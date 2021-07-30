@@ -1,0 +1,16 @@
+--- title: TURN slug: Glossary/TURN tags: - Glossary - Infrastructure - TURN - WebMechanics - WebRTC ---
+
+**TURN **(Traversal Using Relays around NAT) is a {{Glossary('protocol')}} enabling a computer to receive and send data from behind a {{glossary("NAT", "Network Address Translator")}} (NAT) or firewall. TURN is used by {{Glossary("WebRTC")}} to allow any two devices on the Internet to enter a peer-to-peer connection.
+
+Learn more
+----------
+
+### General knowledge
+
+-   {{Interwiki("wikipedia", "TURN")}} on Wikipedia
+-   [WebRTC protocols](/en-US/docs/Web/API/WebRTC_API/Protocols)
+
+### Technical reference
+
+-   [Specification](https://www.ietf.org/rfc/rfc5766.txt)
+-   [Specification update for IPv6](https://www.ietf.org/rfc/rfc6156.txt)

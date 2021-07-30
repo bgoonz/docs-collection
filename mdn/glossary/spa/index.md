@@ -1,0 +1,24 @@
+--- title: SPA (Single-page application) slug: Glossary/SPA tags: - Glossary - SPA - single-page app ---
+
+An SPA (Single-page application) is a web app implementation that loads only a single web document, and then updates the body content of that single document via JavaScript APIs such as {{domxref("XMLHttpRequest")}} and [Fetch](/en-US/docs/Web/API/Fetch_API) when different content is to be shown.
+
+This therefore allows users to use websites without loading whole new pages from the server, which can result in performance gains and a more dynamic experience, with some tradeoff disadvantages such as SEO, more effort required to maintain state, implement navigation, and do meaningful performance monitoring.
+
+Learn more
+----------
+
+### General knowledge
+
+Some of the most popular SPA frameworks include:
+
+-   [React](https://reactjs.org/)
+-   [Angular](https://angular.io/)
+-   [Vue.JS](https://vuejs.org/)
+
+1.  Wikipedia articles
+    1.  {{Interwiki("wikipedia", "Single-page application")}}
+2.  [Glossary](/en-US/docs/Glossary)
+    1.  {{Glossary("API")}}
+    2.  {{Glossary("AJAX")}}
+    3.  {{Glossary("JavaScript")}}
+3.  [Understanding client-side JavaScript frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks)

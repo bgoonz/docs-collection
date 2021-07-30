@@ -1,0 +1,26 @@
+--- title: WebDAV slug: Glossary/WebDAV tags: - Glossary - Infrastructure ---
+
+**WebDAV** (*Web Distributed Authoring and Versioning*) is an {{Glossary("HTTP")}} Extension that lets web developers update their content remotely from a client.
+
+WebDAV is rarely used alone, but two extensions are very common: {{Glossary("CalDAV")}} (remote-access calendar) and {{Glossary("CardDAV")}} (remote-access address book).
+
+WebDAV allows clients to
+
+-   add, delete, and retrieve webpage metadata (e.g. author or creation date)
+-   link pages of any media type to related pages
+-   create sets of documents and retrieve hierarchical list
+-   copy and move webpages
+-   lock a document from being edited by more than one person at a time
+
+See also
+--------
+
+### General knowledge
+
+-   {{Interwiki("wikipedia", "WebDAV")}} on Wikipedia
+
+### Technical reference
+
+-   <span class="external">{{rfc(2518)}}</span>
+-   <span class="external">{{rfc(3253)}}</span>
+-   {{rfc(3744)}}
