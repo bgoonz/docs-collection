@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>report</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="diagnostic-report">Diagnostic report</h1>
+<!--introduced_in=v11.8.0-->
+<!-- type=misc -->
+<blockquote>
+<p>Stability: 2 - Stable</p>
+</blockquote>
+<!-- name=report -->
+<p>Delivers a JSON-formatted diagnostic summary, written to a file.</p>
+<p>The report is intended for development, test and production use, to capture and preserve information for problem determination. It includes JavaScript and native stack traces, heap statistics, platform information, resource usage etc. With the report option enabled, diagnostic reports can be triggered on unhandled exceptions, fatal errors and user signals, in addition to triggering programmatically through API calls.</p>
+<p>A complete example report that was generated on an uncaught exception is provided below for reference.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;header&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;reportVersion&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;event&quot;</span><span class="fu">:</span> <span class="st">&quot;exception&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">&quot;trigger&quot;</span><span class="fu">:</span> <span class="st">&quot;Exception&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;report.20181221.005011.8974.0.001.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">&quot;dumpEventTime&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-12-21T00:50:11Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="dt">&quot;dumpEventTimeStamp&quot;</span><span class="fu">:</span> <span class="st">&quot;1545371411331&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">&quot;processId&quot;</span><span class="fu">:</span> <span class="dv">8974</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="dt">&quot;cwd&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/nodeuser/project/node&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="dt">&quot;commandLine&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="st">&quot;/home/nodeuser/project/node/out/Release/node&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-13" title="13">      <span class="st">&quot;--report-uncaught-exception&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-14" title="14">      <span class="st">&quot;/home/nodeuser/project/node/test/report/test-exception.js&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-15" title="15">      <span class="st">&quot;child&quot;</span></a>
+<a class="sourceLine" id="cb1-16" title="16">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-17" title="17">    <span class="dt">&quot;nodejsVersion&quot;</span><span class="fu">:</span> <span class="st">&quot;v12.0.0-pre&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-18" title="18">    <span class="dt">&quot;glibcVersionRuntime&quot;</span><span class="fu">:</span> <span class="st">&quot;2.17&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-19" title="19">    <span class="dt">&quot;glibcVersionCompiler&quot;</span><span class="fu">:</span> <span class="st">&quot;2.17&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-20" title="20">    <span class="dt">&quot;wordSize&quot;</span><span class="fu">:</span> <span class="st">&quot;64 bit&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-21" title="21">    <span class="dt">&quot;arch&quot;</span><span class="fu">:</span> <span class="st">&quot;x64&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="dt">&quot;platform&quot;</span><span class="fu">:</span> <span class="st">&quot;linux&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-23" title="23">    <span class="dt">&quot;componentVersions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-24" title="24">      <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;12.0.0-pre&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-25" title="25">      <span class="dt">&quot;v8&quot;</span><span class="fu">:</span> <span class="st">&quot;7.1.302.28-node.5&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-26" title="26">      <span class="dt">&quot;uv&quot;</span><span class="fu">:</span> <span class="st">&quot;1.24.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-27" title="27">      <span class="dt">&quot;zlib&quot;</span><span class="fu">:</span> <span class="st">&quot;1.2.11&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-28" title="28">      <span class="dt">&quot;ares&quot;</span><span class="fu">:</span> <span class="st">&quot;1.15.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-29" title="29">      <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="st">&quot;68&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-30" title="30">      <span class="dt">&quot;nghttp2&quot;</span><span class="fu">:</span> <span class="st">&quot;1.34.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-31" title="31">      <span class="dt">&quot;napi&quot;</span><span class="fu">:</span> <span class="st">&quot;3&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-32" title="32">      <span class="dt">&quot;llhttp&quot;</span><span class="fu">:</span> <span class="st">&quot;1.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-33" title="33">      <span class="dt">&quot;openssl&quot;</span><span class="fu">:</span> <span class="st">&quot;1.1.0j&quot;</span></a>
+<a class="sourceLine" id="cb1-34" title="34">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-35" title="35">    <span class="dt">&quot;release&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-36" title="36">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;node&quot;</span></a>
+<a class="sourceLine" id="cb1-37" title="37">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-38" title="38">    <span class="dt">&quot;osName&quot;</span><span class="fu">:</span> <span class="st">&quot;Linux&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-39" title="39">    <span class="dt">&quot;osRelease&quot;</span><span class="fu">:</span> <span class="st">&quot;3.10.0-862.el7.x86_64&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-40" title="40">    <span class="dt">&quot;osVersion&quot;</span><span class="fu">:</span> <span class="st">&quot;#1 SMP Wed Mar 21 18:14:51 EDT 2018&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-41" title="41">    <span class="dt">&quot;osMachine&quot;</span><span class="fu">:</span> <span class="st">&quot;x86_64&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-42" title="42">    <span class="dt">&quot;cpus&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-43" title="43">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-44" title="44">        <span class="dt">&quot;model&quot;</span><span class="fu">:</span> <span class="st">&quot;Intel(R) Core(TM) i7-6820HQ CPU @ 2.70GHz&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-45" title="45">        <span class="dt">&quot;speed&quot;</span><span class="fu">:</span> <span class="dv">2700</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-46" title="46">        <span class="dt">&quot;user&quot;</span><span class="fu">:</span> <span class="dv">88902660</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-47" title="47">        <span class="dt">&quot;nice&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-48" title="48">        <span class="dt">&quot;sys&quot;</span><span class="fu">:</span> <span class="dv">50902570</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-49" title="49">        <span class="dt">&quot;idle&quot;</span><span class="fu">:</span> <span class="dv">241732220</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-50" title="50">        <span class="dt">&quot;irq&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-51" title="51">      <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-52" title="52">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-53" title="53">        <span class="dt">&quot;model&quot;</span><span class="fu">:</span> <span class="st">&quot;Intel(R) Core(TM) i7-6820HQ CPU @ 2.70GHz&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-54" title="54">        <span class="dt">&quot;speed&quot;</span><span class="fu">:</span> <span class="dv">2700</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-55" title="55">        <span class="dt">&quot;user&quot;</span><span class="fu">:</span> <span class="dv">88902660</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-56" title="56">        <span class="dt">&quot;nice&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-57" title="57">        <span class="dt">&quot;sys&quot;</span><span class="fu">:</span> <span class="dv">50902570</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-58" title="58">        <span class="dt">&quot;idle&quot;</span><span class="fu">:</span> <span class="dv">241732220</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-59" title="59">        <span class="dt">&quot;irq&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-60" title="60">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-61" title="61">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-62" title="62">    <span class="dt">&quot;networkInterfaces&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-63" title="63">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-64" title="64">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;en0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-65" title="65">        <span class="dt">&quot;internal&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-66" title="66">        <span class="dt">&quot;mac&quot;</span><span class="fu">:</span> <span class="st">&quot;13:10:de:ad:be:ef&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-67" title="67">        <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;10.0.0.37&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-68" title="68">        <span class="dt">&quot;netmask&quot;</span><span class="fu">:</span> <span class="st">&quot;255.255.255.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-69" title="69">        <span class="dt">&quot;family&quot;</span><span class="fu">:</span> <span class="st">&quot;IPv4&quot;</span></a>
+<a class="sourceLine" id="cb1-70" title="70">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-71" title="71">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-72" title="72">    <span class="dt">&quot;host&quot;</span><span class="fu">:</span> <span class="st">&quot;test_machine&quot;</span></a>
+<a class="sourceLine" id="cb1-73" title="73">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-74" title="74">  <span class="dt">&quot;javascriptStack&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-75" title="75">    <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;Error: *** test-exception.js: throwing uncaught Error&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-76" title="76">    <span class="dt">&quot;stack&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-77" title="77">      <span class="st">&quot;at myException (/home/nodeuser/project/node/test/report/test-exception.js:9:11)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-78" title="78">      <span class="st">&quot;at Object.&lt;anonymous&gt; (/home/nodeuser/project/node/test/report/test-exception.js:12:3)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-79" title="79">      <span class="st">&quot;at Module._compile (internal/modules/cjs/loader.js:718:30)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-80" title="80">      <span class="st">&quot;at Object.Module._extensions..js (internal/modules/cjs/loader.js:729:10)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-81" title="81">      <span class="st">&quot;at Module.load (internal/modules/cjs/loader.js:617:32)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-82" title="82">      <span class="st">&quot;at tryModuleLoad (internal/modules/cjs/loader.js:560:12)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-83" title="83">      <span class="st">&quot;at Function.Module._load (internal/modules/cjs/loader.js:552:3)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-84" title="84">      <span class="st">&quot;at Function.Module.runMain (internal/modules/cjs/loader.js:771:12)&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-85" title="85">      <span class="st">&quot;at executeUserCode (internal/bootstrap/node.js:332:15)&quot;</span></a>
+<a class="sourceLine" id="cb1-86" title="86">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-87" title="87">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-88" title="88">  <span class="dt">&quot;nativeStack&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-89" title="89">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-90" title="90">      <span class="dt">&quot;pc&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b57f07a9ef&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-91" title="91">      <span class="dt">&quot;symbol&quot;</span><span class="fu">:</span> <span class="st">&quot;report::GetNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, v8::Local&lt;v8::String&gt;, std::ostream&amp;) [./node]&quot;</span></a>
+<a class="sourceLine" id="cb1-92" title="92">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-93" title="93">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-94" title="94">      <span class="dt">&quot;pc&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b57f07cf03&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-95" title="95">      <span class="dt">&quot;symbol&quot;</span><span class="fu">:</span> <span class="st">&quot;report::GetReport(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;) [./node]&quot;</span></a>
+<a class="sourceLine" id="cb1-96" title="96">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-97" title="97">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-98" title="98">      <span class="dt">&quot;pc&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b57f1bccfd&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-99" title="99">      <span class="dt">&quot;symbol&quot;</span><span class="fu">:</span> <span class="st">&quot; [./node]&quot;</span></a>
+<a class="sourceLine" id="cb1-100" title="100">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-101" title="101">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-102" title="102">      <span class="dt">&quot;pc&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b57f1be048&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-103" title="103">      <span class="dt">&quot;symbol&quot;</span><span class="fu">:</span> <span class="st">&quot;v8::internal::Builtin_HandleApiCall(int, v8::internal::Object**, v8::internal::Isolate*) [./node]&quot;</span></a>
+<a class="sourceLine" id="cb1-104" title="104">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-105" title="105">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-106" title="106">      <span class="dt">&quot;pc&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b57feeda0e&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-107" title="107">      <span class="dt">&quot;symbol&quot;</span><span class="fu">:</span> <span class="st">&quot; [./node]&quot;</span></a>
+<a class="sourceLine" id="cb1-108" title="108">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-109" title="109">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-110" title="110">  <span class="dt">&quot;javascriptHeap&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-111" title="111">    <span class="dt">&quot;totalMemory&quot;</span><span class="fu">:</span> <span class="dv">6127616</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-112" title="112">    <span class="dt">&quot;totalCommittedMemory&quot;</span><span class="fu">:</span> <span class="dv">4357352</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-113" title="113">    <span class="dt">&quot;usedMemory&quot;</span><span class="fu">:</span> <span class="dv">3221136</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-114" title="114">    <span class="dt">&quot;availableMemory&quot;</span><span class="fu">:</span> <span class="dv">1521370240</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-115" title="115">    <span class="dt">&quot;memoryLimit&quot;</span><span class="fu">:</span> <span class="dv">1526909922</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-116" title="116">    <span class="dt">&quot;heapSpaces&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-117" title="117">      <span class="dt">&quot;read_only_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-118" title="118">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">524288</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-119" title="119">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">39208</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-120" title="120">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">515584</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-121" title="121">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">30504</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-122" title="122">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">485080</span></a>
+<a class="sourceLine" id="cb1-123" title="123">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-124" title="124">      <span class="dt">&quot;new_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-125" title="125">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">2097152</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-126" title="126">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">2019312</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-127" title="127">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">1031168</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-128" title="128">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">985496</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-129" title="129">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">45672</span></a>
+<a class="sourceLine" id="cb1-130" title="130">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-131" title="131">      <span class="dt">&quot;old_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-132" title="132">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">2273280</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-133" title="133">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">1769008</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-134" title="134">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">1974640</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-135" title="135">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">1725488</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-136" title="136">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">249152</span></a>
+<a class="sourceLine" id="cb1-137" title="137">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-138" title="138">      <span class="dt">&quot;code_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-139" title="139">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">696320</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-140" title="140">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">184896</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-141" title="141">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">152128</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-142" title="142">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">152128</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-143" title="143">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-144" title="144">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-145" title="145">      <span class="dt">&quot;map_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-146" title="146">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">536576</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-147" title="147">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">344928</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-148" title="148">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">327520</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-149" title="149">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">327520</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-150" title="150">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-151" title="151">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-152" title="152">      <span class="dt">&quot;large_object_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-153" title="153">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-154" title="154">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-155" title="155">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">1520590336</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-156" title="156">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-157" title="157">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">1520590336</span></a>
+<a class="sourceLine" id="cb1-158" title="158">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-159" title="159">      <span class="dt">&quot;new_large_object_space&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-160" title="160">        <span class="dt">&quot;memorySize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-161" title="161">        <span class="dt">&quot;committedMemory&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-162" title="162">        <span class="dt">&quot;capacity&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-163" title="163">        <span class="dt">&quot;used&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-164" title="164">        <span class="dt">&quot;available&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-165" title="165">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-166" title="166">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-167" title="167">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-168" title="168">  <span class="dt">&quot;resourceUsage&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-169" title="169">    <span class="dt">&quot;userCpuSeconds&quot;</span><span class="fu">:</span> <span class="fl">0.069595</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-170" title="170">    <span class="dt">&quot;kernelCpuSeconds&quot;</span><span class="fu">:</span> <span class="fl">0.019163</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-171" title="171">    <span class="dt">&quot;cpuConsumptionPercent&quot;</span><span class="fu">:</span> <span class="fl">0.000000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-172" title="172">    <span class="dt">&quot;maxRss&quot;</span><span class="fu">:</span> <span class="dv">18079744</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-173" title="173">    <span class="dt">&quot;pageFaults&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-174" title="174">      <span class="dt">&quot;IORequired&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-175" title="175">      <span class="dt">&quot;IONotRequired&quot;</span><span class="fu">:</span> <span class="dv">4610</span></a>
+<a class="sourceLine" id="cb1-176" title="176">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-177" title="177">    <span class="dt">&quot;fsActivity&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-178" title="178">      <span class="dt">&quot;reads&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-179" title="179">      <span class="dt">&quot;writes&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-180" title="180">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-181" title="181">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-182" title="182">  <span class="dt">&quot;uvthreadResourceUsage&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-183" title="183">    <span class="dt">&quot;userCpuSeconds&quot;</span><span class="fu">:</span> <span class="fl">0.068457</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-184" title="184">    <span class="dt">&quot;kernelCpuSeconds&quot;</span><span class="fu">:</span> <span class="fl">0.019127</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-185" title="185">    <span class="dt">&quot;cpuConsumptionPercent&quot;</span><span class="fu">:</span> <span class="fl">0.000000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-186" title="186">    <span class="dt">&quot;fsActivity&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-187" title="187">      <span class="dt">&quot;reads&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-188" title="188">      <span class="dt">&quot;writes&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-189" title="189">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-190" title="190">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-191" title="191">  <span class="dt">&quot;libuv&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-192" title="192">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-193" title="193">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;async&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-194" title="194">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-195" title="195">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-196" title="196">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x0000000102910900&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-197" title="197">      <span class="dt">&quot;details&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb1-198" title="198">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-199" title="199">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-200" title="200">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;timer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-201" title="201">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-202" title="202">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-203" title="203">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x00007fff5fbfeab0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-204" title="204">      <span class="dt">&quot;repeat&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-205" title="205">      <span class="dt">&quot;firesInMsFromNow&quot;</span><span class="fu">:</span> <span class="dv">94403548320796</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-206" title="206">      <span class="dt">&quot;expired&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb1-207" title="207">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-208" title="208">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-209" title="209">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;check&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-210" title="210">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-211" title="211">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-212" title="212">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x00007fff5fbfeb48&quot;</span></a>
+<a class="sourceLine" id="cb1-213" title="213">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-214" title="214">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-215" title="215">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;idle&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-216" title="216">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-217" title="217">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-218" title="218">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x00007fff5fbfebc0&quot;</span></a>
+<a class="sourceLine" id="cb1-219" title="219">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-220" title="220">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-221" title="221">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;prepare&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-222" title="222">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-223" title="223">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-224" title="224">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x00007fff5fbfec38&quot;</span></a>
+<a class="sourceLine" id="cb1-225" title="225">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-226" title="226">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-227" title="227">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;check&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-228" title="228">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-229" title="229">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-230" title="230">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x00007fff5fbfecb0&quot;</span></a>
+<a class="sourceLine" id="cb1-231" title="231">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-232" title="232">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-233" title="233">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;async&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-234" title="234">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-235" title="235">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-236" title="236">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000000010188f2e0&quot;</span></a>
+<a class="sourceLine" id="cb1-237" title="237">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-238" title="238">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-239" title="239">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;tty&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-240" title="240">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-241" title="241">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-242" title="242">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b581db0e18&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-243" title="243">      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">204</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-244" title="244">      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">55</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-245" title="245">      <span class="dt">&quot;fd&quot;</span><span class="fu">:</span> <span class="dv">17</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-246" title="246">      <span class="dt">&quot;writeQueueSize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-247" title="247">      <span class="dt">&quot;readable&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-248" title="248">      <span class="dt">&quot;writable&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb1-249" title="249">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-250" title="250">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-251" title="251">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;signal&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-252" title="252">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-253" title="253">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-254" title="254">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b581d80010&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-255" title="255">      <span class="dt">&quot;signum&quot;</span><span class="fu">:</span> <span class="dv">28</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-256" title="256">      <span class="dt">&quot;signal&quot;</span><span class="fu">:</span> <span class="st">&quot;SIGWINCH&quot;</span></a>
+<a class="sourceLine" id="cb1-257" title="257">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-258" title="258">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-259" title="259">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;tty&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-260" title="260">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-261" title="261">      <span class="dt">&quot;is_referenced&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-262" title="262">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055b581df59f8&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-263" title="263">      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">204</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-264" title="264">      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">55</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-265" title="265">      <span class="dt">&quot;fd&quot;</span><span class="fu">:</span> <span class="dv">19</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-266" title="266">      <span class="dt">&quot;writeQueueSize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-267" title="267">      <span class="dt">&quot;readable&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-268" title="268">      <span class="dt">&quot;writable&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb1-269" title="269">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-270" title="270">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-271" title="271">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;loop&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-272" title="272">      <span class="dt">&quot;is_active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-273" title="273">      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;0x000055fc7b2cb180&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-274" title="274">      <span class="dt">&quot;loopIdleTimeSeconds&quot;</span><span class="fu">:</span> <span class="fl">22644.8</span></a>
+<a class="sourceLine" id="cb1-275" title="275">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-276" title="276">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-277" title="277">  <span class="dt">&quot;workers&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-278" title="278">  <span class="dt">&quot;environmentVariables&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-279" title="279">    <span class="dt">&quot;REMOTEHOST&quot;</span><span class="fu">:</span> <span class="st">&quot;REMOVED&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-280" title="280">    <span class="dt">&quot;MANPATH&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/usr/share/man:&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-281" title="281">    <span class="dt">&quot;XDG_SESSION_ID&quot;</span><span class="fu">:</span> <span class="st">&quot;66126&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-282" title="282">    <span class="dt">&quot;HOSTNAME&quot;</span><span class="fu">:</span> <span class="st">&quot;test_machine&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-283" title="283">    <span class="dt">&quot;HOST&quot;</span><span class="fu">:</span> <span class="st">&quot;test_machine&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-284" title="284">    <span class="dt">&quot;TERM&quot;</span><span class="fu">:</span> <span class="st">&quot;xterm-256color&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-285" title="285">    <span class="dt">&quot;SHELL&quot;</span><span class="fu">:</span> <span class="st">&quot;/bin/csh&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-286" title="286">    <span class="dt">&quot;SSH_CLIENT&quot;</span><span class="fu">:</span> <span class="st">&quot;REMOVED&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-287" title="287">    <span class="dt">&quot;PERL5LIB&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root//usr/lib64/perl5/vendor_perl:/opt/rh/devtoolset-3/root/usr/lib/perl5:/opt/rh/devtoolset-3/root//usr/share/perl5/vendor_perl&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-288" title="288">    <span class="dt">&quot;OLDPWD&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/nodeuser/project/node/src&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-289" title="289">    <span class="dt">&quot;JAVACONFDIRS&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/etc/java:/etc/java&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-290" title="290">    <span class="dt">&quot;SSH_TTY&quot;</span><span class="fu">:</span> <span class="st">&quot;/dev/pts/0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-291" title="291">    <span class="dt">&quot;PCP_DIR&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-292" title="292">    <span class="dt">&quot;GROUP&quot;</span><span class="fu">:</span> <span class="st">&quot;normaluser&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-293" title="293">    <span class="dt">&quot;USER&quot;</span><span class="fu">:</span> <span class="st">&quot;nodeuser&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-294" title="294">    <span class="dt">&quot;LD_LIBRARY_PATH&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/usr/lib64:/opt/rh/devtoolset-3/root/usr/lib&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-295" title="295">    <span class="dt">&quot;HOSTTYPE&quot;</span><span class="fu">:</span> <span class="st">&quot;x86_64-linux&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-296" title="296">    <span class="dt">&quot;XDG_CONFIG_DIRS&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/etc/xdg:/etc/xdg&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-297" title="297">    <span class="dt">&quot;MAIL&quot;</span><span class="fu">:</span> <span class="st">&quot;/var/spool/mail/nodeuser&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-298" title="298">    <span class="dt">&quot;PATH&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/nodeuser/project/node:/opt/rh/devtoolset-3/root/usr/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-299" title="299">    <span class="dt">&quot;PWD&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/nodeuser/project/node&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-300" title="300">    <span class="dt">&quot;LANG&quot;</span><span class="fu">:</span> <span class="st">&quot;en_US.UTF-8&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-301" title="301">    <span class="dt">&quot;PS1&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">u@</span><span class="ch">\\</span><span class="st">h : </span><span class="ch">\\</span><span class="st">[</span><span class="ch">\\</span><span class="st">e[31m</span><span class="ch">\\</span><span class="st">]</span><span class="ch">\\</span><span class="st">w</span><span class="ch">\\</span><span class="st">[</span><span class="ch">\\</span><span class="st">e[m</span><span class="ch">\\</span><span class="st">] &gt;  &quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-302" title="302">    <span class="dt">&quot;SHLVL&quot;</span><span class="fu">:</span> <span class="st">&quot;2&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-303" title="303">    <span class="dt">&quot;HOME&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/nodeuser&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-304" title="304">    <span class="dt">&quot;OSTYPE&quot;</span><span class="fu">:</span> <span class="st">&quot;linux&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-305" title="305">    <span class="dt">&quot;VENDOR&quot;</span><span class="fu">:</span> <span class="st">&quot;unknown&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-306" title="306">    <span class="dt">&quot;PYTHONPATH&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/usr/lib64/python2.7/site-packages:/opt/rh/devtoolset-3/root/usr/lib/python2.7/site-packages&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-307" title="307">    <span class="dt">&quot;MACHTYPE&quot;</span><span class="fu">:</span> <span class="st">&quot;x86_64&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-308" title="308">    <span class="dt">&quot;LOGNAME&quot;</span><span class="fu">:</span> <span class="st">&quot;nodeuser&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-309" title="309">    <span class="dt">&quot;XDG_DATA_DIRS&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/usr/share:/usr/local/share:/usr/share&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-310" title="310">    <span class="dt">&quot;LESSOPEN&quot;</span><span class="fu">:</span> <span class="st">&quot;||/usr/bin/lesspipe.sh %s&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-311" title="311">    <span class="dt">&quot;INFOPATH&quot;</span><span class="fu">:</span> <span class="st">&quot;/opt/rh/devtoolset-3/root/usr/share/info&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-312" title="312">    <span class="dt">&quot;XDG_RUNTIME_DIR&quot;</span><span class="fu">:</span> <span class="st">&quot;/run/user/50141&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-313" title="313">    <span class="dt">&quot;_&quot;</span><span class="fu">:</span> <span class="st">&quot;./node&quot;</span></a>
+<a class="sourceLine" id="cb1-314" title="314">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-315" title="315">  <span class="dt">&quot;userLimits&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-316" title="316">    <span class="dt">&quot;core_file_size_blocks&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-317" title="317">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-318" title="318">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-319" title="319">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-320" title="320">    <span class="dt">&quot;data_seg_size_kbytes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-321" title="321">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-322" title="322">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-323" title="323">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-324" title="324">    <span class="dt">&quot;file_size_blocks&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-325" title="325">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-326" title="326">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-327" title="327">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-328" title="328">    <span class="dt">&quot;max_locked_memory_bytes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-329" title="329">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-330" title="330">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="dv">65536</span></a>
+<a class="sourceLine" id="cb1-331" title="331">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-332" title="332">    <span class="dt">&quot;max_memory_size_kbytes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-333" title="333">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-334" title="334">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-335" title="335">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-336" title="336">    <span class="dt">&quot;open_files&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-337" title="337">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-338" title="338">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="dv">4096</span></a>
+<a class="sourceLine" id="cb1-339" title="339">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-340" title="340">    <span class="dt">&quot;stack_size_bytes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-341" title="341">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-342" title="342">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-343" title="343">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-344" title="344">    <span class="dt">&quot;cpu_time_seconds&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-345" title="345">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-346" title="346">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-347" title="347">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-348" title="348">    <span class="dt">&quot;max_user_processes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-349" title="349">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-350" title="350">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="dv">4127290</span></a>
+<a class="sourceLine" id="cb1-351" title="351">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-352" title="352">    <span class="dt">&quot;virtual_memory_kbytes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-353" title="353">      <span class="dt">&quot;soft&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-354" title="354">      <span class="dt">&quot;hard&quot;</span><span class="fu">:</span> <span class="st">&quot;unlimited&quot;</span></a>
+<a class="sourceLine" id="cb1-355" title="355">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-356" title="356">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-357" title="357">  <span class="dt">&quot;sharedObjects&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-358" title="358">    <span class="st">&quot;/lib64/libdl.so.2&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-359" title="359">    <span class="st">&quot;/lib64/librt.so.1&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-360" title="360">    <span class="st">&quot;/lib64/libstdc++.so.6&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-361" title="361">    <span class="st">&quot;/lib64/libm.so.6&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-362" title="362">    <span class="st">&quot;/lib64/libgcc_s.so.1&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-363" title="363">    <span class="st">&quot;/lib64/libpthread.so.0&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-364" title="364">    <span class="st">&quot;/lib64/libc.so.6&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-365" title="365">    <span class="st">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span></a>
+<a class="sourceLine" id="cb1-366" title="366">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-367" title="367"><span class="fu">}</span></a></code></pre></div>
+<h2 id="usage">Usage</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">node</span> --report-uncaught-exception --report-on-signal \</a>
+<a class="sourceLine" id="cb2-2" title="2">--report-on-fatalerror app.js</a></code></pre></div>
+<ul>
+<li><p><code>--report-uncaught-exception</code> Enables report to be generated on un-caught exceptions. Useful when inspecting JavaScript stack in conjunction with native stack and other runtime environment data.</p></li>
+<li><p><code>--report-on-signal</code> Enables report to be generated upon receiving the specified (or predefined) signal to the running Node.js process. (See below on how to modify the signal that triggers the report.) Default signal is <code>SIGUSR2</code>. Useful when a report needs to be triggered from another program. Application monitors may leverage this feature to collect report at regular intervals and plot rich set of internal runtime data to their views.</p></li>
+</ul>
+<p>Signal based report generation is not supported in Windows.</p>
+<p>Under normal circumstances, there is no need to modify the report triggering signal. However, if <code>SIGUSR2</code> is already used for other purposes, then this flag helps to change the signal for report generation and preserve the original meaning of <code>SIGUSR2</code> for the said purposes.</p>
+<ul>
+<li><p><code>--report-on-fatalerror</code> Enables the report to be triggered on fatal errors (internal errors within the Node.js runtime, such as out of memory) that leads to termination of the application. Useful to inspect various diagnostic data elements such as heap, stack, event loop state, resource consumption etc. to reason about the fatal error.</p></li>
+<li><p><code>--report-compact</code> Write reports in a compact format, single-line JSON, more easily consumable by log processing systems than the default multi-line format designed for human consumption.</p></li>
+<li><p><code>--report-directory</code> Location at which the report will be generated.</p></li>
+<li><p><code>--report-filename</code> Name of the file to which the report will be written.</p></li>
+<li><p><code>--report-signal</code> Sets or resets the signal for report generation (not supported on Windows). Default signal is <code>SIGUSR2</code>.</p></li>
+</ul>
+<p>A report can also be triggered via an API call from a JavaScript application:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>()<span class="op">;</span></a></code></pre></div>
+<p>This function takes an optional additional argument <code>filename</code>, which is the name of a file into which the report is written.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(<span class="st">&#39;./foo.json&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>This function takes an optional additional argument <code>err</code> which is an <code>Error</code> object that will be used as the context for the JavaScript stack printed in the report. When using report to handle errors in a callback or an exception handler, this allows the report to include the location of the original error as well as where it was handled.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="va">process</span>.<span class="at">chdir</span>(<span class="st">&#39;/non-existent-path&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">// Any other code</span></a></code></pre></div>
+<p>If both filename and error object are passed to <code>writeReport()</code> the error object must be the second parameter.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="va">process</span>.<span class="at">chdir</span>(<span class="st">&#39;/non-existent-path&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(filename<span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">// Any other code</span></a></code></pre></div>
+<p>The content of the diagnostic report can be returned as a JavaScript Object via an API call from a JavaScript application:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="kw">typeof</span> report <span class="op">===</span> <span class="st">&#39;object&#39;</span>)<span class="op">;</span> <span class="co">// true</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">// Similar to process.report.writeReport() output</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(report<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
+<p>This function takes an optional additional argument <code>err</code>, which is an <code>Error</code> object that will be used as the context for the JavaScript stack printed in the report.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;custom error&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="kw">typeof</span> report <span class="op">===</span> <span class="st">&#39;object&#39;</span>)<span class="op">;</span> <span class="co">// true</span></a></code></pre></div>
+<p>The API versions are useful when inspecting the runtime state from within the application, in expectation of self-adjusting the resource consumption, load balancing, monitoring etc.</p>
+<p>The content of the report consists of a header section containing the event type, date, time, PID and Node.js version, sections containing JavaScript and native stack traces, a section containing V8 heap information, a section containing <code>libuv</code> handle information and an OS platform information section showing CPU and memory usage and system limits. An example report can be triggered using the Node.js REPL:</p>
+<pre class="console"><code>$ node
+&gt; process.report.writeReport();
+Writing Node.js report to file: report.20181126.091102.8480.0.001.json
+Node.js report completed
+&gt;</code></pre>
+<p>When a report is written, start and end messages are issued to stderr and the filename of the report is returned to the caller. The default filename includes the date, time, PID and a sequence number. The sequence number helps in associating the report dump with the runtime state if generated multiple times for the same Node.js process.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Additional runtime configuration of report generation is available via the following properties of <code>process.report</code>:</p>
+<p><code>reportOnFatalError</code> triggers diagnostic reporting on fatal errors when <code>true</code>. Defaults to <code>false</code>.</p>
+<p><code>reportOnSignal</code> triggers diagnostic reporting on signal when <code>true</code>. This is not supported on Windows. Defaults to <code>false</code>.</p>
+<p><code>reportOnUncaughtException</code> triggers diagnostic reporting on uncaught exception when <code>true</code>. Defaults to <code>false</code>.</p>
+<p><code>signal</code> specifies the POSIX signal identifier that will be used to intercept external triggers for report generation. Defaults to <code>'SIGUSR2'</code>.</p>
+<p><code>filename</code> specifies the name of the output file in the file system. Special meaning is attached to <code>stdout</code> and <code>stderr</code>. Usage of these will result in report being written to the associated standard streams. In cases where standard streams are used, the value in <code>directory</code> is ignored. URLs are not supported. Defaults to a composite filename that contains timestamp, PID and sequence number.</p>
+<p><code>directory</code> specifies the filesystem directory where the report will be written. URLs are not supported. Defaults to the current working directory of the Node.js process.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// Trigger report only on uncaught exceptions.</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnFatalError</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnSignal</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnUncaughtException</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-5" title="5"></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">// Trigger report for both internal errors as well as external signal.</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnFatalError</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnSignal</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnUncaughtException</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-10" title="10"></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">// Change the default signal to &#39;SIGQUIT&#39; and enable it.</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnFatalError</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnUncaughtException</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnSignal</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="va">process</span>.<span class="va">report</span>.<span class="at">signal</span> <span class="op">=</span> <span class="st">&#39;SIGQUIT&#39;</span><span class="op">;</span></a></code></pre></div>
+<p>Configuration on module initialization is also available via environment variables:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="va">NODE_OPTIONS=</span><span class="st">&quot;--report-uncaught-exception \</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="st">  --report-on-fatalerror --report-on-signal \</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="st">  --report-signal=SIGUSR2  --report-filename=./report.json \</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="st">  --report-directory=/home/nodeuser&quot;</span></a></code></pre></div>
+<p>Specific API documentation can be found under <a href="process.md"><code>process API documentation</code></a> section.</p>
+<h2 id="interaction-with-workers">Interaction with workers</h2>
+<!-- YAML
+changes:
+  - version:
+      - v13.9.0
+      - v12.16.2
+    pr-url: https://github.com/nodejs/node/pull/31386
+    description: Workers are now included in the report.
+-->
+<p><a href="worker_threads.md"><code>Worker</code></a> threads can create reports in the same way that the main thread does.</p>
+<p>Reports will include information on any Workers that are children of the current thread as part of the <code>workers</code> section, with each Worker generating a report in the standard report format.</p>
+<p>The thread which is generating the report will wait for the reports from Worker threads to finish. However, the latency for this will usually be low, as both running JavaScript and the event loop are interrupted to generate the report.</p>
+</body>
+</html>

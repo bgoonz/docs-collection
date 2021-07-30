@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>tty</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="tty">TTY</h1>
+<!--introduced_in=v0.10.0-->
+<blockquote>
+<p>Stability: 2 - Stable</p>
+</blockquote>
+<!-- source_link=lib/tty.js -->
+<p>The <code>tty</code> module provides the <code>tty.ReadStream</code> and <code>tty.WriteStream</code> classes. In most cases, it will not be necessary or possible to use this module directly. However, it can be accessed using:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> tty <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;tty&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>When Node.js detects that it is being run with a text terminal (“TTY”) attached, <a href="process.md#process_process_stdin"><code>process.stdin</code></a> will, by default, be initialized as an instance of <code>tty.ReadStream</code> and both <a href="process.md#process_process_stdout"><code>process.stdout</code></a> and <a href="process.md#process_process_stderr"><code>process.stderr</code></a> will, by default, be instances of <code>tty.WriteStream</code>. The preferred method of determining whether Node.js is being run within a TTY context is to check that the value of the <code>process.stdout.isTTY</code> property is <code>true</code>:</p>
+<pre class="console"><code>$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot;
+true
+$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot; | cat
+false</code></pre>
+<p>In most cases, there should be little to no reason for an application to manually create instances of the <code>tty.ReadStream</code> and <code>tty.WriteStream</code> classes.</p>
+<h2 id="class-tty.readstream">Class: <code>tty.ReadStream</code></h2>
+<!-- YAML
+added: v0.5.8
+-->
+<ul>
+<li>Extends: {net.Socket}</li>
+</ul>
+<p>Represents the readable side of a TTY. In normal circumstances <a href="process.md#process_process_stdin"><code>process.stdin</code></a> will be the only <code>tty.ReadStream</code> instance in a Node.js process and there should be no reason to create additional instances.</p>
+<h3 id="readstream.israw"><code>readStream.isRaw</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<p>A <code>boolean</code> that is <code>true</code> if the TTY is currently configured to operate as a raw device. Defaults to <code>false</code>.</p>
+<h3 id="readstream.istty"><code>readStream.isTTY</code></h3>
+<!-- YAML
+added: v0.5.8
+-->
+<p>A <code>boolean</code> that is always <code>true</code> for <code>tty.ReadStream</code> instances.</p>
+<h3 id="readstream.setrawmodemode"><code>readStream.setRawMode(mode)</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<ul>
+<li><code>mode</code> {boolean} If <code>true</code>, configures the <code>tty.ReadStream</code> to operate as a raw device. If <code>false</code>, configures the <code>tty.ReadStream</code> to operate in its default mode. The <code>readStream.isRaw</code> property will be set to the resulting mode.</li>
+<li>Returns: {this} The read stream instance.</li>
+</ul>
+<p>Allows configuration of <code>tty.ReadStream</code> so that it operates as a raw device.</p>
+<p>When in raw mode, input is always available character-by-character, not including modifiers. Additionally, all special processing of characters by the terminal is disabled, including echoing input characters. <kbd>Ctrl</kbd>+<kbd>C</kbd> will no longer cause a <code>SIGINT</code> when in this mode.</p>
+<h2 id="class-tty.writestream">Class: <code>tty.WriteStream</code></h2>
+<!-- YAML
+added: v0.5.8
+-->
+<ul>
+<li>Extends: {net.Socket}</li>
+</ul>
+<p>Represents the writable side of a TTY. In normal circumstances, <a href="process.md#process_process_stdout"><code>process.stdout</code></a> and <a href="process.md#process_process_stderr"><code>process.stderr</code></a> will be the only <code>tty.WriteStream</code> instances created for a Node.js process and there should be no reason to create additional instances.</p>
+<h3 id="event-resize">Event: <code>'resize'</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<p>The <code>'resize'</code> event is emitted whenever either of the <code>writeStream.columns</code> or <code>writeStream.rows</code> properties have changed. No arguments are passed to the listener callback when called.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;resize&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;screen size has changed!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">columns</span><span class="sc">}</span><span class="vs">x</span><span class="sc">${</span><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">rows</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="writestream.clearlinedir-callback"><code>writeStream.clearLine(dir[, callback])</code></h3>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28721
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>dir</code> {number}
+<ul>
+<li><code>-1</code>: to the left from cursor</li>
+<li><code>1</code>: to the right from cursor</li>
+<li><code>0</code>: the entire line</li>
+</ul></li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if the stream wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p><code>writeStream.clearLine()</code> clears the current line of this <code>WriteStream</code> in a direction identified by <code>dir</code>.</p>
+<h3 id="writestream.clearscreendowncallback"><code>writeStream.clearScreenDown([callback])</code></h3>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28721
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if the stream wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p><code>writeStream.clearScreenDown()</code> clears this <code>WriteStream</code> from the current cursor down.</p>
+<h3 id="writestream.columns"><code>writeStream.columns</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<p>A <code>number</code> specifying the number of columns the TTY currently has. This property is updated whenever the <code>'resize'</code> event is emitted.</p>
+<h3 id="writestream.cursortox-y-callback"><code>writeStream.cursorTo(x[, y][, callback])</code></h3>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28721
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>x</code> {number}</li>
+<li><code>y</code> {number}</li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if the stream wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p><code>writeStream.cursorTo()</code> moves this <code>WriteStream</code>’s cursor to the specified position.</p>
+<h3 id="writestream.getcolordepthenv"><code>writeStream.getColorDepth([env])</code></h3>
+<!-- YAML
+added: v9.9.0
+-->
+<ul>
+<li><code>env</code> {Object} An object containing the environment variables to check. This enables simulating the usage of a specific terminal. <strong>Default:</strong> <code>process.env</code>.</li>
+<li>Returns: {number}</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li><code>1</code> for 2,</li>
+<li><code>4</code> for 16,</li>
+<li><code>8</code> for 256,</li>
+<li><code>24</code> for 16,777,216 colors supported.</li>
+</ul>
+<p>Use this to determine what colors the terminal supports. Due to the nature of colors in terminals it is possible to either have false positives or false negatives. It depends on process information and the environment variables that may lie about what terminal is used. It is possible to pass in an <code>env</code> object to simulate the usage of a specific terminal. This can be useful to check how specific environment settings behave.</p>
+<p>To enforce a specific color support, use one of the below environment settings.</p>
+<ul>
+<li>2 colors: <code>FORCE_COLOR = 0</code> (Disables colors)</li>
+<li>16 colors: <code>FORCE_COLOR = 1</code></li>
+<li>256 colors: <code>FORCE_COLOR = 2</code></li>
+<li>16,777,216 colors: <code>FORCE_COLOR = 3</code></li>
+</ul>
+<p>Disabling color support is also possible by using the <code>NO_COLOR</code> and <code>NODE_DISABLE_COLORS</code> environment variables.</p>
+<h3 id="writestream.getwindowsize"><code>writeStream.getWindowSize()</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<ul>
+<li>Returns: {number[]}</li>
+</ul>
+<p><code>writeStream.getWindowSize()</code> returns the size of the TTY corresponding to this <code>WriteStream</code>. The array is of the type <code>[numColumns, numRows]</code> where <code>numColumns</code> and <code>numRows</code> represent the number of columns and rows in the corresponding TTY.</p>
+<h3 id="writestream.hascolorscount-env"><code>writeStream.hasColors([count][, env])</code></h3>
+<!-- YAML
+added:
+ - v11.13.0
+ - v10.16.0
+-->
+<ul>
+<li><code>count</code> {integer} The number of colors that are requested (minimum 2). <strong>Default:</strong> 16.</li>
+<li><code>env</code> {Object} An object containing the environment variables to check. This enables simulating the usage of a specific terminal. <strong>Default:</strong> <code>process.env</code>.</li>
+<li>Returns: {boolean}</li>
+</ul>
+<p>Returns <code>true</code> if the <code>writeStream</code> supports at least as many colors as provided in <code>count</code>. Minimum support is 2 (black and white).</p>
+<p>This has the same false positives and negatives as described in <a href="#tty_writestream_getcolordepth_env"><code>writeStream.getColorDepth()</code></a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">hasColors</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">// Returns true or false depending on if `stdout` supports at least 16 colors.</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">hasColors</span>(<span class="dv">256</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// Returns true or false depending on if `stdout` supports at least 256 colors.</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">hasColors</span>(<span class="op">{</span> <span class="dt">TMUX</span><span class="op">:</span> <span class="st">&#39;1&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">// Returns true.</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="va">process</span>.<span class="va">stdout</span>.<span class="at">hasColors</span>(<span class="dv">2</span> <span class="op">**</span> <span class="dv">24</span><span class="op">,</span> <span class="op">{</span> <span class="dt">TMUX</span><span class="op">:</span> <span class="st">&#39;1&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">// Returns false (the environment setting pretends to support 2 ** 8 colors).</span></a></code></pre></div>
+<h3 id="writestream.istty"><code>writeStream.isTTY</code></h3>
+<!-- YAML
+added: v0.5.8
+-->
+<p>A <code>boolean</code> that is always <code>true</code>.</p>
+<h3 id="writestream.movecursordx-dy-callback"><code>writeStream.moveCursor(dx, dy[, callback])</code></h3>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28721
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>dx</code> {number}</li>
+<li><code>dy</code> {number}</li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if the stream wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p><code>writeStream.moveCursor()</code> moves this <code>WriteStream</code>’s cursor <em>relative</em> to its current position.</p>
+<h3 id="writestream.rows"><code>writeStream.rows</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<p>A <code>number</code> specifying the number of rows the TTY currently has. This property is updated whenever the <code>'resize'</code> event is emitted.</p>
+<h2 id="tty.isattyfd"><code>tty.isatty(fd)</code></h2>
+<!-- YAML
+added: v0.5.8
+-->
+<ul>
+<li><code>fd</code> {number} A numeric file descriptor</li>
+<li>Returns: {boolean}</li>
+</ul>
+<p>The <code>tty.isatty()</code> method returns <code>true</code> if the given <code>fd</code> is associated with a TTY and <code>false</code> if it is not, including whenever <code>fd</code> is not a non-negative integer.</p>
+</body>
+</html>

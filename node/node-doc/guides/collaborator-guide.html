@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>collaborator-guide</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="node.js-collaborator-guide">Node.js collaborator guide</h1>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#issues-and-pull-requests">Issues and pull requests</a>
+<ul>
+<li><a href="#welcoming-first-time-contributors">Welcoming first-time contributors</a></li>
+<li><a href="#closing-issues-and-pull-requests">Closing issues and pull requests</a></li>
+<li><a href="#author-ready-pull-requests">Author ready pull requests</a></li>
+<li><a href="#handling-own-pull-requests">Handling own pull requests</a></li>
+<li><a href="#managing-security-issues">Security issues</a></li>
+</ul></li>
+<li><a href="#accepting-modifications">Accepting modifications</a>
+<ul>
+<li><a href="#code-reviews">Code reviews</a></li>
+<li><a href="#consensus-seeking">Consensus seeking</a></li>
+<li><a href="#waiting-for-approvals">Waiting for approvals</a></li>
+<li><a href="#testing-and-ci">Testing and CI</a>
+<ul>
+<li><a href="#useful-jenkins-ci-jobs">Useful Jenkins CI jobs</a></li>
+<li><a href="#starting-a-jenkins-ci-job">Starting a Jenkins CI job</a></li>
+</ul></li>
+<li><a href="#internal-vs-public-api">Internal vs. public API</a></li>
+<li><a href="#breaking-changes">Breaking changes</a>
+<ul>
+<li><a href="#breaking-changes-and-deprecations">Breaking changes and deprecations</a></li>
+<li><a href="#breaking-changes-to-internal-elements">Breaking changes to internal elements</a></li>
+<li><a href="#unintended-breaking-changes">Unintended breaking changes</a>
+<ul>
+<li><a href="#reverting-commits">Reverting commits</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#introducing-new-modules">Introducing new modules</a></li>
+<li><a href="#additions-to-n-api">Additions to Node-API</a></li>
+<li><a href="#deprecations">Deprecations</a></li>
+<li><a href="#involving-the-tsc">Involving the TSC</a></li>
+</ul></li>
+<li><a href="#landing-pull-requests">Landing pull requests</a>
+<ul>
+<li><a href="#using-git-node">Using <code>git-node</code></a></li>
+<li><a href="#technical-howto">Technical HOWTO</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#i-made-a-mistake">I made a mistake</a></li>
+<li><a href="#long-term-support">Long Term Support</a>
+<ul>
+<li><a href="#what-is-lts">What is LTS?</a></li>
+<li><a href="#how-are-lts-branches-managed">How are LTS branches managed?</a></li>
+<li><a href="#how-can-i-help">How can I help?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#who-to-cc-in-the-issue-tracker">Who to CC in the issue tracker</a></li>
+</ul>
+<p>This document explains how collaborators manage the Node.js project. Collaborators should understand the <a href="../../CONTRIBUTING.md">guidelines for new contributors</a> and the <a href="../../GOVERNANCE.md">project governance model</a>.</p>
+<h2 id="issues-and-pull-requests">Issues and pull requests</h2>
+<p>Mind these guidelines, the opinions of other collaborators, and guidance of the <a href="https://github.com/nodejs/TSC">TSC</a>. Notify other qualified parties for more input on an issue or a pull request. See <a href="#who-to-cc-in-the-issue-tracker">Who to CC in the issue tracker</a>.</p>
+<h3 id="welcoming-first-time-contributors">Welcoming first-time contributors</h3>
+<p>Always show courtesy to individuals submitting issues and pull requests. Be welcoming to first-time contributors, identified by the GitHub <img src="../first_timer_badge.png" alt="First-time contributor" /> badge.</p>
+<p>For first-time contributors, check if the commit author is the same as the pull request author. This way, once their pull request lands, GitHub will show them as a <em>Contributor</em>. Ask if they have configured their git <a href="https://help.github.com/articles/setting-your-username-in-git/">username</a> and <a href="https://help.github.com/articles/setting-your-commit-email-address-in-git/">email</a> to their liking.</p>
+<h3 id="closing-issues-and-pull-requests">Closing issues and pull requests</h3>
+<p>Collaborators can close any issue or pull request that is not relevant to the future of the Node.js project. Where this is unclear, leave the issue or pull request open for several days to allow for discussion. Where this does not yield evidence that the issue or pull request has relevance, close it. Remember that issues and pull requests can always be re-opened if necessary.</p>
+<h3 id="author-ready-pull-requests">Author ready pull requests</h3>
+<p>A pull request is <em>author ready</em> when:</p>
+<ul>
+<li>There is a CI run in progress or completed.</li>
+<li>There is at least one collaborator approval.</li>
+<li>There are no outstanding review comments.</li>
+</ul>
+<p>Please always add the <code>author ready</code> label to the pull request in that case. Please always remove it again as soon as the conditions are not met anymore.</p>
+<h3 id="handling-own-pull-requests">Handling own pull requests</h3>
+<p>When you open a pull request, <a href="#testing-and-ci">start a CI</a> right away. Later, after new code changes or rebasing, start a new CI.</p>
+<p>As soon as the pull request is ready to land, please do so. This allows other collaborators to focus on other pull requests. If your pull request is not ready to land but is <a href="#author-ready-pull-requests">author ready</a>, add the <code>author ready</code> label. If you wish to land the pull request yourself, use the “assign yourself” link to self-assign it.</p>
+<h3 id="managing-security-issues">Managing security issues</h3>
+<p>Use the process outlined in <a href="https://github.com/nodejs/node/blob/HEAD/SECURITY.md">SECURITY.md</a> to report security issues. If a user opens a security issue in the public repository:</p>
+<ul>
+<li>Ask the user to submit a report through HackerOne as outlined in <a href="https://github.com/nodejs/node/blob/HEAD/SECURITY.md">SECURITY.md</a>.</li>
+<li>Move the issue to the private repository called <a href="https://github.com/nodejs/premature-disclosures">premature-disclosures</a>.</li>
+<li>For any related pull requests, create an associated issue in the <code>premature-disclosures</code> repository. Add a copy of the patch for the pull request to the issue. Add screenshots of discussion from the pull request to the issue.</li>
+<li><a href="https://support.github.com/contact">Open a ticket with GitHub</a> to delete the pull request using Node.js (team) as the account organization.</li>
+<li>Open a new issue in the public repository with the title <code>FYI - pull request deleted #YYYY</code>. Include an explanation for the user: &gt; FYI <span class="citation" data-cites="xxxx">@xxxx</span> we asked GitHub to delete your pull request while we work on &gt; releases in private.</li>
+<li>Email <code>tsc@iojs.org</code> with links to the issues in the <code>premature-disclosures</code> repository.</li>
+</ul>
+<h2 id="accepting-modifications">Accepting modifications</h2>
+<p>Contributors propose modifications to Node.js using GitHub pull requests. This includes modifications proposed by TSC members and other collaborators. A pull request must pass code review and CI before landing into the codebase.</p>
+<h3 id="code-reviews">Code reviews</h3>
+<p>At least two collaborators must approve a pull request before the pull request lands. One collaborator approval is enough if the pull request has been open for more than seven days.</p>
+<p>Approving a pull request indicates that the collaborator accepts responsibility for the change.</p>
+<p>Approval must be from collaborators who are not authors of the change.</p>
+<p>In some cases, it might be necessary to summon a GitHub team to a pull request for review by @-mention. See <a href="#who-to-cc-in-the-issue-tracker">Who to CC in the issue tracker</a>.</p>
+<p>If you are the first collaborator to approve a pull request that has no CI yet, please <a href="#testing-and-ci">start one</a>. Please also start a new CI if the pull request creator pushed new code since the last CI run.</p>
+<h3 id="consensus-seeking">Consensus seeking</h3>
+<p>A pull request can land if it has the needed <a href="#code-reviews">approvals</a>, <a href="#testing-and-ci">CI</a>, <a href="#waiting-for-approvals">wait time</a> and no <a href="#objections">outstanding objections</a>. <a href="#breaking-changes">Breaking changes</a> must receive <a href="#involving-the-tsc">TSC review</a> in addition to other requirements. If a pull request meets all requirements except the <a href="#waiting-for-approvals">wait time</a>, please add the <a href="#author-ready-pull-requests"><code>author ready</code></a> label.</p>
+<h4 id="objections">Objections</h4>
+<p>Collaborators can object to a pull request by using the “Request Changes” GitHub feature. Dissent comments alone don’t constitute an objection. Any pull request objection must include a clear reason for that objection, and the objector must remain responsive for further discussion towards consensus about the direction of the pull request. Where possible, provide a set of actionable steps alongside the objection.</p>
+<p>If the objection is not clear to others, another collaborator can ask an objecting collaborator to explain their objection or to provide actionable steps to resolve the objection. If the objector is unresponsive for seven days after a collaborator asks for clarification, a collaborator may dismiss the objection.</p>
+<p>Pull requests with outstanding objections must remain open until all objections are satisfied. If reaching consensus is not possible, a collaborator can escalate the issue to the TSC by pinging <code>@nodejs/tsc</code> and adding the <code>tsc-agenda</code> label to the issue.</p>
+<h4 id="helpful-resources">Helpful resources</h4>
+<ul>
+<li><a href="https://mtlynch.io/human-code-reviews-1/">How to Do Code Reviews Like a Human (Part One)</a></li>
+<li><a href="https://mtlynch.io/human-code-reviews-2/">How to Do Code Reviews Like a Human (Part Two)</a></li>
+<li><a href="https://css-tricks.com/code-review-etiquette/">Code Review Etiquette</a></li>
+</ul>
+<h3 id="waiting-for-approvals">Waiting for approvals</h3>
+<p>Before landing pull requests, allow 48 hours for input from other collaborators. Certain types of pull requests can be fast-tracked and can land after a shorter delay. For example:</p>
+<ul>
+<li>Focused changes that affect only documentation and/or the test suite:
+<ul>
+<li><code>code-and-learn</code> tasks often fall into this category.</li>
+<li><code>good-first-issue</code> pull requests might also be suitable.</li>
+</ul></li>
+<li>Changes that fix regressions:
+<ul>
+<li>Regressions that break the workflow (red CI or broken compilation).</li>
+<li>Regressions that happen right before a release, or reported soon after.</li>
+</ul></li>
+</ul>
+<p>To propose fast-tracking a pull request, apply the <code>fast-track</code> label. Then add a comment that collaborators can upvote.</p>
+<p>If someone disagrees with the fast-tracking request, remove the label. Do not fast-track the pull request in that case.</p>
+<p>The pull request can be fast-tracked if two collaborators approve the fast-tracking request. To land, the pull request itself still needs two collaborator approvals and a passing CI.</p>
+<p>Collaborators can request fast-tracking of pull requests they did not author. In that case only, the request itself is also one fast-track approval. Upvote the comment anyway to avoid any doubt.</p>
+<h3 id="testing-and-ci">Testing and CI</h3>
+<p>All fixes must have a test case which demonstrates the defect. The test should fail before the change, and pass after the change.</p>
+<p>Do not land any pull requests without the necessary passing CI runs. A passing (green) GitHub Actions CI result is required. A passing (green or yellow) <a href="https://ci.nodejs.org/">Jenkins CI</a> is also required if the pull request contains changes that will affect the <code>node</code> binary. This is because GitHub Actions CI does not cover all the environments supported by Node.js.</p>
+<details>
+<p><summary>Changes that affect the <code>node</code> binary</summary></p>
+<p>Changes in the following folders (except comment-only changes) are guaranteed to affect the <code>node</code> binary:</p>
+<ul>
+<li><code>deps/</code></li>
+<li><code>lib/</code></li>
+<li><code>src/</code></li>
+<li><code>test/</code></li>
+<li><code>tools/code_cache/</code></li>
+<li><code>tools/gyp/</code></li>
+<li><code>tools/icu/</code></li>
+<li><code>tools/inspector-protocol/</code></li>
+<li><code>tools/msvs/</code></li>
+<li><code>tools/snapshot/</code></li>
+<li><code>tools/v8_gypfiles/</code></li>
+</ul>
+<p>There are some other files that touch the build chain. Changes in the following files also qualify as affecting the <code>node</code> binary:</p>
+<ul>
+<li><code>tools/*.py</code></li>
+<li><code>tools/build-addons.js</code></li>
+<li><code>*.gyp</code></li>
+<li><code>*.gypi</code></li>
+<li><code>configure</code></li>
+<li><code>configure.py</code></li>
+<li><code>Makefile</code></li>
+<li><code>vcbuilt.bat</code></li>
+</ul>
+</details>
+<p>If there are GitHub Actions CI failures unrelated to the change in the pull request, try “Re-run all jobs”. It’s under the “🔄 Re-run jobs” button, on the right-hand side of “Checks” tab.</p>
+<p>If there are Jenkins CI failures unrelated to the change in the pull request, try “Resume Build”. It is in the left navigation of the relevant <code>node-test-pull-request</code> job. It will preserve all the green results from the current job but re-run everything else. Start a fresh CI if more than seven days have elapsed since the original failing CI as the compiled binaries for the Windows and ARM platforms are only kept for seven days.</p>
+<h4 id="useful-jenkins-ci-jobs">Useful Jenkins CI jobs</h4>
+<ul>
+<li><p><a href="https://ci.nodejs.org/job/node-test-pull-request/"><code>node-test-pull-request</code></a> is the CI job to test pull requests. It runs the <code>build-ci</code> and <code>test-ci</code> targets on all supported platforms.</p></li>
+<li><p><a href="https://ci.nodejs.org/job/citgm-smoker/"><code>citgm-smoker</code></a> uses <a href="https://github.com/nodejs/citgm"><code>CitGM</code></a> to allow you to run <code>npm install &amp;&amp; npm test</code> on a large selection of common modules. This is useful to check whether a change will cause breakage in the ecosystem.</p></li>
+<li><p><a href="https://ci.nodejs.org/job/node-stress-single-test/"><code>node-stress-single-test</code></a> can run a group of tests over and over on a specific platform. Use it to check that the tests are reliable.</p></li>
+<li><p><a href="https://ci.nodejs.org/job/node-test-commit-v8-linux/"><code>node-test-commit-v8-linux</code></a> runs the standard V8 tests. Run it when updating V8 in Node.js or floating new patches on V8.</p></li>
+<li><p><a href="https://ci.nodejs.org/job/node-test-commit-custom-suites-freestyle/"><code>node-test-commit-custom-suites-freestyle</code></a> enables customization of test suites and parameters. It can execute test suites not used in other CI test runs (such as tests in the <code>internet</code> or <code>pummel</code> directories). It can also make sure tests pass when provided with a flag not used in other CI test runs (such as <code>--worker</code>).</p></li>
+</ul>
+<h4 id="starting-a-jenkins-ci-job">Starting a Jenkins CI job</h4>
+<p>From the CI Job page, click “Build with Parameters” on the left side.</p>
+<p>You generally need to enter only one or both of the following options in the form:</p>
+<ul>
+<li><code>GIT_REMOTE_REF</code>: Change to the remote portion of git refspec. To specify the branch this way, <code>refs/heads/BRANCH</code> is used (e.g. for <code>master</code> -&gt; <code>refs/heads/master</code>). For pull requests, it will look like <code>refs/pull/PR_NUMBER/head</code> (e.g. for pull request #42 -&gt; <code>refs/pull/42/head</code>).</li>
+<li><code>REBASE_ONTO</code>: Change that to <code>origin/master</code> so the pull request gets rebased onto master. This can especially be important for pull requests that have been open a while.</li>
+</ul>
+<p>Look at the list of jobs on the left hand side under “Build History” and copy the link to the one you started (which will be the one on top, but click through to make sure it says something like “Started 5 seconds ago” (top right) and “Started by user …”.</p>
+<p>Copy/paste the URL for the job into a comment in the pull request. <a href="https://ci.nodejs.org/job/node-test-pull-request/"><code>node-test-pull-request</code></a> is an exception where the GitHub bot will automatically post for you.</p>
+<p>The <a href="https://ci.nodejs.org/job/node-test-pull-request/"><code>node-test-pull-request</code></a> CI job can be started by adding the <code>request-ci</code> label into the pull request. Once this label is added, <code>github-actions bot</code> will start the <code>node-test-pull-request</code> automatically. If the <code>github-actions bot</code> is unable to start the job, it will update the label with <code>request-ci-failed</code>.</p>
+<h3 id="internal-vs.-public-api">Internal vs. public API</h3>
+<p>All functionality in the official Node.js documentation is part of the public API. Any undocumented object, property, method, argument, behavior, or event is internal. There are exceptions to this rule. Node.js users have come to rely on some undocumented behaviors. Collaborators treat many of those undocumented behaviors as public.</p>
+<p>All undocumented functionality exposed via <code>process.binding(...)</code> is internal.</p>
+<p>All undocumented functionality in <code>lib/internal/**/*.js</code> is internal. It is public, though, if it is re-exported by code in <code>lib/*.js</code>.</p>
+<p>Non-exported <code>Symbol</code> properties and methods are internal.</p>
+<p>Any undocumented object property or method that begins with <code>_</code> is internal.</p>
+<p>Any native C/C++ APIs/ABIs requiring the <code>NODE_WANT_INTERNALS</code> flag are internal.</p>
+<p>Sometimes, there is disagreement about whether functionality is internal or public. In those cases, the TSC makes a determination.</p>
+<p>For undocumented APIs that are public, open a pull request documenting the API.</p>
+<h3 id="breaking-changes">Breaking changes</h3>
+<p>At least two TSC members must approve backward-incompatible changes to the master branch.</p>
+<p>Examples of breaking changes include:</p>
+<ul>
+<li>Removal or redefinition of existing API arguments.</li>
+<li>Changing return values.</li>
+<li>Removing or modifying existing properties on an options argument.</li>
+<li>Adding or removing errors.</li>
+<li>Altering expected timing of an event.</li>
+<li>Changing the side effects of using a particular API.</li>
+</ul>
+<h4 id="breaking-changes-and-deprecations">Breaking changes and deprecations</h4>
+<p>Existing stable public APIs that change in a backward-incompatible way must undergo deprecation. The exceptions to this rule are:</p>
+<ul>
+<li>Adding or removing errors thrown or reported by a public API.</li>
+<li>Changing error messages for errors without error code.</li>
+<li>Altering the timing and non-internal side effects of the public API.</li>
+<li>Changes to errors thrown by dependencies of Node.js, such as V8.</li>
+<li>One-time exceptions granted by the TSC.</li>
+</ul>
+<p>For more information, see <a href="#deprecations">Deprecations</a>.</p>
+<h4 id="breaking-changes-to-internal-elements">Breaking changes to internal elements</h4>
+<p>Breaking changes to internal elements can occur in semver-patch or semver-minor commits. Take significant care when making and reviewing such changes. Make an effort to determine the potential impact of the change in the ecosystem. Use <a href="https://github.com/nodejs/citgm">Canary in the Goldmine</a> to test such changes. If a change will cause ecosystem breakage, then it is semver-major. Consider providing a Public API in such cases.</p>
+<h4 id="unintended-breaking-changes">Unintended breaking changes</h4>
+<p>Sometimes, a change intended to be non-breaking turns out to be a breaking change. If such a change lands on the master branch, a collaborator can revert it. As an alternative to reverting, the TSC can apply the semver-major label after-the-fact.</p>
+<h5 id="reverting-commits">Reverting commits</h5>
+<p>Revert commits with <code>git revert &lt;HASH&gt;</code> or <code>git revert &lt;FROM&gt;..&lt;TO&gt;</code>. The generated commit message will not have a subsystem and might violate line length rules. That is OK. Append the reason for the revert and any <code>Refs</code> or <code>Fixes</code> metadata. Raise a pull request like any other change.</p>
+<h3 id="introducing-new-modules">Introducing new modules</h3>
+<p>Treat commits that introduce new core modules with extra care.</p>
+<p>Check if the module’s name conflicts with an existing ecosystem module. If it does, choose a different name unless the module owner has agreed in writing to transfer it.</p>
+<p>If the new module name is free, register a placeholder in the module registry as soon as possible. Link to the pull request that introduces the new core module in the placeholder’s <code>README</code>.</p>
+<p>For pull requests introducing new core modules:</p>
+<ul>
+<li>Allow at least one week for review.</li>
+<li>Land only after sign-off from at least two TSC members.</li>
+<li>Land with a <a href="../api/documentation.md#stability-index">Stability Index</a> of Experimental. The module must remain Experimental until a semver-major release.</li>
+</ul>
+<h3 id="additions-to-node-api">Additions to Node-API</h3>
+<p>Node-API provides an ABI-stable API guaranteed for future Node.js versions. Node-API additions call for unusual care and scrutiny. If a change adds to <code>node_api.h</code>, <code>js_native_api.h</code>, <code>node_api_types.h</code>, or <code>js_native_api_types.h</code>, consult <a href="https://github.com/nodejs/node/blob/HEAD/doc/guides/adding-new-napi-api.md">the relevant guide</a>.</p>
+<h3 id="deprecations">Deprecations</h3>
+<p>Node.js uses three <a href="https://en.wikipedia.org/wiki/Deprecation">Deprecation</a> levels. For all deprecated APIs, the API documentation must state the deprecation status.</p>
+<ul>
+<li>Documentation-Only Deprecation
+<ul>
+<li>A deprecation notice appears in the API documentation.</li>
+<li>There are no functional changes.</li>
+<li>By default, there will be no warnings emitted for such deprecations at runtime.</li>
+<li>Might cause a runtime warning with the <a href="../api/cli.md#--pending-deprecation"><code>--pending-deprecation</code></a> flag or <code>NODE_PENDING_DEPRECATION</code> environment variable.</li>
+</ul></li>
+<li>Runtime Deprecation
+<ul>
+<li>Emits a warning at runtime on first use of the deprecated API.</li>
+<li>If used with the <a href="../api/cli.md#--throw-deprecation"><code>--throw-deprecation</code></a> flag, will throw a runtime error.</li>
+</ul></li>
+<li>End-of-Life
+<ul>
+<li>The API is no longer subject to the semantic versioning rules.</li>
+<li>Backward-incompatible changes including complete removal of such APIs can occur at any time.</li>
+</ul></li>
+</ul>
+<p>Apply the <code>notable change</code> label to all pull requests that introduce Documentation-Only Deprecations. Such deprecations have no impact on code execution. Thus, they are not breaking changes (<code>semver-major</code>).</p>
+<p>Runtime Deprecations and End-of-Life APIs (internal or public) are breaking changes (<code>semver-major</code>). The TSC can make exceptions, deciding that one of these deprecations is not a breaking change.</p>
+<p>Avoid Runtime Deprecations when an alias or a stub/no-op will suffice. An alias or stub will have lower maintenance costs for end users and Node.js core.</p>
+<p>All deprecations receive a unique and immutable identifier. Documentation, warnings, and errors use the identifier when referring to the deprecation. The documentation for the deprecation identifier must always remain in the API documentation. This is true even if the deprecation is no longer in use (for example, due to removal of an End-of-Life deprecated API).</p>
+<p><a id="deprecation-cycle"></a> A <em>deprecation cycle</em> is a major release during which an API has been in one of the three Deprecation levels. Documentation-Only Deprecations can land in a minor release. They can not change to a Runtime Deprecation until the next major release.</p>
+<p>No API can change to End-of-Life without going through a Runtime Deprecation cycle. There is no rule that deprecated code must progress to End-of-Life. Documentation-Only and Runtime Deprecations can remain in place for an unlimited duration.</p>
+<p>Communicate pending deprecations and associated mitigations with the ecosystem as soon as possible. If possible, do it before the pull request adding the deprecation lands on the master branch.</p>
+<p>Use the <code>notable-change</code> label on pull requests that add or change the deprecation level of an API.</p>
+<h3 id="involving-the-tsc">Involving the TSC</h3>
+<p>Collaborators can opt to elevate pull requests or issues to the <a href="https://github.com/nodejs/TSC">TSC</a>. Do this if a pull request or issue:</p>
+<ul>
+<li>Is labeled <code>semver-major</code>, or</li>
+<li>Has a significant impact on the codebase, or</li>
+<li>Is controversial, or</li>
+<li>Is at an impasse among collaborators who are participating in the discussion.</li>
+</ul>
+<p>@-mention the <code>@nodejs/tsc</code> GitHub team if you want to elevate an issue to the <a href="https://github.com/nodejs/TSC">TSC</a>. Do not use the GitHub UI on the right-hand side to assign to <code>@nodejs/tsc</code> or request a review from <code>@nodejs/tsc</code>.</p>
+<p>The TSC serves as the final arbiter where required.</p>
+<h2 id="landing-pull-requests">Landing pull requests</h2>
+<ol type="1">
+<li>Avoid landing pull requests that have someone else as an assignee. Authors who wish to land their own pull requests will self-assign them. Sometimes, an author will delegate to someone else. If in doubt, ask the assignee whether it is okay to land.</li>
+<li>Never use GitHub’s green <a href="https://help.github.com/articles/merging-a-pull-request/#merging-a-pull-request-on-github">“Merge pull request”</a> button. Reasons for not using the web interface button:
+<ul>
+<li>The “Create a merge commit” method will add an unnecessary merge commit.</li>
+<li>The “Squash and merge” method will add metadata (the pull request #) to the commit title. If more than one author contributes to the pull request, squashing only keeps one author.</li>
+<li>The “Rebase and merge” method has no way of adding metadata to the commit.</li>
+</ul></li>
+<li>Make sure CI is complete and green. If the CI is not green, check for unreliable tests and infrastructure failures. If there are not corresponding issues in the <a href="https://github.com/nodejs/node/issues?q=is%3Aopen+is%3Aissue+label%3A%22CI+%2F+flaky+test%22">node</a> or <a href="https://github.com/nodejs/build/issues">build</a> repositories, open new issues. Run a new CI any time someone pushes new code to the pull request.</li>
+<li>Check that the commit message adheres to <a href="contributing/pull-requests.md#commit-message-guidelines">commit message guidelines</a>.</li>
+<li>Add all necessary <a href="#metadata">metadata</a> to commit messages before landing. If you are unsure exactly how to format the commit messages, use the commit log as a reference. See <a href="https://github.com/nodejs/node/commit/b636ba8186">this commit</a> as an example.</li>
+</ol>
+<p>For pull requests from first-time contributors, be <a href="#welcoming-first-time-contributors">welcoming</a>. Also, verify that their git settings are to their liking.</p>
+<p>All commits should be self-contained, meaning every commit should pass all tests. This makes it much easier when bisecting to find a breaking change.</p>
+<h3 id="using-git-node">Using <code>git-node</code></h3>
+<p>In most cases, using <a href="https://github.com/nodejs/node-core-utils/blob/HEAD/docs/git-node.md">the <code>git-node</code> command</a> of <a href="https://github.com/nodejs/node-core-utils"><code>node-core-utils</code></a> is enough to land a pull request. If you discover a problem when using this tool, please file an issue <a href="https://github.com/nodejs/node-core-utils/issues">to the issue tracker</a>.</p>
+<p>Quick example:</p>
+<pre class="text"><code>$ npm install -g node-core-utils
+$ git node land $PRID</code></pre>
+<p>To use <code>node-core-utils</code>, you will need a GitHub access token. If you do not have one, <code>node-core-utils</code> will create one for you the first time you use it. To do this, it will ask for your GitHub password and two-factor authentication code. If you wish to create the token yourself in advance, see <a href="https://github.com/nodejs/node-core-utils#setting-up-credentials">the <code>node-core-utils</code> guide</a>.</p>
+<h3 id="technical-howto">Technical HOWTO</h3>
+<p>Infrequently, it is necessary to manually perform the steps required to land a pull request rather than rely on <code>git-node</code>.</p>
+<details>
+<p><Summary>Manual Landing Steps</Summary></p>
+<p>Clear any <code>am</code>/<code>rebase</code> that might already be underway:</p>
+<pre class="text"><code>$ git am --abort
+$ git rebase --abort</code></pre>
+<p>Checkout proper target branch:</p>
+<pre class="text"><code>$ git checkout master</code></pre>
+<p>Update the tree (assumes your repository is set up as detailed in <a href="./contributing/pull-requests.md#step-1-fork">CONTRIBUTING.md</a>):</p>
+<pre class="text"><code>$ git fetch upstream
+$ git merge --ff-only upstream/master</code></pre>
+<p>Apply external patches:</p>
+<pre class="text"><code>$ curl -L https://github.com/nodejs/node/pull/xxx.patch | git am --whitespace=fix</code></pre>
+<p>If the merge fails even though recent CI runs were successful, try a 3-way merge:</p>
+<pre class="text"><code>$ git am --abort
+$ curl -L https://github.com/nodejs/node/pull/xxx.patch | git am -3 --whitespace=fix</code></pre>
+<p>If the 3-way merge succeeds, check the results against the original pull request. Build and test on at least one platform before landing.</p>
+<p>If the 3-way merge fails, then it is most likely that a conflicting pull request has landed since the CI run. You will have to ask the author to rebase.</p>
+<p>Check and re-review the changes:</p>
+<pre class="text"><code>$ git diff upstream/master</code></pre>
+<p>Check the number of commits and commit messages:</p>
+<pre class="text"><code>$ git log upstream/master...master</code></pre>
+<p>Squash commits and add metadata:</p>
+<pre class="text"><code>$ git rebase -i upstream/master</code></pre>
+<p>This will open a screen like this (in the default shell editor):</p>
+<pre class="text"><code>pick 6928fc1 crypto: add feature A
+pick 8120c4c add test for feature A
+pick 51759dc crypto: feature B
+pick 7d6f433 test for feature B
+
+# Rebase f9456a2..7d6f433 onto f9456a2
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like &quot;squash&quot;, but discard this commit&#39;s log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out</code></pre>
+<p>Replace a couple of <code>pick</code>s with <code>fixup</code> to squash them into a previous commit:</p>
+<pre class="text"><code>pick 6928fc1 crypto: add feature A
+fixup 8120c4c add test for feature A
+pick 51759dc crypto: feature B
+fixup 7d6f433 test for feature B</code></pre>
+<p>Replace <code>pick</code> with <code>reword</code> to change the commit message:</p>
+<pre class="text"><code>reword 6928fc1 crypto: add feature A
+fixup 8120c4c add test for feature A
+reword 51759dc crypto: feature B
+fixup 7d6f433 test for feature B</code></pre>
+<p>Save the file and close the editor. When prompted, enter a new commit message for that commit. This is an opportunity to fix commit messages.</p>
+<ul>
+<li>The commit message text must conform to the <a href="contributing/pull-requests.md#commit-message-guidelines">commit message guidelines</a>.</li>
+<li><p><a name="metadata"></a>Change the original commit message to include metadata. (The <a href="https://github.com/nodejs/node-core-utils/blob/HEAD/docs/git-node.md#git-node-metadata"><code>git node metadata</code></a> command can generate the metadata for you).</p>
+<ul>
+<li>Required: A <code>PR-URL:</code> line that references the full GitHub URL of the pull request. This makes it easy to trace a commit back to the conversation that led up to that change.</li>
+<li>Optional: A <code>Fixes: X</code> line, where <em>X</em> is the full GitHub URL for an issue. A commit message can include more than one <code>Fixes:</code> lines.</li>
+<li>Optional: One or more <code>Refs:</code> lines referencing a URL for any relevant background.</li>
+<li>Required: A <code>Reviewed-By: Name &lt;email&gt;</code> line for each collaborator who reviewed the change.
+<ul>
+<li>Useful for <span class="citation" data-cites="mentions">@mentions</span> / contact list if something goes wrong in the pull request.</li>
+<li>Protects against the assumption that GitHub will be around forever.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Other changes might have landed on master since the successful CI run. As a precaution, run tests (<code>make -j4 test</code> or <code>vcbuild test</code>).</p>
+<p>Confirm that the commit message format is correct using <a href="https://github.com/nodejs/core-validate-commit">core-validate-commit</a>.</p>
+<pre class="text"><code>$ git rev-list upstream/master...HEAD | xargs core-validate-commit</code></pre>
+<p>Optional: For your own commits, force push the amended commit to the pull request branch. If your branch name is <code>bugfix</code>, then: <code>git push --force-with-lease origin master:bugfix</code>. Don’t close the pull request. It will close after you push it upstream. It will have the purple merged status rather than the red closed status. If you close the pull request before GitHub adjusts its status, it will show up as a 0 commit pull request with no changed files. The order of operations is important. If you push upstream before you push to your branch, GitHub will close the issue with the red closed status.</p>
+<p>Time to push it:</p>
+<pre class="text"><code>$ git push upstream master</code></pre>
+<p>Close the pull request with a “Landed in <code>&lt;commit hash&gt;</code>” comment. Even if your pull request shows the purple merged status, add the “Landed in &lt;commit hash&gt;..&lt;commit hash&gt;” comment if you added more than one commit.</p>
+</details>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>Sometimes, when running <code>git push upstream master</code>, you might get an error message like this:</p>
+<pre class="console"><code>To https://github.com/nodejs/node
+ ! [rejected]              master -&gt; master (fetch first)
+error: failed to push some refs to &#39;https://github.com/nodejs/node&#39;
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.</code></pre>
+<p>That means a commit has landed since your last rebase against <code>upstream/master</code>. To fix this, pull with rebase from upstream, run the tests again, and (if the tests pass) push again:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">git</span> pull upstream master --rebase</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="fu">make</span> -j4 test</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="fu">git</span> push upstream master</a></code></pre></div>
+<h3 id="i-made-a-mistake">I made a mistake</h3>
+<ul>
+<li>Ping a TSC member.</li>
+<li>With <code>git</code>, there’s a way to override remote trees by force pushing (<code>git push -f</code>). This is generally forbidden as it creates conflicts in other people’s forks. It is permissible for simpler slip-ups such as typos in commit messages. You are only allowed to force push to any Node.js branch within 10 minutes from your original push. If someone else pushes to the branch or the 10-minute period passes, consider the commit final.
+<ul>
+<li>Use <code>--force-with-lease</code> to reduce the chance of overwriting someone else’s change.</li>
+</ul></li>
+</ul>
+<h3 id="long-term-support">Long Term Support</h3>
+<h4 id="what-is-lts">What is LTS?</h4>
+<p>Long Term Support (LTS) guarantees 30-month support cycles for specific Node.js versions. You can find more information <a href="https://github.com/nodejs/Release#release-plan">in the full release plan</a>. Once a branch enters LTS, the release plan limits the types of changes permitted in the branch.</p>
+<h4 id="how-are-lts-branches-managed">How are LTS branches managed?</h4>
+<p>Each LTS release has a corresponding branch (v10.x, v8.x, etc.). Each also has a corresponding staging branch (v10.x-staging, v8.x-staging, etc.).</p>
+<p>Commits that land on master are cherry-picked to each staging branch as appropriate. If a change applies only to the LTS branch, open the pull request against the <em>staging</em> branch. Commits from the staging branch land on the LTS branch only when a release is being prepared. They might land on the LTS branch in a different order than they do in staging.</p>
+<p>Only members of <span class="citation" data-cites="nodejs/backporters">@nodejs/backporters</span> should land commits onto LTS staging branches.</p>
+<h4 id="how-can-i-help">How can I help?</h4>
+<p>When you send your pull request, please state if your change is breaking. Also state if you think your patch is a good candidate for backporting. For more information on backporting, please see the <a href="backporting-to-release-lines.md">backporting guide</a>.</p>
+<p>There are several LTS-related labels:</p>
+<ul>
+<li><p><code>lts-watch-</code> labels are for pull requests to consider for landing in staging branches. For example, <code>lts-watch-v10.x</code> would be for a change to consider for the <code>v10.x-staging</code> branch.</p></li>
+<li><p><code>land-on-</code> are for pull requests that should land in a future v*.x release. For example, <code>land-on-v10.x</code> would be for a change to land in Node.js 10.x.</p></li>
+</ul>
+<p>Any collaborator can attach these labels to any pull request/issue. As commits land on the staging branches, the backporter removes the <code>lts-watch-</code> label. Likewise, as commits land in an LTS release, the releaser removes the <code>land-on-</code> label.</p>
+<p>Attach the appropriate <code>lts-watch-</code> label to any pull request that might impact an LTS release.</p>
+<h2 id="who-to-cc-in-the-issue-tracker">Who to CC in the issue tracker</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Subsystem</th>
+<th>Maintainers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>benchmark/*</code></td>
+<td><span class="citation" data-cites="nodejs/benchmarking">@nodejs/benchmarking</span>, <span class="citation" data-cites="mscdex">@mscdex</span></td>
+</tr>
+<tr class="even">
+<td><code>doc/*</code>, <code>*.md</code></td>
+<td><span class="citation" data-cites="nodejs/documentation">@nodejs/documentation</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/assert</code></td>
+<td><span class="citation" data-cites="nodejs/assert">@nodejs/assert</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/async_hooks</code></td>
+<td><span class="citation" data-cites="nodejs/async">@nodejs/async</span>_hooks for bugs/reviews (+ <span class="citation" data-cites="nodejs/diagnostics">@nodejs/diagnostics</span> for API)</td>
+</tr>
+<tr class="odd">
+<td><code>lib/buffer</code></td>
+<td><span class="citation" data-cites="nodejs/buffer">@nodejs/buffer</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/child_process</code></td>
+<td><span class="citation" data-cites="nodejs/child">@nodejs/child</span>_process</td>
+</tr>
+<tr class="odd">
+<td><code>lib/cluster</code></td>
+<td><span class="citation" data-cites="nodejs/cluster">@nodejs/cluster</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/{crypto,tls,https}</code></td>
+<td><span class="citation" data-cites="nodejs/crypto">@nodejs/crypto</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/dgram</code></td>
+<td><span class="citation" data-cites="nodejs/dgram">@nodejs/dgram</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/domains</code></td>
+<td><span class="citation" data-cites="nodejs/domains">@nodejs/domains</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/fs</code>, <code>src/{fs,file}</code></td>
+<td><span class="citation" data-cites="nodejs/fs">@nodejs/fs</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/{_}http{*}</code></td>
+<td><span class="citation" data-cites="nodejs/http">@nodejs/http</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/inspector.js</code>, <code>src/inspector_*</code></td>
+<td><span class="citation" data-cites="nodejs/v8-inspector">@nodejs/v8-inspector</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/internal/bootstrap/*</code></td>
+<td><span class="citation" data-cites="nodejs/process">@nodejs/process</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/internal/url</code>, <code>src/node_url</code></td>
+<td><span class="citation" data-cites="nodejs/url">@nodejs/url</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/net</code></td>
+<td><span class="citation" data-cites="bnoordhuis">@bnoordhuis</span>, <span class="citation" data-cites="indutny">@indutny</span>, <span class="citation" data-cites="nodejs/streams">@nodejs/streams</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/repl</code></td>
+<td><span class="citation" data-cites="nodejs/repl">@nodejs/repl</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/{_}stream{*}</code></td>
+<td><span class="citation" data-cites="nodejs/streams">@nodejs/streams</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/timers</code></td>
+<td><span class="citation" data-cites="nodejs/timers">@nodejs/timers</span></td>
+</tr>
+<tr class="even">
+<td><code>lib/util</code></td>
+<td><span class="citation" data-cites="nodejs/util">@nodejs/util</span></td>
+</tr>
+<tr class="odd">
+<td><code>lib/zlib</code></td>
+<td><span class="citation" data-cites="nodejs/zlib">@nodejs/zlib</span></td>
+</tr>
+<tr class="even">
+<td><code>src/async_wrap.*</code></td>
+<td><span class="citation" data-cites="nodejs/async">@nodejs/async</span>_hooks</td>
+</tr>
+<tr class="odd">
+<td><code>src/node_api.*</code></td>
+<td><span class="citation" data-cites="nodejs/n-api">@nodejs/n-api</span></td>
+</tr>
+<tr class="even">
+<td><code>src/node_crypto.*</code></td>
+<td><span class="citation" data-cites="nodejs/crypto">@nodejs/crypto</span></td>
+</tr>
+<tr class="odd">
+<td><code>test/*</code></td>
+<td><span class="citation" data-cites="nodejs/testing">@nodejs/testing</span></td>
+</tr>
+<tr class="even">
+<td><code>tools/node_modules/eslint</code>, <code>.eslintrc</code></td>
+<td><span class="citation" data-cites="nodejs/linting">@nodejs/linting</span></td>
+</tr>
+<tr class="odd">
+<td>build</td>
+<td><span class="citation" data-cites="nodejs/build">@nodejs/build</span></td>
+</tr>
+<tr class="even">
+<td><code>src/module_wrap.*</code>, <code>lib/internal/modules/*</code>, <code>lib/internal/vm/module.js</code></td>
+<td><span class="citation" data-cites="nodejs/modules">@nodejs/modules</span></td>
+</tr>
+<tr class="odd">
+<td>GYP</td>
+<td><span class="citation" data-cites="nodejs/gyp">@nodejs/gyp</span></td>
+</tr>
+<tr class="even">
+<td>performance</td>
+<td><span class="citation" data-cites="nodejs/performance">@nodejs/performance</span></td>
+</tr>
+<tr class="odd">
+<td>platform specific</td>
+<td><span class="citation" data-cites="nodejs/platform">@nodejs/platform</span>-{aix,arm,freebsd,macos,ppc,smartos,s390,windows}</td>
+</tr>
+<tr class="even">
+<td>python code</td>
+<td><span class="citation" data-cites="nodejs/python">@nodejs/python</span></td>
+</tr>
+<tr class="odd">
+<td>upgrading c-ares</td>
+<td><span class="citation" data-cites="rvagg">@rvagg</span></td>
+</tr>
+<tr class="even">
+<td>upgrading http-parser</td>
+<td><span class="citation" data-cites="nodejs/http">@nodejs/http</span>, <span class="citation" data-cites="nodejs/http2">@nodejs/http2</span></td>
+</tr>
+<tr class="odd">
+<td>upgrading libuv</td>
+<td><span class="citation" data-cites="nodejs/libuv">@nodejs/libuv</span></td>
+</tr>
+<tr class="even">
+<td>upgrading npm</td>
+<td><span class="citation" data-cites="nodejs/npm">@nodejs/npm</span></td>
+</tr>
+<tr class="odd">
+<td>upgrading V8</td>
+<td><span class="citation" data-cites="nodejs/V8">@nodejs/V8</span>, <span class="citation" data-cites="nodejs/post-mortem">@nodejs/post-mortem</span></td>
+</tr>
+<tr class="even">
+<td>Embedded use or delivery of Node.js</td>
+<td><span class="citation" data-cites="nodejs/delivery-channels">@nodejs/delivery-channels</span></td>
+</tr>
+</tbody>
+</table>
+<p>When things need extra attention, are controversial, or <code>semver-major</code>: <span class="citation" data-cites="nodejs/tsc">@nodejs/tsc</span></p>
+<p>If you cannot find who to cc for a file, <code>git shortlog -n -s &lt;file&gt;</code> can help.</p>
+<h2 id="labels">Labels</h2>
+<h3 id="general-labels">General labels</h3>
+<ul>
+<li><code>confirmed-bug</code>: Bugs you have verified</li>
+<li><code>discuss</code>: Things that need larger discussion</li>
+<li><code>feature request</code>: Any issue that requests a new feature</li>
+<li><code>good first issue</code>: Issues suitable for newcomers to fix</li>
+<li><code>meta</code>: Governance, policies, procedures, etc.</li>
+<li><code>tsc-agenda</code>: Open issues and pull requests with this label will be added to the Technical Steering Committee meeting agenda</li>
+</ul>
+<hr />
+<ul>
+<li><code>author-ready</code> - A pull request is <em>author ready</em> when:
+<ul>
+<li>There is a CI run in progress or completed.</li>
+<li>There is at least one collaborator approval (or two TSC approvals for semver-major pull requests).</li>
+<li>There are no outstanding review comments.</li>
+</ul></li>
+</ul>
+<p>Please always add the <code>author ready</code> label to pull requests that qualify. Please always remove it again as soon as the conditions are not met anymore, such as if the CI run fails or a new outstanding review comment is posted.</p>
+<hr />
+<ul>
+<li><code>semver-{minor,major}</code>
+<ul>
+<li>be conservative – that is, if a change has the remote <em>chance</em> of breaking something, go for semver-major</li>
+<li>when adding a semver label, add a comment explaining why you’re adding it</li>
+<li>minor vs. patch: roughly: “does it add a new method / does it add a new section to the docs”</li>
+<li>major vs. everything else: run last versions tests against this version, if they pass, <strong>probably</strong> minor or patch</li>
+</ul></li>
+</ul>
+<h3 id="ltsversion-labels">LTS/version labels</h3>
+<p>We use labels to keep track of which branches a commit should land on:</p>
+<ul>
+<li><code>dont-land-on-v?.x</code>
+<ul>
+<li>For changes that do not apply to a certain release line</li>
+<li>Also used when the work of backporting a change outweighs the benefits</li>
+</ul></li>
+<li><code>land-on-v?.x</code>
+<ul>
+<li>Used by releasers to mark a pull request as scheduled for inclusion in an LTS release</li>
+<li>Applied to the original pull request for clean cherry-picks, to the backport pull request otherwise</li>
+</ul></li>
+<li><code>backport-requested-v?.x</code>
+<ul>
+<li>Used to indicate that a pull request needs a manual backport to a branch in order to land the changes on that branch</li>
+<li>Typically applied by a releaser when the pull request does not apply cleanly or it breaks the tests after applying</li>
+<li>Will be replaced by either <code>dont-land-on-v?.x</code> or <code>backported-to-v?.x</code></li>
+</ul></li>
+<li><code>backported-to-v?.x</code>
+<ul>
+<li>Applied to pull requests for which a backport pull request has been merged</li>
+</ul></li>
+<li><code>lts-watch-v?.x</code>
+<ul>
+<li>Applied to pull requests which the Release working group should consider including in an LTS release</li>
+<li>Does not indicate that any specific action will be taken, but can be effective as messaging to non-collaborators</li>
+</ul></li>
+<li><code>release-agenda</code>
+<ul>
+<li>For things that need discussion by the Release working group</li>
+<li>(for example semver-minor changes that need or should go into an LTS release)</li>
+</ul></li>
+<li><code>v?.x</code>
+<ul>
+<li>Automatically applied to changes that do not target <code>master</code> but rather the <code>v?.x-staging</code> branch</li>
+</ul></li>
+</ul>
+<p>Once a release line enters maintenance mode, the corresponding labels do not need to be attached anymore, as only important bugfixes will be included.</p>
+<h3 id="other-labels">Other labels</h3>
+<ul>
+<li>Operating system labels
+<ul>
+<li><code>macos</code>, <code>windows</code>, <code>smartos</code>, <code>aix</code></li>
+<li>No <code>linux</code> label because it is the implied default</li>
+</ul></li>
+<li>Architecture labels
+<ul>
+<li><code>arm</code>, <code>mips</code>, <code>s390</code>, <code>ppc</code></li>
+<li>No <code>x86{_64}</code> label because it is the implied default</li>
+</ul></li>
+</ul>
+</body>
+</html>

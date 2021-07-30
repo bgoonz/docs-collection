@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>child_process</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="child-process">Child process</h1>
+    <!--introduced_in=v0.10.0-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- source_link=lib/child_process.js -->
+    <p>
+      The <code>child_process</code> module provides the ability to spawn
+      subprocesses in a manner that is similar, but not identical, to popen(3).
+      This capability is primarily provided by the
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      function:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> ls <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;ls&#39;</span><span class="op">,</span> [<span class="st">&#39;-lh&#39;</span><span class="op">,</span> <span class="st">&#39;/usr&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="va">ls</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`stdout: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="va">ls</span>.<span class="va">stderr</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`stderr: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="va">ls</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`child process exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      By default, pipes for <code>stdin</code>, <code>stdout</code>, and
+      <code>stderr</code> are established between the parent Node.js process and
+      the spawned subprocess. These pipes have limited (and platform-specific)
+      capacity. If the subprocess writes to stdout in excess of that limit
+      without the output being captured, the subprocess blocks waiting for the
+      pipe buffer to accept more data. This is identical to the behavior of
+      pipes in the shell. Use the <code>{ stdio: 'ignore' }</code> option if the
+      output will not be consumed.
+    </p>
+    <p>
+      The command lookup is performed using the
+      <code>options.env.PATH</code> environment variable if it is in the
+      <code>options</code> object. Otherwise, <code>process.env.PATH</code> is
+      used.
+    </p>
+    <p>
+      On Windows, environment variables are case-insensitive. Node.js
+      lexicographically sorts the <code>env</code> keys and uses the first one
+      that case-insensitively matches. Only first (in lexicographic order) entry
+      will be passed to the subprocess. This might lead to issues on Windows
+      when passing objects to the <code>env</code> option that have multiple
+      variants of the same key, such as <code>PATH</code> and <code>Path</code>.
+    </p>
+    <p>
+      The
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      method spawns the child process asynchronously, without blocking the
+      Node.js event loop. The
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >
+      function provides equivalent functionality in a synchronous manner that
+      blocks the event loop until the spawned process either exits or is
+      terminated.
+    </p>
+    <p>
+      For convenience, the <code>child_process</code> module provides a handful
+      of synchronous and asynchronous alternatives to
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      and
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >. Each of these alternatives are implemented on top of
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      or
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >.
+    </p>
+    <ul>
+      <li>
+        <a href="#child_process_child_process_exec_command_options_callback"
+          ><code>child_process.exec()</code></a
+        >: spawns a shell and runs a command within that shell, passing the
+        <code>stdout</code> and <code>stderr</code> to a callback function when
+        complete.
+      </li>
+      <li>
+        <a
+          href="#child_process_child_process_execfile_file_args_options_callback"
+          ><code>child_process.execFile()</code></a
+        >: similar to
+        <a href="#child_process_child_process_exec_command_options_callback"
+          ><code>child_process.exec()</code></a
+        >
+        except that it spawns the command directly without first spawning a
+        shell by default.
+      </li>
+      <li>
+        <a href="#child_process_child_process_fork_modulepath_args_options"
+          ><code>child_process.fork()</code></a
+        >: spawns a new Node.js process and invokes a specified module with an
+        IPC communication channel established that allows sending messages
+        between parent and child.
+      </li>
+      <li>
+        <a href="#child_process_child_process_execsync_command_options"
+          ><code>child_process.execSync()</code></a
+        >: a synchronous version of
+        <a href="#child_process_child_process_exec_command_options_callback"
+          ><code>child_process.exec()</code></a
+        >
+        that will block the Node.js event loop.
+      </li>
+      <li>
+        <a href="#child_process_child_process_execfilesync_file_args_options"
+          ><code>child_process.execFileSync()</code></a
+        >: a synchronous version of
+        <a
+          href="#child_process_child_process_execfile_file_args_options_callback"
+          ><code>child_process.execFile()</code></a
+        >
+        that will block the Node.js event loop.
+      </li>
+    </ul>
+    <p>
+      For certain use cases, such as automating shell scripts, the
+      <a href="#child_process_synchronous_process_creation"
+        >synchronous counterparts</a
+      >
+      may be more convenient. In many cases, however, the synchronous methods
+      can have significant impact on performance due to stalling the event loop
+      while spawned processes complete.
+    </p>
+    <h2 id="asynchronous-process-creation">Asynchronous process creation</h2>
+    <p>
+      The
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >,
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >,
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >, and
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >
+      methods all follow the idiomatic asynchronous programming pattern typical
+      of other Node.js APIs.
+    </p>
+    <p>
+      Each of the methods returns a
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      instance. These objects implement the Node.js
+      <a href="events.md#events_class_eventemitter"
+        ><code>EventEmitter</code></a
+      >
+      API, allowing the parent process to register listener functions that are
+      called when certain events occur during the life cycle of the child
+      process.
+    </p>
+    <p>
+      The
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      and
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >
+      methods additionally allow for an optional <code>callback</code> function
+      to be specified that is invoked when the child process terminates.
+    </p>
+    <h3 id="spawning-.bat-and-.cmd-files-on-windows">
+      Spawning <code>.bat</code> and <code>.cmd</code> files on Windows
+    </h3>
+    <p>
+      The importance of the distinction between
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      and
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >
+      can vary based on platform. On Unix-type operating systems (Unix, Linux,
+      macOS)
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >
+      can be more efficient because it does not spawn a shell by default. On
+      Windows, however, <code>.bat</code> and <code>.cmd</code> files are not
+      executable on their own without a terminal, and therefore cannot be
+      launched using
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >. When running on Windows, <code>.bat</code> and <code>.cmd</code> files
+      can be invoked using
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      with the <code>shell</code> option set, with
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >, or by spawning <code>cmd.exe</code> and passing the
+      <code>.bat</code> or <code>.cmd</code> file as an argument (which is what
+      the <code>shell</code> option and
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      do). In any case, if the script filename contains spaces it needs to be
+      quoted.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// On Windows Only...</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> bat <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;cmd.exe&#39;</span><span class="op">,</span> [<span class="st">&#39;/c&#39;</span><span class="op">,</span> <span class="st">&#39;my.bat&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="va">bat</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">data</span>.<span class="at">toString</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="va">bat</span>.<span class="va">stderr</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="va">console</span>.<span class="at">error</span>(<span class="va">data</span>.<span class="at">toString</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-12" title="12"></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="va">bat</span>.<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Child exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// OR...</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">const</span> <span class="op">{</span> exec<span class="op">,</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="at">exec</span>(<span class="st">&#39;my.bat&#39;</span><span class="op">,</span> (err<span class="op">,</span> stdout<span class="op">,</span> stderr) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="va">console</span>.<span class="at">error</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(stdout)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">// Script with spaces in the filename:</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw">const</span> bat <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;&quot;my script.cmd&quot;&#39;</span><span class="op">,</span> [<span class="st">&#39;a&#39;</span><span class="op">,</span> <span class="st">&#39;b&#39;</span>]<span class="op">,</span> <span class="op">{</span> <span class="dt">shell</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="co">// or:</span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="at">exec</span>(<span class="st">&#39;&quot;my script.cmd&quot; a b&#39;</span><span class="op">,</span> (err<span class="op">,</span> stdout<span class="op">,</span> stderr) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="child_process.execcommand-options-callback">
+      <code>child_process.exec(command[, options][, callback])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.90
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/36308
+    description: AbortSignal support was added.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+-->
+    <ul>
+      <li>
+        <code>command</code> {string} The command to run, with space-separated
+        arguments.
+      </li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process. <strong>Default:</strong> <code>process.cwd()</code>.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>encoding</code> {string} <strong>Default:</strong>
+            <code>'utf8'</code>
+          </li>
+          <li>
+            <code>shell</code> {string} Shell to execute the command with. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>'/bin/sh'</code> on Unix,
+            <code>process.env.ComSpec</code> on Windows.
+          </li>
+          <li>
+            <code>signal</code> {AbortSignal} allows aborting the child process
+            using an AbortSignal.
+          </li>
+          <li>
+            <code>timeout</code> {number} <strong>Default:</strong>
+            <code>0</code>
+          </li>
+          <li>
+            <code>maxBuffer</code> {number} Largest amount of data in bytes
+            allowed on stdout or stderr. If exceeded, the child process is
+            terminated and any output is truncated. See caveat at
+            <a href="#child_process_maxbuffer_and_unicode"
+              ><code>maxBuffer</code> and Unicode</a
+            >. <strong>Default:</strong> <code>1024 * 1024</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} <strong>Default:</strong>
+            <code>'SIGTERM'</code>
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>callback</code> {Function} called with the output when process
+        terminates.
+        <ul>
+          <li><code>error</code> {Error}</li>
+          <li><code>stdout</code> {string|Buffer}</li>
+          <li><code>stderr</code> {string|Buffer}</li>
+        </ul>
+      </li>
+      <li>Returns: {ChildProcess}</li>
+    </ul>
+    <p>
+      Spawns a shell then executes the <code>command</code> within that shell,
+      buffering any generated output. The <code>command</code> string passed to
+      the exec function is processed directly by the shell and special
+      characters (vary based on
+      <a href="https://en.wikipedia.org/wiki/List_of_command-line_interpreters"
+        >shell</a
+      >) need to be dealt with accordingly:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span> exec <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="at">exec</span>(<span class="st">&#39;&quot;/path/to/test file/test.sh&quot; arg1 arg2&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// Double quotes are used so that the space in the path is not interpreted as</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">// a delimiter of multiple arguments.</span></a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="at">exec</span>(<span class="st">&#39;echo &quot;The </span><span class="sc">\\</span><span class="st">$HOME variable is $HOME&quot;&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">// The $HOME variable is escaped in the first instance, but not in the second.</span></a></code></pre>
+    </div>
+    <p>
+      <strong
+        >Never pass unsanitized user input to this function. Any input
+        containing shell metacharacters may be used to trigger arbitrary command
+        execution.</strong
+      >
+    </p>
+    <p>
+      If a <code>callback</code> function is provided, it is called with the
+      arguments <code>(error, stdout, stderr)</code>. On success,
+      <code>error</code> will be <code>null</code>. On error,
+      <code>error</code> will be an instance of
+      <a href="errors.md#errors_class_error"><code>Error</code></a
+      >. The <code>error.code</code> property will be the exit code of the
+      process. By convention, any exit code other than <code>0</code> indicates
+      an error. <code>error.signal</code> will be the signal that terminated the
+      process.
+    </p>
+    <p>
+      The <code>stdout</code> and <code>stderr</code> arguments passed to the
+      callback will contain the stdout and stderr output of the child process.
+      By default, Node.js will decode the output as UTF-8 and pass strings to
+      the callback. The <code>encoding</code> option can be used to specify the
+      character encoding used to decode the stdout and stderr output. If
+      <code>encoding</code> is <code>'buffer'</code>, or an unrecognized
+      character encoding, <code>Buffer</code> objects will be passed to the
+      callback instead.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> exec <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="at">exec</span>(<span class="st">&#39;cat *.js missing_file | wc -l&#39;</span><span class="op">,</span> (error<span class="op">,</span> stdout<span class="op">,</span> stderr) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="cf">if</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`exec error: </span><span class="sc">${</span>error<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`stdout: </span><span class="sc">${</span>stdout<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`stderr: </span><span class="sc">${</span>stderr<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      If <code>timeout</code> is greater than <code>0</code>, the parent will
+      send the signal identified by the <code>killSignal</code> property (the
+      default is <code>'SIGTERM'</code>) if the child runs longer than
+      <code>timeout</code> milliseconds.
+    </p>
+    <p>
+      Unlike the exec(3) POSIX system call,
+      <code>child_process.exec()</code> does not replace the existing process
+      and uses a shell to execute the command.
+    </p>
+    <p>
+      If this method is invoked as its
+      <a href="util.md#util_util_promisify_original"
+        ><code>util.promisify()</code></a
+      >ed version, it returns a <code>Promise</code> for an
+      <code>Object</code> with <code>stdout</code> and
+      <code>stderr</code> properties. The returned
+      <code>ChildProcess</code> instance is attached to the
+      <code>Promise</code> as a <code>child</code> property. In case of an error
+      (including any error resulting in an exit code other than 0), a rejected
+      promise is returned, with the same <code>error</code> object given in the
+      callback, but with two additional properties <code>stdout</code> and
+      <code>stderr</code>.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> util <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;util&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">const</span> exec <span class="op">=</span> <span class="va">util</span>.<span class="at">promisify</span>(<span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>).<span class="at">exec</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">lsExample</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="kw">const</span> <span class="op">{</span> stdout<span class="op">,</span> stderr <span class="op">}</span> <span class="op">=</span> <span class="cf">await</span> <span class="at">exec</span>(<span class="st">&#39;ls&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;stdout:&#39;</span><span class="op">,</span> stdout)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;stderr:&#39;</span><span class="op">,</span> stderr)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="at">lsExample</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      If the <code>signal</code> option is enabled, calling
+      <code>.abort()</code> on the corresponding <code>AbortController</code> is
+      similar to calling <code>.kill()</code> on the child process except the
+      error passed to the callback will be an <code>AbortError</code>:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> <span class="op">{</span> exec <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">const</span> controller <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">const</span> <span class="op">{</span> signal <span class="op">}</span> <span class="op">=</span> controller<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">const</span> child <span class="op">=</span> <span class="at">exec</span>(<span class="st">&#39;grep ssh&#39;</span><span class="op">,</span> <span class="op">{</span> signal <span class="op">},</span> (error) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(error)<span class="op">;</span> <span class="co">// an AbortError</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="va">controller</span>.<span class="at">abort</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="child_process.execfilefile-args-options-callback">
+      <code>child_process.execFile(file[, args][, options][, callback])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.91
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version:
+      - v15.4.0
+      - v14.17.0
+    pr-url: https://github.com/nodejs/node/pull/36308
+    description: AbortSignal support was added.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+-->
+    <ul>
+      <li>
+        <code>file</code> {string} The name or path of the executable file to
+        run.
+      </li>
+      <li><code>args</code> {string[]} List of string arguments.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>encoding</code> {string} <strong>Default:</strong>
+            <code>'utf8'</code>
+          </li>
+          <li>
+            <code>timeout</code> {number} <strong>Default:</strong>
+            <code>0</code>
+          </li>
+          <li>
+            <code>maxBuffer</code> {number} Largest amount of data in bytes
+            allowed on stdout or stderr. If exceeded, the child process is
+            terminated and any output is truncated. See caveat at
+            <a href="#child_process_maxbuffer_and_unicode"
+              ><code>maxBuffer</code> and Unicode</a
+            >. <strong>Default:</strong> <code>1024 * 1024</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} <strong>Default:</strong>
+            <code>'SIGTERM'</code>
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>windowsVerbatimArguments</code> {boolean} No quoting or
+            escaping of arguments is done on Windows. Ignored on Unix.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>shell</code> {boolean|string} If <code>true</code>, runs
+            <code>command</code> inside of a shell. Uses
+            <code>'/bin/sh'</code> on Unix, and
+            <code>process.env.ComSpec</code> on Windows. A different shell can
+            be specified as a string. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>false</code> (no shell).
+          </li>
+          <li>
+            <code>signal</code> {AbortSignal} allows aborting the child process
+            using an AbortSignal.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>callback</code> {Function} Called with the output when process
+        terminates.
+        <ul>
+          <li><code>error</code> {Error}</li>
+          <li><code>stdout</code> {string|Buffer}</li>
+          <li><code>stderr</code> {string|Buffer}</li>
+        </ul>
+      </li>
+      <li>Returns: {ChildProcess}</li>
+    </ul>
+    <p>
+      The <code>child_process.execFile()</code> function is similar to
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      except that it does not spawn a shell by default. Rather, the specified
+      executable <code>file</code> is spawned directly as a new process making
+      it slightly more efficient than
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >.
+    </p>
+    <p>
+      The same options as
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      are supported. Since a shell is not spawned, behaviors such as I/O
+      redirection and file globbing are not supported.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> <span class="op">{</span> execFile <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">const</span> child <span class="op">=</span> <span class="at">execFile</span>(<span class="st">&#39;node&#39;</span><span class="op">,</span> [<span class="st">&#39;--version&#39;</span>]<span class="op">,</span> (error<span class="op">,</span> stdout<span class="op">,</span> stderr) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="cf">if</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="cf">throw</span> error<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(stdout)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>stdout</code> and <code>stderr</code> arguments passed to the
+      callback will contain the stdout and stderr output of the child process.
+      By default, Node.js will decode the output as UTF-8 and pass strings to
+      the callback. The <code>encoding</code> option can be used to specify the
+      character encoding used to decode the stdout and stderr output. If
+      <code>encoding</code> is <code>'buffer'</code>, or an unrecognized
+      character encoding, <code>Buffer</code> objects will be passed to the
+      callback instead.
+    </p>
+    <p>
+      If this method is invoked as its
+      <a href="util.md#util_util_promisify_original"
+        ><code>util.promisify()</code></a
+      >ed version, it returns a <code>Promise</code> for an
+      <code>Object</code> with <code>stdout</code> and
+      <code>stderr</code> properties. The returned
+      <code>ChildProcess</code> instance is attached to the
+      <code>Promise</code> as a <code>child</code> property. In case of an error
+      (including any error resulting in an exit code other than 0), a rejected
+      promise is returned, with the same <code>error</code> object given in the
+      callback, but with two additional properties <code>stdout</code> and
+      <code>stderr</code>.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> util <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;util&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">const</span> execFile <span class="op">=</span> <span class="va">util</span>.<span class="at">promisify</span>(<span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>).<span class="at">execFile</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">getVersion</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="kw">const</span> <span class="op">{</span> stdout <span class="op">}</span> <span class="op">=</span> <span class="cf">await</span> <span class="at">execFile</span>(<span class="st">&#39;node&#39;</span><span class="op">,</span> [<span class="st">&#39;--version&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(stdout)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="at">getVersion</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <strong
+        >If the <code>shell</code> option is enabled, do not pass unsanitized
+        user input to this function. Any input containing shell metacharacters
+        may be used to trigger arbitrary command execution.</strong
+      >
+    </p>
+    <p>
+      If the <code>signal</code> option is enabled, calling
+      <code>.abort()</code> on the corresponding <code>AbortController</code> is
+      similar to calling <code>.kill()</code> on the child process except the
+      error passed to the callback will be an <code>AbortError</code>:
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> <span class="op">{</span> execFile <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">const</span> controller <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">const</span> <span class="op">{</span> signal <span class="op">}</span> <span class="op">=</span> controller<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw">const</span> child <span class="op">=</span> <span class="at">execFile</span>(<span class="st">&#39;node&#39;</span><span class="op">,</span> [<span class="st">&#39;--version&#39;</span>]<span class="op">,</span> <span class="op">{</span> signal <span class="op">},</span> (error) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(error)<span class="op">;</span> <span class="co">// an AbortError</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="va">controller</span>.<span class="at">abort</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="child_process.forkmodulepath-args-options">
+      <code>child_process.fork(modulePath[, args][, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.5.0
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v15.13.0
+    pr-url: https://github.com/nodejs/node/pull/37256
+    description: timeout was added.
+  - version: v15.11.0
+    pr-url: https://github.com/nodejs/node/pull/37325
+    description: killSignal for AbortSignal was added.
+  - version:
+      - v15.6.0
+      - v14.17.0
+    pr-url: https://github.com/nodejs/node/pull/36603
+    description: AbortSignal support was added.
+  - version:
+      - v13.2.0
+      - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/30162
+    description: The `serialization` option is supported now.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10866
+    description: The `stdio` option can now be a string.
+  - version: v6.4.0
+    pr-url: https://github.com/nodejs/node/pull/7811
+    description: The `stdio` option is supported now.
+-->
+    <ul>
+      <li><code>modulePath</code> {string} The module to run in the child.</li>
+      <li><code>args</code> {string[]} List of string arguments.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>detached</code> {boolean} Prepare child to run independently
+            of its parent process. Specific behavior depends on the platform,
+            see
+            <a href="#child_process_options_detached"
+              ><code>options.detached</code></a
+            >).
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>execPath</code> {string} Executable used to create the child
+            process.
+          </li>
+          <li>
+            <code>execArgv</code> {string[]} List of string arguments passed to
+            the executable. <strong>Default:</strong>
+            <code>process.execArgv</code>.
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>serialization</code> {string} Specify the kind of
+            serialization used for sending messages between processes. Possible
+            values are <code>'json'</code> and <code>'advanced'</code>. See
+            <a href="#child_process_advanced_serialization"
+              >Advanced serialization</a
+            >
+            for more details. <strong>Default:</strong> <code>'json'</code>.
+          </li>
+          <li>
+            <code>signal</code> {AbortSignal} Allows closing the child process
+            using an AbortSignal.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} The signal value to be used
+            when the spawned process will be killed by timeout or abort signal.
+            <strong>Default:</strong> <code>'SIGTERM'</code>.
+          </li>
+          <li>
+            <code>silent</code> {boolean} If <code>true</code>, stdin, stdout,
+            and stderr of the child will be piped to the parent, otherwise they
+            will be inherited from the parent, see the <code>'pipe'</code> and
+            <code>'inherit'</code> options for
+            <a href="#child_process_child_process_spawn_command_args_options"
+              ><code>child_process.spawn()</code></a
+            >’s
+            <a href="#child_process_options_stdio"><code>stdio</code></a> for
+            more details. <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>stdio</code> {Array|string} See
+            <a href="#child_process_child_process_spawn_command_args_options"
+              ><code>child_process.spawn()</code></a
+            >’s <a href="#child_process_options_stdio"><code>stdio</code></a
+            >. When this option is provided, it overrides <code>silent</code>.
+            If the array variant is used, it must contain exactly one item with
+            value <code>'ipc'</code> or an error will be thrown. For instance
+            <code>[0, 1, 2, 'ipc']</code>.
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>windowsVerbatimArguments</code> {boolean} No quoting or
+            escaping of arguments is done on Windows. Ignored on Unix.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>timeout</code> {number} In milliseconds the maximum amount of
+            time the process is allowed to run. <strong>Default:</strong>
+            <code>undefined</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {ChildProcess}</li>
+    </ul>
+    <p>
+      The <code>child_process.fork()</code> method is a special case of
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      used specifically to spawn new Node.js processes. Like
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >, a
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      object is returned. The returned
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      will have an additional communication channel built-in that allows
+      messages to be passed back and forth between the parent and child. See
+      <a
+        href="#child_process_subprocess_send_message_sendhandle_options_callback"
+        ><code>subprocess.send()</code></a
+      >
+      for details.
+    </p>
+    <p>
+      Keep in mind that spawned Node.js child processes are independent of the
+      parent with exception of the IPC communication channel that is established
+      between the two. Each process has its own memory, with their own V8
+      instances. Because of the additional resource allocations required,
+      spawning a large number of child Node.js processes is not recommended.
+    </p>
+    <p>
+      By default, <code>child_process.fork()</code> will spawn new Node.js
+      instances using the
+      <a href="process.md#process_process_execpath"
+        ><code>process.execPath</code></a
+      >
+      of the parent process. The <code>execPath</code> property in the
+      <code>options</code> object allows for an alternative execution path to be
+      used.
+    </p>
+    <p>
+      Node.js processes launched with a custom <code>execPath</code> will
+      communicate with the parent process using the file descriptor (fd)
+      identified using the environment variable <code>NODE_CHANNEL_FD</code> on
+      the child process.
+    </p>
+    <p>
+      Unlike the fork(2) POSIX system call,
+      <code>child_process.fork()</code> does not clone the current process.
+    </p>
+    <p>
+      The <code>shell</code> option available in
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      is not supported by <code>child_process.fork()</code> and will be ignored
+      if set.
+    </p>
+    <p>
+      If the <code>signal</code> option is enabled, calling
+      <code>.abort()</code> on the corresponding <code>AbortController</code> is
+      similar to calling <code>.kill()</code> on the child process except the
+      error passed to the callback will be an <code>AbortError</code>:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="cf">if</span> (<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>] <span class="op">===</span> <span class="st">&#39;child&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Hello from </span><span class="sc">${</span><span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>]<span class="sc">}</span><span class="vs">!`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="op">},</span> <span class="dv">1</span>_000)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="kw">const</span> <span class="op">{</span> fork <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="kw">const</span> controller <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-8" title="8">  <span class="kw">const</span> <span class="op">{</span> signal <span class="op">}</span> <span class="op">=</span> controller<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-9" title="9">  <span class="kw">const</span> child <span class="op">=</span> <span class="at">fork</span>(__filename<span class="op">,</span> [<span class="st">&#39;child&#39;</span>]<span class="op">,</span> <span class="op">{</span> signal <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-10" title="10">  <span class="va">child</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-11" title="11">    <span class="co">// This will be called with err being an AbortError if the controller aborts</span></a>
+<a class="sourceLine" id="cb11-12" title="12">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-13" title="13">  <span class="va">controller</span>.<span class="at">abort</span>()<span class="op">;</span> <span class="co">// Stops the child process</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="child_process.spawncommand-args-options">
+      <code>child_process.spawn(command[, args][, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.90
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v15.13.0
+    pr-url: https://github.com/nodejs/node/pull/37256
+    description: timeout was added.
+  - version: v15.11.0
+    pr-url: https://github.com/nodejs/node/pull/37325
+    description: killSignal for AbortSignal was added.
+  - version:
+      - v15.5.0
+      - v14.17.0
+    pr-url: https://github.com/nodejs/node/pull/36432
+    description: AbortSignal support was added.
+  - version:
+      - v13.2.0
+      - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/30162
+    description: The `serialization` option is supported now.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+  - version: v6.4.0
+    pr-url: https://github.com/nodejs/node/pull/7696
+    description: The `argv0` option is supported now.
+  - version: v5.7.0
+    pr-url: https://github.com/nodejs/node/pull/4598
+    description: The `shell` option is supported now.
+-->
+    <ul>
+      <li><code>command</code> {string} The command to run.</li>
+      <li><code>args</code> {string[]} List of string arguments.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>argv0</code> {string} Explicitly set the value of
+            <code>argv[0]</code> sent to the child process. This will be set to
+            <code>command</code> if not specified.
+          </li>
+          <li>
+            <code>stdio</code> {Array|string} Child’s stdio configuration (see
+            <a href="#child_process_options_stdio"><code>options.stdio</code></a
+            >).
+          </li>
+          <li>
+            <code>detached</code> {boolean} Prepare child to run independently
+            of its parent process. Specific behavior depends on the platform,
+            see
+            <a href="#child_process_options_detached"
+              ><code>options.detached</code></a
+            >).
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>serialization</code> {string} Specify the kind of
+            serialization used for sending messages between processes. Possible
+            values are <code>'json'</code> and <code>'advanced'</code>. See
+            <a href="#child_process_advanced_serialization"
+              >Advanced serialization</a
+            >
+            for more details. <strong>Default:</strong> <code>'json'</code>.
+          </li>
+          <li>
+            <code>shell</code> {boolean|string} If <code>true</code>, runs
+            <code>command</code> inside of a shell. Uses
+            <code>'/bin/sh'</code> on Unix, and
+            <code>process.env.ComSpec</code> on Windows. A different shell can
+            be specified as a string. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>false</code> (no shell).
+          </li>
+          <li>
+            <code>windowsVerbatimArguments</code> {boolean} No quoting or
+            escaping of arguments is done on Windows. Ignored on Unix. This is
+            set to <code>true</code> automatically when <code>shell</code> is
+            specified and is CMD. <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>signal</code> {AbortSignal} allows aborting the child process
+            using an AbortSignal.
+          </li>
+          <li>
+            <code>timeout</code> {number} In milliseconds the maximum amount of
+            time the process is allowed to run. <strong>Default:</strong>
+            <code>undefined</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} The signal value to be used
+            when the spawned process will be killed by timeout or abort signal.
+            <strong>Default:</strong> <code>'SIGTERM'</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {ChildProcess}</li>
+    </ul>
+    <p>
+      The <code>child_process.spawn()</code> method spawns a new process using
+      the given <code>command</code>, with command-line arguments in
+      <code>args</code>. If omitted, <code>args</code> defaults to an empty
+      array.
+    </p>
+    <p>
+      <strong
+        >If the <code>shell</code> option is enabled, do not pass unsanitized
+        user input to this function. Any input containing shell metacharacters
+        may be used to trigger arbitrary command execution.</strong
+      >
+    </p>
+    <p>
+      A third argument may be used to specify additional options, with these
+      defaults:
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> defaults <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dt">cwd</span><span class="op">:</span> <span class="kw">undefined</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">env</span><span class="op">:</span> <span class="va">process</span>.<span class="at">env</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      Use <code>cwd</code> to specify the working directory from which the
+      process is spawned. If not given, the default is to inherit the current
+      working directory. If given, but the path does not exist, the child
+      process emits an <code>ENOENT</code> error and exits immediately.
+      <code>ENOENT</code> is also emitted when the command does not exist.
+    </p>
+    <p>
+      Use <code>env</code> to specify environment variables that will be visible
+      to the new process, the default is
+      <a href="process.md#process_process_env"><code>process.env</code></a
+      >.
+    </p>
+    <p><code>undefined</code> values in <code>env</code> will be ignored.</p>
+    <p>
+      Example of running <code>ls -lh /usr</code>, capturing
+      <code>stdout</code>, <code>stderr</code>, and the exit code:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> ls <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;ls&#39;</span><span class="op">,</span> [<span class="st">&#39;-lh&#39;</span><span class="op">,</span> <span class="st">&#39;/usr&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="va">ls</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`stdout: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-7" title="7"></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="va">ls</span>.<span class="va">stderr</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-9" title="9">  <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`stderr: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-11" title="11"></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="va">ls</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`child process exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-14" title="14"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>Example: A very elaborate way to run <code>ps ax | grep ssh</code></p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> ps <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;ps&#39;</span><span class="op">,</span> [<span class="st">&#39;ax&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> grep <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;grep&#39;</span><span class="op">,</span> [<span class="st">&#39;ssh&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="va">ps</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="va">grep</span>.<span class="va">stdin</span>.<span class="at">write</span>(data)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="va">ps</span>.<span class="va">stderr</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-10" title="10">  <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`ps stderr: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="va">ps</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="cf">if</span> (code <span class="op">!==</span> <span class="dv">0</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-15" title="15">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`ps process exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="va">grep</span>.<span class="va">stdin</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-19" title="19"></a>
+<a class="sourceLine" id="cb14-20" title="20"><span class="va">grep</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-21" title="21">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">data</span>.<span class="at">toString</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-22" title="22"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-23" title="23"></a>
+<a class="sourceLine" id="cb14-24" title="24"><span class="va">grep</span>.<span class="va">stderr</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-25" title="25">  <span class="va">console</span>.<span class="at">error</span>(<span class="vs">`grep stderr: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-26" title="26"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-27" title="27"></a>
+<a class="sourceLine" id="cb14-28" title="28"><span class="va">grep</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-29" title="29">  <span class="cf">if</span> (code <span class="op">!==</span> <span class="dv">0</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-30" title="30">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`grep process exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-31" title="31">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-32" title="32"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>Example of checking for failed <code>spawn</code>:</p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;bad_command&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="va">subprocess</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-5" title="5">  <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;Failed to start subprocess.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Certain platforms (macOS, Linux) will use the value of
+      <code>argv[0]</code> for the process title while others (Windows, SunOS)
+      will use <code>command</code>.
+    </p>
+    <p>
+      Node.js currently overwrites <code>argv[0]</code> with
+      <code>process.execPath</code> on startup, so
+      <code>process.argv[0]</code> in a Node.js child process will not match the
+      <code>argv0</code> parameter passed to <code>spawn</code> from the parent,
+      retrieve it with the <code>process.argv0</code> property instead.
+    </p>
+    <p>
+      If the <code>signal</code> option is enabled, calling
+      <code>.abort()</code> on the corresponding <code>AbortController</code> is
+      similar to calling <code>.kill()</code> on the child process except the
+      error passed to the callback will be an <code>AbortError</code>:
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">const</span> controller <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">const</span> <span class="op">{</span> signal <span class="op">}</span> <span class="op">=</span> controller<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="kw">const</span> grep <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;grep&#39;</span><span class="op">,</span> [<span class="st">&#39;ssh&#39;</span>]<span class="op">,</span> <span class="op">{</span> signal <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="va">grep</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="co">// This will be called with err being an AbortError if the controller aborts</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="va">controller</span>.<span class="at">abort</span>()<span class="op">;</span> <span class="co">// Stops the child process</span></a></code></pre>
+    </div>
+    <h4 id="options.detached"><code>options.detached</code></h4>
+    <!-- YAML
+added: v0.7.10
+-->
+    <p>
+      On Windows, setting <code>options.detached</code> to
+      <code>true</code> makes it possible for the child process to continue
+      running after the parent exits. The child will have its own console
+      window. Once enabled for a child process, it cannot be disabled.
+    </p>
+    <p>
+      On non-Windows platforms, if <code>options.detached</code> is set to
+      <code>true</code>, the child process will be made the leader of a new
+      process group and session. Child processes may continue running after the
+      parent exits regardless of whether they are detached or not. See setsid(2)
+      for more information.
+    </p>
+    <p>
+      By default, the parent will wait for the detached child to exit. To
+      prevent the parent from waiting for a given <code>subprocess</code> to
+      exit, use the <code>subprocess.unref()</code> method. Doing so will cause
+      the parent’s event loop to not include the child in its reference count,
+      allowing the parent to exit independently of the child, unless there is an
+      established IPC channel between the child and the parent.
+    </p>
+    <p>
+      When using the <code>detached</code> option to start a long-running
+      process, the process will not stay running in the background after the
+      parent exits unless it is provided with a <code>stdio</code> configuration
+      that is not connected to the parent. If the parent’s <code>stdio</code> is
+      inherited, the child will remain attached to the controlling terminal.
+    </p>
+    <p>
+      Example of a long-running process, by detaching and also ignoring its
+      parent <code>stdio</code> file descriptors, in order to ignore the
+      parent’s termination:
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">0</span>]<span class="op">,</span> [<span class="st">&#39;child_program.js&#39;</span>]<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">detached</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-5" title="5">  <span class="dt">stdio</span><span class="op">:</span> <span class="st">&#39;ignore&#39;</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-7" title="7"></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="va">subprocess</span>.<span class="at">unref</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>Alternatively one can redirect the child process’ output into files:</p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">const</span> out <span class="op">=</span> <span class="va">fs</span>.<span class="at">openSync</span>(<span class="st">&#39;./out.log&#39;</span><span class="op">,</span> <span class="st">&#39;a&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="kw">const</span> err <span class="op">=</span> <span class="va">fs</span>.<span class="at">openSync</span>(<span class="st">&#39;./out.log&#39;</span><span class="op">,</span> <span class="st">&#39;a&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-5" title="5"></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;prg&#39;</span><span class="op">,</span> []<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  <span class="dt">detached</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-8" title="8">  <span class="dt">stdio</span><span class="op">:</span> [ <span class="st">&#39;ignore&#39;</span><span class="op">,</span> out<span class="op">,</span> err ]</a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-10" title="10"></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="va">subprocess</span>.<span class="at">unref</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h4 id="options.stdio"><code>options.stdio</code></h4>
+    <!-- YAML
+added: v0.7.10
+changes:
+  - version: v15.6.0
+    pr-url: https://github.com/nodejs/node/pull/29412
+    description: Added the `overlapped` stdio flag.
+  - version: v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2727
+    description: The value `0` is now accepted as a file descriptor.
+-->
+    <p>
+      The <code>options.stdio</code> option is used to configure the pipes that
+      are established between the parent and child process. By default, the
+      child’s stdin, stdout, and stderr are redirected to corresponding
+      <a href="#child_process_subprocess_stdin"><code>subprocess.stdin</code></a
+      >,
+      <a href="#child_process_subprocess_stdout"
+        ><code>subprocess.stdout</code></a
+      >, and
+      <a href="#child_process_subprocess_stderr"
+        ><code>subprocess.stderr</code></a
+      >
+      streams on the
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      object. This is equivalent to setting the <code>options.stdio</code> equal
+      to <code>['pipe', 'pipe', 'pipe']</code>.
+    </p>
+    <p>
+      For convenience, <code>options.stdio</code> may be one of the following
+      strings:
+    </p>
+    <ul>
+      <li>
+        <code>'pipe'</code>: equivalent to
+        <code>['pipe', 'pipe', 'pipe']</code> (the default)
+      </li>
+      <li>
+        <code>'overlapped'</code>: equivalent to
+        <code>['overlapped', 'overlapped', 'overlapped']</code>
+      </li>
+      <li>
+        <code>'ignore'</code>: equivalent to
+        <code>['ignore', 'ignore', 'ignore']</code>
+      </li>
+      <li>
+        <code>'inherit'</code>: equivalent to
+        <code>['inherit', 'inherit', 'inherit']</code> or <code>[0, 1, 2]</code>
+      </li>
+    </ul>
+    <p>
+      Otherwise, the value of <code>options.stdio</code> is an array where each
+      index corresponds to an fd in the child. The fds 0, 1, and 2 correspond to
+      stdin, stdout, and stderr, respectively. Additional fds can be specified
+      to create additional pipes between the parent and child. The value is one
+      of the following:
+    </p>
+    <ol type="1">
+      <li>
+        <code>'pipe'</code>: Create a pipe between the child process and the
+        parent process. The parent end of the pipe is exposed to the parent as a
+        property on the <code>child_process</code> object as
+        <a href="#child_process_subprocess_stdio"
+          ><code>subprocess.stdio[fd]</code></a
+        >. Pipes created for fds 0, 1, and 2 are also available as
+        <a href="#child_process_subprocess_stdin"
+          ><code>subprocess.stdin</code></a
+        >,
+        <a href="#child_process_subprocess_stdout"
+          ><code>subprocess.stdout</code></a
+        >
+        and
+        <a href="#child_process_subprocess_stderr"
+          ><code>subprocess.stderr</code></a
+        >, respectively.
+      </li>
+      <li>
+        <code>'overlapped'</code>: Same as <code>'pipe'</code> except that the
+        <code>FILE_FLAG_OVERLAPPED</code> flag is set on the handle. This is
+        necessary for overlapped I/O on the child process’s stdio handles. See
+        the
+        <a
+          href="https://docs.microsoft.com/en-us/windows/win32/fileio/synchronous-and-asynchronous-i-o"
+          >docs</a
+        >
+        for more details. This is exactly the same as <code>'pipe'</code> on
+        non-Windows systems.
+      </li>
+      <li>
+        <p>
+          <code>'ipc'</code>: Create an IPC channel for passing messages/file
+          descriptors between parent and child. A
+          <a href="#child_process_class_childprocess"
+            ><code>ChildProcess</code></a
+          >
+          may have at most one IPC stdio file descriptor. Setting this option
+          enables the
+          <a
+            href="#child_process_subprocess_send_message_sendhandle_options_callback"
+            ><code>subprocess.send()</code></a
+          >
+          method. If the child is a Node.js process, the presence of an IPC
+          channel will enable
+          <a
+            href="process.md#process_process_send_message_sendhandle_options_callback"
+            ><code>process.send()</code></a
+          >
+          and
+          <a href="process.md#process_process_disconnect"
+            ><code>process.disconnect()</code></a
+          >
+          methods, as well as
+          <a href="process.md#process_event_disconnect"
+            ><code>'disconnect'</code></a
+          >
+          and
+          <a href="process.md#process_event_message"><code>'message'</code></a>
+          events within the child.
+        </p>
+        Accessing the IPC channel fd in any way other than
+        <a
+          href="process.md#process_process_send_message_sendhandle_options_callback"
+          ><code>process.send()</code></a
+        >
+        or using the IPC channel with a child process that is not a Node.js
+        instance is not supported.
+      </li>
+      <li>
+        <code>'ignore'</code>: Instructs Node.js to ignore the fd in the child.
+        While Node.js will always open fds 0, 1, and 2 for the processes it
+        spawns, setting the fd to <code>'ignore'</code> will cause Node.js to
+        open <code>/dev/null</code> and attach it to the child’s fd.
+      </li>
+      <li>
+        <code>'inherit'</code>: Pass through the corresponding stdio stream
+        to/from the parent process. In the first three positions, this is
+        equivalent to <code>process.stdin</code>, <code>process.stdout</code>,
+        and <code>process.stderr</code>, respectively. In any other position,
+        equivalent to <code>'ignore'</code>.
+      </li>
+      <li>
+        {Stream} object: Share a readable or writable stream that refers to a
+        tty, file, socket, or a pipe with the child process. The stream’s
+        underlying file descriptor is duplicated in the child process to the fd
+        that corresponds to the index in the <code>stdio</code> array. The
+        stream must have an underlying descriptor (file streams do not until the
+        <code>'open'</code> event has occurred).
+      </li>
+      <li>
+        Positive integer: The integer value is interpreted as a file descriptor
+        that is currently open in the parent process. It is shared with the
+        child process, similar to how {Stream} objects can be shared. Passing
+        sockets is not supported on Windows.
+      </li>
+      <li>
+        <p>
+          <code>null</code>, <code>undefined</code>: Use default value. For
+          stdio fds 0, 1, and 2 (in other words, stdin, stdout, and stderr) a
+          pipe is created. For fd 3 and up, the default is
+          <code>'ignore'</code>.
+        </p>
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="co">// Child will use parent&#39;s stdios.</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="at">spawn</span>(<span class="st">&#39;prg&#39;</span><span class="op">,</span> []<span class="op">,</span> <span class="op">{</span> <span class="dt">stdio</span><span class="op">:</span> <span class="st">&#39;inherit&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-5" title="5"></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="co">// Spawn child sharing only stderr.</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="at">spawn</span>(<span class="st">&#39;prg&#39;</span><span class="op">,</span> []<span class="op">,</span> <span class="op">{</span> <span class="dt">stdio</span><span class="op">:</span> [<span class="st">&#39;pipe&#39;</span><span class="op">,</span> <span class="st">&#39;pipe&#39;</span><span class="op">,</span> <span class="va">process</span>.<span class="at">stderr</span>] <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-8" title="8"></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="co">// Open an extra fd=4, to interact with programs presenting a</span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="co">// startd-style interface.</span></a>
+<a class="sourceLine" id="cb19-11" title="11"><span class="at">spawn</span>(<span class="st">&#39;prg&#39;</span><span class="op">,</span> []<span class="op">,</span> <span class="op">{</span> <span class="dt">stdio</span><span class="op">:</span> [<span class="st">&#39;pipe&#39;</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="st">&#39;pipe&#39;</span>] <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <em
+        >It is worth noting that when an IPC channel is established between the
+        parent and child processes, and the child is a Node.js process, the
+        child is launched with the IPC channel unreferenced (using
+        <code>unref()</code>) until the child registers an event handler for the
+        <a href="process.md#process_event_disconnect"
+          ><code>'disconnect'</code></a
+        >
+        event or the
+        <a href="process.md#process_event_message"><code>'message'</code></a>
+        event. This allows the child to exit normally without the process being
+        held open by the open IPC channel.</em
+      >
+    </p>
+    <p>
+      On Unix-like operating systems, the
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      method performs memory operations synchronously before decoupling the
+      event loop from the child. Applications with a large memory footprint may
+      find frequent
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      calls to be a bottleneck. For more information, see
+      <a href="https://bugs.chromium.org/p/v8/issues/detail?id=7381"
+        >V8 issue 7381</a
+      >.
+    </p>
+    <p>
+      See also:
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      and
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >.
+    </p>
+    <h2 id="synchronous-process-creation">Synchronous process creation</h2>
+    <p>
+      The
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >,
+      <a href="#child_process_child_process_execsync_command_options"
+        ><code>child_process.execSync()</code></a
+      >, and
+      <a href="#child_process_child_process_execfilesync_file_args_options"
+        ><code>child_process.execFileSync()</code></a
+      >
+      methods are synchronous and will block the Node.js event loop, pausing
+      execution of any additional code until the spawned process exits.
+    </p>
+    <p>
+      Blocking calls like these are mostly useful for simplifying
+      general-purpose scripting tasks and for simplifying the loading/processing
+      of application configuration at startup.
+    </p>
+    <h3 id="child_process.execfilesyncfile-args-options">
+      <code>child_process.execFileSync(file[, args][, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.11.12
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v10.10.0
+    pr-url: https://github.com/nodejs/node/pull/22409
+    description: The `input` option can now be any `TypedArray` or a
+                 `DataView`.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10653
+    description: The `input` option can now be a `Uint8Array`.
+  - version:
+    - v6.2.1
+    - v4.5.0
+    pr-url: https://github.com/nodejs/node/pull/6939
+    description: The `encoding` option can now explicitly be set to `buffer`.
+-->
+    <ul>
+      <li>
+        <code>file</code> {string} The name or path of the executable file to
+        run.
+      </li>
+      <li><code>args</code> {string[]} List of string arguments.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>input</code> {string|Buffer|TypedArray|DataView} The value
+            which will be passed as stdin to the spawned process. Supplying this
+            value will override <code>stdio[0]</code>.
+          </li>
+          <li>
+            <code>stdio</code> {string|Array} Child’s stdio configuration.
+            <code>stderr</code> by default will be output to the parent process’
+            stderr unless <code>stdio</code> is specified.
+            <strong>Default:</strong> <code>'pipe'</code>.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>timeout</code> {number} In milliseconds the maximum amount of
+            time the process is allowed to run. <strong>Default:</strong>
+            <code>undefined</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} The signal value to be used
+            when the spawned process will be killed. <strong>Default:</strong>
+            <code>'SIGTERM'</code>.
+          </li>
+          <li>
+            <code>maxBuffer</code> {number} Largest amount of data in bytes
+            allowed on stdout or stderr. If exceeded, the child process is
+            terminated. See caveat at
+            <a href="#child_process_maxbuffer_and_unicode"
+              ><code>maxBuffer</code> and Unicode</a
+            >. <strong>Default:</strong> <code>1024 * 1024</code>.
+          </li>
+          <li>
+            <code>encoding</code> {string} The encoding used for all stdio
+            inputs and outputs. <strong>Default:</strong> <code>'buffer'</code>.
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>shell</code> {boolean|string} If <code>true</code>, runs
+            <code>command</code> inside of a shell. Uses
+            <code>'/bin/sh'</code> on Unix, and
+            <code>process.env.ComSpec</code> on Windows. A different shell can
+            be specified as a string. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>false</code> (no shell).
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {Buffer|string} The stdout from the command.</li>
+    </ul>
+    <p>
+      The <code>child_process.execFileSync()</code> method is generally
+      identical to
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >
+      with the exception that the method will not return until the child process
+      has fully closed. When a timeout has been encountered and
+      <code>killSignal</code> is sent, the method won’t return until the process
+      has completely exited.
+    </p>
+    <p>
+      If the child process intercepts and handles the
+      <code>SIGTERM</code> signal and does not exit, the parent process will
+      still wait until the child process has exited.
+    </p>
+    <p>
+      If the process times out or has a non-zero exit code, this method will
+      throw an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> that will
+      include the full result of the underlying
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >.
+    </p>
+    <p>
+      <strong
+        >If the <code>shell</code> option is enabled, do not pass unsanitized
+        user input to this function. Any input containing shell metacharacters
+        may be used to trigger arbitrary command execution.</strong
+      >
+    </p>
+    <h3 id="child_process.execsynccommand-options">
+      <code>child_process.execSync(command[, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.11.12
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v10.10.0
+    pr-url: https://github.com/nodejs/node/pull/22409
+    description: The `input` option can now be any `TypedArray` or a
+                 `DataView`.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10653
+    description: The `input` option can now be a `Uint8Array`.
+-->
+    <ul>
+      <li><code>command</code> {string} The command to run.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>input</code> {string|Buffer|TypedArray|DataView} The value
+            which will be passed as stdin to the spawned process. Supplying this
+            value will override <code>stdio[0]</code>.
+          </li>
+          <li>
+            <code>stdio</code> {string|Array} Child’s stdio configuration.
+            <code>stderr</code> by default will be output to the parent process’
+            stderr unless <code>stdio</code> is specified.
+            <strong>Default:</strong> <code>'pipe'</code>.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>shell</code> {string} Shell to execute the command with. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>'/bin/sh'</code> on Unix,
+            <code>process.env.ComSpec</code> on Windows.
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process.
+            (See setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process.
+            (See setgid(2)).
+          </li>
+          <li>
+            <code>timeout</code> {number} In milliseconds the maximum amount of
+            time the process is allowed to run. <strong>Default:</strong>
+            <code>undefined</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} The signal value to be used
+            when the spawned process will be killed. <strong>Default:</strong>
+            <code>'SIGTERM'</code>.
+          </li>
+          <li>
+            <code>maxBuffer</code> {number} Largest amount of data in bytes
+            allowed on stdout or stderr. If exceeded, the child process is
+            terminated and any output is truncated. See caveat at
+            <a href="#child_process_maxbuffer_and_unicode"
+              ><code>maxBuffer</code> and Unicode</a
+            >. <strong>Default:</strong> <code>1024 * 1024</code>.
+          </li>
+          <li>
+            <code>encoding</code> {string} The encoding used for all stdio
+            inputs and outputs. <strong>Default:</strong> <code>'buffer'</code>.
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {Buffer|string} The stdout from the command.</li>
+    </ul>
+    <p>
+      The <code>child_process.execSync()</code> method is generally identical to
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >
+      with the exception that the method will not return until the child process
+      has fully closed. When a timeout has been encountered and
+      <code>killSignal</code> is sent, the method won’t return until the process
+      has completely exited. If the child process intercepts and handles the
+      <code>SIGTERM</code> signal and doesn’t exit, the parent process will wait
+      until the child process has exited.
+    </p>
+    <p>
+      If the process times out or has a non-zero exit code, this method will
+      throw. The
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object will
+      contain the entire result from
+      <a href="#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >.
+    </p>
+    <p>
+      <strong
+        >Never pass unsanitized user input to this function. Any input
+        containing shell metacharacters may be used to trigger arbitrary command
+        execution.</strong
+      >
+    </p>
+    <h3 id="child_process.spawnsynccommand-args-options">
+      <code>child_process.spawnSync(command[, args][, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.11.12
+changes:
+  - version: v16.4.0
+    pr-url: https://github.com/nodejs/node/pull/38862
+    description: The `cwd` option can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version: v10.10.0
+    pr-url: https://github.com/nodejs/node/pull/22409
+    description: The `input` option can now be any `TypedArray` or a
+                 `DataView`.
+  - version: v8.8.0
+    pr-url: https://github.com/nodejs/node/pull/15380
+    description: The `windowsHide` option is supported now.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10653
+    description: The `input` option can now be a `Uint8Array`.
+  - version:
+    - v6.2.1
+    - v4.5.0
+    pr-url: https://github.com/nodejs/node/pull/6939
+    description: The `encoding` option can now explicitly be set to `buffer`.
+  - version: v5.7.0
+    pr-url: https://github.com/nodejs/node/pull/4598
+    description: The `shell` option is supported now.
+-->
+    <ul>
+      <li><code>command</code> {string} The command to run.</li>
+      <li><code>args</code> {string[]} List of string arguments.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>cwd</code> {string|URL} Current working directory of the child
+            process.
+          </li>
+          <li>
+            <code>input</code> {string|Buffer|TypedArray|DataView} The value
+            which will be passed as stdin to the spawned process. Supplying this
+            value will override <code>stdio[0]</code>.
+          </li>
+          <li>
+            <code>argv0</code> {string} Explicitly set the value of
+            <code>argv[0]</code> sent to the child process. This will be set to
+            <code>command</code> if not specified.
+          </li>
+          <li>
+            <code>stdio</code> {string|Array} Child’s stdio configuration.
+          </li>
+          <li>
+            <code>env</code> {Object} Environment key-value pairs.
+            <strong>Default:</strong> <code>process.env</code>.
+          </li>
+          <li>
+            <code>uid</code> {number} Sets the user identity of the process (see
+            setuid(2)).
+          </li>
+          <li>
+            <code>gid</code> {number} Sets the group identity of the process
+            (see setgid(2)).
+          </li>
+          <li>
+            <code>timeout</code> {number} In milliseconds the maximum amount of
+            time the process is allowed to run. <strong>Default:</strong>
+            <code>undefined</code>.
+          </li>
+          <li>
+            <code>killSignal</code> {string|integer} The signal value to be used
+            when the spawned process will be killed. <strong>Default:</strong>
+            <code>'SIGTERM'</code>.
+          </li>
+          <li>
+            <code>maxBuffer</code> {number} Largest amount of data in bytes
+            allowed on stdout or stderr. If exceeded, the child process is
+            terminated and any output is truncated. See caveat at
+            <a href="#child_process_maxbuffer_and_unicode"
+              ><code>maxBuffer</code> and Unicode</a
+            >. <strong>Default:</strong> <code>1024 * 1024</code>.
+          </li>
+          <li>
+            <code>encoding</code> {string} The encoding used for all stdio
+            inputs and outputs. <strong>Default:</strong> <code>'buffer'</code>.
+          </li>
+          <li>
+            <code>shell</code> {boolean|string} If <code>true</code>, runs
+            <code>command</code> inside of a shell. Uses
+            <code>'/bin/sh'</code> on Unix, and
+            <code>process.env.ComSpec</code> on Windows. A different shell can
+            be specified as a string. See
+            <a href="#child_process_shell_requirements">Shell requirements</a>
+            and
+            <a href="#child_process_default_windows_shell"
+              >Default Windows shell</a
+            >. <strong>Default:</strong> <code>false</code> (no shell).
+          </li>
+          <li>
+            <code>windowsVerbatimArguments</code> {boolean} No quoting or
+            escaping of arguments is done on Windows. Ignored on Unix. This is
+            set to <code>true</code> automatically when <code>shell</code> is
+            specified and is CMD. <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>windowsHide</code> {boolean} Hide the subprocess console
+            window that would normally be created on Windows systems.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Returns: {Object}
+        <ul>
+          <li><code>pid</code> {number} Pid of the child process.</li>
+          <li>
+            <code>output</code> {Array} Array of results from stdio output.
+          </li>
+          <li>
+            <code>stdout</code> {Buffer|string} The contents of
+            <code>output[1]</code>.
+          </li>
+          <li>
+            <code>stderr</code> {Buffer|string} The contents of
+            <code>output[2]</code>.
+          </li>
+          <li>
+            <code>status</code> {number|null} The exit code of the subprocess,
+            or <code>null</code> if the subprocess terminated due to a signal.
+          </li>
+          <li>
+            <code>signal</code> {string|null} The signal used to kill the
+            subprocess, or <code>null</code> if the subprocess did not terminate
+            due to a signal.
+          </li>
+          <li>
+            <code>error</code> {Error} The error object if the child process
+            failed or timed out.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      The <code>child_process.spawnSync()</code> method is generally identical
+      to
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      with the exception that the function will not return until the child
+      process has fully closed. When a timeout has been encountered and
+      <code>killSignal</code> is sent, the method won’t return until the process
+      has completely exited. If the process intercepts and handles the
+      <code>SIGTERM</code> signal and doesn’t exit, the parent process will wait
+      until the child process has exited.
+    </p>
+    <p>
+      <strong
+        >If the <code>shell</code> option is enabled, do not pass unsanitized
+        user input to this function. Any input containing shell metacharacters
+        may be used to trigger arbitrary command execution.</strong
+      >
+    </p>
+    <h2 id="class-childprocess">Class: <code>ChildProcess</code></h2>
+    <!-- YAML
+added: v2.2.0
+-->
+    <ul>
+      <li>Extends: {EventEmitter}</li>
+    </ul>
+    <p>
+      Instances of the <code>ChildProcess</code> represent spawned child
+      processes.
+    </p>
+    <p>
+      Instances of <code>ChildProcess</code> are not intended to be created
+      directly. Rather, use the
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >,
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >,
+      <a href="#child_process_child_process_execfile_file_args_options_callback"
+        ><code>child_process.execFile()</code></a
+      >, or
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >
+      methods to create instances of <code>ChildProcess</code>.
+    </p>
+    <h3 id="event-close">Event: <code>'close'</code></h3>
+    <!-- YAML
+added: v0.7.7
+-->
+    <ul>
+      <li>
+        <code>code</code> {number} The exit code if the child exited on its own.
+      </li>
+      <li>
+        <code>signal</code> {string} The signal by which the child process was
+        terminated.
+      </li>
+    </ul>
+    <p>
+      The <code>'close'</code> event is emitted after a process has ended
+      <em>and</em> the stdio streams of a child process have been closed. This
+      is distinct from the
+      <a href="#child_process_event_exit"><code>'exit'</code></a> event, since
+      multiple processes might share the same stdio streams. The
+      <code>'close'</code> event will always emit after
+      <a href="#child_process_event_exit"><code>'exit'</code></a> was already
+      emitted, or
+      <a href="#child_process_event_error"><code>'error'</code></a> if the child
+      failed to spawn.
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">const</span> ls <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;ls&#39;</span><span class="op">,</span> [<span class="st">&#39;-lh&#39;</span><span class="op">,</span> <span class="st">&#39;/usr&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-3" title="3"></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="va">ls</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`stdout: </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-7" title="7"></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="va">ls</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-9" title="9">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`child process close all stdio with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-11" title="11"></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="va">ls</span>.<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`child process exited with code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-14" title="14"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="event-disconnect">Event: <code>'disconnect'</code></h3>
+    <!-- YAML
+added: v0.7.2
+-->
+    <p>
+      The <code>'disconnect'</code> event is emitted after calling the
+      <a href="#child_process_subprocess_disconnect"
+        ><code>subprocess.disconnect()</code></a
+      >
+      method in parent process or
+      <a href="process.md#process_process_disconnect"
+        ><code>process.disconnect()</code></a
+      >
+      in child process. After disconnecting it is no longer possible to send or
+      receive messages, and the
+      <a href="#child_process_subprocess_connected"
+        ><code>subprocess.connected</code></a
+      >
+      property is <code>false</code>.
+    </p>
+    <h3 id="event-error">Event: <code>'error'</code></h3>
+    <ul>
+      <li><code>err</code> {Error} The error.</li>
+    </ul>
+    <p>The <code>'error'</code> event is emitted whenever:</p>
+    <ol type="1">
+      <li>The process could not be spawned, or</li>
+      <li>The process could not be killed, or</li>
+      <li>Sending a message to the child process failed.</li>
+    </ol>
+    <p>
+      The <code>'exit'</code> event may or may not fire after an error has
+      occurred. When listening to both the <code>'exit'</code> and
+      <code>'error'</code> events, guard against accidentally invoking handler
+      functions multiple times.
+    </p>
+    <p>
+      See also
+      <a href="#child_process_subprocess_kill_signal"
+        ><code>subprocess.kill()</code></a
+      >
+      and
+      <a
+        href="#child_process_subprocess_send_message_sendhandle_options_callback"
+        ><code>subprocess.send()</code></a
+      >.
+    </p>
+    <h3 id="event-exit">Event: <code>'exit'</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li>
+        <code>code</code> {number} The exit code if the child exited on its own.
+      </li>
+      <li>
+        <code>signal</code> {string} The signal by which the child process was
+        terminated.
+      </li>
+    </ul>
+    <p>
+      The <code>'exit'</code> event is emitted after the child process ends. If
+      the process exited, <code>code</code> is the final exit code of the
+      process, otherwise <code>null</code>. If the process terminated due to
+      receipt of a signal, <code>signal</code> is the string name of the signal,
+      otherwise <code>null</code>. One of the two will always be
+      non-<code>null</code>.
+    </p>
+    <p>
+      When the <code>'exit'</code> event is triggered, child process stdio
+      streams might still be open.
+    </p>
+    <p>
+      Node.js establishes signal handlers for <code>SIGINT</code> and
+      <code>SIGTERM</code> and Node.js processes will not terminate immediately
+      due to receipt of those signals. Rather, Node.js will perform a sequence
+      of cleanup actions and then will re-raise the handled signal.
+    </p>
+    <p>See waitpid(2).</p>
+    <h3 id="event-message">Event: <code>'message'</code></h3>
+    <!-- YAML
+added: v0.5.9
+-->
+    <ul>
+      <li>
+        <code>message</code> {Object} A parsed JSON object or primitive value.
+      </li>
+      <li>
+        <code>sendHandle</code> {Handle} A
+        <a href="net.md#net_class_net_socket"><code>net.Socket</code></a> or
+        <a href="net.md#net_class_net_server"><code>net.Server</code></a>
+        object, or undefined.
+      </li>
+    </ul>
+    <p>
+      The <code>'message'</code> event is triggered when a child process uses
+      <a
+        href="process.md#process_process_send_message_sendhandle_options_callback"
+        ><code>process.send()</code></a
+      >
+      to send messages.
+    </p>
+    <p>
+      The message goes through serialization and parsing. The resulting message
+      might not be the same as what is originally sent.
+    </p>
+    <p>
+      If the <code>serialization</code> option was set to
+      <code>'advanced'</code> used when spawning the child process, the
+      <code>message</code> argument can contain data that JSON is not able to
+      represent. See
+      <a href="#child_process_advanced_serialization">Advanced serialization</a>
+      for more details.
+    </p>
+    <h3 id="event-spawn">Event: <code>'spawn'</code></h3>
+    <!-- YAML
+added:
+  - v15.1.0
+  - v14.17.0
+-->
+    <p>
+      The <code>'spawn'</code> event is emitted once the child process has
+      spawned successfully. If the child process does not spawn successfully,
+      the <code>'spawn'</code> event is not emitted and the
+      <code>'error'</code> event is emitted instead.
+    </p>
+    <p>
+      If emitted, the <code>'spawn'</code> event comes before all other events
+      and before any data is received via <code>stdout</code> or
+      <code>stderr</code>.
+    </p>
+    <p>
+      The <code>'spawn'</code> event will fire regardless of whether an error
+      occurs <strong>within</strong> the spawned process. For example, if
+      <code>bash some-command</code> spawns successfully, the
+      <code>'spawn'</code> event will fire, though <code>bash</code> may fail to
+      spawn <code>some-command</code>. This caveat also applies when using
+      <code>{ shell: true }</code>.
+    </p>
+    <h3 id="subprocess.channel"><code>subprocess.channel</code></h3>
+    <!-- YAML
+added: v7.1.0
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30165
+    description: The object no longer accidentally exposes native C++ bindings.
+-->
+    <ul>
+      <li>
+        {Object} A pipe representing the IPC channel to the child process.
+      </li>
+    </ul>
+    <p>
+      The <code>subprocess.channel</code> property is a reference to the child’s
+      IPC channel. If no IPC channel currently exists, this property is
+      <code>undefined</code>.
+    </p>
+    <h4 id="subprocess.channel.ref"><code>subprocess.channel.ref()</code></h4>
+    <!-- YAML
+added: v7.1.0
+-->
+    <p>
+      This method makes the IPC channel keep the event loop of the parent
+      process running if <code>.unref()</code> has been called before.
+    </p>
+    <h4 id="subprocess.channel.unref">
+      <code>subprocess.channel.unref()</code>
+    </h4>
+    <!-- YAML
+added: v7.1.0
+-->
+    <p>
+      This method makes the IPC channel not keep the event loop of the parent
+      process running, and lets it finish even while the channel is open.
+    </p>
+    <h3 id="subprocess.connected"><code>subprocess.connected</code></h3>
+    <!-- YAML
+added: v0.7.2
+-->
+    <ul>
+      <li>
+        {boolean} Set to <code>false</code> after
+        <code>subprocess.disconnect()</code> is called.
+      </li>
+    </ul>
+    <p>
+      The <code>subprocess.connected</code> property indicates whether it is
+      still possible to send and receive messages from a child process. When
+      <code>subprocess.connected</code> is <code>false</code>, it is no longer
+      possible to send or receive messages.
+    </p>
+    <h3 id="subprocess.disconnect"><code>subprocess.disconnect()</code></h3>
+    <!-- YAML
+added: v0.7.2
+-->
+    <p>
+      Closes the IPC channel between parent and child, allowing the child to
+      exit gracefully once there are no other connections keeping it alive.
+      After calling this method the <code>subprocess.connected</code> and
+      <code>process.connected</code> properties in both the parent and child
+      (respectively) will be set to <code>false</code>, and it will be no longer
+      possible to pass messages between the processes.
+    </p>
+    <p>
+      The <code>'disconnect'</code> event will be emitted when there are no
+      messages in the process of being received. This will most often be
+      triggered immediately after calling <code>subprocess.disconnect()</code>.
+    </p>
+    <p>
+      When the child process is a Node.js instance (e.g. spawned using
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >), the <code>process.disconnect()</code> method can be invoked within the
+      child process to close the IPC channel as well.
+    </p>
+    <h3 id="subprocess.exitcode"><code>subprocess.exitCode</code></h3>
+    <ul>
+      <li>{integer}</li>
+    </ul>
+    <p>
+      The <code>subprocess.exitCode</code> property indicates the exit code of
+      the child process. If the child process is still running, the field will
+      be <code>null</code>.
+    </p>
+    <h3 id="subprocess.killsignal"><code>subprocess.kill([signal])</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li><code>signal</code> {number|string}</li>
+      <li>Returns: {boolean}</li>
+    </ul>
+    <p>
+      The <code>subprocess.kill()</code> method sends a signal to the child
+      process. If no argument is given, the process will be sent the
+      <code>'SIGTERM'</code> signal. See signal(7) for a list of available
+      signals. This function returns <code>true</code> if kill(2) succeeds, and
+      <code>false</code> otherwise.
+    </p>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">const</span> grep <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;grep&#39;</span><span class="op">,</span> [<span class="st">&#39;ssh&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-3" title="3"></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="va">grep</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> (code<span class="op">,</span> signal) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb21-6" title="6">    <span class="vs">`child process terminated due to receipt of signal </span><span class="sc">${</span>signal<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-8" title="8"></a>
+<a class="sourceLine" id="cb21-9" title="9"><span class="co">// Send SIGHUP to process.</span></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="va">grep</span>.<span class="at">kill</span>(<span class="st">&#39;SIGHUP&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      object may emit an
+      <a href="#child_process_event_error"><code>'error'</code></a> event if the
+      signal cannot be delivered. Sending a signal to a child process that has
+      already exited is not an error but may have unforeseen consequences.
+      Specifically, if the process identifier (PID) has been reassigned to
+      another process, the signal will be delivered to that process instead
+      which can have unexpected results.
+    </p>
+    <p>
+      While the function is called <code>kill</code>, the signal delivered to
+      the child process may not actually terminate the process.
+    </p>
+    <p>See kill(2) for reference.</p>
+    <p>
+      On Windows, where POSIX signals do not exist, the
+      <code>signal</code> argument will be ignored, and the process will be
+      killed forcefully and abruptly (similar to <code>'SIGKILL'</code>). See
+      <a href="process.md#process_signal_events">Signal Events</a> for more
+      details.
+    </p>
+    <p>
+      On Linux, child processes of child processes will not be terminated when
+      attempting to kill their parent. This is likely to happen when running a
+      new process in a shell or with the use of the <code>shell</code> option of
+      <code>ChildProcess</code>:
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-3" title="3"></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(</a>
+<a class="sourceLine" id="cb22-5" title="5">  <span class="st">&#39;sh&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-6" title="6">  [</a>
+<a class="sourceLine" id="cb22-7" title="7">    <span class="st">&#39;-c&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-8" title="8">    <span class="vs">`node -e &quot;setInterval(() =&gt; {</span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="vs">      console.log(process.pid, &#39;is alive&#39;)</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="vs">    }, 500);&quot;`</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-11" title="11">  ]<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-12" title="12">    <span class="dt">stdio</span><span class="op">:</span> [<span class="st">&#39;inherit&#39;</span><span class="op">,</span> <span class="st">&#39;inherit&#39;</span><span class="op">,</span> <span class="st">&#39;inherit&#39;</span>]</a>
+<a class="sourceLine" id="cb22-13" title="13">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb22-14" title="14">)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-15" title="15"></a>
+<a class="sourceLine" id="cb22-16" title="16"><span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-17" title="17">  <span class="va">subprocess</span>.<span class="at">kill</span>()<span class="op">;</span> <span class="co">// Does not terminate the Node.js process in the shell.</span></a>
+<a class="sourceLine" id="cb22-18" title="18"><span class="op">},</span> <span class="dv">2000</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="subprocess.killed"><code>subprocess.killed</code></h3>
+    <!-- YAML
+added: v0.5.10
+-->
+    <ul>
+      <li>
+        {boolean} Set to <code>true</code> after
+        <code>subprocess.kill()</code> is used to successfully send a signal to
+        the child process.
+      </li>
+    </ul>
+    <p>
+      The <code>subprocess.killed</code> property indicates whether the child
+      process successfully received a signal from
+      <code>subprocess.kill()</code>. The <code>killed</code> property does not
+      indicate that the child process has been terminated.
+    </p>
+    <h3 id="subprocess.pid"><code>subprocess.pid</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li>{integer|undefined}</li>
+    </ul>
+    <p>
+      Returns the process identifier (PID) of the child process. If the child
+      process fails to spawn due to errors, then the value is
+      <code>undefined</code> and <code>error</code> is emitted.
+    </p>
+    <div class="sourceCode" id="cb23">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw">const</span> grep <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;grep&#39;</span><span class="op">,</span> [<span class="st">&#39;ssh&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-3" title="3"></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Spawned child pid: </span><span class="sc">${</span><span class="va">grep</span>.<span class="at">pid</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="va">grep</span>.<span class="va">stdin</span>.<span class="at">end</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="subprocess.ref"><code>subprocess.ref()</code></h3>
+    <!-- YAML
+added: v0.7.10
+-->
+    <p>
+      Calling <code>subprocess.ref()</code> after making a call to
+      <code>subprocess.unref()</code> will restore the removed reference count
+      for the child process, forcing the parent to wait for the child to exit
+      before exiting itself.
+    </p>
+    <div class="sourceCode" id="cb24">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">0</span>]<span class="op">,</span> [<span class="st">&#39;child_program.js&#39;</span>]<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-4" title="4">  <span class="dt">detached</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="dt">stdio</span><span class="op">:</span> <span class="st">&#39;ignore&#39;</span></a>
+<a class="sourceLine" id="cb24-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-7" title="7"></a>
+<a class="sourceLine" id="cb24-8" title="8"><span class="va">subprocess</span>.<span class="at">unref</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-9" title="9"><span class="va">subprocess</span>.<span class="at">ref</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="subprocess.sendmessage-sendhandle-options-callback">
+      <code>subprocess.send(message[, sendHandle[, options]][, callback])</code>
+    </h3>
+    <!-- YAML
+added: v0.5.9
+changes:
+  - version: v5.8.0
+    pr-url: https://github.com/nodejs/node/pull/5283
+    description: The `options` parameter, and the `keepOpen` option
+                 in particular, is supported now.
+  - version: v5.0.0
+    pr-url: https://github.com/nodejs/node/pull/3516
+    description: This method returns a boolean for flow control now.
+  - version: v4.0.0
+    pr-url: https://github.com/nodejs/node/pull/2620
+    description: The `callback` parameter is supported now.
+-->
+    <ul>
+      <li><code>message</code> {Object}</li>
+      <li><code>sendHandle</code> {Handle}</li>
+      <li>
+        <code>options</code> {Object} The <code>options</code> argument, if
+        present, is an object used to parameterize the sending of certain types
+        of handles. <code>options</code> supports the following properties:
+        <ul>
+          <li>
+            <code>keepOpen</code> {boolean} A value that can be used when
+            passing instances of <code>net.Socket</code>. When
+            <code>true</code>, the socket is kept open in the sending process.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+      <li><code>callback</code> {Function}</li>
+      <li>Returns: {boolean}</li>
+    </ul>
+    <p>
+      When an IPC channel has been established between the parent and child (
+      i.e. when using
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >), the <code>subprocess.send()</code> method can be used to send messages
+      to the child process. When the child process is a Node.js instance, these
+      messages can be received via the
+      <a href="process.md#process_event_message"><code>'message'</code></a>
+      event.
+    </p>
+    <p>
+      The message goes through serialization and parsing. The resulting message
+      might not be the same as what is originally sent.
+    </p>
+    <p>For example, in the parent script:</p>
+    <div class="sourceCode" id="cb25">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">const</span> cp <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="kw">const</span> n <span class="op">=</span> <span class="va">cp</span>.<span class="at">fork</span>(<span class="vs">`</span><span class="sc">${</span>__dirname<span class="sc">}</span><span class="vs">/sub.js`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-3" title="3"></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="va">n</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (m) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;PARENT got message:&#39;</span><span class="op">,</span> m)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-7" title="7"></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="co">// Causes the child to print: CHILD got message: { hello: &#39;world&#39; }</span></a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="va">n</span>.<span class="at">send</span>(<span class="op">{</span> <span class="dt">hello</span><span class="op">:</span> <span class="st">&#39;world&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      And then the child script, <code>'sub.js'</code> might look like this:
+    </p>
+    <div class="sourceCode" id="cb26">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="va">process</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (m) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;CHILD got message:&#39;</span><span class="op">,</span> m)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-4" title="4"></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="co">// Causes the parent to print: PARENT got message: { foo: &#39;bar&#39;, baz: null }</span></a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="va">process</span>.<span class="at">send</span>(<span class="op">{</span> <span class="dt">foo</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span><span class="op">,</span> <span class="dt">baz</span><span class="op">:</span> <span class="kw">NaN</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Child Node.js processes will have a
+      <a
+        href="process.md#process_process_send_message_sendhandle_options_callback"
+        ><code>process.send()</code></a
+      >
+      method of their own that allows the child to send messages back to the
+      parent.
+    </p>
+    <p>
+      There is a special case when sending a
+      <code>{cmd: 'NODE_foo'}</code> message. Messages containing a
+      <code>NODE_</code> prefix in the <code>cmd</code> property are reserved
+      for use within Node.js core and will not be emitted in the child’s
+      <a href="process.md#process_event_message"><code>'message'</code></a>
+      event. Rather, such messages are emitted using the
+      <code>'internalMessage'</code> event and are consumed internally by
+      Node.js. Applications should avoid using such messages or listening for
+      <code>'internalMessage'</code> events as it is subject to change without
+      notice.
+    </p>
+    <p>
+      The optional <code>sendHandle</code> argument that may be passed to
+      <code>subprocess.send()</code> is for passing a TCP server or socket
+      object to the child process. The child will receive the object as the
+      second argument passed to the callback function registered on the
+      <a href="process.md#process_event_message"><code>'message'</code></a>
+      event. Any data that is received and buffered in the socket will not be
+      sent to the child.
+    </p>
+    <p>
+      The optional <code>callback</code> is a function that is invoked after the
+      message is sent but before the child may have received it. The function is
+      called with a single argument: <code>null</code> on success, or an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object on
+      failure.
+    </p>
+    <p>
+      If no <code>callback</code> function is provided and the message cannot be
+      sent, an <code>'error'</code> event will be emitted by the
+      <a href="#child_process_class_childprocess"><code>ChildProcess</code></a>
+      object. This can happen, for instance, when the child process has already
+      exited.
+    </p>
+    <p>
+      <code>subprocess.send()</code> will return <code>false</code> if the
+      channel has closed or when the backlog of unsent messages exceeds a
+      threshold that makes it unwise to send more. Otherwise, the method returns
+      <code>true</code>. The <code>callback</code> function can be used to
+      implement flow control.
+    </p>
+    <h4 id="example-sending-a-server-object">
+      Example: sending a server object
+    </h4>
+    <p>
+      The <code>sendHandle</code> argument can be used, for instance, to pass
+      the handle of a TCP server object to the child process as illustrated in
+      the example below:
+    </p>
+    <div class="sourceCode" id="cb27">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>).<span class="at">fork</span>(<span class="st">&#39;subprocess.js&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-2" title="2"></a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="co">// Open up the server object and send the handle.</span></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="kw">const</span> server <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;net&#39;</span>).<span class="at">createServer</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb27-6" title="6">  <span class="va">socket</span>.<span class="at">end</span>(<span class="st">&#39;handled by parent&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="va">server</span>.<span class="at">listen</span>(<span class="dv">1337</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb27-9" title="9">  <span class="va">subprocess</span>.<span class="at">send</span>(<span class="st">&#39;server&#39;</span><span class="op">,</span> server)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>The child would then receive the server object as:</p>
+    <div class="sourceCode" id="cb28">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="va">process</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (m<span class="op">,</span> server) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-2" title="2">  <span class="cf">if</span> (m <span class="op">===</span> <span class="st">&#39;server&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-3" title="3">    <span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-4" title="4">      <span class="va">socket</span>.<span class="at">end</span>(<span class="st">&#39;handled by child&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-5" title="5">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Once the server is now shared between the parent and child, some
+      connections can be handled by the parent and some by the child.
+    </p>
+    <p>
+      While the example above uses a server created using the
+      <code>net</code> module, <code>dgram</code> module servers use exactly the
+      same workflow with the exceptions of listening on a
+      <code>'message'</code> event instead of <code>'connection'</code> and
+      using <code>server.bind()</code> instead of <code>server.listen()</code>.
+      This is, however, currently only supported on Unix platforms.
+    </p>
+    <h4 id="example-sending-a-socket-object">
+      Example: sending a socket object
+    </h4>
+    <p>
+      Similarly, the <code>sendHandler</code> argument can be used to pass the
+      handle of a socket to the child process. The example below spawns two
+      children that each handle connections with “normal” or “special” priority:
+    </p>
+    <div class="sourceCode" id="cb29">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">const</span> <span class="op">{</span> fork <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="kw">const</span> normal <span class="op">=</span> <span class="at">fork</span>(<span class="st">&#39;subprocess.js&#39;</span><span class="op">,</span> [<span class="st">&#39;normal&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="kw">const</span> special <span class="op">=</span> <span class="at">fork</span>(<span class="st">&#39;subprocess.js&#39;</span><span class="op">,</span> [<span class="st">&#39;special&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-4" title="4"></a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="co">// Open up the server and send sockets to child. Use pauseOnConnect to prevent</span></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="co">// the sockets from being read before they are sent to the child process.</span></a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="kw">const</span> server <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;net&#39;</span>).<span class="at">createServer</span>(<span class="op">{</span> <span class="dt">pauseOnConnect</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-9" title="9"></a>
+<a class="sourceLine" id="cb29-10" title="10">  <span class="co">// If this is special priority...</span></a>
+<a class="sourceLine" id="cb29-11" title="11">  <span class="cf">if</span> (<span class="va">socket</span>.<span class="at">remoteAddress</span> <span class="op">===</span> <span class="st">&#39;74.125.127.100&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-12" title="12">    <span class="va">special</span>.<span class="at">send</span>(<span class="st">&#39;socket&#39;</span><span class="op">,</span> socket)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-13" title="13">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb29-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb29-15" title="15">  <span class="co">// This is normal priority.</span></a>
+<a class="sourceLine" id="cb29-16" title="16">  <span class="va">normal</span>.<span class="at">send</span>(<span class="st">&#39;socket&#39;</span><span class="op">,</span> socket)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-17" title="17"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-18" title="18"><span class="va">server</span>.<span class="at">listen</span>(<span class="dv">1337</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>subprocess.js</code> would receive the socket handle as the
+      second argument passed to the event callback function:
+    </p>
+    <div class="sourceCode" id="cb30">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="va">process</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (m<span class="op">,</span> socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-2" title="2">  <span class="cf">if</span> (m <span class="op">===</span> <span class="st">&#39;socket&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-3" title="3">    <span class="cf">if</span> (socket) <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-4" title="4">      <span class="co">// Check that the client socket exists.</span></a>
+<a class="sourceLine" id="cb30-5" title="5">      <span class="co">// It is possible for the socket to be closed between the time it is</span></a>
+<a class="sourceLine" id="cb30-6" title="6">      <span class="co">// sent and the time it is received in the child process.</span></a>
+<a class="sourceLine" id="cb30-7" title="7">      <span class="va">socket</span>.<span class="at">end</span>(<span class="vs">`Request handled with </span><span class="sc">${</span><span class="va">process</span>.<span class="at">argv</span>[<span class="dv">2</span>]<span class="sc">}</span><span class="vs"> priority`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb30-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb30-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Do not use <code>.maxConnections</code> on a socket that has been passed
+      to a subprocess. The parent cannot track when the socket is destroyed.
+    </p>
+    <p>
+      Any <code>'message'</code> handlers in the subprocess should verify that
+      <code>socket</code> exists, as the connection may have been closed during
+      the time it takes to send the connection to the child.
+    </p>
+    <h3 id="subprocess.signalcode"><code>subprocess.signalCode</code></h3>
+    <ul>
+      <li>{string|null}</li>
+    </ul>
+    <p>
+      The <code>subprocess.signalCode</code> property indicates the signal
+      received by the child process if any, else <code>null</code>.
+    </p>
+    <h3 id="subprocess.spawnargs"><code>subprocess.spawnargs</code></h3>
+    <ul>
+      <li>{Array}</li>
+    </ul>
+    <p>
+      The <code>subprocess.spawnargs</code> property represents the full list of
+      command-line arguments the child process was launched with.
+    </p>
+    <h3 id="subprocess.spawnfile"><code>subprocess.spawnfile</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>subprocess.spawnfile</code> property indicates the executable
+      file name of the child process that is launched.
+    </p>
+    <p>
+      For
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >, its value will be equal to
+      <a href="process.md#process_process_execpath"
+        ><code>process.execPath</code></a
+      >. For
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >, its value will be the name of the executable file. For
+      <a href="#child_process_child_process_exec_command_options_callback"
+        ><code>child_process.exec()</code></a
+      >, its value will be the name of the shell in which the child process is
+      launched.
+    </p>
+    <h3 id="subprocess.stderr"><code>subprocess.stderr</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li>{stream.Readable}</li>
+    </ul>
+    <p>
+      A <code>Readable Stream</code> that represents the child process’s
+      <code>stderr</code>.
+    </p>
+    <p>
+      If the child was spawned with <code>stdio[2]</code> set to anything other
+      than <code>'pipe'</code>, then this will be <code>null</code>.
+    </p>
+    <p>
+      <code>subprocess.stderr</code> is an alias for
+      <code>subprocess.stdio[2]</code>. Both properties will refer to the same
+      value.
+    </p>
+    <p>
+      The <code>subprocess.stderr</code> property can be <code>null</code> if
+      the child process could not be successfully spawned.
+    </p>
+    <h3 id="subprocess.stdin"><code>subprocess.stdin</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li>{stream.Writable}</li>
+    </ul>
+    <p>
+      A <code>Writable Stream</code> that represents the child process’s
+      <code>stdin</code>.
+    </p>
+    <p>
+      If a child process waits to read all of its input, the child will not
+      continue until this stream has been closed via <code>end()</code>.
+    </p>
+    <p>
+      If the child was spawned with <code>stdio[0]</code> set to anything other
+      than <code>'pipe'</code>, then this will be <code>null</code>.
+    </p>
+    <p>
+      <code>subprocess.stdin</code> is an alias for
+      <code>subprocess.stdio[0]</code>. Both properties will refer to the same
+      value.
+    </p>
+    <p>
+      The <code>subprocess.stdin</code> property can be
+      <code>undefined</code> if the child process could not be successfully
+      spawned.
+    </p>
+    <h3 id="subprocess.stdio"><code>subprocess.stdio</code></h3>
+    <!-- YAML
+added: v0.7.10
+-->
+    <ul>
+      <li>{Array}</li>
+    </ul>
+    <p>
+      A sparse array of pipes to the child process, corresponding with positions
+      in the
+      <a href="#child_process_options_stdio"><code>stdio</code></a> option
+      passed to
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      that have been set to the value <code>'pipe'</code>.
+      <code>subprocess.stdio[0]</code>, <code>subprocess.stdio[1]</code>, and
+      <code>subprocess.stdio[2]</code> are also available as
+      <code>subprocess.stdin</code>, <code>subprocess.stdout</code>, and
+      <code>subprocess.stderr</code>, respectively.
+    </p>
+    <p>
+      In the following example, only the child’s fd <code>1</code> (stdout) is
+      configured as a pipe, so only the parent’s
+      <code>subprocess.stdio[1]</code> is a stream, all other values in the
+      array are <code>null</code>.
+    </p>
+    <div class="sourceCode" id="cb31">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="kw">const</span> child_process <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-4" title="4"></a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="va">child_process</span>.<span class="at">spawn</span>(<span class="st">&#39;ls&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-6" title="6">  <span class="dt">stdio</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb31-7" title="7">    <span class="dv">0</span><span class="op">,</span> <span class="co">// Use parent&#39;s stdin for child.</span></a>
+<a class="sourceLine" id="cb31-8" title="8">    <span class="st">&#39;pipe&#39;</span><span class="op">,</span> <span class="co">// Pipe child&#39;s stdout to parent.</span></a>
+<a class="sourceLine" id="cb31-9" title="9">    <span class="va">fs</span>.<span class="at">openSync</span>(<span class="st">&#39;err.out&#39;</span><span class="op">,</span> <span class="st">&#39;w&#39;</span>)<span class="op">,</span> <span class="co">// Direct child&#39;s stderr to a file.</span></a>
+<a class="sourceLine" id="cb31-10" title="10">  ]</a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-12" title="12"></a>
+<a class="sourceLine" id="cb31-13" title="13"><span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">subprocess</span>.<span class="at">stdio</span>[<span class="dv">0</span>]<span class="op">,</span> <span class="kw">null</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-14" title="14"><span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">subprocess</span>.<span class="at">stdio</span>[<span class="dv">0</span>]<span class="op">,</span> <span class="va">subprocess</span>.<span class="at">stdin</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-15" title="15"></a>
+<a class="sourceLine" id="cb31-16" title="16"><span class="at">assert</span>(<span class="va">subprocess</span>.<span class="at">stdout</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-17" title="17"><span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">subprocess</span>.<span class="at">stdio</span>[<span class="dv">1</span>]<span class="op">,</span> <span class="va">subprocess</span>.<span class="at">stdout</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-18" title="18"></a>
+<a class="sourceLine" id="cb31-19" title="19"><span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">subprocess</span>.<span class="at">stdio</span>[<span class="dv">2</span>]<span class="op">,</span> <span class="kw">null</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-20" title="20"><span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">subprocess</span>.<span class="at">stdio</span>[<span class="dv">2</span>]<span class="op">,</span> <span class="va">subprocess</span>.<span class="at">stderr</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>subprocess.stdio</code> property can be
+      <code>undefined</code> if the child process could not be successfully
+      spawned.
+    </p>
+    <h3 id="subprocess.stdout"><code>subprocess.stdout</code></h3>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li>{stream.Readable}</li>
+    </ul>
+    <p>
+      A <code>Readable Stream</code> that represents the child process’s
+      <code>stdout</code>.
+    </p>
+    <p>
+      If the child was spawned with <code>stdio[1]</code> set to anything other
+      than <code>'pipe'</code>, then this will be <code>null</code>.
+    </p>
+    <p>
+      <code>subprocess.stdout</code> is an alias for
+      <code>subprocess.stdio[1]</code>. Both properties will refer to the same
+      value.
+    </p>
+    <div class="sourceCode" id="cb32">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-2" title="2"></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="st">&#39;ls&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-4" title="4"></a>
+<a class="sourceLine" id="cb32-5" title="5"><span class="va">subprocess</span>.<span class="va">stdout</span>.<span class="at">on</span>(<span class="st">&#39;data&#39;</span><span class="op">,</span> (data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb32-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Received chunk </span><span class="sc">${</span>data<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-7" title="7"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>subprocess.stdout</code> property can be <code>null</code> if
+      the child process could not be successfully spawned.
+    </p>
+    <h3 id="subprocess.unref"><code>subprocess.unref()</code></h3>
+    <!-- YAML
+added: v0.7.10
+-->
+    <p>
+      By default, the parent will wait for the detached child to exit. To
+      prevent the parent from waiting for a given <code>subprocess</code> to
+      exit, use the <code>subprocess.unref()</code> method. Doing so will cause
+      the parent’s event loop to not include the child in its reference count,
+      allowing the parent to exit independently of the child, unless there is an
+      established IPC channel between the child and the parent.
+    </p>
+    <div class="sourceCode" id="cb33">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> <span class="op">{</span> spawn <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="kw">const</span> subprocess <span class="op">=</span> <span class="at">spawn</span>(<span class="va">process</span>.<span class="at">argv</span>[<span class="dv">0</span>]<span class="op">,</span> [<span class="st">&#39;child_program.js&#39;</span>]<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-4" title="4">  <span class="dt">detached</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb33-5" title="5">  <span class="dt">stdio</span><span class="op">:</span> <span class="st">&#39;ignore&#39;</span></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-7" title="7"></a>
+<a class="sourceLine" id="cb33-8" title="8"><span class="va">subprocess</span>.<span class="at">unref</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="maxbuffer-and-unicode"><code>maxBuffer</code> and Unicode</h2>
+    <p>
+      The <code>maxBuffer</code> option specifies the largest number of bytes
+      allowed on <code>stdout</code> or <code>stderr</code>. If this value is
+      exceeded, then the child process is terminated. This impacts output that
+      includes multibyte character encodings such as UTF-8 or UTF-16. For
+      instance, <code>console.log('中文测试')</code> will send 13 UTF-8 encoded
+      bytes to <code>stdout</code> although there are only 4 characters.
+    </p>
+    <h2 id="shell-requirements">Shell requirements</h2>
+    <p>
+      The shell should understand the <code>-c</code> switch. If the shell is
+      <code>'cmd.exe'</code>, it should understand the
+      <code>/d /s /c</code> switches and command-line parsing should be
+      compatible.
+    </p>
+    <h2 id="default-windows-shell">Default Windows shell</h2>
+    <p>
+      Although Microsoft specifies <code>%COMSPEC%</code> must contain the path
+      to <code>'cmd.exe'</code> in the root environment, child processes are not
+      always subject to the same requirement. Thus, in
+      <code>child_process</code> functions where a shell can be spawned,
+      <code>'cmd.exe'</code> is used as a fallback if
+      <code>process.env.ComSpec</code> is unavailable.
+    </p>
+    <h2 id="advanced-serialization">Advanced serialization</h2>
+    <!-- YAML
+added:
+ - v13.2.0
+ - v12.16.0
+-->
+    <p>
+      Child processes support a serialization mechanism for IPC that is based on
+      the
+      <a href="v8.md#v8_serialization_api"
+        >serialization API of the <code>v8</code> module</a
+      >, based on the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm"
+        >HTML structured clone algorithm</a
+      >. This is generally more powerful and supports more built-in JavaScript
+      object types, such as <code>BigInt</code>, <code>Map</code> and
+      <code>Set</code>, <code>ArrayBuffer</code> and <code>TypedArray</code>,
+      <code>Buffer</code>, <code>Error</code>, <code>RegExp</code> etc.
+    </p>
+    <p>
+      However, this format is not a full superset of JSON, and e.g. properties
+      set on objects of such built-in types will not be passed on through the
+      serialization step. Additionally, performance may not be equivalent to
+      that of JSON, depending on the structure of the passed data. Therefore,
+      this feature requires opting in by setting the
+      <code>serialization</code> option to <code>'advanced'</code> when calling
+      <a href="#child_process_child_process_spawn_command_args_options"
+        ><code>child_process.spawn()</code></a
+      >
+      or
+      <a href="#child_process_child_process_fork_modulepath_args_options"
+        ><code>child_process.fork()</code></a
+      >.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>node-postmortem-support</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="postmortem-support">Postmortem support</h1>
+<p>Postmortem metadata are constants present in the final build which can be used by debuggers and other tools to navigate through internal structures of software when analyzing its memory (either on a running process or a core dump). Node.js provides this metadata in its builds for V8 and Node.js internal structures.</p>
+<h2 id="v8-postmortem-metadata">V8 postmortem metadata</h2>
+<p>V8 prefixes all postmortem constants with <code>v8dbg_</code>, and they allow inspection of objects on the heap as well as object properties and references. V8 generates those symbols with a script (<code>deps/v8/tools/gen-postmortem-metadata.py</code>), and Node.js always includes these constants in the final build.</p>
+<h2 id="node.js-debug-symbols">Node.js debug symbols</h2>
+<p>Node.js prefixes all postmortem constants with <code>nodedbg_</code>, and they complement V8 constants by providing ways to inspect Node.js-specific structures, like <code>node::Environment</code>, <code>node::BaseObject</code> and its descendants, classes from <code>src/utils.h</code> and others. Those constants are declared in <code>src/node_postmortem_metadata.cc</code>, and most of them are calculated at compile time.</p>
+<h3 id="calculating-offset-of-class-members">Calculating offset of class members</h3>
+<p>Node.js constants referring to the offset of class members in memory are calculated at compile time. Because of that, those class members must be at a fixed offset from the start of the class. That’s not a problem in most cases, but it also means that those members should always come after any templated member on the class definition.</p>
+<p>For example, if we want to add a constant with the offset for <code>ReqWrap::req_wrap_queue_</code>, it should be defined after <code>ReqWrap::req_</code>, because <code>sizeof(req_)</code> depends on the type of T, which means the class definition should be like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">template</span> &lt;<span class="kw">typename</span> T&gt;</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">class</span> ReqWrap : <span class="kw">public</span> AsyncWrap {</a>
+<a class="sourceLine" id="cb1-3" title="3"> <span class="kw">private</span>:</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="co">// req_wrap_queue_ comes before any templated member, which places it in a</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="co">// fixed offset from the start of the class</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  ListNode&lt;ReqWrap&gt; <span class="va">req_wrap_queue_</span>;</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">  T <span class="va">req_</span>;</a>
+<a class="sourceLine" id="cb1-9" title="9">};</a></code></pre></div>
+<p>instead of:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">template</span> &lt;<span class="kw">typename</span> T&gt;</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">class</span> ReqWrap : <span class="kw">public</span> AsyncWrap {</a>
+<a class="sourceLine" id="cb2-3" title="3"> <span class="kw">private</span>:</a>
+<a class="sourceLine" id="cb2-4" title="4">  T <span class="va">req_</span>;</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="co">// req_wrap_queue_ comes after a templated member, which means it won&#39;t be in</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="co">// a fixed offset from the start of the class</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  ListNode&lt;ReqWrap&gt; <span class="va">req_wrap_queue_</span>;</a>
+<a class="sourceLine" id="cb2-9" title="9">};</a></code></pre></div>
+<p>There are also tests on <code>test/cctest/test_node_postmortem_metadata.cc</code> to make sure all Node.js postmortem metadata are calculated correctly.</p>
+<h2 id="tools-and-references">Tools and references</h2>
+<ul>
+<li><a href="https://github.com/nodejs/llnode">llnode</a>: LLDB plugin</li>
+<li><a href="https://github.com/joyent/mdb_v8"><code>mdb_v8</code></a>: mdb plugin</li>
+<li><a href="https://github.com/nodejs/post-mortem">nodejs/post-mortem</a>: Node.js post-mortem working group</li>
+</ul>
+</body>
+</html>

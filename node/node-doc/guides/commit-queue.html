@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>commit-queue</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="commit-queue">Commit queue</h1>
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<p><em>tl;dr: You can land pull requests by adding the <code>commit-queue</code> label to it.</em></p>
+<p>Commit Queue is an experimental feature for the project which simplifies the landing process by automating it via GitHub Actions. With it, collaborators can land pull requests by adding the <code>commit-queue</code> label to a PR. All checks will run via node-core-utils, and if the pull request is ready to land, the Action will rebase it and push to master.</p>
+<p>This document gives an overview of how the Commit Queue works, as well as implementation details, reasoning for design choices, and current limitations.</p>
+<h2 id="overview">Overview</h2>
+<p>From a high-level, the Commit Queue works as follow:</p>
+<ol type="1">
+<li>Collaborators will add <code>commit-queue</code> label to pull requests ready to land</li>
+<li>Every five minutes the queue will do the following for each pull request with the label:
+<ol type="1">
+<li>Check if the PR also has a <code>request-ci</code> label (if it has, skip this PR since it’s pending a CI run)</li>
+<li>Check if the last Jenkins CI is finished running (if it is not, skip this PR)</li>
+<li>Remove the <code>commit-queue</code> label</li>
+<li>Run <code>git node land &lt;pr&gt;</code></li>
+<li>If it fails:
+<ol type="1">
+<li>Abort <code>git node land</code> session</li>
+<li>Add <code>commit-queue-failed</code> label to the PR</li>
+<li>Leave a comment on the PR with the output from <code>git node land</code></li>
+<li>Skip next steps, go to next PR in the queue</li>
+</ol></li>
+<li>If it succeeds:
+<ol type="1">
+<li>Push the changes to nodejs/node</li>
+<li>Leave a comment on the PR with <code>Landed in ...</code></li>
+<li>Close the PR</li>
+<li>Go to next PR in the queue</li>
+</ol></li>
+</ol></li>
+</ol>
+<h2 id="current-limitations">Current limitations</h2>
+<p>The Commit Queue feature is still in early stages, and as such it might not work for more complex pull requests. These are the currently known limitations of the commit queue:</p>
+<ol type="1">
+<li>All commits in a pull request must either be following commit message guidelines or be a valid <a href="https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---fixupltcommitgt"><code>fixup!</code></a> commit that will be correctly handled by the <a href="https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autosquash"><code>--autosquash</code></a> option</li>
+<li>A CI must’ve ran and succeeded since the last change on the PR</li>
+<li>A collaborator must have approved the PR since the last change</li>
+<li>Only Jenkins CI and GitHub Actions are checked (V8 CI and CITGM are ignored)</li>
+</ol>
+<h2 id="implementation">Implementation</h2>
+<p>The <a href="../../.github/workflows/commit-queue.yml">action</a> will run on scheduler events every five minutes. Five minutes is the smallest number accepted by the scheduler. The scheduler is not guaranteed to run every five minutes, it might take longer between runs.</p>
+<p>Using the scheduler is preferable over using pull_request_target for two reasons:</p>
+<ol type="1">
+<li>if two Commit Queue Actions execution overlap, there’s a high-risk that the last one to finish will fail because the local branch will be out of sync with the remote after the first Action pushes. <code>issue_comment</code> event has the same limitation.</li>
+<li><code>pull_request_target</code> will only run if the Action exists on the base commit of a pull request, and it will run the Action version present on that commit, meaning we wouldn’t be able to use it for already opened PRs without rebasing them first.</li>
+</ol>
+<p><code>node-core-utils</code> is configured with a personal token and a Jenkins token from <span class="citation" data-cites="nodejs-github-bot">[@nodejs-github-bot]</span>(https://github.com/nodejs/github-bot). <code>octokit/graphql-action</code> is used to fetch all pull requests with the <code>commit-queue</code> label. The output is a JSON payload, so <code>jq</code> is used to turn that into a list of PR ids we can pass as arguments to <a href="../../tools/actions/commit-queue.sh"><code>commit-queue.sh</code></a>.</p>
+<blockquote>
+<p>The personal token only needs permission for public repositories and to read profiles, we can use the GITHUB_TOKEN for write operations. Jenkins token is required to check CI status.</p>
+</blockquote>
+<p><code>commit-queue.sh</code> receives the following positional arguments:</p>
+<ol type="1">
+<li>The repository owner</li>
+<li>The repository name</li>
+<li>The Action GITHUB_TOKEN</li>
+<li>Every positional argument starting at this one will be a pull request ID of a pull request with commit-queue set.</li>
+</ol>
+<p>The script will iterate over the pull requests. <code>ncu-ci</code> is used to check if the last CI is still pending, and calls to the GitHub API are used to check if the PR is waiting for CI to start (<code>request-ci</code> label). The PR is skipped if CI is pending. No other CI validation is done here since <code>git node land</code> will fail if the last CI failed.</p>
+<p>The script removes the <code>commit-queue</code> label. It then runs <code>git node land</code>, forwarding stdout and stderr to a file. If any errors happen, <code>git node land --abort</code> is run, and then a <code>commit-queue-failed</code> label is added to the PR, as well as a comment with the output of <code>git node land</code>.</p>
+<p>If no errors happen during <code>git node land</code>, the script will use the <code>GITHUB_TOKEN</code> to push the changes to <code>master</code>, and then will leave a <code>Landed in ...</code> comment in the PR, and then will close it. Iteration continues until all PRs have done the steps above.</p>
+<h2 id="reverting-broken-commits">Reverting broken commits</h2>
+<p>Reverting broken commits is done manually by collaborators, just like when commits are landed manually via <code>git node land</code>. An easy way to revert is a good feature for the project, but is not explicitly required for the Commit Queue to work because the Action lands PRs just like collaborators do today. If once we start using the Commit Queue we notice that the number of required reverts increases drastically, we can pause the queue until a Revert Queue is implemented, but until then we can enable the Commit Queue and then work on a Revert Queue as a follow-up.</p>
+</body>
+</html>

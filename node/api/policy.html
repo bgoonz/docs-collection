@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>policy</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="policies">Policies</h1>
+    <!--introduced_in=v11.8.0-->
+    <!-- type=misc -->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <!-- name=policy -->
+    <p>
+      Node.js contains experimental support for creating policies on loading
+      code.
+    </p>
+    <p>
+      Policies are a security feature intended to allow guarantees about what
+      code Node.js is able to load. The use of policies assumes safe practices
+      for the policy files such as ensuring that policy files cannot be
+      overwritten by the Node.js application by using file permissions.
+    </p>
+    <p>
+      A best practice would be to ensure that the policy manifest is read-only
+      for the running Node.js application and that the file cannot be changed by
+      the running Node.js application in any way. A typical setup would be to
+      create the policy file as a different user id than the one running Node.js
+      and granting read permissions to the user id running Node.js.
+    </p>
+    <h2 id="enabling">Enabling</h2>
+    <!-- type=misc -->
+    <p>
+      The <code>--experimental-policy</code> flag can be used to enable features
+      for policies when loading modules.
+    </p>
+    <p>
+      Once this has been set, all modules must conform to a policy manifest file
+      passed to the flag:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">node</span> --experimental-policy=policy.json app.js</a></code></pre>
+    </div>
+    <p>
+      The policy manifest will be used to enforce constraints on code loaded by
+      Node.js.
+    </p>
+    <p>
+      To mitigate tampering with policy files on disk, an integrity for the
+      policy file itself may be provided via <code>--policy-integrity</code>.
+      This allows running <code>node</code> and asserting the policy file
+      contents even if the file is changed on disk.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">node</span> --experimental-policy=policy.json --policy-integrity=<span class="st">&quot;sha384-SggXRQHwCG8g+DktYYzxkXRIkTiEYWBHqev0xnpCxYlqMBufKZHAHQM3/boDaI/0&quot;</span> app.js</a></code></pre>
+    </div>
+    <h2 id="features">Features</h2>
+    <h3 id="error-behavior">Error behavior</h3>
+    <p>
+      When a policy check fails, Node.js by default will throw an error. It is
+      possible to change the error behavior to one of a few possibilities by
+      defining an “onerror” field in a policy manifest. The following values are
+      available to change the behavior:
+    </p>
+    <ul>
+      <li>
+        <code>"exit"</code>: will exit the process immediately. No cleanup code
+        will be allowed to run.
+      </li>
+      <li>
+        <code>"log"</code>: will log the error at the site of the failure.
+      </li>
+      <li>
+        <code>"throw"</code>: will throw a JS error at the site of the failure.
+        This is the default.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;onerror&quot;</span><span class="fu">:</span> <span class="st">&quot;log&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="dt">&quot;./app/checked.js&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="dt">&quot;integrity&quot;</span><span class="fu">:</span> <span class="st">&quot;sha384-SggXRQHwCG8g+DktYYzxkXRIkTiEYWBHqev0xnpCxYlqMBufKZHAHQM3/boDaI/0&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="integrity-checks">Integrity checks</h3>
+    <p>
+      Policy files must use integrity checks with Subresource Integrity strings
+      compatible with the browser
+      <a href="https://www.w3.org/TR/SRI/#the-integrity-attribute"
+        >integrity attribute</a
+      >
+      associated with absolute URLs.
+    </p>
+    <p>
+      When using <code>require()</code> all resources involved in loading are
+      checked for integrity if a policy manifest has been specified. If a
+      resource does not match the integrity listed in the manifest, an error
+      will be thrown.
+    </p>
+    <p>
+      An example policy file that would allow loading a file
+      <code>checked.js</code>:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;./app/checked.js&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      <span class="dt">&quot;integrity&quot;</span><span class="fu">:</span> <span class="st">&quot;sha384-SggXRQHwCG8g+DktYYzxkXRIkTiEYWBHqev0xnpCxYlqMBufKZHAHQM3/boDaI/0&quot;</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Each resource listed in the policy manifest can be of one the following
+      formats to determine its location:
+    </p>
+    <ol type="1">
+      <li>
+        A
+        <a href="https://url.spec.whatwg.org/#relative-url-with-fragment-string"
+          >relative-URL string</a
+        >
+        to a resource from the manifest such as <code>./resource.js</code>,
+        <code>../resource.js</code>, or <code>/resource.js</code>.
+      </li>
+      <li>
+        A complete URL string to a resource such as
+        <code>file:///resource.js</code>.
+      </li>
+    </ol>
+    <p>
+      When loading resources the entire URL must match including search
+      parameters and hash fragment. <code>./a.js?b</code> will not be used when
+      attempting to load <code>./a.js</code> and vice versa.
+    </p>
+    <p>
+      To generate integrity strings, a script such as
+      <code
+        >printf "sha384-$(cat checked.js | openssl dgst -sha384 -binary |
+        base64)"</code
+      >
+      can be used.
+    </p>
+    <p>
+      Integrity can be specified as the boolean value <code>true</code> to
+      accept any body for the resource which can be useful for local
+      development. It is not recommended in production since it would allow
+      unexpected alteration of resources to be considered valid.
+    </p>
+    <h3 id="dependency-redirection">Dependency redirection</h3>
+    <p>
+      An application may need to ship patched versions of modules or to prevent
+      modules from allowing all modules access to all other modules. Redirection
+      can be used by intercepting attempts to load the modules wishing to be
+      replaced.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">&quot;./app/checked.js&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">      <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">        <span class="dt">&quot;fs&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">        <span class="dt">&quot;os&quot;</span><span class="fu">:</span> <span class="st">&quot;./app/node_modules/alt-os&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="dt">&quot;http&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;import&quot;</span><span class="fu">:</span> <span class="kw">true</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-8" title="8">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The dependencies are keyed by the requested specifier string and have
+      values of either <code>true</code>, <code>null</code>, a string pointing
+      to a module to be resolved, or a conditions object.
+    </p>
+    <p>
+      The specifier string does not perform any searching and must match exactly
+      what is provided to the <code>require()</code> or <code>import</code>.
+      Therefore, multiple specifiers may be needed in the policy if it uses
+      multiple different strings to point to the same module (such as excluding
+      the extension).
+    </p>
+    <p>
+      If the value of the redirection is <code>true</code> the default searching
+      algorithms are used to find the module.
+    </p>
+    <p>
+      If the value of the redirection is a string, it is resolved relative to
+      the manifest and then immediately used without searching.
+    </p>
+    <p>
+      Any specifier string for which resolution is attempted and that is not
+      listed in the dependencies results in an error according to the policy.
+    </p>
+    <p>
+      Redirection does not prevent access to APIs through means such as direct
+      access to <code>require.cache</code> or through
+      <code>module.constructor</code> which allow access to loading modules.
+      Policy redirection only affects specifiers to <code>require()</code> and
+      <code>import</code>. Other means, such as to prevent undesired access to
+      APIs through variables, are necessary to lock down that path of loading
+      modules.
+    </p>
+    <p>
+      A boolean value of <code>true</code> for the dependencies map can be
+      specified to allow a module to load any specifier without redirection.
+      This can be useful for local development and may have some valid usage in
+      production, but should be used only with care after auditing a module to
+      ensure its behavior is valid.
+    </p>
+    <p>
+      Similar to <code>"exports"</code> in <code>package.json</code>,
+      dependencies can also be specified to be objects containing conditions
+      which branch how dependencies are loaded. In the preceding example,
+      <code>"http"</code> is allowed when the <code>"import"</code> condition is
+      part of loading it.
+    </p>
+    <p>
+      A value of <code>null</code> for the resolved value causes the resolution
+      to fail. This can be used to ensure some kinds of dynamic access are
+      explicitly prevented.
+    </p>
+    <p>
+      Unknown values for the resolved module location cause failures but are not
+      guaranteed to be forward compatible.
+    </p>
+    <h4 id="example-patched-dependency">Example: Patched dependency</h4>
+    <p>
+      Redirected dependencies can provide attenuated or modified functionality
+      as fits the application. For example, log data about timing of function
+      durations by wrapping the original:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> original <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fn&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="kw">function</span> <span class="at">fn</span>(...<span class="at">args</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="va">console</span>.<span class="at">time</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="cf">return</span> <span class="kw">new</span>.<span class="at">target</span> <span class="op">?</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="va">Reflect</span>.<span class="at">construct</span>(original<span class="op">,</span> args) :</a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="va">Reflect</span>.<span class="at">apply</span>(original<span class="op">,</span> <span class="kw">this</span><span class="op">,</span> args)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="op">}</span> <span class="cf">finally</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="va">console</span>.<span class="at">timeEnd</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="op">};</span></a></code></pre>
+    </div>
+    <h3 id="scopes">Scopes</h3>
+    <p>
+      Use the <code>"scopes"</code> field of a manifest to set configuration for
+      many resources at once. The <code>"scopes"</code> field works by matching
+      resources by their segments. If a scope or resource includes
+      <code>"cascade": true</code>, unknown specifiers will be searched for in
+      their containing scope. The containing scope for cascading is found by
+      recursively reducing the resource URL by removing segments for
+      <a href="https://url.spec.whatwg.org/#special-scheme">special schemes</a>,
+      keeping trailing <code>"/"</code> suffixes, and removing the query and
+      hash fragment. This leads to the eventual reduction of the URL to its
+      origin. If the URL is non-special the scope will be located by the URL’s
+      origin. If no scope is found for the origin or in the case of opaque
+      origins, a protocol string can be used as a scope.
+    </p>
+    <p>
+      Note, <code>blob:</code> URLs adopt their origin from the path they
+      contain, and so a scope of <code>"blob:https://nodejs.org"</code> will
+      have no effect since no URL can have an origin of
+      <code>blob:https://nodejs.org</code>; URLs starting with
+      <code>blob:https://nodejs.org/</code> will use
+      <code>https://nodejs.org</code> for its origin and thus
+      <code>https:</code> for its protocol scope. For opaque origin
+      <code>blob:</code> URLs they will have <code>blob:</code> for their
+      protocol scope since they do not adopt origins.
+    </p>
+    <h4 id="integrity-using-scopes">Integrity using scopes</h4>
+    <p>
+      Setting an integrity to <code>true</code> on a scope will set the
+      integrity for any resource not found in the manifest to <code>true</code>.
+    </p>
+    <p>
+      Setting an integrity to <code>null</code> on a scope will set the
+      integrity for any resource not found in the manifest to fail matching.
+    </p>
+    <p>
+      Not including an integrity is the same as setting the integrity to
+      <code>null</code>.
+    </p>
+    <p>
+      <code>"cascade"</code> for integrity checks will be ignored if
+      <code>"integrity"</code> is explicitly set.
+    </p>
+    <p>The following example allows loading any file:</p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;scopes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="dt">&quot;file:&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">      <span class="dt">&quot;integrity&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h4 id="dependency-redirection-using-scopes">
+      Dependency redirection using scopes
+    </h4>
+    <p>
+      The following example, would allow access to <code>fs</code> for all
+      resources within <code>./app/</code>:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">&quot;./app/checked.js&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">      <span class="dt">&quot;cascade&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">      <span class="dt">&quot;integrity&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="dt">&quot;scopes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="dt">&quot;./app/&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">      <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="dt">&quot;fs&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The following example, would allow access to <code>fs</code> for all
+      <code>data:</code> resources:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="dt">&quot;data:text/javascript,import(&#39;fs&#39;);&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      <span class="dt">&quot;cascade&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-5" title="5">      <span class="dt">&quot;integrity&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="dt">&quot;scopes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="dt">&quot;data:&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-10" title="10">      <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-11" title="11">        <span class="dt">&quot;fs&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb9-12" title="12">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-13" title="13">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-14" title="14">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="fu">}</span></a></code></pre>
+    </div>
+  </body>
+</html>

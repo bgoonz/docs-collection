@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>doc-style-guide</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="documentation-style-guide">Documentation style guide</h1>
+<p>This style guide helps us create organized and easy-to-read documentation. It provides guidelines for organization, spelling, formatting, and more.</p>
+<p>These are guidelines rather than strict rules. Content is more important than formatting. You do not need to learn the entire style guide before contributing to documentation. Someone can always edit your material later to conform with this guide.</p>
+<ul>
+<li>Documentation is in markdown files with names formatted as <code>lowercase-with-dashes.md</code>.
+<ul>
+<li>Use an underscore in the filename only if the underscore is part of the topic name (e.g., <code>child_process</code>).</li>
+<li>Some files, such as top-level markdown files, are exceptions.</li>
+</ul></li>
+<li>Documents should be word-wrapped at 80 characters.</li>
+<li><code>.editorconfig</code> describes the preferred formatting.
+<ul>
+<li>A <a href="https://editorconfig.org/#download">plugin</a> is available for some editors to apply these rules.</li>
+</ul></li>
+<li>Check changes to documentation with <code>make test-doc -j</code> or <code>vcbuild test-doc</code>.</li>
+<li><a href="https://docs.microsoft.com/en-us/style-guide/word-choice/use-us-spelling-avoid-non-english-words">Use US spelling</a>.</li>
+<li><a href="https://docs.microsoft.com/en-us/style-guide/punctuation/commas">Use serial commas</a>.</li>
+<li>Avoid first-person pronouns (<em>I</em>, <em>we</em>).
+<ul>
+<li>Exception: <em>we recommend foo</em> is preferable to <em>foo is recommended</em>.</li>
+</ul></li>
+<li>Use gender-neutral pronouns and gender-neutral plural nouns.
+<ul>
+<li>OK: <em>they</em>, <em>their</em>, <em>them</em>, <em>folks</em>, <em>people</em>, <em>developers</em></li>
+<li>NOT OK: <em>his</em>, <em>hers</em>, <em>him</em>, <em>her</em>, <em>guys</em>, <em>dudes</em></li>
+</ul></li>
+<li>When combining wrapping elements (parentheses and quotes), place terminal punctuation:
+<ul>
+<li>Inside the wrapping element if the wrapping element contains a complete clause.</li>
+<li>Outside of the wrapping element if the wrapping element contains only a fragment of a clause.</li>
+</ul></li>
+<li>Documents must start with a level-one heading.</li>
+<li>Prefer affixing links (<code>[a link][]</code>) to inlining links (<code>[a link](http://example.com)</code>).</li>
+<li>When documenting APIs, update the YAML comment associated with the API as appropriate. This is especially true when introducing or deprecating an API.</li>
+<li>For code blocks:
+<ul>
+<li>Use <a href="https://github.com/highlightjs/highlight.js/blob/HEAD/SUPPORTED_LANGUAGES.md">language</a>-aware fences. (<code>```js</code>)</li>
+<li><p>For the <a href="https://github.github.com/gfm/#info-string">info string</a>, use one of the following.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Meaning</th>
+<th>Info string</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bash</td>
+<td><code>bash</code></td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td><code>c</code></td>
+</tr>
+<tr class="odd">
+<td>C++</td>
+<td><code>cpp</code></td>
+</tr>
+<tr class="even">
+<td>CoffeeScript</td>
+<td><code>coffee</code></td>
+</tr>
+<tr class="odd">
+<td>Diff</td>
+<td><code>diff</code></td>
+</tr>
+<tr class="even">
+<td>HTTP</td>
+<td><code>http</code></td>
+</tr>
+<tr class="odd">
+<td>JavaScript</td>
+<td><code>js</code></td>
+</tr>
+<tr class="even">
+<td>JSON</td>
+<td><code>json</code></td>
+</tr>
+<tr class="odd">
+<td>Markdown</td>
+<td><code>markdown</code></td>
+</tr>
+<tr class="even">
+<td>Plaintext</td>
+<td><code>text</code></td>
+</tr>
+<tr class="odd">
+<td>Powershell</td>
+<td><code>powershell</code></td>
+</tr>
+<tr class="even">
+<td>R</td>
+<td><code>r</code></td>
+</tr>
+<tr class="odd">
+<td>Shell Session</td>
+<td><code>console</code></td>
+</tr>
+</tbody>
+</table>
+<p>If one of your language-aware fences needs an info string that is not already on this list, you may use <code>text</code> until the grammar gets added to <a href="https://github.com/nodejs/remark-preset-lint-node"><code>remark-preset-lint-node</code></a>.</p></li>
+<li>Code need not be complete. Treat code blocks as an illustration or aid to your point, not as complete running programs. If a complete running program is necessary, include it as an asset in <code>assets/code-examples</code> and link to it.</li>
+</ul></li>
+<li>When using underscores, asterisks, and backticks, please use backslash-escaping: <code>\_</code>, <code>\*</code>, and <code>\`</code>.</li>
+<li>Constructors should use PascalCase.</li>
+<li>Instances should use camelCase.</li>
+<li>Denote methods with parentheses: <code>socket.end()</code> instead of <code>socket.end</code>.</li>
+<li>Function arguments or object properties should use the following format:
+<ul>
+<li><code>* `name` {type|type2} Optional description. **Default:** `value`.</code> <!--lint disable maximum-line-length remark-lint--></li>
+<li>For example: <code>* <code>byteOffset</code> {integer} Index of first byte to expose. <strong>Default:</strong> <code>0</code>.</code> <!--lint enable maximum-line-length remark-lint--></li>
+<li>The <code>type</code> should refer to a Node.js type or a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Data_structures_and_types">JavaScript type</a>.</li>
+</ul></li>
+<li>Function returns should use the following format:
+<ul>
+<li><code>* Returns: {type|type2} Optional description.</code></li>
+<li>E.g. <code>* Returns: {AsyncHook} A reference to <code>asyncHook</code>.</code></li>
+</ul></li>
+<li>Use official styling for capitalization in products and projects.
+<ul>
+<li>OK: JavaScript, Google’s V8 <!--lint disable prohibited-strings remark-lint--></li>
+<li>NOT OK: Javascript, Google’s v8</li>
+</ul></li>
+<li>Use <em>Node.js</em> and not <em>Node</em>, <em>NodeJS</em>, or similar variants. <!-- lint enable prohibited-strings remark-lint-->
+<ul>
+<li>When referring to the executable, <em><code>node</code></em> is acceptable.</li>
+</ul></li>
+<li><a href="https://docs.microsoft.com/en-us/style-guide/word-choice/use-simple-words-concise-sentences">Be direct</a>. <!-- lint disable prohibited-strings remark-lint--></li>
+<li>When referring to a version of Node.js in prose, use <em>Node.js</em> and the version number. Do not prefix the version number with <em>v</em> in prose. This is to avoid confusion about whether <em>v8</em> refers to Node.js 8.x or the V8 JavaScript engine. <!-- lint enable prohibited-strings remark-lint-->
+<ul>
+<li>OK: <em>Node.js 14.x</em>, <em>Node.js 14.3.1</em></li>
+<li>NOT OK: <em>Node.js v14</em></li>
+</ul></li>
+<li><a href="https://docs.microsoft.com/en-us/style-guide/scannable-content/headings#formatting-headings">Use sentence-style capitalization for headings</a>.</li>
+</ul>
+<p>See also API documentation structure overview in <a href="../../tools/doc/README.md">doctools README</a>.</p>
+<p>For topics not covered here, refer to the <a href="https://docs.microsoft.com/en-us/style-guide/welcome/">Microsoft Writing Style Guide</a>.</p>
+</body>
+</html>

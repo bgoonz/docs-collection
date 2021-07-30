@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>perf_hooks</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="performance-measurement-apis">Performance measurement APIs</h1>
+    <!--introduced_in=v8.5.0-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- source_link=lib/perf_hooks.js -->
+    <p>
+      This module provides an implementation of a subset of the W3C
+      <a href="https://w3c.github.io/perf-timing-primer/"
+        >Web Performance APIs</a
+      >
+      as well as additional APIs for Node.js-specific performance measurements.
+    </p>
+    <p>
+      Node.js supports the following
+      <a href="https://w3c.github.io/perf-timing-primer/"
+        >Web Performance APIs</a
+      >:
+    </p>
+    <ul>
+      <li>
+        <a href="https://www.w3.org/TR/hr-time-2">High Resolution Time</a>
+      </li>
+      <li>
+        <a href="https://w3c.github.io/performance-timeline/"
+          >Performance Timeline</a
+        >
+      </li>
+      <li><a href="https://www.w3.org/TR/user-timing/">User Timing</a></li>
+    </ul>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> <span class="op">{</span> PerformanceObserver<span class="op">,</span> performance <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((items) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">items</span>.<span class="at">getEntries</span>()[<span class="dv">0</span>].<span class="at">duration</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="va">performance</span>.<span class="at">clearMarks</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;measure&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="va">performance</span>.<span class="at">measure</span>(<span class="st">&#39;Start to Now&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;A&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="at">doSomeLongRunningProcess</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="va">performance</span>.<span class="at">measure</span>(<span class="st">&#39;A to Now&#39;</span><span class="op">,</span> <span class="st">&#39;A&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;B&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="va">performance</span>.<span class="at">measure</span>(<span class="st">&#39;A to B&#39;</span><span class="op">,</span> <span class="st">&#39;A&#39;</span><span class="op">,</span> <span class="st">&#39;B&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="perf_hooks.performance"><code>perf_hooks.performance</code></h2>
+    <!-- YAML
+added: v8.5.0
+-->
+    <p>
+      An object that can be used to collect performance metrics from the current
+      Node.js instance. It is similar to
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/API/Window/performance"
+        ><code>window.performance</code></a
+      >
+      in browsers.
+    </p>
+    <h3 id="performance.clearmarksname">
+      <code>performance.clearMarks([name])</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li><code>name</code> {string}</li>
+    </ul>
+    <p>
+      If <code>name</code> is not provided, removes all
+      <code>PerformanceMark</code> objects from the Performance Timeline. If
+      <code>name</code> is provided, removes only the named mark.
+    </p>
+    <h3 id="performance.eventlooputilizationutilization1-utilization2">
+      <code
+        >performance.eventLoopUtilization([utilization1[, utilization2]])</code
+      >
+    </h3>
+    <!-- YAML
+added:
+ - v14.10.0
+ - v12.19.0
+-->
+    <ul>
+      <li>
+        <code>utilization1</code> {Object} The result of a previous call to
+        <code>eventLoopUtilization()</code>.
+      </li>
+      <li>
+        <code>utilization2</code> {Object} The result of a previous call to
+        <code>eventLoopUtilization()</code> prior to <code>utilization1</code>.
+      </li>
+      <li>
+        Returns {Object}
+        <ul>
+          <li><code>idle</code> {number}</li>
+          <li><code>active</code> {number}</li>
+          <li><code>utilization</code> {number}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      The <code>eventLoopUtilization()</code> method returns an object that
+      contains the cumulative duration of time the event loop has been both idle
+      and active as a high resolution milliseconds timer. The
+      <code>utilization</code> value is the calculated Event Loop Utilization
+      (ELU).
+    </p>
+    <p>
+      If bootstrapping has not yet finished on the main thread the properties
+      have the value of <code>0</code>. The ELU is immediately available on
+      <a href="worker_threads.md#worker_threads_worker_threads"
+        >Worker threads</a
+      >
+      since bootstrap happens within the event loop.
+    </p>
+    <p>
+      Both <code>utilization1</code> and <code>utilization2</code> are optional
+      parameters.
+    </p>
+    <p>
+      If <code>utilization1</code> is passed, then the delta between the current
+      call’s <code>active</code> and <code>idle</code> times, as well as the
+      corresponding <code>utilization</code> value are calculated and returned
+      (similar to
+      <a href="process.md#process_process_hrtime_time"
+        ><code>process.hrtime()</code></a
+      >).
+    </p>
+    <p>
+      If <code>utilization1</code> and <code>utilization2</code> are both
+      passed, then the delta is calculated between the two arguments. This is a
+      convenience option because, unlike
+      <a href="process.md#process_process_hrtime_time"
+        ><code>process.hrtime()</code></a
+      >, calculating the ELU is more complex than a single subtraction.
+    </p>
+    <p>
+      ELU is similar to CPU utilization, except that it only measures event loop
+      statistics and not CPU usage. It represents the percentage of time the
+      event loop has spent outside the event loop’s event provider
+      (e.g. <code>epoll_wait</code>). No other CPU idle time is taken into
+      consideration. The following is an example of how a mostly idle process
+      will have a high ELU.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> <span class="op">{</span> eventLoopUtilization <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>).<span class="at">performance</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> <span class="op">{</span> spawnSync <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;child_process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="at">setImmediate</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">const</span> elu <span class="op">=</span> <span class="at">eventLoopUtilization</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="at">spawnSync</span>(<span class="st">&#39;sleep&#39;</span><span class="op">,</span> [<span class="st">&#39;5&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(<span class="at">eventLoopUtilization</span>(elu).<span class="at">utilization</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Although the CPU is mostly idle while running this script, the value of
+      <code>utilization</code> is <code>1</code>. This is because the call to
+      <a
+        href="child_process.md#child_process_child_process_spawnsync_command_args_options"
+        ><code>child_process.spawnSync()</code></a
+      >
+      blocks the event loop from proceeding.
+    </p>
+    <p>
+      Passing in a user-defined object instead of the result of a previous call
+      to <code>eventLoopUtilization()</code> will lead to undefined behavior.
+      The return values are not guaranteed to reflect any correct state of the
+      event loop.
+    </p>
+    <h3 id="performance.markname-options">
+      <code>performance.mark([name[, options]])</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to the User Timing Level 3 specification.
+-->
+    <ul>
+      <li><code>name</code> {string}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>detail</code> {any} Additional optional detail to include with
+            the mark.
+          </li>
+          <li>
+            <code>startTime</code> {number} An optional timestamp to be used as
+            the mark time. <strong>Defaults</strong>:
+            <code>performance.now()</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Creates a new <code>PerformanceMark</code> entry in the Performance
+      Timeline. A <code>PerformanceMark</code> is a subclass of
+      <code>PerformanceEntry</code> whose
+      <code>performanceEntry.entryType</code> is always <code>'mark'</code>, and
+      whose <code>performanceEntry.duration</code> is always <code>0</code>.
+      Performance marks are used to mark specific significant moments in the
+      Performance Timeline.
+    </p>
+    <h3 id="performance.measurename-startmarkoroptions-endmark">
+      <code>performance.measure(name[, startMarkOrOptions[, endMark]])</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to the User Timing Level 3 specification.
+  - version:
+      - v13.13.0
+      - v12.16.3
+    pr-url: https://github.com/nodejs/node/pull/32651
+    description: Make `startMark` and `endMark` parameters optional.
+-->
+    <ul>
+      <li><code>name</code> {string}</li>
+      <li>
+        <code>startMarkOrOptions</code> {string|Object} Optional.
+        <ul>
+          <li>
+            <code>detail</code> {any} Additional optional detail to include with
+            the measure.
+          </li>
+          <li>
+            <code>duration</code> {number} Duration between start and end times.
+          </li>
+          <li>
+            <code>end</code> {number|string} Timestamp to be used as the end
+            time, or a string identifying a previously recorded mark.
+          </li>
+          <li>
+            <code>start</code> {number|string} Timestamp to be used as the start
+            time, or a string identifying a previously recorded mark.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>endMark</code> {string} Optional. Must be omitted if
+        <code>startMarkOrOptions</code> is an {Object}.
+      </li>
+    </ul>
+    <p>
+      Creates a new <code>PerformanceMeasure</code> entry in the Performance
+      Timeline. A <code>PerformanceMeasure</code> is a subclass of
+      <code>PerformanceEntry</code> whose
+      <code>performanceEntry.entryType</code> is always <code>'measure'</code>,
+      and whose <code>performanceEntry.duration</code> measures the number of
+      milliseconds elapsed since <code>startMark</code> and
+      <code>endMark</code>.
+    </p>
+    <p>
+      The <code>startMark</code> argument may identify any <em>existing</em>
+      <code>PerformanceMark</code> in the Performance Timeline, or
+      <em>may</em> identify any of the timestamp properties provided by the
+      <code>PerformanceNodeTiming</code> class. If the named
+      <code>startMark</code> does not exist, an error is thrown.
+    </p>
+    <p>
+      The optional <code>endMark</code> argument must identify any
+      <em>existing</em> <code>PerformanceMark</code> in the Performance Timeline
+      or any of the timestamp properties provided by the
+      <code>PerformanceNodeTiming</code> class. <code>endMark</code> will be
+      <code>performance.now()</code> if no parameter is passed, otherwise if the
+      named <code>endMark</code> does not exist, an error will be thrown.
+    </p>
+    <h3 id="performance.nodetiming"><code>performance.nodeTiming</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{PerformanceNodeTiming}</li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      An instance of the <code>PerformanceNodeTiming</code> class that provides
+      performance metrics for specific Node.js operational milestones.
+    </p>
+    <h3 id="performance.now"><code>performance.now()</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>Returns: {number}</li>
+    </ul>
+    <p>
+      Returns the current high resolution millisecond timestamp, where 0
+      represents the start of the current <code>node</code> process.
+    </p>
+    <h3 id="performance.timeorigin"><code>performance.timeOrigin</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The
+      <a href="https://w3c.github.io/hr-time/#dom-performance-timeorigin"
+        ><code>timeOrigin</code></a
+      >
+      specifies the high resolution millisecond timestamp at which the current
+      <code>node</code> process began, measured in Unix time.
+    </p>
+    <h3 id="performance.timerifyfn-options">
+      <code>performance.timerify(fn[, options])</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37475
+    description: Added the histogram option.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Re-implemented to use pure-JavaScript and the ability
+                 to time async functions.
+-->
+    <ul>
+      <li><code>fn</code> {Function}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>histogram</code> {RecordableHistogram} A histogram object
+            created using <code>perf_hooks.createHistogram()</code> that will
+            record runtime durations in nanoseconds.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      Wraps a function within a new function that measures the running time of
+      the wrapped function. A <code>PerformanceObserver</code> must be
+      subscribed to the <code>'function'</code> event type in order for the
+      timing details to be accessed.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="kw">function</span> <span class="at">someFunction</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;hello world&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="kw">const</span> wrapped <span class="op">=</span> <span class="va">performance</span>.<span class="at">timerify</span>(someFunction)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((list) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">list</span>.<span class="at">getEntries</span>()[<span class="dv">0</span>].<span class="at">duration</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="va">obs</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">entryTypes</span><span class="op">:</span> [<span class="st">&#39;function&#39;</span>] <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-17" title="17"></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="co">// A performance timeline entry will be created</span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="at">wrapped</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      If the wrapped function returns a promise, a finally handler will be
+      attached to the promise and the duration will be reported once the finally
+      handler is invoked.
+    </p>
+    <h3 id="performance.tojson"><code>performance.toJSON()</code></h3>
+    <!-- YAML
+added: v16.1.0
+-->
+    <p>
+      An object which is JSON representation of the
+      <code>performance</code> object. It is similar to
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/toJSON"
+        ><code>window.performance.toJSON</code></a
+      >
+      in browsers.
+    </p>
+    <h2 id="class-performanceentry">Class: <code>PerformanceEntry</code></h2>
+    <!-- YAML
+added: v8.5.0
+-->
+    <h3 id="performanceentry.details"><code>performanceEntry.details</code></h3>
+    <!-- YAML
+added: v16.0.0
+-->
+    <ul>
+      <li>{any}</li>
+    </ul>
+    <p>Additional detail specific to the <code>entryType</code>.</p>
+    <h3 id="performanceentry.duration">
+      <code>performanceEntry.duration</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The total number of milliseconds elapsed for this entry. This value will
+      not be meaningful for all Performance Entry types.
+    </p>
+    <h3 id="performanceentry.entrytype">
+      <code>performanceEntry.entryType</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>The type of the performance entry. It may be one of:</p>
+    <ul>
+      <li><code>'node'</code> (Node.js only)</li>
+      <li><code>'mark'</code> (available on the Web)</li>
+      <li><code>'measure'</code> (available on the Web)</li>
+      <li><code>'gc'</code> (Node.js only)</li>
+      <li><code>'function'</code> (Node.js only)</li>
+      <li><code>'http2'</code> (Node.js only)</li>
+      <li><code>'http'</code> (Node.js only)</li>
+    </ul>
+    <h3 id="performanceentry.flags"><code>performanceEntry.flags</code></h3>
+    <!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Runtime deprecated. Now moved to the detail property
+                 when entryType is 'gc'.
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      When <code>performanceEntry.entryType</code> is equal to
+      <code>'gc'</code>, the <code>performance.flags</code> property contains
+      additional information about garbage collection operation. The value may
+      be one of:
+    </p>
+    <ul>
+      <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO</code></li>
+      <li>
+        <code
+          >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED</code
+        >
+      </li>
+      <li>
+        <code>perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED</code>
+      </li>
+      <li>
+        <code
+          >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING</code
+        >
+      </li>
+      <li>
+        <code
+          >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE</code
+        >
+      </li>
+      <li>
+        <code
+          >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY</code
+        >
+      </li>
+      <li>
+        <code
+          >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE</code
+        >
+      </li>
+    </ul>
+    <h3 id="performanceentry.name"><code>performanceEntry.name</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>The name of the performance entry.</p>
+    <h3 id="performanceentry.kind"><code>performanceEntry.kind</code></h3>
+    <!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Runtime deprecated. Now moved to the detail property
+                 when entryType is 'gc'.
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      When <code>performanceEntry.entryType</code> is equal to
+      <code>'gc'</code>, the <code>performance.kind</code> property identifies
+      the type of garbage collection operation that occurred. The value may be
+      one of:
+    </p>
+    <ul>
+      <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR</code></li>
+      <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR</code></li>
+      <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL</code></li>
+      <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB</code></li>
+    </ul>
+    <h3 id="performanceentry.starttime">
+      <code>performanceEntry.startTime</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp marking the starting time of the
+      Performance Entry.
+    </p>
+    <h3 id="garbage-collection-gc-details">
+      Garbage Collection (‘gc’) Details
+    </h3>
+    <p>
+      When <code>performanceEntry.type</code> is equal to <code>'gc'</code>, the
+      <code>performanceEntry.details</code> property will be an {Object} with
+      two properties:
+    </p>
+    <ul>
+      <li>
+        <code>kind</code> {number} One of:
+        <ul>
+          <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR</code></li>
+          <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR</code></li>
+          <li>
+            <code>perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL</code>
+          </li>
+          <li><code>perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB</code></li>
+        </ul>
+      </li>
+      <li>
+        <code>flags</code> {number} One of:
+        <ul>
+          <li>
+            <code>perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO</code>
+          </li>
+          <li>
+            <code
+              >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED</code
+            >
+          </li>
+          <li>
+            <code>perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED</code>
+          </li>
+          <li>
+            <code
+              >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING</code
+            >
+          </li>
+          <li>
+            <code
+              >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE</code
+            >
+          </li>
+          <li>
+            <code
+              >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY</code
+            >
+          </li>
+          <li>
+            <code
+              >perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE</code
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="http2-http2-details">HTTP/2 (‘http2’) Details</h3>
+    <p>
+      When <code>performanceEntry.type</code> is equal to <code>'http2'</code>,
+      the <code>performanceEntry.details</code> property will be an {Object}
+      containing additional performance information.
+    </p>
+    <p>
+      If <code>performanceEntry.name</code> is equal to
+      <code>Http2Stream</code>, the <code>details</code> will contain the
+      following properties:
+    </p>
+    <ul>
+      <li>
+        <code>bytesRead</code> {number} The number of <code>DATA</code> frame
+        bytes received for this <code>Http2Stream</code>.
+      </li>
+      <li>
+        <code>bytesWritten</code> {number} The number of <code>DATA</code> frame
+        bytes sent for this <code>Http2Stream</code>.
+      </li>
+      <li>
+        <code>id</code> {number} The identifier of the associated
+        <code>Http2Stream</code>
+      </li>
+      <li>
+        <code>timeToFirstByte</code> {number} The number of milliseconds elapsed
+        between the <code>PerformanceEntry</code> <code>startTime</code> and the
+        reception of the first <code>DATA</code> frame.
+      </li>
+      <li>
+        <code>timeToFirstByteSent</code> {number} The number of milliseconds
+        elapsed between the <code>PerformanceEntry</code>
+        <code>startTime</code> and sending of the first <code>DATA</code> frame.
+      </li>
+      <li>
+        <code>timeToFirstHeader</code> {number} The number of milliseconds
+        elapsed between the <code>PerformanceEntry</code>
+        <code>startTime</code> and the reception of the first header.
+      </li>
+    </ul>
+    <p>
+      If <code>performanceEntry.name</code> is equal to
+      <code>Http2Session</code>, the <code>details</code> will contain the
+      following properties:
+    </p>
+    <ul>
+      <li>
+        <code>bytesRead</code> {number} The number of bytes received for this
+        <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>bytesWritten</code> {number} The number of bytes sent for this
+        <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>framesReceived</code> {number} The number of HTTP/2 frames
+        received by the <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>framesSent</code> {number} The number of HTTP/2 frames sent by the
+        <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>maxConcurrentStreams</code> {number} The maximum number of streams
+        concurrently open during the lifetime of the <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>pingRTT</code> {number} The number of milliseconds elapsed since
+        the transmission of a <code>PING</code> frame and the reception of its
+        acknowledgment. Only present if a <code>PING</code> frame has been sent
+        on the <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>streamAverageDuration</code> {number} The average duration (in
+        milliseconds) for all <code>Http2Stream</code> instances.
+      </li>
+      <li>
+        <code>streamCount</code> {number} The number of
+        <code>Http2Stream</code> instances processed by the
+        <code>Http2Session</code>.
+      </li>
+      <li>
+        <code>type</code> {string} Either <code>'server'</code> or
+        <code>'client'</code> to identify the type of <code>Http2Session</code>.
+      </li>
+    </ul>
+    <h3 id="timerify-function-details">Timerify (‘function’) Details</h3>
+    <p>
+      When <code>performanceEntry.type</code> is equal to
+      <code>'function'</code>, the
+      <code>performanceEntry.details</code> property will be an {Array} listing
+      the input arguments to the timed function.
+    </p>
+    <h2 id="class-performancenodetiming">
+      Class: <code>PerformanceNodeTiming</code>
+    </h2>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>Extends: {PerformanceEntry}</li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      Provides timing details for Node.js itself. The constructor of this class
+      is not exposed to users.
+    </p>
+    <h3 id="performancenodetiming.bootstrapcomplete">
+      <code>performanceNodeTiming.bootstrapComplete</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the Node.js process
+      completed bootstrapping. If bootstrapping has not yet finished, the
+      property has the value of -1.
+    </p>
+    <h3 id="performancenodetiming.environment">
+      <code>performanceNodeTiming.environment</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the Node.js environment
+      was initialized.
+    </p>
+    <h3 id="performancenodetiming.idletime">
+      <code>performanceNodeTiming.idleTime</code>
+    </h3>
+    <!-- YAML
+added:
+  - v14.10.0
+  - v12.19.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp of the amount of time the event
+      loop has been idle within the event loop’s event provider
+      (e.g. <code>epoll_wait</code>). This does not take CPU usage into
+      consideration. If the event loop has not yet started (e.g., in the first
+      tick of the main script), the property has the value of 0.
+    </p>
+    <h3 id="performancenodetiming.loopexit">
+      <code>performanceNodeTiming.loopExit</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the Node.js event loop
+      exited. If the event loop has not yet exited, the property has the value
+      of -1. It can only have a value of not -1 in a handler of the
+      <a href="process.md#process_event_exit"><code>'exit'</code></a> event.
+    </p>
+    <h3 id="performancenodetiming.loopstart">
+      <code>performanceNodeTiming.loopStart</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the Node.js event loop
+      started. If the event loop has not yet started (e.g., in the first tick of
+      the main script), the property has the value of -1.
+    </p>
+    <h3 id="performancenodetiming.nodestart">
+      <code>performanceNodeTiming.nodeStart</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the Node.js process was
+      initialized.
+    </p>
+    <h3 id="performancenodetiming.v8start">
+      <code>performanceNodeTiming.v8Start</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The high resolution millisecond timestamp at which the V8 platform was
+      initialized.
+    </p>
+    <h2 id="class-perf_hooks.performanceobserver">
+      Class: <code>perf_hooks.PerformanceObserver</code>
+    </h2>
+    <h3 id="new-performanceobservercallback">
+      <code>new PerformanceObserver(callback)</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>list</code> {PerformanceObserverEntryList}</li>
+          <li><code>observer</code> {PerformanceObserver}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      <code>PerformanceObserver</code> objects provide notifications when new
+      <code>PerformanceEntry</code> instances have been added to the Performance
+      Timeline.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((list<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">list</span>.<span class="at">getEntries</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="va">observer</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">entryTypes</span><span class="op">:</span> [<span class="st">&#39;mark&#39;</span>]<span class="op">,</span> <span class="dt">buffered</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-11" title="11"></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;test&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Because <code>PerformanceObserver</code> instances introduce their own
+      additional performance overhead, instances should not be left subscribed
+      to notifications indefinitely. Users should disconnect observers as soon
+      as they are no longer needed.
+    </p>
+    <p>
+      The <code>callback</code> is invoked when a
+      <code>PerformanceObserver</code> is notified about new
+      <code>PerformanceEntry</code> instances. The callback receives a
+      <code>PerformanceObserverEntryList</code> instance and a reference to the
+      <code>PerformanceObserver</code>.
+    </p>
+    <h3 id="performanceobserver.disconnect">
+      <code>performanceObserver.disconnect()</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <p>
+      Disconnects the <code>PerformanceObserver</code> instance from all
+      notifications.
+    </p>
+    <h3 id="performanceobserver.observeoptions">
+      <code>performanceObserver.observe(options)</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/39297
+    description: Updated to conform to Performance Timeline Level 2. The
+                 buffered option has been added back.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to User Timing Level 3. The
+                 buffered option has been removed.
+-->
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>type</code> {string} A single {PerformanceEntry} type. Must
+            not be given if <code>entryTypes</code> is already specified.
+          </li>
+          <li>
+            <code>entryTypes</code> {string[]} An array of strings identifying
+            the types of {PerformanceEntry} instances the observer is interested
+            in. If not provided an error will be thrown.
+          </li>
+          <li>
+            <code>buffered</code> {boolean} If true, the observer callback is
+            called with a list global <code>PerformanceEntry</code> buffered
+            entries. If false, only <code>PerformanceEntry</code>s created after
+            the time point are sent to the observer callback.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Subscribes the {PerformanceObserver} instance to notifications of new
+      {PerformanceEntry} instances identified either by
+      <code>options.entryTypes</code> or <code>options.type</code>:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((list<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="co">// Called three times synchronously. `list` contains one item.</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;mark&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="cf">for</span> (<span class="kw">let</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> n <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> n<span class="op">++</span>)</a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="va">performance</span>.<span class="at">mark</span>(<span class="vs">`test</span><span class="sc">${</span>n<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="class-performanceobserverentrylist">
+      Class: <code>PerformanceObserverEntryList</code>
+    </h2>
+    <!-- YAML
+added: v8.5.0
+-->
+    <p>
+      The <code>PerformanceObserverEntryList</code> class is used to provide
+      access to the <code>PerformanceEntry</code> instances passed to a
+      <code>PerformanceObserver</code>. The constructor of this class is not
+      exposed to users.
+    </p>
+    <h3 id="performanceobserverentrylist.getentries">
+      <code>performanceObserverEntryList.getEntries()</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li>Returns: {PerformanceEntry[]}</li>
+    </ul>
+    <p>
+      Returns a list of <code>PerformanceEntry</code> objects in chronological
+      order with respect to <code>performanceEntry.startTime</code>.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((perfObserverList<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntries</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">   * [</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">   *     name: &#39;test&#39;,</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">   *     startTime: 81.465639,</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">   *   },</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">   *     name: &#39;meow&#39;,</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="co">   *     startTime: 81.860064,</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">   *   }</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="co">   * ]</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb6-24" title="24">  <span class="va">observer</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;mark&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-27" title="27"></a>
+<a class="sourceLine" id="cb6-28" title="28"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;test&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;meow&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="performanceobserverentrylist.getentriesbynamename-type">
+      <code>performanceObserverEntryList.getEntriesByName(name[, type])</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li><code>name</code> {string}</li>
+      <li><code>type</code> {string}</li>
+      <li>Returns: {PerformanceEntry[]}</li>
+    </ul>
+    <p>
+      Returns a list of <code>PerformanceEntry</code> objects in chronological
+      order with respect to <code>performanceEntry.startTime</code> whose
+      <code>performanceEntry.name</code> is equal to <code>name</code>, and
+      optionally, whose <code>performanceEntry.entryType</code> is equal to
+      <code>type</code>.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((perfObserverList<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntriesByName</span>(<span class="st">&#39;meow&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">   * [</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">   *     name: &#39;meow&#39;,</span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">   *     startTime: 98.545991,</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">   *   }</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">   * ]</span></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb7-18" title="18">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntriesByName</span>(<span class="st">&#39;nope&#39;</span>))<span class="op">;</span> <span class="co">// []</span></a>
+<a class="sourceLine" id="cb7-19" title="19"></a>
+<a class="sourceLine" id="cb7-20" title="20">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntriesByName</span>(<span class="st">&#39;test&#39;</span><span class="op">,</span> <span class="st">&#39;mark&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-21" title="21">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">   * [</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">   *     name: &#39;test&#39;,</span></a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">   *     startTime: 63.518931,</span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">   *   }</span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">   * ]</span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb7-31" title="31">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntriesByName</span>(<span class="st">&#39;test&#39;</span><span class="op">,</span> <span class="st">&#39;measure&#39;</span>))<span class="op">;</span> <span class="co">// []</span></a>
+<a class="sourceLine" id="cb7-32" title="32">  <span class="va">observer</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-33" title="33"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-34" title="34"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">entryTypes</span><span class="op">:</span> [<span class="st">&#39;mark&#39;</span><span class="op">,</span> <span class="st">&#39;measure&#39;</span>] <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-35" title="35"></a>
+<a class="sourceLine" id="cb7-36" title="36"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;test&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-37" title="37"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;meow&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="performanceobserverentrylist.getentriesbytypetype">
+      <code>performanceObserverEntryList.getEntriesByType(type)</code>
+    </h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li>Returns: {PerformanceEntry[]}</li>
+    </ul>
+    <p>
+      Returns a list of <code>PerformanceEntry</code> objects in chronological
+      order with respect to <code>performanceEntry.startTime</code> whose
+      <code>performanceEntry.entryType</code> is equal to <code>type</code>.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  PerformanceObserver</a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((perfObserverList<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">perfObserverList</span>.<span class="at">getEntriesByType</span>(<span class="st">&#39;mark&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">   * [</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">   *     name: &#39;test&#39;,</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">   *     startTime: 55.897834,</span></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="co">   *   },</span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="co">   *   PerformanceEntry {</span></a>
+<a class="sourceLine" id="cb8-17" title="17"><span class="co">   *     name: &#39;meow&#39;,</span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="co">   *     entryType: &#39;mark&#39;,</span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="co">   *     startTime: 56.350146,</span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co">   *     duration: 0</span></a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">   *   }</span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="co">   * ]</span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb8-24" title="24">  <span class="va">observer</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;mark&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-27" title="27"></a>
+<a class="sourceLine" id="cb8-28" title="28"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;test&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-29" title="29"><span class="va">performance</span>.<span class="at">mark</span>(<span class="st">&#39;meow&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="perf_hooks.createhistogramoptions">
+      <code>perf_hooks.createHistogram([options])</code>
+    </h2>
+    <!-- YAML
+added: v15.9.0
+-->
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>min</code> {number|bigint} The minimum recordable value. Must
+            be an integer value greater than 0. <strong>Default:</strong>
+            <code>1</code>.
+          </li>
+          <li>
+            <code>max</code> {number|bigint} The maximum recordable value. Must
+            be an integer value greater than <code>min</code>.
+            <strong>Default:</strong> <code>Number.MAX_SAFE_INTEGER</code>.
+          </li>
+          <li>
+            <code>figures</code> {number} The number of accuracy digits. Must be
+            a number between <code>1</code> and <code>5</code>.
+            <strong>Default:</strong> <code>3</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns {RecordableHistogram}</li>
+    </ul>
+    <p>Returns a {RecordableHistogram}.</p>
+    <h2 id="perf_hooks.monitoreventloopdelayoptions">
+      <code>perf_hooks.monitorEventLoopDelay([options])</code>
+    </h2>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>resolution</code> {number} The sampling rate in milliseconds.
+            Must be greater than zero. <strong>Default:</strong>
+            <code>10</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {IntervalHistogram}</li>
+    </ul>
+    <p>
+      <em
+        >This property is an extension by Node.js. It is not available in Web
+        browsers.</em
+      >
+    </p>
+    <p>
+      Creates an <code>IntervalHistogram</code> object that samples and reports
+      the event loop delay over time. The delays will be reported in
+      nanoseconds.
+    </p>
+    <p>
+      Using a timer to detect approximate event loop delay works because the
+      execution of timers is tied specifically to the lifecycle of the libuv
+      event loop. That is, a delay in the loop will cause a delay in the
+      execution of the timer, and those delays are specifically what this API is
+      intended to detect.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> monitorEventLoopDelay <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">const</span> h <span class="op">=</span> <span class="at">monitorEventLoopDelay</span>(<span class="op">{</span> <span class="dt">resolution</span><span class="op">:</span> <span class="dv">20</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="va">h</span>.<span class="at">enable</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">// Do something.</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="va">h</span>.<span class="at">disable</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">min</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">max</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">mean</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">stddev</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">percentiles</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">percentile</span>(<span class="dv">50</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="va">console</span>.<span class="at">log</span>(<span class="va">h</span>.<span class="at">percentile</span>(<span class="dv">99</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="class-histogram">Class: <code>Histogram</code></h2>
+    <!-- YAML
+added: v11.10.0
+-->
+    <h3 id="histogram.exceeds"><code>histogram.exceeds</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The number of times the event loop delay exceeded the maximum 1 hour event
+      loop delay threshold.
+    </p>
+    <h3 id="histogram.max"><code>histogram.max</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>The maximum recorded event loop delay.</p>
+    <h3 id="histogram.mean"><code>histogram.mean</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>The mean of the recorded event loop delays.</p>
+    <h3 id="histogram.min"><code>histogram.min</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>The minimum recorded event loop delay.</p>
+    <h3 id="histogram.percentilepercentile">
+      <code>histogram.percentile(percentile)</code>
+    </h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>
+        <code>percentile</code> {number} A percentile value in the range (0,
+        100].
+      </li>
+      <li>Returns: {number}</li>
+    </ul>
+    <p>Returns the value at the given percentile.</p>
+    <h3 id="histogram.percentiles"><code>histogram.percentiles</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{Map}</li>
+    </ul>
+    <p>
+      Returns a <code>Map</code> object detailing the accumulated percentile
+      distribution.
+    </p>
+    <h3 id="histogram.reset"><code>histogram.reset()</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <p>Resets the collected histogram data.</p>
+    <h3 id="histogram.stddev"><code>histogram.stddev</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>The standard deviation of the recorded event loop delays.</p>
+    <h2 id="class-intervalhistogram-extends-histogram">
+      Class: <code>IntervalHistogram extends Histogram</code>
+    </h2>
+    <p>
+      A <code>Histogram</code> that is periodically updated on a given interval.
+    </p>
+    <h3 id="histogram.disable"><code>histogram.disable()</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>Returns: {boolean}</li>
+    </ul>
+    <p>
+      Disables the update interval timer. Returns <code>true</code> if the timer
+      was stopped, <code>false</code> if it was already stopped.
+    </p>
+    <h3 id="histogram.enable"><code>histogram.enable()</code></h3>
+    <!-- YAML
+added: v11.10.0
+-->
+    <ul>
+      <li>Returns: {boolean}</li>
+    </ul>
+    <p>
+      Enables the update interval timer. Returns <code>true</code> if the timer
+      was started, <code>false</code> if it was already started.
+    </p>
+    <h3 id="cloning-an-intervalhistogram">
+      Cloning an <code>IntervalHistogram</code>
+    </h3>
+    <p>
+      {IntervalHistogram} instances can be cloned via {MessagePort}. On the
+      receiving end, the histogram is cloned as a plain {Histogram} object that
+      does not implement the <code>enable()</code> and
+      <code>disable()</code> methods.
+    </p>
+    <h2 id="class-recordablehistogram-extends-histogram">
+      Class: <code>RecordableHistogram extends Histogram</code>
+    </h2>
+    <!-- YAML
+added: v15.9.0
+-->
+    <h3 id="histogram.recordval"><code>histogram.record(val)</code></h3>
+    <!-- YAML
+added: v15.9.0
+-->
+    <ul>
+      <li>
+        <code>val</code> {number|bigint} The amount to record in the histogram.
+      </li>
+    </ul>
+    <h3 id="histogram.recorddelta"><code>histogram.recordDelta()</code></h3>
+    <!-- YAML
+added: v15.9.0
+-->
+    <p>
+      Calculates the amount of time (in nanoseconds) that has passed since the
+      previous call to <code>recordDelta()</code> and records that amount in the
+      histogram.
+    </p>
+    <h2 id="examples">Examples</h2>
+    <h3 id="measuring-the-duration-of-async-operations">
+      Measuring the duration of async operations
+    </h3>
+    <p>
+      The following example uses the
+      <a href="async_hooks.md">Async Hooks</a> and Performance APIs to measure
+      the actual duration of a Timeout operation (including the amount of time
+      it took to execute the callback).
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">const</span> async_hooks <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;async_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  PerformanceObserver</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-7" title="7"></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="kw">const</span> set <span class="op">=</span> <span class="kw">new</span> <span class="at">Set</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="kw">const</span> hook <span class="op">=</span> <span class="va">async_hooks</span>.<span class="at">createHook</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="at">init</span>(id<span class="op">,</span> type) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-11" title="11">    <span class="cf">if</span> (type <span class="op">===</span> <span class="st">&#39;Timeout&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-12" title="12">      <span class="va">performance</span>.<span class="at">mark</span>(<span class="vs">`Timeout-</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">-Init`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-13" title="13">      <span class="va">set</span>.<span class="at">add</span>(id)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-14" title="14">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-15" title="15">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb10-16" title="16">  <span class="at">destroy</span>(id) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-17" title="17">    <span class="cf">if</span> (<span class="va">set</span>.<span class="at">has</span>(id)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-18" title="18">      <span class="va">set</span>.<span class="at">delete</span>(id)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-19" title="19">      <span class="va">performance</span>.<span class="at">mark</span>(<span class="vs">`Timeout-</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">-Destroy`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-20" title="20">      <span class="va">performance</span>.<span class="at">measure</span>(<span class="vs">`Timeout-</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">`</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-21" title="21">                          <span class="vs">`Timeout-</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">-Init`</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-22" title="22">                          <span class="vs">`Timeout-</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">-Destroy`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-23" title="23">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-24" title="24">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-25" title="25"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-26" title="26"><span class="va">hook</span>.<span class="at">enable</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-27" title="27"></a>
+<a class="sourceLine" id="cb10-28" title="28"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((list<span class="op">,</span> observer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-29" title="29">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">list</span>.<span class="at">getEntries</span>()[<span class="dv">0</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-30" title="30">  <span class="va">performance</span>.<span class="at">clearMarks</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-31" title="31">  <span class="va">observer</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-32" title="32"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-33" title="33"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">entryTypes</span><span class="op">:</span> [<span class="st">&#39;measure&#39;</span>]<span class="op">,</span> <span class="dt">buffered</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-34" title="34"></a>
+<a class="sourceLine" id="cb10-35" title="35"><span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="op">{},</span> <span class="dv">1000</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="measuring-how-long-it-takes-to-load-dependencies">
+      Measuring how long it takes to load dependencies
+    </h3>
+    <p>
+      The following example measures the duration of
+      <code>require()</code> operations to load dependencies:
+    </p>
+    <!-- eslint-disable no-global-assign -->
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  performance<span class="op">,</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  PerformanceObserver</a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;perf_hooks&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw">const</span> mod <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;module&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">// Monkey patch the require function</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="va">mod</span>.<span class="va">Module</span>.<span class="va">prototype</span>.<span class="at">require</span> <span class="op">=</span></a>
+<a class="sourceLine" id="cb11-10" title="10">  <span class="va">performance</span>.<span class="at">timerify</span>(<span class="va">mod</span>.<span class="va">Module</span>.<span class="va">prototype</span>.<span class="at">require</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-11" title="11">require <span class="op">=</span> <span class="va">performance</span>.<span class="at">timerify</span>(require)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-12" title="12"></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">// Activate the observer</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="kw">const</span> obs <span class="op">=</span> <span class="kw">new</span> <span class="at">PerformanceObserver</span>((list) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-15" title="15">  <span class="kw">const</span> entries <span class="op">=</span> <span class="va">list</span>.<span class="at">getEntries</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-16" title="16">  <span class="va">entries</span>.<span class="at">forEach</span>((entry) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-17" title="17">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`require(&#39;</span><span class="sc">${</span>entry[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">&#39;)`</span><span class="op">,</span> <span class="va">entry</span>.<span class="at">duration</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-18" title="18">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-19" title="19">  <span class="va">obs</span>.<span class="at">disconnect</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-21" title="21"><span class="va">obs</span>.<span class="at">observe</span>(<span class="op">{</span> <span class="dt">entryTypes</span><span class="op">:</span> [<span class="st">&#39;function&#39;</span>]<span class="op">,</span> <span class="dt">buffered</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-22" title="22"></a>
+<a class="sourceLine" id="cb11-23" title="23"><span class="at">require</span>(<span class="st">&#39;some-module&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+  </body>
+</html>

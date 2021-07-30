@@ -1,0 +1,3861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>errors</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="errors">Errors</h1>
+    <!--introduced_in=v4.0.0-->
+    <!--type=misc-->
+    <p>
+      Applications running in Node.js will generally experience four categories
+      of errors:
+    </p>
+    <ul>
+      <li>
+        Standard JavaScript errors such as {EvalError}, {SyntaxError},
+        {RangeError}, {ReferenceError}, {TypeError}, and {URIError}.
+      </li>
+      <li>
+        System errors triggered by underlying operating system constraints such
+        as attempting to open a file that does not exist or attempting to send
+        data over a closed socket.
+      </li>
+      <li>User-specified errors triggered by application code.</li>
+      <li>
+        <code>AssertionError</code>s are a special class of error that can be
+        triggered when Node.js detects an exceptional logic violation that
+        should never occur. These are raised typically by the
+        <code>assert</code> module.
+      </li>
+    </ul>
+    <p>
+      All JavaScript and system errors raised by Node.js inherit from, or are
+      instances of, the standard JavaScript {Error} class and are guaranteed to
+      provide <em>at least</em> the properties available on that class.
+    </p>
+    <h2 id="error-propagation-and-interception">
+      Error propagation and interception
+    </h2>
+    <!--type=misc-->
+    <p>
+      Node.js supports several mechanisms for propagating and handling errors
+      that occur while an application is running. How these errors are reported
+      and handled depends entirely on the type of <code>Error</code> and the
+      style of the API that is called.
+    </p>
+    <p>
+      All JavaScript errors are handled as exceptions that
+      <em>immediately</em> generate and throw an error using the standard
+      JavaScript <code>throw</code> mechanism. These are handled using the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch"
+        ><code>try…catch</code> construct</a
+      >
+      provided by the JavaScript language.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// Throws with a ReferenceError because z is not defined.</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">const</span> m <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">const</span> n <span class="op">=</span> m <span class="op">+</span> z<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co">// Handle the error here.</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Any use of the JavaScript <code>throw</code> mechanism will raise an
+      exception that <em>must</em> be handled using <code>try…catch</code> or
+      the Node.js process will exit immediately.
+    </p>
+    <p>
+      With few exceptions, <em>Synchronous</em> APIs (any blocking method that
+      does not accept a <code>callback</code> function, such as
+      <a href="fs.md#fs_fs_readfilesync_path_options"
+        ><code>fs.readFileSync</code></a
+      >), will use <code>throw</code> to report errors.
+    </p>
+    <p>
+      Errors that occur within <em>Asynchronous APIs</em> may be reported in
+      multiple ways:
+    </p>
+    <ul>
+      <li>
+        Most asynchronous methods that accept a <code>callback</code> function
+        will accept an <code>Error</code> object passed as the first argument to
+        that function. If that first argument is not <code>null</code> and is an
+        instance of <code>Error</code>, then an error occurred that should be
+        handled.
+      </li>
+    </ul>
+    <!-- eslint-disable no-useless-return -->
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">fs</span>.<span class="at">readFile</span>(<span class="st">&#39;a file that does not exist&#39;</span><span class="op">,</span> (err<span class="op">,</span> data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;There was an error reading the file!&#39;</span><span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="co">// Otherwise handle the data</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <ul>
+      <li>
+        <p>
+          When an asynchronous method is called on an object that is an
+          <a href="events.md#events_class_eventemitter"
+            ><code>EventEmitter</code></a
+          >, errors can be routed to that object’s <code>'error'</code> event.
+        </p>
+        <div class="sourceCode" id="cb3">
+          <pre
+            class="sourceCode js"
+          ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> net <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;net&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">const</span> connection <span class="op">=</span> <span class="va">net</span>.<span class="at">connect</span>(<span class="st">&#39;localhost&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">// Adding an &#39;error&#39; event handler to a stream:</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="va">connection</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="co">// If the connection is reset by the server, or if it can&#39;t</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="co">// connect at all, or on any sort of error encountered by</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="co">// the connection, the error will be sent here.</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="va">console</span>.<span class="at">error</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="va">connection</span>.<span class="at">pipe</span>(<span class="va">process</span>.<span class="at">stdout</span>)<span class="op">;</span></a></code></pre>
+        </div>
+      </li>
+      <li>
+        <p>
+          A handful of typically asynchronous methods in the Node.js API may
+          still use the <code>throw</code> mechanism to raise exceptions that
+          must be handled using <code>try…catch</code>. There is no
+          comprehensive list of such methods; please refer to the documentation
+          of each method to determine the appropriate error handling mechanism
+          required.
+        </p>
+      </li>
+    </ul>
+    <p>
+      The use of the <code>'error'</code> event mechanism is most common for
+      <a href="stream.md">stream-based</a> and
+      <a href="events.md#events_class_eventemitter">event emitter-based</a>
+      APIs, which themselves represent a series of asynchronous operations over
+      time (as opposed to a single operation that may pass or fail).
+    </p>
+    <p>
+      For <em>all</em>
+      <a href="events.md#events_class_eventemitter"
+        ><code>EventEmitter</code></a
+      >
+      objects, if an <code>'error'</code> event handler is not provided, the
+      error will be thrown, causing the Node.js process to report an uncaught
+      exception and crash unless either: The
+      <a href="domain.md"><code>domain</code></a> module is used appropriately
+      or a handler has been registered for the
+      <a href="process.md#process_event_uncaughtexception"
+        ><code>'uncaughtException'</code></a
+      >
+      event.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> EventEmitter <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="at">setImmediate</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="co">// This will crash the process because no &#39;error&#39; event</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="co">// handler has been added.</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;This will crash&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Errors generated in this way <em>cannot</em> be intercepted using
+      <code>try…catch</code> as they are thrown <em>after</em> the calling code
+      has already exited.
+    </p>
+    <p>
+      Developers must refer to the documentation for each method to determine
+      exactly how errors raised by those methods are propagated.
+    </p>
+    <h3 id="error-first-callbacks">Error-first callbacks</h3>
+    <!--type=misc-->
+    <p>
+      Most asynchronous methods exposed by the Node.js core API follow an
+      idiomatic pattern referred to as an <em>error-first callback</em>. With
+      this pattern, a callback function is passed to the method as an argument.
+      When the operation either completes or an error is raised, the callback
+      function is called with the <code>Error</code> object (if any) passed as
+      the first argument. If no error was raised, the first argument will be
+      passed as <code>null</code>.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">function</span> <span class="at">errorFirstCallback</span>(err<span class="op">,</span> data) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;There was an error&#39;</span><span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(data)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="va">fs</span>.<span class="at">readFile</span>(<span class="st">&#39;/some/file/that/does-not-exist&#39;</span><span class="op">,</span> errorFirstCallback)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="va">fs</span>.<span class="at">readFile</span>(<span class="st">&#39;/some/file/that/does-exist&#39;</span><span class="op">,</span> errorFirstCallback)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The JavaScript <code>try…catch</code> mechanism <strong>cannot</strong> be
+      used to intercept errors generated by asynchronous APIs. A common mistake
+      for beginners is to try to use <code>throw</code> inside an error-first
+      callback:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="co">// THIS WILL NOT WORK:</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="va">fs</span>.<span class="at">readFile</span>(<span class="st">&#39;/some/file/that/does-not-exist&#39;</span><span class="op">,</span> (err<span class="op">,</span> data) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="co">// Mistaken assumption: throwing here...</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-8" title="8">      <span class="cf">throw</span> err<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-12" title="12">  <span class="co">// This will not catch the throw!</span></a>
+<a class="sourceLine" id="cb6-13" title="13">  <span class="va">console</span>.<span class="at">error</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      This will not work because the callback function passed to
+      <code>fs.readFile()</code> is called asynchronously. By the time the
+      callback has been called, the surrounding code, including the
+      <code>try…catch</code> block, will have already exited. Throwing an error
+      inside the callback <strong>can crash the Node.js process</strong> in most
+      cases. If <a href="domain.md">domains</a> are enabled, or a handler has
+      been registered with <code>process.on('uncaughtException')</code>, such
+      errors can be intercepted.
+    </p>
+    <h2 id="class-error">Class: <code>Error</code></h2>
+    <!--type=class-->
+    <p>
+      A generic JavaScript {Error} object that does not denote any specific
+      circumstance of why the error occurred. <code>Error</code> objects capture
+      a “stack trace” detailing the point in the code at which the
+      <code>Error</code> was instantiated, and may provide a text description of
+      the error.
+    </p>
+    <p>
+      All errors generated by Node.js, including all system and JavaScript
+      errors, will either be instances of, or inherit from, the
+      <code>Error</code> class.
+    </p>
+    <h3 id="new-errormessage"><code>new Error(message)</code></h3>
+    <ul>
+      <li><code>message</code> {string}</li>
+    </ul>
+    <p>
+      Creates a new <code>Error</code> object and sets the
+      <code>error.message</code> property to the provided text message. If an
+      object is passed as <code>message</code>, the text message is generated by
+      calling <code>message.toString()</code>. The
+      <code>error.stack</code> property will represent the point in the code at
+      which <code>new Error()</code> was called. Stack traces are dependent on
+      <a href="https://github.com/v8/v8/wiki/Stack-Trace-API"
+        >V8’s stack trace API</a
+      >. Stack traces extend only to either (a) the beginning of
+      <em>synchronous code execution</em>, or (b) the number of frames given by
+      the property <code>Error.stackTraceLimit</code>, whichever is smaller.
+    </p>
+    <h3 id="error.capturestacktracetargetobject-constructoropt">
+      <code>Error.captureStackTrace(targetObject[, constructorOpt])</code>
+    </h3>
+    <ul>
+      <li><code>targetObject</code> {Object}</li>
+      <li><code>constructorOpt</code> {Function}</li>
+    </ul>
+    <p>
+      Creates a <code>.stack</code> property on <code>targetObject</code>, which
+      when accessed returns a string representing the location in the code at
+      which <code>Error.captureStackTrace()</code> was called.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> myObject <span class="op">=</span> <span class="op">{};</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">Error</span>.<span class="at">captureStackTrace</span>(myObject)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="va">myObject</span>.<span class="at">stack</span><span class="op">;</span>  <span class="co">// Similar to `new Error().stack`</span></a></code></pre>
+    </div>
+    <p>
+      The first line of the trace will be prefixed with
+      <code>${myObject.name}: ${myObject.message}</code>.
+    </p>
+    <p>
+      The optional <code>constructorOpt</code> argument accepts a function. If
+      given, all frames above <code>constructorOpt</code>, including
+      <code>constructorOpt</code>, will be omitted from the generated stack
+      trace.
+    </p>
+    <p>
+      The <code>constructorOpt</code> argument is useful for hiding
+      implementation details of error generation from the user. For instance:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">function</span> <span class="at">MyError</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="va">Error</span>.<span class="at">captureStackTrace</span>(<span class="kw">this</span><span class="op">,</span> MyError)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">// Without passing MyError to captureStackTrace, the MyError</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">// frame would show up in the .stack property. By passing</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">// the constructor, we omit that frame, and retain all frames below it.</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">new</span> <span class="at">MyError</span>().<span class="at">stack</span><span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="error.stacktracelimit"><code>Error.stackTraceLimit</code></h3>
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The <code>Error.stackTraceLimit</code> property specifies the number of
+      stack frames collected by a stack trace (whether generated by
+      <code>new Error().stack</code> or
+      <code>Error.captureStackTrace(obj)</code>).
+    </p>
+    <p>
+      The default value is <code>10</code> but may be set to any valid
+      JavaScript number. Changes will affect any stack trace captured
+      <em>after</em> the value has been changed.
+    </p>
+    <p>
+      If set to a non-number value, or set to a negative number, stack traces
+      will not capture any frames.
+    </p>
+    <h3 id="error.code"><code>error.code</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>error.code</code> property is a string label that identifies the
+      kind of error. <code>error.code</code> is the most stable way to identify
+      an error. It will only change between major versions of Node.js. In
+      contrast, <code>error.message</code> strings may change between any
+      versions of Node.js. See
+      <a href="#nodejs-error-codes">Node.js error codes</a> for details about
+      specific codes.
+    </p>
+    <h3 id="error.message"><code>error.message</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>error.message</code> property is the string description of the
+      error as set by calling <code>new Error(message)</code>. The
+      <code>message</code> passed to the constructor will also appear in the
+      first line of the stack trace of the <code>Error</code>, however changing
+      this property after the <code>Error</code> object is created
+      <em>may not</em> change the first line of the stack trace (for example,
+      when <code>error.stack</code> is read before this property is changed).
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> err <span class="op">=</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;The message&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="va">console</span>.<span class="at">error</span>(<span class="va">err</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">// Prints: The message</span></a></code></pre>
+    </div>
+    <h3 id="error.stack"><code>error.stack</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>error.stack</code> property is a string describing the point in
+      the code at which the <code>Error</code> was instantiated.
+    </p>
+    <pre class="console"><code>Error: Things keep happening!
+   at /home/gbusey/file.js:525:2
+   at Frobnicator.refrobulate (/home/gbusey/business-logic.js:424:21)
+   at Actor.&lt;anonymous&gt; (/home/gbusey/actors.js:400:8)
+   at increaseSynergy (/home/gbusey/actors.js:701:6)</code></pre>
+    <p>
+      The first line is formatted as
+      <code>&lt;error class name&gt;: &lt;error message&gt;</code>, and is
+      followed by a series of stack frames (each line beginning with “at”). Each
+      frame describes a call site within the code that lead to the error being
+      generated. V8 attempts to display a name for each function (by variable
+      name, function name, or object method name), but occasionally it will not
+      be able to find a suitable name. If V8 cannot determine a name for the
+      function, only location information will be displayed for that frame.
+      Otherwise, the determined function name will be displayed with location
+      information appended in parentheses.
+    </p>
+    <p>
+      Frames are only generated for JavaScript functions. If, for example,
+      execution synchronously passes through a C++ addon function called
+      <code>cheetahify</code> which itself calls a JavaScript function, the
+      frame representing the <code>cheetahify</code> call will not be present in
+      the stack traces:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> cheetahify <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./native-binding.node&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">function</span> <span class="at">makeFaster</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="co">// `cheetahify()` *synchronously* calls speedy.</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="at">cheetahify</span>(<span class="kw">function</span> <span class="at">speedy</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;oh no!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="at">makeFaster</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">// will throw:</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">//   /home/gbusey/file.js:6</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">//       throw new Error(&#39;oh no!&#39;);</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">//           ^</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">//   Error: oh no!</span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">//       at speedy (/home/gbusey/file.js:6:11)</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="co">//       at makeFaster (/home/gbusey/file.js:5:3)</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="co">//       at Object.&lt;anonymous&gt; (/home/gbusey/file.js:10:1)</span></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">//       at Module._compile (module.js:456:26)</span></a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="co">//       at Object.Module._extensions..js (module.js:474:10)</span></a>
+<a class="sourceLine" id="cb11-21" title="21"><span class="co">//       at Module.load (module.js:356:32)</span></a>
+<a class="sourceLine" id="cb11-22" title="22"><span class="co">//       at Function.Module._load (module.js:312:12)</span></a>
+<a class="sourceLine" id="cb11-23" title="23"><span class="co">//       at Function.Module.runMain (module.js:497:10)</span></a>
+<a class="sourceLine" id="cb11-24" title="24"><span class="co">//       at startup (node.js:119:16)</span></a>
+<a class="sourceLine" id="cb11-25" title="25"><span class="co">//       at node.js:906:3</span></a></code></pre>
+    </div>
+    <p>The location information will be one of:</p>
+    <ul>
+      <li>
+        <code>native</code>, if the frame represents a call internal to V8 (as
+        in <code>[].forEach</code>).
+      </li>
+      <li>
+        <code>plain-filename.js:line:column</code>, if the frame represents a
+        call internal to Node.js.
+      </li>
+      <li>
+        <code>/absolute/path/to/file.js:line:column</code>, if the frame
+        represents a call in a user program, or its dependencies.
+      </li>
+    </ul>
+    <p>
+      The string representing the stack trace is lazily generated when the
+      <code>error.stack</code> property is <strong>accessed</strong>.
+    </p>
+    <p>
+      The number of frames captured by the stack trace is bounded by the smaller
+      of <code>Error.stackTraceLimit</code> or the number of available frames on
+      the current event loop tick.
+    </p>
+    <h2 id="class-assertionerror">Class: <code>AssertionError</code></h2>
+    <ul>
+      <li>Extends: {errors.Error}</li>
+    </ul>
+    <p>
+      Indicates the failure of an assertion. For details, see
+      <a href="assert.md#assert_class_assert_assertionerror"
+        ><code>Class: assert.AssertionError</code></a
+      >.
+    </p>
+    <h2 id="class-rangeerror">Class: <code>RangeError</code></h2>
+    <ul>
+      <li>Extends: {errors.Error}</li>
+    </ul>
+    <p>
+      Indicates that a provided argument was not within the set or range of
+      acceptable values for a function; whether that is a numeric range, or
+      outside the set of options for a given function parameter.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="at">require</span>(<span class="st">&#39;net&#39;</span>).<span class="at">connect</span>(<span class="op">-</span><span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">// Throws &quot;RangeError: &quot;port&quot; option should be &gt;= 0 and &lt; 65536: -1&quot;</span></a></code></pre>
+    </div>
+    <p>
+      Node.js will generate and throw <code>RangeError</code> instances
+      <em>immediately</em> as a form of argument validation.
+    </p>
+    <h2 id="class-referenceerror">Class: <code>ReferenceError</code></h2>
+    <ul>
+      <li>Extends: {errors.Error}</li>
+    </ul>
+    <p>
+      Indicates that an attempt is being made to access a variable that is not
+      defined. Such errors commonly indicate typos in code, or an otherwise
+      broken program.
+    </p>
+    <p>
+      While client code may generate and propagate these errors, in practice,
+      only V8 will do so.
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1">doesNotExist<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">// Throws ReferenceError, doesNotExist is not a variable in this program.</span></a></code></pre>
+    </div>
+    <p>
+      Unless an application is dynamically generating and running code,
+      <code>ReferenceError</code> instances indicate a bug in the code or its
+      dependencies.
+    </p>
+    <h2 id="class-syntaxerror">Class: <code>SyntaxError</code></h2>
+    <ul>
+      <li>Extends: {errors.Error}</li>
+    </ul>
+    <p>
+      Indicates that a program is not valid JavaScript. These errors may only be
+      generated and propagated as a result of code evaluation. Code evaluation
+      may happen as a result of <code>eval</code>, <code>Function</code>,
+      <code>require</code>, or <a href="vm.md">vm</a>. These errors are almost
+      always indicative of a broken program.
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="at">require</span>(<span class="st">&#39;vm&#39;</span>).<span class="at">runInThisContext</span>(<span class="st">&#39;binary ! isNotOk&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="co">// &#39;err&#39; will be a SyntaxError.</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      <code>SyntaxError</code> instances are unrecoverable in the context that
+      created them – they may only be caught by other contexts.
+    </p>
+    <h2 id="class-systemerror">Class: <code>SystemError</code></h2>
+    <ul>
+      <li>Extends: {errors.Error}</li>
+    </ul>
+    <p>
+      Node.js generates system errors when exceptions occur within its runtime
+      environment. These usually occur when an application violates an operating
+      system constraint. For example, a system error will occur if an
+      application attempts to read a file that does not exist.
+    </p>
+    <ul>
+      <li>
+        <code>address</code> {string} If present, the address to which a network
+        connection failed
+      </li>
+      <li><code>code</code> {string} The string error code</li>
+      <li>
+        <code>dest</code> {string} If present, the file path destination when
+        reporting a file system error
+      </li>
+      <li><code>errno</code> {number} The system-provided error number</li>
+      <li>
+        <code>info</code> {Object} If present, extra details about the error
+        condition
+      </li>
+      <li>
+        <code>message</code> {string} A system-provided human-readable
+        description of the error
+      </li>
+      <li>
+        <code>path</code> {string} If present, the file path when reporting a
+        file system error
+      </li>
+      <li>
+        <code>port</code> {number} If present, the network connection port that
+        is not available
+      </li>
+      <li>
+        <code>syscall</code> {string} The name of the system call that triggered
+        the error
+      </li>
+    </ul>
+    <h3 id="error.address"><code>error.address</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      If present, <code>error.address</code> is a string describing the address
+      to which a network connection failed.
+    </p>
+    <h3 id="error.code-1"><code>error.code</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>error.code</code> property is a string representing the error
+      code.
+    </p>
+    <h3 id="error.dest"><code>error.dest</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      If present, <code>error.dest</code> is the file path destination when
+      reporting a file system error.
+    </p>
+    <h3 id="error.errno"><code>error.errno</code></h3>
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      The <code>error.errno</code> property is a negative number which
+      corresponds to the error code defined in
+      <a href="https://docs.libuv.org/en/v1.x/errors.html"
+        ><code>libuv Error handling</code></a
+      >.
+    </p>
+    <p>
+      On Windows the error number provided by the system will be normalized by
+      libuv.
+    </p>
+    <p>
+      To get the string representation of the error code, use
+      <a href="util.md#util_util_getsystemerrorname_err"
+        ><code>util.getSystemErrorName(error.errno)</code></a
+      >.
+    </p>
+    <h3 id="error.info"><code>error.info</code></h3>
+    <ul>
+      <li>{Object}</li>
+    </ul>
+    <p>
+      If present, <code>error.info</code> is an object with details about the
+      error condition.
+    </p>
+    <h3 id="error.message-1"><code>error.message</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      <code>error.message</code> is a system-provided human-readable description
+      of the error.
+    </p>
+    <h3 id="error.path"><code>error.path</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      If present, <code>error.path</code> is a string containing a relevant
+      invalid pathname.
+    </p>
+    <h3 id="error.port"><code>error.port</code></h3>
+    <ul>
+      <li>{number}</li>
+    </ul>
+    <p>
+      If present, <code>error.port</code> is the network connection port that is
+      not available.
+    </p>
+    <h3 id="error.syscall"><code>error.syscall</code></h3>
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>
+      The <code>error.syscall</code> property is a string describing the
+      <a href="https://man7.org/linux/man-pages/man2/syscalls.2.html"
+        >syscall</a
+      >
+      that failed.
+    </p>
+    <h3 id="common-system-errors">Common system errors</h3>
+    <p>
+      This is a list of system errors commonly-encountered when writing a
+      Node.js program. For a comprehensive list, see the
+      <a href="https://man7.org/linux/man-pages/man3/errno.3.html"
+        ><code>errno</code>(3) man page</a
+      >.
+    </p>
+    <ul>
+      <li>
+        <p>
+          <code>EACCES</code> (Permission denied): An attempt was made to access
+          a file in a way forbidden by its file access permissions.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EADDRINUSE</code> (Address already in use): An attempt to bind a
+          server (<a href="net.md"><code>net</code></a
+          >, <a href="http.md"><code>http</code></a
+          >, or <a href="https.md"><code>https</code></a
+          >) to a local address failed due to another server on the local system
+          already occupying that address.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ECONNREFUSED</code> (Connection refused): No connection could be
+          made because the target machine actively refused it. This usually
+          results from trying to connect to a service that is inactive on the
+          foreign host.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ECONNRESET</code> (Connection reset by peer): A connection was
+          forcibly closed by a peer. This normally results from a loss of the
+          connection on the remote socket due to a timeout or reboot. Commonly
+          encountered via the <a href="http.md"><code>http</code></a> and
+          <a href="net.md"><code>net</code></a> modules.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EEXIST</code> (File exists): An existing file was the target of
+          an operation that required that the target not exist.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EISDIR</code> (Is a directory): An operation expected a file,
+          but the given pathname was a directory.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EMFILE</code> (Too many open files in system): Maximum number of
+          <a href="https://en.wikipedia.org/wiki/File_descriptor"
+            >file descriptors</a
+          >
+          allowable on the system has been reached, and requests for another
+          descriptor cannot be fulfilled until at least one has been closed.
+          This is encountered when opening many files at once in parallel,
+          especially on systems (in particular, macOS) where there is a low file
+          descriptor limit for processes. To remedy a low limit, run
+          <code>ulimit -n 2048</code> in the same shell that will run the
+          Node.js process.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ENOENT</code> (No such file or directory): Commonly raised by
+          <a href="fs.md"><code>fs</code></a> operations to indicate that a
+          component of the specified pathname does not exist. No entity (file or
+          directory) could be found by the given path.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ENOTDIR</code> (Not a directory): A component of the given
+          pathname existed, but was not a directory as expected. Commonly raised
+          by
+          <a href="fs.md#fs_fs_readdir_path_options_callback"
+            ><code>fs.readdir</code></a
+          >.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ENOTEMPTY</code> (Directory not empty): A directory with entries
+          was the target of an operation that requires an empty directory,
+          usually
+          <a href="fs.md#fs_fs_unlink_path_callback"><code>fs.unlink</code></a
+          >.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ENOTFOUND</code> (DNS lookup failed): Indicates a DNS failure of
+          either <code>EAI_NODATA</code> or <code>EAI_NONAME</code>. This is not
+          a standard POSIX error.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EPERM</code> (Operation not permitted): An attempt was made to
+          perform an operation that requires elevated privileges.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>EPIPE</code> (Broken pipe): A write on a pipe, socket, or FIFO
+          for which there is no process to read the data. Commonly encountered
+          at the <a href="net.md"><code>net</code></a> and
+          <a href="http.md"><code>http</code></a> layers, indicative that the
+          remote side of the stream being written to has been closed.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>ETIMEDOUT</code> (Operation timed out): A connect or send
+          request failed because the connected party did not properly respond
+          after a period of time. Usually encountered by
+          <a href="http.md"><code>http</code></a> or
+          <a href="net.md"><code>net</code></a
+          >. Often a sign that a <code>socket.end()</code> was not properly
+          called.
+        </p>
+      </li>
+    </ul>
+    <h2 id="class-typeerror">Class: <code>TypeError</code></h2>
+    <ul>
+      <li>Extends {errors.Error}</li>
+    </ul>
+    <p>
+      Indicates that a provided argument is not an allowable type. For example,
+      passing a function to a parameter which expects a string would be a
+      <code>TypeError</code>.
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="at">require</span>(<span class="st">&#39;url&#39;</span>).<span class="at">parse</span>(() <span class="kw">=&gt;</span> <span class="op">{</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">// Throws TypeError, since it expected a string.</span></a></code></pre>
+    </div>
+    <p>
+      Node.js will generate and throw <code>TypeError</code> instances
+      <em>immediately</em> as a form of argument validation.
+    </p>
+    <h2 id="exceptions-vs.-errors">Exceptions vs. errors</h2>
+    <!--type=misc-->
+    <p>
+      A JavaScript exception is a value that is thrown as a result of an invalid
+      operation or as the target of a <code>throw</code> statement. While it is
+      not required that these values are instances of <code>Error</code> or
+      classes which inherit from <code>Error</code>, all exceptions thrown by
+      Node.js or the JavaScript runtime <em>will</em> be instances of
+      <code>Error</code>.
+    </p>
+    <p>
+      Some exceptions are <em>unrecoverable</em> at the JavaScript layer. Such
+      exceptions will <em>always</em> cause the Node.js process to crash.
+      Examples include <code>assert()</code> checks or
+      <code>abort()</code> calls in the C++ layer.
+    </p>
+    <h2 id="openssl-errors">OpenSSL errors</h2>
+    <p>
+      Errors originating in <code>crypto</code> or <code>tls</code> are of class
+      <code>Error</code>, and in addition to the standard <code>.code</code> and
+      <code>.message</code> properties, may have some additional
+      OpenSSL-specific properties.
+    </p>
+    <h3 id="error.opensslerrorstack"><code>error.opensslErrorStack</code></h3>
+    <p>
+      An array of errors that can give context to where in the OpenSSL library
+      an error originates from.
+    </p>
+    <h3 id="error.function"><code>error.function</code></h3>
+    <p>The OpenSSL function the error originates in.</p>
+    <h3 id="error.library"><code>error.library</code></h3>
+    <p>The OpenSSL library the error originates in.</p>
+    <h3 id="error.reason"><code>error.reason</code></h3>
+    <p>A human-readable string describing the reason for the error.</p>
+    <p><a id="nodejs-error-codes"></a> ## Node.js error codes</p>
+    <p>
+      <a id="ABORT_ERR"></a> ### <code>ABORT_ERR</code>
+      <!-- YAML
+added: v15.0.0
+-->
+      Used when an operation has been aborted (typically using an
+      <code>AbortController</code>).
+    </p>
+    <p>
+      APIs <em>not</em> using <code>AbortSignal</code>s typically do not raise
+      an error with this code.
+    </p>
+    <p>
+      This code does not use the regular <code>ERR_*</code> convention Node.js
+      errors use in order to be compatible with the web platform’s
+      <code>AbortError</code>.
+    </p>
+    <p>
+      <a id="ERR_AMBIGUOUS_ARGUMENT"></a> ###
+      <code>ERR_AMBIGUOUS_ARGUMENT</code>
+    </p>
+    <p>
+      A function argument is being used in a way that suggests that the function
+      signature may be misunderstood. This is thrown by the
+      <code>assert</code> module when the <code>message</code> parameter in
+      <code>assert.throws(block, message)</code> matches the error message
+      thrown by <code>block</code> because that usage suggests that the user
+      believes <code>message</code> is the expected message rather than the
+      message the <code>AssertionError</code> will display if
+      <code>block</code> does not throw.
+    </p>
+    <p>
+      <a id="ERR_ARG_NOT_ITERABLE"></a> ### <code>ERR_ARG_NOT_ITERABLE</code>
+    </p>
+    <p>
+      An iterable argument (i.e. a value that works with
+      <code>for...of</code> loops) was required, but not provided to a Node.js
+      API.
+    </p>
+    <p><a id="ERR_ASSERTION"></a> ### <code>ERR_ASSERTION</code></p>
+    <p>
+      A special type of error that can be triggered whenever Node.js detects an
+      exceptional logic violation that should never occur. These are raised
+      typically by the <code>assert</code> module.
+    </p>
+    <p><a id="ERR_ASYNC_CALLBACK"></a> ### <code>ERR_ASYNC_CALLBACK</code></p>
+    <p>
+      An attempt was made to register something that is not a function as an
+      <code>AsyncHooks</code> callback.
+    </p>
+    <p><a id="ERR_ASYNC_TYPE"></a> ### <code>ERR_ASYNC_TYPE</code></p>
+    <p>
+      The type of an asynchronous resource was invalid. Users are also able to
+      define their own types if using the public embedder API.
+    </p>
+    <p>
+      <a id="ERR_BROTLI_COMPRESSION_FAILED"></a> ###
+      <code>ERR_BROTLI_COMPRESSION_FAILED</code>
+    </p>
+    <p>Data passed to a Brotli stream was not successfully compressed.</p>
+    <p>
+      <a id="ERR_BROTLI_INVALID_PARAM"></a> ###
+      <code>ERR_BROTLI_INVALID_PARAM</code>
+    </p>
+    <p>
+      An invalid parameter key was passed during construction of a Brotli
+      stream.
+    </p>
+    <p>
+      <a id="ERR_BUFFER_CONTEXT_NOT_AVAILABLE"></a> ###
+      <code>ERR_BUFFER_CONTEXT_NOT_AVAILABLE</code>
+    </p>
+    <p>
+      An attempt was made to create a Node.js <code>Buffer</code> instance from
+      addon or embedder code, while in a JS engine Context that is not
+      associated with a Node.js instance. The data passed to the
+      <code>Buffer</code> method will have been released by the time the method
+      returns.
+    </p>
+    <p>
+      When encountering this error, a possible alternative to creating a
+      <code>Buffer</code> instance is to create a normal
+      <code>Uint8Array</code>, which only differs in the prototype of the
+      resulting object. <code>Uint8Array</code>s are generally accepted in all
+      Node.js core APIs where <code>Buffer</code>s are; they are available in
+      all Contexts.
+    </p>
+    <p>
+      <a id="ERR_BUFFER_OUT_OF_BOUNDS"></a> ###
+      <code>ERR_BUFFER_OUT_OF_BOUNDS</code>
+    </p>
+    <p>
+      An operation outside the bounds of a <code>Buffer</code> was attempted.
+    </p>
+    <p>
+      <a id="ERR_BUFFER_TOO_LARGE"></a> ### <code>ERR_BUFFER_TOO_LARGE</code>
+    </p>
+    <p>
+      An attempt has been made to create a <code>Buffer</code> larger than the
+      maximum allowed size.
+    </p>
+    <p>
+      <a id="ERR_CANNOT_WATCH_SIGINT"></a> ###
+      <code>ERR_CANNOT_WATCH_SIGINT</code>
+    </p>
+    <p>Node.js was unable to watch for the <code>SIGINT</code> signal.</p>
+    <p>
+      <a id="ERR_CHILD_CLOSED_BEFORE_REPLY"></a> ###
+      <code>ERR_CHILD_CLOSED_BEFORE_REPLY</code>
+    </p>
+    <p>A child process was closed before the parent received a reply.</p>
+    <p>
+      <a id="ERR_CHILD_PROCESS_IPC_REQUIRED"></a> ###
+      <code>ERR_CHILD_PROCESS_IPC_REQUIRED</code>
+    </p>
+    <p>
+      Used when a child process is being forked without specifying an IPC
+      channel.
+    </p>
+    <p>
+      <a id="ERR_CHILD_PROCESS_STDIO_MAXBUFFER"></a> ###
+      <code>ERR_CHILD_PROCESS_STDIO_MAXBUFFER</code>
+    </p>
+    <p>
+      Used when the main process is trying to read data from the child process’s
+      STDERR/STDOUT, and the data’s length is longer than the
+      <code>maxBuffer</code> option.
+    </p>
+    <p>
+      <a id="ERR_CLOSED_MESSAGE_PORT"></a> ###
+      <code>ERR_CLOSED_MESSAGE_PORT</code>
+      <!--
+added:
+  - v16.2.0
+  - v14.17.1
+changes:
+  - version: 11.12.0
+    pr-url: https://github.com/nodejs/node/pull/26487
+    description: The error message was removed.
+  - version:
+      - v16.2.0
+      - v14.17.1
+    pr-url: https://github.com/nodejs/node/pull/38510
+    description: The error message was reintroduced.
+-->
+    </p>
+    <p>
+      There was an attempt to use a <code>MessagePort</code> instance in a
+      closed state, usually after <code>.close()</code> has been called.
+    </p>
+    <p>
+      <a id="ERR_CONSOLE_WRITABLE_STREAM"></a> ###
+      <code>ERR_CONSOLE_WRITABLE_STREAM</code>
+    </p>
+    <p>
+      <code>Console</code> was instantiated without <code>stdout</code> stream,
+      or <code>Console</code> has a non-writable <code>stdout</code> or
+      <code>stderr</code> stream.
+    </p>
+    <p>
+      <a id="ERR_CONSTRUCT_CALL_INVALID"></a> ###
+      <code>ERR_CONSTRUCT_CALL_INVALID</code>
+      <!--
+added: v12.5.0
+-->
+    </p>
+    <p>A class constructor was called that is not callable.</p>
+    <p>
+      <a id="ERR_CONSTRUCT_CALL_REQUIRED"></a> ###
+      <code>ERR_CONSTRUCT_CALL_REQUIRED</code>
+    </p>
+    <p>A constructor for a class was called without <code>new</code>.</p>
+    <p>
+      <a id="ERR_CONTEXT_NOT_INITIALIZED"></a> ###
+      <code>ERR_CONTEXT_NOT_INITIALIZED</code>
+    </p>
+    <p>
+      The vm context passed into the API is not yet initialized. This could
+      happen when an error occurs (and is caught) during the creation of the
+      context, for example, when the allocation fails or the maximum call stack
+      size is reached when the context is created.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED"></a> ###
+      <code>ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED</code>
+    </p>
+    <p>
+      A client certificate engine was requested that is not supported by the
+      version of OpenSSL being used.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_ECDH_INVALID_FORMAT"></a> ###
+      <code>ERR_CRYPTO_ECDH_INVALID_FORMAT</code>
+    </p>
+    <p>
+      An invalid value for the <code>format</code> argument was passed to the
+      <code>crypto.ECDH()</code> class <code>getPublicKey()</code> method.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY"></a> ###
+      <code>ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY</code>
+    </p>
+    <p>
+      An invalid value for the <code>key</code> argument has been passed to the
+      <code>crypto.ECDH()</code> class <code>computeSecret()</code> method. It
+      means that the public key lies outside of the elliptic curve.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_ENGINE_UNKNOWN"></a> ###
+      <code>ERR_CRYPTO_ENGINE_UNKNOWN</code>
+    </p>
+    <p>
+      An invalid crypto engine identifier was passed to
+      <a href="crypto.md#crypto_crypto_setengine_engine_flags"
+        ><code>require('crypto').setEngine()</code></a
+      >.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_FIPS_FORCED"></a> ###
+      <code>ERR_CRYPTO_FIPS_FORCED</code>
+    </p>
+    <p>
+      The
+      <a href="cli.md#cli_force_fips"><code>--force-fips</code></a> command-line
+      argument was used but there was an attempt to enable or disable FIPS mode
+      in the <code>crypto</code> module.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_FIPS_UNAVAILABLE"></a> ###
+      <code>ERR_CRYPTO_FIPS_UNAVAILABLE</code>
+    </p>
+    <p>
+      An attempt was made to enable or disable FIPS mode, but FIPS mode was not
+      available.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_HASH_FINALIZED"></a> ###
+      <code>ERR_CRYPTO_HASH_FINALIZED</code>
+    </p>
+    <p>
+      <a href="crypto.md#crypto_hash_digest_encoding"
+        ><code>hash.digest()</code></a
+      >
+      was called multiple times. The <code>hash.digest()</code> method must be
+      called no more than one time per instance of a <code>Hash</code> object.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_HASH_UPDATE_FAILED"></a> ###
+      <code>ERR_CRYPTO_HASH_UPDATE_FAILED</code>
+    </p>
+    <p>
+      <a href="crypto.md#crypto_hash_update_data_inputencoding"
+        ><code>hash.update()</code></a
+      >
+      failed for any reason. This should rarely, if ever, happen.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_INCOMPATIBLE_KEY"></a> ###
+      <code>ERR_CRYPTO_INCOMPATIBLE_KEY</code>
+    </p>
+    <p>The given crypto keys are incompatible with the attempted operation.</p>
+    <p>
+      <a id="ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS"></a> ###
+      <code>ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS</code>
+    </p>
+    <p>
+      The selected public or private key encoding is incompatible with other
+      options.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_INITIALIZATION_FAILED"></a> ###
+      <code>ERR_CRYPTO_INITIALIZATION_FAILED</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>Initialization of the crypto subsystem failed.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_AUTH_TAG"></a> ###
+      <code>ERR_CRYPTO_INVALID_AUTH_TAG</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid authentication tag was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_COUNTER"></a> ###
+      <code>ERR_CRYPTO_INVALID_COUNTER</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid counter was provided for a counter-mode cipher.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_CURVE"></a> ###
+      <code>ERR_CRYPTO_INVALID_CURVE</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid elliptic-curve was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_DIGEST"></a> ###
+      <code>ERR_CRYPTO_INVALID_DIGEST</code>
+    </p>
+    <p>
+      An invalid
+      <a href="crypto.md#crypto_crypto_gethashes">crypto digest algorithm</a>
+      was specified.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_IV"></a> ### <code>ERR_CRYPTO_INVALID_IV</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid initialization vector was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_JWK"></a> ###
+      <code>ERR_CRYPTO_INVALID_JWK</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid JSON Web Key was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE"></a> ###
+      <code>ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE</code>
+    </p>
+    <p>
+      The given crypto key object’s type is invalid for the attempted operation.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_KEYLEN"></a> ###
+      <code>ERR_CRYPTO_INVALID_KEYLEN</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid key length was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_KEYPAIR"></a> ###
+      <code>ERR_CRYPTO_INVALID_KEYPAIR</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid key pair was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_KEYTYPE"></a> ###
+      <code>ERR_CRYPTO_INVALID_KEYTYPE</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid key type was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_MESSAGELEN"></a> ###
+      <code>ERR_CRYPTO_INVALID_MESSAGELEN</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid message length was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_SCRYPT_PARAMS"></a> ###
+      <code>ERR_CRYPTO_INVALID_SCRYPT_PARAMS</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>Invalid scrypt algorithm parameters were provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_STATE"></a> ###
+      <code>ERR_CRYPTO_INVALID_STATE</code>
+    </p>
+    <p>
+      A crypto method was used on an object that was in an invalid state. For
+      instance, calling
+      <a href="crypto.md#crypto_cipher_getauthtag"
+        ><code>cipher.getAuthTag()</code></a
+      >
+      before calling <code>cipher.final()</code>.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_INVALID_TAG_LENGTH"></a> ###
+      <code>ERR_CRYPTO_INVALID_TAG_LENGTH</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An invalid authentication tag length was provided.</p>
+    <p>
+      <a id="ERR_CRYPTO_JOB_INIT_FAILED"></a> ###
+      <code>ERR_CRYPTO_JOB_INIT_FAILED</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>Initialization of an asynchronous crypto operation failed.</p>
+    <p>
+      <a id="ERR_CRYPTO_JWK_UNSUPPORTED_CURVE"></a> ###
+      <code>ERR_CRYPTO_JWK_UNSUPPORTED_CURVE</code>
+    </p>
+    <p>
+      Key’s Elliptic Curve is not registered for use in the
+      <a
+        href="https://www.iana.org/assignments/jose/jose.xhtml#web-key-elliptic-curve"
+        >JSON Web Key Elliptic Curve Registry</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE"></a> ###
+      <code>ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE</code>
+    </p>
+    <p>
+      Key’s Asymmetric Key Type is not registered for use in the
+      <a href="https://www.iana.org/assignments/jose/jose.xhtml#web-key-types"
+        >JSON Web Key Types Registry</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_OPERATION_FAILED"></a> ###
+      <code>ERR_CRYPTO_OPERATION_FAILED</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>A crypto operation failed for an otherwise unspecified reason.</p>
+    <p>
+      <a id="ERR_CRYPTO_PBKDF2_ERROR"></a> ###
+      <code>ERR_CRYPTO_PBKDF2_ERROR</code>
+    </p>
+    <p>
+      The PBKDF2 algorithm failed for unspecified reasons. OpenSSL does not
+      provide more details and therefore neither does Node.js.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_SCRYPT_INVALID_PARAMETER"></a> ###
+      <code>ERR_CRYPTO_SCRYPT_INVALID_PARAMETER</code>
+    </p>
+    <p>
+      One or more
+      <a
+        href="crypto.md#crypto_crypto_scrypt_password_salt_keylen_options_callback"
+        ><code>crypto.scrypt()</code></a
+      >
+      or
+      <a href="crypto.md#crypto_crypto_scryptsync_password_salt_keylen_options"
+        ><code>crypto.scryptSync()</code></a
+      >
+      parameters are outside their legal range.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_SCRYPT_NOT_SUPPORTED"></a> ###
+      <code>ERR_CRYPTO_SCRYPT_NOT_SUPPORTED</code>
+    </p>
+    <p>
+      Node.js was compiled without <code>scrypt</code> support. Not possible
+      with the official release binaries but can happen with custom builds,
+      including distro builds.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_SIGN_KEY_REQUIRED"></a> ###
+      <code>ERR_CRYPTO_SIGN_KEY_REQUIRED</code>
+    </p>
+    <p>
+      A signing <code>key</code> was not provided to the
+      <a href="crypto.md#crypto_sign_sign_privatekey_outputencoding"
+        ><code>sign.sign()</code></a
+      >
+      method.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH"></a> ###
+      <code>ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH</code>
+    </p>
+    <p>
+      <a href="crypto.md#crypto_crypto_timingsafeequal_a_b"
+        ><code>crypto.timingSafeEqual()</code></a
+      >
+      was called with <code>Buffer</code>, <code>TypedArray</code>, or
+      <code>DataView</code> arguments of different lengths.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_UNKNOWN_CIPHER"></a> ###
+      <code>ERR_CRYPTO_UNKNOWN_CIPHER</code>
+    </p>
+    <p>An unknown cipher was specified.</p>
+    <p>
+      <a id="ERR_CRYPTO_UNKNOWN_DH_GROUP"></a> ###
+      <code>ERR_CRYPTO_UNKNOWN_DH_GROUP</code>
+    </p>
+    <p>
+      An unknown Diffie-Hellman group name was given. See
+      <a href="crypto.md#crypto_crypto_getdiffiehellman_groupname"
+        ><code>crypto.getDiffieHellman()</code></a
+      >
+      for a list of valid group names.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_UNSUPPORTED_OPERATION"></a> ###
+      <code>ERR_CRYPTO_UNSUPPORTED_OPERATION</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>An attempt to invoke an unsupported crypto operation was made.</p>
+    <p>
+      <a id="ERR_DEBUGGER_ERROR"></a> ### <code>ERR_DEBUGGER_ERROR</code>
+      <!-- YAML
+added:
+  - v16.4.0
+  - v14.17.4
+-->
+    </p>
+    <p>An error occurred with the <a href="debugger.md">debugger</a>.</p>
+    <p>
+      <a id="ERR_DEBUGGER_STARTUP_ERROR"></a> ###
+      <code>ERR_DEBUGGER_STARTUP_ERROR</code>
+      <!-- YAML
+added:
+  - v16.4.0
+  - v14.17.4
+-->
+    </p>
+    <p>
+      The <a href="debugger.md">debugger</a> timed out waiting for the required
+      host/port to be free.
+    </p>
+    <p>
+      <a id="ERR_DLOPEN_FAILED"></a> ### <code>ERR_DLOPEN_FAILED</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>A call to <code>process.dlopen()</code> failed.</p>
+    <p><a id="ERR_DIR_CLOSED"></a> ### <code>ERR_DIR_CLOSED</code></p>
+    <p>
+      The <a href="fs.md#fs_class_fs_dir"><code>fs.Dir</code></a> was previously
+      closed.
+    </p>
+    <p>
+      <a id="ERR_DIR_CONCURRENT_OPERATION"></a> ###
+      <code>ERR_DIR_CONCURRENT_OPERATION</code>
+      <!-- YAML
+added: v14.3.0
+-->
+    </p>
+    <p>
+      A synchronous read or close call was attempted on an
+      <a href="fs.md#fs_class_fs_dir"><code>fs.Dir</code></a> which has ongoing
+      asynchronous operations.
+    </p>
+    <p>
+      <a id="ERR_DNS_SET_SERVERS_FAILED"></a> ###
+      <code>ERR_DNS_SET_SERVERS_FAILED</code>
+    </p>
+    <p><code>c-ares</code> failed to set the DNS server.</p>
+    <p>
+      <a id="ERR_DOMAIN_CALLBACK_NOT_AVAILABLE"></a> ###
+      <code>ERR_DOMAIN_CALLBACK_NOT_AVAILABLE</code>
+    </p>
+    <p>
+      The <code>domain</code> module was not usable since it could not establish
+      the required error handling hooks, because
+      <a
+        href="process.md#process_process_setuncaughtexceptioncapturecallback_fn"
+        ><code>process.setUncaughtExceptionCaptureCallback()</code></a
+      >
+      had been called at an earlier point in time.
+    </p>
+    <p>
+      <a id="ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE"></a> ###
+      <code>ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE</code>
+    </p>
+    <p>
+      <a
+        href="process.md#process_process_setuncaughtexceptioncapturecallback_fn"
+        ><code>process.setUncaughtExceptionCaptureCallback()</code></a
+      >
+      could not be called because the <code>domain</code> module has been loaded
+      at an earlier point in time.
+    </p>
+    <p>
+      The stack trace is extended to include the point in time at which the
+      <code>domain</code> module had been loaded.
+    </p>
+    <p>
+      <a id="ERR_ENCODING_INVALID_ENCODED_DATA"></a> ###
+      <code>ERR_ENCODING_INVALID_ENCODED_DATA</code>
+    </p>
+    <p>
+      Data provided to <code>TextDecoder()</code> API was invalid according to
+      the encoding provided.
+    </p>
+    <p>
+      <a id="ERR_ENCODING_NOT_SUPPORTED"></a> ###
+      <code>ERR_ENCODING_NOT_SUPPORTED</code>
+    </p>
+    <p>
+      Encoding provided to <code>TextDecoder()</code> API was not one of the
+      <a href="util.md#util_whatwg_supported_encodings"
+        >WHATWG Supported Encodings</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_EVAL_ESM_CANNOT_PRINT"></a> ###
+      <code>ERR_EVAL_ESM_CANNOT_PRINT</code>
+    </p>
+    <p><code>--print</code> cannot be used with ESM input.</p>
+    <p><a id="ERR_EVENT_RECURSION"></a> ### <code>ERR_EVENT_RECURSION</code></p>
+    <p>
+      Thrown when an attempt is made to recursively dispatch an event on
+      <code>EventTarget</code>.
+    </p>
+    <p>
+      <a id="ERR_EXECUTION_ENVIRONMENT_NOT_AVAILABLE"></a> ###
+      <code>ERR_EXECUTION_ENVIRONMENT_NOT_AVAILABLE</code>
+    </p>
+    <p>
+      The JS execution context is not associated with a Node.js environment.
+      This may occur when Node.js is used as an embedded library and some hooks
+      for the JS engine are not set up properly.
+    </p>
+    <p>
+      <a id="ERR_FALSY_VALUE_REJECTION"></a> ###
+      <code>ERR_FALSY_VALUE_REJECTION</code>
+    </p>
+    <p>
+      A <code>Promise</code> that was callbackified via
+      <code>util.callbackify()</code> was rejected with a falsy value.
+    </p>
+    <p>
+      <a id="ERR_FEATURE_UNAVAILABLE_ON_PLATFORM"></a> ###
+      <code>ERR_FEATURE_UNAVAILABLE_ON_PLATFORM</code>
+      <!-- YAML
+added: v14.0.0
+-->
+    </p>
+    <p>
+      Used when a feature that is not available to the current platform which is
+      running Node.js is used.
+    </p>
+    <p><a id="ERR_FS_EISDIR"></a> ### <code>ERR_FS_EISDIR</code></p>
+    <p>Path is a directory.</p>
+    <p>
+      <a id="ERR_FS_FILE_TOO_LARGE"></a> ### <code>ERR_FS_FILE_TOO_LARGE</code>
+    </p>
+    <p>
+      An attempt has been made to read a file whose size is larger than the
+      maximum allowed size for a <code>Buffer</code>.
+    </p>
+    <p>
+      <a id="ERR_FS_INVALID_SYMLINK_TYPE"></a> ###
+      <code>ERR_FS_INVALID_SYMLINK_TYPE</code>
+    </p>
+    <p>
+      An invalid symlink type was passed to the
+      <a href="fs.md#fs_fs_symlink_target_path_type_callback"
+        ><code>fs.symlink()</code></a
+      >
+      or
+      <a href="fs.md#fs_fs_symlinksync_target_path_type"
+        ><code>fs.symlinkSync()</code></a
+      >
+      methods.
+    </p>
+    <p>
+      <a id="ERR_HTTP_HEADERS_SENT"></a> ### <code>ERR_HTTP_HEADERS_SENT</code>
+    </p>
+    <p>
+      An attempt was made to add more headers after the headers had already been
+      sent.
+    </p>
+    <p>
+      <a id="ERR_HTTP_INVALID_HEADER_VALUE"></a> ###
+      <code>ERR_HTTP_INVALID_HEADER_VALUE</code>
+    </p>
+    <p>An invalid HTTP header value was specified.</p>
+    <p>
+      <a id="ERR_HTTP_INVALID_STATUS_CODE"></a> ###
+      <code>ERR_HTTP_INVALID_STATUS_CODE</code>
+    </p>
+    <p>Status code was outside the regular status code range (100-999).</p>
+    <p>
+      <a id="ERR_HTTP_REQUEST_TIMEOUT"></a> ###
+      <code>ERR_HTTP_REQUEST_TIMEOUT</code>
+    </p>
+    <p>The client has not sent the entire request within the allowed time.</p>
+    <p>
+      <a id="ERR_HTTP_SOCKET_ENCODING"></a> ###
+      <code>ERR_HTTP_SOCKET_ENCODING</code>
+    </p>
+    <p>
+      Changing the socket encoding is not allowed per
+      <a href="https://tools.ietf.org/html/rfc7230#section-3"
+        >RFC 7230 Section 3</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_HTTP_TRAILER_INVALID"></a> ###
+      <code>ERR_HTTP_TRAILER_INVALID</code>
+    </p>
+    <p>
+      The <code>Trailer</code> header was set even though the transfer encoding
+      does not support that.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_ALTSVC_INVALID_ORIGIN"></a> ###
+      <code>ERR_HTTP2_ALTSVC_INVALID_ORIGIN</code>
+    </p>
+    <p>HTTP/2 ALTSVC frames require a valid origin.</p>
+    <p>
+      <a id="ERR_HTTP2_ALTSVC_LENGTH"></a> ###
+      <code>ERR_HTTP2_ALTSVC_LENGTH</code>
+    </p>
+    <p>
+      HTTP/2 ALTSVC frames are limited to a maximum of 16,382 payload bytes.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_CONNECT_AUTHORITY"></a> ###
+      <code>ERR_HTTP2_CONNECT_AUTHORITY</code>
+    </p>
+    <p>
+      For HTTP/2 requests using the <code>CONNECT</code> method, the
+      <code>:authority</code> pseudo-header is required.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_CONNECT_PATH"></a> ###
+      <code>ERR_HTTP2_CONNECT_PATH</code>
+    </p>
+    <p>
+      For HTTP/2 requests using the <code>CONNECT</code> method, the
+      <code>:path</code> pseudo-header is forbidden.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_CONNECT_SCHEME"></a> ###
+      <code>ERR_HTTP2_CONNECT_SCHEME</code>
+    </p>
+    <p>
+      For HTTP/2 requests using the <code>CONNECT</code> method, the
+      <code>:scheme</code> pseudo-header is forbidden.
+    </p>
+    <p><a id="ERR_HTTP2_ERROR"></a> ### <code>ERR_HTTP2_ERROR</code></p>
+    <p>A non-specific HTTP/2 error has occurred.</p>
+    <p>
+      <a id="ERR_HTTP2_GOAWAY_SESSION"></a> ###
+      <code>ERR_HTTP2_GOAWAY_SESSION</code>
+    </p>
+    <p>
+      New HTTP/2 Streams may not be opened after the
+      <code>Http2Session</code> has received a <code>GOAWAY</code> frame from
+      the connected peer.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_HEADER_SINGLE_VALUE"></a> ###
+      <code>ERR_HTTP2_HEADER_SINGLE_VALUE</code>
+    </p>
+    <p>
+      Multiple values were provided for an HTTP/2 header field that was required
+      to have only a single value.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_HEADERS_AFTER_RESPOND"></a> ###
+      <code>ERR_HTTP2_HEADERS_AFTER_RESPOND</code>
+    </p>
+    <p>
+      An additional headers was specified after an HTTP/2 response was
+      initiated.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_HEADERS_SENT"></a> ###
+      <code>ERR_HTTP2_HEADERS_SENT</code>
+    </p>
+    <p>An attempt was made to send multiple response headers.</p>
+    <p>
+      <a id="ERR_HTTP2_INFO_STATUS_NOT_ALLOWED"></a> ###
+      <code>ERR_HTTP2_INFO_STATUS_NOT_ALLOWED</code>
+    </p>
+    <p>
+      Informational HTTP status codes (<code>1xx</code>) may not be set as the
+      response status code on HTTP/2 responses.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_CONNECTION_HEADERS"></a> ###
+      <code>ERR_HTTP2_INVALID_CONNECTION_HEADERS</code>
+    </p>
+    <p>
+      HTTP/1 connection specific headers are forbidden to be used in HTTP/2
+      requests and responses.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_HEADER_VALUE"></a> ###
+      <code>ERR_HTTP2_INVALID_HEADER_VALUE</code>
+    </p>
+    <p>An invalid HTTP/2 header value was specified.</p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_INFO_STATUS"></a> ###
+      <code>ERR_HTTP2_INVALID_INFO_STATUS</code>
+    </p>
+    <p>
+      An invalid HTTP informational status code has been specified.
+      Informational status codes must be an integer between <code>100</code> and
+      <code>199</code> (inclusive).
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_ORIGIN"></a> ###
+      <code>ERR_HTTP2_INVALID_ORIGIN</code>
+    </p>
+    <p>HTTP/2 <code>ORIGIN</code> frames require a valid origin.</p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH"></a> ###
+      <code>ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH</code>
+    </p>
+    <p>
+      Input <code>Buffer</code> and <code>Uint8Array</code> instances passed to
+      the <code>http2.getUnpackedSettings()</code> API must have a length that
+      is a multiple of six.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_PSEUDOHEADER"></a> ###
+      <code>ERR_HTTP2_INVALID_PSEUDOHEADER</code>
+    </p>
+    <p>
+      Only valid HTTP/2 pseudoheaders (<code>:status</code>, <code>:path</code>,
+      <code>:authority</code>, <code>:scheme</code>, and <code>:method</code>)
+      may be used.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_SESSION"></a> ###
+      <code>ERR_HTTP2_INVALID_SESSION</code>
+    </p>
+    <p>
+      An action was performed on an <code>Http2Session</code> object that had
+      already been destroyed.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_SETTING_VALUE"></a> ###
+      <code>ERR_HTTP2_INVALID_SETTING_VALUE</code>
+    </p>
+    <p>An invalid value has been specified for an HTTP/2 setting.</p>
+    <p>
+      <a id="ERR_HTTP2_INVALID_STREAM"></a> ###
+      <code>ERR_HTTP2_INVALID_STREAM</code>
+    </p>
+    <p>
+      An operation was performed on a stream that had already been destroyed.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_MAX_PENDING_SETTINGS_ACK"></a> ###
+      <code>ERR_HTTP2_MAX_PENDING_SETTINGS_ACK</code>
+    </p>
+    <p>
+      Whenever an HTTP/2 <code>SETTINGS</code> frame is sent to a connected
+      peer, the peer is required to send an acknowledgment that it has received
+      and applied the new <code>SETTINGS</code>. By default, a maximum number of
+      unacknowledged <code>SETTINGS</code> frames may be sent at any given time.
+      This error code is used when that limit has been reached.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_NESTED_PUSH"></a> ### <code>ERR_HTTP2_NESTED_PUSH</code>
+    </p>
+    <p>
+      An attempt was made to initiate a new push stream from within a push
+      stream. Nested push streams are not permitted.
+    </p>
+    <p><a id="ERR_HTTP2_NO_MEM"></a> ### <code>ERR_HTTP2_NO_MEM</code></p>
+    <p>
+      Out of memory when using the
+      <code>http2session.setLocalWindowSize(windowSize)</code> API.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_NO_SOCKET_MANIPULATION"></a> ###
+      <code>ERR_HTTP2_NO_SOCKET_MANIPULATION</code>
+    </p>
+    <p>
+      An attempt was made to directly manipulate (read, write, pause, resume,
+      etc.) a socket attached to an <code>Http2Session</code>.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_ORIGIN_LENGTH"></a> ###
+      <code>ERR_HTTP2_ORIGIN_LENGTH</code>
+    </p>
+    <p>
+      HTTP/2 <code>ORIGIN</code> frames are limited to a length of 16382 bytes.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_OUT_OF_STREAMS"></a> ###
+      <code>ERR_HTTP2_OUT_OF_STREAMS</code>
+    </p>
+    <p>
+      The number of streams created on a single HTTP/2 session reached the
+      maximum limit.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_PAYLOAD_FORBIDDEN"></a> ###
+      <code>ERR_HTTP2_PAYLOAD_FORBIDDEN</code>
+    </p>
+    <p>
+      A message payload was specified for an HTTP response code for which a
+      payload is forbidden.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_PING_CANCEL"></a> ### <code>ERR_HTTP2_PING_CANCEL</code>
+    </p>
+    <p>An HTTP/2 ping was canceled.</p>
+    <p>
+      <a id="ERR_HTTP2_PING_LENGTH"></a> ### <code>ERR_HTTP2_PING_LENGTH</code>
+    </p>
+    <p>HTTP/2 ping payloads must be exactly 8 bytes in length.</p>
+    <p>
+      <a id="ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED"></a> ###
+      <code>ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED</code>
+    </p>
+    <p>
+      An HTTP/2 pseudo-header has been used inappropriately. Pseudo-headers are
+      header key names that begin with the <code>:</code> prefix.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_PUSH_DISABLED"></a> ###
+      <code>ERR_HTTP2_PUSH_DISABLED</code>
+    </p>
+    <p>
+      An attempt was made to create a push stream, which had been disabled by
+      the client.
+    </p>
+    <p><a id="ERR_HTTP2_SEND_FILE"></a> ### <code>ERR_HTTP2_SEND_FILE</code></p>
+    <p>
+      An attempt was made to use the
+      <code>Http2Stream.prototype.responseWithFile()</code> API to send a
+      directory.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_SEND_FILE_NOSEEK"></a> ###
+      <code>ERR_HTTP2_SEND_FILE_NOSEEK</code>
+    </p>
+    <p>
+      An attempt was made to use the
+      <code>Http2Stream.prototype.responseWithFile()</code> API to send
+      something other than a regular file, but <code>offset</code> or
+      <code>length</code> options were provided.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_SESSION_ERROR"></a> ###
+      <code>ERR_HTTP2_SESSION_ERROR</code>
+    </p>
+    <p>The <code>Http2Session</code> closed with a non-zero error code.</p>
+    <p>
+      <a id="ERR_HTTP2_SETTINGS_CANCEL"></a> ###
+      <code>ERR_HTTP2_SETTINGS_CANCEL</code>
+    </p>
+    <p>The <code>Http2Session</code> settings canceled.</p>
+    <p>
+      <a id="ERR_HTTP2_SOCKET_BOUND"></a> ###
+      <code>ERR_HTTP2_SOCKET_BOUND</code>
+    </p>
+    <p>
+      An attempt was made to connect a <code>Http2Session</code> object to a
+      <code>net.Socket</code> or <code>tls.TLSSocket</code> that had already
+      been bound to another <code>Http2Session</code> object.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_SOCKET_UNBOUND"></a> ###
+      <code>ERR_HTTP2_SOCKET_UNBOUND</code>
+    </p>
+    <p>
+      An attempt was made to use the <code>socket</code> property of an
+      <code>Http2Session</code> that has already been closed.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STATUS_101"></a> ### <code>ERR_HTTP2_STATUS_101</code>
+    </p>
+    <p>
+      Use of the <code>101</code> Informational status code is forbidden in
+      HTTP/2.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STATUS_INVALID"></a> ###
+      <code>ERR_HTTP2_STATUS_INVALID</code>
+    </p>
+    <p>
+      An invalid HTTP status code has been specified. Status codes must be an
+      integer between <code>100</code> and <code>599</code> (inclusive).
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STREAM_CANCEL"></a> ###
+      <code>ERR_HTTP2_STREAM_CANCEL</code>
+    </p>
+    <p>
+      An <code>Http2Stream</code> was destroyed before any data was transmitted
+      to the connected peer.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STREAM_ERROR"></a> ###
+      <code>ERR_HTTP2_STREAM_ERROR</code>
+    </p>
+    <p>
+      A non-zero error code was been specified in an
+      <code>RST_STREAM</code> frame.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STREAM_SELF_DEPENDENCY"></a> ###
+      <code>ERR_HTTP2_STREAM_SELF_DEPENDENCY</code>
+    </p>
+    <p>
+      When setting the priority for an HTTP/2 stream, the stream may be marked
+      as a dependency for a parent stream. This error code is used when an
+      attempt is made to mark a stream and dependent of itself.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_TOO_MANY_INVALID_FRAMES"></a> ###
+      <code>ERR_HTTP2_TOO_MANY_INVALID_FRAMES</code>
+      <!--
+added: v15.14.0
+-->
+    </p>
+    <p>
+      The limit of acceptable invalid HTTP/2 protocol frames sent by the peer,
+      as specified through the <code>maxSessionInvalidFrames</code> option, has
+      been exceeded.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_TRAILERS_ALREADY_SENT"></a> ###
+      <code>ERR_HTTP2_TRAILERS_ALREADY_SENT</code>
+    </p>
+    <p>
+      Trailing headers have already been sent on the <code>Http2Stream</code>.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_TRAILERS_NOT_READY"></a> ###
+      <code>ERR_HTTP2_TRAILERS_NOT_READY</code>
+    </p>
+    <p>
+      The <code>http2stream.sendTrailers()</code> method cannot be called until
+      after the <code>'wantTrailers'</code> event is emitted on an
+      <code>Http2Stream</code> object. The <code>'wantTrailers'</code> event
+      will only be emitted if the <code>waitForTrailers</code> option is set for
+      the <code>Http2Stream</code>.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_UNSUPPORTED_PROTOCOL"></a> ###
+      <code>ERR_HTTP2_UNSUPPORTED_PROTOCOL</code>
+    </p>
+    <p>
+      <code>http2.connect()</code> was passed a URL that uses any protocol other
+      than <code>http:</code> or <code>https:</code>.
+    </p>
+    <p>
+      <a id="ERR_ILLEGAL_CONSTRUCTOR"></a> ###
+      <code>ERR_ILLEGAL_CONSTRUCTOR</code>
+    </p>
+    <p>
+      An attempt was made to construct an object using a non-public constructor.
+    </p>
+    <p>
+      <a id="ERR_INCOMPATIBLE_OPTION_PAIR"></a> ###
+      <code>ERR_INCOMPATIBLE_OPTION_PAIR</code>
+    </p>
+    <p>
+      An option pair is incompatible with each other and cannot be used at the
+      same time.
+    </p>
+    <p>
+      <a id="ERR_INPUT_TYPE_NOT_ALLOWED"></a> ###
+      <code>ERR_INPUT_TYPE_NOT_ALLOWED</code>
+    </p>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      The <code>--input-type</code> flag was used to attempt to execute a file.
+      This flag can only be used with input via <code>--eval</code>,
+      <code>--print</code> or <code>STDIN</code>.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_ALREADY_ACTIVATED"></a> ###
+      <code>ERR_INSPECTOR_ALREADY_ACTIVATED</code>
+    </p>
+    <p>
+      While using the <code>inspector</code> module, an attempt was made to
+      activate the inspector when it already started to listen on a port. Use
+      <code>inspector.close()</code> before activating it on a different
+      address.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_ALREADY_CONNECTED"></a> ###
+      <code>ERR_INSPECTOR_ALREADY_CONNECTED</code>
+    </p>
+    <p>
+      While using the <code>inspector</code> module, an attempt was made to
+      connect when the inspector was already connected.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_CLOSED"></a> ### <code>ERR_INSPECTOR_CLOSED</code>
+    </p>
+    <p>
+      While using the <code>inspector</code> module, an attempt was made to use
+      the inspector after the session had already closed.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_COMMAND"></a> ### <code>ERR_INSPECTOR_COMMAND</code>
+    </p>
+    <p>
+      An error occurred while issuing a command via the
+      <code>inspector</code> module.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_NOT_ACTIVE"></a> ###
+      <code>ERR_INSPECTOR_NOT_ACTIVE</code>
+    </p>
+    <p>
+      The <code>inspector</code> is not active when
+      <code>inspector.waitForDebugger()</code> is called.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_NOT_AVAILABLE"></a> ###
+      <code>ERR_INSPECTOR_NOT_AVAILABLE</code>
+    </p>
+    <p>The <code>inspector</code> module is not available for use.</p>
+    <p>
+      <a id="ERR_INSPECTOR_NOT_CONNECTED"></a> ###
+      <code>ERR_INSPECTOR_NOT_CONNECTED</code>
+    </p>
+    <p>
+      While using the <code>inspector</code> module, an attempt was made to use
+      the inspector before it was connected.
+    </p>
+    <p>
+      <a id="ERR_INSPECTOR_NOT_WORKER"></a> ###
+      <code>ERR_INSPECTOR_NOT_WORKER</code>
+    </p>
+    <p>
+      An API was called on the main thread that can only be used from the worker
+      thread.
+    </p>
+    <p>
+      <a id="ERR_INTERNAL_ASSERTION"></a> ###
+      <code>ERR_INTERNAL_ASSERTION</code>
+    </p>
+    <p>
+      There was a bug in Node.js or incorrect usage of Node.js internals. To fix
+      the error, open an issue at
+      <a href="https://github.com/nodejs/node/issues" class="uri"
+        >https://github.com/nodejs/node/issues</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_INVALID_ADDRESS_FAMILY"></a> ###
+      <code>ERR_INVALID_ADDRESS_FAMILY</code>
+    </p>
+    <p>The provided address family is not understood by the Node.js API.</p>
+    <p>
+      <a id="ERR_INVALID_ARG_TYPE"></a> ### <code>ERR_INVALID_ARG_TYPE</code>
+    </p>
+    <p>An argument of the wrong type was passed to a Node.js API.</p>
+    <p>
+      <a id="ERR_INVALID_ARG_VALUE"></a> ### <code>ERR_INVALID_ARG_VALUE</code>
+    </p>
+    <p>An invalid or unsupported value was passed for a given argument.</p>
+    <p>
+      <a id="ERR_INVALID_ASYNC_ID"></a> ### <code>ERR_INVALID_ASYNC_ID</code>
+    </p>
+    <p>
+      An invalid <code>asyncId</code> or <code>triggerAsyncId</code> was passed
+      using <code>AsyncHooks</code>. An id less than -1 should never happen.
+    </p>
+    <p>
+      <a id="ERR_INVALID_BUFFER_SIZE"></a> ###
+      <code>ERR_INVALID_BUFFER_SIZE</code>
+    </p>
+    <p>
+      A swap was performed on a <code>Buffer</code> but its size was not
+      compatible with the operation.
+    </p>
+    <p>
+      <a id="ERR_INVALID_CALLBACK"></a> ### <code>ERR_INVALID_CALLBACK</code>
+    </p>
+    <p>
+      A callback function was required but was not been provided to a Node.js
+      API.
+    </p>
+    <p><a id="ERR_INVALID_CHAR"></a> ### <code>ERR_INVALID_CHAR</code></p>
+    <p>Invalid characters were detected in headers.</p>
+    <p>
+      <a id="ERR_INVALID_CURSOR_POS"></a> ###
+      <code>ERR_INVALID_CURSOR_POS</code>
+    </p>
+    <p>
+      A cursor on a given stream cannot be moved to a specified row without a
+      specified column.
+    </p>
+    <p><a id="ERR_INVALID_FD"></a> ### <code>ERR_INVALID_FD</code></p>
+    <p>
+      A file descriptor (‘fd’) was not valid (e.g. it was a negative value).
+    </p>
+    <p><a id="ERR_INVALID_FD_TYPE"></a> ### <code>ERR_INVALID_FD_TYPE</code></p>
+    <p>A file descriptor (‘fd’) type was not valid.</p>
+    <p>
+      <a id="ERR_INVALID_FILE_URL_HOST"></a> ###
+      <code>ERR_INVALID_FILE_URL_HOST</code>
+    </p>
+    <p>
+      A Node.js API that consumes <code>file:</code> URLs (such as certain
+      functions in the <a href="fs.md"><code>fs</code></a> module) encountered a
+      file URL with an incompatible host. This situation can only occur on
+      Unix-like systems where only <code>localhost</code> or an empty host is
+      supported.
+    </p>
+    <p>
+      <a id="ERR_INVALID_FILE_URL_PATH"></a> ###
+      <code>ERR_INVALID_FILE_URL_PATH</code>
+    </p>
+    <p>
+      A Node.js API that consumes <code>file:</code> URLs (such as certain
+      functions in the <a href="fs.md"><code>fs</code></a> module) encountered a
+      file URL with an incompatible path. The exact semantics for determining
+      whether a path can be used is platform-dependent.
+    </p>
+    <p>
+      <a id="ERR_INVALID_HANDLE_TYPE"></a> ###
+      <code>ERR_INVALID_HANDLE_TYPE</code>
+    </p>
+    <p>
+      An attempt was made to send an unsupported “handle” over an IPC
+      communication channel to a child process. See
+      <a
+        href="child_process.md#child_process_subprocess_send_message_sendhandle_options_callback"
+        ><code>subprocess.send()</code></a
+      >
+      and
+      <a
+        href="process.md#process_process_send_message_sendhandle_options_callback"
+        ><code>process.send()</code></a
+      >
+      for more information.
+    </p>
+    <p>
+      <a id="ERR_INVALID_HTTP_TOKEN"></a> ###
+      <code>ERR_INVALID_HTTP_TOKEN</code>
+    </p>
+    <p>An invalid HTTP token was supplied.</p>
+    <p>
+      <a id="ERR_INVALID_IP_ADDRESS"></a> ###
+      <code>ERR_INVALID_IP_ADDRESS</code>
+    </p>
+    <p>An IP address is not valid.</p>
+    <p>
+      <a id="ERR_INVALID_MODULE"></a> ### <code>ERR_INVALID_MODULE</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>
+      An attempt was made to load a module that does not exist or was otherwise
+      not valid.
+    </p>
+    <p>
+      <a id="ERR_INVALID_MODULE_SPECIFIER"></a> ###
+      <code>ERR_INVALID_MODULE_SPECIFIER</code>
+    </p>
+    <p>
+      The imported module string is an invalid URL, package name, or package
+      subpath specifier.
+    </p>
+    <p>
+      <a id="ERR_INVALID_PACKAGE_CONFIG"></a> ###
+      <code>ERR_INVALID_PACKAGE_CONFIG</code>
+    </p>
+    <p>
+      An invalid
+      <a href="packages.md#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      file failed parsing.
+    </p>
+    <p>
+      <a id="ERR_INVALID_PACKAGE_TARGET"></a> ###
+      <code>ERR_INVALID_PACKAGE_TARGET</code>
+    </p>
+    <p>
+      The <code>package.json</code>
+      <a href="packages.md#packages_exports"><code>"exports"</code></a> field
+      contains an invalid target mapping value for the attempted module
+      resolution.
+    </p>
+    <p>
+      <a id="ERR_INVALID_PERFORMANCE_MARK"></a> ###
+      <code>ERR_INVALID_PERFORMANCE_MARK</code>
+    </p>
+    <p>
+      While using the Performance Timing API (<code>perf_hooks</code>), a
+      performance mark is invalid.
+    </p>
+    <p>
+      <a id="ERR_INVALID_PROTOCOL"></a> ### <code>ERR_INVALID_PROTOCOL</code>
+    </p>
+    <p>
+      An invalid <code>options.protocol</code> was passed to
+      <code>http.request()</code>.
+    </p>
+    <p>
+      <a id="ERR_INVALID_REPL_EVAL_CONFIG"></a> ###
+      <code>ERR_INVALID_REPL_EVAL_CONFIG</code>
+    </p>
+    <p>
+      Both <code>breakEvalOnSigint</code> and <code>eval</code> options were set
+      in the <a href="repl.md"><code>REPL</code></a> config, which is not
+      supported.
+    </p>
+    <p>
+      <a id="ERR_INVALID_REPL_INPUT"></a> ###
+      <code>ERR_INVALID_REPL_INPUT</code>
+    </p>
+    <p>
+      The input may not be used in the <a href="repl.md"><code>REPL</code></a
+      >. The conditions under which this error is used are described in the
+      <a href="repl.md"><code>REPL</code></a> documentation.
+    </p>
+    <p>
+      <a id="ERR_INVALID_RETURN_PROPERTY"></a> ###
+      <code>ERR_INVALID_RETURN_PROPERTY</code>
+    </p>
+    <p>
+      Thrown in case a function option does not provide a valid value for one of
+      its returned object properties on execution.
+    </p>
+    <p>
+      <a id="ERR_INVALID_RETURN_PROPERTY_VALUE"></a> ###
+      <code>ERR_INVALID_RETURN_PROPERTY_VALUE</code>
+    </p>
+    <p>
+      Thrown in case a function option does not provide an expected value type
+      for one of its returned object properties on execution.
+    </p>
+    <p>
+      <a id="ERR_INVALID_RETURN_VALUE"></a> ###
+      <code>ERR_INVALID_RETURN_VALUE</code>
+    </p>
+    <p>
+      Thrown in case a function option does not return an expected value type on
+      execution, such as when a function is expected to return a promise.
+    </p>
+    <p>
+      <a id="ERR_INVALID_STATE"></a> ### <code>ERR_INVALID_STATE</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>
+      Indicates that an operation cannot be completed due to an invalid state.
+      For instance, an object may have already been destroyed, or may be
+      performing another operation.
+    </p>
+    <p>
+      <a id="ERR_INVALID_SYNC_FORK_INPUT"></a> ###
+      <code>ERR_INVALID_SYNC_FORK_INPUT</code>
+    </p>
+    <p>
+      A <code>Buffer</code>, <code>TypedArray</code>, <code>DataView</code> or
+      <code>string</code> was provided as stdio input to an asynchronous fork.
+      See the documentation for the
+      <a href="child_process.md"><code>child_process</code></a> module for more
+      information.
+    </p>
+    <p><a id="ERR_INVALID_THIS"></a> ### <code>ERR_INVALID_THIS</code></p>
+    <p>
+      A Node.js API function was called with an incompatible
+      <code>this</code> value.
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> urlSearchParams <span class="op">=</span> <span class="kw">new</span> <span class="at">URLSearchParams</span>(<span class="st">&#39;foo=bar&amp;baz=new&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">const</span> buf <span class="op">=</span> <span class="va">Buffer</span>.<span class="at">alloc</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="va">urlSearchParams</span>.<span class="va">has</span>.<span class="at">call</span>(buf<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="co">// Throws a TypeError with code &#39;ERR_INVALID_THIS&#39;</span></a></code></pre>
+    </div>
+    <p>
+      <a id="ERR_INVALID_TRANSFER_OBJECT"></a> ###
+      <code>ERR_INVALID_TRANSFER_OBJECT</code>
+    </p>
+    <p>An invalid transfer object was passed to <code>postMessage()</code>.</p>
+    <p><a id="ERR_INVALID_TUPLE"></a> ### <code>ERR_INVALID_TUPLE</code></p>
+    <p>
+      An element in the <code>iterable</code> provided to the
+      <a href="url.md#url_the_whatwg_url_api">WHATWG</a>
+      <a href="url.md#url_new_urlsearchparams_iterable"
+        ><code>URLSearchParams</code> constructor</a
+      >
+      did not represent a <code>[name, value]</code> tuple – that is, if an
+      element is not iterable, or does not consist of exactly two elements.
+    </p>
+    <p><a id="ERR_INVALID_URI"></a> ### <code>ERR_INVALID_URI</code></p>
+    <p>An invalid URI was passed.</p>
+    <p><a id="ERR_INVALID_URL"></a> ### <code>ERR_INVALID_URL</code></p>
+    <p>
+      An invalid URL was passed to the
+      <a href="url.md#url_the_whatwg_url_api">WHATWG</a>
+      <a href="url.md#url_new_url_input_base"><code>URL</code> constructor</a>
+      or the legacy
+      <a
+        href="url.md#url_url_parse_urlstring_parsequerystring_slashesdenotehost"
+        ><code>url.parse()</code></a
+      >
+      to be parsed. The thrown error object typically has an additional property
+      <code>'input'</code> that contains the URL that failed to parse.
+    </p>
+    <p>
+      <a id="ERR_INVALID_URL_SCHEME"></a> ###
+      <code>ERR_INVALID_URL_SCHEME</code>
+    </p>
+    <p>
+      An attempt was made to use a URL of an incompatible scheme (protocol) for
+      a specific purpose. It is only used in the
+      <a href="url.md#url_the_whatwg_url_api">WHATWG URL API</a> support in the
+      <a href="fs.md"><code>fs</code></a> module (which only accepts URLs with
+      <code>'file'</code> scheme), but may be used in other Node.js APIs as well
+      in the future.
+    </p>
+    <p>
+      <a id="ERR_IPC_CHANNEL_CLOSED"></a> ###
+      <code>ERR_IPC_CHANNEL_CLOSED</code>
+    </p>
+    <p>
+      An attempt was made to use an IPC communication channel that was already
+      closed.
+    </p>
+    <p>
+      <a id="ERR_IPC_DISCONNECTED"></a> ### <code>ERR_IPC_DISCONNECTED</code>
+    </p>
+    <p>
+      An attempt was made to disconnect an IPC communication channel that was
+      already disconnected. See the documentation for the
+      <a href="child_process.md"><code>child_process</code></a> module for more
+      information.
+    </p>
+    <p><a id="ERR_IPC_ONE_PIPE"></a> ### <code>ERR_IPC_ONE_PIPE</code></p>
+    <p>
+      An attempt was made to create a child Node.js process using more than one
+      IPC communication channel. See the documentation for the
+      <a href="child_process.md"><code>child_process</code></a> module for more
+      information.
+    </p>
+    <p><a id="ERR_IPC_SYNC_FORK"></a> ### <code>ERR_IPC_SYNC_FORK</code></p>
+    <p>
+      An attempt was made to open an IPC communication channel with a
+      synchronously forked Node.js process. See the documentation for the
+      <a href="child_process.md"><code>child_process</code></a> module for more
+      information.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_ASSERT_INTEGRITY"></a> ###
+      <code>ERR_MANIFEST_ASSERT_INTEGRITY</code>
+    </p>
+    <p>
+      An attempt was made to load a resource, but the resource did not match the
+      integrity defined by the policy manifest. See the documentation for
+      <a href="policy.md">policy</a> manifests for more information.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_DEPENDENCY_MISSING"></a> ###
+      <code>ERR_MANIFEST_DEPENDENCY_MISSING</code>
+    </p>
+    <p>
+      An attempt was made to load a resource, but the resource was not listed as
+      a dependency from the location that attempted to load it. See the
+      documentation for <a href="policy.md">policy</a> manifests for more
+      information.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_INTEGRITY_MISMATCH"></a> ###
+      <code>ERR_MANIFEST_INTEGRITY_MISMATCH</code>
+    </p>
+    <p>
+      An attempt was made to load a policy manifest, but the manifest had
+      multiple entries for a resource which did not match each other. Update the
+      manifest entries to match in order to resolve this error. See the
+      documentation for <a href="policy.md">policy</a> manifests for more
+      information.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_INVALID_RESOURCE_FIELD"></a> ###
+      <code>ERR_MANIFEST_INVALID_RESOURCE_FIELD</code>
+    </p>
+    <p>
+      A policy manifest resource had an invalid value for one of its fields.
+      Update the manifest entry to match in order to resolve this error. See the
+      documentation for <a href="policy.md">policy</a> manifests for more
+      information.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_PARSE_POLICY"></a> ###
+      <code>ERR_MANIFEST_PARSE_POLICY</code>
+    </p>
+    <p>
+      An attempt was made to load a policy manifest, but the manifest was unable
+      to be parsed. See the documentation for
+      <a href="policy.md">policy</a> manifests for more information.
+    </p>
+    <p><a id="ERR_MANIFEST_TDZ"></a> ### <code>ERR_MANIFEST_TDZ</code></p>
+    <p>
+      An attempt was made to read from a policy manifest, but the manifest
+      initialization has not yet taken place. This is likely a bug in Node.js.
+    </p>
+    <p>
+      <a id="ERR_MANIFEST_UNKNOWN_ONERROR"></a> ###
+      <code>ERR_MANIFEST_UNKNOWN_ONERROR</code>
+    </p>
+    <p>
+      A policy manifest was loaded, but had an unknown value for its “onerror”
+      behavior. See the documentation for
+      <a href="policy.md">policy</a> manifests for more information.
+    </p>
+    <p>
+      <a id="ERR_MEMORY_ALLOCATION_FAILED"></a> ###
+      <code>ERR_MEMORY_ALLOCATION_FAILED</code>
+    </p>
+    <p>
+      An attempt was made to allocate memory (usually in the C++ layer) but it
+      failed.
+    </p>
+    <p>
+      <a id="ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE"></a> ###
+      <code>ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE</code>
+      <!-- YAML
+added:
+  - v14.5.0
+  - v12.19.0
+-->
+    </p>
+    <p>
+      A message posted to a
+      <a href="worker_threads.md#worker_threads_class_messageport"
+        ><code>MessagePort</code></a
+      >
+      could not be deserialized in the target <a href="vm.md">vm</a>
+      <code>Context</code>. Not all Node.js objects can be successfully
+      instantiated in any context at this time, and attempting to transfer them
+      using <code>postMessage()</code> can fail on the receiving side in that
+      case.
+    </p>
+    <p>
+      <a id="ERR_METHOD_NOT_IMPLEMENTED"></a> ###
+      <code>ERR_METHOD_NOT_IMPLEMENTED</code>
+    </p>
+    <p>A method is required but not implemented.</p>
+    <p><a id="ERR_MISSING_ARGS"></a> ### <code>ERR_MISSING_ARGS</code></p>
+    <p>
+      A required argument of a Node.js API was not passed. This is only used for
+      strict compliance with the API specification (which in some cases may
+      accept <code>func(undefined)</code> but not <code>func()</code>). In most
+      native Node.js APIs, <code>func(undefined)</code> and
+      <code>func()</code> are treated identically, and the
+      <a href="#ERR_INVALID_ARG_TYPE"><code>ERR_INVALID_ARG_TYPE</code></a>
+      error code may be used instead.
+    </p>
+    <p><a id="ERR_MISSING_OPTION"></a> ### <code>ERR_MISSING_OPTION</code></p>
+    <p>
+      For APIs that accept options objects, some options might be mandatory.
+      This code is thrown if a required option is missing.
+    </p>
+    <p>
+      <a id="ERR_MISSING_PASSPHRASE"></a> ###
+      <code>ERR_MISSING_PASSPHRASE</code>
+    </p>
+    <p>
+      An attempt was made to read an encrypted key without specifying a
+      passphrase.
+    </p>
+    <p>
+      <a id="ERR_MISSING_PLATFORM_FOR_WORKER"></a> ###
+      <code>ERR_MISSING_PLATFORM_FOR_WORKER</code>
+    </p>
+    <p>
+      The V8 platform used by this instance of Node.js does not support creating
+      Workers. This is caused by lack of embedder support for Workers. In
+      particular, this error will not occur with standard builds of Node.js.
+    </p>
+    <p>
+      <a id="ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST"></a> ###
+      <code>ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>
+      An object that needs to be explicitly listed in the
+      <code>transferList</code> argument is in the object passed to a
+      <a
+        href="worker_threads.md#worker_threads_port_postmessage_value_transferlist"
+        ><code>postMessage()</code></a
+      >
+      call, but is not provided in the <code>transferList</code> for that call.
+      Usually, this is a <code>MessagePort</code>.
+    </p>
+    <p>
+      In Node.js versions prior to v15.0.0, the error code being used here was
+      <a href="#ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST"
+        ><code>ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST</code></a
+      >. However, the set of transferable object types has been expanded to
+      cover more types than <code>MessagePort</code>.
+    </p>
+    <p>
+      <a id="ERR_MODULE_NOT_FOUND"></a> ### <code>ERR_MODULE_NOT_FOUND</code>
+    </p>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>An <a href="esm.md">ES Module</a> could not be resolved.</p>
+    <p>
+      <a id="ERR_MULTIPLE_CALLBACK"></a> ### <code>ERR_MULTIPLE_CALLBACK</code>
+    </p>
+    <p>A callback was called more than once.</p>
+    <p>
+      A callback is almost always meant to only be called once as the query can
+      either be fulfilled or rejected but not both at the same time. The latter
+      would be possible by calling a callback more than once.
+    </p>
+    <p>
+      <a id="ERR_NAPI_CONS_FUNCTION"></a> ###
+      <code>ERR_NAPI_CONS_FUNCTION</code>
+    </p>
+    <p>
+      While using <code>Node-API</code>, a constructor passed was not a
+      function.
+    </p>
+    <p>
+      <a id="ERR_NAPI_INVALID_DATAVIEW_ARGS"></a> ###
+      <code>ERR_NAPI_INVALID_DATAVIEW_ARGS</code>
+    </p>
+    <p>
+      While calling <code>napi_create_dataview()</code>, a given
+      <code>offset</code> was outside the bounds of the dataview or
+      <code>offset + length</code> was larger than a length of given
+      <code>buffer</code>.
+    </p>
+    <p>
+      <a id="ERR_NAPI_INVALID_TYPEDARRAY_ALIGNMENT"></a> ###
+      <code>ERR_NAPI_INVALID_TYPEDARRAY_ALIGNMENT</code>
+    </p>
+    <p>
+      While calling <code>napi_create_typedarray()</code>, the provided
+      <code>offset</code> was not a multiple of the element size.
+    </p>
+    <p>
+      <a id="ERR_NAPI_INVALID_TYPEDARRAY_LENGTH"></a> ###
+      <code>ERR_NAPI_INVALID_TYPEDARRAY_LENGTH</code>
+    </p>
+    <p>
+      While calling <code>napi_create_typedarray()</code>,
+      <code>(length * size_of_element) + byte_offset</code> was larger than the
+      length of given <code>buffer</code>.
+    </p>
+    <p>
+      <a id="ERR_NAPI_TSFN_CALL_JS"></a> ### <code>ERR_NAPI_TSFN_CALL_JS</code>
+    </p>
+    <p>
+      An error occurred while invoking the JavaScript portion of the thread-safe
+      function.
+    </p>
+    <p>
+      <a id="ERR_NAPI_TSFN_GET_UNDEFINED"></a> ###
+      <code>ERR_NAPI_TSFN_GET_UNDEFINED</code>
+    </p>
+    <p>
+      An error occurred while attempting to retrieve the JavaScript
+      <code>undefined</code> value.
+    </p>
+    <p>
+      <a id="ERR_NAPI_TSFN_START_IDLE_LOOP"></a> ###
+      <code>ERR_NAPI_TSFN_START_IDLE_LOOP</code>
+    </p>
+    <p>
+      On the main thread, values are removed from the queue associated with the
+      thread-safe function in an idle loop. This error indicates that an error
+      has occurred when attempting to start the loop.
+    </p>
+    <p>
+      <a id="ERR_NAPI_TSFN_STOP_IDLE_LOOP"></a> ###
+      <code>ERR_NAPI_TSFN_STOP_IDLE_LOOP</code>
+    </p>
+    <p>
+      Once no more items are left in the queue, the idle loop must be suspended.
+      This error indicates that the idle loop has failed to stop.
+    </p>
+    <p><a id="ERR_NO_CRYPTO"></a> ### <code>ERR_NO_CRYPTO</code></p>
+    <p>
+      An attempt was made to use crypto features while Node.js was not compiled
+      with OpenSSL crypto support.
+    </p>
+    <p><a id="ERR_NO_ICU"></a> ### <code>ERR_NO_ICU</code></p>
+    <p>
+      An attempt was made to use features that require
+      <a href="intl.md#intl_internationalization_support">ICU</a>, but Node.js
+      was not compiled with ICU support.
+    </p>
+    <p>
+      <a id="ERR_NON_CONTEXT_AWARE_DISABLED"></a> ###
+      <code>ERR_NON_CONTEXT_AWARE_DISABLED</code>
+    </p>
+    <p>
+      A non-context-aware native addon was loaded in a process that disallows
+      them.
+    </p>
+    <p><a id="ERR_OUT_OF_RANGE"></a> ### <code>ERR_OUT_OF_RANGE</code></p>
+    <p>A given value is out of the accepted range.</p>
+    <p>
+      <a id="ERR_PACKAGE_IMPORT_NOT_DEFINED"></a> ###
+      <code>ERR_PACKAGE_IMPORT_NOT_DEFINED</code>
+    </p>
+    <p>
+      The <code>package.json</code>
+      <a href="packages.md#packages_imports"><code>"imports"</code></a> field
+      does not define the given internal package specifier mapping.
+    </p>
+    <p>
+      <a id="ERR_PACKAGE_PATH_NOT_EXPORTED"></a> ###
+      <code>ERR_PACKAGE_PATH_NOT_EXPORTED</code>
+    </p>
+    <p>
+      The <code>package.json</code>
+      <a href="packages.md#packages_exports"><code>"exports"</code></a> field
+      does not export the requested subpath. Because exports are encapsulated,
+      private internal modules that are not exported cannot be imported through
+      the package resolution, unless using an absolute URL.
+    </p>
+    <p>
+      <a id="ERR_PERFORMANCE_INVALID_TIMESTAMP"></a> ###
+      <code>ERR_PERFORMANCE_INVALID_TIMESTAMP</code>
+    </p>
+    <p>
+      An invalid timestamp value was provided for a performance mark or measure.
+    </p>
+    <p>
+      <a id="ERR_PERFORMANCE_MEASURE_INVALID_OPTIONS"></a> ###
+      <code>ERR_PERFORMANCE_MEASURE_INVALID_OPTIONS</code>
+    </p>
+    <p>Invalid options were provided for a performance measure.</p>
+    <p><a id="ERR_PROTO_ACCESS"></a> ### <code>ERR_PROTO_ACCESS</code></p>
+    <p>
+      Accessing <code>Object.prototype.__proto__</code> has been forbidden using
+      <a href="cli.md#cli_disable_proto_mode"
+        ><code>--disable-proto=throw</code></a
+      >.
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf"
+        ><code>Object.getPrototypeOf</code></a
+      >
+      and
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf"
+        ><code>Object.setPrototypeOf</code></a
+      >
+      should be used to get and set the prototype of an object.
+    </p>
+    <p><a id="ERR_REQUIRE_ESM"></a> ### <code>ERR_REQUIRE_ESM</code></p>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      An attempt was made to <code>require()</code> an
+      <a href="esm.md">ES Module</a>.
+    </p>
+    <p>
+      <a id="ERR_SCRIPT_EXECUTION_INTERRUPTED"></a> ###
+      <code>ERR_SCRIPT_EXECUTION_INTERRUPTED</code>
+    </p>
+    <p>
+      Script execution was interrupted by <code>SIGINT</code> (For example,
+      <kbd>Ctrl</kbd>+<kbd>C</kbd> was pressed.)
+    </p>
+    <p>
+      <a id="ERR_SCRIPT_EXECUTION_TIMEOUT"></a> ###
+      <code>ERR_SCRIPT_EXECUTION_TIMEOUT</code>
+    </p>
+    <p>
+      Script execution timed out, possibly due to bugs in the script being
+      executed.
+    </p>
+    <p>
+      <a id="ERR_SERVER_ALREADY_LISTEN"></a> ###
+      <code>ERR_SERVER_ALREADY_LISTEN</code>
+    </p>
+    <p>
+      The
+      <a href="net.md#net_server_listen"><code>server.listen()</code></a> method
+      was called while a <code>net.Server</code> was already listening. This
+      applies to all instances of <code>net.Server</code>, including HTTP,
+      HTTPS, and HTTP/2 <code>Server</code> instances.
+    </p>
+    <p>
+      <a id="ERR_SERVER_NOT_RUNNING"></a> ###
+      <code>ERR_SERVER_NOT_RUNNING</code>
+    </p>
+    <p>
+      The
+      <a href="net.md#net_server_close_callback"><code>server.close()</code></a>
+      method was called when a <code>net.Server</code> was not running. This
+      applies to all instances of <code>net.Server</code>, including HTTP,
+      HTTPS, and HTTP/2 <code>Server</code> instances.
+    </p>
+    <p>
+      <a id="ERR_SOCKET_ALREADY_BOUND"></a> ###
+      <code>ERR_SOCKET_ALREADY_BOUND</code>
+    </p>
+    <p>An attempt was made to bind a socket that has already been bound.</p>
+    <p>
+      <a id="ERR_SOCKET_BAD_BUFFER_SIZE"></a> ###
+      <code>ERR_SOCKET_BAD_BUFFER_SIZE</code>
+    </p>
+    <p>
+      An invalid (negative) size was passed for either the
+      <code>recvBufferSize</code> or <code>sendBufferSize</code> options in
+      <a href="dgram.md#dgram_dgram_createsocket_options_callback"
+        ><code>dgram.createSocket()</code></a
+      >.
+    </p>
+    <p><a id="ERR_SOCKET_BAD_PORT"></a> ### <code>ERR_SOCKET_BAD_PORT</code></p>
+    <p>
+      An API function expecting a port &gt;= 0 and &lt; 65536 received an
+      invalid value.
+    </p>
+    <p><a id="ERR_SOCKET_BAD_TYPE"></a> ### <code>ERR_SOCKET_BAD_TYPE</code></p>
+    <p>
+      An API function expecting a socket type (<code>udp4</code> or
+      <code>udp6</code>) received an invalid value.
+    </p>
+    <p>
+      <a id="ERR_SOCKET_BUFFER_SIZE"></a> ###
+      <code>ERR_SOCKET_BUFFER_SIZE</code>
+    </p>
+    <p>
+      While using
+      <a href="dgram.md#dgram_dgram_createsocket_options_callback"
+        ><code>dgram.createSocket()</code></a
+      >, the size of the receive or send <code>Buffer</code> could not be
+      determined.
+    </p>
+    <p><a id="ERR_SOCKET_CLOSED"></a> ### <code>ERR_SOCKET_CLOSED</code></p>
+    <p>An attempt was made to operate on an already closed socket.</p>
+    <p>
+      <a id="ERR_SOCKET_DGRAM_IS_CONNECTED"></a> ###
+      <code>ERR_SOCKET_DGRAM_IS_CONNECTED</code>
+    </p>
+    <p>
+      A
+      <a href="dgram.md#dgram_socket_connect_port_address_callback"
+        ><code>dgram.connect()</code></a
+      >
+      call was made on an already connected socket.
+    </p>
+    <p>
+      <a id="ERR_SOCKET_DGRAM_NOT_CONNECTED"></a> ###
+      <code>ERR_SOCKET_DGRAM_NOT_CONNECTED</code>
+    </p>
+    <p>
+      A
+      <a href="dgram.md#dgram_socket_disconnect"
+        ><code>dgram.disconnect()</code></a
+      >
+      or
+      <a href="dgram.md#dgram_socket_remoteaddress"
+        ><code>dgram.remoteAddress()</code></a
+      >
+      call was made on a disconnected socket.
+    </p>
+    <p>
+      <a id="ERR_SOCKET_DGRAM_NOT_RUNNING"></a> ###
+      <code>ERR_SOCKET_DGRAM_NOT_RUNNING</code>
+    </p>
+    <p>A call was made and the UDP subsystem was not running.</p>
+    <p><a id="ERR_SRI_PARSE"></a> ### <code>ERR_SRI_PARSE</code></p>
+    <p>
+      A string was provided for a Subresource Integrity check, but was unable to
+      be parsed. Check the format of integrity attributes by looking at the
+      <a href="https://www.w3.org/TR/SRI/#the-integrity-attribute"
+        >Subresource Integrity specification</a
+      >.
+    </p>
+    <p>
+      <a id="ERR_STREAM_ALREADY_FINISHED"></a> ###
+      <code>ERR_STREAM_ALREADY_FINISHED</code>
+    </p>
+    <p>
+      A stream method was called that cannot complete because the stream was
+      finished.
+    </p>
+    <p>
+      <a id="ERR_STREAM_CANNOT_PIPE"></a> ###
+      <code>ERR_STREAM_CANNOT_PIPE</code>
+    </p>
+    <p>
+      An attempt was made to call
+      <a href="stream.md#stream_readable_pipe_destination_options"
+        ><code>stream.pipe()</code></a
+      >
+      on a
+      <a href="stream.md#stream_class_stream_writable"><code>Writable</code></a>
+      stream.
+    </p>
+    <p>
+      <a id="ERR_STREAM_DESTROYED"></a> ### <code>ERR_STREAM_DESTROYED</code>
+    </p>
+    <p>
+      A stream method was called that cannot complete because the stream was
+      destroyed using <code>stream.destroy()</code>.
+    </p>
+    <p>
+      <a id="ERR_STREAM_NULL_VALUES"></a> ###
+      <code>ERR_STREAM_NULL_VALUES</code>
+    </p>
+    <p>
+      An attempt was made to call
+      <a href="stream.md#stream_writable_write_chunk_encoding_callback"
+        ><code>stream.write()</code></a
+      >
+      with a <code>null</code> chunk.
+    </p>
+    <p>
+      <a id="ERR_STREAM_PREMATURE_CLOSE"></a> ###
+      <code>ERR_STREAM_PREMATURE_CLOSE</code>
+    </p>
+    <p>
+      An error returned by <code>stream.finished()</code> and
+      <code>stream.pipeline()</code>, when a stream or a pipeline ends non
+      gracefully with no explicit error.
+    </p>
+    <p>
+      <a id="ERR_STREAM_PUSH_AFTER_EOF"></a> ###
+      <code>ERR_STREAM_PUSH_AFTER_EOF</code>
+    </p>
+    <p>
+      An attempt was made to call
+      <a href="stream.md#stream_readable_push_chunk_encoding"
+        ><code>stream.push()</code></a
+      >
+      after a <code>null</code>(EOF) had been pushed to the stream.
+    </p>
+    <p>
+      <a id="ERR_STREAM_UNSHIFT_AFTER_END_EVENT"></a> ###
+      <code>ERR_STREAM_UNSHIFT_AFTER_END_EVENT</code>
+    </p>
+    <p>
+      An attempt was made to call
+      <a href="stream.md#stream_readable_unshift_chunk_encoding"
+        ><code>stream.unshift()</code></a
+      >
+      after the <code>'end'</code> event was emitted.
+    </p>
+    <p><a id="ERR_STREAM_WRAP"></a> ### <code>ERR_STREAM_WRAP</code></p>
+    <p>
+      Prevents an abort if a string decoder was set on the Socket or if the
+      decoder is in <code>objectMode</code>.
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">const</span> Socket <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;net&#39;</span>).<span class="at">Socket</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">const</span> instance <span class="op">=</span> <span class="kw">new</span> <span class="at">Socket</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-3" title="3"></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="va">instance</span>.<span class="at">setEncoding</span>(<span class="st">&#39;utf8&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <a id="ERR_STREAM_WRITE_AFTER_END"></a> ###
+      <code>ERR_STREAM_WRITE_AFTER_END</code>
+    </p>
+    <p>
+      An attempt was made to call
+      <a href="stream.md#stream_writable_write_chunk_encoding_callback"
+        ><code>stream.write()</code></a
+      >
+      after <code>stream.end()</code> has been called.
+    </p>
+    <p><a id="ERR_STRING_TOO_LONG"></a> ### <code>ERR_STRING_TOO_LONG</code></p>
+    <p>
+      An attempt has been made to create a string longer than the maximum
+      allowed length.
+    </p>
+    <p><a id="ERR_SYNTHETIC"></a> ### <code>ERR_SYNTHETIC</code></p>
+    <p>
+      An artificial error object used to capture the call stack for diagnostic
+      reports.
+    </p>
+    <p><a id="ERR_SYSTEM_ERROR"></a> ### <code>ERR_SYSTEM_ERROR</code></p>
+    <p>
+      An unspecified or non-specific system error has occurred within the
+      Node.js process. The error object will have an
+      <code>err.info</code> object property with additional details.
+    </p>
+    <p>
+      <a id="ERR_TLS_CERT_ALTNAME_INVALID"></a> ###
+      <code>ERR_TLS_CERT_ALTNAME_INVALID</code>
+    </p>
+    <p>
+      While using TLS, the host name/IP of the peer did not match any of the
+      <code>subjectAltNames</code> in its certificate.
+    </p>
+    <p>
+      <a id="ERR_TLS_DH_PARAM_SIZE"></a> ### <code>ERR_TLS_DH_PARAM_SIZE</code>
+    </p>
+    <p>
+      While using TLS, the parameter offered for the Diffie-Hellman
+      (<code>DH</code>) key-agreement protocol is too small. By default, the key
+      length must be greater than or equal to 1024 bits to avoid
+      vulnerabilities, even though it is strongly recommended to use 2048 bits
+      or larger for stronger security.
+    </p>
+    <p>
+      <a id="ERR_TLS_HANDSHAKE_TIMEOUT"></a> ###
+      <code>ERR_TLS_HANDSHAKE_TIMEOUT</code>
+    </p>
+    <p>
+      A TLS/SSL handshake timed out. In this case, the server must also abort
+      the connection.
+    </p>
+    <p>
+      <a id="ERR_TLS_INVALID_CONTEXT"></a> ###
+      <code>ERR_TLS_INVALID_CONTEXT</code>
+      <!-- YAML
+added: v13.3.0
+-->
+    </p>
+    <p>The context must be a <code>SecureContext</code>.</p>
+    <p>
+      <a id="ERR_TLS_INVALID_PROTOCOL_METHOD"></a> ###
+      <code>ERR_TLS_INVALID_PROTOCOL_METHOD</code>
+    </p>
+    <p>
+      The specified <code>secureProtocol</code> method is invalid. It is either
+      unknown, or disabled because it is insecure.
+    </p>
+    <p>
+      <a id="ERR_TLS_INVALID_PROTOCOL_VERSION"></a> ###
+      <code>ERR_TLS_INVALID_PROTOCOL_VERSION</code>
+    </p>
+    <p>
+      Valid TLS protocol versions are <code>'TLSv1'</code>,
+      <code>'TLSv1.1'</code>, or <code>'TLSv1.2'</code>.
+    </p>
+    <p>
+      <a id="ERR_TLS_INVALID_STATE"></a> ### <code>ERR_TLS_INVALID_STATE</code>
+      <!-- YAML
+added:
+ - v13.10.0
+ - v12.17.0
+-->
+    </p>
+    <p>
+      The TLS socket must be connected and securily established. Ensure the
+      ‘secure’ event is emitted before continuing.
+    </p>
+    <p>
+      <a id="ERR_TLS_PROTOCOL_VERSION_CONFLICT"></a> ###
+      <code>ERR_TLS_PROTOCOL_VERSION_CONFLICT</code>
+    </p>
+    <p>
+      Attempting to set a TLS protocol <code>minVersion</code> or
+      <code>maxVersion</code> conflicts with an attempt to set the
+      <code>secureProtocol</code> explicitly. Use one mechanism or the other.
+    </p>
+    <p>
+      <a id="ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED"></a> ###
+      <code>ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED</code>
+    </p>
+    <p>Failed to set PSK identity hint. Hint may be too long.</p>
+    <p>
+      <a id="ERR_TLS_RENEGOTIATION_DISABLED"></a> ###
+      <code>ERR_TLS_RENEGOTIATION_DISABLED</code>
+    </p>
+    <p>
+      An attempt was made to renegotiate TLS on a socket instance with TLS
+      disabled.
+    </p>
+    <p>
+      <a id="ERR_TLS_REQUIRED_SERVER_NAME"></a> ###
+      <code>ERR_TLS_REQUIRED_SERVER_NAME</code>
+    </p>
+    <p>
+      While using TLS, the <code>server.addContext()</code> method was called
+      without providing a host name in the first parameter.
+    </p>
+    <p>
+      <a id="ERR_TLS_SESSION_ATTACK"></a> ###
+      <code>ERR_TLS_SESSION_ATTACK</code>
+    </p>
+    <p>
+      An excessive amount of TLS renegotiations is detected, which is a
+      potential vector for denial-of-service attacks.
+    </p>
+    <p>
+      <a id="ERR_TLS_SNI_FROM_SERVER"></a> ###
+      <code>ERR_TLS_SNI_FROM_SERVER</code>
+    </p>
+    <p>
+      An attempt was made to issue Server Name Indication from a TLS server-side
+      socket, which is only valid from a client.
+    </p>
+    <p>
+      <a id="ERR_TRACE_EVENTS_CATEGORY_REQUIRED"></a> ###
+      <code>ERR_TRACE_EVENTS_CATEGORY_REQUIRED</code>
+    </p>
+    <p>
+      The <code>trace_events.createTracing()</code> method requires at least one
+      trace event category.
+    </p>
+    <p>
+      <a id="ERR_TRACE_EVENTS_UNAVAILABLE"></a> ###
+      <code>ERR_TRACE_EVENTS_UNAVAILABLE</code>
+    </p>
+    <p>
+      The <code>trace_events</code> module could not be loaded because Node.js
+      was compiled with the <code>--without-v8-platform</code> flag.
+    </p>
+    <p>
+      <a id="ERR_TRANSFORM_ALREADY_TRANSFORMING"></a> ###
+      <code>ERR_TRANSFORM_ALREADY_TRANSFORMING</code>
+    </p>
+    <p>
+      A <code>Transform</code> stream finished while it was still transforming.
+    </p>
+    <p>
+      <a id="ERR_TRANSFORM_WITH_LENGTH_0"></a> ###
+      <code>ERR_TRANSFORM_WITH_LENGTH_0</code>
+    </p>
+    <p>
+      A <code>Transform</code> stream finished with data still in the write
+      buffer.
+    </p>
+    <p><a id="ERR_TTY_INIT_FAILED"></a> ### <code>ERR_TTY_INIT_FAILED</code></p>
+    <p>The initialization of a TTY failed due to a system error.</p>
+    <p>
+      <a id="ERR_UNAVAILABLE_DURING_EXIT"></a> ###
+      <code>ERR_UNAVAILABLE_DURING_EXIT</code>
+    </p>
+    <p>
+      Function was called within a
+      <a href="process.md#process_event_exit"
+        ><code>process.on('exit')</code></a
+      >
+      handler that shouldn’t be called within
+      <a href="process.md#process_event_exit"
+        ><code>process.on('exit')</code></a
+      >
+      handler.
+    </p>
+    <p>
+      <a id="ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET"></a> ###
+      <code>ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET</code>
+    </p>
+    <p>
+      <a
+        href="process.md#process_process_setuncaughtexceptioncapturecallback_fn"
+        ><code>process.setUncaughtExceptionCaptureCallback()</code></a
+      >
+      was called twice, without first resetting the callback to
+      <code>null</code>.
+    </p>
+    <p>
+      This error is designed to prevent accidentally overwriting a callback
+      registered from another module.
+    </p>
+    <p>
+      <a id="ERR_UNESCAPED_CHARACTERS"></a> ###
+      <code>ERR_UNESCAPED_CHARACTERS</code>
+    </p>
+    <p>A string that contained unescaped characters was received.</p>
+    <p><a id="ERR_UNHANDLED_ERROR"></a> ### <code>ERR_UNHANDLED_ERROR</code></p>
+    <p>
+      An unhandled error occurred (for instance, when an
+      <code>'error'</code> event is emitted by an
+      <a href="events.md#events_class_eventemitter"
+        ><code>EventEmitter</code></a
+      >
+      but an <code>'error'</code> handler is not registered).
+    </p>
+    <p>
+      <a id="ERR_UNKNOWN_BUILTIN_MODULE"></a> ###
+      <code>ERR_UNKNOWN_BUILTIN_MODULE</code>
+    </p>
+    <p>
+      Used to identify a specific kind of internal Node.js error that should not
+      typically be triggered by user code. Instances of this error point to an
+      internal bug within the Node.js binary itself.
+    </p>
+    <p>
+      <a id="ERR_UNKNOWN_CREDENTIAL"></a> ###
+      <code>ERR_UNKNOWN_CREDENTIAL</code>
+    </p>
+    <p>A Unix group or user identifier that does not exist was passed.</p>
+    <p>
+      <a id="ERR_UNKNOWN_ENCODING"></a> ### <code>ERR_UNKNOWN_ENCODING</code>
+    </p>
+    <p>An invalid or unknown encoding option was passed to an API.</p>
+    <p>
+      <a id="ERR_UNKNOWN_FILE_EXTENSION"></a> ###
+      <code>ERR_UNKNOWN_FILE_EXTENSION</code>
+    </p>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      An attempt was made to load a module with an unknown or unsupported file
+      extension.
+    </p>
+    <p>
+      <a id="ERR_UNKNOWN_MODULE_FORMAT"></a> ###
+      <code>ERR_UNKNOWN_MODULE_FORMAT</code>
+    </p>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      An attempt was made to load a module with an unknown or unsupported
+      format.
+    </p>
+    <p><a id="ERR_UNKNOWN_SIGNAL"></a> ### <code>ERR_UNKNOWN_SIGNAL</code></p>
+    <p>
+      An invalid or unknown process signal was passed to an API expecting a
+      valid signal (such as
+      <a href="child_process.md#child_process_subprocess_kill_signal"
+        ><code>subprocess.kill()</code></a
+      >).
+    </p>
+    <p>
+      <a id="ERR_UNSUPPORTED_DIR_IMPORT"></a> ###
+      <code>ERR_UNSUPPORTED_DIR_IMPORT</code>
+    </p>
+    <p>
+      <code>import</code> a directory URL is unsupported. Instead,
+      <a href="packages.md#packages_self_referencing_a_package_using_its_name"
+        >self-reference a package using its name</a
+      >
+      and
+      <a href="packages.md#packages_subpath_exports">define a custom subpath</a>
+      in the
+      <a href="packages.md#packages_exports"><code>"exports"</code></a> field of
+      the
+      <a href="packages.md#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      file.
+    </p>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="im">import</span> <span class="st">&#39;./&#39;</span><span class="op">;</span> <span class="co">// unsupported</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="im">import</span> <span class="st">&#39;./index.js&#39;</span><span class="op">;</span> <span class="co">// supported</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="im">import</span> <span class="st">&#39;package-name&#39;</span><span class="op">;</span> <span class="co">// supported</span></a></code></pre>
+    </div>
+    <p>
+      <a id="ERR_UNSUPPORTED_ESM_URL_SCHEME"></a> ###
+      <code>ERR_UNSUPPORTED_ESM_URL_SCHEME</code>
+    </p>
+    <p>
+      <code>import</code> with URL schemes other than <code>file</code> and
+      <code>data</code> is unsupported.
+    </p>
+    <p>
+      <a id="ERR_VALID_PERFORMANCE_ENTRY_TYPE"></a> ###
+      <code>ERR_VALID_PERFORMANCE_ENTRY_TYPE</code>
+    </p>
+    <p>
+      While using the Performance Timing API (<code>perf_hooks</code>), no valid
+      performance entry types are found.
+    </p>
+    <p>
+      <a id="ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING"></a> ###
+      <code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING</code>
+    </p>
+    <p>A dynamic import callback was not specified.</p>
+    <p>
+      <a id="ERR_VM_MODULE_ALREADY_LINKED"></a> ###
+      <code>ERR_VM_MODULE_ALREADY_LINKED</code>
+    </p>
+    <p>
+      The module attempted to be linked is not eligible for linking, because of
+      one of the following reasons:
+    </p>
+    <ul>
+      <li>
+        It has already been linked (<code>linkingStatus</code> is
+        <code>'linked'</code>)
+      </li>
+      <li>
+        It is being linked (<code>linkingStatus</code> is
+        <code>'linking'</code>)
+      </li>
+      <li>
+        Linking has failed for this module (<code>linkingStatus</code> is
+        <code>'errored'</code>)
+      </li>
+    </ul>
+    <p>
+      <a id="ERR_VM_MODULE_CACHED_DATA_REJECTED"></a> ###
+      <code>ERR_VM_MODULE_CACHED_DATA_REJECTED</code>
+    </p>
+    <p>
+      The <code>cachedData</code> option passed to a module constructor is
+      invalid.
+    </p>
+    <p>
+      <a id="ERR_VM_MODULE_CANNOT_CREATE_CACHED_DATA"></a> ###
+      <code>ERR_VM_MODULE_CANNOT_CREATE_CACHED_DATA</code>
+    </p>
+    <p>
+      Cached data cannot be created for modules which have already been
+      evaluated.
+    </p>
+    <p>
+      <a id="ERR_VM_MODULE_DIFFERENT_CONTEXT"></a> ###
+      <code>ERR_VM_MODULE_DIFFERENT_CONTEXT</code>
+    </p>
+    <p>
+      The module being returned from the linker function is from a different
+      context than the parent module. Linked modules must share the same
+      context.
+    </p>
+    <p>
+      <a id="ERR_VM_MODULE_LINKING_ERRORED"></a> ###
+      <code>ERR_VM_MODULE_LINKING_ERRORED</code>
+    </p>
+    <p>The linker function returned a module for which linking has failed.</p>
+    <p>
+      <a id="ERR_VM_MODULE_LINK_FAILURE"></a> ###
+      <code>ERR_VM_MODULE_LINK_FAILURE</code>
+    </p>
+    <p>The module was unable to be linked due to a failure.</p>
+    <p>
+      <a id="ERR_VM_MODULE_NOT_MODULE"></a> ###
+      <code>ERR_VM_MODULE_NOT_MODULE</code>
+    </p>
+    <p>
+      The fulfilled value of a linking promise is not a
+      <code>vm.Module</code> object.
+    </p>
+    <p>
+      <a id="ERR_VM_MODULE_STATUS"></a> ### <code>ERR_VM_MODULE_STATUS</code>
+    </p>
+    <p>
+      The current module’s status does not allow for this operation. The
+      specific meaning of the error depends on the specific function.
+    </p>
+    <p>
+      <a id="ERR_WASI_ALREADY_STARTED"></a> ###
+      <code>ERR_WASI_ALREADY_STARTED</code>
+    </p>
+    <p>The WASI instance has already started.</p>
+    <p>
+      <a id="ERR_WASI_NOT_STARTED"></a> ### <code>ERR_WASI_NOT_STARTED</code>
+    </p>
+    <p>The WASI instance has not been started.</p>
+    <p>
+      <a id="ERR_WORKER_INIT_FAILED"></a> ###
+      <code>ERR_WORKER_INIT_FAILED</code>
+    </p>
+    <p>The <code>Worker</code> initialization failed.</p>
+    <p>
+      <a id="ERR_WORKER_INVALID_EXEC_ARGV"></a> ###
+      <code>ERR_WORKER_INVALID_EXEC_ARGV</code>
+    </p>
+    <p>
+      The <code>execArgv</code> option passed to the
+      <code>Worker</code> constructor contains invalid flags.
+    </p>
+    <p>
+      <a id="ERR_WORKER_NOT_RUNNING"></a> ###
+      <code>ERR_WORKER_NOT_RUNNING</code>
+    </p>
+    <p>
+      An operation failed because the <code>Worker</code> instance is not
+      currently running.
+    </p>
+    <p>
+      <a id="ERR_WORKER_OUT_OF_MEMORY"></a> ###
+      <code>ERR_WORKER_OUT_OF_MEMORY</code>
+    </p>
+    <p>
+      The <code>Worker</code> instance terminated because it reached its memory
+      limit.
+    </p>
+    <p><a id="ERR_WORKER_PATH"></a> ### <code>ERR_WORKER_PATH</code></p>
+    <p>
+      The path for the main script of a worker is neither an absolute path nor a
+      relative path starting with <code>./</code> or <code>../</code>.
+    </p>
+    <p>
+      <a id="ERR_WORKER_UNSERIALIZABLE_ERROR"></a> ###
+      <code>ERR_WORKER_UNSERIALIZABLE_ERROR</code>
+    </p>
+    <p>
+      All attempts at serializing an uncaught exception from a worker thread
+      failed.
+    </p>
+    <p>
+      <a id="ERR_WORKER_UNSUPPORTED_EXTENSION"></a> ###
+      <code>ERR_WORKER_UNSUPPORTED_EXTENSION</code>
+    </p>
+    <p>
+      The pathname used for the main script of a worker has an unknown file
+      extension.
+    </p>
+    <p>
+      <a id="ERR_WORKER_UNSUPPORTED_OPERATION"></a> ###
+      <code>ERR_WORKER_UNSUPPORTED_OPERATION</code>
+    </p>
+    <p>The requested functionality is not supported in worker threads.</p>
+    <p>
+      <a id="ERR_ZLIB_INITIALIZATION_FAILED"></a> ###
+      <code>ERR_ZLIB_INITIALIZATION_FAILED</code>
+    </p>
+    <p>
+      Creation of a <a href="zlib.md"><code>zlib</code></a> object failed due to
+      incorrect configuration.
+    </p>
+    <p>
+      <a id="HPE_HEADER_OVERFLOW"></a> ### <code>HPE_HEADER_OVERFLOW</code>
+      <!-- YAML
+changes:
+  - version:
+     - v11.4.0
+     - v10.15.0
+    commit: 186035243fad247e3955f
+    pr-url: https://github.com/nodejs-private/node-private/pull/143
+    description: Max header size in `http_parser` was set to 8 KB.
+-->
+    </p>
+    <p>
+      Too much HTTP header data was received. In order to protect against
+      malicious or malconfigured clients, if more than 8 KB of HTTP header data
+      is received then HTTP parsing will abort without a request or response
+      object being created, and an <code>Error</code> with this code will be
+      emitted.
+    </p>
+    <p>
+      <a id="HPE_UNEXPECTED_CONTENT_LENGTH"></a> ###
+      <code>HPE_UNEXPECTED_CONTENT_LENGTH</code>
+    </p>
+    <p>
+      Server is sending both a <code>Content-Length</code> header and
+      <code>Transfer-Encoding: chunked</code>.
+    </p>
+    <p>
+      <code>Transfer-Encoding: chunked</code> allows the server to maintain an
+      HTTP persistent connection for dynamically generated content. In this
+      case, the <code>Content-Length</code> HTTP header cannot be used.
+    </p>
+    <p>
+      Use <code>Content-Length</code> or
+      <code>Transfer-Encoding: chunked</code>.
+    </p>
+    <p>
+      <a id="MODULE_NOT_FOUND"></a> ### <code>MODULE_NOT_FOUND</code>
+      <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25690
+    description: Added `requireStack` property.
+-->
+      A module file could not be resolved while attempting a
+      <a href="modules.md#modules_require_id"><code>require()</code></a> or
+      <code>import</code> operation.
+    </p>
+    <h2 id="legacy-node.js-error-codes">Legacy Node.js error codes</h2>
+    <blockquote>
+      <p>
+        Stability: 0 - Deprecated. These error codes are either inconsistent, or
+        have been removed.
+      </p>
+    </blockquote>
+    <p>
+      <a id="ERR_CANNOT_TRANSFER_OBJECT"></a> ###
+      <code>ERR_CANNOT_TRANSFER_OBJECT</code>
+      <!--
+added: v10.5.0
+removed: v12.5.0
+-->
+    </p>
+    <p>
+      The value passed to <code>postMessage()</code> contained an object that is
+      not supported for transferring.
+    </p>
+    <p>
+      <a id="ERR_CRYPTO_HASH_DIGEST_NO_UTF16"></a> ###
+      <code>ERR_CRYPTO_HASH_DIGEST_NO_UTF16</code>
+      <!-- YAML
+added: v9.0.0
+removed: v12.12.0
+-->
+    </p>
+    <p>
+      The UTF-16 encoding was used with
+      <a href="crypto.md#crypto_hash_digest_encoding"
+        ><code>hash.digest()</code></a
+      >. While the <code>hash.digest()</code> method does allow an
+      <code>encoding</code> argument to be passed in, causing the method to
+      return a string rather than a <code>Buffer</code>, the UTF-16 encoding
+      (e.g. <code>ucs</code> or <code>utf16le</code>) is not supported.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_FRAME_ERROR"></a> ### <code>ERR_HTTP2_FRAME_ERROR</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when a failure occurs sending an individual frame on the HTTP/2
+      session.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_HEADERS_OBJECT"></a> ###
+      <code>ERR_HTTP2_HEADERS_OBJECT</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>Used when an HTTP/2 Headers Object is expected.</p>
+    <p>
+      <a id="ERR_HTTP2_HEADER_REQUIRED"></a> ###
+      <code>ERR_HTTP2_HEADER_REQUIRED</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>Used when a required header is missing in an HTTP/2 message.</p>
+    <p>
+      <a id="ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND"></a> ###
+      <code>ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      HTTP/2 informational headers must only be sent <em>prior</em> to calling
+      the <code>Http2Stream.prototype.respond()</code> method.
+    </p>
+    <p>
+      <a id="ERR_HTTP2_STREAM_CLOSED"></a> ###
+      <code>ERR_HTTP2_STREAM_CLOSED</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when an action has been performed on an HTTP/2 Stream that has
+      already been closed.
+    </p>
+    <p>
+      <a id="ERR_HTTP_INVALID_CHAR"></a> ### <code>ERR_HTTP_INVALID_CHAR</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when an invalid character is found in an HTTP response status message
+      (reason phrase).
+    </p>
+    <p>
+      <a id="ERR_INDEX_OUT_OF_RANGE"></a> ###
+      <code>ERR_INDEX_OUT_OF_RANGE</code>
+      <!-- YAML
+  added: v10.0.0
+  removed: v11.0.0
+-->
+      A given index was out of the accepted range (e.g. negative offsets).
+    </p>
+    <p>
+      <a id="ERR_INVALID_OPT_VALUE"></a> ### <code>ERR_INVALID_OPT_VALUE</code>
+      <!-- YAML
+added: v8.0.0
+removed: v15.0.0
+-->
+    </p>
+    <p>An invalid or unexpected value was passed in an options object.</p>
+    <p>
+      <a id="ERR_INVALID_OPT_VALUE_ENCODING"></a> ###
+      <code>ERR_INVALID_OPT_VALUE_ENCODING</code>
+      <!-- YAML
+added: v9.0.0
+removed: v15.0.0
+-->
+    </p>
+    <p>An invalid or unknown file encoding was passed.</p>
+    <p>
+      <a id="ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST"></a> ###
+      <code>ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST</code>
+      <!-- YAML
+removed: v15.0.0
+-->
+    </p>
+    <p>
+      This error code was replaced by
+      <a href="#ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST"
+        ><code>ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST</code></a
+      >
+      in Node.js v15.0.0, because it is no longer accurate as other types of
+      transferable objects also exist now.
+    </p>
+    <p>
+      <a id="ERR_NAPI_CONS_PROTOTYPE_OBJECT"></a> ###
+      <code>ERR_NAPI_CONS_PROTOTYPE_OBJECT</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used by the <code>Node-API</code> when
+      <code>Constructor.prototype</code> is not an object.
+    </p>
+    <p>
+      <a id="ERR_NO_LONGER_SUPPORTED"></a> ###
+      <code>ERR_NO_LONGER_SUPPORTED</code>
+    </p>
+    <p>
+      A Node.js API was called in an unsupported manner, such as
+      <code>Buffer.write(string, encoding, offset[, length])</code>.
+    </p>
+    <p>
+      <a id="ERR_OPERATION_FAILED"></a> ### <code>ERR_OPERATION_FAILED</code>
+      <!-- YAML
+added: v15.0.0
+-->
+    </p>
+    <p>
+      An operation failed. This is typically used to signal the general failure
+      of an asynchronous operation.
+    </p>
+    <p>
+      <a id="ERR_OUTOFMEMORY"></a> ### <code>ERR_OUTOFMEMORY</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used generically to identify that an operation caused an out of memory
+      condition.
+    </p>
+    <p>
+      <a id="ERR_PARSE_HISTORY_DATA"></a> ###
+      <code>ERR_PARSE_HISTORY_DATA</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      The <code>repl</code> module was unable to parse data from the REPL
+      history file.
+    </p>
+    <p>
+      <a id="ERR_SOCKET_CANNOT_SEND"></a> ###
+      <code>ERR_SOCKET_CANNOT_SEND</code>
+      <!-- YAML
+added: v9.0.0
+removed: v14.0.0
+-->
+    </p>
+    <p>Data could not be sent on a socket.</p>
+    <p>
+      <a id="ERR_STDERR_CLOSE"></a> ### <code>ERR_STDERR_CLOSE</code>
+      <!-- YAML
+removed: v10.12.0
+changes:
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/23053
+    description: Rather than emitting an error, `process.stderr.end()` now
+                 only closes the stream side but not the underlying resource,
+                 making this error obsolete.
+-->
+    </p>
+    <p>
+      An attempt was made to close the <code>process.stderr</code> stream. By
+      design, Node.js does not allow <code>stdout</code> or
+      <code>stderr</code> streams to be closed by user code.
+    </p>
+    <p>
+      <a id="ERR_STDOUT_CLOSE"></a> ### <code>ERR_STDOUT_CLOSE</code>
+      <!-- YAML
+removed: v10.12.0
+changes:
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/23053
+    description: Rather than emitting an error, `process.stderr.end()` now
+                 only closes the stream side but not the underlying resource,
+                 making this error obsolete.
+-->
+    </p>
+    <p>
+      An attempt was made to close the <code>process.stdout</code> stream. By
+      design, Node.js does not allow <code>stdout</code> or
+      <code>stderr</code> streams to be closed by user code.
+    </p>
+    <p>
+      <a id="ERR_STREAM_READ_NOT_IMPLEMENTED"></a> ###
+      <code>ERR_STREAM_READ_NOT_IMPLEMENTED</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when an attempt is made to use a readable stream that has not
+      implemented
+      <a href="stream.md#stream_readable_read_size_1"
+        ><code>readable._read()</code></a
+      >.
+    </p>
+    <p>
+      <a id="ERR_TLS_RENEGOTIATION_FAILED"></a> ###
+      <code>ERR_TLS_RENEGOTIATION_FAILED</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when a TLS renegotiation request has failed in a non-specific way.
+    </p>
+    <p>
+      <a id="ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER"></a> ###
+      <code>ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER</code>
+      <!-- YAML
+added: v10.5.0
+removed: v14.0.0
+-->
+    </p>
+    <p>
+      A <code>SharedArrayBuffer</code> whose memory is not managed by the
+      JavaScript engine or by Node.js was encountered during serialization. Such
+      a <code>SharedArrayBuffer</code> cannot be serialized.
+    </p>
+    <p>
+      This can only happen when native addons create
+      <code>SharedArrayBuffer</code>s in “externalized” mode, or put existing
+      <code>SharedArrayBuffer</code> into externalized mode.
+    </p>
+    <p>
+      <a id="ERR_UNKNOWN_STDIN_TYPE"></a> ###
+      <code>ERR_UNKNOWN_STDIN_TYPE</code>
+      <!-- YAML
+added: v8.0.0
+removed: v11.7.0
+-->
+    </p>
+    <p>
+      An attempt was made to launch a Node.js process with an unknown
+      <code>stdin</code> file type. This error is usually an indication of a bug
+      within Node.js itself, although it is possible for user code to trigger
+      it.
+    </p>
+    <p>
+      <a id="ERR_UNKNOWN_STREAM_TYPE"></a> ###
+      <code>ERR_UNKNOWN_STREAM_TYPE</code>
+      <!-- YAML
+added: v8.0.0
+removed: v11.7.0
+-->
+    </p>
+    <p>
+      An attempt was made to launch a Node.js process with an unknown
+      <code>stdout</code> or <code>stderr</code> file type. This error is
+      usually an indication of a bug within Node.js itself, although it is
+      possible for user code to trigger it.
+    </p>
+    <p><a id="ERR_V8BREAKITERATOR"></a> ### <code>ERR_V8BREAKITERATOR</code></p>
+    <p>
+      The V8 <code>BreakIterator</code> API was used but the full ICU data set
+      is not installed.
+    </p>
+    <p>
+      <a id="ERR_VALUE_OUT_OF_RANGE"></a> ###
+      <code>ERR_VALUE_OUT_OF_RANGE</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>Used when a given value is out of the accepted range.</p>
+    <p>
+      <a id="ERR_VM_MODULE_NOT_LINKED"></a> ###
+      <code>ERR_VM_MODULE_NOT_LINKED</code>
+    </p>
+    <p>The module must be successfully linked before instantiation.</p>
+    <p>
+      <a id="ERR_ZLIB_BINDING_CLOSED"></a> ###
+      <code>ERR_ZLIB_BINDING_CLOSED</code>
+      <!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+    </p>
+    <p>
+      Used when an attempt is made to use a <code>zlib</code> object after it
+      has already been closed.
+    </p>
+    <p>
+      <a id="ERR_CPU_USAGE"></a> ### <code>ERR_CPU_USAGE</code>
+      <!-- YAML
+removed: v15.0.0
+-->
+    </p>
+    <p>
+      The native call from <code>process.cpuUsage</code> could not be processed.
+    </p>
+  </body>
+</html>

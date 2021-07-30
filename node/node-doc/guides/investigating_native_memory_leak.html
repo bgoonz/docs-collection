@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>investigating_native_memory_leak</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="investigating-memory-leaks-with-valgrind">Investigating memory leaks with valgrind</h1>
+<p>A Node.js process may run out of memory due to excessive consumption of native memory. Native Memory is memory which is not managed by the V8 Garbage collector and is allocated either by the Node.js runtime, its dependencies or native <a href="https://nodejs.org/docs/latest/api/n-api.html">addons</a>.</p>
+<p>This guide provides information on how to use valgrind to investigate these issues on Linux platforms.</p>
+<h2 id="valgrind">valgrind</h2>
+<p><a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind</a> is a tool available on Linux distributions which can be used to investigate memory usage including identifying memory leaks (memory which is allocated and not freed) and other memory related problems like double freeing memory.</p>
+<p>To use valgrind:</p>
+<ul>
+<li>Be patient, running under valgrind slows execution significantly due to the checks being performed.</li>
+<li>Reduce your test case to the smallest reproduce. Due to the slowdown it is important to run the minimum test case in order to be able to do it in a reasonable time.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>It is an optional package in most cases and must be installed explicitly. For example on Debian/Ubuntu:</p>
+<pre class="console"><code>apt-get install valgrind</code></pre>
+<h2 id="invocation">Invocation</h2>
+<p>The simplest invocation of valgrind is:</p>
+<pre class="console"><code>valgrind node test.js</code></pre>
+<p>with the output being:</p>
+<pre class="console"><code>user1@minikube1:~/valgrind/node-addon-examples/1_hello_world/napi$ valgrind node test.js
+==28993== Memcheck, a memory error detector
+==28993== Copyright (C) 2002-2017, and GNU GPL&#39;d, by Julian Seward et al.
+==28993== Using valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==28993== Command: node test.js
+==28993==
+==28993== Use of uninitialised value of size 8
+==28993==    at 0x12F2279: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F3E9C: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0x12F3C77: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0xC7C9CF: v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0xC7CE87: v8::internal::Execution::Call(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, int, v8::internal::Handle&lt;v8::internal::Object&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==    by 0xB4CF3A: v8::Function::Call(v8::Local&lt;v8::Context&gt;, v8::Local&lt;v8::Value&gt;, int, v8::Local&lt;v8::Value&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==28993==
+--28993-- WARNING: unhandled amd64-linux syscall: 332
+--28993-- You may be able to write your own handler.
+--28993-- Read the file README_MISSING_SYSCALL_OR_IOCTL.
+--28993-- Nevertheless we consider this a bug.  Please report
+--28993-- it at http://valgrind.org/support/bug_reports.html.
+==28993==
+==28993== HEAP SUMMARY:
+==28993==     in use at exit: 6,140 bytes in 23 blocks
+==28993==   total heap usage: 12,888 allocs, 12,865 frees, 13,033,244 bytes allocated
+==28993==
+==28993== LEAK SUMMARY:
+==28993==    definitely lost: 0 bytes in 0 blocks
+==28993==    indirectly lost: 0 bytes in 0 blocks
+==28993==      possibly lost: 304 bytes in 1 blocks
+==28993==    still reachable: 5,836 bytes in 22 blocks
+==28993==         suppressed: 0 bytes in 0 blocks
+==28993== Rerun with --leak-check=full to see details of leaked memory
+==28993==
+==28993== For counts of detected and suppressed errors, rerun with: -v
+==28993== Use --track-origins=yes to see where uninitialised values come</code></pre>
+<p>This reports that Node.js is not <em>completely</em> clean as there is some memory that was allocated but not freed when the process shut down. It is often impractical/not worth being completely clean in this respect. Modern operating systems will clean up the memory of the process after the shutdown while attempting to free all memory to get a clean report may have a negative impact on the code complexity and shutdown times. Node.js does a pretty good job only leaving on the order of 6 KB that are not freed on shutdown.</p>
+<h2 id="an-obvious-memory-leak">An obvious memory leak</h2>
+<p>Leaks can be introduced in native addons and the following is a simple example leak based on the “Hello world” addon from <a href="https://github.com/nodejs/node-addon-examples">node-addon-examples</a>.</p>
+<p>In this example, a loop which allocates approximately 1 MB of memory and never frees it has been added:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb4-1" title="1"><span class="dt">void</span>* malloc_holder = <span class="kw">nullptr</span>;</a>
+<a class="sourceLine" id="cb4-2" title="2">napi_value Method(napi_env env, napi_callback_info info) {</a>
+<a class="sourceLine" id="cb4-3" title="3">  napi_status status;</a>
+<a class="sourceLine" id="cb4-4" title="4">  napi_value world;</a>
+<a class="sourceLine" id="cb4-5" title="5">  status = napi_create_string_utf8(env, <span class="st">&quot;world&quot;</span>, <span class="dv">5</span>, &amp;world);</a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="ot">assert</span>(status == napi_ok);</a>
+<a class="sourceLine" id="cb4-7" title="7"></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="co">// NEW LEAK HERE</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">0</span>; i &lt; <span class="dv">1024</span>; i++) {</a>
+<a class="sourceLine" id="cb4-10" title="10">    malloc_holder = malloc(<span class="dv">1024</span>);</a>
+<a class="sourceLine" id="cb4-11" title="11">  }</a>
+<a class="sourceLine" id="cb4-12" title="12"></a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="cf">return</span> world;</a>
+<a class="sourceLine" id="cb4-14" title="14">}</a></code></pre></div>
+<p>When trying to create a memory leak you need to ensure that the compiler has not optimized out the code that creates the leak. For example, by assigning the result of the allocation to either a global variable or a variable that will be read afterwards the compiler will not optimize it out along with the malloc and Valgrind will properly report the memory leak. If <code>malloc_holder</code> in the example above is made into a local variable then the compiler may freely remove it along with the allocations (since it is not used) and Valgrind will not find any leaks since they will no longer exist in the code being run.</p>
+<p>Running valgrind on this code shows the following:</p>
+<pre class="console"><code>user1@minikube1:~/valgrind/node-addon-examples/1_hello_world/napi$ valgrind node hello.js
+==1504== Memcheck, a memory error detector
+==1504== Copyright (C) 2002-2017, and GNU GPL&#39;d, by Julian Seward et al.
+==1504== Using V#algrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==1504== Command: node hello.js
+==1504==
+==1504== Use of uninitialised value of size 8
+==1504==    at 0x12F2279: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F3E9C: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0x12F3C77: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0xC7C9CF: v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0xC7CE87: v8::internal::Execution::Call(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, int, v8::internal::Handle&lt;v8::internal::Object&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==    by 0xB4CF3A: v8::Function::Call(v8::Local&lt;v8::Context&gt;, v8::Local&lt;v8::Value&gt;, int, v8::Local&lt;v8::Value&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==1504==
+--1504-- WARNING: unhandled amd64-linux syscall: 332
+--1504-- You may be able to write your own handler.
+--1504-- Read the file README_MISSING_SYSCALL_OR_IOCTL.
+--1504-- Nevertheless we consider this a bug.  Please report
+--1504-- it at http://valgrind.org/support/bug_reports.html.
+world
+==1504==
+==1504== HEAP SUMMARY:
+==1504==     in use at exit: 1,008,003 bytes in 1,032 blocks
+==1504==   total heap usage: 17,603 allocs, 16,571 frees, 18,306,103 bytes allocated
+==1504==
+==1504== LEAK SUMMARY:
+==1504==    definitely lost: 996,064 bytes in 997 blocks
+==1504==    indirectly lost: 0 bytes in 0 blocks
+==1504==      possibly lost: 3,304 bytes in 4 blocks
+==1504==    still reachable: 8,635 bytes in 31 blocks
+==1504==                       of which reachable via heuristic:
+==1504==                         multipleinheritance: 48 bytes in 1 blocks
+==1504==         suppressed: 0 bytes in 0 blocks
+==1504== Rerun with --leak-check=full to see details of leaked memory
+==1504==
+==1504== For counts of detected and suppressed errors, rerun with: -v
+==1504== Use --track-origins=yes to see where uninitialised values come from
+==1504== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)</code></pre>
+<p>Valgrind is reporting a problem as it shows 996,604 bytes as definitely lost and the question is how to find where that memory was allocated. The next step is to rerun as suggested in the output with <code>--leak-check=full</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">user1@minikube1</span>:~/valgrind/node-addon-examples/1_hello_world/napi$ valgrind --leak-check=full node hello.js</a>
+<a class="sourceLine" id="cb6-2" title="2">==<span class="ex">4174</span>== Memcheck, a memory error detector</a>
+<a class="sourceLine" id="cb6-3" title="3">==<span class="ex">4174</span>== Copyright (C) <span class="ex">2002-2017</span>, and GNU GPL<span class="st">&#39;d, by Julian Seward et al.</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="st">==4174== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="st">==4174== Command: node hello.js</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="st">==4174== Use of uninitialised value of size 8</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="st">==4174==    at 0x12F2279: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="st">==4174==    by 0x12F3E9C: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="st">==4174==    by 0x12F3C77: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="st">==4174==    by 0xC7C9CF: v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="st">==4174==    by 0xC7CE87: v8::internal::Execution::Call(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, int, v8::internal::Handle&lt;v8::internal::Object&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="st">==4174==    by 0xB4CF3A: v8::Function::Call(v8::Local&lt;v8::Context&gt;, v8::Local&lt;v8::Value&gt;, int, v8::Local&lt;v8::Value&gt;*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="st">--4174-- WARNING: unhandled amd64-linux syscall: 332</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="st">--4174-- You may be able to write your own handler.</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="st">--4174-- Read the file README_MISSING_SYSCALL_OR_IOCTL.</span></a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="st">--4174-- Nevertheless we consider this a bug.  Please report</span></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="st">--4174-- it at http://valgrind.org/support/bug_reports.html.</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="st">world</span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-28" title="28"><span class="st">==4174== HEAP SUMMARY:</span></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="st">==4174==     in use at exit: 1,008,003 bytes in 1,032 blocks</span></a>
+<a class="sourceLine" id="cb6-30" title="30"><span class="st">==4174==   total heap usage: 17,606 allocs, 16,574 frees, 18,305,977 bytes allocated</span></a>
+<a class="sourceLine" id="cb6-31" title="31"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="st">==4174== 64 bytes in 1 blocks are definitely lost in loss record 17 of 35</span></a>
+<a class="sourceLine" id="cb6-33" title="33"><span class="st">==4174==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)</span></a>
+<a class="sourceLine" id="cb6-34" title="34"><span class="st">==4174==    by 0x9AEAD5: napi_module_register (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-35" title="35"><span class="st">==4174==    by 0x4010732: call_init (dl-init.c:72)</span></a>
+<a class="sourceLine" id="cb6-36" title="36"><span class="st">==4174==    by 0x4010732: _dl_init (dl-init.c:119)</span></a>
+<a class="sourceLine" id="cb6-37" title="37"><span class="st">==4174==    by 0x40151FE: dl_open_worker (dl-open.c:522)</span></a>
+<a class="sourceLine" id="cb6-38" title="38"><span class="st">==4174==    by 0x5D052DE: _dl_catch_exception (dl-error-skeleton.c:196)</span></a>
+<a class="sourceLine" id="cb6-39" title="39"><span class="st">==4174==    by 0x40147C9: _dl_open (dl-open.c:605)</span></a>
+<a class="sourceLine" id="cb6-40" title="40"><span class="st">==4174==    by 0x4E3CF95: dlopen_doit (dlopen.c:66)</span></a>
+<a class="sourceLine" id="cb6-41" title="41"><span class="st">==4174==    by 0x5D052DE: _dl_catch_exception (dl-error-skeleton.c:196)</span></a>
+<a class="sourceLine" id="cb6-42" title="42"><span class="st">==4174==    by 0x5D0536E: _dl_catch_error (dl-error-skeleton.c:215)</span></a>
+<a class="sourceLine" id="cb6-43" title="43"><span class="st">==4174==    by 0x4E3D734: _dlerror_run (dlerror.c:162)</span></a>
+<a class="sourceLine" id="cb6-44" title="44"><span class="st">==4174==    by 0x4E3D050: dlopen@@GLIBC_2.2.5 (dlopen.c:87)</span></a>
+<a class="sourceLine" id="cb6-45" title="45"><span class="st">==4174==    by 0x9B29A0: node::binding::DLOpen(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;)::{lambda(node::binding::DLib*)#1}::operator()(node::binding::DLib*) const (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-46" title="46"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-47" title="47"><span class="st">==4174== 304 bytes in 1 blocks are possibly lost in loss record 27 of 35</span></a>
+<a class="sourceLine" id="cb6-48" title="48"><span class="st">==4174==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)</span></a>
+<a class="sourceLine" id="cb6-49" title="49"><span class="st">==4174==    by 0x40134A6: allocate_dtv (dl-tls.c:286)</span></a>
+<a class="sourceLine" id="cb6-50" title="50"><span class="st">==4174==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)</span></a>
+<a class="sourceLine" id="cb6-51" title="51"><span class="st">==4174==    by 0x5987227: allocate_stack (allocatestack.c:627)</span></a>
+<a class="sourceLine" id="cb6-52" title="52"><span class="st">==4174==    by 0x5987227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)</span></a>
+<a class="sourceLine" id="cb6-53" title="53"><span class="st">==4174==    by 0xAAF9DC: node::inspector::Agent::Start(std::string const&amp;, node::DebugOptions const&amp;, std::shared_ptr&lt;node::HostPort&gt;, bool) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-54" title="54"><span class="st">==4174==    by 0x9A8BE7: node::Environment::InitializeInspector(std::unique_ptr&lt;node::inspector::ParentInspectorHandle, std::default_delete&lt;node::inspector::ParentInspectorHandle&gt; &gt;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-55" title="55"><span class="st">==4174==    by 0xA1C9A5: node::NodeMainInstance::CreateMainEnvironment(int*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-56" title="56"><span class="st">==4174==    by 0xA1CB42: node::NodeMainInstance::Run() (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-57" title="57"><span class="st">==4174==    by 0x9ACB67: node::Start(int, char**) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-58" title="58"><span class="st">==4174==    by 0x5BBFB96: (below main) (libc-start.c:310)</span></a>
+<a class="sourceLine" id="cb6-59" title="59"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-60" title="60"><span class="st">==4174== 2,000 bytes in 2 blocks are possibly lost in loss record 33 of 35</span></a>
+<a class="sourceLine" id="cb6-61" title="61"><span class="st">==4174==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)</span></a>
+<a class="sourceLine" id="cb6-62" title="62"><span class="st">==4174==    by 0x9794979: Method(napi_env__*, napi_callback_info__*) (in /home/user1/valgrind/node-addon-examples/1_hello_world/napi/build/Release/hello.node)</span></a>
+<a class="sourceLine" id="cb6-63" title="63"><span class="st">==4174==    by 0x98F764: v8impl::(anonymous namespace)::FunctionCallbackWrapper::Invoke(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-64" title="64"><span class="st">==4174==    by 0xBA6FC8: v8::internal::MaybeHandle&lt;v8::internal::Object&gt; v8::internal::(anonymous namespace)::HandleApiCallHelper&lt;false&gt;(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::FunctionTemplateInfo&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::BuiltinArguments) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-65" title="65"><span class="st">==4174==    by 0xBA8DB6: v8::internal::Builtin_HandleApiCall(int, unsigned long*, v8::internal::Isolate*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-66" title="66"><span class="st">==4174==    by 0x1376358: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-67" title="67"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-68" title="68"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-69" title="69"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-70" title="70"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-71" title="71"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-72" title="72"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-73" title="73"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-74" title="74"><span class="st">==4174== 997,000 bytes in 997 blocks are definitely lost in loss record 35 of 35</span></a>
+<a class="sourceLine" id="cb6-75" title="75"><span class="st">==4174==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)</span></a>
+<a class="sourceLine" id="cb6-76" title="76"><span class="st">==4174==    by 0x9794979: Method(napi_env__*, napi_callback_info__*) (in /home/user1/valgrind/node-addon-examples/1_hello_world/napi/build/Release/hello.node)</span></a>
+<a class="sourceLine" id="cb6-77" title="77"><span class="st">==4174==    by 0x98F764: v8impl::(anonymous namespace)::FunctionCallbackWrapper::Invoke(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-78" title="78"><span class="st">==4174==    by 0xBA6FC8: v8::internal::MaybeHandle&lt;v8::internal::Object&gt; v8::internal::(anonymous namespace)::HandleApiCallHelper&lt;false&gt;(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::FunctionTemplateInfo&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::BuiltinArguments) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-79" title="79"><span class="st">==4174==    by 0xBA8DB6: v8::internal::Builtin_HandleApiCall(int, unsigned long*, v8::internal::Isolate*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-80" title="80"><span class="st">==4174==    by 0x1376358: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-81" title="81"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-82" title="82"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-83" title="83"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-84" title="84"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-85" title="85"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-86" title="86"><span class="st">==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</span></a>
+<a class="sourceLine" id="cb6-87" title="87"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-88" title="88"><span class="st">==4174== LEAK SUMMARY:</span></a>
+<a class="sourceLine" id="cb6-89" title="89"><span class="st">==4174==    definitely lost: 997,064 bytes in 998 blocks</span></a>
+<a class="sourceLine" id="cb6-90" title="90"><span class="st">==4174==    indirectly lost: 0 bytes in 0 blocks</span></a>
+<a class="sourceLine" id="cb6-91" title="91"><span class="st">==4174==      possibly lost: 2,304 bytes in 3 blocks</span></a>
+<a class="sourceLine" id="cb6-92" title="92"><span class="st">==4174==    still reachable: 8,635 bytes in 31 blocks</span></a>
+<a class="sourceLine" id="cb6-93" title="93"><span class="st">==4174==                       of which reachable via heuristic:</span></a>
+<a class="sourceLine" id="cb6-94" title="94"><span class="st">==4174==                         multipleinheritance: 48 bytes in 1 blocks</span></a>
+<a class="sourceLine" id="cb6-95" title="95"><span class="st">==4174==         suppressed: 0 bytes in 0 blocks</span></a>
+<a class="sourceLine" id="cb6-96" title="96"><span class="st">==4174== Reachable blocks (those to which a pointer was found) are not shown.</span></a>
+<a class="sourceLine" id="cb6-97" title="97"><span class="st">==4174== To see them, rerun with: --leak-check=full --show-leak-kinds=all</span></a>
+<a class="sourceLine" id="cb6-98" title="98"><span class="st">==4174==</span></a>
+<a class="sourceLine" id="cb6-99" title="99"><span class="st">==4174== For counts of detected and suppressed errors, rerun with: -v</span></a>
+<a class="sourceLine" id="cb6-100" title="100"><span class="st">==4174== Use --track-origins=yes to see where uninitialised values come from</span></a>
+<a class="sourceLine" id="cb6-101" title="101"><span class="st">==4174== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)</span></a></code></pre></div>
+<p>This is the most interesting part of the report:</p>
+<pre class="console"><code>==4174== 997,000 bytes in 997 blocks are definitely lost in loss record 35 of 35
+==4174==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4174==    by 0x9794979: Method(napi_env__*, napi_callback_info__*) (in /home/user1/valgrind/node-addon-examples/1_hello_world/napi/build/Release/hello.node)
+==4174==    by 0x98F764: v8impl::(anonymous namespace)::FunctionCallbackWrapper::Invoke(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0xBA6FC8: v8::internal::MaybeHandle&lt;v8::internal::Object&gt; v8::internal::(anonymous namespace)::HandleApiCallHelper&lt;false&gt;(v8::internal::Isolate*, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::FunctionTemplateInfo&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::BuiltinArguments) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0xBA8DB6: v8::internal::Builtin_HandleApiCall(int, unsigned long*, v8::internal::Isolate*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x1376358: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</code></pre>
+<p>From the stack trace we can tell that the leak came from a native addon:</p>
+<pre class="console"><code>==4174==    by 0x9794979: Method(napi_env__*, napi_callback_info__*) (in /home/user1/valgrind/node-addon-examples/1_hello_world/napi/build/Release/hello.node)</code></pre>
+<p>What we can’t tell is where in the native addon the memory is being allocated. This is because by default the addon is compiled without the debug symbols which valgrind needs to be able to provide more information.</p>
+<h2 id="enabling-debug-symbols-to-get-more-information">Enabling debug symbols to get more information</h2>
+<p>Leaks may be either in addons or Node.js itself. The sections which follow cover the steps needed to enable debug symbols to get more info.</p>
+<h3 id="native-addons">Native addons</h3>
+<p>To enable debug symbols for all of your addons that are compiled on install use:</p>
+<pre class="console"><code>npm install --debug</code></pre>
+<p>Any options which are not consumed by npm are passed on to node-gyp and this results in the addons being compiled with the debug option.</p>
+<p>If the native addon contains pre-built binaries you will need to force a rebuild.</p>
+<pre class="console"><code>npm install --debug
+npm rebuild</code></pre>
+<p>The next step is to run valgrind after the rebuild. This time the information for the leaking location includes the name of the source file and the line number:</p>
+<pre class="console"><code>==18481== 997,000 bytes in 997 blocks are definitely lost in loss record 35 of 35
+==18481==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+&gt;&gt;&gt;&gt;&gt; ==18481==    by 0x9794989: Method(napi_env__*, napi_callback_info__*) (hello.cc:13)  &lt;&lt;&lt;&lt;&lt;
+==18481==    by 0x98F764: v8impl::(anonymous namespace)::FunctionCallbackWrapper::Invoke(v8::FunctionCallbackInfo&lt;v8::Value&gt; const&amp;) (in /home/user1/val  grind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0xBA6FC8: v8::internal::MaybeHandle&lt;v8::internal::Object&gt; v8::internal::(anonymous namespace)::HandleApiCallHelper&lt;false&gt;(v8::internal::  Isolate*, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::HeapObject&gt;, v8::internal::Handle&lt;v8::internal::FunctionTem  plateInfo&gt;, v8::internal::Handle&lt;v8::internal::Object&gt;, v8::internal::BuiltinArguments) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0xBA8DB6: v8::internal::Builtin_HandleApiCall(int, unsigned long*, v8::internal::Isolate*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x1376358: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==18481==    by 0x12F68A3: ??? (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)</code></pre>
+<p>This new output shows us exactly where the leak is occurring in the file <code>hello.cc</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb12-1" title="1">  <span class="dv">6</span> <span class="dt">void</span>* malloc_holder = <span class="kw">nullptr</span>;</a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dv">7</span> napi_value Method(napi_env env, napi_callback_info info) {</a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dv">8</span>   napi_status status;</a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="dv">9</span>   napi_value world;</a>
+<a class="sourceLine" id="cb12-5" title="5"> <span class="dv">10</span>   status = napi_create_string_utf8(env, <span class="st">&quot;world&quot;</span>, <span class="dv">5</span>, &amp;world);</a>
+<a class="sourceLine" id="cb12-6" title="6"> <span class="dv">11</span>   <span class="ot">assert</span>(status == napi_ok);</a>
+<a class="sourceLine" id="cb12-7" title="7"> <span class="dv">12</span>   <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">0</span>; i&lt; <span class="dv">1000</span>; i++) {</a>
+<a class="sourceLine" id="cb12-8" title="8"> <span class="dv">13</span>     malloc_holder = malloc(<span class="dv">1000</span>);  <span class="co">// &lt;&lt;&lt;&lt;&lt;&lt; This is where we are allocating the memory that is not freed</span></a>
+<a class="sourceLine" id="cb12-9" title="9"> <span class="dv">14</span>   }</a>
+<a class="sourceLine" id="cb12-10" title="10"> <span class="dv">15</span>   <span class="cf">return</span> world;</a>
+<a class="sourceLine" id="cb12-11" title="11"> <span class="dv">16</span> }</a></code></pre></div>
+<h3 id="node.js-binary">Node.js binary</h3>
+<p>If the leak is not in an addon and is instead in the Node.js binary itself, you may need to compile node yourself and turn on debug symbols. Looking at this entry reported by valgrind, with a release binary we see:</p>
+<pre class="console"><code> ==4174== 304 bytes in 1 blocks are possibly lost in loss record 27 of 35
+==4174==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4174==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==4174==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==4174==    by 0x5987227: allocate_stack (allocatestack.c:627)
+==4174==    by 0x5987227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==4174==    by 0xAAF9DC: node::inspector::Agent::Start(std::string const&amp;, node::DebugOptions const&amp;, std::shared_ptr&lt;node::HostPort&gt;, bool) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x9A8BE7: node::Environment::InitializeInspector(std::unique_ptr&lt;node::inspector::ParentInspectorHandle, std::default_delete&lt;node::inspector::ParentInspectorHandle&gt; &gt;) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0xA1C9A5: node::NodeMainInstance::CreateMainEnvironment(int*) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0xA1CB42: node::NodeMainInstance::Run() (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x9ACB67: node::Start(int, char**) (in /home/user1/valgrind/node-v12.14.1-linux-x64/bin/node)
+==4174==    by 0x5BBFB96: (below main) (libc-start.c:310)</code></pre>
+<p>This gives us some information of where to look (<code>node::inspector::Agent::Start</code>) but not where in that function. We get more information than you might expect (or see by default with addons) because the Node.js binary exports many of its symbols using <code>-rdynamic</code> so that they can be used by addons. If the stack gives you enough information to track down where the leak is, that’s great, otherwise the next step is to compile a debug build of Node.js.</p>
+<p>To get additional information with valgrind:</p>
+<ul>
+<li>Check out the Node.js source corresponding to the release that you want to debug. For example:</li>
+</ul>
+<pre class="console"><code>git clone https://github.com/nodejs/node.git
+git checkout v12.14.1</code></pre>
+<ul>
+<li>Compile with debug enabled (for additional info see <a href="https://github.com/nodejs/node/blob/v12.14.1/BUILDING.md#building-a-debug-build">building a debug build</a>). For example, on *nix:</li>
+</ul>
+<pre class="console"><code>./configure --debug
+make -j4</code></pre>
+<ul>
+<li>Make sure to run with your compiled debug version of Node.js. Having used <code>./configure --debug</code>, two binaries will have been built when <code>make</code> was run. You must use the one which is in <code>out/Debug</code>.</li>
+</ul>
+<p>Running valgrind using the debug build of Node.js shows:</p>
+<pre class="console"><code>==44112== 592 bytes in 1 blocks are possibly lost in loss record 26 of 27
+==44112==    at 0x4C2BF79: calloc (vg_replace_malloc.c:762)
+==44112==    by 0x4012754: _dl_allocate_tls (in /usr/lib64/ld-2.17.so)
+==44112==    by 0x586287B: pthread_create@@GLIBC_2.2.5 (in /usr/lib64/libpthread-2.17.so)
+==44112==    by 0xFAB2D2: node::inspector::(anonymous namespace)::StartDebugSignalHandler() (inspector_agent.cc:140)
+==44112==    by 0xFACB10: node::inspector::Agent::Start(std::string const&amp;, node::DebugOptions const&amp;, std::shared_ptr&lt;node::HostPort&gt;, bool) (inspector_agent.cc:777)
+==44112==    by 0xE3A0BB: node::Environment::InitializeInspector(std::unique_ptr&lt;node::inspector::ParentInspectorHandle, std::default_delete&lt;node::inspector::ParentInspectorHandle&gt; &gt;) (node.cc:216)
+==44112==    by 0xEE8F3E: node::NodeMainInstance::CreateMainEnvironment(int*) (node_main_instance.cc:222)
+==44112==    by 0xEE8831: node::NodeMainInstance::Run() (node_main_instance.cc:108)
+==44112==    by 0xE3CDEC: node::Start(int, char**) (node.cc:996)
+==44112==    by 0x22D8BBF: main (node_main.cc:126)</code></pre>
+<p>Now we can see the specific file name and line in the Node.js code which caused the allocation (inspector_agent.cc:140).</p>
+</body>
+</html>

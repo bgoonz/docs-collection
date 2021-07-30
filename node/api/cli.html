@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>cli</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="command-line-options">Command-line options</h1>
+    <!--introduced_in=v5.9.1-->
+    <!--type=misc-->
+    <p>
+      Node.js comes with a variety of CLI options. These options expose built-in
+      debugging, multiple ways to execute scripts, and other helpful runtime
+      options.
+    </p>
+    <p>
+      To view this documentation as a manual page in a terminal, run
+      <code>man node</code>.
+    </p>
+    <h2 id="synopsis">Synopsis</h2>
+    <p>
+      <code
+        >node [options] [V8 options] [script.js | -e "script" | -] [--]
+        [arguments]</code
+      >
+    </p>
+    <p>
+      <code
+        >node inspect [script.js | -e "script" | &lt;host&gt;:&lt;port&gt;]
+        …</code
+      >
+    </p>
+    <p><code>node --v8-options</code></p>
+    <p>Execute without arguments to start the <a href="repl.md">REPL</a>.</p>
+    <p>
+      For more info about <code>node inspect</code>, see the
+      <a href="debugger.md">debugger</a> documentation.
+    </p>
+    <h2 id="options">Options</h2>
+    <!-- YAML
+changes:
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/23020
+    description: Underscores instead of dashes are now allowed for
+                 Node.js options as well, in addition to V8 options.
+-->
+    <p>
+      All options, including V8 options, allow words to be separated by both
+      dashes (<code>-</code>) or underscores (<code>_</code>). For example,
+      <code>--pending-deprecation</code> is equivalent to
+      <code>--pending_deprecation</code>.
+    </p>
+    <p>
+      If an option that takes a single value (such as
+      <code>--max-http-header-size</code>) is passed more than once, then the
+      last passed value is used. Options from the command line take precedence
+      over options passed through the
+      <a href="#cli_node_options_options"><code>NODE_OPTIONS</code></a>
+      environment variable.
+    </p>
+    <h3 id="section"><code>-</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>
+      Alias for stdin. Analogous to the use of <code>-</code> in other
+      command-line utilities, meaning that the script is read from stdin, and
+      the rest of the options are passed to that script.
+    </p>
+    <h3 id="section-1"><code>--</code></h3>
+    <!-- YAML
+added: v6.11.0
+-->
+    <p>
+      Indicate the end of node options. Pass the rest of the arguments to the
+      script. If no script filename or eval/print script is supplied prior to
+      this, then the next argument is used as a script filename.
+    </p>
+    <h3 id="abort-on-uncaught-exception">
+      <code>--abort-on-uncaught-exception</code>
+    </h3>
+    <!-- YAML
+added: v0.10.8
+-->
+    <p>
+      Aborting instead of exiting causes a core file to be generated for
+      post-mortem analysis using a debugger (such as <code>lldb</code>,
+      <code>gdb</code>, and <code>mdb</code>).
+    </p>
+    <p>
+      If this flag is passed, the behavior can still be set to not abort through
+      <a
+        href="process.md#process_process_setuncaughtexceptioncapturecallback_fn"
+        ><code>process.setUncaughtExceptionCaptureCallback()</code></a
+      >
+      (and through usage of the <code>domain</code> module that uses it).
+    </p>
+    <h3 id="completion-bash"><code>--completion-bash</code></h3>
+    <!-- YAML
+added: v10.12.0
+-->
+    <p>Print source-able bash completion script for Node.js.</p>
+    <pre
+      class="console"
+    ><code>$ node --completion-bash &gt; node_bash_completion
+$ source node_bash_completion</code></pre>
+    <h3 id="ccondition---conditionscondition">
+      <code>-C=condition</code>, <code>--conditions=condition</code>
+    </h3>
+    <!-- YAML
+added:
+  - v14.9.0
+  - v12.19.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Enable experimental support for custom
+      <a href="packages.md#packages_conditional_exports">conditional exports</a>
+      resolution conditions.
+    </p>
+    <p>Any number of custom string condition names are permitted.</p>
+    <p>
+      The default Node.js conditions of <code>"node"</code>,
+      <code>"default"</code>, <code>"import"</code>, and
+      <code>"require"</code> will always apply as defined.
+    </p>
+    <p>For example, to run a module with “development” resolutions:</p>
+    <pre class="console"><code>$ node -C=development app.js</code></pre>
+    <h3 id="cpu-prof"><code>--cpu-prof</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Starts the V8 CPU profiler on start up, and writes the CPU profile to disk
+      before exit.
+    </p>
+    <p>
+      If <code>--cpu-prof-dir</code> is not specified, the generated profile is
+      placed in the current working directory.
+    </p>
+    <p>
+      If <code>--cpu-prof-name</code> is not specified, the generated profile is
+      named
+      <code>CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile</code>.
+    </p>
+    <pre class="console"><code>$ node --cpu-prof index.js
+$ ls *.cpuprofile
+CPU.20190409.202950.15293.0.0.cpuprofile</code></pre>
+    <h3 id="cpu-prof-dir"><code>--cpu-prof-dir</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the directory where the CPU profiles generated by
+      <code>--cpu-prof</code> will be placed.
+    </p>
+    <p>
+      The default value is controlled by the
+      <a href="#cli_diagnostic_dir_directory">–diagnostic-dir</a> command-line
+      option.
+    </p>
+    <h3 id="cpu-prof-interval"><code>--cpu-prof-interval</code></h3>
+    <!-- YAML
+added: v12.2.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the sampling interval in microseconds for the CPU profiles
+      generated by <code>--cpu-prof</code>. The default is 1000 microseconds.
+    </p>
+    <h3 id="cpu-prof-name"><code>--cpu-prof-name</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the file name of the CPU profile generated by
+      <code>--cpu-prof</code>.
+    </p>
+    <h3 id="diagnostic-dirdirectory">
+      <code>--diagnostic-dir=directory</code>
+    </h3>
+    <p>
+      Set the directory to which all diagnostic output files are written.
+      Defaults to current working directory.
+    </p>
+    <p>
+      Affects the default output directory of: *
+      <a href="#cli_cpu_prof_dir">–cpu-prof-dir</a> *
+      <a href="#cli_heap_prof_dir">–heap-prof-dir</a> *
+      <a href="#cli_redirect_warnings_file">–redirect-warnings</a>
+    </p>
+    <h3 id="disable-protomode"><code>--disable-proto=mode</code></h3>
+    <!-- YAML
+added:
+ - v13.12.0
+ - v12.17.0
+-->
+    <p>
+      Disable the <code>Object.prototype.__proto__</code> property. If
+      <code>mode</code> is <code>delete</code>, the property is removed
+      entirely. If <code>mode</code> is <code>throw</code>, accesses to the
+      property throw an exception with the code <code>ERR_PROTO_ACCESS</code>.
+    </p>
+    <h3 id="disallow-code-generation-from-strings">
+      <code>--disallow-code-generation-from-strings</code>
+    </h3>
+    <!-- YAML
+added: v9.8.0
+-->
+    <p>
+      Make built-in language features like <code>eval</code> and
+      <code>new Function</code> that generate code from strings throw an
+      exception instead. This does not affect the Node.js
+      <code>vm</code> module.
+    </p>
+    <h3 id="dns-result-orderorder"><code>--dns-result-order=order</code></h3>
+    <!-- YAML
+added: v16.4.0
+-->
+    <p>
+      Set the default value of <code>verbatim</code> in
+      <a href="dns.md#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      and
+      <a href="dns.md#dns_dnspromises_lookup_hostname_options"
+        ><code>dnsPromises.lookup()</code></a
+      >. The value could be: * <code>ipv4first</code>: sets default
+      <code>verbatim</code> <code>false</code>. * <code>verbatim</code>: sets
+      default <code>verbatim</code> <code>true</code>.
+    </p>
+    <p>
+      The default is <code>ipv4first</code> and
+      <a href="dns.md#dns_dns_setdefaultresultorder_order"
+        ><code>dns.setDefaultResultOrder()</code></a
+      >
+      have higher priority than <code>--dns-result-order</code>.
+    </p>
+    <h3 id="enable-fips"><code>--enable-fips</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <p>
+      Enable FIPS-compliant crypto at startup. (Requires Node.js to be built
+      against FIPS-compatible OpenSSL.)
+    </p>
+    <h3 id="enable-source-maps"><code>--enable-source-maps</code></h3>
+    <!-- YAML
+added: v12.12.0
+changes:
+  - version: v15.11.0
+    pr-url: https://github.com/nodejs/node/pull/37362
+    description: This API is no longer experimental.
+-->
+    <p>
+      Enable
+      <a href="https://sourcemaps.info/spec.html">Source Map v3</a> support for
+      stack traces.
+    </p>
+    <p>
+      When using a transpiler, such as TypeScript, stack traces thrown by an
+      application reference the transpiled code, not the original source
+      position. <code>--enable-source-maps</code> enables caching of Source Maps
+      and makes a best effort to report stack traces relative to the original
+      source file.
+    </p>
+    <p>
+      Overriding <code>Error.prepareStackTrace</code> prevents
+      <code>--enable-source-maps</code> from modifying the stack trace.
+    </p>
+    <h3 id="experimental-abortcontroller">
+      <code>--experimental-abortcontroller</code>
+    </h3>
+    <!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33527
+    description: --experimental-abortcontroller is no longer required.
+-->
+    <p>
+      <code>AbortController</code> and <code>AbortSignal</code> support is
+      enabled by default. Use of this command-line flag is no longer required.
+    </p>
+    <h3 id="experimental-import-meta-resolve">
+      <code>--experimental-import-meta-resolve</code>
+    </h3>
+    <!-- YAML
+added:
+  - v13.9.0
+  - v12.16.2
+-->
+    <p>Enable experimental <code>import.meta.resolve()</code> support.</p>
+    <h3 id="experimental-json-modules">
+      <code>--experimental-json-modules</code>
+    </h3>
+    <!-- YAML
+added: v12.9.0
+-->
+    <p>Enable experimental JSON support for the ES Module loader.</p>
+    <h3 id="experimental-loadermodule">
+      <code>--experimental-loader=module</code>
+    </h3>
+    <!-- YAML
+added: v9.0.0
+-->
+    <p>
+      Specify the <code>module</code> of a custom experimental
+      <a href="esm.md#esm_loaders">ECMAScript Module loader</a>.
+      <code>module</code> may be either a path to a file, or an ECMAScript
+      Module name.
+    </p>
+    <h3 id="experimental-modules"><code>--experimental-modules</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <p>Enable latest experimental modules features (deprecated).</p>
+    <h3 id="experimental-policy"><code>--experimental-policy</code></h3>
+    <!-- YAML
+added: v11.8.0
+-->
+    <p>Use the specified file as a security policy.</p>
+    <h3 id="no-experimental-repl-await">
+      <code>--no-experimental-repl-await</code>
+    </h3>
+    <!-- YAML
+added: v16.6.0
+ -->
+    <p>Use this flag to disable top-level await in REPL.</p>
+    <h3 id="experimental-specifier-resolutionmode">
+      <code>--experimental-specifier-resolution=mode</code>
+    </h3>
+    <!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+-->
+    <p>
+      Sets the resolution algorithm for resolving ES module specifiers. Valid
+      options are <code>explicit</code> and <code>node</code>.
+    </p>
+    <p>
+      The default is <code>explicit</code>, which requires providing the full
+      path to a module. The <code>node</code> mode enables support for optional
+      file extensions and the ability to import a directory that has an index
+      file.
+    </p>
+    <p>
+      See
+      <a href="esm.md#esm_customizing_esm_specifier_resolution_algorithm"
+        >customizing ESM specifier resolution</a
+      >
+      for example usage.
+    </p>
+    <h3 id="experimental-vm-modules"><code>--experimental-vm-modules</code></h3>
+    <!-- YAML
+added: v9.6.0
+-->
+    <p>Enable experimental ES Module support in the <code>vm</code> module.</p>
+    <h3 id="experimental-wasi-unstable-preview1">
+      <code>--experimental-wasi-unstable-preview1</code>
+    </h3>
+    <!-- YAML
+added:
+  - v13.3.0
+  - v12.16.0
+changes:
+  - version: v13.6.0
+    pr-url: https://github.com/nodejs/node/pull/30980
+    description: changed from `--experimental-wasi-unstable-preview0` to
+                 `--experimental-wasi-unstable-preview1`.
+-->
+    <p>Enable experimental WebAssembly System Interface (WASI) support.</p>
+    <h3 id="experimental-wasm-modules">
+      <code>--experimental-wasm-modules</code>
+    </h3>
+    <!-- YAML
+added: v12.3.0
+-->
+    <p>Enable experimental WebAssembly module support.</p>
+    <h3 id="force-context-aware"><code>--force-context-aware</code></h3>
+    <!-- YAML
+added: v12.12.0
+-->
+    <p>
+      Disable loading native addons that are not
+      <a href="addons.md#addons_context_aware_addons">context-aware</a>.
+    </p>
+    <h3 id="force-fips"><code>--force-fips</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <p>
+      Force FIPS-compliant crypto on startup. (Cannot be disabled from script
+      code.) (Same requirements as <code>--enable-fips</code>.)
+    </p>
+    <h3 id="frozen-intrinsics"><code>--frozen-intrinsics</code></h3>
+    <!-- YAML
+added: v11.12.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Enable experimental frozen intrinsics like <code>Array</code> and
+      <code>Object</code>.
+    </p>
+    <p>
+      Support is currently only provided for the root context and no guarantees
+      are currently provided that <code>global.Array</code> is indeed the
+      default intrinsic reference. Code may break under this flag.
+    </p>
+    <p>
+      <code>--require</code> runs prior to freezing intrinsics in order to allow
+      polyfills to be added.
+    </p>
+    <h3 id="heapsnapshot-near-heap-limitmax_count">
+      <code>--heapsnapshot-near-heap-limit=max_count</code>
+    </h3>
+    <!-- YAML
+added: v15.1.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Writes a V8 heap snapshot to disk when the V8 heap usage is approaching
+      the heap limit. <code>count</code> should be a non-negative integer (in
+      which case Node.js will write no more than
+      <code>max_count</code> snapshots to disk).
+    </p>
+    <p>
+      When generating snapshots, garbage collection may be triggered and bring
+      the heap usage down, therefore multiple snapshots may be written to disk
+      before the Node.js instance finally runs out of memory. These heap
+      snapshots can be compared to determine what objects are being allocated
+      during the time consecutive snapshots are taken. It’s not guaranteed that
+      Node.js will write exactly <code>max_count</code> snapshots to disk, but
+      it will try its best to generate at least one and up to
+      <code>max_count</code> snapshots before the Node.js instance runs out of
+      memory when <code>max_count</code> is greater than <code>0</code>.
+    </p>
+    <p>
+      Generating V8 snapshots takes time and memory (both memory managed by the
+      V8 heap and native memory outside the V8 heap). The bigger the heap is,
+      the more resources it needs. Node.js will adjust the V8 heap to
+      accommodate the additional V8 heap memory overhead, and try its best to
+      avoid using up all the memory available to the process. When the process
+      uses more memory than the system deems appropriate, the process may be
+      terminated abruptly by the system, depending on the system configuration.
+    </p>
+    <pre
+      class="console"
+    ><code>$ node --max-old-space-size=100 --heapsnapshot-near-heap-limit=3 index.js
+Wrote snapshot to Heap.20200430.100036.49580.0.001.heapsnapshot
+Wrote snapshot to Heap.20200430.100037.49580.0.002.heapsnapshot
+Wrote snapshot to Heap.20200430.100038.49580.0.003.heapsnapshot
+
+&lt;--- Last few GCs ---&gt;
+
+[49580:0x110000000]     4826 ms: Mark-sweep 130.6 (147.8) -&gt; 130.5 (147.8) MB, 27.4 / 0.0 ms  (average mu = 0.126, current mu = 0.034) allocation failure scavenge might not succeed
+[49580:0x110000000]     4845 ms: Mark-sweep 130.6 (147.8) -&gt; 130.6 (147.8) MB, 18.8 / 0.0 ms  (average mu = 0.088, current mu = 0.031) allocation failure scavenge might not succeed
+
+
+&lt;--- JS stacktrace ---&gt;
+
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+....</code></pre>
+    <h3 id="heapsnapshot-signalsignal">
+      <code>--heapsnapshot-signal=signal</code>
+    </h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      Enables a signal handler that causes the Node.js process to write a heap
+      dump when the specified signal is received. <code>signal</code> must be a
+      valid signal name. Disabled by default.
+    </p>
+    <pre
+      class="console"
+    ><code>$ node --heapsnapshot-signal=SIGUSR2 index.js &amp;
+$ ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+node         1  5.5  6.1 787252 247004 ?       Ssl  16:43   0:02 node --heapsnapshot-signal=SIGUSR2 index.js
+$ kill -USR2 1
+$ ls
+Heap.20190718.133405.15554.0.001.heapsnapshot</code></pre>
+    <h3 id="heap-prof"><code>--heap-prof</code></h3>
+    <!-- YAML
+added: v12.4.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Starts the V8 heap profiler on start up, and writes the heap profile to
+      disk before exit.
+    </p>
+    <p>
+      If <code>--heap-prof-dir</code> is not specified, the generated profile is
+      placed in the current working directory.
+    </p>
+    <p>
+      If <code>--heap-prof-name</code> is not specified, the generated profile
+      is named
+      <code>Heap.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.heapprofile</code>.
+    </p>
+    <pre class="console"><code>$ node --heap-prof index.js
+$ ls *.heapprofile
+Heap.20190409.202950.15293.0.001.heapprofile</code></pre>
+    <h3 id="heap-prof-dir"><code>--heap-prof-dir</code></h3>
+    <!-- YAML
+added: v12.4.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the directory where the heap profiles generated by
+      <code>--heap-prof</code> will be placed.
+    </p>
+    <p>
+      The default value is controlled by the
+      <a href="#cli_diagnostic_dir_directory">–diagnostic-dir</a> command-line
+      option.
+    </p>
+    <h3 id="heap-prof-interval"><code>--heap-prof-interval</code></h3>
+    <!-- YAML
+added: v12.4.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the average sampling interval in bytes for the heap profiles
+      generated by <code>--heap-prof</code>. The default is 512 * 1024 bytes.
+    </p>
+    <h3 id="heap-prof-name"><code>--heap-prof-name</code></h3>
+    <!-- YAML
+added: v12.4.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Specify the file name of the heap profile generated by
+      <code>--heap-prof</code>.
+    </p>
+    <h3 id="icu-data-dirfile"><code>--icu-data-dir=file</code></h3>
+    <!-- YAML
+added: v0.11.15
+-->
+    <p>Specify ICU data load path. (Overrides <code>NODE_ICU_DATA</code>.)</p>
+    <h3 id="input-typetype"><code>--input-type=type</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      This configures Node.js to interpret string input as CommonJS or as an ES
+      module. String input is input via <code>--eval</code>,
+      <code>--print</code>, or <code>STDIN</code>.
+    </p>
+    <p>
+      Valid values are <code>"commonjs"</code> and <code>"module"</code>. The
+      default is <code>"commonjs"</code>.
+    </p>
+    <h3 id="inspect-brkhostport"><code>--inspect-brk[=[host:]port]</code></h3>
+    <!-- YAML
+added: v7.6.0
+-->
+    <p>
+      Activate inspector on <code>host:port</code> and break at start of user
+      script. Default <code>host:port</code> is <code>127.0.0.1:9229</code>.
+    </p>
+    <h3 id="inspect-porthostport"><code>--inspect-port=[host:]port</code></h3>
+    <!-- YAML
+added: v7.6.0
+-->
+    <p>
+      Set the <code>host:port</code> to be used when the inspector is activated.
+      Useful when activating the inspector by sending the
+      <code>SIGUSR1</code> signal.
+    </p>
+    <p>Default host is <code>127.0.0.1</code>.</p>
+    <p>
+      See the <a href="#inspector_security">security warning</a> below regarding
+      the <code>host</code> parameter usage.
+    </p>
+    <h3 id="inspecthostport"><code>--inspect[=[host:]port]</code></h3>
+    <!-- YAML
+added: v6.3.0
+-->
+    <p>
+      Activate inspector on <code>host:port</code>. Default is
+      <code>127.0.0.1:9229</code>.
+    </p>
+    <p>
+      V8 inspector integration allows tools such as Chrome DevTools and IDEs to
+      debug and profile Node.js instances. The tools attach to Node.js instances
+      via a tcp port and communicate using the
+      <a href="https://chromedevtools.github.io/devtools-protocol/"
+        >Chrome DevTools Protocol</a
+      >.
+    </p>
+    <p>
+      <a id="inspector_security"></a> #### Warning: binding inspector to a
+      public IP:port combination is insecure
+    </p>
+    <p>
+      Binding the inspector to a public IP (including <code>0.0.0.0</code>) with
+      an open port is insecure, as it allows external hosts to connect to the
+      inspector and perform a
+      <a href="https://www.owasp.org/index.php/Code_Injection"
+        >remote code execution</a
+      >
+      attack.
+    </p>
+    <p>If specifying a host, make sure that either:</p>
+    <ul>
+      <li>The host is not accessible from public networks.</li>
+      <li>A firewall disallows unwanted connections on the port.</li>
+    </ul>
+    <p>
+      <strong
+        >More specifically, <code>--inspect=0.0.0.0</code> is insecure if the
+        port (<code>9229</code> by default) is not firewall-protected.</strong
+      >
+    </p>
+    <p>
+      See the
+      <a
+        href="https://nodejs.org/en/docs/guides/debugging-getting-started/#security-implications"
+        >debugging security implications</a
+      >
+      section for more information.
+    </p>
+    <h3 id="inspect-publish-uidstderrhttp">
+      <code>--inspect-publish-uid=stderr,http</code>
+    </h3>
+    <p>Specify ways of the inspector web socket url exposure.</p>
+    <p>
+      By default inspector websocket url is available in stderr and under
+      <code>/json/list</code> endpoint on
+      <code>http://host:port/json/list</code>.
+    </p>
+    <h3 id="insecure-http-parser"><code>--insecure-http-parser</code></h3>
+    <!-- YAML
+added:
+ - v13.4.0
+ - v12.15.0
+ - v10.19.0
+-->
+    <p>
+      Use an insecure HTTP parser that accepts invalid HTTP headers. This may
+      allow interoperability with non-conformant HTTP implementations. It may
+      also allow request smuggling and other HTTP attacks that rely on invalid
+      headers being accepted. Avoid using this option.
+    </p>
+    <h3 id="jitless"><code>--jitless</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      Disable
+      <a href="https://v8.dev/blog/jitless"
+        >runtime allocation of executable memory</a
+      >. This may be required on some platforms for security reasons. It can
+      also reduce attack surface on other platforms, but the performance impact
+      may be severe.
+    </p>
+    <p>
+      This flag is inherited from V8 and is subject to change upstream. It may
+      disappear in a non-semver-major release.
+    </p>
+    <h3 id="max-http-header-sizesize">
+      <code>--max-http-header-size=size</code>
+    </h3>
+    <!-- YAML
+added:
+ - v11.6.0
+ - v10.15.0
+changes:
+  - version: v13.13.0
+    pr-url: https://github.com/nodejs/node/pull/32520
+    description: Change maximum default size of HTTP headers from 8 KB to 16 KB.
+-->
+    <p>
+      Specify the maximum size, in bytes, of HTTP headers. Defaults to 16 KB.
+    </p>
+    <h3 id="napi-modules"><code>--napi-modules</code></h3>
+    <!-- YAML
+added: v7.10.0
+-->
+    <p>This option is a no-op. It is kept for compatibility.</p>
+    <h3 id="no-deprecation"><code>--no-deprecation</code></h3>
+    <!-- YAML
+added: v0.8.0
+-->
+    <p>Silence deprecation warnings.</p>
+    <h3 id="no-force-async-hooks-checks">
+      <code>--no-force-async-hooks-checks</code>
+    </h3>
+    <!-- YAML
+added: v9.0.0
+-->
+    <p>
+      Disables runtime checks for <code>async_hooks</code>. These will still be
+      enabled dynamically when <code>async_hooks</code> is enabled.
+    </p>
+    <h3 id="no-warnings"><code>--no-warnings</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <p>Silence all process warnings (including deprecations).</p>
+    <h3 id="node-memory-debug"><code>--node-memory-debug</code></h3>
+    <!-- YAML
+added: v15.0.0
+-->
+    <p>
+      Enable extra debug checks for memory leaks in Node.js internals. This is
+      usually only useful for developers debugging Node.js itself.
+    </p>
+    <h3 id="openssl-configfile"><code>--openssl-config=file</code></h3>
+    <!-- YAML
+added: v6.9.0
+-->
+    <p>
+      Load an OpenSSL configuration file on startup. Among other uses, this can
+      be used to enable FIPS-compliant crypto if Node.js is built against
+      FIPS-enabled OpenSSL.
+    </p>
+    <h3 id="pending-deprecation"><code>--pending-deprecation</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>Emit pending deprecation warnings.</p>
+    <p>
+      Pending deprecations are generally identical to a runtime deprecation with
+      the notable exception that they are turned <em>off</em> by default and
+      will not be emitted unless either the
+      <code>--pending-deprecation</code> command-line flag, or the
+      <code>NODE_PENDING_DEPRECATION=1</code> environment variable, is set.
+      Pending deprecations are used to provide a kind of selective “early
+      warning” mechanism that developers may leverage to detect deprecated API
+      usage.
+    </p>
+    <h3 id="policy-integritysri"><code>--policy-integrity=sri</code></h3>
+    <!-- YAML
+added: v12.7.0
+-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      Instructs Node.js to error prior to running any code if the policy does
+      not have the specified integrity. It expects a
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity"
+        >Subresource Integrity</a
+      >
+      string as a parameter.
+    </p>
+    <h3 id="preserve-symlinks"><code>--preserve-symlinks</code></h3>
+    <!-- YAML
+added: v6.3.0
+-->
+    <p>
+      Instructs the module loader to preserve symbolic links when resolving and
+      caching modules.
+    </p>
+    <p>
+      By default, when Node.js loads a module from a path that is symbolically
+      linked to a different on-disk location, Node.js will dereference the link
+      and use the actual on-disk “real path” of the module as both an identifier
+      and as a root path to locate other dependency modules. In most cases, this
+      default behavior is acceptable. However, when using symbolically linked
+      peer dependencies, as illustrated in the example below, the default
+      behavior causes an exception to be thrown if <code>moduleA</code> attempts
+      to require <code>moduleB</code> as a peer dependency:
+    </p>
+    <pre class="text"><code>{appDir}
+ ├── app
+ │   ├── index.js
+ │   └── node_modules
+ │       ├── moduleA -&gt; {appDir}/moduleA
+ │       └── moduleB
+ │           ├── index.js
+ │           └── package.json
+ └── moduleA
+     ├── index.js
+     └── package.json</code></pre>
+    <p>
+      The <code>--preserve-symlinks</code> command-line flag instructs Node.js
+      to use the symlink path for modules as opposed to the real path, allowing
+      symbolically linked peer dependencies to be found.
+    </p>
+    <p>
+      Note, however, that using <code>--preserve-symlinks</code> can have other
+      side effects. Specifically, symbolically linked <em>native</em> modules
+      can fail to load if those are linked from more than one location in the
+      dependency tree (Node.js would see those as two separate modules and would
+      attempt to load the module multiple times, causing an exception to be
+      thrown).
+    </p>
+    <p>
+      The <code>--preserve-symlinks</code> flag does not apply to the main
+      module, which allows
+      <code>node --preserve-symlinks node_module/.bin/&lt;foo&gt;</code> to
+      work. To apply the same behavior for the main module, also use
+      <code>--preserve-symlinks-main</code>.
+    </p>
+    <h3 id="preserve-symlinks-main"><code>--preserve-symlinks-main</code></h3>
+    <!-- YAML
+added: v10.2.0
+-->
+    <p>
+      Instructs the module loader to preserve symbolic links when resolving and
+      caching the main module (<code>require.main</code>).
+    </p>
+    <p>
+      This flag exists so that the main module can be opted-in to the same
+      behavior that <code>--preserve-symlinks</code> gives to all other imports;
+      they are separate flags, however, for backward compatibility with older
+      Node.js versions.
+    </p>
+    <p>
+      <code>--preserve-symlinks-main</code> does not imply
+      <code>--preserve-symlinks</code>; use
+      <code>--preserve-symlinks-main</code> in addition to
+      <code>--preserve-symlinks</code> when it is not desirable to follow
+      symlinks before resolving relative paths.
+    </p>
+    <p>See <code>--preserve-symlinks</code> for more information.</p>
+    <h3 id="prof"><code>--prof</code></h3>
+    <!-- YAML
+added: v2.0.0
+-->
+    <p>Generate V8 profiler output.</p>
+    <h3 id="prof-process"><code>--prof-process</code></h3>
+    <!-- YAML
+added: v5.2.0
+-->
+    <p>
+      Process V8 profiler output generated using the V8 option
+      <code>--prof</code>.
+    </p>
+    <h3 id="redirect-warningsfile"><code>--redirect-warnings=file</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>
+      Write process warnings to the given file instead of printing to stderr.
+      The file will be created if it does not exist, and will be appended to if
+      it does. If an error occurs while attempting to write the warning to the
+      file, the warning will be written to stderr instead.
+    </p>
+    <p>
+      The <code>file</code> name may be an absolute path. If it is not, the
+      default directory it will be written to is controlled by the
+      <a href="#cli_diagnostic_dir_directory">–diagnostic-dir</a> command-line
+      option.
+    </p>
+    <h3 id="report-compact"><code>--report-compact</code></h3>
+    <!-- YAML
+added:
+ - v13.12.0
+ - v12.17.0
+-->
+    <p>
+      Write reports in a compact format, single-line JSON, more easily
+      consumable by log processing systems than the default multi-line format
+      designed for human consumption.
+    </p>
+    <h3 id="report-dirdirectory-report-directorydirectory">
+      <code>--report-dir=directory</code>,
+      <code>report-directory=directory</code>
+    </h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: Changed from `--diagnostic-report-directory` to
+                 `--report-directory`.
+-->
+    <p>Location at which the report will be generated.</p>
+    <h3 id="report-filenamefilename">
+      <code>--report-filename=filename</code>
+    </h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: changed from `--diagnostic-report-filename` to
+                 `--report-filename`.
+-->
+    <p>Name of the file to which the report will be written.</p>
+    <h3 id="report-on-fatalerror"><code>--report-on-fatalerror</code></h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+    - v14.0.0
+    - v13.14.0
+    - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32496
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: changed from `--diagnostic-report-on-fatalerror` to
+                 `--report-on-fatalerror`.
+-->
+    <p>
+      Enables the report to be triggered on fatal errors (internal errors within
+      the Node.js runtime such as out of memory) that lead to termination of the
+      application. Useful to inspect various diagnostic data elements such as
+      heap, stack, event loop state, resource consumption etc. to reason about
+      the fatal error.
+    </p>
+    <h3 id="report-on-signal"><code>--report-on-signal</code></h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: changed from `--diagnostic-report-on-signal` to
+                 `--report-on-signal`.
+-->
+    <p>
+      Enables report to be generated upon receiving the specified (or
+      predefined) signal to the running Node.js process. The signal to trigger
+      the report is specified through <code>--report-signal</code>.
+    </p>
+    <h3 id="report-signalsignal"><code>--report-signal=signal</code></h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: changed from `--diagnostic-report-signal` to
+                 `--report-signal`.
+-->
+    <p>
+      Sets or resets the signal for report generation (not supported on
+      Windows). Default signal is <code>SIGUSR2</code>.
+    </p>
+    <h3 id="report-uncaught-exception">
+      <code>--report-uncaught-exception</code>
+    </h3>
+    <!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This option is no longer experimental.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27312
+    description: changed from `--diagnostic-report-uncaught-exception` to
+                 `--report-uncaught-exception`.
+-->
+    <p>
+      Enables report to be generated on uncaught exceptions. Useful when
+      inspecting the JavaScript stack in conjunction with native stack and other
+      runtime environment data.
+    </p>
+    <h3 id="secure-heapn"><code>--secure-heap=n</code></h3>
+    <!-- YAML
+added: v15.6.0
+-->
+    <p>
+      Initializes an OpenSSL secure heap of <code>n</code> bytes. When
+      initialized, the secure heap is used for selected types of allocations
+      within OpenSSL during key generation and other operations. This is useful,
+      for instance, to prevent sensitive information from leaking due to pointer
+      overruns or underruns.
+    </p>
+    <p>
+      The secure heap is a fixed size and cannot be resized at runtime so, if
+      used, it is important to select a large enough heap to cover all
+      application uses.
+    </p>
+    <p>
+      The heap size given must be a power of two. Any value less than 2 will
+      disable the secure heap.
+    </p>
+    <p>The secure heap is disabled by default.</p>
+    <p>The secure heap is not available on Windows.</p>
+    <p>
+      See
+      <a
+        href="https://www.openssl.org/docs/man1.1.0/man3/CRYPTO_secure_malloc_init.html"
+        ><code>CRYPTO_secure_malloc_init</code></a
+      >
+      for more details.
+    </p>
+    <h3 id="secure-heap-minn"><code>--secure-heap-min=n</code></h3>
+    <!-- YAML
+added: v15.6.0
+-->
+    <p>
+      When using <code>--secure-heap</code>, the
+      <code>--secure-heap-min</code> flag specifies the minimum allocation from
+      the secure heap. The minimum value is <code>2</code>. The maximum value is
+      the lesser of <code>--secure-heap</code> or <code>2147483647</code>. The
+      value given must be a power of two.
+    </p>
+    <h3 id="throw-deprecation"><code>--throw-deprecation</code></h3>
+    <!-- YAML
+added: v0.11.14
+-->
+    <p>Throw errors for deprecations.</p>
+    <h3 id="titletitle"><code>--title=title</code></h3>
+    <!-- YAML
+added: v10.7.0
+-->
+    <p>Set <code>process.title</code> on startup.</p>
+    <h3 id="tls-cipher-listlist"><code>--tls-cipher-list=list</code></h3>
+    <!-- YAML
+added: v4.0.0
+-->
+    <p>
+      Specify an alternative default TLS cipher list. Requires Node.js to be
+      built with crypto support (default).
+    </p>
+    <h3 id="tls-keylogfile"><code>--tls-keylog=file</code></h3>
+    <!-- YAML
+added:
+ - v13.2.0
+ - v12.16.0
+-->
+    <p>
+      Log TLS key material to a file. The key material is in NSS
+      <code>SSLKEYLOGFILE</code> format and can be used by software (such as
+      Wireshark) to decrypt the TLS traffic.
+    </p>
+    <h3 id="tls-max-v1.2"><code>--tls-max-v1.2</code></h3>
+    <!-- YAML
+added:
+ - v12.0.0
+ - v10.20.0
+-->
+    <p>
+      Set
+      <a href="tls.md#tls_tls_default_max_version"
+        ><code>tls.DEFAULT_MAX_VERSION</code></a
+      >
+      to ‘TLSv1.2’. Use to disable support for TLSv1.3.
+    </p>
+    <h3 id="tls-max-v1.3"><code>--tls-max-v1.3</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      Set default
+      <a href="tls.md#tls_tls_default_max_version"
+        ><code>tls.DEFAULT_MAX_VERSION</code></a
+      >
+      to ‘TLSv1.3’. Use to enable support for TLSv1.3.
+    </p>
+    <h3 id="tls-min-v1.0"><code>--tls-min-v1.0</code></h3>
+    <!-- YAML
+added:
+ - v12.0.0
+ - v10.20.0
+-->
+    <p>
+      Set default
+      <a href="tls.md#tls_tls_default_min_version"
+        ><code>tls.DEFAULT_MIN_VERSION</code></a
+      >
+      to ‘TLSv1’. Use for compatibility with old TLS clients or servers.
+    </p>
+    <h3 id="tls-min-v1.1"><code>--tls-min-v1.1</code></h3>
+    <!-- YAML
+added:
+ - v12.0.0
+ - v10.20.0
+-->
+    <p>
+      Set default
+      <a href="tls.md#tls_tls_default_min_version"
+        ><code>tls.DEFAULT_MIN_VERSION</code></a
+      >
+      to ‘TLSv1.1’. Use for compatibility with old TLS clients or servers.
+    </p>
+    <h3 id="tls-min-v1.2"><code>--tls-min-v1.2</code></h3>
+    <!-- YAML
+added:
+ - v12.2.0
+ - v10.20.0
+-->
+    <p>
+      Set default
+      <a href="tls.md#tls_tls_default_min_version"
+        ><code>tls.DEFAULT_MIN_VERSION</code></a
+      >
+      to ‘TLSv1.2’. This is the default for 12.x and later, but the option is
+      supported for compatibility with older Node.js versions.
+    </p>
+    <h3 id="tls-min-v1.3"><code>--tls-min-v1.3</code></h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      Set default
+      <a href="tls.md#tls_tls_default_min_version"
+        ><code>tls.DEFAULT_MIN_VERSION</code></a
+      >
+      to ‘TLSv1.3’. Use to disable support for TLSv1.2, which is not as secure
+      as TLSv1.3.
+    </p>
+    <h3 id="trace-atomics-wait"><code>--trace-atomics-wait</code></h3>
+    <!-- YAML
+added: v14.3.0
+-->
+    <p>
+      Print short summaries of calls to
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics/wait"
+        ><code>Atomics.wait()</code></a
+      >
+      to stderr. The output could look like this:
+    </p>
+    <pre
+      class="text"
+    ><code>(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 0, 1, inf) started
+(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 0, 1, inf) did not wait because the values mismatched
+(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 0, 0, 10) started
+(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 0, 0, 10) timed out
+(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 4, 0, inf) started
+(node:15701) [Thread 1] Atomics.wait(&amp;lt;address&gt; + 4, -1, inf) started
+(node:15701) [Thread 0] Atomics.wait(&amp;lt;address&gt; + 4, 0, inf) was woken up by another thread
+(node:15701) [Thread 1] Atomics.wait(&amp;lt;address&gt; + 4, -1, inf) was woken up by another thread</code></pre>
+    <p>The fields here correspond to:</p>
+    <ul>
+      <li>
+        The thread id as given by
+        <a href="worker_threads.md#worker_threads_worker_threadid"
+          ><code>worker_threads.threadId</code></a
+        >
+      </li>
+      <li>
+        The base address of the <code>SharedArrayBuffer</code> in question, as
+        well as the byte offset corresponding to the index passed to
+        <code>Atomics.wait()</code>
+      </li>
+      <li>The expected value that was passed to <code>Atomics.wait()</code></li>
+      <li>The timeout passed to <code>Atomics.wait</code></li>
+    </ul>
+    <h3 id="trace-deprecation"><code>--trace-deprecation</code></h3>
+    <!-- YAML
+added: v0.8.0
+-->
+    <p>Print stack traces for deprecations.</p>
+    <h3 id="trace-event-categories"><code>--trace-event-categories</code></h3>
+    <!-- YAML
+added: v7.7.0
+-->
+    <p>
+      A comma separated list of categories that should be traced when trace
+      event tracing is enabled using <code>--trace-events-enabled</code>.
+    </p>
+    <h3 id="trace-event-file-pattern">
+      <code>--trace-event-file-pattern</code>
+    </h3>
+    <!-- YAML
+added: v9.8.0
+-->
+    <p>
+      Template string specifying the filepath for the trace event data, it
+      supports <code>${rotation}</code> and <code>${pid}</code>.
+    </p>
+    <h3 id="trace-events-enabled"><code>--trace-events-enabled</code></h3>
+    <!-- YAML
+added: v7.7.0
+-->
+    <p>Enables the collection of trace event tracing information.</p>
+    <h3 id="trace-exit"><code>--trace-exit</code></h3>
+    <!-- YAML
+added:
+ - v13.5.0
+ - v12.16.0
+-->
+    <p>
+      Prints a stack trace whenever an environment is exited proactively,
+      i.e. invoking <code>process.exit()</code>.
+    </p>
+    <h3 id="trace-sigint"><code>--trace-sigint</code></h3>
+    <!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+-->
+    <p>Prints a stack trace on SIGINT.</p>
+    <h3 id="trace-sync-io"><code>--trace-sync-io</code></h3>
+    <!-- YAML
+added: v2.1.0
+-->
+    <p>
+      Prints a stack trace whenever synchronous I/O is detected after the first
+      turn of the event loop.
+    </p>
+    <h3 id="trace-tls"><code>--trace-tls</code></h3>
+    <!-- YAML
+added: v12.2.0
+-->
+    <p>
+      Prints TLS packet trace information to <code>stderr</code>. This can be
+      used to debug TLS connection problems.
+    </p>
+    <h3 id="trace-uncaught"><code>--trace-uncaught</code></h3>
+    <!-- YAML
+added: v13.1.0
+-->
+    <p>
+      Print stack traces for uncaught exceptions; usually, the stack trace
+      associated with the creation of an <code>Error</code> is printed, whereas
+      this makes Node.js also print the stack trace associated with throwing the
+      value (which does not need to be an <code>Error</code> instance).
+    </p>
+    <p>
+      Enabling this option may affect garbage collection behavior negatively.
+    </p>
+    <h3 id="trace-warnings"><code>--trace-warnings</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <p>Print stack traces for process warnings (including deprecations).</p>
+    <h3 id="track-heap-objects"><code>--track-heap-objects</code></h3>
+    <!-- YAML
+added: v2.4.0
+-->
+    <p>Track heap object allocations for heap snapshots.</p>
+    <h3 id="unhandled-rejectionsmode">
+      <code>--unhandled-rejections=mode</code>
+    </h3>
+    <!-- YAML
+added:
+  - v12.0.0
+  - v10.17.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33021
+    description: Changed default mode to `throw`. Previously, a warning was
+                 emitted.
+-->
+    <p>
+      Using this flag allows to change what should happen when an unhandled
+      rejection occurs. One of the following modes can be chosen:
+    </p>
+    <ul>
+      <li>
+        <code>throw</code>: Emit
+        <a href="process.md#process_event_unhandledrejection"
+          ><code>unhandledRejection</code></a
+        >. If this hook is not set, raise the unhandled rejection as an uncaught
+        exception. This is the default.
+      </li>
+      <li>
+        <code>strict</code>: Raise the unhandled rejection as an uncaught
+        exception.
+      </li>
+      <li>
+        <code>warn</code>: Always trigger a warning, no matter if the
+        <a href="process.md#process_event_unhandledrejection"
+          ><code>unhandledRejection</code></a
+        >
+        hook is set or not but do not print the deprecation warning.
+      </li>
+      <li>
+        <code>warn-with-error-code</code>: Emit
+        <a href="process.md#process_event_unhandledrejection"
+          ><code>unhandledRejection</code></a
+        >. If this hook is not set, trigger a warning, and set the process exit
+        code to 1.
+      </li>
+      <li><code>none</code>: Silence all warnings.</li>
+    </ul>
+    <h3 id="use-bundled-ca---use-openssl-ca">
+      <code>--use-bundled-ca</code>, <code>--use-openssl-ca</code>
+    </h3>
+    <!-- YAML
+added: v6.11.0
+-->
+    <p>
+      Use bundled Mozilla CA store as supplied by current Node.js version or use
+      OpenSSL’s default CA store. The default store is selectable at build-time.
+    </p>
+    <p>
+      The bundled CA store, as supplied by Node.js, is a snapshot of Mozilla CA
+      store that is fixed at release time. It is identical on all supported
+      platforms.
+    </p>
+    <p>
+      Using OpenSSL store allows for external modifications of the store. For
+      most Linux and BSD distributions, this store is maintained by the
+      distribution maintainers and system administrators. OpenSSL CA store
+      location is dependent on configuration of the OpenSSL library but this can
+      be altered at runtime using environment variables.
+    </p>
+    <p>See <code>SSL_CERT_DIR</code> and <code>SSL_CERT_FILE</code>.</p>
+    <h3 id="use-largepagesmode"><code>--use-largepages=mode</code></h3>
+    <!-- YAML
+added:
+ - v13.6.0
+ - v12.17.0
+-->
+    <p>
+      Re-map the Node.js static code to large memory pages at startup. If
+      supported on the target system, this will cause the Node.js static code to
+      be moved onto 2 MiB pages instead of 4 KiB pages.
+    </p>
+    <p>
+      The following values are valid for <code>mode</code>: * <code>off</code>:
+      No mapping will be attempted. This is the default. * <code>on</code>: If
+      supported by the OS, mapping will be attempted. Failure to map will be
+      ignored and a message will be printed to standard error. *
+      <code>silent</code>: If supported by the OS, mapping will be attempted.
+      Failure to map will be ignored and will not be reported.
+    </p>
+    <h3 id="v8-options"><code>--v8-options</code></h3>
+    <!-- YAML
+added: v0.1.3
+-->
+    <p>Print V8 command-line options.</p>
+    <h3 id="v8-pool-sizenum"><code>--v8-pool-size=num</code></h3>
+    <!-- YAML
+added: v5.10.0
+-->
+    <p>
+      Set V8’s thread pool size which will be used to allocate background jobs.
+    </p>
+    <p>
+      If set to <code>0</code> then V8 will choose an appropriate size of the
+      thread pool based on the number of online processors.
+    </p>
+    <p>
+      If the value provided is larger than V8’s maximum, then the largest value
+      will be chosen.
+    </p>
+    <h3 id="zero-fill-buffers"><code>--zero-fill-buffers</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <p>
+      Automatically zero-fills all newly allocated
+      <a href="buffer.md#buffer_class_buffer"><code>Buffer</code></a> and
+      <a href="buffer.md#buffer_class_slowbuffer"><code>SlowBuffer</code></a>
+      instances.
+    </p>
+    <h3 id="c---check"><code>-c</code>, <code>--check</code></h3>
+    <!-- YAML
+added:
+  - v5.0.0
+  - v4.2.0
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19600
+    description: The `--require` option is now supported when checking a file.
+-->
+    <p>Syntax check the script without executing.</p>
+    <h3 id="e---eval-script"><code>-e</code>, <code>--eval "script"</code></h3>
+    <!-- YAML
+added: v0.5.2
+changes:
+  - version: v5.11.0
+    pr-url: https://github.com/nodejs/node/pull/5348
+    description: Built-in libraries are now available as predefined variables.
+-->
+    <p>
+      Evaluate the following argument as JavaScript. The modules which are
+      predefined in the REPL can also be used in <code>script</code>.
+    </p>
+    <p>
+      On Windows, using <code>cmd.exe</code> a single quote will not work
+      correctly because it only recognizes double <code>"</code> for quoting. In
+      Powershell or Git bash, both <code>'</code> and <code>"</code> are usable.
+    </p>
+    <h3 id="h---help"><code>-h</code>, <code>--help</code></h3>
+    <!-- YAML
+added: v0.1.3
+-->
+    <p>
+      Print node command-line options. The output of this option is less
+      detailed than this document.
+    </p>
+    <h3 id="i---interactive"><code>-i</code>, <code>--interactive</code></h3>
+    <!-- YAML
+added: v0.7.7
+-->
+    <p>Opens the REPL even if stdin does not appear to be a terminal.</p>
+    <h3 id="p---print-script">
+      <code>-p</code>, <code>--print "script"</code>
+    </h3>
+    <!-- YAML
+added: v0.6.4
+changes:
+  - version: v5.11.0
+    pr-url: https://github.com/nodejs/node/pull/5348
+    description: Built-in libraries are now available as predefined variables.
+-->
+    <p>Identical to <code>-e</code> but prints the result.</p>
+    <h3 id="r---require-module">
+      <code>-r</code>, <code>--require module</code>
+    </h3>
+    <!-- YAML
+added: v1.6.0
+-->
+    <p>Preload the specified module at startup.</p>
+    <p>
+      Follows <code>require()</code>’s module resolution rules.
+      <code>module</code> may be either a path to a file, or a node module name.
+    </p>
+    <p>
+      Only CommonJS modules are supported. Attempting to preload a ES6 Module
+      using <code>--require</code> will fail with an error.
+    </p>
+    <h3 id="v---version"><code>-v</code>, <code>--version</code></h3>
+    <!-- YAML
+added: v0.1.3
+-->
+    <p>Print node’s version.</p>
+    <h2 id="environment-variables">Environment variables</h2>
+    <h3 id="force_color1-2-3"><code>FORCE_COLOR=[1, 2, 3]</code></h3>
+    <p>
+      The <code>FORCE_COLOR</code> environment variable is used to enable ANSI
+      colorized output. The value may be:
+    </p>
+    <ul>
+      <li>
+        <code>1</code>, <code>true</code>, or the empty string
+        <code>''</code> indicate 16-color support,
+      </li>
+      <li><code>2</code> to indicate 256-color support, or</li>
+      <li><code>3</code> to indicate 16 million-color support.</li>
+    </ul>
+    <p>
+      When <code>FORCE_COLOR</code> is used and set to a supported value, both
+      the <code>NO_COLOR</code>, and
+      <code>NODE_DISABLE_COLORS</code> environment variables are ignored.
+    </p>
+    <p>
+      Any other value will result in colorized output being disabled. ###
+      <code>NODE_DEBUG=module[,…]</code>
+      <!-- YAML
+added: v0.1.32
+-->
+    </p>
+    <p>
+      <code>','</code>-separated list of core modules that should print debug
+      information.
+    </p>
+    <h3 id="node_debug_nativemodule">
+      <code>NODE_DEBUG_NATIVE=module[,…]</code>
+    </h3>
+    <p>
+      <code>','</code>-separated list of core C++ modules that should print
+      debug information.
+    </p>
+    <h3 id="node_disable_colors1"><code>NODE_DISABLE_COLORS=1</code></h3>
+    <!-- YAML
+added: v0.3.0
+-->
+    <p>When set, colors will not be used in the REPL.</p>
+    <h3 id="node_extra_ca_certsfile"><code>NODE_EXTRA_CA_CERTS=file</code></h3>
+    <!-- YAML
+added: v7.3.0
+-->
+    <p>
+      When set, the well known “root” CAs (like VeriSign) will be extended with
+      the extra certificates in <code>file</code>. The file should consist of
+      one or more trusted certificates in PEM format. A message will be emitted
+      (once) with
+      <a href="process.md#process_process_emitwarning_warning_type_code_ctor"
+        ><code>process.emitWarning()</code></a
+      >
+      if the file is missing or malformed, but any errors are otherwise ignored.
+    </p>
+    <p>
+      Neither the well known nor extra certificates are used when the
+      <code>ca</code> options property is explicitly specified for a TLS or
+      HTTPS client or server.
+    </p>
+    <p>
+      This environment variable is ignored when <code>node</code> runs as setuid
+      root or has Linux file capabilities set.
+    </p>
+    <p>
+      The <code>NODE_EXTRA_CA_CERTS</code> environment variable is only read
+      when the Node.js process is first launched. Changing the value at runtime
+      using <code>process.env.NODE_EXTRA_CA_CERTS</code> has no effect on the
+      current process.
+    </p>
+    <h3 id="node_icu_datafile"><code>NODE_ICU_DATA=file</code></h3>
+    <!-- YAML
+added: v0.11.15
+-->
+    <p>
+      Data path for ICU (<code>Intl</code> object) data. Will extend linked-in
+      data when compiled with small-icu support.
+    </p>
+    <h3 id="node_no_warnings1"><code>NODE_NO_WARNINGS=1</code></h3>
+    <!-- YAML
+added: v6.11.0
+-->
+    <p>When set to <code>1</code>, process warnings are silenced.</p>
+    <h3 id="node_optionsoptions..."><code>NODE_OPTIONS=options...</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>
+      A space-separated list of command-line options.
+      <code>options...</code> are interpreted before command-line options, so
+      command-line options will override or compound after anything in
+      <code>options...</code>. Node.js will exit with an error if an option that
+      is not allowed in the environment is used, such as <code>-p</code> or a
+      script file.
+    </p>
+    <p>
+      If an option value contains a space, it can be escaped using double
+      quotes:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="va">NODE_OPTIONS=</span><span class="st">&#39;--require &quot;./my path/file.js&quot;&#39;</span></a></code></pre>
+    </div>
+    <p>
+      A singleton flag passed as a command-line option will override the same
+      flag passed into <code>NODE_OPTIONS</code>:
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># The inspector will be available on port 5555</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">NODE_OPTIONS=</span><span class="st">&#39;--inspect=localhost:4444&#39;</span> <span class="ex">node</span> --inspect=localhost:5555</a></code></pre>
+    </div>
+    <p>
+      A flag that can be passed multiple times will be treated as if its
+      <code>NODE_OPTIONS</code> instances were passed first, and then its
+      command-line instances afterwards:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="va">NODE_OPTIONS=</span><span class="st">&#39;--require &quot;./a.js&quot;&#39;</span> <span class="ex">node</span> --require <span class="st">&quot;./b.js&quot;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co"># is equivalent to:</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="ex">node</span> --require <span class="st">&quot;./a.js&quot;</span> --require <span class="st">&quot;./b.js&quot;</span></a></code></pre>
+    </div>
+    <p>
+      Node.js options that are allowed are:
+      <!-- node-options-node start -->
+      * <code>--conditions</code>, <code>-C</code> *
+      <code>--diagnostic-dir</code> * <code>--disable-proto</code> *
+      <code>--dns-result-order</code> * <code>--enable-fips</code> *
+      <code>--enable-source-maps</code> *
+      <code>--experimental-abortcontroller</code> *
+      <code>--experimental-import-meta-resolve</code> *
+      <code>--experimental-json-modules</code> *
+      <code>--experimental-loader</code> * <code>--experimental-modules</code> *
+      <code>--experimental-policy</code> *
+      <code>--experimental-specifier-resolution</code> *
+      <code>--experimental-top-level-await</code> *
+      <code>--experimental-vm-modules</code> *
+      <code>--experimental-wasi-unstable-preview1</code> *
+      <code>--experimental-wasm-modules</code> *
+      <code>--force-context-aware</code> * <code>--force-fips</code> *
+      <code>--frozen-intrinsics</code> *
+      <code>--heapsnapshot-near-heap-limit</code> *
+      <code>--heapsnapshot-signal</code> * <code>--http-parser</code> *
+      <code>--icu-data-dir</code> * <code>--input-type</code> *
+      <code>--insecure-http-parser</code> * <code>--inspect-brk</code> *
+      <code>--inspect-port</code>, <code>--debug-port</code> *
+      <code>--inspect-publish-uid</code> * <code>--inspect</code> *
+      <code>--max-http-header-size</code> * <code>--napi-modules</code> *
+      <code>--no-deprecation</code> *
+      <code>--no-experimental-repl-await</code> *
+      <code>--no-force-async-hooks-checks</code> * <code>--no-warnings</code> *
+      <code>--node-memory-debug</code> * <code>--openssl-config</code> *
+      <code>--pending-deprecation</code> * <code>--policy-integrity</code> *
+      <code>--preserve-symlinks-main</code> * <code>--preserve-symlinks</code> *
+      <code>--prof-process</code> * <code>--redirect-warnings</code> *
+      <code>--report-compact</code> * <code>--report-dir</code>,
+      <code>--report-directory</code> * <code>--report-filename</code> *
+      <code>--report-on-fatalerror</code> * <code>--report-on-signal</code> *
+      <code>--report-signal</code> * <code>--report-uncaught-exception</code> *
+      <code>--require</code>, <code>-r</code> * <code>--secure-heap-min</code> *
+      <code>--secure-heap</code> * <code>--throw-deprecation</code> *
+      <code>--title</code> * <code>--tls-cipher-list</code> *
+      <code>--tls-keylog</code> * <code>--tls-max-v1.2</code> *
+      <code>--tls-max-v1.3</code> * <code>--tls-min-v1.0</code> *
+      <code>--tls-min-v1.1</code> * <code>--tls-min-v1.2</code> *
+      <code>--tls-min-v1.3</code> * <code>--trace-atomics-wait</code> *
+      <code>--trace-deprecation</code> * <code>--trace-event-categories</code> *
+      <code>--trace-event-file-pattern</code> *
+      <code>--trace-events-enabled</code> * <code>--trace-exit</code> *
+      <code>--trace-sigint</code> * <code>--trace-sync-io</code> *
+      <code>--trace-tls</code> * <code>--trace-uncaught</code> *
+      <code>--trace-warnings</code> * <code>--track-heap-objects</code> *
+      <code>--unhandled-rejections</code> * <code>--use-bundled-ca</code> *
+      <code>--use-largepages</code> * <code>--use-openssl-ca</code> *
+      <code>--v8-pool-size</code> * <code>--zero-fill-buffers</code>
+      <!-- node-options-node end -->
+    </p>
+    <p>
+      V8 options that are allowed are:
+      <!-- node-options-v8 start -->
+      * <code>--abort-on-uncaught-exception</code> *
+      <code>--disallow-code-generation-from-strings</code> *
+      <code>--huge-max-old-generation-size</code> *
+      <code>--interpreted-frames-native-stack</code> * <code>--jitless</code> *
+      <code>--max-old-space-size</code> *
+      <code>--perf-basic-prof-only-functions</code> *
+      <code>--perf-basic-prof</code> * <code>--perf-prof-unwinding-info</code> *
+      <code>--perf-prof</code> * <code>--stack-trace-limit</code>
+      <!-- node-options-v8 end -->
+    </p>
+    <p>
+      <code>--perf-basic-prof-only-functions</code>,
+      <code>--perf-basic-prof</code>, <code>--perf-prof-unwinding-info</code>,
+      and <code>--perf-prof</code> are only available on Linux.
+    </p>
+    <h3 id="node_pathpath"><code>NODE_PATH=path[:…]</code></h3>
+    <!-- YAML
+added: v0.1.32
+-->
+    <p>
+      <code>':'</code>-separated list of directories prefixed to the module
+      search path.
+    </p>
+    <p>On Windows, this is a <code>';'</code>-separated list instead.</p>
+    <h3 id="node_pending_deprecation1">
+      <code>NODE_PENDING_DEPRECATION=1</code>
+    </h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>When set to <code>1</code>, emit pending deprecation warnings.</p>
+    <p>
+      Pending deprecations are generally identical to a runtime deprecation with
+      the notable exception that they are turned <em>off</em> by default and
+      will not be emitted unless either the
+      <code>--pending-deprecation</code> command-line flag, or the
+      <code>NODE_PENDING_DEPRECATION=1</code> environment variable, is set.
+      Pending deprecations are used to provide a kind of selective “early
+      warning” mechanism that developers may leverage to detect deprecated API
+      usage.
+    </p>
+    <h3 id="node_pending_pipe_instancesinstances">
+      <code>NODE_PENDING_PIPE_INSTANCES=instances</code>
+    </h3>
+    <p>
+      Set the number of pending pipe instance handles when the pipe server is
+      waiting for connections. This setting applies to Windows only.
+    </p>
+    <h3 id="node_preserve_symlinks1"><code>NODE_PRESERVE_SYMLINKS=1</code></h3>
+    <!-- YAML
+added: v7.1.0
+-->
+    <p>
+      When set to <code>1</code>, instructs the module loader to preserve
+      symbolic links when resolving and caching modules.
+    </p>
+    <h3 id="node_redirect_warningsfile">
+      <code>NODE_REDIRECT_WARNINGS=file</code>
+    </h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <p>
+      When set, process warnings will be emitted to the given file instead of
+      printing to stderr. The file will be created if it does not exist, and
+      will be appended to if it does. If an error occurs while attempting to
+      write the warning to the file, the warning will be written to stderr
+      instead. This is equivalent to using the
+      <code>--redirect-warnings=file</code> command-line flag.
+    </p>
+    <h3 id="node_repl_historyfile"><code>NODE_REPL_HISTORY=file</code></h3>
+    <!-- YAML
+added: v3.0.0
+-->
+    <p>
+      Path to the file used to store the persistent REPL history. The default
+      path is <code>~/.node_repl_history</code>, which is overridden by this
+      variable. Setting the value to an empty string (<code>''</code> or
+      <code>' '</code>) disables persistent REPL history.
+    </p>
+    <h3 id="node_repl_external_modulefile">
+      <code>NODE_REPL_EXTERNAL_MODULE=file</code>
+    </h3>
+    <!-- YAML
+added:
+ - v13.0.0
+ - v12.16.0
+-->
+    <p>
+      Path to a Node.js module which will be loaded in place of the built-in
+      REPL. Overriding this value to an empty string (<code>''</code>) will use
+      the built-in REPL.
+    </p>
+    <h3 id="node_skip_platform_checkvalue">
+      <code>NODE_SKIP_PLATFORM_CHECK=value</code>
+    </h3>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>
+      If <code>value</code> equals <code>'1'</code>, the check for a supported
+      platform is skipped during Node.js startup. Node.js might not execute
+      correctly. Any issues encountered on unsupported platforms will not be
+      fixed.
+    </p>
+    <h3 id="node_tls_reject_unauthorizedvalue">
+      <code>NODE_TLS_REJECT_UNAUTHORIZED=value</code>
+    </h3>
+    <p>
+      If <code>value</code> equals <code>'0'</code>, certificate validation is
+      disabled for TLS connections. This makes TLS, and HTTPS by extension,
+      insecure. The use of this environment variable is strongly discouraged.
+    </p>
+    <h3 id="node_v8_coveragedir"><code>NODE_V8_COVERAGE=dir</code></h3>
+    <p>
+      When set, Node.js will begin outputting
+      <a
+        href="https://v8project.blogspot.com/2017/12/javascript-code-coverage.html"
+        >V8 JavaScript code coverage</a
+      >
+      and <a href="https://sourcemaps.info/spec.html">Source Map</a> data to the
+      directory provided as an argument (coverage information is written as JSON
+      to files with a <code>coverage</code> prefix).
+    </p>
+    <p>
+      <code>NODE_V8_COVERAGE</code> will automatically propagate to
+      subprocesses, making it easier to instrument applications that call the
+      <code>child_process.spawn()</code> family of functions.
+      <code>NODE_V8_COVERAGE</code> can be set to an empty string, to prevent
+      propagation.
+    </p>
+    <h4 id="coverage-output">Coverage output</h4>
+    <p>
+      Coverage is output as an array of
+      <a
+        href="https://chromedevtools.github.io/devtools-protocol/tot/Profiler#type-ScriptCoverage"
+        >ScriptCoverage</a
+      >
+      objects on the top-level key <code>result</code>:
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb12-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-4" title="4">      <span class="dt">&quot;scriptId&quot;</span><span class="fu">:</span> <span class="st">&quot;67&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb12-5" title="5">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;internal/tty.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb12-6" title="6">      <span class="dt">&quot;functions&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb12-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb12-8" title="8">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h4 id="source-map-cache">Source map cache</h4>
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <p>
+      If found, source map data is appended to the top-level key
+      <code>source-map-cache</code> on the JSON coverage object.
+    </p>
+    <p>
+      <code>source-map-cache</code> is an object with keys representing the
+      files source maps were extracted from, and values which include the raw
+      source-map URL (in the key <code>url</code>), the parsed Source Map v3
+      information (in the key <code>data</code>), and the line lengths of the
+      source file (in the key <code>lineLengths</code>).
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-4" title="4">      <span class="dt">&quot;scriptId&quot;</span><span class="fu">:</span> <span class="st">&quot;68&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-5" title="5">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;file:///absolute/path/to/source.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-6" title="6">      <span class="dt">&quot;functions&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb13-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-8" title="8">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-9" title="9">  <span class="dt">&quot;source-map-cache&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-10" title="10">    <span class="dt">&quot;file:///absolute/path/to/source.js&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-11" title="11">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;./path-to-map.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-12" title="12">      <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-13" title="13">        <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-14" title="14">        <span class="dt">&quot;sources&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb13-15" title="15">          <span class="st">&quot;file:///absolute/path/to/original.js&quot;</span></a>
+<a class="sourceLine" id="cb13-16" title="16">        <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-17" title="17">        <span class="dt">&quot;names&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb13-18" title="18">          <span class="st">&quot;Foo&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-19" title="19">          <span class="st">&quot;console&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-20" title="20">          <span class="st">&quot;info&quot;</span></a>
+<a class="sourceLine" id="cb13-21" title="21">        <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-22" title="22">        <span class="dt">&quot;mappings&quot;</span><span class="fu">:</span> <span class="st">&quot;MAAMA,IACJC,YAAaC&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-23" title="23">        <span class="dt">&quot;sourceRoot&quot;</span><span class="fu">:</span> <span class="st">&quot;./&quot;</span></a>
+<a class="sourceLine" id="cb13-24" title="24">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb13-25" title="25">      <span class="dt">&quot;lineLengths&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb13-26" title="26">        <span class="dv">13</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-27" title="27">        <span class="dv">62</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-28" title="28">        <span class="dv">38</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-29" title="29">        <span class="dv">27</span></a>
+<a class="sourceLine" id="cb13-30" title="30">      <span class="ot">]</span></a>
+<a class="sourceLine" id="cb13-31" title="31">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-32" title="32">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-33" title="33"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="no_colorany"><code>NO_COLOR=&lt;any&gt;</code></h3>
+    <p>
+      <a href="https://no-color.org"><code>NO_COLOR</code></a> is an alias for
+      <code>NODE_DISABLE_COLORS</code>. The value of the environment variable is
+      arbitrary.
+    </p>
+    <h3 id="openssl_conffile"><code>OPENSSL_CONF=file</code></h3>
+    <!-- YAML
+added: v6.11.0
+-->
+    <p>
+      Load an OpenSSL configuration file on startup. Among other uses, this can
+      be used to enable FIPS-compliant crypto if Node.js is built with
+      <code>./configure --openssl-fips</code>.
+    </p>
+    <p>
+      If the
+      <a href="#cli_openssl_config_file"><code>--openssl-config</code></a>
+      command-line option is used, the environment variable is ignored.
+    </p>
+    <h3 id="ssl_cert_dirdir"><code>SSL_CERT_DIR=dir</code></h3>
+    <!-- YAML
+added: v7.7.0
+-->
+    <p>
+      If <code>--use-openssl-ca</code> is enabled, this overrides and sets
+      OpenSSL’s directory containing trusted certificates.
+    </p>
+    <p>
+      Be aware that unless the child environment is explicitly set, this
+      environment variable will be inherited by any child processes, and if they
+      use OpenSSL, it may cause them to trust the same CAs as node.
+    </p>
+    <h3 id="ssl_cert_filefile"><code>SSL_CERT_FILE=file</code></h3>
+    <!-- YAML
+added: v7.7.0
+-->
+    <p>
+      If <code>--use-openssl-ca</code> is enabled, this overrides and sets
+      OpenSSL’s file containing trusted certificates.
+    </p>
+    <p>
+      Be aware that unless the child environment is explicitly set, this
+      environment variable will be inherited by any child processes, and if they
+      use OpenSSL, it may cause them to trust the same CAs as node.
+    </p>
+    <h3 id="tz"><code>TZ</code></h3>
+    <!-- YAML
+added: v0.0.1
+changes:
+  - version:
+     - v16.2.0
+    pr-url: https://github.com/nodejs/node/pull/38642
+    description:
+      Changing the TZ variable using process.env.TZ = changes the timezone
+      on Windows as well.
+  - version:
+     - v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/20026
+    description:
+      Changing the TZ variable using process.env.TZ = changes the timezone
+      on POSIX systems.
+-->
+    <p>
+      The <code>TZ</code> environment variable is used to specify the timezone
+      configuration.
+    </p>
+    <p>
+      While the Node.js support for <code>TZ</code> will not handle all of the
+      various
+      <a
+        href="https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html"
+        >ways that <code>TZ</code> is handled in other environments</a
+      >, it will support basic
+      <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+        >timezone IDs</a
+      >
+      (such as <code>'Etc/UTC'</code>, <code>'Europe/Paris'</code> or
+      <code>'America/New_York'</code>. It may support a few other abbreviations
+      or aliases, but these are strongly discouraged and not guaranteed.
+    </p>
+    <pre
+      class="console"
+    ><code>$ TZ=Europe/Dublin node -pe &quot;new Date().toString()&quot;
+Wed May 12 2021 20:30:48 GMT+0100 (Irish Standard Time)</code></pre>
+    <h3 id="uv_threadpool_sizesize"><code>UV_THREADPOOL_SIZE=size</code></h3>
+    <p>
+      Set the number of threads used in libuv’s threadpool to
+      <code>size</code> threads.
+    </p>
+    <p>
+      Asynchronous system APIs are used by Node.js whenever possible, but where
+      they do not exist, libuv’s threadpool is used to create asynchronous node
+      APIs based on synchronous system APIs. Node.js APIs that use the
+      threadpool are:
+    </p>
+    <ul>
+      <li>
+        all <code>fs</code> APIs, other than the file watcher APIs and those
+        that are explicitly synchronous
+      </li>
+      <li>
+        asynchronous crypto APIs such as <code>crypto.pbkdf2()</code>,
+        <code>crypto.scrypt()</code>, <code>crypto.randomBytes()</code>,
+        <code>crypto.randomFill()</code>, <code>crypto.generateKeyPair()</code>
+      </li>
+      <li><code>dns.lookup()</code></li>
+      <li>
+        all <code>zlib</code> APIs, other than those that are explicitly
+        synchronous
+      </li>
+    </ul>
+    <p>
+      Because libuv’s threadpool has a fixed size, it means that if for whatever
+      reason any of these APIs takes a long time, other (seemingly unrelated)
+      APIs that run in libuv’s threadpool will experience degraded performance.
+      In order to mitigate this issue, one potential solution is to increase the
+      size of libuv’s threadpool by setting the
+      <code>'UV_THREADPOOL_SIZE'</code> environment variable to a value greater
+      than <code>4</code> (its current default value). For more information, see
+      the
+      <a href="https://docs.libuv.org/en/latest/threadpool.html"
+        >libuv threadpool documentation</a
+      >.
+    </p>
+    <h2 id="useful-v8-options">Useful V8 options</h2>
+    <p>
+      V8 has its own set of CLI options. Any V8 CLI option that is provided to
+      <code>node</code> will be passed on to V8 to handle. V8’s options have
+      <em>no stability guarantee</em>. The V8 team themselves don’t consider
+      them to be part of their formal API, and reserve the right to change them
+      at any time. Likewise, they are not covered by the Node.js stability
+      guarantees. Many of the V8 options are of interest only to V8 developers.
+      Despite this, there is a small set of V8 options that are widely
+      applicable to Node.js, and they are documented here:
+    </p>
+    <h3 id="max-old-space-sizesize-in-megabytes">
+      <code>--max-old-space-size=SIZE</code> (in megabytes)
+    </h3>
+    <p>
+      Sets the max memory size of V8’s old memory section. As memory consumption
+      approaches the limit, V8 will spend more time on garbage collection in an
+      effort to free unused memory.
+    </p>
+    <p>
+      On a machine with 2 GB of memory, consider setting this to 1536 (1.5 GB)
+      to leave some memory for other uses and avoid swapping.
+    </p>
+    <pre
+      class="console"
+    ><code>$ node --max-old-space-size=1536 index.js</code></pre>
+  </body>
+</html>

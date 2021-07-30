@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>maintaining-root-certs</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="maintaining-the-root-certificates">Maintaining the root certificates</h1>
+<p>Node.js contains a compiled-in set of root certificates used as trust anchors for TLS certificate validation.</p>
+<p>The certificates come from Mozilla, specifically NSS’s <code>certdata.txt</code> file.</p>
+<p>The PEM encodings of the certificates are converted to C strings, and committed in <code>src/node_root_certs.h</code>.</p>
+<h2 id="when-to-update">When to update</h2>
+<p>Root certificates should be updated sometime after Mozilla makes an NSS release, check the <a href="https://wiki.mozilla.org/NSS:Release_Versions">NSS release schedule</a>.</p>
+<h2 id="process">Process</h2>
+<p>Commands assume that the current working directory is the root of a checkout of the nodejs/node repository.</p>
+<ol type="1">
+<li><p>Find NSS metadata for update.</p>
+<p>The latest released NSS version, release date, Firefox version, and Firefox release date can be found in the <a href="https://wiki.mozilla.org/NSS:Release_Versions">NSS release schedule</a>.</p>
+<p>The tag to fetch <code>certdata.txt</code> from is found by looking for the release version in the <a href="https://hg.mozilla.org/projects/nss/tags">tag list</a>.</p></li>
+<li><p>Update <code>certdata.txt</code> from the NSS release tag.</p>
+<p>Update the tag in the commands below, and run:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">cd</span> tools/</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ex">./mk-ca-bundle.pl</span> -v <span class="op">2&gt;</span>_before</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ex">curl</span> -O https://hg.mozilla.org/projects/nss/raw-file/NSS_3_41_RTM/lib/ckfw/builtins/certdata.txt</a></code></pre></div>
+<p>The <code>_before</code> file will be used later. Verify that running <code>mk-ca-bundle</code> made no changes to <code>src/node_root_certs.h</code>. If it did, something went wrong with the previous update. Seek help!</p>
+<p>Update metadata in the message below, and commit <code>certdata.txt</code>:</p>
+<pre class="text"><code>tools: update certdata.txt
+
+This is the certdata.txt[0] from NSS 3.41, released on 2018-12-03.
+
+This is the version of NSS that will ship in Firefox 65 on
+2018-12-11.
+
+[0] https://hg.mozilla.org/projects/nss/raw-file/NSS_3_41_RTM/lib/ckfw/builtins/certdata.txt</code></pre></li>
+<li><p>Update <code>node_root_certs.h</code> from <code>certdata.txt</code>.</p>
+<p>Run the command below:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">./mk-ca-bundle.pl</span> -v <span class="op">2&gt;</span>_after</a></code></pre></div>
+<p>Confirm that <code>../src/node_root_certs.h</code> was updated.</p>
+<p>Determine what changes were made by diffing the before and after files:</p>
+<pre class="console"><code>% diff _before _after
+11d10
+&lt; Parsing: Visa eCommerce Root
+106d104
+&lt; Parsing: TÜRKTRUST Elektronik Sertifika Hizmet Sağlayıcısı H5
+113,117d110
+&lt; Parsing: Certplus Root CA G1
+&lt; Parsing: Certplus Root CA G2
+&lt; Parsing: OpenTrust Root CA G1
+&lt; Parsing: OpenTrust Root CA G2
+&lt; Parsing: OpenTrust Root CA G3
+134c127,136
+&lt; Done (133 CA certs processed, 20 skipped).
+---
+&gt; Parsing: GlobalSign Root CA - R6
+&gt; Parsing: OISTE WISeKey Global Root GC CA
+&gt; Parsing: GTS Root R1
+&gt; Parsing: GTS Root R2
+&gt; Parsing: GTS Root R3
+&gt; Parsing: GTS Root R4
+&gt; Parsing: UCA Global G2 Root
+&gt; Parsing: UCA Extended Validation Root
+&gt; Parsing: Certigna Root CA
+&gt; Done (135 CA certs processed, 16 skipped).</code></pre>
+<p>Use the diff to update the message below, and commit <code>src/node_root_certs.h</code>:</p>
+<pre class="text"><code>crypto: update root certificates
+
+Update the list of root certificates in src/node_root_certs.h with
+tools/mk-ca-bundle.pl.
+
+Certificates added:
+- GlobalSign Root CA - R6
+- OISTE WISeKey Global Root GC CA
+- GTS Root R1
+- GTS Root R2
+- GTS Root R3
+- GTS Root R4
+- UCA Global G2 Root
+- UCA Extended Validation Root
+- Certigna Root CA
+
+Certificates removed:
+- Visa eCommerce Root
+- TÜRKTRUST Elektronik Sertifika Hizmet Sağlayıcısı H5
+- Certplus Root CA G1
+- Certplus Root CA G2
+- OpenTrust Root CA G1
+- OpenTrust Root CA G2
+- OpenTrust Root CA G3</code></pre></li>
+</ol>
+</body>
+</html>

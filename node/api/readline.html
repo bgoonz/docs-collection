@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>readline</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="readline">Readline</h1>
+<!--introduced_in=v0.10.0-->
+<blockquote>
+<p>Stability: 2 - Stable</p>
+</blockquote>
+<!-- source_link=lib/readline.js -->
+<p>The <code>readline</code> module provides an interface for reading data from a <a href="stream.md#stream_readable_streams">Readable</a> stream (such as <a href="process.md#process_process_stdin"><code>process.stdin</code></a>) one line at a time. It can be accessed using:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>The following simple example illustrates the basic use of the <code>readline</code> module.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="dt">input</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdin</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">output</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdout</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="va">rl</span>.<span class="at">question</span>(<span class="st">&#39;What do you think of Node.js? &#39;</span><span class="op">,</span> (answer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="co">// </span><span class="al">TODO</span><span class="co">: Log the answer in a database</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Thank you for your valuable feedback: </span><span class="sc">${</span>answer<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-11" title="11"></a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="va">rl</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Once this code is invoked, the Node.js application will not terminate until the <code>readline.Interface</code> is closed because the interface waits for data to be received on the <code>input</code> stream.</p>
+<h2 id="class-interface">Class: <code>Interface</code></h2>
+<!-- YAML
+added: v0.1.104
+-->
+<ul>
+<li>Extends: {EventEmitter}</li>
+</ul>
+<p>Instances of the <code>readline.Interface</code> class are constructed using the <code>readline.createInterface()</code> method. Every instance is associated with a single <code>input</code> <a href="stream.md#stream_readable_streams">Readable</a> stream and a single <code>output</code> <a href="stream.md#stream_writable_streams">Writable</a> stream. The <code>output</code> stream is used to print prompts for user input that arrives on, and is read from, the <code>input</code> stream.</p>
+<h3 id="event-close">Event: <code>'close'</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<p>The <code>'close'</code> event is emitted when one of the following occur:</p>
+<ul>
+<li>The <code>rl.close()</code> method is called and the <code>readline.Interface</code> instance has relinquished control over the <code>input</code> and <code>output</code> streams;</li>
+<li>The <code>input</code> stream receives its <code>'end'</code> event;</li>
+<li>The <code>input</code> stream receives <kbd>Ctrl</kbd>+<kbd>D</kbd> to signal end-of-transmission (EOT);</li>
+<li>The <code>input</code> stream receives <kbd>Ctrl</kbd>+<kbd>C</kbd> to signal <code>SIGINT</code> and there is no <code>'SIGINT'</code> event listener registered on the <code>readline.Interface</code> instance.</li>
+</ul>
+<p>The listener function is called without passing any arguments.</p>
+<p>The <code>readline.Interface</code> instance is finished once the <code>'close'</code> event is emitted.</p>
+<h3 id="event-line">Event: <code>'line'</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<p>The <code>'line'</code> event is emitted whenever the <code>input</code> stream receives an end-of-line input (<code>\n</code>, <code>\r</code>, or <code>\r\n</code>). This usually occurs when the user presses <kbd>Enter</kbd> or <kbd>Return</kbd>.</p>
+<p>The listener function is called with a string containing the single line of received input.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;line&#39;</span><span class="op">,</span> (input) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Received: </span><span class="sc">${</span>input<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-history">Event: <code>'history'</code></h3>
+<!-- YAML
+added: v15.8.0
+-->
+<p>The <code>'history'</code> event is emitted whenever the history array has changed.</p>
+<p>The listener function is called with an array containing the history array. It will reflect all changes, added lines and removed lines due to <code>historySize</code> and <code>removeHistoryDuplicates</code>.</p>
+<p>The primary purpose is to allow a listener to persist the history. It is also possible for the listener to change the history object. This could be useful to prevent certain lines to be added to the history, like a password.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;history&#39;</span><span class="op">,</span> (history) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Received: </span><span class="sc">${</span>history<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-pause">Event: <code>'pause'</code></h3>
+<!-- YAML
+added: v0.7.5
+-->
+<p>The <code>'pause'</code> event is emitted when one of the following occur:</p>
+<ul>
+<li>The <code>input</code> stream is paused.</li>
+<li>The <code>input</code> stream is not paused and receives the <code>'SIGCONT'</code> event. (See events <a href="#readline_event_sigtstp"><code>'SIGTSTP'</code></a> and <a href="#readline_event_sigcont"><code>'SIGCONT'</code></a>.)</li>
+</ul>
+<p>The listener function is called without passing any arguments.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;pause&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Readline paused.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-resume">Event: <code>'resume'</code></h3>
+<!-- YAML
+added: v0.7.5
+-->
+<p>The <code>'resume'</code> event is emitted whenever the <code>input</code> stream is resumed.</p>
+<p>The listener function is called without passing any arguments.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;resume&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Readline resumed.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-sigcont">Event: <code>'SIGCONT'</code></h3>
+<!-- YAML
+added: v0.7.5
+-->
+<p>The <code>'SIGCONT'</code> event is emitted when a Node.js process previously moved into the background using <kbd>Ctrl</kbd>+<kbd>Z</kbd> (i.e. <code>SIGTSTP</code>) is then brought back to the foreground using fg(1p).</p>
+<p>If the <code>input</code> stream was paused <em>before</em> the <code>SIGTSTP</code> request, this event will not be emitted.</p>
+<p>The listener function is invoked without passing any arguments.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;SIGCONT&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="co">// `prompt` will automatically resume the stream</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="va">rl</span>.<span class="at">prompt</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The <code>'SIGCONT'</code> event is <em>not</em> supported on Windows.</p>
+<h3 id="event-sigint">Event: <code>'SIGINT'</code></h3>
+<!-- YAML
+added: v0.3.0
+-->
+<p>The <code>'SIGINT'</code> event is emitted whenever the <code>input</code> stream receives a <kbd>Ctrl+C</kbd> input, known typically as <code>SIGINT</code>. If there are no <code>'SIGINT'</code> event listeners registered when the <code>input</code> stream receives a <code>SIGINT</code>, the <code>'pause'</code> event will be emitted.</p>
+<p>The listener function is invoked without passing any arguments.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;SIGINT&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="va">rl</span>.<span class="at">question</span>(<span class="st">&#39;Are you sure you want to exit? &#39;</span><span class="op">,</span> (answer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="cf">if</span> (<span class="va">answer</span>.<span class="at">match</span>(<span class="ss">/</span><span class="sc">^</span><span class="ss">y</span><span class="sc">(</span><span class="ss">es</span><span class="sc">)?$</span><span class="ss">/i</span>)) <span class="va">rl</span>.<span class="at">pause</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-sigtstp">Event: <code>'SIGTSTP'</code></h3>
+<!-- YAML
+added: v0.7.5
+-->
+<p>The <code>'SIGTSTP'</code> event is emitted when the <code>input</code> stream receives a <kbd>Ctrl</kbd>+<kbd>Z</kbd> input, typically known as <code>SIGTSTP</code>. If there are no <code>'SIGTSTP'</code> event listeners registered when the <code>input</code> stream receives a <code>SIGTSTP</code>, the Node.js process will be sent to the background.</p>
+<p>When the program is resumed using fg(1p), the <code>'pause'</code> and <code>'SIGCONT'</code> events will be emitted. These can be used to resume the <code>input</code> stream.</p>
+<p>The <code>'pause'</code> and <code>'SIGCONT'</code> events will not be emitted if the <code>input</code> was paused before the process was sent to the background.</p>
+<p>The listener function is invoked without passing any arguments.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;SIGTSTP&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="co">// This will override SIGTSTP and prevent the program from going to the</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="co">// background.</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Caught SIGTSTP.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The <code>'SIGTSTP'</code> event is <em>not</em> supported on Windows.</p>
+<h3 id="rl.close"><code>rl.close()</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<p>The <code>rl.close()</code> method closes the <code>readline.Interface</code> instance and relinquishes control over the <code>input</code> and <code>output</code> streams. When called, the <code>'close'</code> event will be emitted.</p>
+<p>Calling <code>rl.close()</code> does not immediately stop other events (including <code>'line'</code>) from being emitted by the <code>readline.Interface</code> instance.</p>
+<h3 id="rl.pause"><code>rl.pause()</code></h3>
+<!-- YAML
+added: v0.3.4
+-->
+<p>The <code>rl.pause()</code> method pauses the <code>input</code> stream, allowing it to be resumed later if necessary.</p>
+<p>Calling <code>rl.pause()</code> does not immediately pause other events (including <code>'line'</code>) from being emitted by the <code>readline.Interface</code> instance.</p>
+<h3 id="rl.promptpreservecursor"><code>rl.prompt([preserveCursor])</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<ul>
+<li><code>preserveCursor</code> {boolean} If <code>true</code>, prevents the cursor placement from being reset to <code>0</code>.</li>
+</ul>
+<p>The <code>rl.prompt()</code> method writes the <code>readline.Interface</code> instances configured <code>prompt</code> to a new line in <code>output</code> in order to provide a user with a new location at which to provide input.</p>
+<p>When called, <code>rl.prompt()</code> will resume the <code>input</code> stream if it has been paused.</p>
+<p>If the <code>readline.Interface</code> was created with <code>output</code> set to <code>null</code> or <code>undefined</code> the prompt is not written.</p>
+<h3 id="rl.questionquery-options-callback"><code>rl.question(query[, options], callback)</code></h3>
+<!-- YAML
+added: v0.3.3
+-->
+<ul>
+<li><code>query</code> {string} A statement or query to write to <code>output</code>, prepended to the prompt.</li>
+<li><code>options</code> {Object}
+<ul>
+<li><code>signal</code> {AbortSignal} Optionally allows the <code>question()</code> to be canceled using an <code>AbortController</code>.</li>
+</ul></li>
+<li><code>callback</code> {Function} A callback function that is invoked with the user’s input in response to the <code>query</code>.</li>
+</ul>
+<p>The <code>rl.question()</code> method displays the <code>query</code> by writing it to the <code>output</code>, waits for user input to be provided on <code>input</code>, then invokes the <code>callback</code> function passing the provided input as the first argument.</p>
+<p>When called, <code>rl.question()</code> will resume the <code>input</code> stream if it has been paused.</p>
+<p>If the <code>readline.Interface</code> was created with <code>output</code> set to <code>null</code> or <code>undefined</code> the <code>query</code> is not written.</p>
+<p>The <code>callback</code> function passed to <code>rl.question()</code> does not follow the typical pattern of accepting an <code>Error</code> object or <code>null</code> as the first argument. The <code>callback</code> is called with the provided answer as the only argument.</p>
+<p>Example usage:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="va">rl</span>.<span class="at">question</span>(<span class="st">&#39;What is your favorite food? &#39;</span><span class="op">,</span> (answer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Oh, so your favorite food is </span><span class="sc">${</span>answer<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Using an <code>AbortController</code> to cancel a question.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> ac <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">const</span> signal <span class="op">=</span> <span class="va">ac</span>.<span class="at">signal</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="va">rl</span>.<span class="at">question</span>(<span class="st">&#39;What is your favorite food? &#39;</span><span class="op">,</span> <span class="op">{</span> signal <span class="op">},</span> (answer) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Oh, so your favorite food is </span><span class="sc">${</span>answer<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="va">signal</span>.<span class="at">addEventListener</span>(<span class="st">&#39;abort&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-9" title="9">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;The food question timed out&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="op">},</span> <span class="op">{</span> <span class="dt">once</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-11" title="11"></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="va">ac</span>.<span class="at">abort</span>()<span class="op">,</span> <span class="dv">10000</span>)<span class="op">;</span></a></code></pre></div>
+<p>If this method is invoked as it’s util.promisify()ed version, it returns a Promise that fulfills with the answer. If the question is canceled using an <code>AbortController</code> it will reject with an <code>AbortError</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> util <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;util&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">const</span> question <span class="op">=</span> <span class="va">util</span>.<span class="at">promisify</span>(<span class="va">rl</span>.<span class="at">question</span>).<span class="at">bind</span>(rl)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">questionExample</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-6" title="6">    <span class="kw">const</span> answer <span class="op">=</span> <span class="cf">await</span> <span class="at">question</span>(<span class="st">&#39;What is you favorite food? &#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-7" title="7">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Oh, so your favorite food is </span><span class="sc">${</span>answer<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-8" title="8">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-9" title="9">    <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;Question rejected&#39;</span><span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="at">questionExample</span>()<span class="op">;</span></a></code></pre></div>
+<h3 id="rl.resume"><code>rl.resume()</code></h3>
+<!-- YAML
+added: v0.3.4
+-->
+<p>The <code>rl.resume()</code> method resumes the <code>input</code> stream if it has been paused.</p>
+<h3 id="rl.setpromptprompt"><code>rl.setPrompt(prompt)</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<ul>
+<li><code>prompt</code> {string}</li>
+</ul>
+<p>The <code>rl.setPrompt()</code> method sets the prompt that will be written to <code>output</code> whenever <code>rl.prompt()</code> is called.</p>
+<h3 id="rl.getprompt"><code>rl.getPrompt()</code></h3>
+<!-- YAML
+added:
+  - v15.3.0
+  - v14.17.0
+-->
+<ul>
+<li>Returns: {string} the current prompt string</li>
+</ul>
+<p>The <code>rl.getPrompt()</code> method returns the current prompt used by <code>rl.prompt()</code>.</p>
+<h3 id="rl.writedata-key"><code>rl.write(data[, key])</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<ul>
+<li><code>data</code> {string}</li>
+<li><code>key</code> {Object}
+<ul>
+<li><code>ctrl</code> {boolean} <code>true</code> to indicate the <kbd>Ctrl</kbd> key.</li>
+<li><code>meta</code> {boolean} <code>true</code> to indicate the <kbd>Meta</kbd> key.</li>
+<li><code>shift</code> {boolean} <code>true</code> to indicate the <kbd>Shift</kbd> key.</li>
+<li><code>name</code> {string} The name of the a key.</li>
+</ul></li>
+</ul>
+<p>The <code>rl.write()</code> method will write either <code>data</code> or a key sequence identified by <code>key</code> to the <code>output</code>. The <code>key</code> argument is supported only if <code>output</code> is a <a href="tty.md">TTY</a> text terminal. See <a href="#readline_tty_keybindings">TTY keybindings</a> for a list of key combinations.</p>
+<p>If <code>key</code> is specified, <code>data</code> is ignored.</p>
+<p>When called, <code>rl.write()</code> will resume the <code>input</code> stream if it has been paused.</p>
+<p>If the <code>readline.Interface</code> was created with <code>output</code> set to <code>null</code> or <code>undefined</code> the <code>data</code> and <code>key</code> are not written.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="va">rl</span>.<span class="at">write</span>(<span class="st">&#39;Delete this!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">// Simulate Ctrl+U to delete the line written previously</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="va">rl</span>.<span class="at">write</span>(<span class="kw">null</span><span class="op">,</span> <span class="op">{</span> <span class="dt">ctrl</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;u&#39;</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The <code>rl.write()</code> method will write the data to the <code>readline</code> <code>Interface</code>’s <code>input</code> <em>as if it were provided by the user</em>.</p>
+<h3 id="rlsymbol.asynciterator"><code>rl[Symbol.asyncIterator]()</code></h3>
+<!-- YAML
+added:
+ - v11.4.0
+ - v10.16.0
+changes:
+  - version:
+     - v11.14.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/26989
+    description: Symbol.asyncIterator support is no longer experimental.
+-->
+<ul>
+<li>Returns: {AsyncIterator}</li>
+</ul>
+<p>Create an <code>AsyncIterator</code> object that iterates through each line in the input stream as a string. This method allows asynchronous iteration of <code>readline.Interface</code> objects through <code>for await...of</code> loops.</p>
+<p>Errors in the input stream are not forwarded.</p>
+<p>If the loop is terminated with <code>break</code>, <code>throw</code>, or <code>return</code>, <a href="#readline_rl_close"><code>rl.close()</code></a> will be called. In other words, iterating over a <code>readline.Interface</code> will always consume the input stream fully.</p>
+<p>Performance is not on par with the traditional <code>'line'</code> event API. Use <code>'line'</code> instead for performance-sensitive applications.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">async</span> <span class="kw">function</span> <span class="at">processLineByLine</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="cf">for</span> <span class="cf">await</span> (<span class="kw">const</span> line <span class="kw">of</span> rl) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    <span class="co">// Each line in the readline input will be successively available here as</span></a>
+<a class="sourceLine" id="cb14-8" title="8">    <span class="co">// `line`.</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="op">}</span></a></code></pre></div>
+<p><code>readline.createInterface()</code> will start to consume the input stream once invoked. Having asynchronous operations between interface creation and asynchronous iteration may result in missed lines.</p>
+<h3 id="rl.line"><code>rl.line</code></h3>
+<!-- YAML
+added: v0.1.98
+changes:
+  - version: v15.8.0
+    pr-url: https://github.com/nodejs/node/pull/33676
+    description: Value will always be a string, never undefined.
+-->
+<ul>
+<li>{string}</li>
+</ul>
+<p>The current input data being processed by node.</p>
+<p>This can be used when collecting input from a TTY stream to retrieve the current value that has been processed thus far, prior to the <code>line</code> event being emitted. Once the <code>line</code> event has been emitted, this property will be an empty string.</p>
+<p>Be aware that modifying the value during the instance runtime may have unintended consequences if <code>rl.cursor</code> is not also controlled.</p>
+<p><strong>If not using a TTY stream for input, use the <a href="#readline_event_line"><code>'line'</code></a> event.</strong></p>
+<p>One possible use case would be as follows:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">const</span> values <span class="op">=</span> [<span class="st">&#39;lorem ipsum&#39;</span><span class="op">,</span> <span class="st">&#39;dolor sit amet&#39;</span>]<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="va">process</span>.<span class="at">stdin</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="kw">const</span> showResults <span class="op">=</span> <span class="at">debounce</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb15-5" title="5">    <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-6" title="6">    <span class="va">values</span>.<span class="at">filter</span>((val) <span class="kw">=&gt;</span> <span class="va">val</span>.<span class="at">startsWith</span>(<span class="va">rl</span>.<span class="at">line</span>)).<span class="at">join</span>(<span class="st">&#39; &#39;</span>)</a>
+<a class="sourceLine" id="cb15-7" title="7">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="op">},</span> <span class="dv">300</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="va">process</span>.<span class="va">stdin</span>.<span class="at">on</span>(<span class="st">&#39;keypress&#39;</span><span class="op">,</span> (c<span class="op">,</span> k) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-10" title="10">  <span class="at">showResults</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="rl.cursor"><code>rl.cursor</code></h3>
+<!-- YAML
+added: v0.1.98
+-->
+<ul>
+<li>{number|undefined}</li>
+</ul>
+<p>The cursor position relative to <code>rl.line</code>.</p>
+<p>This will track where the current cursor lands in the input string, when reading input from a TTY stream. The position of cursor determines the portion of the input string that will be modified as input is processed, as well as the column where the terminal caret will be rendered.</p>
+<h3 id="rl.getcursorpos"><code>rl.getCursorPos()</code></h3>
+<!-- YAML
+added:
+ - v13.5.0
+ - v12.16.0
+-->
+<ul>
+<li>Returns: {Object}
+<ul>
+<li><code>rows</code> {number} the row of the prompt the cursor currently lands on</li>
+<li><code>cols</code> {number} the screen column the cursor currently lands on</li>
+</ul></li>
+</ul>
+<p>Returns the real position of the cursor in relation to the input prompt + string. Long input (wrapping) strings, as well as multiple line prompts are included in the calculations.</p>
+<h2 id="readline.clearlinestream-dir-callback"><code>readline.clearLine(stream, dir[, callback])</code></h2>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28674
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>stream</code> {stream.Writable}</li>
+<li><code>dir</code> {number}
+<ul>
+<li><code>-1</code>: to the left from cursor</li>
+<li><code>1</code>: to the right from cursor</li>
+<li><code>0</code>: the entire line</li>
+</ul></li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if <code>stream</code> wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p>The <code>readline.clearLine()</code> method clears current line of given <a href="tty.md">TTY</a> stream in a specified direction identified by <code>dir</code>.</p>
+<h2 id="readline.clearscreendownstream-callback"><code>readline.clearScreenDown(stream[, callback])</code></h2>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28641
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>stream</code> {stream.Writable}</li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if <code>stream</code> wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p>The <code>readline.clearScreenDown()</code> method clears the given <a href="tty.md">TTY</a> stream from the current position of the cursor down.</p>
+<h2 id="readline.createinterfaceoptions"><code>readline.createInterface(options)</code></h2>
+<!-- YAML
+added: v0.1.98
+changes:
+  - version: v15.14.0
+    pr-url: https://github.com/nodejs/node/pull/37932
+    description: The `signal` option is supported now.
+  - version: v15.8.0
+    pr-url: https://github.com/nodejs/node/pull/33662
+    description: The `history` option is supported now.
+  - version: v13.9.0
+    pr-url: https://github.com/nodejs/node/pull/31318
+    description: The `tabSize` option is supported now.
+  - version:
+    - v8.3.0
+    - v6.11.4
+    pr-url: https://github.com/nodejs/node/pull/13497
+    description: Remove max limit of `crlfDelay` option.
+  - version: v6.6.0
+    pr-url: https://github.com/nodejs/node/pull/8109
+    description: The `crlfDelay` option is supported now.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/7125
+    description: The `prompt` option is supported now.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/6352
+    description: The `historySize` option can be `0` now.
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>input</code> {stream.Readable} The <a href="stream.md#stream_readable_streams">Readable</a> stream to listen to. This option is <em>required</em>.</li>
+<li><code>output</code> {stream.Writable} The <a href="stream.md#stream_writable_streams">Writable</a> stream to write readline data to.</li>
+<li><code>completer</code> {Function} An optional function used for Tab autocompletion.</li>
+<li><code>terminal</code> {boolean} <code>true</code> if the <code>input</code> and <code>output</code> streams should be treated like a TTY, and have ANSI/VT100 escape codes written to it. <strong>Default:</strong> checking <code>isTTY</code> on the <code>output</code> stream upon instantiation.</li>
+<li><code>history</code> {string[]} Initial list of history lines. This option makes sense only if <code>terminal</code> is set to <code>true</code> by the user or by an internal <code>output</code> check, otherwise the history caching mechanism is not initialized at all. <strong>Default:</strong> <code>[]</code>.</li>
+<li><code>historySize</code> {number} Maximum number of history lines retained. To disable the history set this value to <code>0</code>. This option makes sense only if <code>terminal</code> is set to <code>true</code> by the user or by an internal <code>output</code> check, otherwise the history caching mechanism is not initialized at all. <strong>Default:</strong> <code>30</code>.</li>
+<li><code>removeHistoryDuplicates</code> {boolean} If <code>true</code>, when a new input line added to the history list duplicates an older one, this removes the older line from the list. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>prompt</code> {string} The prompt string to use. <strong>Default:</strong> <code>'&gt; '</code>.</li>
+<li><code>crlfDelay</code> {number} If the delay between <code>\r</code> and <code>\n</code> exceeds <code>crlfDelay</code> milliseconds, both <code>\r</code> and <code>\n</code> will be treated as separate end-of-line input. <code>crlfDelay</code> will be coerced to a number no less than <code>100</code>. It can be set to <code>Infinity</code>, in which case <code>\r</code> followed by <code>\n</code> will always be considered a single newline (which may be reasonable for <a href="#readline_example_read_file_stream_line_by_line">reading files</a> with <code>\r\n</code> line delimiter). <strong>Default:</strong> <code>100</code>.</li>
+<li><code>escapeCodeTimeout</code> {number} The duration <code>readline</code> will wait for a character (when reading an ambiguous key sequence in milliseconds one that can both form a complete key sequence using the input read so far and can take additional input to complete a longer key sequence). <strong>Default:</strong> <code>500</code>.</li>
+<li><code>tabSize</code> {integer} The number of spaces a tab is equal to (minimum 1). <strong>Default:</strong> <code>8</code>.</li>
+<li><code>signal</code> {AbortSignal} Allows closing the interface using an AbortSignal. Aborting the signal will internally call <code>close</code> on the interface.</li>
+</ul></li>
+<li>Returns: {readline.Interface}</li>
+</ul>
+<p>The <code>readline.createInterface()</code> method creates a new <code>readline.Interface</code> instance.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb16-3" title="3">  <span class="dt">input</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdin</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="dt">output</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdout</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Once the <code>readline.Interface</code> instance is created, the most common case is to listen for the <code>'line'</code> event:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;line&#39;</span><span class="op">,</span> (line) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Received: </span><span class="sc">${</span>line<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>If <code>terminal</code> is <code>true</code> for this instance then the <code>output</code> stream will get the best compatibility if it defines an <code>output.columns</code> property and emits a <code>'resize'</code> event on the <code>output</code> if or when the columns ever change (<a href="process.md#process_process_stdout"><code>process.stdout</code></a> does this automatically when it is a TTY).</p>
+<p>When creating a <code>readline.Interface</code> using <code>stdin</code> as input, the program will not terminate until it receives <code>EOF</code> (<kbd>Ctrl</kbd>+<kbd>D</kbd> on Linux/macOS, <kbd>Ctrl</kbd>+<kbd>Z</kbd> followed by <kbd>Return</kbd> on Windows). If you want your application to exit without waiting for user input, you can <a href="net.md#net_socket_unref"><code>unref()</code></a> the standard input stream:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">process</span>.<span class="va">stdin</span>.<span class="at">unref</span>()<span class="op">;</span></a></code></pre></div>
+<h3 id="use-of-the-completer-function">Use of the <code>completer</code> function</h3>
+<p>The <code>completer</code> function takes the current line entered by the user as an argument, and returns an <code>Array</code> with 2 entries:</p>
+<ul>
+<li>An <code>Array</code> with matching entries for the completion.</li>
+<li>The substring that was used for the matching.</li>
+</ul>
+<p>For instance: <code>[[substr1, substr2, ...], originalsubstring]</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">function</span> <span class="at">completer</span>(line) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-2" title="2">  <span class="kw">const</span> completions <span class="op">=</span> <span class="st">&#39;.help .error .exit .quit .q&#39;</span>.<span class="at">split</span>(<span class="st">&#39; &#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-3" title="3">  <span class="kw">const</span> hits <span class="op">=</span> <span class="va">completions</span>.<span class="at">filter</span>((c) <span class="kw">=&gt;</span> <span class="va">c</span>.<span class="at">startsWith</span>(line))<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="co">// Show all completions if none found</span></a>
+<a class="sourceLine" id="cb19-5" title="5">  <span class="cf">return</span> [<span class="va">hits</span>.<span class="at">length</span> <span class="op">?</span> hits : completions<span class="op">,</span> line]<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="op">}</span></a></code></pre></div>
+<p>The <code>completer</code> function can be called asynchronously if it accepts two arguments:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">function</span> <span class="at">completer</span>(linePartial<span class="op">,</span> callback) <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="at">callback</span>(<span class="kw">null</span><span class="op">,</span> [[<span class="st">&#39;123&#39;</span>]<span class="op">,</span> linePartial])<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="op">}</span></a></code></pre></div>
+<h2 id="readline.cursortostream-x-y-callback"><code>readline.cursorTo(stream, x[, y][, callback])</code></h2>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28674
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>stream</code> {stream.Writable}</li>
+<li><code>x</code> {number}</li>
+<li><code>y</code> {number}</li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if <code>stream</code> wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p>The <code>readline.cursorTo()</code> method moves cursor to the specified position in a given <a href="tty.md">TTY</a> <code>stream</code>.</p>
+<h2 id="readline.emitkeypresseventsstream-interface"><code>readline.emitKeypressEvents(stream[, interface])</code></h2>
+<!-- YAML
+added: v0.7.7
+-->
+<ul>
+<li><code>stream</code> {stream.Readable}</li>
+<li><code>interface</code> {readline.Interface}</li>
+</ul>
+<p>The <code>readline.emitKeypressEvents()</code> method causes the given <a href="stream.md#stream_readable_streams">Readable</a> stream to begin emitting <code>'keypress'</code> events corresponding to received input.</p>
+<p>Optionally, <code>interface</code> specifies a <code>readline.Interface</code> instance for which autocompletion is disabled when copy-pasted input is detected.</p>
+<p>If the <code>stream</code> is a <a href="tty.md">TTY</a>, then it must be in raw mode.</p>
+<p>This is automatically called by any readline instance on its <code>input</code> if the <code>input</code> is a terminal. Closing the <code>readline</code> instance does not stop the <code>input</code> from emitting <code>'keypress'</code> events.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="va">readline</span>.<span class="at">emitKeypressEvents</span>(<span class="va">process</span>.<span class="at">stdin</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="cf">if</span> (<span class="va">process</span>.<span class="va">stdin</span>.<span class="at">isTTY</span>)</a>
+<a class="sourceLine" id="cb21-3" title="3">  <span class="va">process</span>.<span class="va">stdin</span>.<span class="at">setRawMode</span>(<span class="kw">true</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="readline.movecursorstream-dx-dy-callback"><code>readline.moveCursor(stream, dx, dy[, callback])</code></h2>
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28674
+    description: The stream's write() callback and return value are exposed.
+-->
+<ul>
+<li><code>stream</code> {stream.Writable}</li>
+<li><code>dx</code> {number}</li>
+<li><code>dy</code> {number}</li>
+<li><code>callback</code> {Function} Invoked once the operation completes.</li>
+<li>Returns: {boolean} <code>false</code> if <code>stream</code> wishes for the calling code to wait for the <code>'drain'</code> event to be emitted before continuing to write additional data; otherwise <code>true</code>.</li>
+</ul>
+<p>The <code>readline.moveCursor()</code> method moves the cursor <em>relative</em> to its current position in a given <a href="tty.md">TTY</a> <code>stream</code>.</p>
+<h2 id="example-tiny-cli">Example: Tiny CLI</h2>
+<p>The following example illustrates the use of <code>readline.Interface</code> class to implement a small command-line interface:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb22-3" title="3">  <span class="dt">input</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdin</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-4" title="4">  <span class="dt">output</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdout</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb22-5" title="5">  <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;OHAI&gt; &#39;</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-7" title="7"></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="va">rl</span>.<span class="at">prompt</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-9" title="9"></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;line&#39;</span><span class="op">,</span> (line) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-11" title="11">  <span class="cf">switch</span> (<span class="va">line</span>.<span class="at">trim</span>()) <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-12" title="12">    <span class="cf">case</span> <span class="st">&#39;hello&#39;</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb22-13" title="13">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;world!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-14" title="14">      <span class="cf">break</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb22-15" title="15">    <span class="cf">default</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb22-16" title="16">      <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Say what? I might have heard &#39;</span><span class="sc">${</span><span class="va">line</span>.<span class="at">trim</span>()<span class="sc">}</span><span class="vs">&#39;`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-17" title="17">      <span class="cf">break</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb22-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb22-19" title="19">  <span class="va">rl</span>.<span class="at">prompt</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-20" title="20"><span class="op">}</span>).<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-21" title="21">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Have a great day!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-22" title="22">  <span class="va">process</span>.<span class="at">exit</span>(<span class="dv">0</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-23" title="23"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="example-read-file-stream-line-by-line">Example: Read file stream line-by-Line</h2>
+<p>A common use case for <code>readline</code> is to consume an input file one line at a time. The easiest way to do so is leveraging the <a href="fs.md#fs_class_fs_readstream"><code>fs.ReadStream</code></a> API as well as a <code>for await...of</code> loop:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-3" title="3"></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="kw">async</span> <span class="kw">function</span> <span class="at">processLineByLine</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-5" title="5">  <span class="kw">const</span> fileStream <span class="op">=</span> <span class="va">fs</span>.<span class="at">createReadStream</span>(<span class="st">&#39;input.txt&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-6" title="6"></a>
+<a class="sourceLine" id="cb23-7" title="7">  <span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb23-8" title="8">    <span class="dt">input</span><span class="op">:</span> fileStream<span class="op">,</span></a>
+<a class="sourceLine" id="cb23-9" title="9">    <span class="dt">crlfDelay</span><span class="op">:</span> <span class="kw">Infinity</span></a>
+<a class="sourceLine" id="cb23-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-11" title="11">  <span class="co">// Note: we use the crlfDelay option to recognize all instances of CR LF</span></a>
+<a class="sourceLine" id="cb23-12" title="12">  <span class="co">// (&#39;\r\n&#39;) in input.txt as a single line break.</span></a>
+<a class="sourceLine" id="cb23-13" title="13"></a>
+<a class="sourceLine" id="cb23-14" title="14">  <span class="cf">for</span> <span class="cf">await</span> (<span class="kw">const</span> line <span class="kw">of</span> rl) <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-15" title="15">    <span class="co">// Each line in input.txt will be successively available here as `line`.</span></a>
+<a class="sourceLine" id="cb23-16" title="16">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Line from file: </span><span class="sc">${</span>line<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-17" title="17">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-18" title="18"><span class="op">}</span></a>
+<a class="sourceLine" id="cb23-19" title="19"></a>
+<a class="sourceLine" id="cb23-20" title="20"><span class="at">processLineByLine</span>()<span class="op">;</span></a></code></pre></div>
+<p>Alternatively, one could use the <a href="#readline_event_line"><code>'line'</code></a> event:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="kw">const</span> readline <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-3" title="3"></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="kw">const</span> rl <span class="op">=</span> <span class="va">readline</span>.<span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="dt">input</span><span class="op">:</span> <span class="va">fs</span>.<span class="at">createReadStream</span>(<span class="st">&#39;sample.txt&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb24-6" title="6">  <span class="dt">crlfDelay</span><span class="op">:</span> <span class="kw">Infinity</span></a>
+<a class="sourceLine" id="cb24-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-8" title="8"></a>
+<a class="sourceLine" id="cb24-9" title="9"><span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;line&#39;</span><span class="op">,</span> (line) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Line from file: </span><span class="sc">${</span>line<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-11" title="11"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>Currently, <code>for await...of</code> loop can be a bit slower. If <code>async</code> / <code>await</code> flow and speed are both essential, a mixed approach can be applied:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">const</span> <span class="op">{</span> once <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="kw">const</span> <span class="op">{</span> createReadStream <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="kw">const</span> <span class="op">{</span> createInterface <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;readline&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-4" title="4"></a>
+<a class="sourceLine" id="cb25-5" title="5">(<span class="kw">async</span> <span class="kw">function</span> <span class="at">processLineByLine</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-6" title="6">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-7" title="7">    <span class="kw">const</span> rl <span class="op">=</span> <span class="at">createInterface</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb25-8" title="8">      <span class="dt">input</span><span class="op">:</span> <span class="at">createReadStream</span>(<span class="st">&#39;big-file.txt&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb25-9" title="9">      <span class="dt">crlfDelay</span><span class="op">:</span> <span class="kw">Infinity</span></a>
+<a class="sourceLine" id="cb25-10" title="10">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-11" title="11"></a>
+<a class="sourceLine" id="cb25-12" title="12">    <span class="va">rl</span>.<span class="at">on</span>(<span class="st">&#39;line&#39;</span><span class="op">,</span> (line) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-13" title="13">      <span class="co">// Process the line.</span></a>
+<a class="sourceLine" id="cb25-14" title="14">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-15" title="15"></a>
+<a class="sourceLine" id="cb25-16" title="16">    <span class="cf">await</span> <span class="at">once</span>(rl<span class="op">,</span> <span class="st">&#39;close&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-17" title="17"></a>
+<a class="sourceLine" id="cb25-18" title="18">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;File processed.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-19" title="19">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-20" title="20">    <span class="va">console</span>.<span class="at">error</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb25-22" title="22"><span class="op">}</span>)()<span class="op">;</span></a></code></pre></div>
+<h2 id="tty-keybindings">TTY keybindings</h2>
+<table>
+<tr>
+<th>
+Keybindings
+</th>
+<th>
+Description
+</th>
+<th>
+Notes
+</th>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Backspace</kbd>
+</td>
+<td>
+Delete line left
+</td>
+<td>
+Doesn’t work on Linux, Mac and Windows
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Delete</kbd>
+</td>
+<td>
+Delete line right
+</td>
+<td>
+Doesn’t work on Mac
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>C</kbd>
+</td>
+<td>
+Emit <code>SIGINT</code> or close the readline instance
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>H</kbd>
+</td>
+<td>
+Delete left
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>D</kbd>
+</td>
+<td>
+Delete right or close the readline instance in case the current line is empty / EOF
+</td>
+<td>
+Doesn’t work on Windows
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>U</kbd>
+</td>
+<td>
+Delete from the current position to the line start
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>K</kbd>
+</td>
+<td>
+Delete from the current position to the end of line
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>A</kbd>
+</td>
+<td>
+Go to start of line
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>E</kbd>
+</td>
+<td>
+Go to to end of line
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>B</kbd>
+</td>
+<td>
+Back one character
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>F</kbd>
+</td>
+<td>
+Forward one character
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>L</kbd>
+</td>
+<td>
+Clear screen
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>N</kbd>
+</td>
+<td>
+Next history item
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>P</kbd>
+</td>
+<td>
+Previous history item
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Z</kbd>
+</td>
+<td>
+Moves running process into background. Type <code>fg</code> and press <kbd>Enter</kbd> to return.
+</td>
+<td>
+Doesn’t work on Windows
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>W</kbd> or <kbd>Ctrl</kbd> +<kbd>Backspace</kbd>
+</td>
+<td>
+Delete backward to a word boundary
+</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Backspace</kbd> Doesn’t work on Linux, Mac and Windows
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Delete</kbd>
+</td>
+<td>
+Delete forward to a word boundary
+</td>
+<td>
+Doesn’t work on Mac
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Left arrow</kbd> or <kbd>Meta</kbd>+<kbd>B</kbd>
+</td>
+<td>
+Word left
+</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Left arrow</kbd> Doesn’t work on Mac
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Right arrow</kbd> or <kbd>Meta</kbd>+<kbd>F</kbd>
+</td>
+<td>
+Word right
+</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Right arrow</kbd> Doesn’t work on Mac
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Meta</kbd>+<kbd>D</kbd> or <kbd>Meta</kbd> +<kbd>Delete</kbd>
+</td>
+<td>
+Delete word right
+</td>
+<td>
+<kbd>Meta</kbd>+<kbd>Delete</kbd> Doesn’t work on windows
+</td>
+</tr>
+<tr>
+<td>
+<kbd>Meta</kbd>+<kbd>Backspace</kbd>
+</td>
+<td>
+Delete word left
+</td>
+<td>
+Doesn’t work on Mac
+</td>
+</tr>
+</table>
+</body>
+</html>

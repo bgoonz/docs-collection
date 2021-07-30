@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>writing-and-running-benchmarks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="how-to-write-and-run-benchmarks-in-node.js-core">How to write and run benchmarks in Node.js core</h1>
+<h2 id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a>
+<ul>
+<li><a href="#http-benchmark-requirements">HTTP benchmark requirements</a></li>
+<li><a href="#https-benchmark-requirements">HTTPS benchmark requirements</a></li>
+<li><a href="#http2-benchmark-requirements">HTTP/2 benchmark requirements</a></li>
+<li><a href="#benchmark-analysis-requirements">Benchmark analysis requirements</a></li>
+</ul></li>
+<li><a href="#running-benchmarks">Running benchmarks</a>
+<ul>
+<li><a href="#running-individual-benchmarks">Running individual benchmarks</a></li>
+<li><a href="#running-all-benchmarks">Running all benchmarks</a></li>
+<li><a href="#filtering-benchmarks">Filtering benchmarks</a></li>
+<li><a href="#comparing-nodejs-versions">Comparing Node.js versions</a></li>
+<li><a href="#comparing-parameters">Comparing parameters</a></li>
+<li><a href="#running-benchmarks-on-the-ci">Running benchmarks on the CI</a></li>
+</ul></li>
+<li><a href="#creating-a-benchmark">Creating a benchmark</a>
+<ul>
+<li><a href="#basics-of-a-benchmark">Basics of a benchmark</a></li>
+<li><a href="#creating-an-http-benchmark">Creating an HTTP benchmark</a></li>
+</ul></li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Basic Unix tools are required for some benchmarks. <a href="https://git-scm.com/download/win">Git for Windows</a> includes Git Bash and the necessary tools, which need to be included in the global Windows <code>PATH</code>.</p>
+<h3 id="http-benchmark-requirements">HTTP benchmark requirements</h3>
+<p>Most of the HTTP benchmarks require a benchmarker to be installed. This can be either <a href="https://github.com/wg/wrk"><code>wrk</code></a> or <a href="https://github.com/mcollina/autocannon"><code>autocannon</code></a>.</p>
+<p><code>Autocannon</code> is a Node.js script that can be installed using <code>npm install -g autocannon</code>. It will use the Node.js executable that is in the path. In order to compare two HTTP benchmark runs, make sure that the Node.js version in the path is not altered.</p>
+<p><code>wrk</code> may be available through one of the available package managers. If not, it can be easily built <a href="https://github.com/wg/wrk">from source</a> via <code>make</code>.</p>
+<p>By default, <code>wrk</code> will be used as the benchmarker. If it is not available, <code>autocannon</code> will be used in its place. When creating an HTTP benchmark, the benchmarker to be used should be specified by providing it as an argument:</p>
+<p><code>node benchmark/run.js --set benchmarker=autocannon http</code></p>
+<p><code>node benchmark/http/simple.js benchmarker=autocannon</code></p>
+<h4 id="https-benchmark-requirements">HTTPS benchmark requirements</h4>
+<p>To run the <code>https</code> benchmarks, one of <code>autocannon</code> or <code>wrk</code> benchmarkers must be used.</p>
+<p><code>node benchmark/https/simple.js benchmarker=autocannon</code></p>
+<h4 id="http2-benchmark-requirements">HTTP/2 benchmark requirements</h4>
+<p>To run the <code>http2</code> benchmarks, the <code>h2load</code> benchmarker must be used. The <code>h2load</code> tool is a component of the <code>nghttp2</code> project and may be installed from <a href="https://nghttp2.org">nghttp2.org</a> or built from source.</p>
+<p><code>node benchmark/http2/simple.js benchmarker=h2load</code></p>
+<h3 id="benchmark-analysis-requirements">Benchmark analysis requirements</h3>
+<p>To analyze the results, <code>R</code> should be installed. Use one of the available package managers or download it from <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>.</p>
+<p>The R packages <code>ggplot2</code> and <code>plyr</code> are also used and can be installed using the R REPL.</p>
+<pre class="console"><code>$ R
+install.packages(&quot;ggplot2&quot;)
+install.packages(&quot;plyr&quot;)</code></pre>
+<p>If a message states that a CRAN mirror must be selected first, specify a mirror with the <code>repo</code> parameter.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="dt">repo=</span><span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</a></code></pre></div>
+<p>Of course, use an appropriate mirror based on location. A list of mirrors is <a href="https://cran.r-project.org/mirrors.html">located here</a>.</p>
+<h2 id="running-benchmarks">Running benchmarks</h2>
+<h3 id="running-individual-benchmarks">Running individual benchmarks</h3>
+<p>This can be useful for debugging a benchmark or doing a quick performance measure. But it does not provide the statistical information to make any conclusions about the performance.</p>
+<p>Individual benchmarks can be executed by simply executing the benchmark script with node.</p>
+<pre class="console"><code>$ node benchmark/buffers/buffer-tostring.js
+
+buffers/buffer-tostring.js n=10000000 len=0 arg=true: 62710590.393305704
+buffers/buffer-tostring.js n=10000000 len=1 arg=true: 9178624.591787899
+buffers/buffer-tostring.js n=10000000 len=64 arg=true: 7658962.8891432695
+buffers/buffer-tostring.js n=10000000 len=1024 arg=true: 4136904.4060201733
+buffers/buffer-tostring.js n=10000000 len=0 arg=false: 22974354.231509723
+buffers/buffer-tostring.js n=10000000 len=1 arg=false: 11485945.656765845
+buffers/buffer-tostring.js n=10000000 len=64 arg=false: 8718280.70650129
+buffers/buffer-tostring.js n=10000000 len=1024 arg=false: 4103857.0726124765</code></pre>
+<p>Each line represents a single benchmark with parameters specified as <code>${variable}=${value}</code>. Each configuration combination is executed in a separate process. This ensures that benchmark results aren’t affected by the execution order due to V8 optimizations. <strong>The last number is the rate of operations measured in ops/sec (higher is better).</strong></p>
+<p>Furthermore a subset of the configurations can be specified, by setting them in the process arguments:</p>
+<pre class="console"><code>$ node benchmark/buffers/buffer-tostring.js len=1024
+
+buffers/buffer-tostring.js n=10000000 len=1024 arg=true: 3498295.68561504
+buffers/buffer-tostring.js n=10000000 len=1024 arg=false: 3783071.1678948295</code></pre>
+<h3 id="running-all-benchmarks">Running all benchmarks</h3>
+<p>Similar to running individual benchmarks, a group of benchmarks can be executed by using the <code>run.js</code> tool. To see how to use this script, run <code>node benchmark/run.js</code>. Again this does not provide the statistical information to make any conclusions.</p>
+<pre class="console"><code>$ node benchmark/run.js assert
+
+assert/deepequal-buffer.js
+assert/deepequal-buffer.js method=&quot;deepEqual&quot; strict=0 len=100 n=20000: 773,200.4995493788
+assert/deepequal-buffer.js method=&quot;notDeepEqual&quot; strict=0 len=100 n=20000: 964,411.712953848
+...
+
+assert/deepequal-map.js
+assert/deepequal-map.js method=&quot;deepEqual_primitiveOnly&quot; strict=0 len=500 n=500: 20,445.06368453332
+assert/deepequal-map.js method=&quot;deepEqual_objectOnly&quot; strict=0 len=500 n=500: 1,393.3481642240833
+...
+
+assert/deepequal-object.js
+assert/deepequal-object.js method=&quot;deepEqual&quot; strict=0 size=100 n=5000: 1,053.1950937538475
+assert/deepequal-object.js method=&quot;notDeepEqual&quot; strict=0 size=100 n=5000: 9,734.193251965213
+...</code></pre>
+<p>It is possible to execute more groups by adding extra process arguments.</p>
+<pre class="console"><code>$ node benchmark/run.js assert async_hooks</code></pre>
+<h4 id="filtering-benchmarks">Filtering benchmarks</h4>
+<p><code>benchmark/run.js</code> and <code>benchmark/compare.js</code> have <code>--filter pattern</code> and <code>--exclude pattern</code> options, which can be used to run a subset of benchmarks or to exclude specific benchmarks from the execution, respectively.</p>
+<pre class="console"><code>$ node benchmark/run.js --filter &quot;deepequal-b&quot; assert
+
+assert/deepequal-buffer.js
+assert/deepequal-buffer.js method=&quot;deepEqual&quot; strict=0 len=100 n=20000: 773,200.4995493788
+assert/deepequal-buffer.js method=&quot;notDeepEqual&quot; strict=0 len=100 n=20000: 964,411.712953848
+
+$ node benchmark/run.js --exclude &quot;deepequal-b&quot; assert
+
+assert/deepequal-map.js
+assert/deepequal-map.js method=&quot;deepEqual_primitiveOnly&quot; strict=0 len=500 n=500: 20,445.06368453332
+assert/deepequal-map.js method=&quot;deepEqual_objectOnly&quot; strict=0 len=500 n=500: 1,393.3481642240833
+...
+
+assert/deepequal-object.js
+assert/deepequal-object.js method=&quot;deepEqual&quot; strict=0 size=100 n=5000: 1,053.1950937538475
+assert/deepequal-object.js method=&quot;notDeepEqual&quot; strict=0 size=100 n=5000: 9,734.193251965213
+...</code></pre>
+<p><code>--filter</code> and <code>--exclude</code> can be repeated to provide multiple patterns.</p>
+<pre class="console"><code>$ node benchmark/run.js --filter &quot;deepequal-b&quot; --filter &quot;deepequal-m&quot; assert
+
+assert/deepequal-buffer.js
+assert/deepequal-buffer.js method=&quot;deepEqual&quot; strict=0 len=100 n=20000: 773,200.4995493788
+assert/deepequal-buffer.js method=&quot;notDeepEqual&quot; strict=0 len=100 n=20000: 964,411.712953848
+
+assert/deepequal-map.js
+assert/deepequal-map.js method=&quot;deepEqual_primitiveOnly&quot; strict=0 len=500 n=500: 20,445.06368453332
+assert/deepequal-map.js method=&quot;deepEqual_objectOnly&quot; strict=0 len=500 n=500: 1,393.3481642240833
+
+$ node benchmark/run.js --exclude &quot;deepequal-b&quot; --exclude &quot;deepequal-m&quot; assert
+
+assert/deepequal-object.js
+assert/deepequal-object.js method=&quot;deepEqual&quot; strict=0 size=100 n=5000: 1,053.1950937538475
+assert/deepequal-object.js method=&quot;notDeepEqual&quot; strict=0 size=100 n=5000: 9,734.193251965213
+...
+
+assert/deepequal-prims-and-objs-big-array-set.js
+assert/deepequal-prims-and-objs-big-array-set.js method=&quot;deepEqual_Array&quot; strict=0 len=20000 n=25 primitive=&quot;string&quot;: 865.2977195251661
+assert/deepequal-prims-and-objs-big-array-set.js method=&quot;notDeepEqual_Array&quot; strict=0 len=20000 n=25 primitive=&quot;string&quot;: 827.8297281403861
+assert/deepequal-prims-and-objs-big-array-set.js method=&quot;deepEqual_Set&quot; strict=0 len=20000 n=25 primitive=&quot;string&quot;: 28,826.618268696366
+...</code></pre>
+<p>If <code>--filter</code> and <code>--exclude</code> are used together, <code>--filter</code> is applied first, and <code>--exclude</code> is applied on the result of <code>--filter</code>:</p>
+<pre class="console"><code>$ node benchmark/run.js --filter &quot;bench-&quot; process
+
+process/bench-env.js
+process/bench-env.js operation=&quot;get&quot; n=1000000: 2,356,946.0770617095
+process/bench-env.js operation=&quot;set&quot; n=1000000: 1,295,176.3266261867
+process/bench-env.js operation=&quot;enumerate&quot; n=1000000: 24,592.32231990992
+process/bench-env.js operation=&quot;query&quot; n=1000000: 3,625,787.2150573144
+process/bench-env.js operation=&quot;delete&quot; n=1000000: 1,521,131.5742806569
+
+process/bench-hrtime.js
+process/bench-hrtime.js type=&quot;raw&quot; n=1000000: 13,178,002.113936031
+process/bench-hrtime.js type=&quot;diff&quot; n=1000000: 11,585,435.712423025
+process/bench-hrtime.js type=&quot;bigint&quot; n=1000000: 13,342,884.703919787
+
+$ node benchmark/run.js --filter &quot;bench-&quot; --exclude &quot;hrtime&quot; process
+
+process/bench-env.js
+process/bench-env.js operation=&quot;get&quot; n=1000000: 2,356,946.0770617095
+process/bench-env.js operation=&quot;set&quot; n=1000000: 1,295,176.3266261867
+process/bench-env.js operation=&quot;enumerate&quot; n=1000000: 24,592.32231990992
+process/bench-env.js operation=&quot;query&quot; n=1000000: 3,625,787.2150573144
+process/bench-env.js operation=&quot;delete&quot; n=1000000: 1,521,131.5742806569</code></pre>
+<h3 id="comparing-node.js-versions">Comparing Node.js versions</h3>
+<p>To compare the effect of a new Node.js version use the <code>compare.js</code> tool. This will run each benchmark multiple times, making it possible to calculate statistics on the performance measures. To see how to use this script, run <code>node benchmark/compare.js</code>.</p>
+<p>As an example on how to check for a possible performance improvement, the <a href="https://github.com/nodejs/node/pull/5134">#5134</a> pull request will be used as an example. This pull request <em>claims</em> to improve the performance of the <code>string_decoder</code> module.</p>
+<p>First build two versions of Node.js, one from the master branch (here called <code>./node-master</code>) and another with the pull request applied (here called <code>./node-pr-5134</code>).</p>
+<p>To run multiple compiled versions in parallel you need to copy the output of the build: <code>cp ./out/Release/node ./node-master</code>. Check out the following example:</p>
+<pre class="console"><code>$ git checkout master
+$ ./configure &amp;&amp; make -j4
+$ cp ./out/Release/node ./node-master
+
+$ git checkout pr-5134
+$ ./configure &amp;&amp; make -j4
+$ cp ./out/Release/node ./node-pr-5134</code></pre>
+<p>The <code>compare.js</code> tool will then produce a csv file with the benchmark results.</p>
+<pre class="console"><code>$ node benchmark/compare.js --old ./node-master --new ./node-pr-5134 string_decoder &gt; compare-pr-5134.csv</code></pre>
+<p><em>Tips: there are some useful options of <code>benchmark/compare.js</code>. For example, if you want to compare the benchmark of a single script instead of a whole module, you can use the <code>--filter</code> option:</em></p>
+<pre class="console"><code>  --new      ./new-node-binary  new node binary (required)
+  --old      ./old-node-binary  old node binary (required)
+  --runs     30                 number of samples
+  --filter   pattern            string to filter benchmark scripts
+  --set      variable=value     set benchmark variable (can be repeated)
+  --no-progress                 don&#39;t show benchmark progress indicator</code></pre>
+<p>For analysing the benchmark results use the <code>compare.R</code> tool.</p>
+<pre class="console"><code>$ cat compare-pr-5134.csv | Rscript benchmark/compare.R
+
+                                                                                             confidence improvement accuracy (*)    (**)   (***)
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=128 encoding=&#39;ascii&#39;                  ***     -3.76 %       ±1.36%  ±1.82%  ±2.40%
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=128 encoding=&#39;utf8&#39;                    **     -0.81 %       ±0.53%  ±0.71%  ±0.93%
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=32 encoding=&#39;ascii&#39;                   ***     -2.70 %       ±0.83%  ±1.11%  ±1.45%
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=32 encoding=&#39;base64-ascii&#39;            ***     -1.57 %       ±0.83%  ±1.11%  ±1.46%
+...</code></pre>
+<p>In the output, <em>improvement</em> is the relative improvement of the new version, hopefully this is positive. <em>confidence</em> tells if there is enough statistical evidence to validate the <em>improvement</em>. If there is enough evidence then there will be at least one star (<code>*</code>), more stars is just better. <strong>However if there are no stars, then don’t make any conclusions based on the <em>improvement</em>.</strong> Sometimes this is fine, for example if no improvements are expected, then there shouldn’t be any stars.</p>
+<p><strong>A word of caution:</strong> Statistics is not a foolproof tool. If a benchmark shows a statistical significant difference, there is a 5% risk that this difference doesn’t actually exist. For a single benchmark this is not an issue. But when considering 20 benchmarks it’s normal that one of them will show significance, when it shouldn’t. A possible solution is to instead consider at least two stars (<code>**</code>) as the threshold, in that case the risk is 1%. If three stars (<code>***</code>) is considered the risk is 0.1%. However this may require more runs to obtain (can be set with <code>--runs</code>).</p>
+<p><em>For the statistically minded, the R script performs an <a href="https://en.wikipedia.org/wiki/Student%27s_t-test#Equal_or_unequal_sample_sizes.2C_unequal_variances">independent/unpaired 2-group t-test</a>, with the null hypothesis that the performance is the same for both versions. The confidence field will show a star if the p-value is less than <code>0.05</code>.</em></p>
+<p>The <code>compare.R</code> tool can also produce a box plot by using the <code>--plot filename</code> option. In this case there are 48 different benchmark combinations, and there may be a need to filter the csv file. This can be done while benchmarking using the <code>--set</code> parameter (e.g. <code>--set encoding=ascii</code>) or by filtering results afterwards using tools such as <code>sed</code> or <code>grep</code>. In the <code>sed</code> case be sure to keep the first line since that contains the header information.</p>
+<pre class="console"><code>$ cat compare-pr-5134.csv | sed &#39;1p;/encoding=&#39;&quot;&#39;&quot;ascii&quot;&#39;&quot;&#39;/!d&#39; | Rscript benchmark/compare.R --plot compare-plot.png
+
+                                                                                      confidence improvement accuracy (*)    (**)   (***)
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=128 encoding=&#39;ascii&#39;           ***     -3.76 %       ±1.36%  ±1.82%  ±2.40%
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=32 encoding=&#39;ascii&#39;            ***     -2.70 %       ±0.83%  ±1.11%  ±1.45%
+ string_decoder/string-decoder.js n=2500000 chunkLen=16 inLen=4096 encoding=&#39;ascii&#39;          ***     -4.06 %       ±0.31%  ±0.41%  ±0.54%
+ string_decoder/string-decoder.js n=2500000 chunkLen=256 inLen=1024 encoding=&#39;ascii&#39;         ***     -1.42 %       ±0.58%  ±0.77%  ±1.01%
+...</code></pre>
+<figure>
+<img src="doc_img/compare-boxplot.png" alt="compare tool boxplot" /><figcaption>compare tool boxplot</figcaption>
+</figure>
+<h3 id="comparing-parameters">Comparing parameters</h3>
+<p>It can be useful to compare the performance for different parameters, for example to analyze the time complexity.</p>
+<p>To do this use the <code>scatter.js</code> tool, this will run a benchmark multiple times and generate a csv with the results. To see how to use this script, run <code>node benchmark/scatter.js</code>.</p>
+<pre class="console"><code>$ node benchmark/scatter.js benchmark/string_decoder/string-decoder.js &gt; scatter.csv</code></pre>
+<p>After generating the csv, a comparison table can be created using the <code>scatter.R</code> tool. Even more useful it creates an actual scatter plot when using the <code>--plot filename</code> option.</p>
+<pre class="console"><code>$ cat scatter.csv | Rscript benchmark/scatter.R --xaxis chunkLen --category encoding --plot scatter-plot.png --log
+
+aggregating variable: inLen
+
+chunkLen     encoding      rate confidence.interval
+      16        ascii 1515855.1           334492.68
+      16 base64-ascii  403527.2            89677.70
+      16  base64-utf8  322352.8            70792.93
+      16      utf16le 1714567.5           388439.81
+      16         utf8 1100181.6           254141.32
+      64        ascii 3550402.0           661277.65
+      64 base64-ascii 1093660.3           229976.34
+      64  base64-utf8  997804.8           227238.04
+      64      utf16le 3372234.0           647274.88
+      64         utf8 1731941.2           360854.04
+     256        ascii 5033793.9           723354.30
+     256 base64-ascii 1447962.1           236625.96
+     256  base64-utf8 1357269.2           231045.70
+     256      utf16le 4039581.5           655483.16
+     256         utf8 1828672.9           360311.55
+    1024        ascii 5677592.7           624771.56
+    1024 base64-ascii 1494171.7           227302.34
+    1024  base64-utf8 1399218.9           224584.79
+    1024      utf16le 4157452.0           630416.28
+    1024         utf8 1824266.6           359628.52</code></pre>
+<p>Because the scatter plot can only show two variables (in this case <em>chunkLen</em> and <em>encoding</em>) the rest is aggregated. Sometimes aggregating is a problem, this can be solved by filtering. This can be done while benchmarking using the <code>--set</code> parameter (e.g. <code>--set encoding=ascii</code>) or by filtering results afterwards using tools such as <code>sed</code> or <code>grep</code>. In the <code>sed</code> case be sure to keep the first line since that contains the header information.</p>
+<pre class="console"><code>$ cat scatter.csv | sed -E &#39;1p;/([^,]+, ){3}128,/!d&#39; | Rscript benchmark/scatter.R --xaxis chunkLen --category encoding --plot scatter-plot.png --log
+
+chunkLen     encoding      rate confidence.interval
+      16        ascii 1302078.5            71692.27
+      16 base64-ascii  338669.1            15159.54
+      16  base64-utf8  281904.2            20326.75
+      16      utf16le 1381515.5            58533.61
+      16         utf8  831183.2            33631.01
+      64        ascii 4363402.8           224030.00
+      64 base64-ascii 1036825.9            48644.72
+      64  base64-utf8  780059.3            60994.98
+      64      utf16le 3900749.5           158366.84
+      64         utf8 1723710.6            80665.65
+     256        ascii 8472896.1           511822.51
+     256 base64-ascii 2215884.6           104347.53
+     256  base64-utf8 1996230.3           131778.47
+     256      utf16le 5824147.6           234550.82
+     256         utf8 2019428.8           100913.36
+    1024        ascii 8340189.4           598855.08
+    1024 base64-ascii 2201316.2           111777.68
+    1024  base64-utf8 2002272.9           128843.11
+    1024      utf16le 5789281.7           240642.77
+    1024         utf8 2025551.2            81770.69</code></pre>
+<figure>
+<img src="doc_img/scatter-plot.png" alt="compare tool boxplot" /><figcaption>compare tool boxplot</figcaption>
+</figure>
+<h3 id="running-benchmarks-on-the-ci">Running benchmarks on the CI</h3>
+<p>To see the performance impact of a pull request by running benchmarks on the CI, check out <a href="https://github.com/nodejs/benchmarking/blob/HEAD/docs/core_benchmarks.md">How to: Running core benchmarks on Node.js CI</a>.</p>
+<h2 id="creating-a-benchmark">Creating a benchmark</h2>
+<h3 id="basics-of-a-benchmark">Basics of a benchmark</h3>
+<p>All benchmarks use the <code>require('../common.js')</code> module. This contains the <code>createBenchmark(main, configs[, options])</code> method which will setup the benchmark.</p>
+<p>The arguments of <code>createBenchmark</code> are:</p>
+<ul>
+<li><code>main</code> {Function} The benchmark function, where the code running operations and controlling timers should go</li>
+<li><code>configs</code> {Object} The benchmark parameters. <code>createBenchmark</code> will run all possible combinations of these parameters, unless specified otherwise. Each configuration is a property with an array of possible values. The configuration values can only be strings or numbers.</li>
+<li><code>options</code> {Object} The benchmark options. At the moment only the <code>flags</code> option for specifying command line flags is supported.</li>
+</ul>
+<p><code>createBenchmark</code> returns a <code>bench</code> object, which is used for timing the runtime of the benchmark. Run <code>bench.start()</code> after the initialization and <code>bench.end(n)</code> when the benchmark is done. <code>n</code> is the number of operations performed in the benchmark.</p>
+<p>The benchmark script will be run twice:</p>
+<p>The first pass will configure the benchmark with the combination of parameters specified in <code>configs</code>, and WILL NOT run the <code>main</code> function. In this pass, no flags except the ones directly passed via commands when running the benchmarks will be used.</p>
+<p>In the second pass, the <code>main</code> function will be run, and the process will be launched with:</p>
+<ul>
+<li>The flags passed into <code>createBenchmark</code> (the third argument)</li>
+<li>The flags in the command passed when the benchmark was run</li>
+</ul>
+<p>Beware that any code outside the <code>main</code> function will be run twice in different processes. This could be troublesome if the code outside the <code>main</code> function has side effects. In general, prefer putting the code inside the <code>main</code> function if it’s more than just declaration.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common.js&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">const</span> <span class="op">{</span> SlowBuffer <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;buffer&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="kw">const</span> configs <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="co">// Number of operations, specified here so they show up in the report.</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  <span class="co">// Most benchmarks just use one value for all runs.</span></a>
+<a class="sourceLine" id="cb18-8" title="8">  <span class="dt">n</span><span class="op">:</span> [<span class="dv">1024</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-9" title="9">  <span class="dt">type</span><span class="op">:</span> [<span class="st">&#39;fast&#39;</span><span class="op">,</span> <span class="st">&#39;slow&#39;</span>]<span class="op">,</span>  <span class="co">// Custom configurations</span></a>
+<a class="sourceLine" id="cb18-10" title="10">  <span class="dt">size</span><span class="op">:</span> [<span class="dv">16</span><span class="op">,</span> <span class="dv">128</span><span class="op">,</span> <span class="dv">1024</span>]  <span class="co">// Custom configurations</span></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="op">};</span></a>
+<a class="sourceLine" id="cb18-12" title="12"></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-14" title="14">  <span class="co">// Add --expose-internals in order to require internal modules in main</span></a>
+<a class="sourceLine" id="cb18-15" title="15">  <span class="dt">flags</span><span class="op">:</span> [<span class="st">&#39;--zero-fill-buffers&#39;</span>]</a>
+<a class="sourceLine" id="cb18-16" title="16"><span class="op">};</span></a>
+<a class="sourceLine" id="cb18-17" title="17"></a>
+<a class="sourceLine" id="cb18-18" title="18"><span class="co">// `main` and `configs` are required, `options` is optional.</span></a>
+<a class="sourceLine" id="cb18-19" title="19"><span class="kw">const</span> bench <span class="op">=</span> <span class="va">common</span>.<span class="at">createBenchmark</span>(main<span class="op">,</span> configs<span class="op">,</span> options)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-20" title="20"></a>
+<a class="sourceLine" id="cb18-21" title="21"><span class="co">// Any code outside main will be run twice,</span></a>
+<a class="sourceLine" id="cb18-22" title="22"><span class="co">// in different processes, with different command line arguments.</span></a>
+<a class="sourceLine" id="cb18-23" title="23"></a>
+<a class="sourceLine" id="cb18-24" title="24"><span class="kw">function</span> <span class="at">main</span>(conf) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-25" title="25">  <span class="co">// Only flags that have been passed to createBenchmark</span></a>
+<a class="sourceLine" id="cb18-26" title="26">  <span class="co">// earlier when main is run will be in effect.</span></a>
+<a class="sourceLine" id="cb18-27" title="27">  <span class="co">// In order to benchmark the internal modules, require them here. For example:</span></a>
+<a class="sourceLine" id="cb18-28" title="28">  <span class="co">// const URL = require(&#39;internal/url&#39;).URL</span></a>
+<a class="sourceLine" id="cb18-29" title="29"></a>
+<a class="sourceLine" id="cb18-30" title="30">  <span class="co">// Start the timer</span></a>
+<a class="sourceLine" id="cb18-31" title="31">  <span class="va">bench</span>.<span class="at">start</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-32" title="32"></a>
+<a class="sourceLine" id="cb18-33" title="33">  <span class="co">// Do operations here</span></a>
+<a class="sourceLine" id="cb18-34" title="34">  <span class="kw">const</span> BufferConstructor <span class="op">=</span> <span class="va">conf</span>.<span class="at">type</span> <span class="op">===</span> <span class="st">&#39;fast&#39;</span> <span class="op">?</span> Buffer : SlowBuffer<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-35" title="35"></a>
+<a class="sourceLine" id="cb18-36" title="36">  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">conf</span>.<span class="at">n</span><span class="op">;</span> i<span class="op">++</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-37" title="37">    <span class="kw">new</span> <span class="at">BufferConstructor</span>(<span class="va">conf</span>.<span class="at">size</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-38" title="38">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-39" title="39"></a>
+<a class="sourceLine" id="cb18-40" title="40">  <span class="co">// End the timer, pass in the number of operations</span></a>
+<a class="sourceLine" id="cb18-41" title="41">  <span class="va">bench</span>.<span class="at">end</span>(<span class="va">conf</span>.<span class="at">n</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-42" title="42"><span class="op">}</span></a></code></pre></div>
+<h3 id="creating-an-http-benchmark">Creating an HTTP benchmark</h3>
+<p>The <code>bench</code> object returned by <code>createBenchmark</code> implements <code>http(options, callback)</code> method. It can be used to run external tool to benchmark HTTP servers.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common.js&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-4" title="4"></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="kw">const</span> bench <span class="op">=</span> <span class="va">common</span>.<span class="at">createBenchmark</span>(main<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-6" title="6">  <span class="dt">kb</span><span class="op">:</span> [<span class="dv">64</span><span class="op">,</span> <span class="dv">128</span><span class="op">,</span> <span class="dv">256</span><span class="op">,</span> <span class="dv">1024</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb19-7" title="7">  <span class="dt">connections</span><span class="op">:</span> [<span class="dv">100</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></a>
+<a class="sourceLine" id="cb19-8" title="8">  <span class="dt">duration</span><span class="op">:</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-10" title="10"></a>
+<a class="sourceLine" id="cb19-11" title="11"><span class="kw">function</span> <span class="at">main</span>(conf) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-12" title="12">  <span class="kw">const</span> http <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;http&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-13" title="13">  <span class="kw">const</span> len <span class="op">=</span> <span class="va">conf</span>.<span class="at">kb</span> <span class="op">*</span> <span class="dv">1024</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb19-14" title="14">  <span class="kw">const</span> chunk <span class="op">=</span> <span class="va">Buffer</span>.<span class="at">alloc</span>(len<span class="op">,</span> <span class="st">&#39;x&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-15" title="15">  <span class="kw">const</span> server <span class="op">=</span> <span class="va">http</span>.<span class="at">createServer</span>((req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-16" title="16">    <span class="va">res</span>.<span class="at">end</span>(chunk)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-17" title="17">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-18" title="18"></a>
+<a class="sourceLine" id="cb19-19" title="19">  <span class="va">server</span>.<span class="at">listen</span>(<span class="va">common</span>.<span class="at">PORT</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-20" title="20">    <span class="va">bench</span>.<span class="at">http</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb19-21" title="21">      <span class="dt">connections</span><span class="op">:</span> <span class="va">conf</span>.<span class="at">connections</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-22" title="22">    <span class="op">},</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-23" title="23">      <span class="va">server</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-24" title="24">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-25" title="25">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-26" title="26"><span class="op">}</span></a></code></pre></div>
+<p>Supported options keys are:</p>
+<ul>
+<li><code>port</code> - defaults to <code>common.PORT</code></li>
+<li><code>path</code> - defaults to <code>/</code></li>
+<li><code>connections</code> - number of concurrent connections to use, defaults to 100</li>
+<li><code>duration</code> - duration of the benchmark in seconds, defaults to 10</li>
+<li><code>benchmarker</code> - benchmarker to use, defaults to the first available http benchmarker</li>
+</ul>
+</body>
+</html>

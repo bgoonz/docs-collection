@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>releases</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="node.js-release-process">Node.js release process</h1>
+<p>This document describes the technical aspects of the Node.js release process. The intended audience is those who have been authorized by the Node.js Technical Steering Committee (TSC) to create, promote, and sign official release builds for Node.js, hosted on <a href="https://nodejs.org/" class="uri">https://nodejs.org/</a>.</p>
+<h2 id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#who-can-make-a-release">Who can make a release?</a>
+<ul>
+<li><a href="#1-jenkins-release-access">1. Jenkins release access</a></li>
+<li><a href="#2-nodejsorg-access">2. &lt;nodejs.org&gt; access</a></li>
+<li><a href="#3-a-publicly-listed-gpg-key">3. A publicly listed GPG key</a></li>
+</ul></li>
+<li><a href="#how-to-create-a-release">How to create a release</a>
+<ul>
+<li><a href="#0-pre-release-steps">0. Pre-release steps</a></li>
+<li><a href="#1-update-the-staging-branch">1. Update the staging branch</a></li>
+<li><a href="#2-create-a-new-branch-for-the-release">2. Create a new branch for the release</a></li>
+<li><a href="#3-update-srcnode_versionh">3. Update <code>src/node_version.h</code></a></li>
+<li><a href="#4-update-the-changelog">4. Update the changelog</a></li>
+<li><a href="#5-create-release-commit">5. Create release commit</a></li>
+<li><a href="#6-propose-release-on-github">6. Propose release on GitHub</a></li>
+<li><a href="#7-ensure-that-the-release-branch-is-stable">7. Ensure that the release branch is stable</a></li>
+<li><a href="#8-produce-a-nightly-build-optional">8. Produce a nightly build <em>(optional)</em></a></li>
+<li><a href="#9-produce-release-builds">9. Produce release builds</a></li>
+<li><a href="#10-test-the-build">10. Test the build</a></li>
+<li><a href="#11-tag-and-sign-the-release-commit">11. Tag and sign the release commit</a></li>
+<li><a href="#12-set-up-for-the-next-release">12. Set up for the next release</a></li>
+<li><a href="#13-cherry-pick-the-release-commit-to-master">13. Cherry-pick the release commit to <code>master</code></a></li>
+<li><a href="#14-push-the-release-tag">14. Push the release tag</a></li>
+<li><a href="#15-promote-and-sign-the-release-builds">15. Promote and sign the release builds</a></li>
+<li><a href="#16-check-the-release">16. Check the release</a></li>
+<li><a href="#17-create-a-blog-post">17. Create a blog post</a></li>
+<li><a href="#18-create-the-release-on-github">18. Create the release on GitHub</a></li>
+<li><a href="#19-cleanup">19. Cleanup</a></li>
+<li><a href="#20-announce">20. Announce</a></li>
+<li><a href="#21-celebrate">21. Celebrate</a></li>
+</ul></li>
+<li><a href="#lts-releases">LTS releases</a></li>
+<li><a href="#major-releases">Major releases</a></li>
+</ul>
+<h2 id="who-can-make-a-release">Who can make a release?</h2>
+<p>Release authorization is given by the Node.js TSC. Once authorized, an individual must have the following:</p>
+<h3 id="jenkins-release-access">1. Jenkins release access</h3>
+<p>There are three relevant Jenkins jobs that should be used for a release flow:</p>
+<p><strong>a.</strong> <strong>Test runs:</strong> <strong><a href="https://ci.nodejs.org/job/node-test-pull-request/">node-test-pull-request</a></strong> is used for a final full-test run to ensure that the current <em>HEAD</em> is stable.</p>
+<p><strong>b.</strong> <strong>Nightly builds:</strong> (optional) <strong><a href="https://ci-release.nodejs.org/job/iojs+release/">iojs+release</a></strong> can be used to create a nightly release for the current <em>HEAD</em> if public test releases are required. Builds triggered with this job are published straight to <a href="https://nodejs.org/download/nightly/" class="uri">https://nodejs.org/download/nightly/</a> and are available for public download.</p>
+<p><strong>c.</strong> <strong>Release builds:</strong> <strong><a href="https://ci-release.nodejs.org/job/iojs+release/">iojs+release</a></strong> does all of the work to build all required release assets. Promotion of the release files is a manual step once they are ready (see below).</p>
+<p>The <a href="https://github.com/nodejs/build">Node.js build team</a> is able to provide this access to individuals authorized by the TSC.</p>
+<h3 id="nodejs.org-access">2. &lt;nodejs.org&gt; access</h3>
+<p>The <em>dist</em> user on nodejs.org controls the assets available in <a href="https://nodejs.org/download/" class="uri">https://nodejs.org/download/</a>. <a href="https://nodejs.org/dist/" class="uri">https://nodejs.org/dist/</a> is an alias for <a href="https://nodejs.org/download/release/" class="uri">https://nodejs.org/download/release/</a>.</p>
+<p>The Jenkins release build workers upload their artifacts to the web server as the <em>staging</em> user. The <em>dist</em> user has access to move these assets to public access while, for security, the <em>staging</em> user does not.</p>
+<p>Nightly builds are promoted automatically on the server by a cron task for the <em>dist</em> user.</p>
+<p>Release builds require manual promotion by an individual with SSH access to the server as the <em>dist</em> user. The <a href="https://github.com/nodejs/build">Node.js build team</a> is able to provide this access to individuals authorized by the TSC.</p>
+<h3 id="a-publicly-listed-gpg-key">3. A publicly-listed GPG key</h3>
+<p>A <code>SHASUMS256.txt</code> file is produced for every promoted build, nightly, and releases. Additionally for releases, this file is signed by the individual responsible for that release. In order to be able to verify downloaded binaries, the public should be able to check that the <code>SHASUMS256.txt</code> file has been signed by someone who has been authorized to create a release.</p>
+<p>The GPG keys should be fetchable from a known third-party keyserver. The SKS Keyservers at <a href="https://sks-keyservers.net" class="uri">https://sks-keyservers.net</a> are recommended. Use the <a href="https://pgp.mit.edu/">submission</a> form to submit a new GPG key. You’ll need to do an ASCII-armored export of your key first:</p>
+<pre class="console"><code>$ gpg --armor --export email@server.com &gt; ~/nodekey.asc</code></pre>
+<p>Keys should be fetchable via:</p>
+<pre class="console"><code>$ gpg --keyserver pool.sks-keyservers.net --recv-keys &lt;FINGERPRINT&gt;</code></pre>
+<p>The key you use may be a child/subkey of an existing key.</p>
+<p>Additionally, full GPG key fingerprints for individuals authorized to release should be listed in the Node.js GitHub README.md file.</p>
+<h2 id="how-to-create-a-release">How to create a release</h2>
+<p>Notes:</p>
+<ul>
+<li>Dates listed below as <em>“YYYY-MM-DD”</em> should be the date of the release <strong>as UTC</strong>. Use <code>date -u +'%Y-%m-%d'</code> to find out what this is.</li>
+<li>Version strings are listed below as <em>“vx.y.z”</em> or <em>“x.y.z”</em>. Substitute for the release version.</li>
+<li>Examples will use the fictional release version <code>1.2.3</code>.</li>
+</ul>
+<h3 id="pre-release-steps">0. Pre-release steps</h3>
+<p>Before preparing a Node.js release, the Build Working Group must be notified at least one business day in advance of the expected release. Coordinating with Build is essential to make sure that the CI works, release files are published, and the release blog post is available on the project website.</p>
+<p>Build can be contacted best by opening up an issue on the <a href="https://github.com/nodejs/build/issues/new">Build issue tracker</a>.</p>
+<p>When preparing a security release, contact Build at least two weekdays in advance of the expected release. To ensure that the security patch(es) can be properly tested, run a <code>node-test-pull-request</code> job against the <code>master</code> branch of the <code>nodejs-private/node-private</code> repository a day or so before the <a href="https://github.com/nodejs/build/blob/HEAD/doc/jenkins-guide.md#restricting-access-for-security-releases">CI lockdown procedure</a> begins. This is to confirm that Jenkins can properly access the private repository.</p>
+<h3 id="update-the-staging-branch">1. Update the staging branch</h3>
+<p>Checkout the staging branch locally.</p>
+<pre class="console"><code>$ git remote update
+$ git checkout v1.x-staging
+$ git reset --hard upstream/v1.x-staging</code></pre>
+<p>If the staging branch is not up to date relative to <code>master</code>, bring the appropriate PRs and commits into it.</p>
+<p>Go through PRs with the label <code>vN.x</code>. e.g. <a href="https://github.com/nodejs/node/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc+label%3Av8.x">PRs with the <code>v8.x</code> label</a>.</p>
+<p>For each PR:</p>
+<ul>
+<li>Run or check that there is a passing CI.</li>
+<li>Check approvals (you can approve yourself).</li>
+<li>Check that the commit metadata was not changed from the <code>master</code> commit.</li>
+<li>If there are merge conflicts, ask the PR author to rebase. Simple conflicts can be resolved when landing.</li>
+</ul>
+<p>When landing the PR add the <code>Backport-PR-URL:</code> line to each commit. Close the backport PR with <code>Landed in ...</code>. Update the label on the original PR from <code>backport-requested-vN.x</code> to <code>backported-to-vN.x</code>.</p>
+<p>To determine the relevant commits, use <a href="https://github.com/nodejs/branch-diff"><code>branch-diff</code></a>. The tool is available on npm and should be installed globally or run with <code>npx</code>. It depends on our commit metadata, as well as the GitHub labels such as <code>semver-minor</code> and <code>semver-major</code>. One drawback is that when the <code>PR-URL</code> metadata is accidentally omitted from a commit, the commit will show up because it’s unsure if it’s a duplicate or not.</p>
+<p>For a list of commits that could be landed in a patch release on v1.x:</p>
+<pre class="console"><code>$ branch-diff v1.x-staging master --exclude-label=semver-major,semver-minor,dont-land-on-v1.x,backport-requested-v1.x,backport-blocked-v1.x,backport-open-v1.x,backported-to-v1.x --filter-release --format=simple</code></pre>
+<p>Previously released commits and version bumps do not need to be cherry-picked.</p>
+<p>Carefully review the list of commits:</p>
+<ul>
+<li>Checking for errors (incorrect <code>PR-URL</code>)</li>
+<li>Checking semver status - Commits labeled as <code>semver-minor</code> or <code>semver-major</code> should only be cherry-picked when appropriate for the type of release being made.</li>
+<li>If you think it’s risky and the change should wait for a while, add the <code>baking-for-lts</code> tag.</li>
+</ul>
+<p>When you are ready to cherry-pick commits, you can automate with the following command. (For semver-minor releases, make sure to remove the <code>semver-minor</code> tag from <code>exclude-label</code>.)</p>
+<pre class="console"><code>$ branch-diff v1.x-staging master --exclude-label=semver-major,semver-minor,dont-land-on-v1.x,backport-requested-v1.x,backport-blocked-v1.x,backport-open-v1.x,backported-to-v1.x --filter-release --format=sha --reverse | xargs git cherry-pick</code></pre>
+<p>When cherry-picking commits, if there are simple conflicts you can resolve them. Otherwise, add the <code>backport-requested-vN.x</code> label to the original PR and post a comment stating that it does not land cleanly and will require a backport PR. You can refer the owner of the PR to the “<a href="https://github.com/nodejs/node/blob/HEAD/doc/guides/backporting-to-release-lines.md">Backporting to Release Lines</a>” guide.</p>
+<p>If commits were cherry-picked in this step, check that the test still pass.</p>
+<pre class="console"><code>$ make test</code></pre>
+<p>Then, push to the staging branch to keep it up-to-date.</p>
+<pre class="console"><code>$ git push upstream v1.x-staging</code></pre>
+<h3 id="create-a-new-branch-for-the-release">2. Create a new branch for the release</h3>
+<p>Create a new branch named <code>vx.y.z-proposal</code>, off the corresponding staging branch.</p>
+<pre class="console"><code>$ git checkout -b v1.2.3-proposal upstream/v1.x-staging</code></pre>
+<h3 id="update-srcnode_version.h">3. Update <code>src/node_version.h</code></h3>
+<p>Set the version for the proposed release using the following macros, which are already defined in <code>src/node_version.h</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" title="1"><span class="pp">#define NODE_MAJOR_VERSION x</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="pp">#define NODE_MINOR_VERSION y</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="pp">#define NODE_PATCH_VERSION z</span></a></code></pre></div>
+<p>Set the <code>NODE_VERSION_IS_RELEASE</code> macro value to <code>1</code>. This causes the build to be produced with a version string that does not have a trailing pre-release tag:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb10-1" title="1"><span class="pp">#define NODE_VERSION_IS_RELEASE 1</span></a></code></pre></div>
+<h3 id="update-the-changelog">4. Update the changelog</h3>
+<h4 id="step-1-collect-the-formatted-list-of-changes">Step 1: Collect the formatted list of changes</h4>
+<p>Collect a formatted list of commits since the last release. Use <a href="https://github.com/nodejs/changelog-maker"><code>changelog-maker</code></a> to do this:</p>
+<pre class="console"><code>$ changelog-maker --group</code></pre>
+<p><code>changelog-maker</code> counts commits since the last tag and if the last tag in the repository was not on the current branch you may have to supply a <code>--start-ref</code> argument:</p>
+<pre class="console"><code>$ changelog-maker --group --filter-release --start-ref v1.2.2</code></pre>
+<p><code>--filter-release</code> will remove the release commit from the previous release.</p>
+<h4 id="step-2-update-the-appropriate-docchangelogschangelog_.md-file">Step 2: Update the appropriate doc/changelogs/CHANGELOG_*.md file</h4>
+<p>There is a separate <code>CHANGELOG_Vx.md</code> file for each major Node.js release line. These are located in the <code>doc/changelogs/</code> directory. Once the formatted list of changes is collected, it must be added to the top of the relevant changelog file in the release branch (e.g. a release for Node.js v4 would be added to the <code>/doc/changelogs/CHANGELOG_V4.md</code>).</p>
+<p><strong>Please do <em>not</em> add the changelog entries to the root <code>CHANGELOG.md</code> file.</strong></p>
+<p>The new entry should take the following form:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb13-1" title="1">&lt;a id=&quot;x.y.x&quot;&gt;&lt;/a&gt;</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="fu">## YYYY-MM-DD, Version x.y.z (Release Type), @releaser</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="fu">### Notable changes</span></a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6">* <span class="fl">List interesting changes here</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="fl">* Particularly changes that are responsible for minor or major version bumps</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="fl">* Also be sure to look at any changes introduced by dependencies such as npm</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="fl">* ... and include any notable items from there</span></a>
+<a class="sourceLine" id="cb13-10" title="10"></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="fu">### Commits</span></a>
+<a class="sourceLine" id="cb13-12" title="12"></a>
+<a class="sourceLine" id="cb13-13" title="13">* <span class="fl">Include the full list of commits since the last release here. Do not include &quot;Working on X.Y.Z+1&quot; commits.</span></a></code></pre></div>
+<p>The release type should be either Current, LTS, or Maintenance, depending on the type of release being produced.</p>
+<p>You can use <code>branch-diff</code> to get a list of commits with the <code>notable-change</code> label:</p>
+<pre class="console"><code>$ branch-diff upstream/v1.x v1.2.3-proposal --require-label=notable-change -format=simple</code></pre>
+<p>Be sure that the <code>&lt;a&gt;</code> tag, as well as the two headings, are not indented at all.</p>
+<p>At the top of the root <code>CHANGELOG.md</code> file, there is a table indexing all releases in each major release line. A link to the new release needs to be added to it. Follow the existing examples and be sure to add the release to the <em>top</em> of the list. The most recent release for each release line is shown in <strong>bold</strong> in the index. When updating the index, please make sure to update the display accordingly by removing the bold styling from the previous release.</p>
+<h4 id="step-3-update-any-replaceme-and-dep00xx-tags-in-the-docs">Step 3: Update any REPLACEME and DEP00XX tags in the docs</h4>
+<p>If this release includes new APIs then it is necessary to document that they were first added in this version. The relevant commits should already include <code>REPLACEME</code> tags as per the example in the <a href="../../tools/doc/README.md">docs README</a>. Check for these tags with</p>
+<pre class="console"><code>grep REPLACEME doc/api/*.md</code></pre>
+<p>and substitute this node version with</p>
+<pre class="console"><code>sed -i &quot;s/REPLACEME/$VERSION/g&quot; doc/api/*.md` or `perl -pi -e &quot;s/REPLACEME/$VERSION/g&quot; doc/api/*.md</code></pre>
+<p><code>$VERSION</code> should be prefixed with a <code>v</code>.</p>
+<p>If this release includes any new deprecations it is necessary to ensure that those are assigned a proper static deprecation code. These are listed in the docs (see <code>doc/api/deprecations.md</code>) and in the source as <code>DEP00XX</code>. The code must be assigned a number (e.g. <code>DEP0012</code>). This assignment should occur when the PR is landed, but a check will be made when the release build is run.</p>
+<h3 id="create-release-commit">5. Create release commit</h3>
+<p>The <code>CHANGELOG.md</code>, <code>doc/changelogs/CHANGELOG_Vx.md</code>, <code>src/node_version.h</code>, and <code>REPLACEME</code> changes should be the final commit that will be tagged for the release. When committing these to git, use the following message format:</p>
+<pre class="text"><code>YYYY-MM-DD, Version x.y.z (Release Type)
+
+Notable changes:
+
+* Copy the notable changes list here, reformatted for plain-text</code></pre>
+<p>For security releases, begin the commit message with the phrase <code>This is a security release.</code> to allow the <a href="https://github.com/nodejs/nodejs-dist-indexer">distribution indexer</a> to identify it as such:</p>
+<pre class="text"><code>YYYY-MM-DD, Version x.y.z (Release Type)
+
+This is a security release.
+
+Notable changes:
+
+* Copy the notable changes list here, reformatted for plain-text</code></pre>
+<h3 id="propose-release-on-github">6. Propose release on GitHub</h3>
+<p>Push the release branch to <code>nodejs/node</code>, not to your own fork. This allows release branches to more easily be passed between members of the release team if necessary.</p>
+<p>Create a pull request targeting the correct release line. For example, a <code>v5.3.0-proposal</code> PR should target <code>v5.x</code>, not master. Paste the CHANGELOG modifications into the body of the PR so that collaborators can see what is changing. These PRs should be left open for at least 24 hours, and can be updated as new commits land. If the CHANGELOG pasted into the pull request is long enough that it slows down the GitHub UI, consider pasting the commits into <code>&lt;details&gt;</code> tags or in follow up comments.</p>
+<p>If using the <code>&lt;details&gt;</code> tag, use the following format:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb19-1" title="1">&lt;details&gt;</a>
+<a class="sourceLine" id="cb19-2" title="2">&lt;summary&gt;Commits&lt;/summary&gt;</a>
+<a class="sourceLine" id="cb19-3" title="3"></a>
+<a class="sourceLine" id="cb19-4" title="4">* <span class="fl">Full list of commits...</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="fl">&lt;/details&gt;</span></a></code></pre></div>
+<p>If you need any additional information about any of the commits, this PR is a good place to @-mention the relevant contributors.</p>
+<p>After opening the PR, update the release commit to include <code>PR-URL</code> metadata and force-push the proposal.</p>
+<h3 id="ensure-that-the-release-branch-is-stable">7. Ensure that the release branch is stable</h3>
+<p>Run a <strong><a href="https://ci.nodejs.org/job/node-test-pull-request/"><code>node-test-pull-request</code></a></strong> test run to ensure that the build is stable and the HEAD commit is ready for release.</p>
+<p>Also run a <strong><a href="https://ci.nodejs.org/job/node-test-commit-v8-linux/"><code>node-test-commit-v8-linux</code></a></strong> test run if the release contains changes to <code>deps/v8</code>.</p>
+<p>Perform some smoke-testing. There is the <strong><a href="https://ci.nodejs.org/job/citgm-smoker/"><code>citgm-smoker</code></a></strong> CI job for this purpose. Run it once with the base <code>vx.x</code> branch as a reference and with the proposal branch to check if new regressions could be introduced in the ecosystem.</p>
+<h3 id="produce-a-nightly-build-optional">8. Produce a nightly build <em>(optional)</em></h3>
+<p>If there is a reason to produce a test release for the purpose of having others try out installers or specifics of builds, produce a nightly build using <strong><a href="https://ci-release.nodejs.org/job/iojs+release/">iojs+release</a></strong> and wait for it to drop in <a href="https://nodejs.org/download/nightly/" class="uri">https://nodejs.org/download/nightly/</a>. Follow the directions and enter a proper length commit SHA, enter a date string, and select “nightly” for “disttype”.</p>
+<p>This is particularly recommended if there has been recent work relating to the macOS or Windows installers as they are not tested in any way by CI.</p>
+<h3 id="produce-release-builds">9. Produce release builds</h3>
+<p>Use <strong><a href="https://ci-release.nodejs.org/job/iojs+release/">iojs+release</a></strong> to produce release artifacts. Enter the commit that you want to build from and select “release” for “disttype”.</p>
+<p>Artifacts from each worker are uploaded to Jenkins and are available if further testing is required. Use this opportunity particularly to test macOS and Windows installers if there are any concerns. Click through to the individual workers for a run to find the artifacts.</p>
+<p>All release workers should achieve “SUCCESS” (and be green, not red). A release with failures should not be promoted as there are likely problems to be investigated.</p>
+<p>You can rebuild the release as many times as you need prior to promoting them if you encounter problems.</p>
+<p>If you have an error on Windows and need to start again, be aware that you’ll get immediate failure unless you wait up to 2 minutes for the linker to stop from previous jobs. i.e. if a build fails after having started compiling, that worker will still have a linker process that’s running for another couple of minutes which will prevent Jenkins from clearing the workspace to start a new one. This isn’t a big deal, it’s just a hassle because it’ll result in another failed build if you start again!</p>
+<h3 id="test-the-build">10. Test the build</h3>
+<p>Jenkins collects the artifacts from the builds, allowing you to download and install the new build. Make sure that the build appears correct. Check the version numbers, and perform some basic checks to confirm that all is well with the build before moving forward.</p>
+<h3 id="tag-and-sign-the-release-commit">11. Tag and sign the release commit</h3>
+<p>Once you have produced builds that you’re happy with, create a new tag. By waiting until this stage to create tags, you can discard a proposed release if something goes wrong or additional commits are required. Once you have created a tag and pushed it to GitHub, you <strong><em>must not</em></strong> delete and re-tag. If you make a mistake after tagging then you’ll have to version-bump and start again and count that tag/version as lost.</p>
+<p>Tag summaries have a predictable format, look at a recent tag to see, <code>git tag -v v6.0.0</code>. The message should look something like <code>2016-04-26 Node.js v6.0.0 (Current) Release</code>.</p>
+<p>Install <code>git-secure-tag</code> npm module:</p>
+<pre class="console"><code>$ npm install -g git-secure-tag</code></pre>
+<p>Create a tag using the following command:</p>
+<pre class="console"><code>$ git secure-tag &lt;vx.y.z&gt; &lt;commit-sha&gt; -sm &quot;YYYY-MM-DD Node.js vx.y.z (&lt;release-type&gt;) Release&quot;</code></pre>
+<p><code>release-type</code> is either “Current” or “LTS”. For LTS releases, you should also include the release code name.</p>
+<pre class="text"><code>2019-10-22 Node.js v10.17.0 &#39;Dubnium&#39; (LTS) Release</code></pre>
+<p>The tag <strong>must</strong> be signed using the GPG key that’s listed for you on the project README.</p>
+<h3 id="set-up-for-the-next-release">12. Set up for the next release</h3>
+<p>On release proposal branch, edit <code>src/node_version.h</code> again and:</p>
+<ul>
+<li>Increment <code>NODE_PATCH_VERSION</code> by one</li>
+<li>Change <code>NODE_VERSION_IS_RELEASE</code> back to <code>0</code></li>
+</ul>
+<p>Commit this change with the following commit message format:</p>
+<pre class="text"><code>Working on vx.y.z # where &#39;z&#39; is the incremented patch number
+
+PR-URL: &lt;full URL to your release proposal PR&gt;</code></pre>
+<p>This sets up the branch so that nightly builds are produced with the next version number <em>and</em> a pre-release tag.</p>
+<p>Merge your release proposal branch into the stable branch that you are releasing from and rebase the corresponding staging branch on top of that.</p>
+<pre class="console"><code>$ git checkout v1.x
+$ git merge --ff-only v1.2.3-proposal
+$ git push upstream v1.x
+$ git checkout v1.x-staging
+$ git rebase v1.x
+$ git push upstream v1.x-staging</code></pre>
+<h3 id="cherry-pick-the-release-commit-to-master">13. Cherry-pick the release commit to <code>master</code></h3>
+<pre class="console"><code>$ git checkout master
+$ git cherry-pick v1.x^</code></pre>
+<p>Git should stop to let you fix conflicts. Revert all changes that were made to <code>src/node_version.h</code>:</p>
+<pre class="console"><code>$ git checkout --ours HEAD -- src/node_version.h</code></pre>
+<p>If there are conflicts in <code>doc</code> due to updated <code>REPLACEME</code> placeholders (that happens when a change previously landed on another release branch), keep both version numbers. Convert the YAML field to an array if it is not already one.</p>
+<p>Then finish cherry-picking and push the commit upstream:</p>
+<pre class="console"><code>$ git add src/node_version.h doc
+$ git cherry-pick --continue
+$ make lint
+$ git push upstream master</code></pre>
+<p><strong>Do not</strong> cherry-pick the “Working on vx.y.z” commit to <code>master</code>.</p>
+<h3 id="push-the-release-tag">14. Push the release tag</h3>
+<p>Push the tag to the repository before you promote the builds. If you haven’t pushed your tag first, then build promotion won’t work properly. Push the tag using the following command:</p>
+<pre class="console"><code>$ git push &lt;remote&gt; &lt;vx.y.z&gt;</code></pre>
+<p><em>Note</em>: Please do not push the tag unless you are ready to complete the remainder of the release steps.</p>
+<h3 id="promote-and-sign-the-release-builds">15. Promote and sign the release builds</h3>
+<p><strong>The same individual who signed the release tag must be the one to promote the builds as the <code>SHASUMS256.txt</code> file needs to be signed with the same GPG key!</strong></p>
+<p>Use <code>tools/release.sh</code> to promote and sign the build. Before doing this, you’ll need to ensure you’ve loaded the correct ssh key, or you’ll see the following:</p>
+<pre class="console"><code># Checking for releases ...
+Enter passphrase for key &#39;/Users/&lt;user&gt;/.ssh/id_rsa&#39;:
+dist@direct.nodejs.org&#39;s password:</code></pre>
+<p>The key can be loaded either with <code>ssh-add</code>:</p>
+<pre class="console"><code># Substitute node_id_rsa with whatever you&#39;ve named the key
+$ ssh-add ~/.ssh/node_id_rsa</code></pre>
+<p>or at runtime with:</p>
+<pre class="console"><code># Substitute node_id_rsa with whatever you&#39;ve named the key
+$ ./tools/release.sh -i ~/.ssh/node_id_rsa</code></pre>
+<p><code>tools/release.sh</code> will perform the following actions when run:</p>
+<details>
+<p><strong>a.</strong> Select a GPG key from your private keys. It will use a command similar to: <code>gpg --list-secret-keys</code> to list your keys. If you don’t have any keys, it will bail. If you have only one key, it will use that. If you have more than one key it will ask you to select one from the list. Be sure to use the same key that you signed your git tag with.</p>
+<p><strong>b.</strong> Log in to the server via SSH and check for releases that can be promoted, along with the list of artifacts. It will use the <code>dist-promotable</code> command on the server to find these. You will be asked, for each promotable release, whether you want to proceed. If there is more than one release to promote (there shouldn’t be), be sure to only promote the release you are responsible for.</p>
+<p><strong>c.</strong> Log in to the server via SSH and run the promote script for the given release. The command on the server will be similar to: <code>dist-promote vx.y.z</code>. After this step, the release artifacts will be available for download and a <code>SHASUMS256.txt</code> file will be present. The release will still be unsigned, however.</p>
+<p><strong>d.</strong> Use <code>scp</code> to download <code>SHASUMS256.txt</code> to a temporary directory on your computer.</p>
+<p><strong>e.</strong> Sign the <code>SHASUMS256.txt</code> file using a command similar to: <code>gpg --default-key YOURKEY --digest-algo SHA256 --clearsign /path/to/SHASUMS256.txt</code>. You will be prompted by GPG for your password. The signed file will be named SHASUMS256.txt.asc.</p>
+<p><strong>f.</strong> Output an ASCII armored version of your public GPG key using a command similar to: <code>gpg --default-key YOURKEY --digest-algo SHA256 --detach-sign /path/to/SHASUMS256.txt</code>. You will be prompted by GPG for your password. The signed file will be named SHASUMS256.txt.sig.</p>
+<strong>g.</strong> Upload the <code>SHASUMS256.txt</code> files back to the server into the release directory.
+</details>
+<p><strong>It is possible to only sign a release by running <code>./tools/release.sh -s vX.Y.Z</code>.</strong></p>
+<h3 id="check-the-release">16. Check the release</h3>
+<p>Your release should be available at <code>https://nodejs.org/dist/vx.y.z/</code> and <a href="https://nodejs.org/dist/latest/" class="uri">https://nodejs.org/dist/latest/</a>. Check that the appropriate files are in place. You may want to check that the binaries are working as appropriate and have the right internal version strings. Check that the API docs are available at <a href="https://nodejs.org/api/" class="uri">https://nodejs.org/api/</a>. Check that the release catalog files are correct at <a href="https://nodejs.org/dist/index.tab" class="uri">https://nodejs.org/dist/index.tab</a> and <a href="https://nodejs.org/dist/index.json" class="uri">https://nodejs.org/dist/index.json</a>.</p>
+<h3 id="create-a-blog-post">17. Create a blog post</h3>
+<p>There is an automatic build that is kicked off when you promote new builds, so within a few minutes nodejs.org will be listing your new version as the latest release. However, the blog post is not yet fully automatic.</p>
+<p>Create a new blog post by running the <a href="https://github.com/nodejs/nodejs.org/blob/HEAD/scripts/release-post.js">nodejs.org release-post.js script</a>. This script will use the promoted builds and changelog to generate the post. Run <code>npm run serve</code> to preview the post locally before pushing to the <a href="https://github.com/nodejs/nodejs.org">nodejs.org repository</a>.</p>
+<ul>
+<li>You can add a short blurb just under the main heading if you want to say something important, otherwise the text should be publication ready.</li>
+<li>The links to the download files won’t be complete unless you waited for the ARMv6 builds. Any downloads that are missing will have <code>*Coming soon*</code> next to them. It’s your responsibility to manually update these later when you have the outstanding builds.</li>
+<li>The <code>SHASUMS256.txt.asc</code> content is at the bottom of the post. When you update the list of tarballs you’ll need to copy/paste the new contents of this file to reflect those changes.</li>
+<li><p>Always use pull-requests on the <a href="https://github.com/nodejs/nodejs.org">nodejs.org repository</a>. Be respectful of the website team, but you do not have to wait for PR sign-off. Please use the following commit message format:</p>
+<pre class="console"><code>Blog: vX.Y.Z release post
+
+Refs: &lt;full URL to your release proposal PR&gt;</code></pre></li>
+<li><p>Changes to <code>master</code> on the <a href="https://github.com/nodejs/nodejs.org">nodejs.org repository</a> will trigger a new build of nodejs.org so your changes should appear a few minutes after pushing.</p></li>
+</ul>
+<h3 id="create-the-release-on-github">18. Create the release on GitHub</h3>
+<ul>
+<li>Go to the <a href="https://github.com/nodejs/node/releases/new">New release page</a>.</li>
+<li>Select the tag version you pushed earlier.</li>
+<li>For release title, copy the title from the changelog.</li>
+<li>For the description, copy the rest of the changelog entry.</li>
+<li>Click on the “Publish release” button.</li>
+</ul>
+<h3 id="cleanup">19. Cleanup</h3>
+<p>Close your release proposal PR and delete the proposal branch.</p>
+<h3 id="announce">20. Announce</h3>
+<p>The nodejs.org website will automatically rebuild and include the new version. To announce the build on Twitter through the official <span class="citation" data-cites="nodejs">@nodejs</span> account, email <a href="mailto:pr@nodejs.org">pr@nodejs.org</a> with a message such as:</p>
+<blockquote>
+<p>v5.8.0 of <span class="citation" data-cites="nodejs">@nodejs</span> is out: <a href="https://nodejs.org/en/blog/release/v5.8.0/" class="uri">https://nodejs.org/en/blog/release/v5.8.0/</a> … something here about notable changes</p>
+</blockquote>
+<p>To ensure communication goes out with the timing of the blog post, please allow 24 hour prior notice. If known, please include the date and time the release will be shared with the community in the email to coordinate these announcements.</p>
+<p>Ping the IRC ops and the other <a href="https://github.com/nodejs/community-committee/blob/HEAD/governance/PARTNER_COMMUNITIES.md">Partner Communities</a> liaisons.</p>
+<h3 id="celebrate">21. Celebrate</h3>
+<p><em>In whatever form you do this…</em></p>
+<h2 id="lts-releases">LTS Releases</h2>
+<h3 id="marking-a-release-line-as-lts">Marking a release line as LTS</h3>
+<p>To mark a release line as LTS, the following changes must be made to <code>src/node_version.h</code>:</p>
+<ul>
+<li>The <code>NODE_MINOR_VERSION</code> macro must be incremented by one</li>
+<li>The <code>NODE_PATCH_VERSION</code> macro must be set to <code>0</code></li>
+<li>The <code>NODE_VERSION_IS_LTS</code> macro must be set to <code>1</code></li>
+<li>The <code>NODE_VERSION_LTS_CODENAME</code> macro must be set to the code name selected for the LTS release.</li>
+</ul>
+<p>For example:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb33-1" title="1"><span class="st">-#define NODE_MINOR_VERSION 12</span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="st">-#define NODE_PATCH_VERSION 1</span></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="va">+#define NODE_MINOR_VERSION 13</span></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="va">+#define NODE_PATCH_VERSION 0</span></a>
+<a class="sourceLine" id="cb33-5" title="5"></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="st">-#define NODE_VERSION_IS_LTS 0</span></a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="st">-#define NODE_VERSION_LTS_CODENAME &quot;&quot;</span></a>
+<a class="sourceLine" id="cb33-8" title="8"><span class="va">+#define NODE_VERSION_IS_LTS 1</span></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="va">+#define NODE_VERSION_LTS_CODENAME &quot;Erbium&quot;</span></a>
+<a class="sourceLine" id="cb33-10" title="10"></a>
+<a class="sourceLine" id="cb33-11" title="11"><span class="st">-#define NODE_VERSION_IS_RELEASE 0</span></a>
+<a class="sourceLine" id="cb33-12" title="12"><span class="va">+#define NODE_VERSION_IS_RELEASE 1</span></a></code></pre></div>
+<p>The changes must be made as part of a new semver-minor release.</p>
+<h3 id="update-release-labels">Update release labels</h3>
+<p>The <code>lts-watch-vN.x</code> issue label must be created, with the same color as other existing labels for that release line, such as <code>vN.x</code>.</p>
+<p>If the release is transitioning from Active LTS to Maintenance, the <code>backport-requested-vN.x</code> label must be deleted.</p>
+<h2 id="major-releases">Major releases</h2>
+<p>The process for cutting a new Node.js major release has a number of differences from cutting a minor or patch release.</p>
+<h3 id="schedule">Schedule</h3>
+<p>New Node.js Major releases happen twice per year:</p>
+<ul>
+<li>Even-numbered releases are cut in April.</li>
+<li>Odd-numbered releases are cut in October.</li>
+</ul>
+<p>Major releases should be targeted for the third Tuesday of the release month.</p>
+<p>A major release must not slip beyond the release month. In other words, major releases must not slip into May or November.</p>
+<p>The release date for the next major release should be announced immediately following the current release (e.g. the release date for 13.0.0 should be announced immediately following the release of 12.0.0).</p>
+<h3 id="release-branch">Release branch</h3>
+<p>Approximately three months before a major release, new <code>vN.x</code> and <code>vN.x-staging</code> branches (where <code>N</code> indicates the major release) should be created as forks of the <code>master</code> branch. Up until one month before the release date, these must be kept in sync with <code>master</code> and must not be considered to be stable branches (e.g. they may be force pushed).</p>
+<p>The <code>vN.x</code> and <code>vN.x-staging</code> branches must be kept in sync with one another up until the date of release.</p>
+<p>One month or less before the release date, commits must be cherry-picked into the two branches. To land <code>SEMVER-MAJOR</code> at this time requires no objections from the TSC.</p>
+<h3 id="create-release-labels">Create release labels</h3>
+<p>The following issue labels must be created:</p>
+<ul>
+<li><code>vN.x</code></li>
+<li><code>backport-blocked-vN.x</code></li>
+<li><code>backport-open-vN.x</code></li>
+<li><code>backport-requested-vN.x</code></li>
+<li><code>backported-to-vN.x</code></li>
+<li><code>dont-land-on-vN.x</code></li>
+</ul>
+<p>The label description can be copied from existing labels of previous releases. The label color must be the same for all new labels, but different from the labels of previous releases.</p>
+<h3 id="release-proposal">Release proposal</h3>
+<p>A draft release proposal should be created two months before the release. A separate <code>vN.x-proposal</code> branch should be created that tracks the <code>vN.x</code> branch. This branch will contain the draft release commit (with the draft changelog).</p>
+<p>Notify the <code>@nodejs/npm</code> team in the release proposal PR to inform them of the upcoming release. <code>npm</code> maintains a list of <a href="https://github.com/npm/cli/blob/latest/lib/utils/unsupported.js#L3">supported versions</a> that will need updating to include the new major release.</p>
+<h3 id="update-node_module_version">Update <code>NODE_MODULE_VERSION</code></h3>
+<p>This macro in <code>src/node_version.h</code> is used to signal an ABI version for native addons. It currently has two common uses in the community:</p>
+<ul>
+<li>Determining what API to work against for compiling native addons, e.g. <a href="https://github.com/nodejs/nan">NAN</a> uses it to form a compatibility-layer for much of what it wraps.</li>
+<li>Determining the ABI for downloading pre-built binaries of native addons, e.g. <a href="https://github.com/mapbox/node-pre-gyp">node-pre-gyp</a> uses this value as exposed via <code>process.versions.modules</code> to help determine the appropriate binary to download at install-time.</li>
+</ul>
+<p>The general rule is to bump this version when there are <em>breaking ABI</em> changes and also if there are non-trivial API changes. The rules are not yet strictly defined, so if in doubt, please confer with someone that will have a more informed perspective, such as a member of the NAN team.</p>
+<p>A registry of currently used <code>NODE_MODULE_VERSION</code> values is maintained at <a href="https://github.com/nodejs/node/blob/HEAD/doc/abi_version_registry.json" class="uri">https://github.com/nodejs/node/blob/HEAD/doc/abi_version_registry.json</a>. When bumping <code>NODE_MODULE_VERSION</code>, you should choose a new value not listed in the registry. Also include a change to the registry in your commit to reflect the newly used value. Ensure that the release commit removes the <code>-pre</code> suffix for the major version being prepared.</p>
+<p>It is current TSC policy to bump major version when ABI changes. If you see a need to bump <code>NODE_MODULE_VERSION</code> outside of a majore release then you should consult the TSC. Commits may need to be reverted or a major version bump may need to happen.</p>
+<h3 id="test-releases-and-release-candidates">Test releases and release candidates</h3>
+<p>Test builds should be generated from the <code>vN.x-proposal</code> branch starting at about 6 weeks before the release.</p>
+<p>Release Candidates should be generated from the <code>vN.x-proposal</code> branch starting at about 4 weeks before the release, with a target of one release candidate per week.</p>
+<p>Always run test releases and release candidates through the Canary in the Goldmine tool for additional testing.</p>
+<h3 id="changelogs">Changelogs</h3>
+<p>Generating major release changelogs is a bit more involved than minor and patch changelogs.</p>
+<h4 id="create-the-changelog-file">Create the changelog file</h4>
+<p>In the <code>doc/changelogs</code> directory, create a new <code>CHANGELOG_V{N}.md</code> file where <code>{N}</code> is the major version of the release. Follow the structure of the existing <code>CHANGELOG_V*.md</code> files.</p>
+<p>The navigation headers in all of the <code>CHANGELOG_V*.md</code> files must be updated to account for the new <code>CHANGELOG_V{N}.md</code> file.</p>
+<p>Once the file is created, the root <code>CHANGELOG.md</code> file must be updated to reference the newly-created major release <code>CHANGELOG_V{N}.md</code>.</p>
+<h4 id="generate-the-changelog">Generate the changelog</h4>
+<p>To generate a proper major release changelog, use the <code>branch-diff</code> tool to compare the <code>vN.x</code> branch against the <code>vN-1.x</code> branch (e.g. for Node.js 12.0, we compare the <code>v12.x</code> branch against the up to date <code>v11.x</code> branch). Make sure that the local copy of the downlevel branch is up to date.</p>
+<p>The commits in the generated changelog must then be organized:</p>
+<ul>
+<li>Remove all release commits from the list</li>
+<li>Remove all reverted commits and their reverts</li>
+<li>Separate all SEMVER-MAJOR, SEMVER-MINOR, and SEMVER-PATCH commits into lists</li>
+</ul>
+<h4 id="generate-the-notable-changes">Generate the notable changes</h4>
+<p>For a major release, all SEMVER-MAJOR commits that are not strictly internal, test, or doc-related are to be listed as notable changes. Some SEMVER-MINOR commits may be listed as notable changes on a case-by-case basis. Use your judgment there.</p>
+<h3 id="snap">Snap</h3>
+<p>The Node.js <a href="https://snapcraft.io/node">Snap</a> package has a “default” for installs where the user hasn’t specified a release line (“track” in Snap terminology). This should be updated to point to the most recently activated LTS. A member of the Node.js Build Infrastructure team is able to perform the switch of the default. An issue should be opened on the <a href="https://github.com/nodejs/snap">Node.js Snap management repository</a> requesting this take place once a new LTS line has been released.</p>
+</body>
+</html>

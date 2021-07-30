@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>worker_threads</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="worker-threads">Worker threads</h1>
+<!--introduced_in=v10.5.0-->
+<blockquote>
+<p>Stability: 2 - Stable</p>
+</blockquote>
+<!-- source_link=lib/worker_threads.js -->
+<p>The <code>worker_threads</code> module enables the use of threads that execute JavaScript in parallel. To access it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> worker <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>Workers (threads) are useful for performing CPU-intensive JavaScript operations. They do not help much with I/O-intensive work. The Node.js built-in asynchronous I/O operations are more efficient than Workers can be.</p>
+<p>Unlike <code>child_process</code> or <code>cluster</code>, <code>worker_threads</code> can share memory. They do so by transferring <code>ArrayBuffer</code> instances or sharing <code>SharedArrayBuffer</code> instances.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  Worker<span class="op">,</span> isMainThread<span class="op">,</span> parentPort<span class="op">,</span> workerData</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="kw">function</span> <span class="at">parseJSAsync</span>(script) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="cf">return</span> <span class="kw">new</span> <span class="at">Promise</span>((resolve<span class="op">,</span> reject) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename<span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="dt">workerData</span><span class="op">:</span> script</a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">      <span class="va">worker</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> resolve)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="va">worker</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> reject)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="va">worker</span>.<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> (code) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="cf">if</span> (code <span class="op">!==</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb2-15" title="15">          <span class="at">reject</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="vs">`Worker stopped with exit code </span><span class="sc">${</span>code<span class="sc">}</span><span class="vs">`</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-17" title="17">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-18" title="18">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-20" title="20">  <span class="kw">const</span> <span class="op">{</span> parse <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;some-js-parsing-library&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-21" title="21">  <span class="kw">const</span> script <span class="op">=</span> workerData<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-22" title="22">  <span class="va">parentPort</span>.<span class="at">postMessage</span>(<span class="at">parse</span>(script))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="op">}</span></a></code></pre></div>
+<p>The above example spawns a Worker thread for each <code>parse()</code> call. In actual practice, use a pool of Workers for these kinds of tasks. Otherwise, the overhead of creating Workers would likely exceed their benefit.</p>
+<p>When implementing a worker pool, use the <a href="async_hooks.md#async_hooks_class_asyncresource"><code>AsyncResource</code></a> API to inform diagnostic tools (e.g. to provide asynchronous stack traces) about the correlation between tasks and their outcomes. See <a href="async_hooks.md#async-resource-worker-pool">“Using <code>AsyncResource</code> for a <code>Worker</code> thread pool”</a> in the <code>async_hooks</code> documentation for an example implementation.</p>
+<p>Worker threads inherit non-process-specific options by default. Refer to <a href="#worker_threads_new_worker_filename_options"><code>Worker constructor options</code></a> to know how to customize worker thread options, specifically <code>argv</code> and <code>execArgv</code> options.</p>
+<h2 id="worker.getenvironmentdatakey"><code>worker.getEnvironmentData(key)</code></h2>
+<!-- YAML
+added: v15.12.0
+-->
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<ul>
+<li><code>key</code> {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.</li>
+<li>Returns: {any}</li>
+</ul>
+<p>Within a worker thread, <code>worker.getEnvironmentData()</code> returns a clone of data passed to the spawning thread’s <code>worker.setEnvironmentData()</code>. Every new <code>Worker</code> receives its own copy of the environment data automatically.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  Worker<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  isMainThread<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  setEnvironmentData<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  getEnvironmentData<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="at">setEnvironmentData</span>(<span class="st">&#39;Hello&#39;</span><span class="op">,</span> <span class="st">&#39;World!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="va">console</span>.<span class="at">log</span>(<span class="at">getEnvironmentData</span>(<span class="st">&#39;Hello&#39;</span>))<span class="op">;</span>  <span class="co">// Prints &#39;World!&#39;.</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="op">}</span></a></code></pre></div>
+<h2 id="worker.ismainthread"><code>worker.isMainThread</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{boolean}</li>
+</ul>
+<p>Is <code>true</code> if this code is not running inside of a <a href="#worker_threads_class_worker"><code>Worker</code></a> thread.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span> Worker<span class="op">,</span> isMainThread <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="co">// This re-loads the current file inside a Worker instance.</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Inside Worker!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(isMainThread)<span class="op">;</span>  <span class="co">// Prints &#39;false&#39;.</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="op">}</span></a></code></pre></div>
+<h2 id="worker.markasuntransferableobject"><code>worker.markAsUntransferable(object)</code></h2>
+<!-- YAML
+added:
+  - v14.5.0
+  - v12.19.0
+-->
+<p>Mark an object as not transferable. If <code>object</code> occurs in the transfer list of a <a href="#worker_threads_port_postmessage_value_transferlist"><code>port.postMessage()</code></a> call, it is ignored.</p>
+<p>In particular, this makes sense for objects that can be cloned, rather than transferred, and which are used by other objects on the sending side. For example, Node.js marks the <code>ArrayBuffer</code>s it uses for its <a href="buffer.md#buffer_static_method_buffer_allocunsafe_size"><code>Buffer</code> pool</a> with this.</p>
+<p>This operation cannot be undone.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel<span class="op">,</span> markAsUntransferable <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">const</span> pooledBuffer <span class="op">=</span> <span class="kw">new</span> <span class="at">ArrayBuffer</span>(<span class="dv">8</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">const</span> typedArray1 <span class="op">=</span> <span class="kw">new</span> <span class="at">Uint8Array</span>(pooledBuffer)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">const</span> typedArray2 <span class="op">=</span> <span class="kw">new</span> <span class="at">Float64Array</span>(pooledBuffer)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="at">markAsUntransferable</span>(pooledBuffer)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="kw">const</span> <span class="op">{</span> port1 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="va">port1</span>.<span class="at">postMessage</span>(typedArray1<span class="op">,</span> [ <span class="va">typedArray1</span>.<span class="at">buffer</span> ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">// The following line prints the contents of typedArray1 -- it still owns</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">// its memory and has been cloned, not transferred. Without</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">// `markAsUntransferable()`, this would print an empty Uint8Array.</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">// typedArray2 is intact as well.</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="va">console</span>.<span class="at">log</span>(typedArray1)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="va">console</span>.<span class="at">log</span>(typedArray2)<span class="op">;</span></a></code></pre></div>
+<p>There is no equivalent to this API in browsers.</p>
+<h2 id="worker.movemessageporttocontextport-contextifiedsandbox"><code>worker.moveMessagePortToContext(port, contextifiedSandbox)</code></h2>
+<!-- YAML
+added: v11.13.0
+-->
+<ul>
+<li><code>port</code> {MessagePort} The message port to transfer.</li>
+<li><p><code>contextifiedSandbox</code> {Object} A <a href="vm.md#vm_what_does_it_mean_to_contextify_an_object">contextified</a> object as returned by the <code>vm.createContext()</code> method.</p></li>
+<li><p>Returns: {MessagePort}</p></li>
+</ul>
+<p>Transfer a <code>MessagePort</code> to a different <a href="vm.md"><code>vm</code></a> Context. The original <code>port</code> object is rendered unusable, and the returned <code>MessagePort</code> instance takes its place.</p>
+<p>The returned <code>MessagePort</code> is an object in the target context and inherits from its global <code>Object</code> class. Objects passed to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/onmessage"><code>port.onmessage()</code></a> listener are also created in the target context and inherit from its global <code>Object</code> class.</p>
+<p>However, the created <code>MessagePort</code> no longer inherits from <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget"><code>EventTarget</code></a>, and only <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/onmessage"><code>port.onmessage()</code></a> can be used to receive events using it.</p>
+<h2 id="worker.parentport"><code>worker.parentPort</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{null|MessagePort}</li>
+</ul>
+<p>If this thread is a <a href="#worker_threads_class_worker"><code>Worker</code></a>, this is a <a href="#worker_threads_class_messageport"><code>MessagePort</code></a> allowing communication with the parent thread. Messages sent using <code>parentPort.postMessage()</code> are available in the parent thread using <code>worker.on('message')</code>, and messages sent from the parent thread using <code>worker.postMessage()</code> are available in this thread using <code>parentPort.on('message')</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> <span class="op">{</span> Worker<span class="op">,</span> isMainThread<span class="op">,</span> parentPort <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="va">worker</span>.<span class="at">once</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="va">console</span>.<span class="at">log</span>(message)<span class="op">;</span>  <span class="co">// Prints &#39;Hello, world!&#39;.</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="va">worker</span>.<span class="at">postMessage</span>(<span class="st">&#39;Hello, world!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="co">// When a message from the parent thread is received, send it back:</span></a>
+<a class="sourceLine" id="cb6-11" title="11">  <span class="va">parentPort</span>.<span class="at">once</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-12" title="12">    <span class="va">parentPort</span>.<span class="at">postMessage</span>(message)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-13" title="13">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="op">}</span></a></code></pre></div>
+<h2 id="worker.receivemessageonportport"><code>worker.receiveMessageOnPort(port)</code></h2>
+<!-- YAML
+added: v12.3.0
+changes:
+  - version: v15.12.0
+    pr-url: https://github.com/nodejs/node/pull/37535
+    description: The port argument can also refer to a `BroadcastChannel` now.
+-->
+<ul>
+<li><p><code>port</code> {MessagePort|BroadcastChannel}</p></li>
+<li><p>Returns: {Object|undefined}</p></li>
+</ul>
+<p>Receive a single message from a given <code>MessagePort</code>. If no message is available, <code>undefined</code> is returned, otherwise an object with a single <code>message</code> property that contains the message payload, corresponding to the oldest message in the <code>MessagePort</code>’s queue.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel<span class="op">,</span> receiveMessageOnPort <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="va">port1</span>.<span class="at">postMessage</span>(<span class="op">{</span> <span class="dt">hello</span><span class="op">:</span> <span class="st">&#39;world&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="at">receiveMessageOnPort</span>(port2))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">// Prints: { message: { hello: &#39;world&#39; } }</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="va">console</span>.<span class="at">log</span>(<span class="at">receiveMessageOnPort</span>(port2))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">// Prints: undefined</span></a></code></pre></div>
+<p>When this function is used, no <code>'message'</code> event is emitted and the <code>onmessage</code> listener is not invoked.</p>
+<h2 id="worker.resourcelimits"><code>worker.resourceLimits</code></h2>
+<!-- YAML
+added:
+ - v13.2.0
+ - v12.16.0
+-->
+<ul>
+<li>{Object}
+<ul>
+<li><code>maxYoungGenerationSizeMb</code> {number}</li>
+<li><code>maxOldGenerationSizeMb</code> {number}</li>
+<li><code>codeRangeSizeMb</code> {number}</li>
+<li><code>stackSizeMb</code> {number}</li>
+</ul></li>
+</ul>
+<p>Provides the set of JS engine resource constraints inside this Worker thread. If the <code>resourceLimits</code> option was passed to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, this matches its values.</p>
+<p>If this is used in the main thread, its value is an empty object.</p>
+<h2 id="worker.share_env"><code>worker.SHARE_ENV</code></h2>
+<!-- YAML
+added: v11.14.0
+-->
+<ul>
+<li>{symbol}</li>
+</ul>
+<p>A special value that can be passed as the <code>env</code> option of the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, to indicate that the current thread and the Worker thread should share read and write access to the same set of environment variables.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> <span class="op">{</span> Worker<span class="op">,</span> SHARE_ENV <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">new</span> <span class="at">Worker</span>(<span class="st">&#39;process.env.SET_IN_WORKER = &quot;foo&quot;&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">eval</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">env</span><span class="op">:</span> SHARE_ENV <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3">  .<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">process</span>.<span class="va">env</span>.<span class="at">SET_IN_WORKER</span>)<span class="op">;</span>  <span class="co">// Prints &#39;foo&#39;.</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="worker.setenvironmentdatakey-value"><code>worker.setEnvironmentData(key[, value])</code></h2>
+<!-- YAML
+added: v15.12.0
+-->
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<ul>
+<li><code>key</code> {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.</li>
+<li><code>value</code> {any} Any arbitrary, cloneable JavaScript value that will be cloned and passed automatically to all new <code>Worker</code> instances. If <code>value</code> is passed as <code>undefined</code>, any previously set value for the <code>key</code> will be deleted.</li>
+</ul>
+<p>The <code>worker.setEnvironmentData()</code> API sets the content of <code>worker.getEnvironmentData()</code> in the current thread and all new <code>Worker</code> instances spawned from the current context.</p>
+<h2 id="worker.threadid"><code>worker.threadId</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{integer}</li>
+</ul>
+<p>An integer identifier for the current thread. On the corresponding worker object (if there is any), it is available as <a href="#worker_threads_worker_threadid_1"><code>worker.threadId</code></a>. This value is unique for each <a href="#worker_threads_class_worker"><code>Worker</code></a> instance inside a single process.</p>
+<h2 id="worker.workerdata"><code>worker.workerData</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<p>An arbitrary JavaScript value that contains a clone of the data passed to this thread’s <code>Worker</code> constructor.</p>
+<p>The data is cloned as if using <a href="#worker_threads_port_postmessage_value_transferlist"><code>postMessage()</code></a>, according to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm">HTML structured clone algorithm</a>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> Worker<span class="op">,</span> isMainThread<span class="op">,</span> workerData <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename<span class="op">,</span> <span class="op">{</span> <span class="dt">workerData</span><span class="op">:</span> <span class="st">&#39;Hello, world!&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(workerData)<span class="op">;</span>  <span class="co">// Prints &#39;Hello, world!&#39;.</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="op">}</span></a></code></pre></div>
+<h2 id="class-broadcastchannel-extends-eventtarget">Class: <code>BroadcastChannel extends EventTarget</code></h2>
+<!-- YAML
+added: v15.4.0
+-->
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<p>Instances of <code>BroadcastChannel</code> allow asynchronous one-to-many communication with all other <code>BroadcastChannel</code> instances bound to the same channel name.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  isMainThread<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  BroadcastChannel<span class="op">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">  Worker</a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-8" title="8"></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="kw">const</span> bc <span class="op">=</span> <span class="kw">new</span> <span class="at">BroadcastChannel</span>(<span class="st">&#39;hello&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-10" title="10"></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-12" title="12">  <span class="kw">let</span> c <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-13" title="13">  <span class="va">bc</span>.<span class="at">onmessage</span> <span class="op">=</span> (event) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-14" title="14">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">data</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-15" title="15">    <span class="cf">if</span> (<span class="op">++</span>c <span class="op">===</span> <span class="dv">10</span>) <span class="va">bc</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-16" title="16">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb10-17" title="17">  <span class="cf">for</span> (<span class="kw">let</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> n <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> n<span class="op">++</span>)</a>
+<a class="sourceLine" id="cb10-18" title="18">    <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-20" title="20">  <span class="va">bc</span>.<span class="at">postMessage</span>(<span class="st">&#39;hello from every worker&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-21" title="21">  <span class="va">bc</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-22" title="22"><span class="op">}</span></a></code></pre></div>
+<h3 id="new-broadcastchannelname"><code>new BroadcastChannel(name)</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<ul>
+<li><code>name</code> {any} The name of the channel to connect to. Any JavaScript value that can be converted to a string using <code>${name}</code> is permitted.</li>
+</ul>
+<h3 id="broadcastchannel.close"><code>broadcastChannel.close()</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<p>Closes the <code>BroadcastChannel</code> connection.</p>
+<h3 id="broadcastchannel.onmessage"><code>broadcastChannel.onmessage</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<ul>
+<li>Type: {Function} Invoked with a single <code>MessageEvent</code> argument when a message is received.</li>
+</ul>
+<h3 id="broadcastchannel.onmessageerror"><code>broadcastChannel.onmessageerror</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<ul>
+<li>Type: {Function} Invoked with a received message cannot be deserialized.</li>
+</ul>
+<h3 id="broadcastchannel.postmessagemessage"><code>broadcastChannel.postMessage(message)</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<ul>
+<li><code>message</code> {any} Any cloneable JavaScript value.</li>
+</ul>
+<h3 id="broadcastchannel.ref"><code>broadcastChannel.ref()</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<p>Opposite of <code>unref()</code>. Calling <code>ref()</code> on a previously <code>unref()</code>ed BroadcastChannel does <em>not</em> let the program exit if it’s the only active handle left (the default behavior). If the port is <code>ref()</code>ed, calling <code>ref()</code> again has no effect.</p>
+<h3 id="broadcastchannel.unref"><code>broadcastChannel.unref()</code></h3>
+<!-- YAML
+added: v15.4.0
+-->
+<p>Calling <code>unref()</code> on a BroadcastChannel allows the thread to exit if this is the only active handle in the event system. If the BroadcastChannel is already <code>unref()</code>ed calling <code>unref()</code> again has no effect.</p>
+<h2 id="class-messagechannel">Class: <code>MessageChannel</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Instances of the <code>worker.MessageChannel</code> class represent an asynchronous, two-way communications channel. The <code>MessageChannel</code> has no methods of its own. <code>new MessageChannel()</code> yields an object with <code>port1</code> and <code>port2</code> properties, which refer to linked <a href="#worker_threads_class_messageport"><code>MessagePort</code></a> instances.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="va">port1</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;received&#39;</span><span class="op">,</span> message))<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="va">port2</span>.<span class="at">postMessage</span>(<span class="op">{</span> <span class="dt">foo</span><span class="op">:</span> <span class="st">&#39;bar&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">// Prints: received { foo: &#39;bar&#39; } from the `port1.on(&#39;message&#39;)` listener</span></a></code></pre></div>
+<h2 id="class-messageport">Class: <code>MessagePort</code></h2>
+<!-- YAML
+added: v10.5.0
+changes:
+  - version:
+    - v14.7.0
+    pr-url: https://github.com/nodejs/node/pull/34057
+    description: This class now inherits from `EventTarget` rather than
+                 from `EventEmitter`.
+-->
+<ul>
+<li>Extends: {EventTarget}</li>
+</ul>
+<p>Instances of the <code>worker.MessagePort</code> class represent one end of an asynchronous, two-way communications channel. It can be used to transfer structured data, memory regions and other <code>MessagePort</code>s between different <a href="#worker_threads_class_worker"><code>Worker</code></a>s.</p>
+<p>This implementation matches <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessagePort">browser <code>MessagePort</code></a>s.</p>
+<h3 id="event-close">Event: <code>'close'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>The <code>'close'</code> event is emitted once either side of the channel has been disconnected.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">//   foobar</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">//   closed!</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="va">port2</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(message))<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="va">port2</span>.<span class="at">on</span>(<span class="st">&#39;close&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;closed!&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-9" title="9"></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="va">port1</span>.<span class="at">postMessage</span>(<span class="st">&#39;foobar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="va">port1</span>.<span class="at">close</span>()<span class="op">;</span></a></code></pre></div>
+<h3 id="event-message">Event: <code>'message'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li><code>value</code> {any} The transmitted value</li>
+</ul>
+<p>The <code>'message'</code> event is emitted for any incoming message, containing the cloned input of <a href="#worker_threads_port_postmessage_value_transferlist"><code>port.postMessage()</code></a>.</p>
+<p>Listeners on this event receive a clone of the <code>value</code> parameter as passed to <code>postMessage()</code> and no further arguments.</p>
+<h3 id="event-messageerror">Event: <code>'messageerror'</code></h3>
+<!-- YAML
+added:
+  - v14.5.0
+  - v12.19.0
+-->
+<ul>
+<li><code>error</code> {Error} An Error object</li>
+</ul>
+<p>The <code>'messageerror'</code> event is emitted when deserializing a message failed.</p>
+<p>Currently, this event is emitted when there is an error occurring while instantiating the posted JS object on the receiving end. Such situations are rare, but can happen, for instance, when certain Node.js API objects are received in a <code>vm.Context</code> (where Node.js APIs are currently unavailable).</p>
+<h3 id="port.close"><code>port.close()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Disables further sending of messages on either side of the connection. This method can be called when no further communication will happen over this <code>MessagePort</code>.</p>
+<p>The <a href="#worker_threads_event_close"><code>'close'</code> event</a> is emitted on both <code>MessagePort</code> instances that are part of the channel.</p>
+<h3 id="port.postmessagevalue-transferlist"><code>port.postMessage(value[, transferList])</code></h3>
+<!-- YAML
+added: v10.5.0
+changes:
+  - version: v15.14.0
+    pr-url: https://github.com/nodejs/node/pull/37917
+    description: Add 'BlockList' to the list of cloneable types.
+  - version: v15.9.0
+    pr-url: https://github.com/nodejs/node/pull/37155
+    description: Add 'Histogram' types to the list of cloneable types.
+  - version: v15.6.0
+    pr-url: https://github.com/nodejs/node/pull/36804
+    description: Added `X509Certificate` to the list of cloneable types.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: Added `CryptoKey` to the list of cloneable types.
+  - version:
+    - v14.5.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/33360
+    description: Added `KeyObject` to the list of cloneable types.
+  - version:
+    - v14.5.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/33772
+    description: Added `FileHandle` to the list of transferable types.
+-->
+<ul>
+<li><code>value</code> {any}</li>
+<li><code>transferList</code> {Object[]}</li>
+</ul>
+<p>Sends a JavaScript value to the receiving side of this channel. <code>value</code> is transferred in a way which is compatible with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm">HTML structured clone algorithm</a>.</p>
+<p>In particular, the significant differences to <code>JSON</code> are:</p>
+<ul>
+<li><code>value</code> may contain circular references.</li>
+<li><code>value</code> may contain instances of builtin JS types such as <code>RegExp</code>s, <code>BigInt</code>s, <code>Map</code>s, <code>Set</code>s, etc.</li>
+<li><code>value</code> may contain typed arrays, both using <code>ArrayBuffer</code>s and <code>SharedArrayBuffer</code>s.</li>
+<li><code>value</code> may contain <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module"><code>WebAssembly.Module</code></a> instances.</li>
+<li><code>value</code> may not contain native (C++-backed) objects other than:
+<ul>
+<li>{CryptoKey}s,</li>
+<li>{FileHandle}s,</li>
+<li>{Histogram}s,</li>
+<li>{KeyObject}s,</li>
+<li>{MessagePort}s,</li>
+<li>{net.BlockList}s,</li>
+<li>{net.SocketAddress}es,</li>
+<li>{X509Certificate}s.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="va">port1</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(message))<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="kw">const</span> circularData <span class="op">=</span> <span class="op">{};</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="va">circularData</span>.<span class="at">foo</span> <span class="op">=</span> circularData<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">// Prints: { foo: [Circular] }</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="va">port2</span>.<span class="at">postMessage</span>(circularData)<span class="op">;</span></a></code></pre></div>
+<p><code>transferList</code> may be a list of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code>ArrayBuffer</code></a>, <a href="#worker_threads_class_messageport"><code>MessagePort</code></a> and <a href="fs.md#fs_class_filehandle"><code>FileHandle</code></a> objects. After transferring, they are not usable on the sending side of the channel anymore (even if they are not contained in <code>value</code>). Unlike with <a href="child_process.md">child processes</a>, transferring handles such as network sockets is currently not supported.</p>
+<p>If <code>value</code> contains <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer"><code>SharedArrayBuffer</code></a> instances, those are accessible from either thread. They cannot be listed in <code>transferList</code>.</p>
+<p><code>value</code> may still contain <code>ArrayBuffer</code> instances that are not in <code>transferList</code>; in that case, the underlying memory is copied rather than moved.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> <span class="op">{</span> MessageChannel <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="va">port1</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (message) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(message))<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">const</span> uint8Array <span class="op">=</span> <span class="kw">new</span> <span class="at">Uint8Array</span>([ <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span> ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">// This posts a copy of `uint8Array`:</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="va">port2</span>.<span class="at">postMessage</span>(uint8Array)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="co">// This does not copy data, but renders `uint8Array` unusable:</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="va">port2</span>.<span class="at">postMessage</span>(uint8Array<span class="op">,</span> [ <span class="va">uint8Array</span>.<span class="at">buffer</span> ])<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11"></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="co">// The memory for the `sharedUint8Array` is accessible from both the</span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="co">// original and the copy received by `.on(&#39;message&#39;)`:</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="kw">const</span> sharedUint8Array <span class="op">=</span> <span class="kw">new</span> <span class="at">Uint8Array</span>(<span class="kw">new</span> <span class="at">SharedArrayBuffer</span>(<span class="dv">4</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="va">port2</span>.<span class="at">postMessage</span>(sharedUint8Array)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-16" title="16"></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="co">// This transfers a freshly created message port to the receiver.</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="co">// This can be used, for example, to create communication channels between</span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="co">// multiple `Worker` threads that are children of the same parent thread.</span></a>
+<a class="sourceLine" id="cb14-20" title="20"><span class="kw">const</span> otherChannel <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-21" title="21"><span class="va">port2</span>.<span class="at">postMessage</span>(<span class="op">{</span> <span class="dt">port</span><span class="op">:</span> <span class="va">otherChannel</span>.<span class="at">port1</span> <span class="op">},</span> [ <span class="va">otherChannel</span>.<span class="at">port1</span> ])<span class="op">;</span></a></code></pre></div>
+<p>The message object is cloned immediately, and can be modified after posting without having side effects.</p>
+<p>For more information on the serialization and deserialization mechanisms behind this API, see the <a href="v8.md#v8_serialization_api">serialization API of the <code>v8</code> module</a>.</p>
+<h4 id="considerations-when-transferring-typedarrays-and-buffers">Considerations when transferring TypedArrays and Buffers</h4>
+<p>All <code>TypedArray</code> and <code>Buffer</code> instances are views over an underlying <code>ArrayBuffer</code>. That is, it is the <code>ArrayBuffer</code> that actually stores the raw data while the <code>TypedArray</code> and <code>Buffer</code> objects provide a way of viewing and manipulating the data. It is possible and common for multiple views to be created over the same <code>ArrayBuffer</code> instance. Great care must be taken when using a transfer list to transfer an <code>ArrayBuffer</code> as doing so causes all <code>TypedArray</code> and <code>Buffer</code> instances that share that same <code>ArrayBuffer</code> to become unusable.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">const</span> ab <span class="op">=</span> <span class="kw">new</span> <span class="at">ArrayBuffer</span>(<span class="dv">10</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="kw">const</span> u1 <span class="op">=</span> <span class="kw">new</span> <span class="at">Uint8Array</span>(ab)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="kw">const</span> u2 <span class="op">=</span> <span class="kw">new</span> <span class="at">Uint16Array</span>(ab)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="va">console</span>.<span class="at">log</span>(<span class="va">u2</span>.<span class="at">length</span>)<span class="op">;</span>  <span class="co">// prints 5</span></a>
+<a class="sourceLine" id="cb15-7" title="7"></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="va">port</span>.<span class="at">postMessage</span>(u1<span class="op">,</span> [<span class="va">u1</span>.<span class="at">buffer</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="va">console</span>.<span class="at">log</span>(<span class="va">u2</span>.<span class="at">length</span>)<span class="op">;</span>  <span class="co">// prints 0</span></a></code></pre></div>
+<p>For <code>Buffer</code> instances, specifically, whether the underlying <code>ArrayBuffer</code> can be transferred or cloned depends entirely on how instances were created, which often cannot be reliably determined.</p>
+<p>An <code>ArrayBuffer</code> can be marked with <a href="#worker_threads_worker_markasuntransferable_object"><code>markAsUntransferable()</code></a> to indicate that it should always be cloned and never transferred.</p>
+<p>Depending on how a <code>Buffer</code> instance was created, it may or may not own its underlying <code>ArrayBuffer</code>. An <code>ArrayBuffer</code> must not be transferred unless it is known that the <code>Buffer</code> instance owns it. In particular, for <code>Buffer</code>s created from the internal <code>Buffer</code> pool (using, for instance <code>Buffer.from()</code> or <code>Buffer.allocUnsafe()</code>), transferring them is not possible and they are always cloned, which sends a copy of the entire <code>Buffer</code> pool. This behavior may come with unintended higher memory usage and possible security concerns.</p>
+<p>See <a href="buffer.md#buffer_static_method_buffer_allocunsafe_size"><code>Buffer.allocUnsafe()</code></a> for more details on <code>Buffer</code> pooling.</p>
+<p>The <code>ArrayBuffer</code>s for <code>Buffer</code> instances created using <code>Buffer.alloc()</code> or <code>Buffer.allocUnsafeSlow()</code> can always be transferred but doing so renders all other existing views of those <code>ArrayBuffer</code>s unusable.</p>
+<h4 id="considerations-when-cloning-objects-with-prototypes-classes-and-accessors">Considerations when cloning objects with prototypes, classes, and accessors</h4>
+<p>Because object cloning uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm">HTML structured clone algorithm</a>, non-enumerable properties, property accessors, and object prototypes are not preserved. In particular, <a href="buffer.md"><code>Buffer</code></a> objects will be read as plain <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code>Uint8Array</code></a>s on the receiving side, and instances of JavaScript classes will be cloned as plain JavaScript objects.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> b <span class="op">=</span> <span class="at">Symbol</span>(<span class="st">&#39;b&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">class</span> Foo <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  #a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="at">constructor</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-6" title="6">    <span class="kw">this</span>[b] <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="kw">this</span>.<span class="at">c</span> <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-8" title="8">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10">  get <span class="at">d</span>() <span class="op">{</span> <span class="cf">return</span> <span class="dv">4</span><span class="op">;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb16-12" title="12"></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-14" title="14"></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="va">port1</span>.<span class="at">onmessage</span> <span class="op">=</span> (<span class="op">{</span> data <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(data)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-16" title="16"></a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="va">port2</span>.<span class="at">postMessage</span>(<span class="kw">new</span> <span class="at">Foo</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-18" title="18"></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="co">// Prints: { c: 3 }</span></a></code></pre></div>
+<p>This limitation extends to many built-in objects, such as the global <code>URL</code> object:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="va">port1</span>.<span class="at">onmessage</span> <span class="op">=</span> (<span class="op">{</span> data <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(data)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-4" title="4"></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="va">port2</span>.<span class="at">postMessage</span>(<span class="kw">new</span> <span class="at">URL</span>(<span class="st">&#39;https://example.org&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-6" title="6"></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="co">// Prints: { }</span></a></code></pre></div>
+<h3 id="port.ref"><code>port.ref()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Opposite of <code>unref()</code>. Calling <code>ref()</code> on a previously <code>unref()</code>ed port does <em>not</em> let the program exit if it’s the only active handle left (the default behavior). If the port is <code>ref()</code>ed, calling <code>ref()</code> again has no effect.</p>
+<p>If listeners are attached or removed using <code>.on('message')</code>, the port is <code>ref()</code>ed and <code>unref()</code>ed automatically depending on whether listeners for the event exist.</p>
+<h3 id="port.start"><code>port.start()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Starts receiving messages on this <code>MessagePort</code>. When using this port as an event emitter, this is called automatically once <code>'message'</code> listeners are attached.</p>
+<p>This method exists for parity with the Web <code>MessagePort</code> API. In Node.js, it is only useful for ignoring messages when no event listener is present. Node.js also diverges in its handling of <code>.onmessage</code>. Setting it automatically calls <code>.start()</code>, but unsetting it lets messages queue up until a new handler is set or the port is discarded.</p>
+<h3 id="port.unref"><code>port.unref()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Calling <code>unref()</code> on a port allows the thread to exit if this is the only active handle in the event system. If the port is already <code>unref()</code>ed calling <code>unref()</code> again has no effect.</p>
+<p>If listeners are attached or removed using <code>.on('message')</code>, the port is <code>ref()</code>ed and <code>unref()</code>ed automatically depending on whether listeners for the event exist.</p>
+<h2 id="class-worker">Class: <code>Worker</code></h2>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>Extends: {EventEmitter}</li>
+</ul>
+<p>The <code>Worker</code> class represents an independent JavaScript execution thread. Most Node.js APIs are available inside of it.</p>
+<p>Notable differences inside a Worker environment are:</p>
+<ul>
+<li>The <a href="process.md#process_process_stdin"><code>process.stdin</code></a>, <a href="process.md#process_process_stdout"><code>process.stdout</code></a> and <a href="process.md#process_process_stderr"><code>process.stderr</code></a> may be redirected by the parent thread.</li>
+<li>The <a href="#worker_threads_worker_ismainthread"><code>require('worker_threads').isMainThread</code></a> property is set to <code>false</code>.</li>
+<li>The <a href="#worker_threads_worker_parentport"><code>require('worker_threads').parentPort</code></a> message port is available.</li>
+<li><a href="process.md#process_process_exit_code"><code>process.exit()</code></a> does not stop the whole program, just the single thread, and <a href="process.md#process_process_abort"><code>process.abort()</code></a> is not available.</li>
+<li><a href="process.md#process_process_chdir_directory"><code>process.chdir()</code></a> and <code>process</code> methods that set group or user ids are not available.</li>
+<li><a href="process.md#process_process_env"><code>process.env</code></a> is a copy of the parent thread’s environment variables, unless otherwise specified. Changes to one copy are not visible in other threads, and are not visible to native add-ons (unless <a href="#worker_threads_worker_share_env"><code>worker.SHARE_ENV</code></a> is passed as the <code>env</code> option to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor).</li>
+<li><a href="process.md#process_process_title"><code>process.title</code></a> cannot be modified.</li>
+<li>Signals are not delivered through <a href="process.md#process_signal_events"><code>process.on('...')</code></a>.</li>
+<li>Execution may stop at any point as a result of <a href="#worker_threads_worker_terminate"><code>worker.terminate()</code></a> being invoked.</li>
+<li>IPC channels from parent processes are not accessible.</li>
+<li>The <a href="tracing.md"><code>trace_events</code></a> module is not supported.</li>
+<li>Native add-ons can only be loaded from multiple threads if they fulfill <a href="addons.md#addons_worker_support">certain conditions</a>.</li>
+</ul>
+<p>Creating <code>Worker</code> instances inside of other <code>Worker</code>s is possible.</p>
+<p>Like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a> and the <a href="cluster.md"><code>cluster</code> module</a>, two-way communication can be achieved through inter-thread message passing. Internally, a <code>Worker</code> has a built-in pair of <a href="#worker_threads_class_messageport"><code>MessagePort</code></a>s that are already associated with each other when the <code>Worker</code> is created. While the <code>MessagePort</code> object on the parent side is not directly exposed, its functionalities are exposed through <a href="#worker_threads_worker_postmessage_value_transferlist"><code>worker.postMessage()</code></a> and the <a href="#worker_threads_event_message_1"><code>worker.on('message')</code></a> event on the <code>Worker</code> object for the parent thread.</p>
+<p>To create custom messaging channels (which is encouraged over using the default global channel because it facilitates separation of concerns), users can create a <code>MessageChannel</code> object on either thread and pass one of the <code>MessagePort</code>s on that <code>MessageChannel</code> to the other thread through a pre-existing channel, such as the global one.</p>
+<p>See <a href="#worker_threads_port_postmessage_value_transferlist"><code>port.postMessage()</code></a> for more information on how messages are passed, and what kind of JavaScript values can be successfully transported through the thread barrier.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-3" title="3">  Worker<span class="op">,</span> MessageChannel<span class="op">,</span> MessagePort<span class="op">,</span> isMainThread<span class="op">,</span> parentPort</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  <span class="kw">const</span> subChannel <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-8" title="8">  <span class="va">worker</span>.<span class="at">postMessage</span>(<span class="op">{</span> <span class="dt">hereIsYourPort</span><span class="op">:</span> <span class="va">subChannel</span>.<span class="at">port1</span> <span class="op">},</span> [<span class="va">subChannel</span>.<span class="at">port1</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-9" title="9">  <span class="va">subChannel</span>.<span class="va">port2</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-10" title="10">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;received:&#39;</span><span class="op">,</span> value)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-11" title="11">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-13" title="13">  <span class="va">parentPort</span>.<span class="at">once</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-14" title="14">    <span class="at">assert</span>(<span class="va">value</span>.<span class="at">hereIsYourPort</span> <span class="kw">instanceof</span> MessagePort)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-15" title="15">    <span class="va">value</span>.<span class="va">hereIsYourPort</span>.<span class="at">postMessage</span>(<span class="st">&#39;the worker is sending this&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-16" title="16">    <span class="va">value</span>.<span class="va">hereIsYourPort</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-17" title="17">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-18" title="18"><span class="op">}</span></a></code></pre></div>
+<h3 id="new-workerfilename-options"><code>new Worker(filename[, options])</code></h3>
+<!-- YAML
+added: v10.5.0
+changes:
+  - version: v14.9.0
+    pr-url: https://github.com/nodejs/node/pull/34584
+    description: The `filename` parameter can be a WHATWG `URL` object using
+                 `data:` protocol.
+  - version: v14.9.0
+    pr-url: https://github.com/nodejs/node/pull/34394
+    description: The `trackUnmanagedFds` option was set to `true` by default.
+  - version:
+    - v14.6.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/34303
+    description: The `trackUnmanagedFds` option was introduced.
+  - version:
+     - v13.13.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32278
+    description: The `transferList` option was introduced.
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/31664
+    description: The `filename` parameter can be a WHATWG `URL` object using
+                 `file:` protocol.
+  - version:
+     - v13.4.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/30559
+    description: The `argv` option was introduced.
+  - version:
+     - v13.2.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/26628
+    description: The `resourceLimits` option was introduced.
+-->
+<ul>
+<li><code>filename</code> {string|URL} The path to the Worker’s main script or module. Must be either an absolute path or a relative path (i.e. relative to the current working directory) starting with <code>./</code> or <code>../</code>, or a WHATWG <code>URL</code> object using <code>file:</code> or <code>data:</code> protocol. When using a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs"><code>data:</code> URL</a>, the data is interpreted based on MIME type using the <a href="esm.md#esm_data_imports">ECMAScript module loader</a>. If <code>options.eval</code> is <code>true</code>, this is a string containing JavaScript code rather than a path.</li>
+<li><code>options</code> {Object}
+<ul>
+<li><code>argv</code> {any[]} List of arguments which would be stringified and appended to <code>process.argv</code> in the worker. This is mostly similar to the <code>workerData</code> but the values are available on the global <code>process.argv</code> as if they were passed as CLI options to the script.</li>
+<li><code>env</code> {Object} If set, specifies the initial value of <code>process.env</code> inside the Worker thread. As a special value, <a href="#worker_threads_worker_share_env"><code>worker.SHARE_ENV</code></a> may be used to specify that the parent thread and the child thread should share their environment variables; in that case, changes to one thread’s <code>process.env</code> object affect the other thread as well. <strong>Default:</strong> <code>process.env</code>.</li>
+<li><code>eval</code> {boolean} If <code>true</code> and the first argument is a <code>string</code>, interpret the first argument to the constructor as a script that is executed once the worker is online.</li>
+<li><code>execArgv</code> {string[]} List of node CLI options passed to the worker. V8 options (such as <code>--max-old-space-size</code>) and options that affect the process (such as <code>--title</code>) are not supported. If set, this is provided as <a href="process.md#process_process_execargv"><code>process.execArgv</code></a> inside the worker. By default, options are inherited from the parent thread.</li>
+<li><code>stdin</code> {boolean} If this is set to <code>true</code>, then <code>worker.stdin</code> provides a writable stream whose contents appear as <code>process.stdin</code> inside the Worker. By default, no data is provided.</li>
+<li><code>stdout</code> {boolean} If this is set to <code>true</code>, then <code>worker.stdout</code> is not automatically piped through to <code>process.stdout</code> in the parent.</li>
+<li><code>stderr</code> {boolean} If this is set to <code>true</code>, then <code>worker.stderr</code> is not automatically piped through to <code>process.stderr</code> in the parent.</li>
+<li><code>workerData</code> {any} Any JavaScript value that is cloned and made available as <a href="#worker_threads_worker_workerdata"><code>require('worker_threads').workerData</code></a>. The cloning occurs as described in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm">HTML structured clone algorithm</a>, and an error is thrown if the object cannot be cloned (e.g. because it contains <code>function</code>s).</li>
+<li><code>trackUnmanagedFds</code> {boolean} If this is set to <code>true</code>, then the Worker tracks raw file descriptors managed through <a href="fs.md#fs_fs_open_path_flags_mode_callback"><code>fs.open()</code></a> and <a href="fs.md#fs_fs_close_fd_callback"><code>fs.close()</code></a>, and closes them when the Worker exits, similar to other resources like network sockets or file descriptors managed through the <a href="fs.md#fs_class_filehandle"><code>FileHandle</code></a> API. This option is automatically inherited by all nested <code>Worker</code>s. <strong>Default:</strong> <code>true</code>.</li>
+<li><code>transferList</code> {Object[]} If one or more <code>MessagePort</code>-like objects are passed in <code>workerData</code>, a <code>transferList</code> is required for those items or <a href="errors.md#errors_err_missing_message_port_in_transfer_list"><code>ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST</code></a> is thrown. See <a href="#worker_threads_port_postmessage_value_transferlist"><code>port.postMessage()</code></a> for more information.</li>
+<li><code>resourceLimits</code> {Object} An optional set of resource limits for the new JS engine instance. Reaching these limits leads to termination of the <code>Worker</code> instance. These limits only affect the JS engine, and no external data, including no <code>ArrayBuffer</code>s. Even if these limits are set, the process may still abort if it encounters a global out-of-memory situation.
+<ul>
+<li><code>maxOldGenerationSizeMb</code> {number} The maximum size of the main heap in MB.</li>
+<li><code>maxYoungGenerationSizeMb</code> {number} The maximum size of a heap space for recently created objects.</li>
+<li><code>codeRangeSizeMb</code> {number} The size of a pre-allocated memory range used for generated code.</li>
+<li><code>stackSizeMb</code> {number} The default maximum stack size for the thread. Small values may lead to unusable Worker instances. <strong>Default:</strong> <code>4</code>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="event-error">Event: <code>'error'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li><code>err</code> {Error}</li>
+</ul>
+<p>The <code>'error'</code> event is emitted if the worker thread throws an uncaught exception. In that case, the worker is terminated.</p>
+<h3 id="event-exit">Event: <code>'exit'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li><code>exitCode</code> {integer}</li>
+</ul>
+<p>The <code>'exit'</code> event is emitted once the worker has stopped. If the worker exited by calling <a href="process.md#process_process_exit_code"><code>process.exit()</code></a>, the <code>exitCode</code> parameter is the passed exit code. If the worker was terminated, the <code>exitCode</code> parameter is <code>1</code>.</p>
+<p>This is the final event emitted by any <code>Worker</code> instance.</p>
+<h3 id="event-message-1">Event: <code>'message'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li><code>value</code> {any} The transmitted value</li>
+</ul>
+<p>The <code>'message'</code> event is emitted when the worker thread has invoked <a href="#worker_threads_worker_postmessage_value_transferlist"><code>require('worker_threads').parentPort.postMessage()</code></a>. See the <a href="#worker_threads_event_message"><code>port.on('message')</code></a> event for more details.</p>
+<p>All messages sent from the worker thread are emitted before the <a href="#worker_threads_event_exit"><code>'exit'</code> event</a> is emitted on the <code>Worker</code> object.</p>
+<h3 id="event-messageerror-1">Event: <code>'messageerror'</code></h3>
+<!-- YAML
+added:
+  - v14.5.0
+  - v12.19.0
+-->
+<ul>
+<li><code>error</code> {Error} An Error object</li>
+</ul>
+<p>The <code>'messageerror'</code> event is emitted when deserializing a message failed.</p>
+<h3 id="event-online">Event: <code>'online'</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>The <code>'online'</code> event is emitted when the worker thread has started executing JavaScript code.</p>
+<h3 id="worker.getheapsnapshot"><code>worker.getHeapSnapshot()</code></h3>
+<!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+-->
+<ul>
+<li>Returns: {Promise} A promise for a Readable Stream containing a V8 heap snapshot</li>
+</ul>
+<p>Returns a readable stream for a V8 snapshot of the current state of the Worker. See <a href="v8.md#v8_v8_getheapsnapshot"><code>v8.getHeapSnapshot()</code></a> for more details.</p>
+<p>If the Worker thread is no longer running, which may occur before the <a href="#worker_threads_event_exit"><code>'exit'</code> event</a> is emitted, the returned <code>Promise</code> is rejected immediately with an <a href="errors.md#ERR_WORKER_NOT_RUNNING"><code>ERR_WORKER_NOT_RUNNING</code></a> error.</p>
+<h3 id="worker.performance"><code>worker.performance</code></h3>
+<!-- YAML
+added:
+  - v15.1.0
+  - v14.17.0
+  - v12.22.0
+-->
+<p>An object that can be used to query performance information from a worker instance. Similar to <a href="perf_hooks.md#perf_hooks_perf_hooks_performance"><code>perf_hooks.performance</code></a>.</p>
+<h4 id="performance.eventlooputilizationutilization1-utilization2"><code>performance.eventLoopUtilization([utilization1[, utilization2]])</code></h4>
+<!-- YAML
+added:
+  - v15.1.0
+  - v14.17.0
+  - v12.22.0
+-->
+<ul>
+<li><code>utilization1</code> {Object} The result of a previous call to <code>eventLoopUtilization()</code>.</li>
+<li><code>utilization2</code> {Object} The result of a previous call to <code>eventLoopUtilization()</code> prior to <code>utilization1</code>.</li>
+<li>Returns {Object}
+<ul>
+<li><code>idle</code> {number}</li>
+<li><code>active</code> {number}</li>
+<li><code>utilization</code> {number}</li>
+</ul></li>
+</ul>
+<p>The same call as <a href="perf_hooks.md#perf_hooks_performance_eventlooputilization_utilization1_utilization2"><code>perf_hooks</code> <code>eventLoopUtilization()</code></a>, except the values of the worker instance are returned.</p>
+<p>One difference is that, unlike the main thread, bootstrapping within a worker is done within the event loop. So the event loop utilization is immediately available once the worker’s script begins execution.</p>
+<p>An <code>idle</code> time that does not increase does not indicate that the worker is stuck in bootstrap. The following examples shows how the worker’s entire lifetime never accumulates any <code>idle</code> time, but is still be able to process messages.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> <span class="op">{</span> Worker<span class="op">,</span> isMainThread<span class="op">,</span> parentPort <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;worker_threads&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="cf">if</span> (isMainThread) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="at">Worker</span>(__filename)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-5" title="5">  <span class="at">setInterval</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-6" title="6">    <span class="va">worker</span>.<span class="at">postMessage</span>(<span class="st">&#39;hi&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-7" title="7">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">worker</span>.<span class="va">performance</span>.<span class="at">eventLoopUtilization</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-8" title="8">  <span class="op">},</span> <span class="dv">100</span>).<span class="at">unref</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-9" title="9">  <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="op">}</span></a>
+<a class="sourceLine" id="cb19-11" title="11"></a>
+<a class="sourceLine" id="cb19-12" title="12"><span class="va">parentPort</span>.<span class="at">on</span>(<span class="st">&#39;message&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;msg&#39;</span>)).<span class="at">unref</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-13" title="13">(<span class="kw">function</span> <span class="at">r</span>(n) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-14" title="14">  <span class="cf">if</span> (<span class="op">--</span>n <span class="op">&lt;</span> <span class="dv">0</span>) <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb19-15" title="15">  <span class="kw">const</span> t <span class="op">=</span> <span class="va">Date</span>.<span class="at">now</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-16" title="16">  <span class="cf">while</span> (<span class="va">Date</span>.<span class="at">now</span>() <span class="op">-</span> t <span class="op">&lt;</span> <span class="dv">300</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-17" title="17">  <span class="at">setImmediate</span>(r<span class="op">,</span> n)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-18" title="18"><span class="op">}</span>)(<span class="dv">10</span>)<span class="op">;</span></a></code></pre></div>
+<p>The event loop utilization of a worker is available only after the <a href="#worker_threads_event_online"><code>'online'</code> event</a> emitted, and if called before this, or after the <a href="#worker_threads_event_exit"><code>'exit'</code> event</a>, then all properties have the value of <code>0</code>.</p>
+<h3 id="worker.postmessagevalue-transferlist"><code>worker.postMessage(value[, transferList])</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li><code>value</code> {any}</li>
+<li><code>transferList</code> {Object[]}</li>
+</ul>
+<p>Send a message to the worker that is received via <a href="#worker_threads_event_message"><code>require('worker_threads').parentPort.on('message')</code></a>. See <a href="#worker_threads_port_postmessage_value_transferlist"><code>port.postMessage()</code></a> for more details.</p>
+<h3 id="worker.ref"><code>worker.ref()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Opposite of <code>unref()</code>, calling <code>ref()</code> on a previously <code>unref()</code>ed worker does <em>not</em> let the program exit if it’s the only active handle left (the default behavior). If the worker is <code>ref()</code>ed, calling <code>ref()</code> again has no effect.</p>
+<h3 id="worker.resourcelimits-1"><code>worker.resourceLimits</code></h3>
+<!-- YAML
+added:
+ - v13.2.0
+ - v12.16.0
+-->
+<ul>
+<li>{Object}
+<ul>
+<li><code>maxYoungGenerationSizeMb</code> {number}</li>
+<li><code>maxOldGenerationSizeMb</code> {number}</li>
+<li><code>codeRangeSizeMb</code> {number}</li>
+<li><code>stackSizeMb</code> {number}</li>
+</ul></li>
+</ul>
+<p>Provides the set of JS engine resource constraints for this Worker thread. If the <code>resourceLimits</code> option was passed to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, this matches its values.</p>
+<p>If the worker has stopped, the return value is an empty object.</p>
+<h3 id="worker.stderr"><code>worker.stderr</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{stream.Readable}</li>
+</ul>
+<p>This is a readable stream which contains data written to <a href="process.md#process_process_stderr"><code>process.stderr</code></a> inside the worker thread. If <code>stderr: true</code> was not passed to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, then data is piped to the parent thread’s <a href="process.md#process_process_stderr"><code>process.stderr</code></a> stream.</p>
+<h3 id="worker.stdin"><code>worker.stdin</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{null|stream.Writable}</li>
+</ul>
+<p>If <code>stdin: true</code> was passed to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, this is a writable stream. The data written to this stream will be made available in the worker thread as <a href="process.md#process_process_stdin"><code>process.stdin</code></a>.</p>
+<h3 id="worker.stdout"><code>worker.stdout</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{stream.Readable}</li>
+</ul>
+<p>This is a readable stream which contains data written to <a href="process.md#process_process_stdout"><code>process.stdout</code></a> inside the worker thread. If <code>stdout: true</code> was not passed to the <a href="#worker_threads_class_worker"><code>Worker</code></a> constructor, then data is piped to the parent thread’s <a href="process.md#process_process_stdout"><code>process.stdout</code></a> stream.</p>
+<h3 id="worker.terminate"><code>worker.terminate()</code></h3>
+<!-- YAML
+added: v10.5.0
+changes:
+  - version: v12.5.0
+    pr-url: https://github.com/nodejs/node/pull/28021
+    description: This function now returns a Promise.
+                 Passing a callback is deprecated, and was useless up to this
+                 version, as the Worker was actually terminated synchronously.
+                 Terminating is now a fully asynchronous operation.
+-->
+<ul>
+<li>Returns: {Promise}</li>
+</ul>
+<p>Stop all JavaScript execution in the worker thread as soon as possible. Returns a Promise for the exit code that is fulfilled when the <a href="#worker_threads_event_exit"><code>'exit'</code> event</a> is emitted.</p>
+<h3 id="worker.threadid-1"><code>worker.threadId</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<ul>
+<li>{integer}</li>
+</ul>
+<p>An integer identifier for the referenced thread. Inside the worker thread, it is available as <a href="#worker_threads_worker_threadid"><code>require('worker_threads').threadId</code></a>. This value is unique for each <code>Worker</code> instance inside a single process.</p>
+<h3 id="worker.unref"><code>worker.unref()</code></h3>
+<!-- YAML
+added: v10.5.0
+-->
+<p>Calling <code>unref()</code> on a worker allows the thread to exit if this is the only active handle in the event system. If the worker is already <code>unref()</code>ed calling <code>unref()</code> again has no effect.</p>
+<h2 id="notes">Notes</h2>
+<h3 id="synchronous-blocking-of-stdio">Synchronous blocking of stdio</h3>
+<p><code>Worker</code>s utilize message passing via {MessagePort} to implement interactions with <code>stdio</code>. This means that <code>stdio</code> output originating from a <code>Worker</code> can get blocked by synchronous code on the receiving end that is blocking the Node.js event loop.</p>
+<pre class="mjs"><code>import {
+  Worker,
+  isMainThread,
+} from &#39;worker_threads&#39;;
+
+if (isMainThread) {
+  new Worker(new URL(import.meta.url));
+  for (let n = 0; n &lt; 1e10; n++) {}
+} else {
+  // This output will be blocked by the for loop in the main thread.
+  console.log(&#39;foo&#39;);
+}</code></pre>
+<pre class="cjs"><code>&#39;use strict&#39;;
+
+const {
+  Worker,
+  isMainThread,
+} = require(&#39;worker_threads&#39;);
+
+if (isMainThread) {
+  new Worker(__filename);
+  for (let n = 0; n &lt; 1e10; n++) {}
+} else {
+  // This output will be blocked by the for loop in the main thread.
+  console.log(&#39;foo&#39;);
+}</code></pre>
+<h3 id="launching-worker-threads-from-preload-scripts">Launching worker threads from preload scripts</h3>
+<p>Take care when launching worker threads from preload scripts (scripts loaded and run using the <code>-r</code> command line flag). Unless the <code>execArgv</code> option is explicitly set, new Worker threads automatically inherit the command line flags from the running process and will preload the same preload scripts as the main thread. If the preload script unconditionally launches a worker thread, every thread spawned will spawn another until the application crashes.</p>
+</body>
+</html>

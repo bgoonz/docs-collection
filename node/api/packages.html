@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>packages</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="modules-packages">Modules: Packages</h1>
+    <!--introduced_in=v12.20.0-->
+    <!-- type=misc -->
+    <!-- YAML
+changes:
+  - version:
+    - v14.13.0
+    - v12.20.0
+    pr-url: https://github.com/nodejs/node/pull/34718
+    description: Add support for `"exports"` patterns.
+  - version:
+    - v14.6.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/34117
+    description: Add package `"imports"` field.
+  - version:
+    - v13.7.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31001
+    description: Unflag conditional exports.
+  - version:
+    - v13.6.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31002
+    description: Unflag self-referencing a package using its name.
+  - version: v12.7.0
+    pr-url: https://github.com/nodejs/node/pull/28568
+    description:
+      Introduce `"exports"` `package.json` field as a more powerful alternative
+      to the classic `"main"` field.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26745
+    description:
+      Add support for ES modules using `.js` file extension via `package.json`
+      `"type"` field.
+-->
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      A package is a folder tree described by a <code>package.json</code> file.
+      The package consists of the folder containing the
+      <code>package.json</code> file and all subfolders until the next folder
+      containing another <code>package.json</code> file, or a folder named
+      <code>node_modules</code>.
+    </p>
+    <p>
+      This page provides guidance for package authors writing
+      <code>package.json</code> files along with a reference for the
+      <a href="#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      fields defined by Node.js.
+    </p>
+    <h2 id="determining-module-system">Determining module system</h2>
+    <p>
+      Node.js will treat the following as <a href="esm.md">ES modules</a> when
+      passed to <code>node</code> as the initial input, or when referenced by
+      <code>import</code> statements within ES module code:
+    </p>
+    <ul>
+      <li>
+        <p>Files ending in <code>.mjs</code>.</p>
+      </li>
+      <li>
+        <p>
+          Files ending in <code>.js</code> when the nearest parent
+          <code>package.json</code> file contains a top-level
+          <a href="#packages_type"><code>"type"</code></a> field with a value of
+          <code>"module"</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Strings passed in as an argument to <code>--eval</code>, or piped to
+          <code>node</code> via <code>STDIN</code>, with the flag
+          <code>--input-type=module</code>.
+        </p>
+      </li>
+    </ul>
+    <p>
+      Node.js will treat as <a href="modules.md">CommonJS</a> all other forms of
+      input, such as <code>.js</code> files where the nearest parent
+      <code>package.json</code> file contains no top-level
+      <code>"type"</code> field, or string input without the flag
+      <code>--input-type</code>. This behavior is to preserve backward
+      compatibility. However, now that Node.js supports both CommonJS and ES
+      modules, it is best to be explicit whenever possible. Node.js will treat
+      the following as CommonJS when passed to <code>node</code> as the initial
+      input, or when referenced by <code>import</code> statements within ES
+      module code:
+    </p>
+    <ul>
+      <li>
+        <p>Files ending in <code>.cjs</code>.</p>
+      </li>
+      <li>
+        <p>
+          Files ending in <code>.js</code> when the nearest parent
+          <code>package.json</code> file contains a top-level field
+          <a href="#packages_type"><code>"type"</code></a> with a value of
+          <code>"commonjs"</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Strings passed in as an argument to <code>--eval</code> or
+          <code>--print</code>, or piped to <code>node</code> via
+          <code>STDIN</code>, with the flag <code>--input-type=commonjs</code>.
+        </p>
+      </li>
+    </ul>
+    <p>
+      Package authors should include the
+      <a href="#packages_type"><code>"type"</code></a> field, even in packages
+      where all sources are CommonJS. Being explicit about the
+      <code>type</code> of the package will future-proof the package in case the
+      default type of Node.js ever changes, and it will also make things easier
+      for build tools and loaders to determine how the files in the package
+      should be interpreted.
+    </p>
+    <h3 id="package.json-and-file-extensions">
+      <code>package.json</code> and file extensions
+    </h3>
+    <p>
+      Within a package, the
+      <a href="#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      <a href="#packages_type"><code>"type"</code></a> field defines how Node.js
+      should interpret <code>.js</code> files. If a
+      <code>package.json</code> file does not have a <code>"type"</code> field,
+      <code>.js</code> files are treated as <a href="modules.md">CommonJS</a>.
+    </p>
+    <p>
+      A <code>package.json</code> <code>"type"</code> value of
+      <code>"module"</code> tells Node.js to interpret <code>.js</code> files
+      within that package as using <a href="esm.md">ES module</a> syntax.
+    </p>
+    <p>
+      The <code>"type"</code> field applies not only to initial entry points
+      (<code>node my-app.js</code>) but also to files referenced by
+      <code>import</code> statements and <code>import()</code> expressions.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// my-app.js, treated as an ES module because there is a package.json</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">// file in the same folder with &quot;type&quot;: &quot;module&quot;.</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="im">import</span> <span class="st">&#39;./startup/init.js&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">// Loaded as ES module since ./startup contains no package.json file,</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">// and therefore inherits the &quot;type&quot; value from one level up.</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="im">import</span> <span class="st">&#39;commonjs-package&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">// Loaded as CommonJS since ./node_modules/commonjs-package/package.json</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co">// lacks a &quot;type&quot; field or contains &quot;type&quot;: &quot;commonjs&quot;.</span></a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="im">import</span> <span class="st">&#39;./node_modules/commonjs-package/index.js&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">// Loaded as CommonJS since ./node_modules/commonjs-package/package.json</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">// lacks a &quot;type&quot; field or contains &quot;type&quot;: &quot;commonjs&quot;.</span></a></code></pre>
+    </div>
+    <p>
+      Files ending with <code>.mjs</code> are always loaded as
+      <a href="esm.md">ES modules</a> regardless of the nearest parent
+      <code>package.json</code>.
+    </p>
+    <p>
+      Files ending with <code>.cjs</code> are always loaded as
+      <a href="modules.md">CommonJS</a> regardless of the nearest parent
+      <code>package.json</code>.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> <span class="st">&#39;./legacy-file.cjs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">// Loaded as CommonJS since .cjs is always loaded as CommonJS.</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="im">import</span> <span class="st">&#39;commonjs-package/src/index.mjs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">// Loaded as ES module since .mjs is always loaded as ES module.</span></a></code></pre>
+    </div>
+    <p>
+      The <code>.mjs</code> and <code>.cjs</code> extensions can be used to mix
+      types within the same package:
+    </p>
+    <ul>
+      <li>
+        <p>
+          Within a <code>"type": "module"</code> package, Node.js can be
+          instructed to interpret a particular file as
+          <a href="modules.md">CommonJS</a> by naming it with a
+          <code>.cjs</code> extension (since both <code>.js</code> and
+          <code>.mjs</code> files are treated as ES modules within a
+          <code>"module"</code> package).
+        </p>
+      </li>
+      <li>
+        <p>
+          Within a <code>"type": "commonjs"</code> package, Node.js can be
+          instructed to interpret a particular file as an
+          <a href="esm.md">ES module</a> by naming it with an
+          <code>.mjs</code> extension (since both <code>.js</code> and
+          <code>.cjs</code> files are treated as CommonJS within a
+          <code>"commonjs"</code> package).
+        </p>
+      </li>
+    </ul>
+    <h3 id="input-type-flag"><code>--input-type</code> flag</h3>
+    <!-- YAML
+added: v12.0.0
+-->
+    <p>
+      Strings passed in as an argument to <code>--eval</code> (or
+      <code>-e</code>), or piped to <code>node</code> via <code>STDIN</code>,
+      are treated as <a href="esm.md">ES modules</a> when the
+      <code>--input-type=module</code> flag is set.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">node</span> --input-type=module --eval <span class="st">&quot;import { sep } from &#39;path&#39;; console.log(sep);&quot;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="bu">echo</span> <span class="st">&quot;import { sep } from &#39;path&#39;; console.log(sep);&quot;</span> <span class="kw">|</span> <span class="ex">node</span> --input-type=module</a></code></pre>
+    </div>
+    <p>
+      For completeness there is also <code>--input-type=commonjs</code>, for
+      explicitly running string input as CommonJS. This is the default behavior
+      if <code>--input-type</code> is unspecified.
+    </p>
+    <h2 id="package-entry-points">Package entry points</h2>
+    <p>
+      In a package’s <code>package.json</code> file, two fields can define entry
+      points for a package: <a href="#packages_main"><code>"main"</code></a> and
+      <a href="#packages_exports"><code>"exports"</code></a
+      >. The <a href="#packages_main"><code>"main"</code></a> field is supported
+      in all versions of Node.js, but its capabilities are limited: it only
+      defines the main entry point of the package.
+    </p>
+    <p>
+      The <a href="#packages_exports"><code>"exports"</code></a> field provides
+      an alternative to <a href="#packages_main"><code>"main"</code></a> where
+      the package main entry point can be defined while also encapsulating the
+      package,
+      <strong
+        >preventing any other entry points besides those defined in
+        <a href="#packages_exports"><code>"exports"</code></a></strong
+      >. This encapsulation allows module authors to define a public interface
+      for their package.
+    </p>
+    <p>
+      If both <a href="#packages_exports"><code>"exports"</code></a> and
+      <a href="#packages_main"><code>"main"</code></a> are defined, the
+      <a href="#packages_exports"><code>"exports"</code></a> field takes
+      precedence over <a href="#packages_main"><code>"main"</code></a
+      >. <a href="#packages_exports"><code>"exports"</code></a> are not specific
+      to ES modules or CommonJS;
+      <a href="#packages_main"><code>"main"</code></a> is overridden by
+      <a href="#packages_exports"><code>"exports"</code></a> if it exists. As
+      such <a href="#packages_main"><code>"main"</code></a> cannot be used as a
+      fallback for CommonJS but it can be used as a fallback for legacy versions
+      of Node.js that do not support the
+      <a href="#packages_exports"><code>"exports"</code></a> field.
+    </p>
+    <p>
+      <a href="#packages_conditional_exports">Conditional exports</a> can be
+      used within <a href="#packages_exports"><code>"exports"</code></a> to
+      define different package entry points per environment, including whether
+      the package is referenced via <code>require</code> or via
+      <code>import</code>. For more information about supporting both CommonJS
+      and ES Modules in a single package please consult
+      <a href="#packages_dual_commonjs_es_module_packages"
+        >the dual CommonJS/ES module packages section</a
+      >.
+    </p>
+    <p>
+      <strong>Warning</strong>: Introducing the
+      <a href="#packages_exports"><code>"exports"</code></a> field prevents
+      consumers of a package from using any entry points that are not defined,
+      including the
+      <a href="#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      (e.g. <code>require('your-package/package.json')</code>.
+      <strong>This will likely be a breaking change.</strong>
+    </p>
+    <p>
+      To make the introduction of
+      <a href="#packages_exports"><code>"exports"</code></a> non-breaking,
+      ensure that every previously supported entry point is exported. It is best
+      to explicitly specify entry points so that the package’s public API is
+      well-defined. For example, a project that previous exported
+      <code>main</code>, <code>lib</code>, <code>feature</code>, and the
+      <code>package.json</code> could use the following
+      <code>package.exports</code>:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;my-mod&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="dt">&quot;./lib&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="dt">&quot;./lib/index&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="dt">&quot;./lib/index.js&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="dt">&quot;./feature&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    <span class="dt">&quot;./feature/index.js&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="dt">&quot;./package.json&quot;</span><span class="fu">:</span> <span class="st">&quot;./package.json&quot;</span></a>
+<a class="sourceLine" id="cb4-11" title="11">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>Alternatively a project could choose to export entire folders:</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;my-mod&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="dt">&quot;./lib&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="dt">&quot;./lib/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./lib/*.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="dt">&quot;./feature&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature/index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="dt">&quot;./feature/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature/*.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="dt">&quot;./package.json&quot;</span><span class="fu">:</span> <span class="st">&quot;./package.json&quot;</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      As a last resort, package encapsulation can be disabled entirely by
+      creating an export for the root of the package <code>"./*": "./*"</code>.
+      This exposes every file in the package at the cost of disabling the
+      encapsulation and potential tooling benefits this provides. As the ES
+      Module loader in Node.js enforces the use of
+      <a href="esm.md#esm_mandatory_file_extensions">the full specifier path</a
+      >, exporting the root rather than being explicit about entry is less
+      expressive than either of the prior examples. Not only is encapsulation
+      lost but module consumers are unable to
+      <code>import feature from 'my-mod/feature'</code> as they need to provide
+      the full path <code>import feature from 'my-mod/feature/index.js</code>.
+    </p>
+    <h3 id="main-entry-point-export">Main entry point export</h3>
+    <p>
+      To set the main entry point for a package, it is advisable to define both
+      <a href="#packages_exports"><code>"exports"</code></a> and
+      <a href="#packages_main"><code>"main"</code></a> in the package’s
+      <a href="#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      file:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      When the <a href="#packages_exports"><code>"exports"</code></a> field is
+      defined, all subpaths of the package are encapsulated and no longer
+      available to importers. For example,
+      <code>require('pkg/subpath.js')</code> throws an
+      <a href="errors.md#errors_err_package_path_not_exported"
+        ><code>ERR_PACKAGE_PATH_NOT_EXPORTED</code></a
+      >
+      error.
+    </p>
+    <p>
+      This encapsulation of exports provides more reliable guarantees about
+      package interfaces for tools and when handling semver upgrades for a
+      package. It is not a strong encapsulation since a direct require of any
+      absolute subpath of the package such as
+      <code>require('/path/to/node_modules/pkg/subpath.js')</code> will still
+      load <code>subpath.js</code>.
+    </p>
+    <h3 id="subpath-exports">Subpath exports</h3>
+    <!-- YAML
+added: v12.7.0
+-->
+    <p>
+      When using the
+      <a href="#packages_exports"><code>"exports"</code></a> field, custom
+      subpaths can be defined along with the main entry point by treating the
+      main entry point as the <code>"."</code> subpath:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="dt">&quot;./submodule&quot;</span><span class="fu">:</span> <span class="st">&quot;./src/submodule.js&quot;</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Now only the defined subpath in
+      <a href="#packages_exports"><code>"exports"</code></a> can be imported by
+      a consumer:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> submodule <span class="im">from</span> <span class="st">&#39;es-module-package/submodule&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">// Loads ./node_modules/es-module-package/src/submodule.js</span></a></code></pre>
+    </div>
+    <p>While other subpaths will error:</p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> submodule <span class="im">from</span> <span class="st">&#39;es-module-package/private-module.js&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">// Throws ERR_PACKAGE_PATH_NOT_EXPORTED</span></a></code></pre>
+    </div>
+    <h3 id="subpath-imports">Subpath imports</h3>
+    <!-- YAML
+added:
+  - v14.6.0
+  - v12.19.0
+-->
+    <p>
+      In addition to the
+      <a href="#packages_exports"><code>"exports"</code></a> field, it is
+      possible to define internal package import maps that only apply to import
+      specifiers from within the package itself.
+    </p>
+    <p>
+      Entries in the imports field must always start with <code>#</code> to
+      ensure they are disambiguated from package specifiers.
+    </p>
+    <p>
+      For example, the imports field can be used to gain the benefits of
+      conditional exports for internal modules:
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="er">//</span> <span class="er">package.json</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">&quot;imports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="dt">&quot;#dep&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">      <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;dep-node-native&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">      <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="st">&quot;./dep-polyfill.js&quot;</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb10-9" title="9">  <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="dt">&quot;dep-node-native&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb10-11" title="11">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      where <code>import '#dep'</code> does not get the resolution of the
+      external package <code>dep-node-native</code> (including its exports in
+      turn), and instead gets the local file
+      <code>./dep-polyfill.js</code> relative to the package in other
+      environments.
+    </p>
+    <p>
+      Unlike the <code>"exports"</code> field, the <code>"imports"</code> field
+      permits mapping to external packages.
+    </p>
+    <p>
+      The resolution rules for the imports field are otherwise analogous to the
+      exports field.
+    </p>
+    <h3 id="subpath-patterns">Subpath patterns</h3>
+    <!-- YAML
+added:
+  - v14.13.0
+  - v12.20.0
+-->
+    <p>
+      For packages with a small number of exports or imports, we recommend
+      explicitly listing each exports subpath entry. But for packages that have
+      large numbers of subpaths, this might cause
+      <code>package.json</code> bloat and maintenance issues.
+    </p>
+    <p>For these use cases, subpath export patterns can be used instead:</p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="er">//</span> <span class="er">./node_modules/es-module-package/package.json</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="dt">&quot;./features/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./src/features/*.js&quot;</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="dt">&quot;imports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="dt">&quot;#internal/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./src/internal/*.js&quot;</span></a>
+<a class="sourceLine" id="cb11-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      <strong
+        ><code>*</code> maps expose nested subpaths as it is a string
+        replacement syntax only.</strong
+      >
+    </p>
+    <p>
+      The left hand matching pattern must always end in <code>*</code>. All
+      instances of <code>*</code> on the right hand side will then be replaced
+      with this value, including if it contains any <code>/</code> separators.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="im">import</span> featureX <span class="im">from</span> <span class="st">&#39;es-module-package/features/x&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">// Loads ./node_modules/es-module-package/src/features/x.js</span></a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="im">import</span> featureY <span class="im">from</span> <span class="st">&#39;es-module-package/features/y/y&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">// Loads ./node_modules/es-module-package/src/features/y/y.js</span></a>
+<a class="sourceLine" id="cb12-6" title="6"></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="im">import</span> internalZ <span class="im">from</span> <span class="st">&#39;#internal/z&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">// Loads ./node_modules/es-module-package/src/internal/z.js</span></a></code></pre>
+    </div>
+    <p>
+      This is a direct static replacement without any special handling for file
+      extensions. In the previous example,
+      <code>pkg/features/x.json</code> would be resolved to
+      <code>./src/features/x.json.js</code> in the mapping.
+    </p>
+    <p>
+      The property of exports being statically enumerable is maintained with
+      exports patterns since the individual exports for a package can be
+      determined by treating the right hand side target pattern as a
+      <code>**</code> glob against the list of files within the package. Because
+      <code>node_modules</code> paths are forbidden in exports targets, this
+      expansion is dependent on only the files of the package itself.
+    </p>
+    <p>
+      To exclude private subfolders from patterns, <code>null</code> targets can
+      be used:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="er">//</span> <span class="er">./node_modules/es-module-package/package.json</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="dt">&quot;./features/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./src/features/*.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-5" title="5">    <span class="dt">&quot;./features/private-internal/*&quot;</span><span class="fu">:</span> <span class="kw">null</span></a>
+<a class="sourceLine" id="cb13-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="fu">}</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="im">import</span> featureInternal <span class="im">from</span> <span class="st">&#39;es-module-package/features/private-internal/m&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">// Throws: ERR_PACKAGE_PATH_NOT_EXPORTED</span></a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="im">import</span> featureX <span class="im">from</span> <span class="st">&#39;es-module-package/features/x&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co">// Loads ./node_modules/es-module-package/src/features/x.js</span></a></code></pre>
+    </div>
+    <h3 id="subpath-folder-mappings">Subpath folder mappings</h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37215
+    description: Runtime deprecation.
+  - version: v15.1.0
+    pr-url: https://github.com/nodejs/node/pull/35747
+    description: Runtime deprecation for self-referencing imports.
+  - version:
+    - v14.13.0
+    - v12.20.0
+    pr-url: https://github.com/nodejs/node/pull/34718
+    description: Documentation-only deprecation.
+-->
+    <blockquote>
+      <p>Stability: 0 - Deprecated: Use subpath patterns instead.</p>
+    </blockquote>
+    <p>
+      Before subpath patterns were supported, a trailing <code>"/"</code> suffix
+      was used to support folder mappings:
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb15-2" title="2">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb15-3" title="3">    <span class="dt">&quot;./features/&quot;</span><span class="fu">:</span> <span class="st">&quot;./features/&quot;</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p><em>This feature will be removed in a future release.</em></p>
+    <p>
+      Instead, use direct
+      <a href="#packages_subpath_patterns">subpath patterns</a>:
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="dt">&quot;./features/*&quot;</span><span class="fu">:</span> <span class="st">&quot;./features/*.js&quot;</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The benefit of patterns over folder exports is that packages can always be
+      imported by consumers without subpath file extensions being necessary.
+    </p>
+    <h3 id="exports-sugar">Exports sugar</h3>
+    <!-- YAML
+added: v12.11.0
+-->
+    <p>
+      If the <code>"."</code> export is the only export, the
+      <a href="#packages_exports"><code>"exports"</code></a> field provides
+      sugar for this case being the direct
+      <a href="#packages_exports"><code>"exports"</code></a> field value.
+    </p>
+    <p>
+      If the <code>"."</code> export has a fallback array or string value, then
+      the <a href="#packages_exports"><code>"exports"</code></a> field can be
+      set to this value directly.
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>can be written:</p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="conditional-exports">Conditional exports</h3>
+    <!-- YAML
+added:
+  - v13.2.0
+  - v12.16.0
+changes:
+  - version:
+    - v13.7.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31001
+    description: Unflag conditional exports.
+-->
+    <p>
+      Conditional exports provide a way to map to different paths depending on
+      certain conditions. They are supported for both CommonJS and ES module
+      imports.
+    </p>
+    <p>
+      For example, a package that wants to provide different ES module exports
+      for <code>require()</code> and <code>import</code> can be written:
+    </p>
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb19-1" title="1"><span class="er">//</span> <span class="er">package.json</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb19-3" title="3">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main-require.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb19-5" title="5">    <span class="dt">&quot;import&quot;</span><span class="fu">:</span> <span class="st">&quot;./main-module.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb19-6" title="6">    <span class="dt">&quot;require&quot;</span><span class="fu">:</span> <span class="st">&quot;./main-require.cjs&quot;</span></a>
+<a class="sourceLine" id="cb19-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb19-8" title="8">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>Node.js implements the following conditions:</p>
+    <ul>
+      <li>
+        <code>"import"</code> - matches when the package is loaded via
+        <code>import</code> or <code>import()</code>, or via any top-level
+        import or resolve operation by the ECMAScript module loader. Applies
+        regardless of the module format of the target file.
+        <em>Always mutually exclusive with <code>"require"</code>.</em>
+      </li>
+      <li>
+        <code>"require"</code> - matches when the package is loaded via
+        <code>require()</code>. The referenced file should be loadable with
+        <code>require()</code> although the condition matches regardless of the
+        module format of the target file. Expected formats include CommonJS,
+        JSON, and native addons but not ES modules as
+        <code>require()</code> doesn’t support them.
+        <em>Always mutually exclusive with <code>"import"</code>.</em>
+      </li>
+      <li>
+        <code>"node"</code> - matches for any Node.js environment. Can be a
+        CommonJS or ES module file.
+        <em
+          >This condition should always come after <code>"import"</code> or
+          <code>"require"</code>.</em
+        >
+      </li>
+      <li>
+        <code>"default"</code> - the generic fallback that always matches. Can
+        be a CommonJS or ES module file.
+        <em>This condition should always come last.</em>
+      </li>
+    </ul>
+    <p>
+      Within the <a href="#packages_exports"><code>"exports"</code></a> object,
+      key order is significant. During condition matching, earlier entries have
+      higher priority and take precedence over later entries.
+      <em
+        >The general rule is that conditions should be from most specific to
+        least specific in object order</em
+      >.
+    </p>
+    <p>
+      Using the <code>"import"</code> and <code>"require"</code> conditions can
+      lead to some hazards, which are further explained in
+      <a href="#packages_dual_commonjs_es_module_packages"
+        >the dual CommonJS/ES module packages section</a
+      >.
+    </p>
+    <p>
+      Conditional exports can also be extended to exports subpaths, for example:
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-5" title="5">    <span class="dt">&quot;./feature&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-6" title="6">      <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature-node.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-7" title="7">      <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature.js&quot;</span></a>
+<a class="sourceLine" id="cb20-8" title="8">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb20-9" title="9">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Defines a package where <code>require('pkg/feature')</code> and
+      <code>import 'pkg/feature'</code> could provide different implementations
+      between Node.js and other JS environments.
+    </p>
+    <p>
+      When using environment branches, always include a
+      <code>"default"</code> condition where possible. Providing a
+      <code>"default"</code> condition ensures that any unknown JS environments
+      are able to use this universal implementation, which helps avoid these JS
+      environments from having to pretend to be existing environments in order
+      to support packages with conditional exports. For this reason, using
+      <code>"node"</code> and <code>"default"</code> condition branches is
+      usually preferable to using <code>"node"</code> and
+      <code>"browser"</code> condition branches.
+    </p>
+    <h3 id="nested-conditions">Nested conditions</h3>
+    <p>
+      In addition to direct mappings, Node.js also supports nested condition
+      objects.
+    </p>
+    <p>
+      For example, to define a package that only has dual mode entry points for
+      use in Node.js but not the browser:
+    </p>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-3" title="3">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-5" title="5">      <span class="dt">&quot;import&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature-node.mjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-6" title="6">      <span class="dt">&quot;require&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature-node.cjs&quot;</span></a>
+<a class="sourceLine" id="cb21-7" title="7">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="st">&quot;./feature.mjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-9" title="9">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Conditions continue to be matched in order as with flat conditions. If a
+      nested conditional does not have any mapping it will continue checking the
+      remaining conditions of the parent condition. In this way nested
+      conditions behave analogously to nested JavaScript
+      <code>if</code> statements.
+    </p>
+    <h3 id="resolving-user-conditions">Resolving user conditions</h3>
+    <!-- YAML
+added:
+  - v14.9.0
+  - v12.19.0
+-->
+    <p>
+      When running Node.js, custom user conditions can be added with the
+      <code>--conditions</code> flag:
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">node</span> --conditions=development main.js</a></code></pre>
+    </div>
+    <p>
+      which would then resolve the <code>"development"</code> condition in
+      package imports and exports, while resolving the existing
+      <code>"node"</code>, <code>"default"</code>, <code>"import"</code>, and
+      <code>"require"</code> conditions as appropriate.
+    </p>
+    <p>Any number of custom conditions can be set with repeat flags.</p>
+    <h3 id="conditions-definitions">Conditions Definitions</h3>
+    <p>
+      The <code>"import"</code>, <code>"require"</code>, <code>"node"</code> and
+      <code>"default"</code> conditions are defined and implemented in Node.js
+      core, <a href="#packages_conditional_exports">as specified above</a>.
+    </p>
+    <p>
+      Other condition strings are unknown to Node.js and thus ignored by
+      default. Runtimes or tools other than Node.js can use them at their
+      discretion.
+    </p>
+    <p>
+      These user conditions can be enabled in Node.js via the
+      <a href="#packages_resolving_user_conditions"
+        ><code>--conditions</code> flag</a
+      >.
+    </p>
+    <p>
+      The following condition definitions are currently endorsed by Node.js:
+    </p>
+    <ul>
+      <li>
+        <code>"browser"</code> - any environment which implements a standard
+        subset of global browser APIs available from JavaScript in web browsers,
+        including the DOM APIs.
+      </li>
+      <li>
+        <code>"development"</code> - can be used to define a development-only
+        environment entry point.
+        <em
+          >Must always be mutually exclusive with <code>"production"</code>.</em
+        >
+      </li>
+      <li>
+        <code>"production"</code> - can be used to define a production
+        environment entry point.
+        <em
+          >Must always be mutually exclusive with
+          <code>"development"</code>.</em
+        >
+      </li>
+    </ul>
+    <p>
+      The above user conditions can be enabled in Node.js via the
+      <a href="#packages_resolving_user_conditions"
+        ><code>--conditions</code> flag</a
+      >.
+    </p>
+    <p>
+      Platform specific conditions such as <code>"deno"</code>,
+      <code>"electron"</code>, or <code>"react-native"</code> may be used, but
+      while there remain no implementation or integration intent from these
+      platforms, the above are not explicitly endorsed by Node.js.
+    </p>
+    <p>
+      New conditions definitions may be added to this list by creating a pull
+      request to the
+      <a
+        href="https://github.com/nodejs/node/blob/HEAD/doc/api/packages.md#conditions-definitions"
+        >Node.js documentation for this section</a
+      >. The requirements for listing a new condition definition here are that:
+    </p>
+    <ul>
+      <li>
+        The definition should be clear and unambiguous for all implementers.
+      </li>
+      <li>
+        The use case for why the condition is needed should be clearly
+        justified.
+      </li>
+      <li>There should exist sufficient existing implementation usage.</li>
+      <li>
+        The condition name should not conflict with another condition definition
+        or condition in wide usage.
+      </li>
+      <li>
+        The listing of the condition definition should provide a coordination
+        benefit to the ecosystem that wouldn’t otherwise be possible. For
+        example, this would not necessarily be the case for company-specific or
+        application-specific conditions.
+      </li>
+    </ul>
+    <p>
+      The above definitions may be moved to a dedicated conditions registry in
+      due course.
+    </p>
+    <h3 id="self-referencing-a-package-using-its-name">
+      Self-referencing a package using its name
+    </h3>
+    <!-- YAML
+added:
+  - v13.1.0
+  - v12.16.0
+changes:
+  - version:
+    - v13.6.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31002
+    description: Unflag self-referencing a package using its name.
+-->
+    <p>
+      Within a package, the values defined in the package’s
+      <code>package.json</code>
+      <a href="#packages_exports"><code>"exports"</code></a> field can be
+      referenced via the package’s name. For example, assuming the
+      <code>package.json</code> is:
+    </p>
+    <div class="sourceCode" id="cb23">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb23-1" title="1"><span class="er">//</span> <span class="er">package.json</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-3" title="3">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;a-package&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-5" title="5">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.mjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-6" title="6">    <span class="dt">&quot;./foo&quot;</span><span class="fu">:</span> <span class="st">&quot;./foo.js&quot;</span></a>
+<a class="sourceLine" id="cb23-7" title="7">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Then any module <em>in that package</em> can reference an export in the
+      package itself:
+    </p>
+    <div class="sourceCode" id="cb24">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="co">// ./a-module.mjs</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="im">import</span> <span class="op">{</span> something <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;a-package&#39;</span><span class="op">;</span> <span class="co">// Imports &quot;something&quot; from ./main.mjs.</span></a></code></pre>
+    </div>
+    <p>
+      Self-referencing is available only if <code>package.json</code> has
+      <a href="#packages_exports"><code>"exports"</code></a
+      >, and will allow importing only what that
+      <a href="#packages_exports"><code>"exports"</code></a> (in the
+      <code>package.json</code>) allows. So the code below, given the previous
+      package, will generate a runtime error:
+    </p>
+    <div class="sourceCode" id="cb25">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="co">// ./another-module.mjs</span></a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co">// Imports &quot;another&quot; from ./m.mjs. Fails because</span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="co">// the &quot;package.json&quot; &quot;exports&quot; field</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co">// does not provide an export named &quot;./m.mjs&quot;.</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="im">import</span> <span class="op">{</span> another <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;a-package/m.mjs&#39;</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Self-referencing is also available when using <code>require</code>, both
+      in an ES module, and in a CommonJS one. For example, this code will also
+      work:
+    </p>
+    <pre class="cjs"><code>// ./a-module.js
+const { something } = require(&#39;a-package/foo&#39;); // Loads from ./foo.js.</code></pre>
+    <h2 id="dual-commonjses-module-packages">
+      Dual CommonJS/ES module packages
+    </h2>
+    <p>
+      Prior to the introduction of support for ES modules in Node.js, it was a
+      common pattern for package authors to include both CommonJS and ES module
+      JavaScript sources in their package, with <code>package.json</code>
+      <a href="#packages_main"><code>"main"</code></a> specifying the CommonJS
+      entry point and <code>package.json</code> <code>"module"</code> specifying
+      the ES module entry point. This enabled Node.js to run the CommonJS entry
+      point while build tools such as bundlers used the ES module entry point,
+      since Node.js ignored (and still ignores) the top-level
+      <code>"module"</code> field.
+    </p>
+    <p>
+      Node.js can now run ES module entry points, and a package can contain both
+      CommonJS and ES module entry points (either via separate specifiers such
+      as <code>'pkg'</code> and <code>'pkg/es-module'</code>, or both at the
+      same specifier via
+      <a href="#packages_conditional_exports">Conditional exports</a>). Unlike
+      in the scenario where <code>"module"</code> is only used by bundlers, or
+      ES module files are transpiled into CommonJS on the fly before evaluation
+      by Node.js, the files referenced by the ES module entry point are
+      evaluated as ES modules.
+    </p>
+    <h3 id="dual-package-hazard">Dual package hazard</h3>
+    <p>
+      When an application is using a package that provides both CommonJS and ES
+      module sources, there is a risk of certain bugs if both versions of the
+      package get loaded. This potential comes from the fact that the
+      <code>pkgInstance</code> created by
+      <code>const pkgInstance = require('pkg')</code> is not the same as the
+      <code>pkgInstance</code> created by
+      <code>import pkgInstance from 'pkg'</code> (or an alternative main path
+      like <code>'pkg/module'</code>). This is the “dual package hazard,” where
+      two versions of the same package can be loaded within the same runtime
+      environment. While it is unlikely that an application or package would
+      intentionally load both versions directly, it is common for an application
+      to load one version while a dependency of the application loads the other
+      version. This hazard can happen because Node.js supports intermixing
+      CommonJS and ES modules, and can lead to unexpected behavior.
+    </p>
+    <p>
+      If the package main export is a constructor, an
+      <code>instanceof</code> comparison of instances created by the two
+      versions returns <code>false</code>, and if the export is an object,
+      properties added to one (like <code>pkgInstance.foo = 3</code>) are not
+      present on the other. This differs from how <code>import</code> and
+      <code>require</code> statements work in all-CommonJS or all-ES module
+      environments, respectively, and therefore is surprising to users. It also
+      differs from the behavior users are familiar with when using transpilation
+      via tools like <a href="https://babeljs.io/">Babel</a> or
+      <a href="https://github.com/standard-things/esm#readme"
+        ><code>esm</code></a
+      >.
+    </p>
+    <h3 id="writing-dual-packages-while-avoiding-or-minimizing-hazards">
+      Writing dual packages while avoiding or minimizing hazards
+    </h3>
+    <p>
+      First, the hazard described in the previous section occurs when a package
+      contains both CommonJS and ES module sources and both sources are provided
+      for use in Node.js, either via separate main entry points or exported
+      paths. A package might instead be written where any version of Node.js
+      receives only CommonJS sources, and any separate ES module sources the
+      package might contain are intended only for other environments such as
+      browsers. Such a package would be usable by any version of Node.js, since
+      <code>import</code> can refer to CommonJS files; but it would not provide
+      any of the advantages of using ES module syntax.
+    </p>
+    <p>
+      A package might also switch from CommonJS to ES module syntax in a
+      <a href="https://semver.org/">breaking change</a> version bump. This has
+      the disadvantage that the newest version of the package would only be
+      usable in ES module-supporting versions of Node.js.
+    </p>
+    <p>
+      Every pattern has tradeoffs, but there are two broad approaches that
+      satisfy the following conditions:
+    </p>
+    <ol type="1">
+      <li>
+        The package is usable via both <code>require</code> and
+        <code>import</code>.
+      </li>
+      <li>
+        The package is usable in both current Node.js and older versions of
+        Node.js that lack support for ES modules.
+      </li>
+      <li>
+        The package main entry point, e.g. <code>'pkg'</code> can be used by
+        both <code>require</code> to resolve to a CommonJS file and by
+        <code>import</code> to resolve to an ES module file. (And likewise for
+        exported paths, e.g. <code>'pkg/feature'</code>.)
+      </li>
+      <li>
+        The package provides named exports, e.g. <code
+          >import { name } from 'pkg'</code
+        >
+        rather than <code>import pkg from 'pkg'; pkg.name</code>.
+      </li>
+      <li>
+        The package is potentially usable in other ES module environments such
+        as browsers.
+      </li>
+      <li>
+        The hazards described in the previous section are avoided or minimized.
+      </li>
+    </ol>
+    <h4 id="approach-1-use-an-es-module-wrapper">
+      Approach #1: Use an ES module wrapper
+    </h4>
+    <p>
+      Write the package in CommonJS or transpile ES module sources into
+      CommonJS, and create an ES module wrapper file that defines the named
+      exports. Using
+      <a href="#packages_conditional_exports">Conditional exports</a>, the ES
+      module wrapper is used for <code>import</code> and the CommonJS entry
+      point for <code>require</code>.
+    </p>
+    <div class="sourceCode" id="cb27">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb27-1" title="1"><span class="er">//</span> <span class="er">./node_modules/pkg/package.json</span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-3" title="3">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-4" title="4">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-5" title="5">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-6" title="6">    <span class="dt">&quot;import&quot;</span><span class="fu">:</span> <span class="st">&quot;./wrapper.mjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb27-7" title="7">    <span class="dt">&quot;require&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span></a>
+<a class="sourceLine" id="cb27-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The preceding example uses explicit extensions <code>.mjs</code> and
+      <code>.cjs</code>. If your files use the <code>.js</code> extension,
+      <code>"type": "module"</code> will cause such files to be treated as ES
+      modules, just as <code>"type": "commonjs"</code> would cause them to be
+      treated as CommonJS. See <a href="esm.md#esm_enabling">Enabling</a>.
+    </p>
+    <pre class="cjs"><code>// ./node_modules/pkg/index.cjs
+exports.name = &#39;value&#39;;</code></pre>
+    <div class="sourceCode" id="cb29">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="co">// ./node_modules/pkg/wrapper.mjs</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="im">import</span> cjsModule <span class="im">from</span> <span class="st">&#39;./index.cjs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="im">export</span> <span class="kw">const</span> name <span class="op">=</span> <span class="va">cjsModule</span>.<span class="at">name</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      In this example, the <code>name</code> from
+      <code>import { name } from 'pkg'</code> is the same singleton as the
+      <code>name</code> from <code>const { name } = require('pkg')</code>.
+      Therefore <code>===</code> returns <code>true</code> when comparing the
+      two <code>name</code>s and the divergent specifier hazard is avoided.
+    </p>
+    <p>
+      If the module is not simply a list of named exports, but rather contains a
+      unique function or object export like
+      <code>module.exports = function () { ... }</code>, or if support in the
+      wrapper for the <code>import pkg from 'pkg'</code> pattern is desired,
+      then the wrapper would instead be written to export the default optionally
+      along with any named exports as well:
+    </p>
+    <div class="sourceCode" id="cb30">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="im">import</span> cjsModule <span class="im">from</span> <span class="st">&#39;./index.cjs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="im">export</span> <span class="kw">const</span> name <span class="op">=</span> <span class="va">cjsModule</span>.<span class="at">name</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="im">export</span> <span class="im">default</span> cjsModule<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      This approach is appropriate for any of the following use cases: * The
+      package is currently written in CommonJS and the author would prefer not
+      to refactor it into ES module syntax, but wishes to provide named exports
+      for ES module consumers. * The package has other packages that depend on
+      it, and the end user might install both this package and those other
+      packages. For example a <code>utilities</code> package is used directly in
+      an application, and a <code>utilities-plus</code> package adds a few more
+      functions to <code>utilities</code>. Because the wrapper exports
+      underlying CommonJS files, it doesn’t matter if
+      <code>utilities-plus</code> is written in CommonJS or ES module syntax; it
+      will work either way. * The package stores internal state, and the package
+      author would prefer not to refactor the package to isolate its state
+      management. See the next section.
+    </p>
+    <p>
+      A variant of this approach not requiring conditional exports for consumers
+      could be to add an export, e.g. <code>"./module"</code>, to point to an
+      all-ES module-syntax version of the package. This could be used via
+      <code>import 'pkg/module'</code> by users who are certain that the
+      CommonJS version will not be loaded anywhere in the application, such as
+      by dependencies; or if the CommonJS version can be loaded but doesn’t
+      affect the ES module version (for example, because the package is
+      stateless):
+    </p>
+    <div class="sourceCode" id="cb31">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb31-1" title="1"><span class="er">//</span> <span class="er">./node_modules/pkg/package.json</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb31-3" title="3">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb31-4" title="4">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb31-5" title="5">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb31-6" title="6">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb31-7" title="7">    <span class="dt">&quot;./module&quot;</span><span class="fu">:</span> <span class="st">&quot;./wrapper.mjs&quot;</span></a>
+<a class="sourceLine" id="cb31-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb31-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h4 id="approach-2-isolate-state">Approach #2: Isolate state</h4>
+    <p>
+      A
+      <a href="#packages_node_js_package_json_field_definitions"
+        ><code>package.json</code></a
+      >
+      file can define the separate CommonJS and ES module entry points directly:
+    </p>
+    <div class="sourceCode" id="cb32">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb32-1" title="1"><span class="er">//</span> <span class="er">./node_modules/pkg/package.json</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb32-3" title="3">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-4" title="4">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-5" title="5">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb32-6" title="6">    <span class="dt">&quot;import&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.mjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb32-7" title="7">    <span class="dt">&quot;require&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span></a>
+<a class="sourceLine" id="cb32-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb32-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      This can be done if both the CommonJS and ES module versions of the
+      package are equivalent, for example because one is the transpiled output
+      of the other; and the package’s management of state is carefully isolated
+      (or the package is stateless).
+    </p>
+    <p>
+      The reason that state is an issue is because both the CommonJS and ES
+      module versions of the package might get used within an application; for
+      example, the user’s application code could <code>import</code> the ES
+      module version while a dependency <code>require</code>s the CommonJS
+      version. If that were to occur, two copies of the package would be loaded
+      in memory and therefore two separate states would be present. This would
+      likely cause hard-to-troubleshoot bugs.
+    </p>
+    <p>
+      Aside from writing a stateless package (if JavaScript’s
+      <code>Math</code> were a package, for example, it would be stateless as
+      all of its methods are static), there are some ways to isolate state so
+      that it’s shared between the potentially loaded CommonJS and ES module
+      instances of the package:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          If possible, contain all state within an instantiated object.
+          JavaScript’s <code>Date</code>, for example, needs to be instantiated
+          to contain state; if it were a package, it would be used like this:
+        </p>
+        <div class="sourceCode" id="cb33">
+          <pre
+            class="sourceCode js"
+          ><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="im">import</span> Date <span class="im">from</span> <span class="st">&#39;date&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw">const</span> someDate <span class="op">=</span> <span class="kw">new</span> <span class="at">Date</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="co">// someDate contains state; Date does not</span></a></code></pre>
+        </div>
+        <p>
+          The <code>new</code> keyword isn’t required; a package’s function can
+          return a new object, or modify a passed-in object, to keep the state
+          external to the package.
+        </p>
+      </li>
+      <li>
+        <p>
+          Isolate the state in one or more CommonJS files that are shared
+          between the CommonJS and ES module versions of the package. For
+          example, if the CommonJS and ES module entry points are
+          <code>index.cjs</code> and <code>index.mjs</code>, respectively:
+        </p>
+        <pre class="cjs"><code>// ./node_modules/pkg/index.cjs
+const state = require(&#39;./state.cjs&#39;);
+module.exports.state = state;</code></pre>
+        <div class="sourceCode" id="cb35">
+          <pre
+            class="sourceCode js"
+          ><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="co">// ./node_modules/pkg/index.mjs</span></a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="im">import</span> state <span class="im">from</span> <span class="st">&#39;./state.cjs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="im">export</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-4" title="4">  state</a>
+<a class="sourceLine" id="cb35-5" title="5"><span class="op">};</span></a></code></pre>
+        </div>
+        <p>
+          Even if <code>pkg</code> is used via both <code>require</code> and
+          <code>import</code> in an application (for example, via
+          <code>import</code> in application code and via
+          <code>require</code> by a dependency) each reference of
+          <code>pkg</code> will contain the same state; and modifying that state
+          from either module system will apply to both.
+        </p>
+      </li>
+    </ol>
+    <p>
+      Any plugins that attach to the package’s singleton would need to
+      separately attach to both the CommonJS and ES module singletons.
+    </p>
+    <p>
+      This approach is appropriate for any of the following use cases: * The
+      package is currently written in ES module syntax and the package author
+      wants that version to be used wherever such syntax is supported. * The
+      package is stateless or its state can be isolated without too much
+      difficulty. * The package is unlikely to have other public packages that
+      depend on it, or if it does, the package is stateless or has state that
+      need not be shared between dependencies or with the overall application.
+    </p>
+    <p>
+      Even with isolated state, there is still the cost of possible extra code
+      execution between the CommonJS and ES module versions of a package.
+    </p>
+    <p>
+      As with the previous approach, a variant of this approach not requiring
+      conditional exports for consumers could be to add an export, e.g.
+      <code>"./module"</code>, to point to an all-ES module-syntax version of
+      the package:
+    </p>
+    <div class="sourceCode" id="cb36">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb36-1" title="1"><span class="er">//</span> <span class="er">./node_modules/pkg/package.json</span></a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb36-3" title="3">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb36-4" title="4">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb36-5" title="5">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb36-6" title="6">    <span class="dt">&quot;.&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.cjs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb36-7" title="7">    <span class="dt">&quot;./module&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.mjs&quot;</span></a>
+<a class="sourceLine" id="cb36-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb36-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="node.js-package.json-field-definitions">
+      Node.js <code>package.json</code> field definitions
+    </h2>
+    <p>
+      This section describes the fields used by the Node.js runtime. Other tools
+      (such as
+      <a href="https://docs.npmjs.com/creating-a-package-json-file">npm</a>) use
+      additional fields which are ignored by Node.js and not documented here.
+    </p>
+    <p>
+      The following fields in <code>package.json</code> files are used in
+      Node.js:
+    </p>
+    <ul>
+      <li>
+        <a href="#packages_name"><code>"name"</code></a> - Relevant when using
+        named imports within a package. Also used by package managers as the
+        name of the package.
+      </li>
+      <li>
+        <a href="#packages_main"><code>"main"</code></a> - The default module
+        when loading the package, if exports is not specified, and in versions
+        of Node.js prior to the introduction of exports.
+      </li>
+      <li>
+        <a href="#packages_type"><code>"type"</code></a> - The package type
+        determining whether to load <code>.js</code> files as CommonJS or ES
+        modules.
+      </li>
+      <li>
+        <a href="#packages_exports"><code>"exports"</code></a> - Package exports
+        and conditional exports. When present, limits which submodules can be
+        loaded from within the package.
+      </li>
+      <li>
+        <a href="#packages_imports"><code>"imports"</code></a> - Package
+        imports, for use by modules within the package itself.
+      </li>
+    </ul>
+    <h3 id="name"><code>"name"</code></h3>
+    <!-- YAML
+added:
+  - v13.1.0
+  - v12.16.0
+changes:
+  - version:
+    - v13.6.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31002
+    description: Remove the `--experimental-resolve-self` option.
+-->
+    <ul>
+      <li>Type: {string}</li>
+    </ul>
+    <div class="sourceCode" id="cb37">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb37-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb37-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;package-name&quot;</span></a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>"name"</code> field defines your package’s name. Publishing to
+      the <em>npm</em> registry requires a name that satisfies
+      <a href="https://docs.npmjs.com/files/package.json#name"
+        >certain requirements</a
+      >.
+    </p>
+    <p>
+      The <code>"name"</code> field can be used in addition to the
+      <a href="#packages_exports"><code>"exports"</code></a> field to
+      <a href="#packages_self_referencing_a_package_using_its_name"
+        >self-reference</a
+      >
+      a package using its name.
+    </p>
+    <h3 id="main"><code>"main"</code></h3>
+    <!-- YAML
+added: v0.4.0
+-->
+    <ul>
+      <li>Type: {string}</li>
+    </ul>
+    <div class="sourceCode" id="cb38">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb38-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb38-2" title="2">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./main.js&quot;</span></a>
+<a class="sourceLine" id="cb38-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>"main"</code> field defines the script that is used when the
+      <a href="modules.md#modules_folders_as_modules"
+        >package directory is loaded via <code>require()</code></a
+      >. Its value is a path.
+    </p>
+    <pre
+      class="cjs"
+    ><code>require(&#39;./path/to/directory&#39;); // This resolves to ./path/to/directory/main.js.</code></pre>
+    <p>
+      When a package has an
+      <a href="#packages_exports"><code>"exports"</code></a> field, this will
+      take precedence over the <code>"main"</code> field when importing the
+      package by name.
+    </p>
+    <h3 id="type"><code>"type"</code></h3>
+    <!-- YAML
+added: v12.0.0
+changes:
+  - version:
+    - v13.2.0
+    - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/29866
+    description: Unflag `--experimental-modules`.
+-->
+    <ul>
+      <li>Type: {string}</li>
+    </ul>
+    <p>
+      The <code>"type"</code> field defines the module format that Node.js uses
+      for all <code>.js</code> files that have that
+      <code>package.json</code> file as their nearest parent.
+    </p>
+    <p>
+      Files ending with <code>.js</code> are loaded as ES modules when the
+      nearest parent <code>package.json</code> file contains a top-level field
+      <code>"type"</code> with a value of <code>"module"</code>.
+    </p>
+    <p>
+      The nearest parent <code>package.json</code> is defined as the first
+      <code>package.json</code> found when searching in the current folder, that
+      folder’s parent, and so on up until a node_modules folder or the volume
+      root is reached.
+    </p>
+    <div class="sourceCode" id="cb40">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb40-1" title="1"><span class="er">//</span> <span class="er">package.json</span></a>
+<a class="sourceLine" id="cb40-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb40-3" title="3">  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;module&quot;</span></a>
+<a class="sourceLine" id="cb40-4" title="4"><span class="fu">}</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb41">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb41-1" title="1"><span class="co"># In same folder as preceding package.json</span></a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="ex">node</span> my-app.js <span class="co"># Runs as ES module</span></a></code></pre>
+    </div>
+    <p>
+      If the nearest parent <code>package.json</code> lacks a
+      <code>"type"</code> field, or contains <code>"type": "commonjs"</code>,
+      <code>.js</code> files are treated as <a href="modules.md">CommonJS</a>.
+      If the volume root is reached and no <code>package.json</code> is found,
+      <code>.js</code> files are treated as <a href="modules.md">CommonJS</a>.
+    </p>
+    <p>
+      <code>import</code> statements of <code>.js</code> files are treated as ES
+      modules if the nearest parent <code>package.json</code> contains
+      <code>"type": "module"</code>.
+    </p>
+    <div class="sourceCode" id="cb42">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb42-1" title="1"><span class="co">// my-app.js, part of the same example as above</span></a>
+<a class="sourceLine" id="cb42-2" title="2"><span class="im">import</span> <span class="st">&#39;./startup.js&#39;</span><span class="op">;</span> <span class="co">// Loaded as ES module because of package.json</span></a></code></pre>
+    </div>
+    <p>
+      Regardless of the value of the <code>"type"</code> field,
+      <code>.mjs</code> files are always treated as ES modules and
+      <code>.cjs</code> files are always treated as CommonJS.
+    </p>
+    <h3 id="exports"><code>"exports"</code></h3>
+    <!-- YAML
+added: v12.7.0
+changes:
+  - version:
+    - v14.13.0
+    - v12.20.0
+    pr-url: https://github.com/nodejs/node/pull/34718
+    description: Add support for `"exports"` patterns.
+  - version:
+    - v13.7.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31008
+    description: Implement logical conditional exports ordering.
+  - version:
+    - v13.7.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/31001
+    description: Remove the `--experimental-conditional-exports` option.
+  - version:
+    - v13.2.0
+    - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/29978
+    description: Implement conditional exports.
+-->
+    <ul>
+      <li>Type: {Object} | {string} | {string[]}</li>
+    </ul>
+    <div class="sourceCode" id="cb43">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb43-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb43-2" title="2">  <span class="dt">&quot;exports&quot;</span><span class="fu">:</span> <span class="st">&quot;./index.js&quot;</span></a>
+<a class="sourceLine" id="cb43-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>"exports"</code> field allows defining the
+      <a href="#packages_package_entry_points">entry points</a> of a package
+      when imported by name loaded either via a <code>node_modules</code> lookup
+      or a
+      <a href="#packages_self_referencing_a_package_using_its_name"
+        >self-reference</a
+      >
+      to its own name. It is supported in Node.js 12+ as an alternative to the
+      <a href="#packages_main"><code>"main"</code></a> that can support defining
+      <a href="#packages_subpath_exports">subpath exports</a> and
+      <a href="#packages_conditional_exports">conditional exports</a> while
+      encapsulating internal unexported modules.
+    </p>
+    <p>
+      <a href="#packages_conditional_exports">Conditional Exports</a> can also
+      be used within <code>"exports"</code> to define different package entry
+      points per environment, including whether the package is referenced via
+      <code>require</code> or via <code>import</code>.
+    </p>
+    <p>
+      All paths defined in the <code>"exports"</code> must be relative file URLs
+      starting with <code>./</code>.
+    </p>
+    <h3 id="imports"><code>"imports"</code></h3>
+    <!-- YAML
+added:
+ - v14.6.0
+ - v12.19.0
+-->
+    <ul>
+      <li>Type: {Object}</li>
+    </ul>
+    <div class="sourceCode" id="cb44">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb44-1" title="1"><span class="er">//</span> <span class="er">package.json</span></a>
+<a class="sourceLine" id="cb44-2" title="2"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb44-3" title="3">  <span class="dt">&quot;imports&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb44-4" title="4">    <span class="dt">&quot;#dep&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb44-5" title="5">      <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;dep-node-native&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb44-6" title="6">      <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="st">&quot;./dep-polyfill.js&quot;</span></a>
+<a class="sourceLine" id="cb44-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb44-8" title="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb44-9" title="9">  <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb44-10" title="10">    <span class="dt">&quot;dep-node-native&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb44-11" title="11">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb44-12" title="12"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Entries in the imports field must be strings starting with <code>#</code>.
+    </p>
+    <p>Import maps permit mapping to external packages.</p>
+    <p>
+      This field defines
+      <a href="#packages_subpath_imports">subpath imports</a> for the current
+      package.
+    </p>
+  </body>
+</html>

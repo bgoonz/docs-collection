@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>wasi</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="webassembly-system-interface-wasi">WebAssembly System Interface (WASI)</h1>
+<!--introduced_in=v12.16.0-->
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<!-- source_link=lib/wasi.js -->
+<p>The WASI API provides an implementation of the <a href="https://wasi.dev/">WebAssembly System Interface</a> specification. WASI gives sandboxed WebAssembly applications access to the underlying operating system via a collection of POSIX-like functions.</p>
+<pre class="mjs"><code>import fs from &#39;fs&#39;;
+import { WASI } from &#39;wasi&#39;;
+import { argv, env } from &#39;process&#39;;
+
+const wasi = new WASI({
+  args: argv,
+  env,
+  preopens: {
+    &#39;/sandbox&#39;: &#39;/some/real/path/that/wasm/can/access&#39;
+  }
+});
+const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
+
+const wasm = await WebAssembly.compile(fs.readFileSync(&#39;./demo.wasm&#39;));
+const instance = await WebAssembly.instantiate(wasm, importObject);
+
+wasi.start(instance);</code></pre>
+<pre class="cjs"><code>&#39;use strict&#39;;
+const fs = require(&#39;fs&#39;);
+const { WASI } = require(&#39;wasi&#39;);
+const { argv, env } = require(&#39;process&#39;);
+
+const wasi = new WASI({
+  args: argv,
+  env,
+  preopens: {
+    &#39;/sandbox&#39;: &#39;/some/real/path/that/wasm/can/access&#39;
+  }
+});
+const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
+
+(async () =&gt; {
+  const wasm = await WebAssembly.compile(fs.readFileSync(&#39;./demo.wasm&#39;));
+  const instance = await WebAssembly.instantiate(wasm, importObject);
+
+  wasi.start(instance);
+})();</code></pre>
+<p>To run the above example, create a new WebAssembly text format file named <code>demo.wat</code>:</p>
+<pre class="text"><code>(module
+    ;; Import the required fd_write WASI function which will write the given io vectors to stdout
+    ;; The function signature for fd_write is:
+    ;; (File Descriptor, *iovs, iovs_len, nwritten) -&gt; Returns number of bytes written
+    (import &quot;wasi_snapshot_preview1&quot; &quot;fd_write&quot; (func $fd_write (param i32 i32 i32 i32) (result i32)))
+
+    (memory 1)
+    (export &quot;memory&quot; (memory 0))
+
+    ;; Write &#39;hello world\n&#39; to memory at an offset of 8 bytes
+    ;; Note the trailing newline which is required for the text to appear
+    (data (i32.const 8) &quot;hello world\n&quot;)
+
+    (func $main (export &quot;_start&quot;)
+        ;; Creating a new io vector within linear memory
+        (i32.store (i32.const 0) (i32.const 8))  ;; iov.iov_base - This is a pointer to the start of the &#39;hello world\n&#39; string
+        (i32.store (i32.const 4) (i32.const 12))  ;; iov.iov_len - The length of the &#39;hello world\n&#39; string
+
+        (call $fd_write
+            (i32.const 1) ;; file_descriptor - 1 for stdout
+            (i32.const 0) ;; *iovs - The pointer to the iov array, which is stored at memory location 0
+            (i32.const 1) ;; iovs_len - We&#39;re printing 1 string stored in an iov - so one.
+            (i32.const 20) ;; nwritten - A place in memory to store the number of bytes written
+        )
+        drop ;; Discard the number of bytes written from the top of the stack
+    )
+)</code></pre>
+<p>Use <a href="https://github.com/WebAssembly/wabt">wabt</a> to compile <code>.wat</code> to <code>.wasm</code></p>
+<pre class="console"><code>$ wat2wasm demo.wat</code></pre>
+<p>The <code>--experimental-wasi-unstable-preview1</code> CLI argument is needed for this example to run.</p>
+<h2 id="class-wasi">Class: <code>WASI</code></h2>
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
+<p>The <code>WASI</code> class provides the WASI system call API and additional convenience methods for working with WASI-based applications. Each <code>WASI</code> instance represents a distinct sandbox environment. For security purposes, each <code>WASI</code> instance must have its command-line arguments, environment variables, and sandbox directory structure configured explicitly.</p>
+<h3 id="new-wasioptions"><code>new WASI([options])</code></h3>
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>args</code> {Array} An array of strings that the WebAssembly application will see as command-line arguments. The first argument is the virtual path to the WASI command itself. <strong>Default:</strong> <code>[]</code>.</li>
+<li><code>env</code> {Object} An object similar to <code>process.env</code> that the WebAssembly application will see as its environment. <strong>Default:</strong> <code>{}</code>.</li>
+<li><code>preopens</code> {Object} This object represents the WebAssembly application’s sandbox directory structure. The string keys of <code>preopens</code> are treated as directories within the sandbox. The corresponding values in <code>preopens</code> are the real paths to those directories on the host machine.</li>
+<li><code>returnOnExit</code> {boolean} By default, WASI applications terminate the Node.js process via the <code>__wasi_proc_exit()</code> function. Setting this option to <code>true</code> causes <code>wasi.start()</code> to return the exit code rather than terminate the process. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>stdin</code> {integer} The file descriptor used as standard input in the WebAssembly application. <strong>Default:</strong> <code>0</code>.</li>
+<li><code>stdout</code> {integer} The file descriptor used as standard output in the WebAssembly application. <strong>Default:</strong> <code>1</code>.</li>
+<li><code>stderr</code> {integer} The file descriptor used as standard error in the WebAssembly application. <strong>Default:</strong> <code>2</code>.</li>
+</ul></li>
+</ul>
+<h3 id="wasi.startinstance"><code>wasi.start(instance)</code></h3>
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
+<ul>
+<li><code>instance</code> {WebAssembly.Instance}</li>
+</ul>
+<p>Attempt to begin execution of <code>instance</code> as a WASI command by invoking its <code>_start()</code> export. If <code>instance</code> does not contain a <code>_start()</code> export, or if <code>instance</code> contains an <code>_initialize()</code> export, then an exception is thrown.</p>
+<p><code>start()</code> requires that <code>instance</code> exports a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory"><code>WebAssembly.Memory</code></a> named <code>memory</code>. If <code>instance</code> does not have a <code>memory</code> export an exception is thrown.</p>
+<p>If <code>start()</code> is called more than once, an exception is thrown.</p>
+<h3 id="wasi.initializeinstance"><code>wasi.initialize(instance)</code></h3>
+<!-- YAML
+added:
+ - v14.6.0
+ - v12.19.0
+-->
+<ul>
+<li><code>instance</code> {WebAssembly.Instance}</li>
+</ul>
+<p>Attempt to initialize <code>instance</code> as a WASI reactor by invoking its <code>_initialize()</code> export, if it is present. If <code>instance</code> contains a <code>_start()</code> export, then an exception is thrown.</p>
+<p><code>initialize()</code> requires that <code>instance</code> exports a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory"><code>WebAssembly.Memory</code></a> named <code>memory</code>. If <code>instance</code> does not have a <code>memory</code> export an exception is thrown.</p>
+<p>If <code>initialize()</code> is called more than once, an exception is thrown.</p>
+<h3 id="wasi.wasiimport"><code>wasi.wasiImport</code></h3>
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
+<ul>
+<li>{Object}</li>
+</ul>
+<p><code>wasiImport</code> is an object that implements the WASI system call API. This object should be passed as the <code>wasi_snapshot_preview1</code> import during the instantiation of a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance"><code>WebAssembly.Instance</code></a>.</p>
+</body>
+</html>

@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>console</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="console">Console</h1>
+    <!--introduced_in=v0.10.13-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- source_link=lib/console.js -->
+    <p>
+      The <code>console</code> module provides a simple debugging console that
+      is similar to the JavaScript console mechanism provided by web browsers.
+    </p>
+    <p>The module exports two specific components:</p>
+    <ul>
+      <li>
+        A <code>Console</code> class with methods such as
+        <code>console.log()</code>, <code>console.error()</code> and
+        <code>console.warn()</code> that can be used to write to any Node.js
+        stream.
+      </li>
+      <li>
+        A global <code>console</code> instance configured to write to
+        <a href="process.md#process_process_stdout"
+          ><code>process.stdout</code></a
+        >
+        and
+        <a href="process.md#process_process_stderr"
+          ><code>process.stderr</code></a
+        >. The global <code>console</code> can be used without calling
+        <code>require('console')</code>.
+      </li>
+    </ul>
+    <p>
+      <strong><em>Warning</em></strong
+      >: The global console object’s methods are neither consistently
+      synchronous like the browser APIs they resemble, nor are they consistently
+      asynchronous like all other Node.js streams. See the
+      <a href="process.md#process_a_note_on_process_i_o">note on process I/O</a>
+      for more information.
+    </p>
+    <p>Example using the global <code>console</code>:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;hello world&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">// Prints: hello world, to stdout</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;hello %s&#39;</span><span class="op">,</span> <span class="st">&#39;world&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">// Prints: hello world, to stdout</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="va">console</span>.<span class="at">error</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Whoops, something bad happened&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">// Prints error message and stack trace to stderr:</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">//   Error: Whoops, something bad happened</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">//     at [eval]:5:15</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">//     at Script.runInThisContext (node:vm:132:18)</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co">//     at Object.runInThisContext (node:vm:309:38)</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="co">//     at node:internal/process/execution:77:19</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co">//     at [eval]-wrapper:6:22</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">//     at evalScript (node:internal/process/execution:76:60)</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">//     at node:internal/main/eval_string:23:3</span></a>
+<a class="sourceLine" id="cb1-15" title="15"></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="kw">const</span> name <span class="op">=</span> <span class="st">&#39;Will Robinson&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="va">console</span>.<span class="at">warn</span>(<span class="vs">`Danger </span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">! Danger!`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="co">// Prints: Danger Will Robinson! Danger!, to stderr</span></a></code></pre>
+    </div>
+    <p>Example using the <code>Console</code> class:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> out <span class="op">=</span> <span class="at">getStreamSomehow</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> err <span class="op">=</span> <span class="at">getStreamSomehow</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> myConsole <span class="op">=</span> <span class="kw">new</span> <span class="va">console</span>.<span class="at">Console</span>(out<span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="va">myConsole</span>.<span class="at">log</span>(<span class="st">&#39;hello world&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">// Prints: hello world, to out</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="va">myConsole</span>.<span class="at">log</span>(<span class="st">&#39;hello %s&#39;</span><span class="op">,</span> <span class="st">&#39;world&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">// Prints: hello world, to out</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="va">myConsole</span>.<span class="at">error</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Whoops, something bad happened&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co">// Prints: [Error: Whoops, something bad happened], to err</span></a>
+<a class="sourceLine" id="cb2-11" title="11"></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="kw">const</span> name <span class="op">=</span> <span class="st">&#39;Will Robinson&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="va">myConsole</span>.<span class="at">warn</span>(<span class="vs">`Danger </span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">! Danger!`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">// Prints: Danger Will Robinson! Danger!, to err</span></a></code></pre>
+    </div>
+    <h2 id="class-console">Class: <code>Console</code></h2>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/9744
+    description: Errors that occur while writing to the underlying streams
+                 will now be ignored by default.
+-->
+    <!--type=class-->
+    <p>
+      The <code>Console</code> class can be used to create a simple logger with
+      configurable output streams and can be accessed using either
+      <code>require('console').Console</code> or
+      <code>console.Console</code> (or their destructured counterparts):
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> Console <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;console&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> <span class="op">{</span> Console <span class="op">}</span> <span class="op">=</span> console<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="new-consolestdout-stderr-ignoreerrors">
+      <code>new Console(stdout[, stderr][, ignoreErrors])</code>
+    </h3>
+    <h3 id="new-consoleoptions"><code>new Console(options)</code></h3>
+    <!-- YAML
+changes:
+  - version:
+     - v14.2.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32964
+    description: The `groupIndentation` option was introduced.
+  - version: v11.7.0
+    pr-url: https://github.com/nodejs/node/pull/24978
+    description: The `inspectOptions` option is introduced.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19372
+    description: The `Console` constructor now supports an `options` argument,
+                 and the `colorMode` option was introduced.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/9744
+    description: The `ignoreErrors` option was introduced.
+-->
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li><code>stdout</code> {stream.Writable}</li>
+          <li><code>stderr</code> {stream.Writable}</li>
+          <li>
+            <code>ignoreErrors</code> {boolean} Ignore errors when writing to
+            the underlying streams. <strong>Default:</strong> <code>true</code>.
+          </li>
+          <li>
+            <code>colorMode</code> {boolean|string} Set color support for this
+            <code>Console</code> instance. Setting to <code>true</code> enables
+            coloring while inspecting values. Setting to
+            <code>false</code> disables coloring while inspecting values.
+            Setting to <code>'auto'</code> makes color support depend on the
+            value of the <code>isTTY</code> property and the value returned by
+            <code>getColorDepth()</code> on the respective stream. This option
+            can not be used, if <code>inspectOptions.colors</code> is set as
+            well. <strong>Default:</strong> <code>'auto'</code>.
+          </li>
+          <li>
+            <code>inspectOptions</code> {Object} Specifies options that are
+            passed along to
+            <a href="util.md#util_util_inspect_object_options"
+              ><code>util.inspect()</code></a
+            >.
+          </li>
+          <li>
+            <code>groupIndentation</code> {number} Set group indentation.
+            <strong>Default:</strong> <code>2</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Creates a new <code>Console</code> with one or two writable stream
+      instances. <code>stdout</code> is a writable stream to print log or info
+      output. <code>stderr</code> is used for warning or error output. If
+      <code>stderr</code> is not provided, <code>stdout</code> is used for
+      <code>stderr</code>.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> output <span class="op">=</span> <span class="va">fs</span>.<span class="at">createWriteStream</span>(<span class="st">&#39;./stdout.log&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> errorOutput <span class="op">=</span> <span class="va">fs</span>.<span class="at">createWriteStream</span>(<span class="st">&#39;./stderr.log&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">// Custom simple logger</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">const</span> logger <span class="op">=</span> <span class="kw">new</span> <span class="at">Console</span>(<span class="op">{</span> <span class="dt">stdout</span><span class="op">:</span> output<span class="op">,</span> <span class="dt">stderr</span><span class="op">:</span> errorOutput <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">// use it like console</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">const</span> count <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="va">logger</span>.<span class="at">log</span>(<span class="st">&#39;count: %d&#39;</span><span class="op">,</span> count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">// In stdout.log: count 5</span></a></code></pre>
+    </div>
+    <p>
+      The global <code>console</code> is a special <code>Console</code> whose
+      output is sent to
+      <a href="process.md#process_process_stdout"
+        ><code>process.stdout</code></a
+      >
+      and
+      <a href="process.md#process_process_stderr"><code>process.stderr</code></a
+      >. It is equivalent to calling:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">new</span> <span class="at">Console</span>(<span class="op">{</span> <span class="dt">stdout</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdout</span><span class="op">,</span> <span class="dt">stderr</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stderr</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="console.assertvalue-...message">
+      <code>console.assert(value[, ...message])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.101
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17706
+    description: The implementation is now spec compliant and does not throw
+                 anymore.
+-->
+    <ul>
+      <li><code>value</code> {any} The value tested for being truthy.</li>
+      <li>
+        <code>...message</code> {any} All arguments besides
+        <code>value</code> are used as error message.
+      </li>
+    </ul>
+    <p>
+      <code>console.assert()</code> writes a message if <code>value</code> is
+      <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy"
+        >falsy</a
+      >
+      or omitted. It only writes a message and does not otherwise affect
+      execution. The output always starts with <code>"Assertion failed"</code>.
+      If provided, <code>message</code> is formatted using
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >.
+    </p>
+    <p>
+      If <code>value</code> is
+      <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy"
+        >truthy</a
+      >, nothing happens.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">console</span>.<span class="at">assert</span>(<span class="kw">true</span><span class="op">,</span> <span class="st">&#39;does nothing&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="va">console</span>.<span class="at">assert</span>(<span class="kw">false</span><span class="op">,</span> <span class="st">&#39;Whoops %s work&#39;</span><span class="op">,</span> <span class="st">&#39;didn</span><span class="sc">\&#39;</span><span class="st">t&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">// Assertion failed: Whoops didn&#39;t work</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="va">console</span>.<span class="at">assert</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">// Assertion failed</span></a></code></pre>
+    </div>
+    <h3 id="console.clear"><code>console.clear()</code></h3>
+    <!-- YAML
+added: v8.3.0
+-->
+    <p>
+      When <code>stdout</code> is a TTY, calling
+      <code>console.clear()</code> will attempt to clear the TTY. When
+      <code>stdout</code> is not a TTY, this method does nothing.
+    </p>
+    <p>
+      The specific operation of <code>console.clear()</code> can vary across
+      operating systems and terminal types. For most Linux operating systems,
+      <code>console.clear()</code> operates similarly to the
+      <code>clear</code> shell command. On Windows,
+      <code>console.clear()</code> will clear only the output in the current
+      terminal viewport for the Node.js binary.
+    </p>
+    <h3 id="console.countlabel"><code>console.count([label])</code></h3>
+    <!-- YAML
+added: v8.3.0
+-->
+    <ul>
+      <li>
+        <code>label</code> {string} The display label for the counter.
+        <strong>Default:</strong> <code>'default'</code>.
+      </li>
+    </ul>
+    <p>
+      Maintains an internal counter specific to <code>label</code> and outputs
+      to <code>stdout</code> the number of times
+      <code>console.count()</code> has been called with the given
+      <code>label</code>.
+    </p>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>()</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="im">default</span><span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;default&#39;</span>)</a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="im">default</span><span class="op">:</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;abc&#39;</span>)</a>
+<a class="sourceLine" id="cb8-8" title="8">abc<span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;xyz&#39;</span>)</a>
+<a class="sourceLine" id="cb8-11" title="11">xyz<span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;abc&#39;</span>)</a>
+<a class="sourceLine" id="cb8-14" title="14">abc<span class="op">:</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>()</a>
+<a class="sourceLine" id="cb8-17" title="17"><span class="im">default</span><span class="op">:</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="op">&gt;</span></a></code></pre>
+    </div>
+    <h3 id="console.countresetlabel">
+      <code>console.countReset([label])</code>
+    </h3>
+    <!-- YAML
+added: v8.3.0
+-->
+    <ul>
+      <li>
+        <code>label</code> {string} The display label for the counter.
+        <strong>Default:</strong> <code>'default'</code>.
+      </li>
+    </ul>
+    <p>Resets the internal counter specific to <code>label</code>.</p>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;abc&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2">abc<span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">countReset</span>(<span class="st">&#39;abc&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">&gt;</span> <span class="va">console</span>.<span class="at">count</span>(<span class="st">&#39;abc&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7">abc<span class="op">:</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="kw">undefined</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="op">&gt;</span></a></code></pre>
+    </div>
+    <h3 id="console.debugdata-...args">
+      <code>console.debug(data[, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v8.0.0
+changes:
+  - version: v8.10.0
+    pr-url: https://github.com/nodejs/node/pull/17033
+    description: "`console.debug` is now an alias for `console.log`."
+-->
+    <ul>
+      <li><code>data</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      The <code>console.debug()</code> function is an alias for
+      <a href="#console_console_log_data_args"><code>console.log()</code></a
+      >.
+    </p>
+    <h3 id="console.dirobj-options">
+      <code>console.dir(obj[, options])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.101
+-->
+    <ul>
+      <li><code>obj</code> {any}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>showHidden</code> {boolean} If <code>true</code> then the
+            object’s non-enumerable and symbol properties will be shown too.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>depth</code> {number} Tells
+            <a href="util.md#util_util_inspect_object_options"
+              ><code>util.inspect()</code></a
+            >
+            how many times to recurse while formatting the object. This is
+            useful for inspecting large complicated objects. To make it recurse
+            indefinitely, pass <code>null</code>. <strong>Default:</strong>
+            <code>2</code>.
+          </li>
+          <li>
+            <code>colors</code> {boolean} If <code>true</code>, then the output
+            will be styled with ANSI color codes. Colors are customizable; see
+            <a href="util.md#util_customizing_util_inspect_colors"
+              >customizing <code>util.inspect()</code> colors</a
+            >. <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses
+      <a href="util.md#util_util_inspect_object_options"
+        ><code>util.inspect()</code></a
+      >
+      on <code>obj</code> and prints the resulting string to
+      <code>stdout</code>. This function bypasses any custom
+      <code>inspect()</code> function defined on <code>obj</code>.
+    </p>
+    <h3 id="console.dirxml...data"><code>console.dirxml(...data)</code></h3>
+    <!-- YAML
+added: v8.0.0
+changes:
+  - version: v9.3.0
+    pr-url: https://github.com/nodejs/node/pull/17152
+    description: "`console.dirxml` now calls `console.log` for its arguments."
+-->
+    <ul>
+      <li><code>...data</code> {any}</li>
+    </ul>
+    <p>
+      This method calls <code>console.log()</code> passing it the arguments
+      received. This method does not produce any XML formatting.
+    </p>
+    <h3 id="console.errordata-...args">
+      <code>console.error([data][, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.100
+-->
+    <ul>
+      <li><code>data</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      Prints to <code>stderr</code> with newline. Multiple arguments can be
+      passed, with the first used as the primary message and all additional used
+      as substitution values similar to printf(3) (the arguments are all passed
+      to
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >).
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> code <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;error #%d&#39;</span><span class="op">,</span> code)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">// Prints: error #5, to stderr</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> code)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">// Prints: error 5, to stderr</span></a></code></pre>
+    </div>
+    <p>
+      If formatting elements (e.g. <code>%d</code>) are not found in the first
+      string then
+      <a href="util.md#util_util_inspect_object_options"
+        ><code>util.inspect()</code></a
+      >
+      is called on each argument and the resulting string values are
+      concatenated. See
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >
+      for more information.
+    </p>
+    <h3 id="console.group...label"><code>console.group([...label])</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <ul>
+      <li><code>...label</code> {any}</li>
+    </ul>
+    <p>
+      Increases indentation of subsequent lines by spaces for
+      <code>groupIndentation</code> length.
+    </p>
+    <p>
+      If one or more <code>label</code>s are provided, those are printed first
+      without the additional indentation.
+    </p>
+    <h3 id="console.groupcollapsed"><code>console.groupCollapsed()</code></h3>
+    <!-- YAML
+  added: v8.5.0
+-->
+    <p>
+      An alias for
+      <a href="#console_console_group_label"><code>console.group()</code></a
+      >.
+    </p>
+    <h3 id="console.groupend"><code>console.groupEnd()</code></h3>
+    <!-- YAML
+added: v8.5.0
+-->
+    <p>
+      Decreases indentation of subsequent lines by spaces for
+      <code>groupIndentation</code> length.
+    </p>
+    <h3 id="console.infodata-...args">
+      <code>console.info([data][, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.100
+-->
+    <ul>
+      <li><code>data</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      The <code>console.info()</code> function is an alias for
+      <a href="#console_console_log_data_args"><code>console.log()</code></a
+      >.
+    </p>
+    <h3 id="console.logdata-...args">
+      <code>console.log([data][, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.100
+-->
+    <ul>
+      <li><code>data</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      Prints to <code>stdout</code> with newline. Multiple arguments can be
+      passed, with the first used as the primary message and all additional used
+      as substitution values similar to printf(3) (the arguments are all passed
+      to
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >).
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> count <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;count: %d&#39;</span><span class="op">,</span> count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">// Prints: count: 5, to stdout</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;count:&#39;</span><span class="op">,</span> count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">// Prints: count: 5, to stdout</span></a></code></pre>
+    </div>
+    <p>
+      See
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >
+      for more information.
+    </p>
+    <h3 id="console.tabletabulardata-properties">
+      <code>console.table(tabularData[, properties])</code>
+    </h3>
+    <!-- YAML
+added: v10.0.0
+-->
+    <ul>
+      <li><code>tabularData</code> {any}</li>
+      <li>
+        <code>properties</code> {string[]} Alternate properties for constructing
+        the table.
+      </li>
+    </ul>
+    <p>
+      Try to construct a table with the columns of the properties of
+      <code>tabularData</code> (or use <code>properties</code>) and rows of
+      <code>tabularData</code> and log it. Falls back to just logging the
+      argument if it can’t be parsed as tabular.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// These can&#39;t be parsed as tabular data</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="va">console</span>.<span class="at">table</span>(<span class="at">Symbol</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">// Symbol()</span></a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="va">console</span>.<span class="at">table</span>(<span class="kw">undefined</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">// undefined</span></a>
+<a class="sourceLine" id="cb12-7" title="7"></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="va">console</span>.<span class="at">table</span>([<span class="op">{</span> <span class="dt">a</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="st">&#39;Y&#39;</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">a</span><span class="op">:</span> <span class="st">&#39;Z&#39;</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="dv">2</span> <span class="op">}</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">// ┌─────────┬─────┬─────┐</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">// │ (index) │  a  │  b  │</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">// ├─────────┼─────┼─────┤</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">// │    0    │  1  │ &#39;Y&#39; │</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">// │    1    │ &#39;Z&#39; │  2  │</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">// └─────────┴─────┴─────┘</span></a>
+<a class="sourceLine" id="cb12-15" title="15"></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="va">console</span>.<span class="at">table</span>([<span class="op">{</span> <span class="dt">a</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="st">&#39;Y&#39;</span> <span class="op">},</span> <span class="op">{</span> <span class="dt">a</span><span class="op">:</span> <span class="st">&#39;Z&#39;</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="dv">2</span> <span class="op">}</span>]<span class="op">,</span> [<span class="st">&#39;a&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="co">// ┌─────────┬─────┐</span></a>
+<a class="sourceLine" id="cb12-18" title="18"><span class="co">// │ (index) │  a  │</span></a>
+<a class="sourceLine" id="cb12-19" title="19"><span class="co">// ├─────────┼─────┤</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="co">// │    0    │  1  │</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="co">// │    1    │ &#39;Z&#39; │</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="co">// └─────────┴─────┘</span></a></code></pre>
+    </div>
+    <h3 id="console.timelabel"><code>console.time([label])</code></h3>
+    <!-- YAML
+added: v0.1.104
+-->
+    <ul>
+      <li>
+        <code>label</code> {string} <strong>Default:</strong>
+        <code>'default'</code>
+      </li>
+    </ul>
+    <p>
+      Starts a timer that can be used to compute the duration of an operation.
+      Timers are identified by a unique <code>label</code>. Use the same
+      <code>label</code> when calling
+      <a href="#console_console_timeend_label"
+        ><code>console.timeEnd()</code></a
+      >
+      to stop the timer and output the elapsed time in suitable time units to
+      <code>stdout</code>. For example, if the elapsed time is 3869ms,
+      <code>console.timeEnd()</code> displays “3.869s”.
+    </p>
+    <h3 id="console.timeendlabel"><code>console.timeEnd([label])</code></h3>
+    <!-- YAML
+added: v0.1.104
+changes:
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/29251
+    description: The elapsed time is displayed with a suitable time unit.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5901
+    description: This method no longer supports multiple calls that don’t map
+                 to individual `console.time()` calls; see below for details.
+-->
+    <ul>
+      <li>
+        <code>label</code> {string} <strong>Default:</strong>
+        <code>'default'</code>
+      </li>
+    </ul>
+    <p>
+      Stops a timer that was previously started by calling
+      <a href="#console_console_time_label"><code>console.time()</code></a> and
+      prints the result to <code>stdout</code>:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="va">console</span>.<span class="at">time</span>(<span class="st">&#39;100-elements&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">100</span><span class="op">;</span> i<span class="op">++</span>) <span class="op">{}</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="va">console</span>.<span class="at">timeEnd</span>(<span class="st">&#39;100-elements&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">// prints 100-elements: 225.438ms</span></a></code></pre>
+    </div>
+    <h3 id="console.timeloglabel-...data">
+      <code>console.timeLog([label][, ...data])</code>
+    </h3>
+    <!-- YAML
+added: v10.7.0
+-->
+    <ul>
+      <li>
+        <code>label</code> {string} <strong>Default:</strong>
+        <code>'default'</code>
+      </li>
+      <li><code>...data</code> {any}</li>
+    </ul>
+    <p>
+      For a timer that was previously started by calling
+      <a href="#console_console_time_label"><code>console.time()</code></a
+      >, prints the elapsed time and other <code>data</code> arguments to
+      <code>stdout</code>:
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">console</span>.<span class="at">time</span>(<span class="st">&#39;process&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> value <span class="op">=</span> <span class="at">expensiveProcess1</span>()<span class="op">;</span> <span class="co">// Returns 42</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="va">console</span>.<span class="at">timeLog</span>(<span class="st">&#39;process&#39;</span><span class="op">,</span> value)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">// Prints &quot;process: 365.227ms 42&quot;.</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="at">doExpensiveProcess2</span>(value)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="va">console</span>.<span class="at">timeEnd</span>(<span class="st">&#39;process&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="console.tracemessage-...args">
+      <code>console.trace([message][, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.104
+-->
+    <ul>
+      <li><code>message</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      Prints to <code>stderr</code> the string <code>'Trace: '</code>, followed
+      by the
+      <a href="util.md#util_util_format_format_args"
+        ><code>util.format()</code></a
+      >
+      formatted message and stack trace to the current position in the code.
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="va">console</span>.<span class="at">trace</span>(<span class="st">&#39;Show me&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">// Prints: (stack trace will vary based on where trace is called)</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">//  Trace: Show me</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">//    at repl:2:9</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">//    at REPLServer.defaultEval (repl.js:248:27)</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">//    at bound (domain.js:287:14)</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">//    at REPLServer.runBound [as eval] (domain.js:300:12)</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">//    at REPLServer.&lt;anonymous&gt; (repl.js:412:12)</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">//    at emitOne (events.js:82:20)</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">//    at REPLServer.emit (events.js:169:7)</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">//    at REPLServer.Interface._onLine (readline.js:210:10)</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">//    at REPLServer.Interface._line (readline.js:549:8)</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">//    at REPLServer.Interface._ttyWrite (readline.js:826:14)</span></a></code></pre>
+    </div>
+    <h3 id="console.warndata-...args">
+      <code>console.warn([data][, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.100
+-->
+    <ul>
+      <li><code>data</code> {any}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      The <code>console.warn()</code> function is an alias for
+      <a href="#console_console_error_data_args"><code>console.error()</code></a
+      >.
+    </p>
+    <h2 id="inspector-only-methods">Inspector only methods</h2>
+    <p>
+      The following methods are exposed by the V8 engine in the general API but
+      do not display anything unless used in conjunction with the
+      <a href="debugger.md">inspector</a> (<code>--inspect</code> flag).
+    </p>
+    <h3 id="console.profilelabel"><code>console.profile([label])</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <ul>
+      <li><code>label</code> {string}</li>
+    </ul>
+    <p>
+      This method does not display anything unless used in the inspector. The
+      <code>console.profile()</code> method starts a JavaScript CPU profile with
+      an optional label until
+      <a href="#console_console_profileend_label"
+        ><code>console.profileEnd()</code></a
+      >
+      is called. The profile is then added to the <strong>Profile</strong> panel
+      of the inspector.
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="va">console</span>.<span class="at">profile</span>(<span class="st">&#39;MyLabel&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">// Some code</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="va">console</span>.<span class="at">profileEnd</span>(<span class="st">&#39;MyLabel&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="co">// Adds the profile &#39;MyLabel&#39; to the Profiles panel of the inspector.</span></a></code></pre>
+    </div>
+    <h3 id="console.profileendlabel">
+      <code>console.profileEnd([label])</code>
+    </h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <ul>
+      <li><code>label</code> {string}</li>
+    </ul>
+    <p>
+      This method does not display anything unless used in the inspector. Stops
+      the current JavaScript CPU profiling session if one has been started and
+      prints the report to the <strong>Profiles</strong> panel of the inspector.
+      See
+      <a href="#console_console_profile_label"
+        ><code>console.profile()</code></a
+      >
+      for an example.
+    </p>
+    <p>
+      If this method is called without a label, the most recently started
+      profile is stopped.
+    </p>
+    <h3 id="console.timestamplabel"><code>console.timeStamp([label])</code></h3>
+    <!-- YAML
+added: v8.0.0
+-->
+    <ul>
+      <li><code>label</code> {string}</li>
+    </ul>
+    <p>
+      This method does not display anything unless used in the inspector. The
+      <code>console.timeStamp()</code> method adds an event with the label
+      <code>'label'</code> to the <strong>Timeline</strong> panel of the
+      inspector.
+    </p>
+  </body>
+</html>

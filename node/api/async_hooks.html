@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>async_hooks</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="async-hooks">Async hooks</h1>
+    <!--introduced_in=v8.1.0-->
+    <blockquote>
+      <p>Stability: 1 - Experimental</p>
+    </blockquote>
+    <!-- source_link=lib/async_hooks.js -->
+    <p>
+      The <code>async_hooks</code> module provides an API to track asynchronous
+      resources. It can be accessed using:
+    </p>
+    <pre
+      class="mjs"
+    ><code>import async_hooks from &#39;async_hooks&#39;;</code></pre>
+    <pre
+      class="cjs"
+    ><code>const async_hooks = require(&#39;async_hooks&#39;);</code></pre>
+    <h2 id="terminology">Terminology</h2>
+    <p>
+      An asynchronous resource represents an object with an associated callback.
+      This callback may be called multiple times, for example, the
+      <code>'connection'</code> event in <code>net.createServer()</code>, or
+      just a single time like in <code>fs.open()</code>. A resource can also be
+      closed before the callback is called. <code>AsyncHook</code> does not
+      explicitly distinguish between these different cases but will represent
+      them as the abstract concept that is a resource.
+    </p>
+    <p>
+      If
+      <a href="worker_threads.md#worker_threads_class_worker"
+        ><code>Worker</code></a
+      >s are used, each thread has an independent
+      <code>async_hooks</code> interface, and each thread will use a new set of
+      async IDs.
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>Following is a simple overview of the public API.</p>
+    <pre class="mjs"><code>import async_hooks from &#39;async_hooks&#39;;
+
+// Return the ID of the current execution context.
+const eid = async_hooks.executionAsyncId();
+
+// Return the ID of the handle responsible for triggering the callback of the
+// current execution scope to call.
+const tid = async_hooks.triggerAsyncId();
+
+// Create a new AsyncHook instance. All of these callbacks are optional.
+const asyncHook =
+    async_hooks.createHook({ init, before, after, destroy, promiseResolve });
+
+// Allow callbacks of this AsyncHook instance to call. This is not an implicit
+// action after running the constructor, and must be explicitly run to begin
+// executing callbacks.
+asyncHook.enable();
+
+// Disable listening for new asynchronous events.
+asyncHook.disable();
+
+//
+// The following are the callbacks that can be passed to createHook().
+//
+
+// init is called during object construction. The resource may not have
+// completed construction when this callback runs, therefore all fields of the
+// resource referenced by &quot;asyncId&quot; may not have been populated.
+function init(asyncId, type, triggerAsyncId, resource) { }
+
+// Before is called just before the resource&#39;s callback is called. It can be
+// called 0-N times for handles (such as TCPWrap), and will be called exactly 1
+// time for requests (such as FSReqCallback).
+function before(asyncId) { }
+
+// After is called just after the resource&#39;s callback has finished.
+function after(asyncId) { }
+
+// Destroy is called when the resource is destroyed.
+function destroy(asyncId) { }
+
+// promiseResolve is called only for promise resources, when the
+// `resolve` function passed to the `Promise` constructor is invoked
+// (either directly or through other means of resolving a promise).
+function promiseResolve(asyncId) { }</code></pre>
+    <pre class="cjs"><code>const async_hooks = require(&#39;async_hooks&#39;);
+
+// Return the ID of the current execution context.
+const eid = async_hooks.executionAsyncId();
+
+// Return the ID of the handle responsible for triggering the callback of the
+// current execution scope to call.
+const tid = async_hooks.triggerAsyncId();
+
+// Create a new AsyncHook instance. All of these callbacks are optional.
+const asyncHook =
+    async_hooks.createHook({ init, before, after, destroy, promiseResolve });
+
+// Allow callbacks of this AsyncHook instance to call. This is not an implicit
+// action after running the constructor, and must be explicitly run to begin
+// executing callbacks.
+asyncHook.enable();
+
+// Disable listening for new asynchronous events.
+asyncHook.disable();
+
+//
+// The following are the callbacks that can be passed to createHook().
+//
+
+// init is called during object construction. The resource may not have
+// completed construction when this callback runs, therefore all fields of the
+// resource referenced by &quot;asyncId&quot; may not have been populated.
+function init(asyncId, type, triggerAsyncId, resource) { }
+
+// Before is called just before the resource&#39;s callback is called. It can be
+// called 0-N times for handles (such as TCPWrap), and will be called exactly 1
+// time for requests (such as FSReqCallback).
+function before(asyncId) { }
+
+// After is called just after the resource&#39;s callback has finished.
+function after(asyncId) { }
+
+// Destroy is called when the resource is destroyed.
+function destroy(asyncId) { }
+
+// promiseResolve is called only for promise resources, when the
+// `resolve` function passed to the `Promise` constructor is invoked
+// (either directly or through other means of resolving a promise).
+function promiseResolve(asyncId) { }</code></pre>
+    <h2 id="async_hooks.createhookcallbacks">
+      <code>async_hooks.createHook(callbacks)</code>
+    </h2>
+    <!-- YAML
+added: v8.1.0
+-->
+    <ul>
+      <li>
+        <code>callbacks</code> {Object} The
+        <a href="#async_hooks_hook_callbacks">Hook Callbacks</a> to register
+        <ul>
+          <li>
+            <code>init</code> {Function} The
+            <a href="#async_hooks_init_asyncid_type_triggerasyncid_resource"
+              ><code>init</code> callback</a
+            >.
+          </li>
+          <li>
+            <code>before</code> {Function} The
+            <a href="#async_hooks_before_asyncid"
+              ><code>before</code> callback</a
+            >.
+          </li>
+          <li>
+            <code>after</code> {Function} The
+            <a href="#async_hooks_after_asyncid"><code>after</code> callback</a
+            >.
+          </li>
+          <li>
+            <code>destroy</code> {Function} The
+            <a href="#async_hooks_destroy_asyncid"
+              ><code>destroy</code> callback</a
+            >.
+          </li>
+          <li>
+            <code>promiseResolve</code> {Function} The
+            <a href="#async_hooks_promiseresolve_asyncid"
+              ><code>promiseResolve</code> callback</a
+            >.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Returns: {AsyncHook} Instance used for disabling and enabling hooks
+      </li>
+    </ul>
+    <p>
+      Registers functions to be called for different lifetime events of each
+      async operation.
+    </p>
+    <p>
+      The callbacks
+      <code>init()</code>/<code>before()</code>/<code>after()</code>/<code
+        >destroy()</code
+      >
+      are called for the respective asynchronous event during a resource’s
+      lifetime.
+    </p>
+    <p>
+      All callbacks are optional. For example, if only resource cleanup needs to
+      be tracked, then only the <code>destroy</code> callback needs to be
+      passed. The specifics of all functions that can be passed to
+      <code>callbacks</code> is in the
+      <a href="#async_hooks_hook_callbacks">Hook Callbacks</a> section.
+    </p>
+    <pre class="mjs"><code>import { createHook } from &#39;async_hooks&#39;;
+
+const asyncHook = createHook({
+  init(asyncId, type, triggerAsyncId, resource) { },
+  destroy(asyncId) { }
+});</code></pre>
+    <pre class="cjs"><code>const async_hooks = require(&#39;async_hooks&#39;);
+
+const asyncHook = async_hooks.createHook({
+  init(asyncId, type, triggerAsyncId, resource) { },
+  destroy(asyncId) { }
+});</code></pre>
+    <p>The callbacks will be inherited via the prototype chain:</p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">class</span> MyAsyncCallbacks <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="at">init</span>(asyncId<span class="op">,</span> type<span class="op">,</span> triggerAsyncId<span class="op">,</span> resource) <span class="op">{</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="at">destroy</span>(asyncId) <span class="op">{}</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">class</span> MyAddedCallbacks <span class="kw">extends</span> MyAsyncCallbacks <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="at">before</span>(asyncId) <span class="op">{</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="at">after</span>(asyncId) <span class="op">{</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb7-10" title="10"></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="kw">const</span> asyncHook <span class="op">=</span> <span class="va">async_hooks</span>.<span class="at">createHook</span>(<span class="kw">new</span> <span class="at">MyAddedCallbacks</span>())<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Because promises are asynchronous resources whose lifecycle is tracked via
+      the async hooks mechanism, the <code>init()</code>, <code>before()</code>,
+      <code>after()</code>, and <code>destroy()</code> callbacks
+      <em>must not</em> be async functions that return promises.
+    </p>
+    <h3 id="error-handling">Error handling</h3>
+    <p>
+      If any <code>AsyncHook</code> callbacks throw, the application will print
+      the stack trace and exit. The exit path does follow that of an uncaught
+      exception, but all <code>'uncaughtException'</code> listeners are removed,
+      thus forcing the process to exit. The <code>'exit'</code> callbacks will
+      still be called unless the application is run with
+      <code>--abort-on-uncaught-exception</code>, in which case a stack trace
+      will be printed and the application exits, leaving a core file.
+    </p>
+    <p>
+      The reason for this error handling behavior is that these callbacks are
+      running at potentially volatile points in an object’s lifetime, for
+      example during class construction and destruction. Because of this, it is
+      deemed necessary to bring down the process quickly in order to prevent an
+      unintentional abort in the future. This is subject to change in the future
+      if a comprehensive analysis is performed to ensure an exception can follow
+      the normal control flow without unintentional side effects.
+    </p>
+    <h3 id="printing-in-asynchooks-callbacks">
+      Printing in AsyncHooks callbacks
+    </h3>
+    <p>
+      Because printing to the console is an asynchronous operation,
+      <code>console.log()</code> will cause the AsyncHooks callbacks to be
+      called. Using <code>console.log()</code> or similar asynchronous
+      operations inside an AsyncHooks callback function will thus cause an
+      infinite recursion. An easy solution to this when debugging is to use a
+      synchronous logging operation such as
+      <code>fs.writeFileSync(file, msg, flag)</code>. This will print to the
+      file and will not invoke AsyncHooks recursively because it is synchronous.
+    </p>
+    <pre class="mjs"><code>import { writeFileSync } from &#39;fs&#39;;
+import { format } from &#39;util&#39;;
+
+function debug(...args) {
+  // Use a function like this one when debugging inside an AsyncHooks callback
+  writeFileSync(&#39;log.out&#39;, `${format(...args)}\n`, { flag: &#39;a&#39; });
+}</code></pre>
+    <pre class="cjs"><code>const fs = require(&#39;fs&#39;);
+const util = require(&#39;util&#39;);
+
+function debug(...args) {
+  // Use a function like this one when debugging inside an AsyncHooks callback
+  fs.writeFileSync(&#39;log.out&#39;, `${util.format(...args)}\n`, { flag: &#39;a&#39; });
+}</code></pre>
+    <p>
+      If an asynchronous operation is needed for logging, it is possible to keep
+      track of what caused the asynchronous operation using the information
+      provided by AsyncHooks itself. The logging should then be skipped when it
+      was the logging itself that caused AsyncHooks callback to call. By doing
+      this the otherwise infinite recursion is broken.
+    </p>
+    <h2 id="class-asynchook">Class: <code>AsyncHook</code></h2>
+    <p>
+      The class <code>AsyncHook</code> exposes an interface for tracking
+      lifetime events of asynchronous operations.
+    </p>
+    <h3 id="asynchook.enable"><code>asyncHook.enable()</code></h3>
+    <ul>
+      <li>Returns: {AsyncHook} A reference to <code>asyncHook</code>.</li>
+    </ul>
+    <p>
+      Enable the callbacks for a given <code>AsyncHook</code> instance. If no
+      callbacks are provided, enabling is a no-op.
+    </p>
+    <p>
+      The <code>AsyncHook</code> instance is disabled by default. If the
+      <code>AsyncHook</code> instance should be enabled immediately after
+      creation, the following pattern can be used.
+    </p>
+    <pre class="mjs"><code>import { createHook } from &#39;async_hooks&#39;;
+
+const hook = createHook(callbacks).enable();</code></pre>
+    <pre class="cjs"><code>const async_hooks = require(&#39;async_hooks&#39;);
+
+const hook = async_hooks.createHook(callbacks).enable();</code></pre>
+    <h3 id="asynchook.disable"><code>asyncHook.disable()</code></h3>
+    <ul>
+      <li>Returns: {AsyncHook} A reference to <code>asyncHook</code>.</li>
+    </ul>
+    <p>
+      Disable the callbacks for a given <code>AsyncHook</code> instance from the
+      global pool of <code>AsyncHook</code> callbacks to be executed. Once a
+      hook has been disabled it will not be called again until enabled.
+    </p>
+    <p>
+      For API consistency <code>disable()</code> also returns the
+      <code>AsyncHook</code> instance.
+    </p>
+    <h3 id="hook-callbacks">Hook callbacks</h3>
+    <p>
+      Key events in the lifetime of asynchronous events have been categorized
+      into four areas: instantiation, before/after the callback is called, and
+      when the instance is destroyed.
+    </p>
+    <h4 id="initasyncid-type-triggerasyncid-resource">
+      <code>init(asyncId, type, triggerAsyncId, resource)</code>
+    </h4>
+    <ul>
+      <li><code>asyncId</code> {number} A unique ID for the async resource.</li>
+      <li><code>type</code> {string} The type of the async resource.</li>
+      <li>
+        <code>triggerAsyncId</code> {number} The unique ID of the async resource
+        in whose execution context this async resource was created.
+      </li>
+      <li>
+        <code>resource</code> {Object} Reference to the resource representing
+        the async operation, needs to be released during <em>destroy</em>.
+      </li>
+    </ul>
+    <p>
+      Called when a class is constructed that has the <em>possibility</em> to
+      emit an asynchronous event. This <em>does not</em> mean the instance must
+      call <code>before</code>/<code>after</code> before <code>destroy</code> is
+      called, only that the possibility exists.
+    </p>
+    <p>
+      This behavior can be observed by doing something like opening a resource
+      then closing it before the resource can be used. The following snippet
+      demonstrates this.
+    </p>
+    <pre class="mjs"><code>import { createServer } from &#39;net&#39;;
+
+createServer().listen(function() { this.close(); });
+// OR
+clearTimeout(setTimeout(() =&gt; {}, 10));</code></pre>
+    <pre
+      class="cjs"
+    ><code>require(&#39;net&#39;).createServer().listen(function() { this.close(); });
+// OR
+clearTimeout(setTimeout(() =&gt; {}, 10));</code></pre>
+    <p>
+      Every new resource is assigned an ID that is unique within the scope of
+      the current Node.js instance.
+    </p>
+    <h5 id="type"><code>type</code></h5>
+    <p>
+      The <code>type</code> is a string identifying the type of resource that
+      caused <code>init</code> to be called. Generally, it will correspond to
+      the name of the resource’s constructor.
+    </p>
+    <pre
+      class="text"
+    ><code>FSEVENTWRAP, FSREQCALLBACK, GETADDRINFOREQWRAP, GETNAMEINFOREQWRAP, HTTPINCOMINGMESSAGE,
+HTTPCLIENTREQUEST, JSSTREAM, PIPECONNECTWRAP, PIPEWRAP, PROCESSWRAP, QUERYWRAP,
+SHUTDOWNWRAP, SIGNALWRAP, STATWATCHER, TCPCONNECTWRAP, TCPSERVERWRAP, TCPWRAP,
+TTYWRAP, UDPSENDWRAP, UDPWRAP, WRITEWRAP, ZLIB, SSLCONNECTION, PBKDF2REQUEST,
+RANDOMBYTESREQUEST, TLSWRAP, Microtask, Timeout, Immediate, TickObject</code></pre>
+    <p>
+      There is also the <code>PROMISE</code> resource type, which is used to
+      track <code>Promise</code> instances and asynchronous work scheduled by
+      them.
+    </p>
+    <p>
+      Users are able to define their own <code>type</code> when using the public
+      embedder API.
+    </p>
+    <p>
+      It is possible to have type name collisions. Embedders are encouraged to
+      use unique prefixes, such as the npm package name, to prevent collisions
+      when listening to the hooks.
+    </p>
+    <h5 id="triggerasyncid"><code>triggerAsyncId</code></h5>
+    <p>
+      <code>triggerAsyncId</code> is the <code>asyncId</code> of the resource
+      that caused (or “triggered”) the new resource to initialize and that
+      caused <code>init</code> to call. This is different from
+      <code>async_hooks.executionAsyncId()</code> that only shows
+      <em>when</em> a resource was created, while
+      <code>triggerAsyncId</code> shows <em>why</em> a resource was created.
+    </p>
+    <p>
+      The following is a simple demonstration of <code>triggerAsyncId</code>:
+    </p>
+    <pre
+      class="mjs"
+    ><code>import { createHook, executionASyncId } from &#39;async_hooks&#39;;
+import { stdout } from &#39;process&#39;;
+import net from &#39;net&#39;;
+
+createHook({
+  init(asyncId, type, triggerAsyncId) {
+    const eid = executionAsyncId();
+    fs.writeSync(
+      stdout.fd,
+      `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+  }
+}).enable();
+
+net.createServer((conn) =&gt; {}).listen(8080);</code></pre>
+    <pre
+      class="cjs"
+    ><code>const { createHook, executionAsyncId } = require(&#39;async_hooks&#39;);
+const { fd } = require(&#39;process&#39;).stdout;
+const net = require(&#39;net&#39;);
+
+createHook({
+  init(asyncId, type, triggerAsyncId) {
+    const eid = executionAsyncId();
+    fs.writeSync(
+      fd,
+      `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+  }
+}).enable();
+
+net.createServer((conn) =&gt; {}).listen(8080);</code></pre>
+    <p>Output when hitting the server with <code>nc localhost 8080</code>:</p>
+    <pre class="console"><code>TCPSERVERWRAP(5): trigger: 1 execution: 1
+TCPWRAP(7): trigger: 5 execution: 0</code></pre>
+    <p>
+      The <code>TCPSERVERWRAP</code> is the server which receives the
+      connections.
+    </p>
+    <p>
+      The <code>TCPWRAP</code> is the new connection from the client. When a new
+      connection is made, the <code>TCPWrap</code> instance is immediately
+      constructed. This happens outside of any JavaScript stack. (An
+      <code>executionAsyncId()</code> of <code>0</code> means that it is being
+      executed from C++ with no JavaScript stack above it.) With only that
+      information, it would be impossible to link resources together in terms of
+      what caused them to be created, so <code>triggerAsyncId</code> is given
+      the task of propagating what resource is responsible for the new
+      resource’s existence.
+    </p>
+    <h5 id="resource"><code>resource</code></h5>
+    <p>
+      <code>resource</code> is an object that represents the actual async
+      resource that has been initialized. This can contain useful information
+      that can vary based on the value of <code>type</code>. For instance, for
+      the <code>GETADDRINFOREQWRAP</code> resource type,
+      <code>resource</code> provides the host name used when looking up the IP
+      address for the host in <code>net.Server.listen()</code>. The API for
+      accessing this information is not supported, but using the Embedder API,
+      users can provide and document their own resource objects. For example,
+      such a resource object could contain the SQL query being executed.
+    </p>
+    <p>
+      In some cases the resource object is reused for performance reasons, it is
+      thus not safe to use it as a key in a <code>WeakMap</code> or add
+      properties to it.
+    </p>
+    <h5 id="asynchronous-context-example">Asynchronous context example</h5>
+    <p>
+      The following is an example with additional information about the calls to
+      <code>init</code> between the <code>before</code> and
+      <code>after</code> calls, specifically what the callback to
+      <code>listen()</code> will look like. The output formatting is slightly
+      more elaborate to make calling context easier to see.
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">const</span> <span class="op">{</span> fd <span class="op">}</span> <span class="op">=</span> <span class="va">process</span>.<span class="at">stdout</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">let</span> indent <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="va">async_hooks</span>.<span class="at">createHook</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb18-5" title="5">  <span class="at">init</span>(asyncId<span class="op">,</span> type<span class="op">,</span> triggerAsyncId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-6" title="6">    <span class="kw">const</span> eid <span class="op">=</span> <span class="va">async_hooks</span>.<span class="at">executionAsyncId</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-7" title="7">    <span class="kw">const</span> indentStr <span class="op">=</span> <span class="st">&#39; &#39;</span>.<span class="at">repeat</span>(indent)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-8" title="8">    <span class="va">fs</span>.<span class="at">writeSync</span>(</a>
+<a class="sourceLine" id="cb18-9" title="9">      fd<span class="op">,</span></a>
+<a class="sourceLine" id="cb18-10" title="10">      <span class="vs">`</span><span class="sc">${</span>indentStr<span class="sc">}${</span>type<span class="sc">}</span><span class="vs">(</span><span class="sc">${</span>asyncId<span class="sc">}</span><span class="vs">):`</span> <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-11" title="11">      <span class="vs">` trigger: </span><span class="sc">${</span>triggerAsyncId<span class="sc">}</span><span class="vs"> execution: </span><span class="sc">${</span>eid<span class="sc">}\n</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-12" title="12">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-13" title="13">  <span class="at">before</span>(asyncId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-14" title="14">    <span class="kw">const</span> indentStr <span class="op">=</span> <span class="st">&#39; &#39;</span>.<span class="at">repeat</span>(indent)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-15" title="15">    <span class="va">fs</span>.<span class="at">writeSync</span>(fd<span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>indentStr<span class="sc">}</span><span class="vs">before:  </span><span class="sc">${</span>asyncId<span class="sc">}\n</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-16" title="16">    indent <span class="op">+=</span> <span class="dv">2</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-17" title="17">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-18" title="18">  <span class="at">after</span>(asyncId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-19" title="19">    indent <span class="op">-=</span> <span class="dv">2</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-20" title="20">    <span class="kw">const</span> indentStr <span class="op">=</span> <span class="st">&#39; &#39;</span>.<span class="at">repeat</span>(indent)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-21" title="21">    <span class="va">fs</span>.<span class="at">writeSync</span>(fd<span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>indentStr<span class="sc">}</span><span class="vs">after:  </span><span class="sc">${</span>asyncId<span class="sc">}\n</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-22" title="22">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-23" title="23">  <span class="at">destroy</span>(asyncId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-24" title="24">    <span class="kw">const</span> indentStr <span class="op">=</span> <span class="st">&#39; &#39;</span>.<span class="at">repeat</span>(indent)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-25" title="25">    <span class="va">fs</span>.<span class="at">writeSync</span>(fd<span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>indentStr<span class="sc">}</span><span class="vs">destroy:  </span><span class="sc">${</span>asyncId<span class="sc">}\n</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-26" title="26">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb18-27" title="27"><span class="op">}</span>).<span class="at">enable</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-28" title="28"></a>
+<a class="sourceLine" id="cb18-29" title="29"><span class="va">net</span>.<span class="at">createServer</span>(() <span class="kw">=&gt;</span> <span class="op">{}</span>).<span class="at">listen</span>(<span class="dv">8080</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-30" title="30">  <span class="co">// Let&#39;s wait 10ms before logging the server started.</span></a>
+<a class="sourceLine" id="cb18-31" title="31">  <span class="at">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-32" title="32">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;&gt;&gt;&gt;&#39;</span><span class="op">,</span> <span class="va">async_hooks</span>.<span class="at">executionAsyncId</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-33" title="33">  <span class="op">},</span> <span class="dv">10</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-34" title="34"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>Output from only starting the server:</p>
+    <pre class="console"><code>TCPSERVERWRAP(5): trigger: 1 execution: 1
+TickObject(6): trigger: 5 execution: 1
+before:  6
+  Timeout(7): trigger: 6 execution: 6
+after:   6
+destroy: 6
+before:  7
+&gt;&gt;&gt; 7
+  TickObject(8): trigger: 7 execution: 7
+after:   7
+before:  8
+after:   8</code></pre>
+    <p>
+      As illustrated in the example, <code>executionAsyncId()</code> and
+      <code>execution</code> each specify the value of the current execution
+      context; which is delineated by calls to <code>before</code> and
+      <code>after</code>.
+    </p>
+    <p>
+      Only using <code>execution</code> to graph resource allocation results in
+      the following:
+    </p>
+    <pre class="console"><code>  root(1)
+     ^
+     |
+TickObject(6)
+     ^
+     |
+ Timeout(7)</code></pre>
+    <p>
+      The <code>TCPSERVERWRAP</code> is not part of this graph, even though it
+      was the reason for <code>console.log()</code> being called. This is
+      because binding to a port without a host name is a
+      <em>synchronous</em> operation, but to maintain a completely asynchronous
+      API the user’s callback is placed in a <code>process.nextTick()</code>.
+      Which is why <code>TickObject</code> is present in the output and is a
+      ‘parent’ for <code>.listen()</code> callback.
+    </p>
+    <p>
+      The graph only shows <em>when</em> a resource was created, not
+      <em>why</em>, so to track the <em>why</em> use
+      <code>triggerAsyncId</code>. Which can be represented with the following
+      graph:
+    </p>
+    <pre class="console"><code> bootstrap(1)
+     |
+     ˅
+TCPSERVERWRAP(5)
+     |
+     ˅
+ TickObject(6)
+     |
+     ˅
+  Timeout(7)</code></pre>
+    <h4 id="beforeasyncid"><code>before(asyncId)</code></h4>
+    <ul>
+      <li><code>asyncId</code> {number}</li>
+    </ul>
+    <p>
+      When an asynchronous operation is initiated (such as a TCP server
+      receiving a new connection) or completes (such as writing data to disk) a
+      callback is called to notify the user. The <code>before</code> callback is
+      called just before said callback is executed. <code>asyncId</code> is the
+      unique identifier assigned to the resource about to execute the callback.
+    </p>
+    <p>
+      The <code>before</code> callback will be called 0 to N times. The
+      <code>before</code> callback will typically be called 0 times if the
+      asynchronous operation was cancelled or, for example, if no connections
+      are received by a TCP server. Persistent asynchronous resources like a TCP
+      server will typically call the <code>before</code> callback multiple
+      times, while other operations like <code>fs.open()</code> will call it
+      only once.
+    </p>
+    <h4 id="afterasyncid"><code>after(asyncId)</code></h4>
+    <ul>
+      <li><code>asyncId</code> {number}</li>
+    </ul>
+    <p>
+      Called immediately after the callback specified in <code>before</code> is
+      completed.
+    </p>
+    <p>
+      If an uncaught exception occurs during execution of the callback, then
+      <code>after</code> will run <em>after</em> the
+      <code>'uncaughtException'</code> event is emitted or a
+      <code>domain</code>’s handler runs.
+    </p>
+    <h4 id="destroyasyncid"><code>destroy(asyncId)</code></h4>
+    <ul>
+      <li><code>asyncId</code> {number}</li>
+    </ul>
+    <p>
+      Called after the resource corresponding to <code>asyncId</code> is
+      destroyed. It is also called asynchronously from the embedder API
+      <code>emitDestroy()</code>.
+    </p>
+    <p>
+      Some resources depend on garbage collection for cleanup, so if a reference
+      is made to the <code>resource</code> object passed to <code>init</code> it
+      is possible that <code>destroy</code> will never be called, causing a
+      memory leak in the application. If the resource does not depend on garbage
+      collection, then this will not be an issue.
+    </p>
+    <h4 id="promiseresolveasyncid"><code>promiseResolve(asyncId)</code></h4>
+    <!-- YAML
+added: v8.6.0
+-->
+    <ul>
+      <li><code>asyncId</code> {number}</li>
+    </ul>
+    <p>
+      Called when the <code>resolve</code> function passed to the
+      <code>Promise</code> constructor is invoked (either directly or through
+      other means of resolving a promise).
+    </p>
+    <p><code>resolve()</code> does not do any observable synchronous work.</p>
+    <p>
+      The <code>Promise</code> is not necessarily fulfilled or rejected at this
+      point if the <code>Promise</code> was resolved by assuming the state of
+      another <code>Promise</code>.
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">new</span> <span class="at">Promise</span>((resolve) <span class="kw">=&gt;</span> <span class="at">resolve</span>(<span class="kw">true</span>)).<span class="at">then</span>((a) <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>calls the following callbacks:</p>
+    <pre class="text"><code>init for PROMISE with id 5, trigger id: 1
+  promise resolve 5      # corresponds to resolve(true)
+init for PROMISE with id 6, trigger id: 5  # the Promise returned by then()
+  before 6               # the then() callback is entered
+  promise resolve 6      # the then() callback resolves the promise by returning
+  after 6</code></pre>
+    <h3 id="async_hooks.executionasyncresource">
+      <code>async_hooks.executionAsyncResource()</code>
+    </h3>
+    <!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+-->
+    <ul>
+      <li>
+        Returns: {Object} The resource representing the current execution.
+        Useful to store data within the resource.
+      </li>
+    </ul>
+    <p>
+      Resource objects returned by <code>executionAsyncResource()</code> are
+      most often internal Node.js handle objects with undocumented APIs. Using
+      any functions or properties on the object is likely to crash your
+      application and should be avoided.
+    </p>
+    <p>
+      Using <code>executionAsyncResource()</code> in the top-level execution
+      context will return an empty object as there is no handle or request
+      object to use, but having an object representing the top-level can be
+      helpful.
+    </p>
+    <pre class="mjs"><code>import { open } from &#39;fs&#39;;
+import { executionAsyncId, executionAsyncResource } from &#39;async_hooks&#39;;
+
+console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
+open(new URL(import.meta.url), &#39;r&#39;, (err, fd) =&gt; {
+  console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+});</code></pre>
+    <pre class="cjs"><code>const { open } = require(&#39;fs&#39;);
+const { executionAsyncId, executionAsyncResource } = require(&#39;async_hooks&#39;);
+
+console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
+open(__filename, &#39;r&#39;, (err, fd) =&gt; {
+  console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+});</code></pre>
+    <p>
+      This can be used to implement continuation local storage without the use
+      of a tracking <code>Map</code> to store the metadata:
+    </p>
+    <pre class="mjs"><code>import { createServer } from &#39;http&#39;;
+import {
+  executionAsyncId,
+  executionAsyncResource,
+  createHook
+} from &#39;async_hooks&#39;;
+const sym = Symbol(&#39;state&#39;); // Private symbol to avoid pollution
+
+createHook({
+  init(asyncId, type, triggerAsyncId, resource) {
+    const cr = executionAsyncResource();
+    if (cr) {
+      resource[sym] = cr[sym];
+    }
+  }
+}).enable();
+
+const server = createServer((req, res) =&gt; {
+  executionAsyncResource()[sym] = { state: req.url };
+  setTimeout(function() {
+    res.end(JSON.stringify(executionAsyncResource()[sym]));
+  }, 100);
+}).listen(3000);</code></pre>
+    <pre class="cjs"><code>const { createServer } = require(&#39;http&#39;);
+const {
+  executionAsyncId,
+  executionAsyncResource,
+  createHook
+} = require(&#39;async_hooks&#39;);
+const sym = Symbol(&#39;state&#39;); // Private symbol to avoid pollution
+
+createHook({
+  init(asyncId, type, triggerAsyncId, resource) {
+    const cr = executionAsyncResource();
+    if (cr) {
+      resource[sym] = cr[sym];
+    }
+  }
+}).enable();
+
+const server = createServer((req, res) =&gt; {
+  executionAsyncResource()[sym] = { state: req.url };
+  setTimeout(function() {
+    res.end(JSON.stringify(executionAsyncResource()[sym]));
+  }, 100);
+}).listen(3000);</code></pre>
+    <h3 id="async_hooks.executionasyncid">
+      <code>async_hooks.executionAsyncId()</code>
+    </h3>
+    <!-- YAML
+added: v8.1.0
+changes:
+  - version: v8.2.0
+    pr-url: https://github.com/nodejs/node/pull/13490
+    description: Renamed from `currentId`.
+-->
+    <ul>
+      <li>
+        Returns: {number} The <code>asyncId</code> of the current execution
+        context. Useful to track when something calls.
+      </li>
+    </ul>
+    <pre
+      class="mjs"
+    ><code>import { executionAsyncId } from &#39;async_hooks&#39;;
+
+console.log(executionAsyncId());  // 1 - bootstrap
+fs.open(path, &#39;r&#39;, (err, fd) =&gt; {
+  console.log(executionAsyncId());  // 6 - open()
+});</code></pre>
+    <pre class="cjs"><code>const async_hooks = require(&#39;async_hooks&#39;);
+
+console.log(async_hooks.executionAsyncId());  // 1 - bootstrap
+fs.open(path, &#39;r&#39;, (err, fd) =&gt; {
+  console.log(async_hooks.executionAsyncId());  // 6 - open()
+});</code></pre>
+    <p>
+      The ID returned from <code>executionAsyncId()</code> is related to
+      execution timing, not causality (which is covered by
+      <code>triggerAsyncId()</code>):
+    </p>
+    <div class="sourceCode" id="cb30">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">const</span> server <span class="op">=</span> <span class="va">net</span>.<span class="at">createServer</span>((conn) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-2" title="2">  <span class="co">// Returns the ID of the server, not of the new connection, because the</span></a>
+<a class="sourceLine" id="cb30-3" title="3">  <span class="co">// callback runs in the execution scope of the server&#39;s MakeCallback().</span></a>
+<a class="sourceLine" id="cb30-4" title="4">  <span class="va">async_hooks</span>.<span class="at">executionAsyncId</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-5" title="5"></a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="op">}</span>).<span class="at">listen</span>(port<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb30-7" title="7">  <span class="co">// Returns the ID of a TickObject (process.nextTick()) because all</span></a>
+<a class="sourceLine" id="cb30-8" title="8">  <span class="co">// callbacks passed to .listen() are wrapped in a nextTick().</span></a>
+<a class="sourceLine" id="cb30-9" title="9">  <span class="va">async_hooks</span>.<span class="at">executionAsyncId</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-10" title="10"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Promise contexts may not get precise <code>executionAsyncIds</code> by
+      default. See the section on
+      <a href="#async_hooks_promise_execution_tracking"
+        >promise execution tracking</a
+      >.
+    </p>
+    <h3 id="async_hooks.triggerasyncid">
+      <code>async_hooks.triggerAsyncId()</code>
+    </h3>
+    <ul>
+      <li>
+        Returns: {number} The ID of the resource responsible for calling the
+        callback that is currently being executed.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb31">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">const</span> server <span class="op">=</span> <span class="va">net</span>.<span class="at">createServer</span>((conn) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-2" title="2">  <span class="co">// The resource that caused (or triggered) this callback to be called</span></a>
+<a class="sourceLine" id="cb31-3" title="3">  <span class="co">// was that of the new connection. Thus the return value of triggerAsyncId()</span></a>
+<a class="sourceLine" id="cb31-4" title="4">  <span class="co">// is the asyncId of &quot;conn&quot;.</span></a>
+<a class="sourceLine" id="cb31-5" title="5">  <span class="va">async_hooks</span>.<span class="at">triggerAsyncId</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-6" title="6"></a>
+<a class="sourceLine" id="cb31-7" title="7"><span class="op">}</span>).<span class="at">listen</span>(port<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-8" title="8">  <span class="co">// Even though all callbacks passed to .listen() are wrapped in a nextTick()</span></a>
+<a class="sourceLine" id="cb31-9" title="9">  <span class="co">// the callback itself exists because the call to the server&#39;s .listen()</span></a>
+<a class="sourceLine" id="cb31-10" title="10">  <span class="co">// was made. So the return value would be the ID of the server.</span></a>
+<a class="sourceLine" id="cb31-11" title="11">  <span class="va">async_hooks</span>.<span class="at">triggerAsyncId</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-12" title="12"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Promise contexts may not get valid <code>triggerAsyncId</code>s by
+      default. See the section on
+      <a href="#async_hooks_promise_execution_tracking"
+        >promise execution tracking</a
+      >.
+    </p>
+    <h2 id="promise-execution-tracking">Promise execution tracking</h2>
+    <p>
+      By default, promise executions are not assigned <code>asyncId</code>s due
+      to the relatively expensive nature of the
+      <a
+        href="https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit"
+        >promise introspection API</a
+      >
+      provided by V8. This means that programs using promises or
+      <code>async</code>/<code>await</code> will not get correct execution and
+      trigger ids for promise callback contexts by default.
+    </p>
+    <pre
+      class="mjs"
+    ><code>import { executionAsyncId, triggerAsyncId } from &#39;async_hooks&#39;;
+
+Promise.resolve(1729).then(() =&gt; {
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+});
+// produces:
+// eid 1 tid 0</code></pre>
+    <pre
+      class="cjs"
+    ><code>const { executionAsyncId, triggerAsyncId } = require(&#39;async_hooks&#39;);
+
+Promise.resolve(1729).then(() =&gt; {
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+});
+// produces:
+// eid 1 tid 0</code></pre>
+    <p>
+      Observe that the <code>then()</code> callback claims to have executed in
+      the context of the outer scope even though there was an asynchronous hop
+      involved. Also, the <code>triggerAsyncId</code> value is <code>0</code>,
+      which means that we are missing context about the resource that caused
+      (triggered) the <code>then()</code> callback to be executed.
+    </p>
+    <p>
+      Installing async hooks via <code>async_hooks.createHook</code> enables
+      promise execution tracking:
+    </p>
+    <pre
+      class="mjs"
+    ><code>import { createHook, executionAsyncId, triggerAsyncId } from &#39;async_hooks&#39;;
+createHook({ init() {} }).enable(); // forces PromiseHooks to be enabled.
+Promise.resolve(1729).then(() =&gt; {
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+});
+// produces:
+// eid 7 tid 6</code></pre>
+    <pre
+      class="cjs"
+    ><code>const { createHook, exectionAsyncId, triggerAsyncId } = require(&#39;async_hooks&#39;);
+
+createHook({ init() {} }).enable(); // forces PromiseHooks to be enabled.
+Promise.resolve(1729).then(() =&gt; {
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+});
+// produces:
+// eid 7 tid 6</code></pre>
+    <p>
+      In this example, adding any actual hook function enabled the tracking of
+      promises. There are two promises in the example above; the promise created
+      by <code>Promise.resolve()</code> and the promise returned by the call to
+      <code>then()</code>. In the example above, the first promise got the
+      <code>asyncId</code> <code>6</code> and the latter got
+      <code>asyncId</code> <code>7</code>. During the execution of the
+      <code>then()</code> callback, we are executing in the context of promise
+      with <code>asyncId</code> <code>7</code>. This promise was triggered by
+      async resource <code>6</code>.
+    </p>
+    <p>
+      Another subtlety with promises is that <code>before</code> and
+      <code>after</code> callbacks are run only on chained promises. That means
+      promises not created by <code>then()</code>/<code>catch()</code> will not
+      have the <code>before</code> and <code>after</code> callbacks fired on
+      them. For more details see the details of the V8
+      <a
+        href="https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit"
+        >PromiseHooks</a
+      >
+      API.
+    </p>
+    <h2 id="javascript-embedder-api">JavaScript embedder API</h2>
+    <p>
+      Library developers that handle their own asynchronous resources performing
+      tasks like I/O, connection pooling, or managing callback queues may use
+      the <code>AsyncResource</code> JavaScript API so that all the appropriate
+      callbacks are called.
+    </p>
+    <h3 id="class-asyncresource">Class: <code>AsyncResource</code></h3>
+    <p>
+      The documentation for this class has moved
+      <a href="async_context.md#async_context_class_asyncresource"
+        ><code>AsyncResource</code></a
+      >.
+    </p>
+    <h2 id="class-asynclocalstorage">Class: <code>AsyncLocalStorage</code></h2>
+    <p>
+      The documentation for this class has moved
+      <a href="async_context.md#async_context_class_asynclocalstorage"
+        ><code>AsyncLocalStorage</code></a
+      >.
+    </p>
+  </body>
+</html>

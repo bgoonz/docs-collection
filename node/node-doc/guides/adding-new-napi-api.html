@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>adding-new-napi-api</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="contributing-a-new-api-to-node-api">Contributing a new API to Node-API</h1>
+<p>Node-API is the next-generation ABI-stable API for native modules. While improving the API surface is encouraged and welcomed, the following are a set of principles and guidelines to keep in mind while adding a new Node-API.</p>
+<ul>
+<li>A new API <strong>must</strong> adhere to Node-API API shape and spirit.
+<ul>
+<li><strong>Must</strong> be a C API.</li>
+<li><strong>Must</strong> not throw exceptions.</li>
+<li><strong>Must</strong> return <code>napi_status</code>.</li>
+<li><strong>Should</strong> consume <code>napi_env</code>.</li>
+<li><strong>Must</strong> operate only on primitive data types, pointers to primitive data types or opaque handles.</li>
+<li><strong>Must</strong> be a necessary API and not a nice to have. Convenience APIs belong in node-addon-api.</li>
+<li><strong>Must</strong> not change the signature of an existing Node-API API or break ABI compatibility with other versions of Node.js.</li>
+</ul></li>
+<li>New API <strong>should</strong> be agnostic towards the underlying JavaScript VM.</li>
+<li>New API PRs <strong>must</strong> have a corresponding documentation update.</li>
+<li>New API PRs <strong>must</strong> be tagged as <strong>n-api</strong>.</li>
+<li>There <strong>must</strong> be at least one test case showing how to use the API.</li>
+<li>There <strong>should</strong> be at least one test case per interesting use of the API.</li>
+<li>There <strong>should</strong> be a sample provided that operates in a realistic way (operating how a real addon would be written).</li>
+<li>A new API <strong>should</strong> be discussed at the Node-API team meeting.</li>
+<li>A new API addition <strong>must</strong> be signed off by at least two members of the Node-API team.</li>
+<li>A new API addition <strong>should</strong> be simultaneously implemented in at least one other VM implementation of Node.js.</li>
+<li>A new API <strong>must</strong> be considered experimental for at least one minor version release of Node.js before it can be considered for promotion out of experimental.
+<ul>
+<li>Experimental APIs <strong>must</strong> be documented as such.</li>
+<li>Experimental APIs <strong>must</strong> require an explicit compile-time flag (<code>#define</code>) to be set to opt-in.</li>
+<li>Experimental APIs <strong>must</strong> be considered for backport.</li>
+<li>Experimental status exit criteria <strong>must</strong> involve at least the following:
+<ul>
+<li>A new PR <strong>must</strong> be opened in <code>nodejs/node</code> to remove experimental status. This PR <strong>must</strong> be tagged as <strong>n-api</strong> and <strong>semver-minor</strong>.</li>
+<li>Exiting an API from experimental <strong>must</strong> be signed off by the team.</li>
+<li>If a backport is merited, an API <strong>must</strong> have a down-level implementation.</li>
+<li>The API <strong>should</strong> be used by a published real-world module. Use of the API by a real-world published module will contribute favorably to the decision to take an API out of experimental status.</li>
+<li>The API <strong>must</strong> be implemented in a Node.js implementation with an alternate VM.</li>
+</ul></li>
+</ul></li>
+</ul>
+</body>
+</html>

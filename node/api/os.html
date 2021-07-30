@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>os</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="os">OS</h1>
+    <!--introduced_in=v0.10.0-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- source_link=lib/os.js -->
+    <p>
+      The <code>os</code> module provides operating system-related utility
+      methods and properties. It can be accessed using:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> os <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;os&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="os.eol"><code>os.EOL</code></h2>
+    <!-- YAML
+added: v0.7.8
+-->
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>The operating system-specific end-of-line marker.</p>
+    <ul>
+      <li><code>\n</code> on POSIX</li>
+      <li><code>\r\n</code> on Windows</li>
+    </ul>
+    <h2 id="os.arch"><code>os.arch()</code></h2>
+    <!-- YAML
+added: v0.5.0
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>
+      Returns the operating system CPU architecture for which the Node.js binary
+      was compiled. Possible values are <code>'arm'</code>,
+      <code>'arm64'</code>, <code>'ia32'</code>, <code>'mips'</code>,
+      <code>'mipsel'</code>, <code>'ppc'</code>, <code>'ppc64'</code>,
+      <code>'s390'</code>, <code>'s390x'</code>, <code>'x32'</code>, and
+      <code>'x64'</code>.
+    </p>
+    <p>
+      The return value is equivalent to
+      <a href="process.md#process_process_arch"><code>process.arch</code></a
+      >.
+    </p>
+    <h2 id="os.constants"><code>os.constants</code></h2>
+    <!-- YAML
+added: v6.3.0
+-->
+    <ul>
+      <li>{Object}</li>
+    </ul>
+    <p>
+      Contains commonly used operating system-specific constants for error
+      codes, process signals, and so on. The specific constants defined are
+      described in <a href="#os_os_constants_1">OS constants</a>.
+    </p>
+    <h2 id="os.cpus"><code>os.cpus()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {Object[]}</li>
+    </ul>
+    <p>
+      Returns an array of objects containing information about each logical CPU
+      core.
+    </p>
+    <p>The properties included on each object include:</p>
+    <ul>
+      <li><code>model</code> {string}</li>
+      <li><code>speed</code> {number} (in MHz)</li>
+      <li>
+        <code>times</code> {Object}
+        <ul>
+          <li>
+            <code>user</code> {number} The number of milliseconds the CPU has
+            spent in user mode.
+          </li>
+          <li>
+            <code>nice</code> {number} The number of milliseconds the CPU has
+            spent in nice mode.
+          </li>
+          <li>
+            <code>sys</code> {number} The number of milliseconds the CPU has
+            spent in sys mode.
+          </li>
+          <li>
+            <code>idle</code> {number} The number of milliseconds the CPU has
+            spent in idle mode.
+          </li>
+          <li>
+            <code>irq</code> {number} The number of milliseconds the CPU has
+            spent in irq mode.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <!-- eslint-disable semi -->
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1">[</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">model</span><span class="op">:</span> <span class="st">&#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">speed</span><span class="op">:</span> <span class="dv">2926</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">times</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="dt">user</span><span class="op">:</span> <span class="dv">252020</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">nice</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="dt">sys</span><span class="op">:</span> <span class="dv">30340</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="dt">idle</span><span class="op">:</span> <span class="dv">1070356870</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="dt">irq</span><span class="op">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-13" title="13">  <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="dt">model</span><span class="op">:</span> <span class="st">&#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="dt">speed</span><span class="op">:</span> <span class="dv">2926</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="dt">times</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="dt">user</span><span class="op">:</span> <span class="dv">306960</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-18" title="18">      <span class="dt">nice</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-19" title="19">      <span class="dt">sys</span><span class="op">:</span> <span class="dv">26980</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-20" title="20">      <span class="dt">idle</span><span class="op">:</span> <span class="dv">1071569080</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-21" title="21">      <span class="dt">irq</span><span class="op">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-22" title="22">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-23" title="23">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-24" title="24">  <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-25" title="25">    <span class="dt">model</span><span class="op">:</span> <span class="st">&#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-26" title="26">    <span class="dt">speed</span><span class="op">:</span> <span class="dv">2926</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-27" title="27">    <span class="dt">times</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-28" title="28">      <span class="dt">user</span><span class="op">:</span> <span class="dv">248450</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-29" title="29">      <span class="dt">nice</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-30" title="30">      <span class="dt">sys</span><span class="op">:</span> <span class="dv">21750</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-31" title="31">      <span class="dt">idle</span><span class="op">:</span> <span class="dv">1070919370</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-32" title="32">      <span class="dt">irq</span><span class="op">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-33" title="33">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-34" title="34">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-35" title="35">  <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-36" title="36">    <span class="dt">model</span><span class="op">:</span> <span class="st">&#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-37" title="37">    <span class="dt">speed</span><span class="op">:</span> <span class="dv">2926</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-38" title="38">    <span class="dt">times</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-39" title="39">      <span class="dt">user</span><span class="op">:</span> <span class="dv">256880</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-40" title="40">      <span class="dt">nice</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-41" title="41">      <span class="dt">sys</span><span class="op">:</span> <span class="dv">19430</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-42" title="42">      <span class="dt">idle</span><span class="op">:</span> <span class="dv">1070905480</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-43" title="43">      <span class="dt">irq</span><span class="op">:</span> <span class="dv">20</span></a>
+<a class="sourceLine" id="cb2-44" title="44">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-45" title="45">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-46" title="46">]</a></code></pre>
+    </div>
+    <p>
+      <code>nice</code> values are POSIX-only. On Windows, the
+      <code>nice</code> values of all processors are always 0.
+    </p>
+    <h2 id="os.devnull"><code>os.devNull</code></h2>
+    <!-- YAML
+added: v16.3.0
+-->
+    <ul>
+      <li>{string}</li>
+    </ul>
+    <p>The platform-specific file path of the null device.</p>
+    <ul>
+      <li><code>\\.\nul</code> on Windows</li>
+      <li><code>/dev/null</code> on POSIX</li>
+    </ul>
+    <h2 id="os.endianness"><code>os.endianness()</code></h2>
+    <!-- YAML
+added: v0.9.4
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>
+      Returns a string identifying the endianness of the CPU for which the
+      Node.js binary was compiled.
+    </p>
+    <p>
+      Possible values are <code>'BE'</code> for big endian and
+      <code>'LE'</code> for little endian.
+    </p>
+    <h2 id="os.freemem"><code>os.freemem()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>Returns the amount of free system memory in bytes as an integer.</p>
+    <h2 id="os.getprioritypid"><code>os.getPriority([pid])</code></h2>
+    <!-- YAML
+added: v10.10.0
+-->
+    <ul>
+      <li>
+        <code>pid</code> {integer} The process ID to retrieve scheduling
+        priority for. <strong>Default:</strong> <code>0</code>.
+      </li>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>
+      Returns the scheduling priority for the process specified by
+      <code>pid</code>. If <code>pid</code> is not provided or is
+      <code>0</code>, the priority of the current process is returned.
+    </p>
+    <h2 id="os.homedir"><code>os.homedir()</code></h2>
+    <!-- YAML
+added: v2.3.0
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>Returns the string path of the current user’s home directory.</p>
+    <p>
+      On POSIX, it uses the <code>$HOME</code> environment variable if defined.
+      Otherwise it uses the
+      <a href="https://en.wikipedia.org/wiki/User_identifier#Effective_user_ID"
+        >effective UID</a
+      >
+      to look up the user’s home directory.
+    </p>
+    <p>
+      On Windows, it uses the <code>USERPROFILE</code> environment variable if
+      defined. Otherwise it uses the path to the profile directory of the
+      current user.
+    </p>
+    <h2 id="os.hostname"><code>os.hostname()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>Returns the host name of the operating system as a string.</p>
+    <h2 id="os.loadavg"><code>os.loadavg()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {number[]}</li>
+    </ul>
+    <p>Returns an array containing the 1, 5, and 15 minute load averages.</p>
+    <p>
+      The load average is a measure of system activity calculated by the
+      operating system and expressed as a fractional number.
+    </p>
+    <p>
+      The load average is a Unix-specific concept. On Windows, the return value
+      is always <code>[0, 0, 0]</code>.
+    </p>
+    <h2 id="os.networkinterfaces"><code>os.networkInterfaces()</code></h2>
+    <!-- YAML
+added: v0.6.0
+-->
+    <ul>
+      <li>Returns: {Object}</li>
+    </ul>
+    <p>
+      Returns an object containing network interfaces that have been assigned a
+      network address.
+    </p>
+    <p>
+      Each key on the returned object identifies a network interface. The
+      associated value is an array of objects that each describe an assigned
+      network address.
+    </p>
+    <p>
+      The properties available on the assigned network address object include:
+    </p>
+    <ul>
+      <li><code>address</code> {string} The assigned IPv4 or IPv6 address</li>
+      <li><code>netmask</code> {string} The IPv4 or IPv6 network mask</li>
+      <li>
+        <code>family</code> {string} Either <code>IPv4</code> or
+        <code>IPv6</code>
+      </li>
+      <li>
+        <code>mac</code> {string} The MAC address of the network interface
+      </li>
+      <li>
+        <code>internal</code> {boolean} <code>true</code> if the network
+        interface is a loopback or similar interface that is not remotely
+        accessible; otherwise <code>false</code>
+      </li>
+      <li>
+        <code>scopeid</code> {number} The numeric IPv6 scope ID (only specified
+        when <code>family</code> is <code>IPv6</code>)
+      </li>
+      <li>
+        <code>cidr</code> {string} The assigned IPv4 or IPv6 address with the
+        routing prefix in CIDR notation. If the <code>netmask</code> is invalid,
+        this property is set to <code>null</code>.
+      </li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">lo</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="dt">netmask</span><span class="op">:</span> <span class="st">&#39;255.0.0.0&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="dt">family</span><span class="op">:</span> <span class="st">&#39;IPv4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-7" title="7">      <span class="dt">mac</span><span class="op">:</span> <span class="st">&#39;00:00:00:00:00:00&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="dt">internal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-9" title="9">      <span class="dt">cidr</span><span class="op">:</span> <span class="st">&#39;127.0.0.1/8&#39;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-11" title="11">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">      <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;::1&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-13" title="13">      <span class="dt">netmask</span><span class="op">:</span> <span class="st">&#39;ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-14" title="14">      <span class="dt">family</span><span class="op">:</span> <span class="st">&#39;IPv6&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-15" title="15">      <span class="dt">mac</span><span class="op">:</span> <span class="st">&#39;00:00:00:00:00:00&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-16" title="16">      <span class="dt">scopeid</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-17" title="17">      <span class="dt">internal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-18" title="18">      <span class="dt">cidr</span><span class="op">:</span> <span class="st">&#39;::1/128&#39;</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-20" title="20">  ]<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-21" title="21">  <span class="dt">eth0</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb3-22" title="22">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-23" title="23">      <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;192.168.1.108&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-24" title="24">      <span class="dt">netmask</span><span class="op">:</span> <span class="st">&#39;255.255.255.0&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-25" title="25">      <span class="dt">family</span><span class="op">:</span> <span class="st">&#39;IPv4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-26" title="26">      <span class="dt">mac</span><span class="op">:</span> <span class="st">&#39;01:02:03:0a:0b:0c&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-27" title="27">      <span class="dt">internal</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-28" title="28">      <span class="dt">cidr</span><span class="op">:</span> <span class="st">&#39;192.168.1.108/24&#39;</span></a>
+<a class="sourceLine" id="cb3-29" title="29">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb3-30" title="30">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-31" title="31">      <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;fe80::a00:27ff:fe4e:66a1&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-32" title="32">      <span class="dt">netmask</span><span class="op">:</span> <span class="st">&#39;ffff:ffff:ffff:ffff::&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-33" title="33">      <span class="dt">family</span><span class="op">:</span> <span class="st">&#39;IPv6&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-34" title="34">      <span class="dt">mac</span><span class="op">:</span> <span class="st">&#39;01:02:03:0a:0b:0c&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-35" title="35">      <span class="dt">scopeid</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-36" title="36">      <span class="dt">internal</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-37" title="37">      <span class="dt">cidr</span><span class="op">:</span> <span class="st">&#39;fe80::a00:27ff:fe4e:66a1/64&#39;</span></a>
+<a class="sourceLine" id="cb3-38" title="38">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-39" title="39">  ]</a>
+<a class="sourceLine" id="cb3-40" title="40"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="os.platform"><code>os.platform()</code></h2>
+    <!-- YAML
+added: v0.5.0
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>
+      Returns a string identifying the operating system platform. The value is
+      set at compile time. Possible values are <code>'aix'</code>,
+      <code>'darwin'</code>, <code>'freebsd'</code>, <code>'linux'</code>,
+      <code>'openbsd'</code>, <code>'sunos'</code>, and <code>'win32'</code>.
+    </p>
+    <p>
+      The return value is equivalent to
+      <a href="process.md#process_process_platform"
+        ><code>process.platform</code></a
+      >.
+    </p>
+    <p>
+      The value <code>'android'</code> may also be returned if Node.js is built
+      on the Android operating system.
+      <a
+        href="https://github.com/nodejs/node/blob/HEAD/BUILDING.md#androidandroid-based-devices-eg-firefox-os"
+        >Android support is experimental</a
+      >.
+    </p>
+    <h2 id="os.release"><code>os.release()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>Returns the operating system as a string.</p>
+    <p>
+      On POSIX systems, the operating system release is determined by calling
+      <a href="https://linux.die.net/man/3/uname"><code>uname(3)</code></a
+      >. On Windows, <code>GetVersionExW()</code> is used. See
+      <a href="https://en.wikipedia.org/wiki/Uname#Examples" class="uri"
+        >https://en.wikipedia.org/wiki/Uname#Examples</a
+      >
+      for more information.
+    </p>
+    <h2 id="os.setprioritypid-priority">
+      <code>os.setPriority([pid, ]priority)</code>
+    </h2>
+    <!-- YAML
+added: v10.10.0
+-->
+    <ul>
+      <li>
+        <code>pid</code> {integer} The process ID to set scheduling priority
+        for. <strong>Default:</strong> <code>0</code>.
+      </li>
+      <li>
+        <code>priority</code> {integer} The scheduling priority to assign to the
+        process.
+      </li>
+    </ul>
+    <p>
+      Attempts to set the scheduling priority for the process specified by
+      <code>pid</code>. If <code>pid</code> is not provided or is
+      <code>0</code>, the process ID of the current process is used.
+    </p>
+    <p>
+      The <code>priority</code> input must be an integer between
+      <code>-20</code> (high priority) and <code>19</code> (low priority). Due
+      to differences between Unix priority levels and Windows priority classes,
+      <code>priority</code> is mapped to one of six priority constants in
+      <code>os.constants.priority</code>. When retrieving a process priority
+      level, this range mapping may cause the return value to be slightly
+      different on Windows. To avoid confusion, set <code>priority</code> to one
+      of the priority constants.
+    </p>
+    <p>
+      On Windows, setting priority to <code>PRIORITY_HIGHEST</code> requires
+      elevated user privileges. Otherwise the set priority will be silently
+      reduced to <code>PRIORITY_HIGH</code>.
+    </p>
+    <h2 id="os.tmpdir"><code>os.tmpdir()</code></h2>
+    <!-- YAML
+added: v0.9.9
+changes:
+  - version: v2.0.0
+    pr-url: https://github.com/nodejs/node/pull/747
+    description: This function is now cross-platform consistent and no longer
+                 returns a path with a trailing slash on any platform.
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>
+      Returns the operating system’s default directory for temporary files as a
+      string.
+    </p>
+    <h2 id="os.totalmem"><code>os.totalmem()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>Returns the total amount of system memory in bytes as an integer.</p>
+    <h2 id="os.type"><code>os.type()</code></h2>
+    <!-- YAML
+added: v0.3.3
+-->
+    <ul>
+      <li>Returns: {string}</li>
+    </ul>
+    <p>
+      Returns the operating system name as returned by
+      <a href="https://linux.die.net/man/3/uname"><code>uname(3)</code></a
+      >. For example, it returns <code>'Linux'</code> on Linux,
+      <code>'Darwin'</code> on macOS, and <code>'Windows_NT'</code> on Windows.
+    </p>
+    <p>
+      See
+      <a href="https://en.wikipedia.org/wiki/Uname#Examples" class="uri"
+        >https://en.wikipedia.org/wiki/Uname#Examples</a
+      >
+      for additional information about the output of running
+      <a href="https://linux.die.net/man/3/uname"><code>uname(3)</code></a> on
+      various operating systems.
+    </p>
+    <h2 id="os.uptime"><code>os.uptime()</code></h2>
+    <!-- YAML
+added: v0.3.3
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/20129
+    description: The result of this function no longer contains a fraction
+                 component on Windows.
+-->
+    <ul>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>Returns the system uptime in number of seconds.</p>
+    <h2 id="os.userinfooptions"><code>os.userInfo([options])</code></h2>
+    <!-- YAML
+added: v6.0.0
+-->
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>encoding</code> {string} Character encoding used to interpret
+            resulting strings. If <code>encoding</code> is set to
+            <code>'buffer'</code>, the <code>username</code>,
+            <code>shell</code>, and <code>homedir</code> values will be
+            <code>Buffer</code> instances. <strong>Default:</strong>
+            <code>'utf8'</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {Object}</li>
+    </ul>
+    <p>
+      Returns information about the currently effective user. On POSIX
+      platforms, this is typically a subset of the password file. The returned
+      object includes the <code>username</code>, <code>uid</code>,
+      <code>gid</code>, <code>shell</code>, and <code>homedir</code>. On
+      Windows, the <code>uid</code> and <code>gid</code> fields are
+      <code>-1</code>, and <code>shell</code> is <code>null</code>.
+    </p>
+    <p>
+      The value of <code>homedir</code> returned by
+      <code>os.userInfo()</code> is provided by the operating system. This
+      differs from the result of <code>os.homedir()</code>, which queries
+      environment variables for the home directory before falling back to the
+      operating system response.
+    </p>
+    <p>
+      Throws a
+      <a href="errors.md#errors_class_systemerror"><code>SystemError</code></a>
+      if a user has no <code>username</code> or <code>homedir</code>.
+    </p>
+    <h2 id="os.version"><code>os.version()</code></h2>
+    <!-- YAML
+added:
+ - v13.11.0
+ - v12.17.0
+-->
+    <ul>
+      <li>Returns {string}</li>
+    </ul>
+    <p>Returns a string identifying the kernel version.</p>
+    <p>
+      On POSIX systems, the operating system release is determined by calling
+      <a href="https://linux.die.net/man/3/uname"><code>uname(3)</code></a
+      >. On Windows, <code>RtlGetVersion()</code> is used, and if it is not
+      available, <code>GetVersionExW()</code> will be used. See
+      <a href="https://en.wikipedia.org/wiki/Uname#Examples" class="uri"
+        >https://en.wikipedia.org/wiki/Uname#Examples</a
+      >
+      for more information.
+    </p>
+    <h2 id="os-constants">OS constants</h2>
+    <p>The following constants are exported by <code>os.constants</code>.</p>
+    <p>Not all constants will be available on every operating system.</p>
+    <h3 id="signal-constants">Signal constants</h3>
+    <!-- YAML
+changes:
+  - version: v5.11.0
+    pr-url: https://github.com/nodejs/node/pull/6093
+    description: Added support for `SIGINFO`.
+-->
+    <p>
+      The following signal constants are exported by
+      <code>os.constants.signals</code>.
+    </p>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGHUP</code>
+        </td>
+        <td>
+          Sent to indicate when a controlling terminal is closed or a parent
+          process exits.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGINT</code>
+        </td>
+        <td>
+          Sent to indicate when a user wishes to interrupt a process
+          (<kbd>Ctrl</kbd>+<kbd>C</kbd>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGQUIT</code>
+        </td>
+        <td>
+          Sent to indicate when a user wishes to terminate a process and perform
+          a core dump.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGILL</code>
+        </td>
+        <td>
+          Sent to a process to notify that it has attempted to perform an
+          illegal, malformed, unknown, or privileged instruction.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGTRAP</code>
+        </td>
+        <td>Sent to a process when an exception has occurred.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGABRT</code>
+        </td>
+        <td>Sent to a process to request that it abort.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGIOT</code>
+        </td>
+        <td>Synonym for <code>SIGABRT</code></td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGBUS</code>
+        </td>
+        <td>Sent to a process to notify that it has caused a bus error.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGFPE</code>
+        </td>
+        <td>
+          Sent to a process to notify that it has performed an illegal
+          arithmetic operation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGKILL</code>
+        </td>
+        <td>Sent to a process to terminate it immediately.</td>
+      </tr>
+      <tr>
+        <td><code>SIGUSR1</code> <code>SIGUSR2</code></td>
+        <td>Sent to a process to identify user-defined conditions.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGSEGV</code>
+        </td>
+        <td>Sent to a process to notify of a segmentation fault.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGPIPE</code>
+        </td>
+        <td>
+          Sent to a process when it has attempted to write to a disconnected
+          pipe.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGALRM</code>
+        </td>
+        <td>Sent to a process when a system timer elapses.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGTERM</code>
+        </td>
+        <td>Sent to a process to request termination.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGCHLD</code>
+        </td>
+        <td>Sent to a process when a child process terminates.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGSTKFLT</code>
+        </td>
+        <td>Sent to a process to indicate a stack fault on a coprocessor.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGCONT</code>
+        </td>
+        <td>
+          Sent to instruct the operating system to continue a paused process.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGSTOP</code>
+        </td>
+        <td>Sent to instruct the operating system to halt a process.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGTSTP</code>
+        </td>
+        <td>Sent to a process to request it to stop.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGBREAK</code>
+        </td>
+        <td>Sent to indicate when a user wishes to interrupt a process.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGTTIN</code>
+        </td>
+        <td>
+          Sent to a process when it reads from the TTY while in the background.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGTTOU</code>
+        </td>
+        <td>
+          Sent to a process when it writes to the TTY while in the background.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGURG</code>
+        </td>
+        <td>Sent to a process when a socket has urgent data to read.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGXCPU</code>
+        </td>
+        <td>Sent to a process when it has exceeded its limit on CPU usage.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGXFSZ</code>
+        </td>
+        <td>
+          Sent to a process when it grows a file larger than the maximum
+          allowed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGVTALRM</code>
+        </td>
+        <td>Sent to a process when a virtual timer has elapsed.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGPROF</code>
+        </td>
+        <td>Sent to a process when a system timer has elapsed.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGWINCH</code>
+        </td>
+        <td>
+          Sent to a process when the controlling terminal has changed its size.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGIO</code>
+        </td>
+        <td>Sent to a process when I/O is available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGPOLL</code>
+        </td>
+        <td>Synonym for <code>SIGIO</code></td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGLOST</code>
+        </td>
+        <td>Sent to a process when a file lock has been lost.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGPWR</code>
+        </td>
+        <td>Sent to a process to notify of a power failure.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGINFO</code>
+        </td>
+        <td>Synonym for <code>SIGPWR</code></td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGSYS</code>
+        </td>
+        <td>Sent to a process to notify of a bad argument.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>SIGUNUSED</code>
+        </td>
+        <td>Synonym for <code>SIGSYS</code></td>
+      </tr>
+    </table>
+    <h3 id="error-constants">Error constants</h3>
+    <p>
+      The following error constants are exported by
+      <code>os.constants.errno</code>.
+    </p>
+    <h4 id="posix-error-constants">POSIX error constants</h4>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>E2BIG</code>
+        </td>
+        <td>Indicates that the list of arguments is longer than expected.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EACCES</code>
+        </td>
+        <td>
+          Indicates that the operation did not have sufficient permissions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EADDRINUSE</code>
+        </td>
+        <td>Indicates that the network address is already in use.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EADDRNOTAVAIL</code>
+        </td>
+        <td>
+          Indicates that the network address is currently unavailable for use.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EAFNOSUPPORT</code>
+        </td>
+        <td>Indicates that the network address family is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EAGAIN</code>
+        </td>
+        <td>
+          Indicates that there is no data available and to try the operation
+          again later.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EALREADY</code>
+        </td>
+        <td>
+          Indicates that the socket already has a pending connection in
+          progress.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EBADF</code>
+        </td>
+        <td>Indicates that a file descriptor is not valid.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EBADMSG</code>
+        </td>
+        <td>Indicates an invalid data message.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EBUSY</code>
+        </td>
+        <td>Indicates that a device or resource is busy.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ECANCELED</code>
+        </td>
+        <td>Indicates that an operation was canceled.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ECHILD</code>
+        </td>
+        <td>Indicates that there are no child processes.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ECONNABORTED</code>
+        </td>
+        <td>Indicates that the network connection has been aborted.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ECONNREFUSED</code>
+        </td>
+        <td>Indicates that the network connection has been refused.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ECONNRESET</code>
+        </td>
+        <td>Indicates that the network connection has been reset.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EDEADLK</code>
+        </td>
+        <td>Indicates that a resource deadlock has been avoided.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EDESTADDRREQ</code>
+        </td>
+        <td>Indicates that a destination address is required.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EDOM</code>
+        </td>
+        <td>
+          Indicates that an argument is out of the domain of the function.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EDQUOT</code>
+        </td>
+        <td>Indicates that the disk quota has been exceeded.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EEXIST</code>
+        </td>
+        <td>Indicates that the file already exists.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EFAULT</code>
+        </td>
+        <td>Indicates an invalid pointer address.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EFBIG</code>
+        </td>
+        <td>Indicates that the file is too large.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EHOSTUNREACH</code>
+        </td>
+        <td>Indicates that the host is unreachable.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EIDRM</code>
+        </td>
+        <td>Indicates that the identifier has been removed.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EILSEQ</code>
+        </td>
+        <td>Indicates an illegal byte sequence.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EINPROGRESS</code>
+        </td>
+        <td>Indicates that an operation is already in progress.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EINTR</code>
+        </td>
+        <td>Indicates that a function call was interrupted.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EINVAL</code>
+        </td>
+        <td>Indicates that an invalid argument was provided.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EIO</code>
+        </td>
+        <td>Indicates an otherwise unspecified I/O error.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EISCONN</code>
+        </td>
+        <td>Indicates that the socket is connected.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EISDIR</code>
+        </td>
+        <td>Indicates that the path is a directory.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ELOOP</code>
+        </td>
+        <td>Indicates too many levels of symbolic links in a path.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EMFILE</code>
+        </td>
+        <td>Indicates that there are too many open files.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EMLINK</code>
+        </td>
+        <td>Indicates that there are too many hard links to a file.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EMSGSIZE</code>
+        </td>
+        <td>Indicates that the provided message is too long.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EMULTIHOP</code>
+        </td>
+        <td>Indicates that a multihop was attempted.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENAMETOOLONG</code>
+        </td>
+        <td>Indicates that the filename is too long.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENETDOWN</code>
+        </td>
+        <td>Indicates that the network is down.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENETRESET</code>
+        </td>
+        <td>Indicates that the connection has been aborted by the network.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENETUNREACH</code>
+        </td>
+        <td>Indicates that the network is unreachable.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENFILE</code>
+        </td>
+        <td>Indicates too many open files in the system.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOBUFS</code>
+        </td>
+        <td>Indicates that no buffer space is available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENODATA</code>
+        </td>
+        <td>
+          Indicates that no message is available on the stream head read queue.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENODEV</code>
+        </td>
+        <td>Indicates that there is no such device.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOENT</code>
+        </td>
+        <td>Indicates that there is no such file or directory.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOEXEC</code>
+        </td>
+        <td>Indicates an exec format error.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOLCK</code>
+        </td>
+        <td>Indicates that there are no locks available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOLINK</code>
+        </td>
+        <td>Indications that a link has been severed.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOMEM</code>
+        </td>
+        <td>Indicates that there is not enough space.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOMSG</code>
+        </td>
+        <td>Indicates that there is no message of the desired type.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOPROTOOPT</code>
+        </td>
+        <td>Indicates that a given protocol is not available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOSPC</code>
+        </td>
+        <td>Indicates that there is no space available on the device.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOSR</code>
+        </td>
+        <td>Indicates that there are no stream resources available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOSTR</code>
+        </td>
+        <td>Indicates that a given resource is not a stream.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOSYS</code>
+        </td>
+        <td>Indicates that a function has not been implemented.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTCONN</code>
+        </td>
+        <td>Indicates that the socket is not connected.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTDIR</code>
+        </td>
+        <td>Indicates that the path is not a directory.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTEMPTY</code>
+        </td>
+        <td>Indicates that the directory is not empty.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTSOCK</code>
+        </td>
+        <td>Indicates that the given item is not a socket.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTSUP</code>
+        </td>
+        <td>Indicates that a given operation is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENOTTY</code>
+        </td>
+        <td>Indicates an inappropriate I/O control operation.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ENXIO</code>
+        </td>
+        <td>Indicates no such device or address.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EOPNOTSUPP</code>
+        </td>
+        <td>
+          Indicates that an operation is not supported on the socket. Although
+          <code>ENOTSUP</code> and <code>EOPNOTSUPP</code> have the same value
+          on Linux, according to POSIX.1 these error values should be distinct.)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EOVERFLOW</code>
+        </td>
+        <td>
+          Indicates that a value is too large to be stored in a given data type.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>EPERM</code>
+        </td>
+        <td>Indicates that the operation is not permitted.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EPIPE</code>
+        </td>
+        <td>Indicates a broken pipe.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EPROTO</code>
+        </td>
+        <td>Indicates a protocol error.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EPROTONOSUPPORT</code>
+        </td>
+        <td>Indicates that a protocol is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EPROTOTYPE</code>
+        </td>
+        <td>Indicates the wrong type of protocol for a socket.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ERANGE</code>
+        </td>
+        <td>Indicates that the results are too large.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EROFS</code>
+        </td>
+        <td>Indicates that the file system is read only.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ESPIPE</code>
+        </td>
+        <td>Indicates an invalid seek operation.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ESRCH</code>
+        </td>
+        <td>Indicates that there is no such process.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ESTALE</code>
+        </td>
+        <td>Indicates that the file handle is stale.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ETIME</code>
+        </td>
+        <td>Indicates an expired timer.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ETIMEDOUT</code>
+        </td>
+        <td>Indicates that the connection timed out.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ETXTBSY</code>
+        </td>
+        <td>Indicates that a text file is busy.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EWOULDBLOCK</code>
+        </td>
+        <td>Indicates that the operation would block.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>EXDEV</code>
+        </td>
+        <td>Indicates an improper link.</td>
+      </tr>
+    </table>
+    <h4 id="windows-specific-error-constants">
+      Windows-specific error constants
+    </h4>
+    <p>
+      The following error codes are specific to the Windows operating system.
+    </p>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEINTR</code>
+        </td>
+        <td>Indicates an interrupted function call.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEBADF</code>
+        </td>
+        <td>Indicates an invalid file handle.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEACCES</code>
+        </td>
+        <td>Indicates insufficient permissions to complete the operation.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEFAULT</code>
+        </td>
+        <td>Indicates an invalid pointer address.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEINVAL</code>
+        </td>
+        <td>Indicates that an invalid argument was passed.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEMFILE</code>
+        </td>
+        <td>Indicates that there are too many open files.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEWOULDBLOCK</code>
+        </td>
+        <td>Indicates that a resource is temporarily unavailable.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEINPROGRESS</code>
+        </td>
+        <td>Indicates that an operation is currently in progress.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEALREADY</code>
+        </td>
+        <td>Indicates that an operation is already in progress.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOTSOCK</code>
+        </td>
+        <td>Indicates that the resource is not a socket.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEDESTADDRREQ</code>
+        </td>
+        <td>Indicates that a destination address is required.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEMSGSIZE</code>
+        </td>
+        <td>Indicates that the message size is too long.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEPROTOTYPE</code>
+        </td>
+        <td>Indicates the wrong protocol type for the socket.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOPROTOOPT</code>
+        </td>
+        <td>Indicates a bad protocol option.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEPROTONOSUPPORT</code>
+        </td>
+        <td>Indicates that the protocol is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAESOCKTNOSUPPORT</code>
+        </td>
+        <td>Indicates that the socket type is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEOPNOTSUPP</code>
+        </td>
+        <td>Indicates that the operation is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEPFNOSUPPORT</code>
+        </td>
+        <td>Indicates that the protocol family is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEAFNOSUPPORT</code>
+        </td>
+        <td>Indicates that the address family is not supported.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEADDRINUSE</code>
+        </td>
+        <td>Indicates that the network address is already in use.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEADDRNOTAVAIL</code>
+        </td>
+        <td>Indicates that the network address is not available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENETDOWN</code>
+        </td>
+        <td>Indicates that the network is down.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENETUNREACH</code>
+        </td>
+        <td>Indicates that the network is unreachable.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENETRESET</code>
+        </td>
+        <td>Indicates that the network connection has been reset.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAECONNABORTED</code>
+        </td>
+        <td>Indicates that the connection has been aborted.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAECONNRESET</code>
+        </td>
+        <td>Indicates that the connection has been reset by the peer.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOBUFS</code>
+        </td>
+        <td>Indicates that there is no buffer space available.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEISCONN</code>
+        </td>
+        <td>Indicates that the socket is already connected.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOTCONN</code>
+        </td>
+        <td>Indicates that the socket is not connected.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAESHUTDOWN</code>
+        </td>
+        <td>
+          Indicates that data cannot be sent after the socket has been shutdown.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAETOOMANYREFS</code>
+        </td>
+        <td>Indicates that there are too many references.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAETIMEDOUT</code>
+        </td>
+        <td>Indicates that the connection has timed out.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAECONNREFUSED</code>
+        </td>
+        <td>Indicates that the connection has been refused.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAELOOP</code>
+        </td>
+        <td>Indicates that a name cannot be translated.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENAMETOOLONG</code>
+        </td>
+        <td>Indicates that a name was too long.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEHOSTDOWN</code>
+        </td>
+        <td>Indicates that a network host is down.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEHOSTUNREACH</code>
+        </td>
+        <td>Indicates that there is no route to a network host.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOTEMPTY</code>
+        </td>
+        <td>Indicates that the directory is not empty.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEPROCLIM</code>
+        </td>
+        <td>Indicates that there are too many processes.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEUSERS</code>
+        </td>
+        <td>Indicates that the user quota has been exceeded.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEDQUOT</code>
+        </td>
+        <td>Indicates that the disk quota has been exceeded.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAESTALE</code>
+        </td>
+        <td>Indicates a stale file handle reference.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEREMOTE</code>
+        </td>
+        <td>Indicates that the item is remote.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSASYSNOTREADY</code>
+        </td>
+        <td>Indicates that the network subsystem is not ready.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAVERNOTSUPPORTED</code>
+        </td>
+        <td>
+          Indicates that the <code>winsock.dll</code> version is out of range.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSANOTINITIALISED</code>
+        </td>
+        <td>
+          Indicates that successful WSAStartup has not yet been performed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEDISCON</code>
+        </td>
+        <td>Indicates that a graceful shutdown is in progress.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAENOMORE</code>
+        </td>
+        <td>Indicates that there are no more results.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAECANCELLED</code>
+        </td>
+        <td>Indicates that an operation has been canceled.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEINVALIDPROCTABLE</code>
+        </td>
+        <td>Indicates that the procedure call table is invalid.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEINVALIDPROVIDER</code>
+        </td>
+        <td>Indicates an invalid service provider.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEPROVIDERFAILEDINIT</code>
+        </td>
+        <td>Indicates that the service provider failed to initialized.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSASYSCALLFAILURE</code>
+        </td>
+        <td>Indicates a system call failure.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSASERVICE_NOT_FOUND</code>
+        </td>
+        <td>Indicates that a service was not found.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSATYPE_NOT_FOUND</code>
+        </td>
+        <td>Indicates that a class type was not found.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSA_E_NO_MORE</code>
+        </td>
+        <td>Indicates that there are no more results.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSA_E_CANCELLED</code>
+        </td>
+        <td>Indicates that the call was canceled.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WSAEREFUSED</code>
+        </td>
+        <td>Indicates that a database query was refused.</td>
+      </tr>
+    </table>
+    <h3 id="dlopen-constants">dlopen constants</h3>
+    <p>
+      If available on the operating system, the following constants are exported
+      in <code>os.constants.dlopen</code>. See dlopen(3) for detailed
+      information.
+    </p>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>RTLD_LAZY</code>
+        </td>
+        <td>Perform lazy binding. Node.js sets this flag by default.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>RTLD_NOW</code>
+        </td>
+        <td>
+          Resolve all undefined symbols in the library before dlopen(3) returns.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RTLD_GLOBAL</code>
+        </td>
+        <td>
+          Symbols defined by the library will be made available for symbol
+          resolution of subsequently loaded libraries.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RTLD_LOCAL</code>
+        </td>
+        <td>
+          The converse of <code>RTLD_GLOBAL</code>. This is the default behavior
+          if neither flag is specified.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RTLD_DEEPBIND</code>
+        </td>
+        <td>
+          Make a self-contained library use its own symbols in preference to
+          symbols from previously loaded libraries.
+        </td>
+      </tr>
+    </table>
+    <h3 id="priority-constants">Priority constants</h3>
+    <!-- YAML
+added: v10.10.0
+-->
+    <p>
+      The following process scheduling constants are exported by
+      <code>os.constants.priority</code>.
+    </p>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_LOW</code>
+        </td>
+        <td>
+          The lowest process scheduling priority. This corresponds to
+          <code>IDLE_PRIORITY_CLASS</code> on Windows, and a nice value of
+          <code>19</code> on all other platforms.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_BELOW_NORMAL</code>
+        </td>
+        <td>
+          The process scheduling priority above <code>PRIORITY_LOW</code> and
+          below <code>PRIORITY_NORMAL</code>. This corresponds to
+          <code>BELOW_NORMAL_PRIORITY_CLASS</code> on Windows, and a nice value
+          of <code>10</code> on all other platforms.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_NORMAL</code>
+        </td>
+        <td>
+          The default process scheduling priority. This corresponds to
+          <code>NORMAL_PRIORITY_CLASS</code> on Windows, and a nice value of
+          <code>0</code> on all other platforms.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_ABOVE_NORMAL</code>
+        </td>
+        <td>
+          The process scheduling priority above <code>PRIORITY_NORMAL</code> and
+          below <code>PRIORITY_HIGH</code>. This corresponds to
+          <code>ABOVE_NORMAL_PRIORITY_CLASS</code> on Windows, and a nice value
+          of <code>-7</code> on all other platforms.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_HIGH</code>
+        </td>
+        <td>
+          The process scheduling priority above
+          <code>PRIORITY_ABOVE_NORMAL</code> and below
+          <code>PRIORITY_HIGHEST</code>. This corresponds to
+          <code>HIGH_PRIORITY_CLASS</code> on Windows, and a nice value of
+          <code>-14</code> on all other platforms.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PRIORITY_HIGHEST</code>
+        </td>
+        <td>
+          The highest process scheduling priority. This corresponds to
+          <code>REALTIME_PRIORITY_CLASS</code> on Windows, and a nice value of
+          <code>-20</code> on all other platforms.
+        </td>
+      </tr>
+    </table>
+    <h3 id="libuv-constants">libuv constants</h3>
+    <table>
+      <tr>
+        <th>Constant</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>
+          <code>UV_UDP_REUSEADDR</code>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  </body>
+</html>

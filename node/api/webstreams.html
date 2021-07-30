@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>webstreams</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="web-streams-api">Web Streams API</h1>
+<blockquote>
+<p>Stability: 1 - Experimental</p>
+</blockquote>
+<p>An implementation of the <a href="https://streams.spec.whatwg.org/">WHATWG Streams Standard</a>.</p>
+<pre class="mjs"><code>import {
+  ReadableStream,
+  WritableStream,
+  TransformStream,
+} from &#39;node:stream/web&#39;;</code></pre>
+<pre class="cjs"><code>const {
+  ReadableStream,
+  WritableStream,
+  TransformStream,
+} = require(&#39;stream/web&#39;);</code></pre>
+<h2 id="overview">Overview</h2>
+<p>The <a href="https://streams.spec.whatwg.org/">WHATWG Streams Standard</a> (or “web streams”) defines an API for handling streaming data. It is similar to the Node.js <a href="stream.md">Streams</a> API but emerged later and has become the “standard” API for streaming data across many JavaScript environments.</p>
+<p>There are three primary types of objects</p>
+<ul>
+<li><code>ReadableStream</code> - Represents a source of streaming data.</li>
+<li><code>WritableStream</code> - Represents a destination for streaming data.</li>
+<li><code>TransformStream</code> - Represents an algorithm for transforming streaming data.</li>
+</ul>
+<h3 id="example-readablestream">Example <code>ReadableStream</code></h3>
+<p>This example creates a simple <code>ReadableStream</code> that pushes the current <code>performance.now()</code> timestamp once every second forever. An async iterable is used to read the data from the stream.</p>
+<pre class="mjs"><code>import {
+  ReadableStream
+} from &#39;node:stream/web&#39;;
+
+import {
+  setInterval as every
+} from &#39;node:timers/promises&#39;;
+
+import {
+  performance
+} from &#39;node:perf_hooks&#39;;
+
+const SECOND = 1000;
+
+const stream = new ReadableStream({
+  async start(controller) {
+    for await (const _ of every(SECOND))
+      controller.enqueue(performance.now());
+  }
+});
+
+for await (const value of stream)
+  console.log(value);</code></pre>
+<pre class="cjs"><code>const {
+  ReadableStream
+} = require(&#39;stream/web&#39;);
+
+const {
+  setInterval: every
+} = require(&#39;timers/promises&#39;);
+
+const {
+  performance
+} = require(&#39;perf_hooks&#39;);
+
+const SECOND = 1000;
+
+const stream = new ReadableStream({
+  async start(controller) {
+    for await (const _ of every(SECOND))
+      controller.enqueue(performance.now());
+  }
+});
+
+(async () =&gt; {
+  for await (const value of stream)
+    console.log(value);
+})();</code></pre>
+<h2 id="api">API</h2>
+<h3 id="class-readablestream">Class: <code>ReadableStream</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<h4 id="new-readablestreamunderlyingsource-strategy"><code>new ReadableStream([underlyingSource [, strategy]])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<!--lint disable maximum-line-length remark-lint-->
+<ul>
+<li><code>underlyingSource</code> {Object}
+<ul>
+<li><code>start</code> {Function} A user-defined function that is invoked immediately when the <code>ReadableStream</code> is created.
+<ul>
+<li><code>controller</code> {ReadableStreamDefaultController|ReadableByteStreamController}</li>
+<li>Returns: <code>undefined</code> or a promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>pull</code> {Function} A user-defined function that is called repeatedly when the <code>ReadableStream</code> internal queue is not full. The operation may be sync or async. If async, the function will not be called again until the previously returned promise is fulfilled.
+<ul>
+<li><code>controller</code> {ReadableStreamDefaultController|ReadableByteStreamController}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>cancel</code> {Function} A user-defined function that is called when the <code>ReadableStream</code> is canceled.
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>type</code> {string} Must be <code>'bytes'</code> or <code>undefined</code>.</li>
+<li><code>autoAllocateChunkSize</code> {number} Used only when <code>type</code> is equal to <code>'bytes'</code>.</li>
+</ul></li>
+<li><code>strategy</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number} The maximum internal queue size before backpressure is applied.</li>
+<li><code>size</code> {Function} A user-defined function used to identify the size of each chunk of data.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number} <!--lint enable maximum-line-length remark-lint--></li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="readablestream.locked"><code>readableStream.locked</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {boolean} Set to <code>true</code> if there is an active reader for this {ReadableStream}.</li>
+</ul>
+<p>The <code>readableStream.locked</code> property is <code>false</code> by default, and is switch to <code>true</code> while there is an active reader consuming the stream’s data.</p>
+<h4 id="readablestream.cancelreason"><code>readableStream.cancel([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code> once cancelation has been completed.</li>
+</ul>
+<h4 id="readablestream.getreaderoptions"><code>readableStream.getReader([options])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>mode</code> {string} <code>'byob'</code> or <code>undefined</code></li>
+</ul></li>
+<li>Returns: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}</li>
+</ul>
+<pre class="mjs"><code>import { ReadableStream } from &#39;node:stream/web&#39;;
+
+const stream = new ReadableStream();
+
+const reader = stream.getReader();
+
+console.log(await reader.read());</code></pre>
+<pre class="cjs"><code>const { ReadableStream } = require(&#39;stream/web&#39;);
+
+const stream = new ReadableStream();
+
+const reader = stream.getReader();
+
+reader.read().then(console.log);</code></pre>
+<p>Causes the <code>readableStream.locked</code> to be <code>true</code>.</p>
+<h4 id="readablestream.pipethroughtransform-options"><code>readableStream.pipeThrough(transform[, options])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>transform</code> {Object}
+<ul>
+<li><code>readable</code> {ReadableStream} The <code>ReadableStream</code> to which <code>transform.writable</code> will push the potentially modified data is receives from this <code>ReadableStream</code>.</li>
+<li><code>writable</code> {WritableStream} The <code>WritableStream</code> to which this <code>ReadableStream</code>’s data will be written.</li>
+</ul></li>
+<li><code>options</code> {Object}
+<ul>
+<li><code>preventAbort</code> {boolean} When <code>true</code>, errors in this <code>ReadableStream</code> will not cause <code>transform.writable</code> to be aborted.</li>
+<li><code>preventCancel</code> {boolean} When <code>true</code>, errors in the destination <code>transform.writable</code> is not cause this <code>ReadableStream</code> to be canceled.</li>
+<li><code>preventClose</code> {boolean} When <code>true</code>, closing this <code>ReadableStream</code> will no cause <code>transform.writable</code> to be closed.</li>
+<li><code>signal</code> {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.</li>
+</ul></li>
+<li>Returns: {ReadableStream} From <code>transform.readable</code>.</li>
+</ul>
+<p>Connects this {ReadableStream} to the pair of {ReadableStream} and {WritableStream} provided in the <code>transform</code> argument such that the data from this {ReadableStream} is written in to <code>transform.writable</code>, possibly transformed, then pushed to <code>transform.readable</code>. Once the pipeline is configured, <code>transform.readable</code> is returned.</p>
+<p>Causes the <code>readableStream.locked</code> to be <code>true</code> while the pipe operation is active.</p>
+<pre class="mjs"><code>import {
+  ReadableStream,
+  TransformStream,
+} from &#39;node:stream/web&#39;;
+
+const stream = new ReadableStream({
+  start(controller) {
+    controller.enqueue(&#39;a&#39;);
+  },
+});
+
+const transform = new TransformStream({
+  transform(chunk, controller) {
+    controller.enqueue(chunk.toUpperCase());
+  }
+});
+
+const transformedStream = stream.pipeThrough(transform);
+
+for await (const chunk of transformedStream)
+  console.log(chunk);</code></pre>
+<pre class="cjs"><code>const {
+  ReadableStream,
+  TransformStream,
+} = require(&#39;stream/web&#39;);
+
+const stream = new ReadableStream({
+  start(controller) {
+    controller.enqueue(&#39;a&#39;);
+  },
+});
+
+const transform = new TransformStream({
+  transform(chunk, controller) {
+    controller.enqueue(chunk.toUpperCase());
+  }
+});
+
+const transformedStream = stream.pipeThrough(transform);
+
+(async () =&gt; {
+  for await (const chunk of transformedStream)
+    console.log(chunk);
+})();</code></pre>
+<h4 id="readablestream.pipetodestination-options"><code>readableStream.pipeTo(destination, options)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>destination</code> {WritableStream} A {WritableStream} to which this <code>ReadableStream</code>’s data will be written.</li>
+<li><code>options</code> {Object}
+<ul>
+<li><code>preventAbort</code> {boolean} When <code>true</code>, errors in this <code>ReadableStream</code> will not cause <code>transform.writable</code> to be aborted.</li>
+<li><code>preventCancel</code> {boolean} When <code>true</code>, errors in the destination <code>transform.writable</code> is not cause this <code>ReadableStream</code> to be canceled.</li>
+<li><code>preventClose</code> {boolean} When <code>true</code>, closing this <code>ReadableStream</code> will no cause <code>transform.writable</code> to be closed.</li>
+<li><code>signal</code> {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.</li>
+</ul></li>
+<li>Returns: A promise fulfilled with <code>undefined</code></li>
+</ul>
+<p>Causes the <code>readableStream.locked</code> to be <code>true</code> while the pipe operation is active.</p>
+<h4 id="readablestream.tee"><code>readableStream.tee()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Returns: {ReadableStream[]}</li>
+</ul>
+<p>Returns a pair of new {ReadableStream} instances to which this <code>ReadableStream</code>’s data will be forwarded. Each will receive the same data.</p>
+<p>Causes the <code>readableStream.locked</code> to be <code>true</code>.</p>
+<h4 id="readablestream.valuesoptions"><code>readableStream.values([options])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>preventCancel</code> {boolean} When <code>true</code>, prevents the {ReadableStream} from being closed when the async iterator abruptly terminates. <strong>Defaults</strong>: <code>false</code></li>
+</ul></li>
+</ul>
+<p>Creates and returns an async iterator usable for consuming this <code>ReadableStream</code>’s data.</p>
+<p>Causes the <code>readableStream.locked</code> to be <code>true</code> while the async iterator is active.</p>
+<pre class="mjs"><code>import { Buffer } from &#39;node:buffer&#39;;
+
+const stream = new ReadableStream(getSomeSource());
+
+for await (const chunk of stream.values({ preventCancel: true }))
+  console.log(Buffer.from(chunk).toString());</code></pre>
+<h4 id="async-iteration">Async Iteration</h4>
+<p>The {ReadableStream} object supports the async iterator protocol using <code>for await</code> syntax.</p>
+<pre class="mjs"><code>import { Buffer } from &#39;buffer&#39;;
+
+const stream = new ReadableStream(getSomeSource());
+
+for await (const chunk of stream)
+  console.log(Buffer.from(chunk).toString());</code></pre>
+<p>The async iterator will consume the {ReadableStream} until it terminates.</p>
+<p>By default, if the async iterator exits early (via either a <code>break</code>, <code>return</code>, or a <code>throw</code>), the {ReadableStream} will be closed. To prevent automatic closing of the {ReadableStream}, use the <code>readableStream.values()</code> method to acquire the async iterator and set the <code>preventCancel</code> option to <code>true</code>.</p>
+<p>The {ReadableStream} must not be locked (that is, it must not have an existing active reader). During the async iteration, the {ReadableStream} will be locked.</p>
+<h4 id="transferring-with-postmessage">Transferring with <code>postMessage()</code></h4>
+<p>A {ReadableStream} instance can be transferred using a {MessagePort}.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> stream <span class="op">=</span> <span class="kw">new</span> <span class="at">ReadableStream</span>(<span class="at">getReadableSourceSomehow</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="va">port1</span>.<span class="at">onmessage</span> <span class="op">=</span> (<span class="op">{</span> data <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="va">data</span>.<span class="at">getReader</span>().<span class="at">read</span>().<span class="at">then</span>((chunk) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="va">console</span>.<span class="at">log</span>(chunk)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="op">};</span></a>
+<a class="sourceLine" id="cb11-10" title="10"></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="va">port2</span>.<span class="at">postMessage</span>(stream<span class="op">,</span> [stream])<span class="op">;</span></a></code></pre></div>
+<h3 id="class-readablestreamdefaultreader">Class: <code>ReadableStreamDefaultReader</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>By default, calling <code>readableStream.getReader()</code> with no arguments will return an instance of <code>ReadableStreamDefaultReader</code>. The default reader treats the chunks of data passed through the stream as opaque values, which allows the {ReadableStream} to work with generally any JavaScript value.</p>
+<h4 id="new-readablestreamdefaultreaderstream"><code>new ReadableStreamDefaultReader(stream)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>stream</code> {ReadableStream}</li>
+</ul>
+<p>Creates a new {ReadableStreamDefaultReader} that is locked to the given {ReadableStream}.</p>
+<h4 id="readablestreamdefaultreader.cancelreason"><code>readableStreamDefaultReader.cancel([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Cancels the {ReadableStream} and returns a promise that is fulfilled when the underlying stream has been canceled.</p>
+<h4 id="readablestreamdefaultreader.closed"><code>readableStreamDefaultReader.closed</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {Promise} Fulfilled with <code>undefined</code> when the associated {ReadableStream} is closed or this reader’s lock is released.</li>
+</ul>
+<h4 id="readablestreamdefaultreader.read"><code>readableStreamDefaultReader.read()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Returns: A promise fulfilled with an object:
+<ul>
+<li><code>value</code> {ArrayBuffer}</li>
+<li><code>done</code> {boolean}</li>
+</ul></li>
+</ul>
+<p>Requests the next chunk of data from the underlying {ReadableStream} and returns a promise that is fulfilled with the data once it is available.</p>
+<h4 id="readablestreamdefaultreader.releaselock"><code>readableStreamDefaultReader.releaseLock()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Releases this reader’s lock on the underlying {ReadableStream}.</p>
+<h3 id="class-readablestreambyobreader">Class: <code>ReadableStreamBYOBReader</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>The <code>ReadableStreamBYOBReader</code> is an alternative consumer for byte-oriented {ReadableStream}’s (those that are created with <code>underlyingSource.type</code> set equal to <code>'bytes`` when the</code>ReadableStream` was created).</p>
+<p>The <code>BYOB</code> is short for “bring your own buffer”. This is a pattern that allows for more efficient reading of byte-oriented data that avoids extraneous copying.</p>
+<pre class="mjs"><code>import {
+  open
+} from &#39;node:fs/promises&#39;;
+
+import {
+  ReadableStream
+} from &#39;node:stream/web&#39;;
+
+import { Buffer } from &#39;node:buffer&#39;;
+
+class Source {
+  type = &#39;bytes&#39;;
+  autoAllocateChunkSize = 1024;
+
+  async start(controller) {
+    this.file = await open(new URL(import.meta.url));
+    this.controller = controller;
+  }
+
+  async pull(controller) {
+    const view = controller.byobRequest?.view;
+    const {
+      bytesRead,
+    } = await this.file.read({
+      buffer: view,
+      offset: view.byteOffset,
+      length: view.byteLength
+    });
+
+    if (bytesRead === 0) {
+      await this.file.close();
+      this.controller.close();
+    }
+    controller.byobRequest.respond(bytesRead);
+  }
+}
+
+const stream = new ReadableStream(new Source());
+
+async function read(stream) {
+  const reader = stream.getReader({ mode: &#39;byob&#39; });
+
+  const chunks = [];
+  let result;
+  do {
+    result = await reader.read(Buffer.alloc(100));
+    if (result.value !== undefined)
+      chunks.push(Buffer.from(result.value));
+  } while (!result.done);
+
+  return Buffer.concat(chunks);
+}
+
+const data = await read(stream);
+console.log(Buffer.from(data).toString());</code></pre>
+<h4 id="new-readablestreambyobreaderstream"><code>new ReadableStreamBYOBReader(stream)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>stream</code> {ReadableStream}</li>
+</ul>
+<p>Creates a new <code>ReadableStreamBYOBReader</code> that is locked to the given {ReadableStream}.</p>
+<h4 id="readablestreambyobreader.cancelreason"><code>readableStreamBYOBReader.cancel([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Cancels the {ReadableStream} and returns a promise that is fulfilled when the underlying stream has been canceled.</p>
+<h4 id="readablestreambyobreader.closed"><code>readableStreamBYOBReader.closed</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {Promise} Fulfilled with <code>undefined</code> when the associated {ReadableStream} is closed or this reader’s lock is released.</li>
+</ul>
+<h4 id="readablestreambyobreader.readview"><code>readableStreamBYOBReader.read(view)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>view</code> {Buffer|TypedArray|DataView}</li>
+<li>Returns: A promise fulfilled with an object:
+<ul>
+<li><code>value</code> {ArrayBuffer}</li>
+<li><code>done</code> {boolean}</li>
+</ul></li>
+</ul>
+<p>Requests the next chunk of data from the underlying {ReadableStream} and returns a promise that is fulfilled with the data once it is available.</p>
+<p>Do not pass a pooled {Buffer} object instance in to this method. Pooled <code>Buffer</code> objects are created using <code>Buffer.allocUnsafe()</code>, or <code>Buffer.from()</code>, or are often returned by various <code>fs</code> module callbacks. These types of <code>Buffer</code>s use a shared underlying {ArrayBuffer} object that contains all of the data from all of the pooled <code>Buffer</code> instances. When a <code>Buffer</code>, {TypedArray}, or {DataView} is passed in to <code>readableStreamBYOBReader.read()</code>, the view’s underlying <code>ArrayBuffer</code> is <em>detached</em>, invalidating all existing views that may exist on that <code>ArrayBuffer</code>. This can have disastrous consequences for your application.</p>
+<h4 id="readablestreambyobreader.releaselock"><code>readableStreamBYOBReader.releaseLock()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Releases this reader’s lock on the underlying {ReadableStream}.</p>
+<h3 id="class-readablestreamdefaultcontroller">Class: <code>ReadableStreamDefaultController</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Every {ReadableStream} has a controller that is responsible for the internal state and management of the stream’s queue. The <code>ReadableStreamDefaultController</code> is the default controller implementation for <code>ReadableStream</code>s that are not byte-oriented.</p>
+<h4 id="readablestreamdefaultcontroller.close"><code>readableStreamDefaultController.close()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Closes the {ReadableStream} to which this controller is associated.</p>
+<h4 id="readablestreamdefaultcontroller.desiredsize"><code>readableStreamDefaultController.desiredSize</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<p>Returns the amount of data remaining to fill the {ReadableStream}’s queue.</p>
+<h4 id="readablestreamdefaultcontroller.enqueuechunk"><code>readableStreamDefaultController.enqueue(chunk)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>chunk</code> {any}</li>
+</ul>
+<p>Appends a new chunk of data to the {ReadableStream}’s queue.</p>
+<h4 id="readablestreamdefaultcontroller.errorerror"><code>readableStreamDefaultController.error(error)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>error</code> {any}</li>
+</ul>
+<p>Signals an error that causes the {ReadableStream} to error and close.</p>
+<h3 id="class-readablebytestreamcontroller">Class: <code>ReadableByteStreamController</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Every {ReadableStream} has a controller that is responsible for the internal state and management of the stream’s queue. The <code>ReadableByteStreamController</code> is for byte-oriented <code>ReadableStream</code>s.</p>
+<h4 id="readablebytestreamcontroller.byobrequest"><code>readableByteStreamController.byobRequest</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {ReadableStreamBYOBRequest}</li>
+</ul>
+<h4 id="readablebytestreamcontroller.close"><code>readableByteStreamController.close()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Closes the {ReadableStream} to which this controller is associated.</p>
+<h4 id="readablebytestreamcontroller.desiredsize"><code>readableByteStreamController.desiredSize</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<p>Returns the amount of data remaining to fill the {ReadableStream}’s queue.</p>
+<h4 id="readablebytestreamcontroller.enqueuechunk"><code>readableByteStreamController.enqueue(chunk)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>chunk</code>: {Buffer|TypedArray|DataView}</li>
+</ul>
+<p>Appends a new chunk of data to the {ReadableStream}’s queue.</p>
+<h4 id="readablebytestreamcontroller.errorerror"><code>readableByteStreamController.error(error)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>error</code> {any}</li>
+</ul>
+<p>Signals an error that causes the {ReadableStream} to error and close.</p>
+<h3 id="class-readablestreambyobrequest">Class: <code>ReadableStreamBYOBRequest</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>When using <code>ReadableByteStreamController</code> in byte-oriented streams, and when using the <code>ReadableStreamBYOBReader</code>, the <code>readableByteStreamController.byobRequest</code> property provides access to a <code>ReadableStreamBYOBRequest</code> instance that represents the current read request. The object is used to gain access to the <code>ArrayBuffer</code>/<code>TypedArray</code> that has been provided for the read request to fill, and provides methods for signaling that the data has been provided.</p>
+<h4 id="readablestreambyobrequest.respondbyteswritten"><code>readableStreamBYOBRequest.respond(bytesWritten)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>bytesWritten</code> {number}</li>
+</ul>
+<p>Signals that a <code>bytesWritten</code> number of bytes have been written to <code>readableStreamBYOBRequest.view</code>.</p>
+<h4 id="readablestreambyobrequest.respondwithnewviewview"><code>readableStreamBYOBRequest.respondWithNewView(view)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>view</code> {Buffer|TypedArray|DataView}</li>
+</ul>
+<p>Signals that the request has been fulfilled with bytes written to a new <code>Buffer</code>, <code>TypedArray</code>, or <code>DataView</code>.</p>
+<h4 id="readablestreambyobrequest.view"><code>readableStreamBYOBRequest.view</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {Buffer|TypedArray|DataView}</li>
+</ul>
+<h3 id="class-writablestream">Class: <code>WritableStream</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>The <code>WritableStream</code> is a destination to which stream data is sent.</p>
+<pre class="mjs"><code>import {
+  WritableStream
+} from &#39;node:stream/web&#39;;
+
+const stream = new WritableStream({
+  write(chunk) {
+    console.log(chunk);
+  }
+});
+
+await stream.getWriter().write(&#39;Hello World&#39;);</code></pre>
+<h4 id="new-writablestreamunderlyingsink-strategy"><code>new WritableStream([underlyingSink[, strategy]])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>underlyingSink</code> {Object}
+<ul>
+<li><code>start</code> {Function} A user-defined function that is invoked immediately when the <code>WritableStream</code> is created.
+<ul>
+<li><code>controller</code> {WritableStreamDefaultController}</li>
+<li>Returns: <code>undefined</code> or a promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>write</code> {Function} A user-defined function that is invoked when a chunk of data has been written to the <code>WritableStream</code>.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li><code>controller</code> {WritableStreamDefaultController}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>close</code> {Function} A user-defined function that is called when the <code>WritableStream</code> is closed.
+<ul>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>abort</code> {Function} A user-defined function that is called to abruptly close the <code>WritableStream</code>.
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>type</code> {any} The <code>type</code> option is reserved for future use and <em>must</em> be undefined.</li>
+</ul></li>
+<li><code>strategy</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number} The maximum internal queue size before backpressure is applied.</li>
+<li><code>size</code> {Function} A user-defined function used to identify the size of each chunk of data.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number}</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="writablestream.abortreason"><code>writableStream.abort([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Abruptly terminates the <code>WritableStream</code>. All queued writes will be canceled with their associated promises rejected.</p>
+<h4 id="writablestream.close"><code>writableStream.close()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Closes the <code>WritableStream</code> when no additional writes are expected.</p>
+<h4 id="writablestream.getwriter"><code>writableStream.getWriter()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Returns: {WritableStreamDefaultWriter}</li>
+</ul>
+<p>Creates and creates a new writer instance that can be used to write data into the <code>WritableStream</code>.</p>
+<h4 id="writablestream.locked"><code>writableStream.locked</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {boolean}</li>
+</ul>
+<p>The <code>writableStream.locked</code> property is <code>false</code> by default, and is switched to <code>true</code> while there is an active writer attached to this <code>WritableStream</code>.</p>
+<h4 id="transferring-with-postmessage-1">Transferring with postMessage()</h4>
+<p>A {WritableStream} instance can be transferred using a {MessagePort}.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> stream <span class="op">=</span> <span class="kw">new</span> <span class="at">WritableStream</span>(<span class="at">getWritableSinkSomehow</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="va">port1</span>.<span class="at">onmessage</span> <span class="op">=</span> (<span class="op">{</span> data <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="va">data</span>.<span class="at">getWriter</span>().<span class="at">write</span>(<span class="st">&#39;hello&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="op">};</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="va">port2</span>.<span class="at">postMessage</span>(stream<span class="op">,</span> [stream])<span class="op">;</span></a></code></pre></div>
+<h3 id="class-writablestreamdefaultwriter">Class: <code>WritableStreamDefaultWriter</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<h4 id="new-writablestreamdefaultwriterstream"><code>new WritableStreamDefaultWriter(stream)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>stream</code> {WritableStream}</li>
+</ul>
+<p>Creates a new <code>WritableStreamDefaultWriter</code> that is locked to the given <code>WritableStream</code>.</p>
+<h4 id="writablestreamdefaultwriter.abortreason"><code>writableStreamDefaultWriter.abort([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Abruptly terminates the <code>WritableStream</code>. All queued writes will be canceled with their associated promises rejected.</p>
+<h4 id="writablestreamdefaultwriter.close"><code>writableStreamDefaultWriter.close()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Closes the <code>WritableStream</code> when no additional writes are expected.</p>
+<h4 id="writablestreamdefaultwriter.closed"><code>writableStreamDefaultWriter.closed</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: A promise that is fulfilled with <code>undefined</code> when the associated {WritableStream} is closed or this writer’s lock is released.</li>
+</ul>
+<h4 id="writablestreamdefaultwriter.desiredsize"><code>writableStreamDefaultWriter.desiredSize</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<p>The amount of data required to fill the {WritableStream}’s queue.</p>
+<h4 id="writablestreamdefaultwriter.ready"><code>writableStreamDefaultWriter.ready</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>type: A promise that is fulfilled with <code>undefined</code> when the writer is ready to be used.</li>
+</ul>
+<h4 id="writablestreamdefaultwriter.releaselock"><code>writableStreamDefaultWriter.releaseLock()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Releases this writer’s lock on the underlying {ReadableStream}.</p>
+<h4 id="writablestreamdefaultwriter.writechunk"><code>writableStreamDefaultWriter.write([chunk])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>chunk</code>: {any}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul>
+<p>Appends a new chunk of data to the {WritableStream}’s queue.</p>
+<h3 id="class-writablestreamdefaultcontroller">Class: <code>WritableStreamDefaultController</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>The <code>WritableStreamDefaultController</code> manage’s the {WritableStream}’s internal state.</p>
+<h4 id="writablestreamdefaultcontroller.abortreason"><code>writableStreamDefaultController.abortReason</code></h4>
+<ul>
+<li>Type: {any} The <code>reason</code> value passed to <code>writableStream.abort()</code>.</li>
+</ul>
+<h4 id="writablestreamdefaultcontroller.errorerror"><code>writableStreamDefaultController.error(error)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>error</code> {any}</li>
+</ul>
+<p>Called by user-code to signal that an error has occurred while processing the <code>WritableStream</code> data. When called, the {WritableStream} will be aborted, with currently pending writes canceled.</p>
+<h4 id="writablestreamdefaultcontroller.signal"><code>writableStreamDefaultController.signal</code></h4>
+<ul>
+<li>Type: {AbortSignal} An <code>AbortSignal</code> that can be used to cancel pending write or close operations when a {WritableStream} is aborted.</li>
+</ul>
+<h3 id="class-transformstream">Class: <code>TransformStream</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>A <code>TransformStream</code> consists of a {ReadableStream} and a {WritableStream} that are connected such that the data written to the <code>WritableStream</code> is received, and potentially transformed, before being pushed into the <code>ReadableStream</code>’s queue.</p>
+<pre class="mjs"><code>import {
+  TransformStream
+} from &#39;node:stream/web&#39;;
+
+const transform = new TransformStream({
+  transform(chunk, controller) {
+    controller.enqueue(chunk.toUpperCase());
+  }
+});
+
+await Promise.all([
+  transform.writable.getWriter().write(&#39;A&#39;),
+  transform.readable.getReader().read(),
+]);</code></pre>
+<h4 id="new-transformstreamtransformer-writablestrategy-readablestrategy"><code>new TransformStream([transformer[, writableStrategy[, readableStrategy]]])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>transformer</code> {Object}
+<ul>
+<li><code>start</code> {Function} A user-defined function that is invoked immediately when the <code>TransformStream</code> is created.
+<ul>
+<li><code>controller</code> {TransformStreamDefaultController}</li>
+<li>Returns: <code>undefined</code> or a promise fulfilled with <code>undefined</code></li>
+</ul></li>
+<li><code>transform</code> {Function} A user-defined function that receives, and potentially modifies, a chunk of data written to <code>transformStream.writable</code>, before forwarding that on to <code>transformStream.readable</code>.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li><code>controller</code> {TransformStreamDefaultController}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>flush</code> {Function} A user-defined function that is called immediately before the writable side of the <code>TransformStream</code> is closed, signaling the end of the transformation process.
+<ul>
+<li><code>controller</code> {TransformStreamDefaultController}</li>
+<li>Returns: A promise fulfilled with <code>undefined</code>.</li>
+</ul></li>
+<li><code>readableType</code> {any} the <code>readableType</code> option is reserved for future use and <em>must</em> be `undefined.</li>
+<li><code>writableType</code> {any} the <code>writableType</code> option is reserved for future use and <em>must</em> be `undefined.</li>
+</ul></li>
+<li><code>writableStrategy</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number} The maximum internal queue size before backpressure is applied.</li>
+<li><code>size</code> {Function} A user-defined function used to identify the size of each chunk of data.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number}</li>
+</ul></li>
+</ul></li>
+<li><code>readableStrategy</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number} The maximum internal queue size before backpressure is applied.</li>
+<li><code>size</code> {Function} A user-defined function used to identify the size of each chunk of data.
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number}</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="transformstream.readable"><code>transformStream.readable</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {ReadableStream}</li>
+</ul>
+<h4 id="transformstream.writable"><code>transformStream.writable</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {WritableStream}</li>
+</ul>
+<h4 id="transferring-with-postmessage-2">Transferring with postMessage()</h4>
+<p>A {TransformStream} instance can be transferred using a {MessagePort}.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> stream <span class="op">=</span> <span class="kw">new</span> <span class="at">TransformStream</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">const</span> <span class="op">{</span> port1<span class="op">,</span> port2 <span class="op">}</span> <span class="op">=</span> <span class="kw">new</span> <span class="at">MessageChannel</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="va">port1</span>.<span class="at">onmessage</span> <span class="op">=</span> (<span class="op">{</span> data <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="kw">const</span> <span class="op">{</span> writable<span class="op">,</span> readable <span class="op">}</span> <span class="op">=</span> data<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-7" title="7">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="op">};</span></a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="va">port2</span>.<span class="at">postMessage</span>(stream<span class="op">,</span> [stream])<span class="op">;</span></a></code></pre></div>
+<h3 id="class-transformstreamdefaultcontroller">Class: <code>TransformStreamDefaultController</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<p>The <code>TransformStreamDefaultController</code> manages the internal state of the <code>TransformStream</code>.</p>
+<h4 id="transformstreamdefaultcontroller.desiredsize"><code>transformStreamDefaultController.desiredSize</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<p>The amount of data required to fill the readable side’s queue.</p>
+<h4 id="transformstreamdefaultcontroller.enqueuechunk"><code>transformStreamDefaultController.enqueue([chunk])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>chunk</code> {any}</li>
+</ul>
+<p>Appends a chunk of data to the readable side’s queue.</p>
+<h4 id="transformstreamdefaultcontroller.errorreason"><code>transformStreamDefaultController.error([reason])</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>reason</code> {any}</li>
+</ul>
+<p>Signals to both the readable and writable side that an error has occurred while processing the transform data, causing both sides to be abruptly closed.</p>
+<h4 id="transformstreamdefaultcontroller.terminate"><code>transformStreamDefaultController.terminate()</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<p>Closes the readable side of the transport and causes the writable side to be abruptly closed with an error.</p>
+<h3 id="class-bytelengthqueuingstrategy">Class: <code>ByteLengthQueuingStrategy</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<h4 id="new-bytelengthqueuingstrategyoptions"><code>new ByteLengthQueuingStrategy(options)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number}</li>
+</ul></li>
+</ul>
+<h4 id="bytelengthqueuingstrategy.highwatermark"><code>byteLengthQueuingStrategy.highWaterMark</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<h4 id="bytelengthqueuingstrategy.size"><code>byteLengthQueuingStrategy.size</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {Function}
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number}</li>
+</ul></li>
+</ul>
+<h3 id="class-countqueuingstrategy">Class: <code>CountQueuingStrategy</code></h3>
+<!-- YAML
+added: v16.5.0
+-->
+<h4 id="new-countqueuingstrategyoptions"><code>new CountQueuingStrategy(options)</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li><code>options</code> {Object}
+<ul>
+<li><code>highWaterMark</code> {number}</li>
+</ul></li>
+</ul>
+<h4 id="countqueuingstrategy.highwatermark"><code>countQueuingStrategy.highWaterMark</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {number}</li>
+</ul>
+<h4 id="countqueuingstrategy.size"><code>countQueuingStrategy.size</code></h4>
+<!-- YAML
+added: v16.5.0
+-->
+<ul>
+<li>Type: {Function}
+<ul>
+<li><code>chunk</code> {any}</li>
+<li>Returns: {number}</li>
+</ul></li>
+</ul>
+<h3 id="class-textencoderstream">Class: <code>TextEncoderStream</code></h3>
+<!-- YAML
+added: v16.6.0
+-->
+<h4 id="new-textencoderstream"><code>new TextEncoderStream()</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<p>Creates a new <code>TextEncoderStream</code> instance.</p>
+<h4 id="textencoderstream.encoding"><code>textEncoderStream.encoding</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {string}</li>
+</ul>
+<p>The encoding supported by the <code>TextEncoderStream</code> instance.</p>
+<h4 id="textencoderstream.readable"><code>textEncoderStream.readable</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {ReadableStream}</li>
+</ul>
+<h4 id="textencoderstream.writable"><code>textEncoderStream.writable</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {WritableStream}</li>
+</ul>
+<h3 id="class-textdecoderstream">Class: <code>TextDecoderStream</code></h3>
+<!-- YAML
+added: v16.6.0
+-->
+<h4 id="new-textdecoderstreamencoding-options"><code>new TextDecoderStream([encoding[, options]])</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li><code>encoding</code> {string} Identifies the <code>encoding</code> that this <code>TextDecoder</code> instance supports. <strong>Default:</strong> <code>'utf-8'</code>.</li>
+<li><code>options</code> {Object}
+<ul>
+<li><code>fatal</code> {boolean} <code>true</code> if decoding failures are fatal.</li>
+<li><code>ignoreBOM</code> {boolean} When <code>true</code>, the <code>TextDecoderStream</code> will include the byte order mark in the decoded result. When <code>false</code>, the byte order mark will be removed from the output. This option is only used when <code>encoding</code> is <code>'utf-8'</code>, <code>'utf-16be'</code> or <code>'utf-16le'</code>. <strong>Default:</strong> <code>false</code>.</li>
+</ul></li>
+</ul>
+<p>Creates a new <code>TextDecoderStream</code> instance.</p>
+<h4 id="textdecoderstream.encoding"><code>textDecoderStream.encoding</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {string}</li>
+</ul>
+<p>The encoding supported by the <code>TextDecoderStream</code> instance.</p>
+<h4 id="textdecoderstream.fatal"><code>textDecoderStream.fatal</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {boolean}</li>
+</ul>
+<p>The value will be <code>true</code> if decoding errors result in a <code>TypeError</code> being thrown.</p>
+<h4 id="textdecoderstream.ignorebom"><code>textDecoderStream.ignoreBOM</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {boolean}</li>
+</ul>
+<p>The value will be <code>true</code> if the decoding result will include the byte order mark.</p>
+<h4 id="textdecoderstream.readable"><code>textDecoderStream.readable</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {ReadableStream}</li>
+</ul>
+<h4 id="textdecoderstream.writable"><code>textDecoderStream.writable</code></h4>
+<!-- YAML
+added: v16.6.0
+-->
+<ul>
+<li>Type: {WritableStream}</li>
+</ul>
+<h3 id="class-compressionstream">Class: <code>CompressionStream</code></h3>
+<!-- YAML
+added: REPLACEME
+-->
+<h4 id="new-compressionstreamformat"><code>new CompressionStream(format)</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li><code>format</code> {string} One of either <code>'deflate'</code> or <code>'gzip'</code>.</li>
+</ul>
+<h4 id="compressionstream.readable"><code>compressionStream.readable</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li>Type: {ReadableStream}</li>
+</ul>
+<h4 id="compressionstream.writable"><code>compressionStream.writable</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li>Type: {WritableStream}</li>
+</ul>
+<h3 id="class-decompressionstream">Class: <code>DecompressionStream</code></h3>
+<!-- YAML
+added: REPLACEME
+-->
+<h4 id="new-decompressionstreamformat"><code>new DecompressionStream(format)</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li><code>format</code> {string} One of either <code>'deflate'</code> or <code>'gzip'</code>.</li>
+</ul>
+<h4 id="decompressionstream.readable"><code>decompressionStream.readable</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li>Type: {ReadableStream}</li>
+</ul>
+<h4 id="deccompressionstream.writable"><code>deccompressionStream.writable</code></h4>
+<!-- YAML
+added: REPLACEME
+-->
+<ul>
+<li>Type: {WritableStream}</li>
+</ul>
+</body>
+</html>

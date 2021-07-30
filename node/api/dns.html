@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>dns</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="dns">DNS</h1>
+    <!--introduced_in=v0.10.0-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- source_link=lib/dns.js -->
+    <p>
+      The <code>dns</code> module enables name resolution. For example, use it
+      to look up IP addresses of host names.
+    </p>
+    <p>
+      Although named for the
+      <a href="https://en.wikipedia.org/wiki/Domain_Name_System"
+        >Domain Name System (DNS)</a
+      >, it does not always use the DNS protocol for lookups.
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      uses the operating system facilities to perform name resolution. It may
+      not need to perform any network communication. To perform name resolution
+      the way other applications on the same system do, use
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> dns <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="va">dns</span>.<span class="at">lookup</span>(<span class="st">&#39;example.org&#39;</span><span class="op">,</span> (err<span class="op">,</span> address<span class="op">,</span> family) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;address: %j family: IPv%s&#39;</span><span class="op">,</span> address<span class="op">,</span> family)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">// address: &quot;93.184.216.34&quot; family: IPv4</span></a></code></pre>
+    </div>
+    <p>
+      All other functions in the <code>dns</code> module connect to an actual
+      DNS server to perform name resolution. They will always use the network to
+      perform DNS queries. These functions do not use the same set of
+      configuration files used by
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      (e.g. <code>/etc/hosts</code>). Use these functions to always perform DNS
+      queries, bypassing other name-resolution facilities.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> dns <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">dns</span>.<span class="at">resolve4</span>(<span class="st">&#39;archive.org&#39;</span><span class="op">,</span> (err<span class="op">,</span> addresses) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="cf">if</span> (err) <span class="cf">throw</span> err<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`addresses: </span><span class="sc">${</span><span class="va">JSON</span>.<span class="at">stringify</span>(addresses)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="va">addresses</span>.<span class="at">forEach</span>((a) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="va">dns</span>.<span class="at">reverse</span>(a<span class="op">,</span> (err<span class="op">,</span> hostnames) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="cf">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-11" title="11">        <span class="cf">throw</span> err<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`reverse for </span><span class="sc">${</span>a<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="va">JSON</span>.<span class="at">stringify</span>(hostnames)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      See the
+      <a href="#dns_implementation_considerations"
+        >Implementation considerations section</a
+      >
+      for more information.
+    </p>
+    <h2 id="class-dns.resolver">Class: <code>dns.Resolver</code></h2>
+    <!-- YAML
+added: v8.3.0
+-->
+    <p>An independent resolver for DNS requests.</p>
+    <p>
+      Creating a new resolver uses the default server settings. Setting the
+      servers used for a resolver using
+      <a href="#dns_dns_setservers_servers"
+        ><code>resolver.setServers()</code></a
+      >
+      does not affect other resolvers:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> Resolver <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">const</span> resolver <span class="op">=</span> <span class="kw">new</span> <span class="at">Resolver</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="va">resolver</span>.<span class="at">setServers</span>([<span class="st">&#39;4.4.4.4&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">// This request will use the server at 4.4.4.4, independent of global settings.</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="va">resolver</span>.<span class="at">resolve4</span>(<span class="st">&#39;example.org&#39;</span><span class="op">,</span> (err<span class="op">,</span> addresses) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>The following methods from the <code>dns</code> module are available:</p>
+    <ul>
+      <li>
+        <a href="#dns_dns_getservers"><code>resolver.getServers()</code></a>
+      </li>
+      <li>
+        <a href="#dns_dns_resolve_hostname_rrtype_callback"
+          ><code>resolver.resolve()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolve4_hostname_options_callback"
+          ><code>resolver.resolve4()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolve6_hostname_options_callback"
+          ><code>resolver.resolve6()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolveany_hostname_callback"
+          ><code>resolver.resolveAny()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvecaa_hostname_callback"
+          ><code>resolver.resolveCaa()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvecname_hostname_callback"
+          ><code>resolver.resolveCname()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvemx_hostname_callback"
+          ><code>resolver.resolveMx()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvenaptr_hostname_callback"
+          ><code>resolver.resolveNaptr()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvens_hostname_callback"
+          ><code>resolver.resolveNs()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolveptr_hostname_callback"
+          ><code>resolver.resolvePtr()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvesoa_hostname_callback"
+          ><code>resolver.resolveSoa()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvesrv_hostname_callback"
+          ><code>resolver.resolveSrv()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_resolvetxt_hostname_callback"
+          ><code>resolver.resolveTxt()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_reverse_ip_callback"
+          ><code>resolver.reverse()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dns_setservers_servers"
+          ><code>resolver.setServers()</code></a
+        >
+      </li>
+    </ul>
+    <h3 id="resolveroptions"><code>Resolver([options])</code></h3>
+    <!-- YAML
+added: v8.3.0
+changes:
+  - version: v12.18.3
+    pr-url: https://github.com/nodejs/node/pull/33472
+    description: The constructor now accepts an `options` object.
+                 The single supported option is `timeout`.
+-->
+    <p>Create a new resolver.</p>
+    <ul>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>timeout</code> {integer} Query timeout in milliseconds, or
+            <code>-1</code> to use the default timeout.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="resolver.cancel"><code>resolver.cancel()</code></h3>
+    <!-- YAML
+added: v8.3.0
+-->
+    <p>
+      Cancel all outstanding DNS queries made by this resolver. The
+      corresponding callbacks will be called with an error with code
+      <code>ECANCELLED</code>.
+    </p>
+    <h3 id="resolver.setlocaladdressipv4-ipv6">
+      <code>resolver.setLocalAddress([ipv4][, ipv6])</code>
+    </h3>
+    <!-- YAML
+added:
+  - v15.1.0
+  - v14.17.0
+-->
+    <ul>
+      <li>
+        <code>ipv4</code> {string} A string representation of an IPv4 address.
+        <strong>Default:</strong> <code>'0.0.0.0'</code>
+      </li>
+      <li>
+        <code>ipv6</code> {string} A string representation of an IPv6 address.
+        <strong>Default:</strong> <code>'::0'</code>
+      </li>
+    </ul>
+    <p>
+      The resolver instance will send its requests from the specified IP
+      address. This allows programs to specify outbound interfaces when used on
+      multi-homed systems.
+    </p>
+    <p>
+      If a v4 or v6 address is not specified, it is set to the default, and the
+      operating system will choose a local address automatically.
+    </p>
+    <p>
+      The resolver will use the v4 local address when making requests to IPv4
+      DNS servers, and the v6 local address when making requests to IPv6 DNS
+      servers. The <code>rrtype</code> of resolution requests has no impact on
+      the local address used.
+    </p>
+    <h2 id="dns.getservers"><code>dns.getServers()</code></h2>
+    <!-- YAML
+added: v0.11.3
+-->
+    <ul>
+      <li>Returns: {string[]}</li>
+    </ul>
+    <p>
+      Returns an array of IP address strings, formatted according to
+      <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>, that
+      are currently configured for DNS resolution. A string will include a port
+      section if a custom port is used.
+    </p>
+    <!-- eslint-disable semi-->
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1">[</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="st">&#39;4.4.4.4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="st">&#39;2001:4860:4860::8888&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="st">&#39;4.4.4.4:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="st">&#39;[2001:4860:4860::8888]:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">]</a></code></pre>
+    </div>
+    <h2 id="dns.lookuphostname-options-callback">
+      <code>dns.lookup(hostname[, options], callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.90
+changes:
+  - version: v8.5.0
+    pr-url: https://github.com/nodejs/node/pull/14731
+    description: The `verbatim` option is supported now.
+  - version: v1.2.0
+    pr-url: https://github.com/nodejs/node/pull/744
+    description: The `all` option is supported now.
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>options</code> {integer | Object}
+        <ul>
+          <li>
+            <code>family</code> {integer} The record family. Must be
+            <code>4</code>, <code>6</code>, or <code>0</code>. The value
+            <code>0</code> indicates that IPv4 and IPv6 addresses are both
+            returned. <strong>Default:</strong> <code>0</code>.
+          </li>
+          <li>
+            <code>hints</code> {number} One or more
+            <a href="#dns_supported_getaddrinfo_flags"
+              >supported <code>getaddrinfo</code> flags</a
+            >. Multiple flags may be passed by bitwise <code>OR</code>ing their
+            values.
+          </li>
+          <li>
+            <code>all</code> {boolean} When <code>true</code>, the callback
+            returns all resolved addresses in an array. Otherwise, returns a
+            single address. <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>verbatim</code> {boolean} When <code>true</code>, the callback
+            receives IPv4 and IPv6 addresses in the order the DNS resolver
+            returned them. When <code>false</code>, IPv4 addresses are placed
+            before IPv6 addresses. <strong>Default:</strong> currently
+            <code>false</code> (addresses are reordered) but this is expected to
+            change in the not too distant future. Default value is configurable
+            using
+            <a href="#dns_dns_setdefaultresultorder_order"
+              ><code>dns.setDefaultResultOrder()</code></a
+            >
+            or
+            <a href="cli.md#cli_dns_result_order_order"
+              ><code>--dns-result-order</code></a
+            >. New code should use <code>{ verbatim: true }</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li>
+            <code>address</code> {string} A string representation of an IPv4 or
+            IPv6 address.
+          </li>
+          <li>
+            <code>family</code> {integer} <code>4</code> or <code>6</code>,
+            denoting the family of <code>address</code>, or <code>0</code> if
+            the address is not an IPv4 or IPv6 address. <code>0</code> is a
+            likely indicator of a bug in the name resolution service used by the
+            operating system.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Resolves a host name (e.g. <code>'nodejs.org'</code>) into the first found
+      A (IPv4) or AAAA (IPv6) record. All <code>option</code> properties are
+      optional. If <code>options</code> is an integer, then it must be
+      <code>4</code> or <code>6</code> – if <code>options</code> is not
+      provided, then IPv4 and IPv6 addresses are both returned if found.
+    </p>
+    <p>
+      With the <code>all</code> option set to <code>true</code>, the arguments
+      for <code>callback</code> change to <code>(err, addresses)</code>, with
+      <code>addresses</code> being an array of objects with the properties
+      <code>address</code> and <code>family</code>.
+    </p>
+    <p>
+      On error, <code>err</code> is an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is the error code. Keep in mind that
+      <code>err.code</code> will be set to <code>'ENOTFOUND'</code> not only
+      when the host name does not exist but also when the lookup fails in other
+      ways such as no available file descriptors.
+    </p>
+    <p>
+      <code>dns.lookup()</code> does not necessarily have anything to do with
+      the DNS protocol. The implementation uses an operating system facility
+      that can associate names with addresses, and vice versa. This
+      implementation can have subtle but important consequences on the behavior
+      of any Node.js program. Please take some time to consult the
+      <a href="#dns_implementation_considerations"
+        >Implementation considerations section</a
+      >
+      before using <code>dns.lookup()</code>.
+    </p>
+    <p>Example usage:</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> dns <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">family</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">hints</span><span class="op">:</span> <span class="va">dns</span>.<span class="at">ADDRCONFIG</span> <span class="op">|</span> <span class="va">dns</span>.<span class="at">V4MAPPED</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">};</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="va">dns</span>.<span class="at">lookup</span>(<span class="st">&#39;example.com&#39;</span><span class="op">,</span> options<span class="op">,</span> (err<span class="op">,</span> address<span class="op">,</span> family) <span class="kw">=&gt;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;address: %j family: IPv%s&#39;</span><span class="op">,</span> address<span class="op">,</span> family))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">// address: &quot;2606:2800:220:1:248:1893:25c8:1946&quot; family: IPv6</span></a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">// When options.all is true, the result will be an Array.</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="va">options</span>.<span class="at">all</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="va">dns</span>.<span class="at">lookup</span>(<span class="st">&#39;example.com&#39;</span><span class="op">,</span> options<span class="op">,</span> (err<span class="op">,</span> addresses) <span class="kw">=&gt;</span></a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;addresses: %j&#39;</span><span class="op">,</span> addresses))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">// addresses: [{&quot;address&quot;:&quot;2606:2800:220:1:248:1893:25c8:1946&quot;,&quot;family&quot;:6}]</span></a></code></pre>
+    </div>
+    <p>
+      If this method is invoked as its
+      <a href="util.md#util_util_promisify_original"
+        ><code>util.promisify()</code></a
+      >ed version, and <code>all</code> is not set to <code>true</code>, it
+      returns a <code>Promise</code> for an <code>Object</code> with
+      <code>address</code> and <code>family</code> properties.
+    </p>
+    <h3 id="supported-getaddrinfo-flags">Supported getaddrinfo flags</h3>
+    <!-- YAML
+changes:
+  - version:
+     - v13.13.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32183
+    description: Added support for the `dns.ALL` flag.
+-->
+    <p>
+      The following flags can be passed as hints to
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >.
+    </p>
+    <ul>
+      <li>
+        <code>dns.ADDRCONFIG</code>: Limits returned address types to the types
+        of non-loopback addresses configured on the system. For example, IPv4
+        addresses are only returned if the current system has at least one IPv4
+        address configured.
+      </li>
+      <li>
+        <code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6
+        addresses were found, then return IPv4 mapped IPv6 addresses. It is not
+        supported on some operating systems (e.g FreeBSD 10.1).
+      </li>
+      <li>
+        <code>dns.ALL</code>: If <code>dns.V4MAPPED</code> is specified, return
+        resolved IPv6 addresses as well as IPv4 mapped IPv6 addresses.
+      </li>
+    </ul>
+    <h2 id="dns.lookupserviceaddress-port-callback">
+      <code>dns.lookupService(address, port, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.11.14
+-->
+    <ul>
+      <li><code>address</code> {string}</li>
+      <li><code>port</code> {number}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>hostname</code> {string} e.g. <code>example.com</code></li>
+          <li><code>service</code> {string} e.g. <code>http</code></li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Resolves the given <code>address</code> and <code>port</code> into a host
+      name and service using the operating system’s underlying
+      <code>getnameinfo</code> implementation.
+    </p>
+    <p>
+      If <code>address</code> is not a valid IP address, a
+      <code>TypeError</code> will be thrown. The <code>port</code> will be
+      coerced to a number. If it is not a legal port, a
+      <code>TypeError</code> will be thrown.
+    </p>
+    <p>
+      On an error, <code>err</code> is an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is the error code.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> dns <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="va">dns</span>.<span class="at">lookupService</span>(<span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span> <span class="dv">22</span><span class="op">,</span> (err<span class="op">,</span> hostname<span class="op">,</span> service) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(hostname<span class="op">,</span> service)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="co">// Prints: localhost ssh</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      If this method is invoked as its
+      <a href="util.md#util_util_promisify_original"
+        ><code>util.promisify()</code></a
+      >ed version, it returns a <code>Promise</code> for an
+      <code>Object</code> with <code>hostname</code> and
+      <code>service</code> properties.
+    </p>
+    <h2 id="dns.resolvehostname-rrtype-callback">
+      <code>dns.resolve(hostname[, rrtype], callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.27
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>rrtype</code> {string} Resource record type.
+        <strong>Default:</strong> <code>'A'</code>.
+      </li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>records</code> {string[] | Object[] | Object}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a host name
+      (e.g. <code>'nodejs.org'</code>) into an array of the resource records.
+      The <code>callback</code> function has arguments
+      <code>(err, records)</code>. When successful, <code>records</code> will be
+      an array of resource records. The type and structure of individual results
+      varies based on <code>rrtype</code>:
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th><code>rrtype</code></th>
+          <th><code>records</code> contains</th>
+          <th>Result type</th>
+          <th>Shorthand method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'A'</code></td>
+          <td>IPv4 addresses (default)</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dns_resolve4_hostname_options_callback"
+              ><code>dns.resolve4()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'AAAA'</code></td>
+          <td>IPv6 addresses</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dns_resolve6_hostname_options_callback"
+              ><code>dns.resolve6()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'ANY'</code></td>
+          <td>any records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolveany_hostname_callback"
+              ><code>dns.resolveAny()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'CAA'</code></td>
+          <td>CA authorization records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolvecaa_hostname_callback"
+              ><code>dns.resolveCaa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'CNAME'</code></td>
+          <td>canonical name records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dns_resolvecname_hostname_callback"
+              ><code>dns.resolveCname()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'MX'</code></td>
+          <td>mail exchange records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolvemx_hostname_callback"
+              ><code>dns.resolveMx()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'NAPTR'</code></td>
+          <td>name authority pointer records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolvenaptr_hostname_callback"
+              ><code>dns.resolveNaptr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'NS'</code></td>
+          <td>name server records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dns_resolvens_hostname_callback"
+              ><code>dns.resolveNs()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'PTR'</code></td>
+          <td>pointer records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dns_resolveptr_hostname_callback"
+              ><code>dns.resolvePtr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'SOA'</code></td>
+          <td>start of authority records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolvesoa_hostname_callback"
+              ><code>dns.resolveSoa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'SRV'</code></td>
+          <td>service records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dns_resolvesrv_hostname_callback"
+              ><code>dns.resolveSrv()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'TXT'</code></td>
+          <td>text records</td>
+          <td>{string[]}</td>
+          <td>
+            <a href="#dns_dns_resolvetxt_hostname_callback"
+              ><code>dns.resolveTxt()</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      On error, <code>err</code> is an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is one of the
+      <a href="#dns_error_codes">DNS error codes</a>.
+    </p>
+    <h2 id="dns.resolve4hostname-options-callback">
+      <code>dns.resolve4(hostname[, options], callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.16
+changes:
+  - version: v7.2.0
+    pr-url: https://github.com/nodejs/node/pull/9296
+    description: This method now supports passing `options`,
+                 specifically `options.ttl`.
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>ttl</code> {boolean} Retrieve the Time-To-Live value (TTL) of
+            each record. When <code>true</code>, the callback receives an array
+            of <code>{ address: '1.2.3.4', ttl: 60 }</code> objects rather than
+            an array of strings, with the TTL expressed in seconds.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {string[] | Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a IPv4 addresses (<code>A</code> records)
+      for the <code>hostname</code>. The <code>addresses</code> argument passed
+      to the <code>callback</code> function will contain an array of IPv4
+      addresses (e.g.
+      <code>['74.125.79.104', '74.125.79.105', '74.125.79.106']</code>).
+    </p>
+    <h2 id="dns.resolve6hostname-options-callback">
+      <code>dns.resolve6(hostname[, options], callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.16
+changes:
+  - version: v7.2.0
+    pr-url: https://github.com/nodejs/node/pull/9296
+    description: This method now supports passing `options`,
+                 specifically `options.ttl`.
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>ttl</code> {boolean} Retrieve the Time-To-Live value (TTL) of
+            each record. When <code>true</code>, the callback receives an array
+            of <code>{ address: '0:1:2:3:4:5:6:7', ttl: 60 }</code> objects
+            rather than an array of strings, with the TTL expressed in seconds.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {string[] | Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a IPv6 addresses (<code>AAAA</code>
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of IPv6 addresses.
+    </p>
+    <h2 id="dns.resolveanyhostname-callback">
+      <code>dns.resolveAny(hostname, callback)</code>
+    </h2>
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>ret</code> {Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve all records (also known as
+      <code>ANY</code> or <code>*</code> query). The <code>ret</code> argument
+      passed to the <code>callback</code> function will be an array containing
+      various types of records. Each object has a property
+      <code>type</code> that indicates the type of the current record. And
+      depending on the <code>type</code>, additional properties will be present
+      on the object:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 66%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'A'</code></td>
+          <td><code>address</code>/<code>ttl</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'AAAA'</code></td>
+          <td><code>address</code>/<code>ttl</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>'CNAME'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'MX'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dns_resolvemx_hostname_callback"
+              ><code>dns.resolveMx()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'NAPTR'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dns_resolvenaptr_hostname_callback"
+              ><code>dns.resolveNaptr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'NS'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>'PTR'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'SOA'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dns_resolvesoa_hostname_callback"
+              ><code>dns.resolveSoa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'SRV'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dns_resolvesrv_hostname_callback"
+              ><code>dns.resolveSrv()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'TXT'</code></td>
+          <td>
+            This type of record contains an array property called
+            <code>entries</code> which refers to
+            <a href="#dns_dns_resolvetxt_hostname_callback"
+              ><code>dns.resolveTxt()</code></a
+            >, e.g. <code>{ entries: ['...'], type: 'TXT' }</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Here is an example of the <code>ret</code> object passed to the callback:
+    </p>
+    <!-- eslint-disable semi -->
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1">[ <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;A&#39;</span><span class="op">,</span> <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span> <span class="dt">ttl</span><span class="op">:</span> <span class="dv">299</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;CNAME&#39;</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">&#39;example.com&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;MX&#39;</span><span class="op">,</span> <span class="dt">exchange</span><span class="op">:</span> <span class="st">&#39;alt4.aspmx.l.example.com&#39;</span><span class="op">,</span> <span class="dt">priority</span><span class="op">:</span> <span class="dv">50</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;NS&#39;</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">&#39;ns1.example.com&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;TXT&#39;</span><span class="op">,</span> <span class="dt">entries</span><span class="op">:</span> [ <span class="st">&#39;v=spf1 include:_spf.example.com ~all&#39;</span> ] <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;SOA&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="dt">nsname</span><span class="op">:</span> <span class="st">&#39;ns1.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="dt">hostmaster</span><span class="op">:</span> <span class="st">&#39;admin.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="dt">serial</span><span class="op">:</span> <span class="dv">156696742</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="dt">refresh</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="dt">retry</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="dt">expire</span><span class="op">:</span> <span class="dv">1800</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-13" title="13">    <span class="dt">minttl</span><span class="op">:</span> <span class="dv">60</span> <span class="op">}</span> ]</a></code></pre>
+    </div>
+    <p>
+      DNS server operators may choose not to respond to
+      <code>ANY</code> queries. It may be better to call individual methods like
+      <a href="#dns_dns_resolve4_hostname_options_callback"
+        ><code>dns.resolve4()</code></a
+      >,
+      <a href="#dns_dns_resolvemx_hostname_callback"
+        ><code>dns.resolveMx()</code></a
+      >, and so on. For more details, see
+      <a href="https://tools.ietf.org/html/rfc8482">RFC 8482</a>.
+    </p>
+    <h2 id="dns.resolvecnamehostname-callback">
+      <code>dns.resolveCname(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.3.2
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {string[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve <code>CNAME</code> records for the
+      <code>hostname</code>. The <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of canonical name
+      records available for the
+      <code>hostname</code> (e.g. <code>['bar.example.com']</code>).
+    </p>
+    <h2 id="dns.resolvecaahostname-callback">
+      <code>dns.resolveCaa(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>records</code> {Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve <code>CAA</code> records for the
+      <code>hostname</code>. The <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of certification
+      authority authorization records available for the
+      <code>hostname</code> (e.g. <code
+        >[{critical: 0, iodef: 'mailto:pki@example.com'}, {critical: 128, issue:
+        'pki.example.com'}]</code
+      >).
+    </p>
+    <h2 id="dns.resolvemxhostname-callback">
+      <code>dns.resolveMx(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.27
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve mail exchange records (<code>MX</code>
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of objects containing
+      both a <code>priority</code> and <code>exchange</code> property
+      (e.g. <code>[{priority: 10, exchange: 'mx.example.com'}, ...]</code>).
+    </p>
+    <h2 id="dns.resolvenaptrhostname-callback">
+      <code>dns.resolveNaptr(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.9.12
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve regular expression based records (<code
+        >NAPTR</code
+      >
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of objects with the
+      following properties:
+    </p>
+    <ul>
+      <li><code>flags</code></li>
+      <li><code>service</code></li>
+      <li><code>regexp</code></li>
+      <li><code>replacement</code></li>
+      <li><code>order</code></li>
+      <li><code>preference</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">flags</span><span class="op">:</span> <span class="st">&#39;s&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">service</span><span class="op">:</span> <span class="st">&#39;SIP+D2U&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">regexp</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="dt">replacement</span><span class="op">:</span> <span class="st">&#39;_sip._udp.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="dt">order</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="dt">preference</span><span class="op">:</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="dns.resolvenshostname-callback">
+      <code>dns.resolveNs(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.90
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {string[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve name server records (<code>NS</code>
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will contain an array of name server
+      records available for <code>hostname</code> (e.g. <code
+        >['ns1.example.com', 'ns2.example.com']</code
+      >).
+    </p>
+    <h2 id="dns.resolveptrhostname-callback">
+      <code>dns.resolvePtr(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v6.0.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {string[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve pointer records (<code>PTR</code>
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will be an array of strings containing the
+      reply records.
+    </p>
+    <h2 id="dns.resolvesoahostname-callback">
+      <code>dns.resolveSoa(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.11.10
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>address</code> {Object}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a start of authority record (<code
+        >SOA</code
+      >
+      record) for the <code>hostname</code>. The <code>address</code> argument
+      passed to the <code>callback</code> function will be an object with the
+      following properties:
+    </p>
+    <ul>
+      <li><code>nsname</code></li>
+      <li><code>hostmaster</code></li>
+      <li><code>serial</code></li>
+      <li><code>refresh</code></li>
+      <li><code>retry</code></li>
+      <li><code>expire</code></li>
+      <li><code>minttl</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">nsname</span><span class="op">:</span> <span class="st">&#39;ns.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">hostmaster</span><span class="op">:</span> <span class="st">&#39;root.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">serial</span><span class="op">:</span> <span class="dv">2013101809</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="dt">refresh</span><span class="op">:</span> <span class="dv">10000</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="dt">retry</span><span class="op">:</span> <span class="dv">2400</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="dt">expire</span><span class="op">:</span> <span class="dv">604800</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="dt">minttl</span><span class="op">:</span> <span class="dv">3600</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="dns.resolvesrvhostname-callback">
+      <code>dns.resolveSrv(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.27
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>addresses</code> {Object[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve service records (<code>SRV</code>
+      records) for the <code>hostname</code>. The
+      <code>addresses</code> argument passed to the
+      <code>callback</code> function will be an array of objects with the
+      following properties:
+    </p>
+    <ul>
+      <li><code>priority</code></li>
+      <li><code>weight</code></li>
+      <li><code>port</code></li>
+      <li><code>name</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">priority</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">weight</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">port</span><span class="op">:</span> <span class="dv">21223</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;service.example.com&#39;</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="dns.resolvetxthostname-callback">
+      <code>dns.resolveTxt(hostname, callback)</code>
+    </h2>
+    <!-- YAML
+added: v0.1.27
+-->
+    <!--lint disable no-undefined-references list-item-bullet-indent-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li>
+            <code>records</code>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type"
+              class="type"
+              >&lt;string[][]&gt;</a
+            >
+            <!--lint enable no-undefined-references list-item-bullet-indent-->
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve text queries (<code>TXT</code> records)
+      for the <code>hostname</code>. The <code>records</code> argument passed to
+      the <code>callback</code> function is a two-dimensional array of the text
+      records available for <code>hostname</code> (e.g.
+      <code>[ ['v=spf1 ip4:0.0.0.0 ', '~all' ] ]</code>). Each sub-array
+      contains TXT chunks of one record. Depending on the use case, these could
+      be either joined together or treated separately.
+    </p>
+    <h2 id="dns.reverseip-callback"><code>dns.reverse(ip, callback)</code></h2>
+    <!-- YAML
+added: v0.1.16
+-->
+    <ul>
+      <li><code>ip</code> {string}</li>
+      <li>
+        <code>callback</code> {Function}
+        <ul>
+          <li><code>err</code> {Error}</li>
+          <li><code>hostnames</code> {string[]}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Performs a reverse DNS query that resolves an IPv4 or IPv6 address to an
+      array of host names.
+    </p>
+    <p>
+      On error, <code>err</code> is an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is one of the
+      <a href="#dns_error_codes">DNS error codes</a>.
+    </p>
+    <h2 id="dns.setdefaultresultorderorder">
+      <code>dns.setDefaultResultOrder(order)</code>
+    </h2>
+    <!-- YAML
+added: v16.4.0
+-->
+    <ul>
+      <li>
+        <code>order</code> {string} must be <code>'ipv4first'</code> or
+        <code>'verbatim'</code>.
+      </li>
+    </ul>
+    <p>
+      Set the default value of <code>verbatim</code> in
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      and
+      <a href="#dns_dnspromises_lookup_hostname_options"
+        ><code>dnsPromises.lookup()</code></a
+      >. The value could be: * <code>ipv4first</code>: sets default
+      <code>verbatim</code> <code>false</code>. * <code>verbatim</code>: sets
+      default <code>verbatim</code> <code>true</code>.
+    </p>
+    <p>
+      The default is <code>ipv4first</code> and
+      <a href="#dns_dns_setdefaultresultorder_order"
+        ><code>dns.setDefaultResultOrder()</code></a
+      >
+      have higher priority than
+      <a href="cli.md#cli_dns_result_order_order"
+        ><code>--dns-result-order</code></a
+      >. When using <a href="worker_threads.md">worker threads</a>,
+      <a href="#dns_dns_setdefaultresultorder_order"
+        ><code>dns.setDefaultResultOrder()</code></a
+      >
+      from the main thread won’t affect the default dns orders in workers.
+    </p>
+    <h2 id="dns.setserversservers"><code>dns.setServers(servers)</code></h2>
+    <!-- YAML
+added: v0.11.3
+-->
+    <ul>
+      <li>
+        <code>servers</code> {string[]} array of
+        <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>
+        formatted addresses
+      </li>
+    </ul>
+    <p>
+      Sets the IP address and port of servers to be used when performing DNS
+      resolution. The <code>servers</code> argument is an array of
+      <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>
+      formatted addresses. If the port is the IANA default DNS port (53) it can
+      be omitted.
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="va">dns</span>.<span class="at">setServers</span>([</a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="st">&#39;4.4.4.4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="st">&#39;[2001:4860:4860::8888]&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="st">&#39;4.4.4.4:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="st">&#39;[2001:4860:4860::8888]:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-6" title="6">])<span class="op">;</span></a></code></pre>
+    </div>
+    <p>An error will be thrown if an invalid address is provided.</p>
+    <p>
+      The <code>dns.setServers()</code> method must not be called while a DNS
+      query is in progress.
+    </p>
+    <p>
+      The
+      <a href="#dns_dns_setservers_servers"><code>dns.setServers()</code></a>
+      method affects only
+      <a href="#dns_dns_resolve_hostname_rrtype_callback"
+        ><code>dns.resolve()</code></a
+      >, <code>dns.resolve*()</code> and
+      <a href="#dns_dns_reverse_ip_callback"><code>dns.reverse()</code></a> (and
+      specifically <em>not</em>
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >).
+    </p>
+    <p>
+      This method works much like
+      <a href="https://man7.org/linux/man-pages/man5/resolv.conf.5.html"
+        >resolve.conf</a
+      >. That is, if attempting to resolve with the first server provided
+      results in a <code>NOTFOUND</code> error, the
+      <code>resolve()</code> method will <em>not</em> attempt to resolve with
+      subsequent servers provided. Fallback DNS servers will only be used if the
+      earlier ones time out or result in some other error.
+    </p>
+    <h2 id="dns-promises-api">DNS promises API</h2>
+    <!-- YAML
+added: v10.6.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/32953
+    description: Exposed as `require('dns/promises')`.
+  - version:
+    - v11.14.0
+    - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/26592
+    description: This API is no longer experimental.
+-->
+    <p>
+      The <code>dns.promises</code> API provides an alternative set of
+      asynchronous DNS methods that return <code>Promise</code> objects rather
+      than using callbacks. The API is accessible via
+      <code>require('dns').promises</code> or
+      <code>require('dns/promises')</code>.
+    </p>
+    <h3 id="class-dnspromises.resolver">
+      Class: <code>dnsPromises.Resolver</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <p>An independent resolver for DNS requests.</p>
+    <p>
+      Creating a new resolver uses the default server settings. Setting the
+      servers used for a resolver using
+      <a href="#dns_dnspromises_setservers_servers"
+        ><code>resolver.setServers()</code></a
+      >
+      does not affect other resolvers:
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> <span class="op">{</span> Resolver <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>).<span class="at">promises</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">const</span> resolver <span class="op">=</span> <span class="kw">new</span> <span class="at">Resolver</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="va">resolver</span>.<span class="at">setServers</span>([<span class="st">&#39;4.4.4.4&#39;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">// This request will use the server at 4.4.4.4, independent of global settings.</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="va">resolver</span>.<span class="at">resolve4</span>(<span class="st">&#39;example.org&#39;</span>).<span class="at">then</span>((addresses) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-7" title="7">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-9" title="9"></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">// Alternatively, the same code can be written using async-await style.</span></a>
+<a class="sourceLine" id="cb12-11" title="11">(<span class="kw">async</span> <span class="kw">function</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-12" title="12">  <span class="kw">const</span> addresses <span class="op">=</span> <span class="cf">await</span> <span class="va">resolver</span>.<span class="at">resolve4</span>(<span class="st">&#39;example.org&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="op">}</span>)()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The following methods from the <code>dnsPromises</code> API are available:
+    </p>
+    <ul>
+      <li>
+        <a href="#dns_dnspromises_getservers"
+          ><code>resolver.getServers()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolve_hostname_rrtype"
+          ><code>resolver.resolve()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolve4_hostname_options"
+          ><code>resolver.resolve4()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolve6_hostname_options"
+          ><code>resolver.resolve6()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolveany_hostname"
+          ><code>resolver.resolveAny()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvecaa_hostname"
+          ><code>resolver.resolveCaa()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvecname_hostname"
+          ><code>resolver.resolveCname()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvemx_hostname"
+          ><code>resolver.resolveMx()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvenaptr_hostname"
+          ><code>resolver.resolveNaptr()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvens_hostname"
+          ><code>resolver.resolveNs()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolveptr_hostname"
+          ><code>resolver.resolvePtr()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvesoa_hostname"
+          ><code>resolver.resolveSoa()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvesrv_hostname"
+          ><code>resolver.resolveSrv()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_resolvetxt_hostname"
+          ><code>resolver.resolveTxt()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_reverse_ip"
+          ><code>resolver.reverse()</code></a
+        >
+      </li>
+      <li>
+        <a href="#dns_dnspromises_setservers_servers"
+          ><code>resolver.setServers()</code></a
+        >
+      </li>
+    </ul>
+    <h3 id="resolver.cancel-1"><code>resolver.cancel()</code></h3>
+    <!-- YAML
+added:
+  - v15.3.0
+  - v14.17.0
+-->
+    <p>
+      Cancel all outstanding DNS queries made by this resolver. The
+      corresponding promises will be rejected with an error with code
+      <code>ECANCELLED</code>.
+    </p>
+    <h3 id="dnspromises.getservers"><code>dnsPromises.getServers()</code></h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li>Returns: {string[]}</li>
+    </ul>
+    <p>
+      Returns an array of IP address strings, formatted according to
+      <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>, that
+      are currently configured for DNS resolution. A string will include a port
+      section if a custom port is used.
+    </p>
+    <!-- eslint-disable semi-->
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1">[</a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="st">&#39;4.4.4.4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-3" title="3">  <span class="st">&#39;2001:4860:4860::8888&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-4" title="4">  <span class="st">&#39;4.4.4.4:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="st">&#39;[2001:4860:4860::8888]:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-6" title="6">]</a></code></pre>
+    </div>
+    <h3 id="dnspromises.lookuphostname-options">
+      <code>dnsPromises.lookup(hostname[, options])</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+      <li>
+        <code>options</code> {integer | Object}
+        <ul>
+          <li>
+            <code>family</code> {integer} The record family. Must be
+            <code>4</code>, <code>6</code>, or <code>0</code>. The value
+            <code>0</code> indicates that IPv4 and IPv6 addresses are both
+            returned. <strong>Default:</strong> <code>0</code>.
+          </li>
+          <li>
+            <code>hints</code> {number} One or more
+            <a href="#dns_supported_getaddrinfo_flags"
+              >supported <code>getaddrinfo</code> flags</a
+            >. Multiple flags may be passed by bitwise <code>OR</code>ing their
+            values.
+          </li>
+          <li>
+            <code>all</code> {boolean} When <code>true</code>, the
+            <code>Promise</code> is resolved with all addresses in an array.
+            Otherwise, returns a single address. <strong>Default:</strong>
+            <code>false</code>.
+          </li>
+          <li>
+            <code>verbatim</code> {boolean} When <code>true</code>, the
+            <code>Promise</code> is resolved with IPv4 and IPv6 addresses in the
+            order the DNS resolver returned them. When <code>false</code>, IPv4
+            addresses are placed before IPv6 addresses.
+            <strong>Default:</strong> currently <code>false</code> (addresses
+            are reordered) but this is expected to change in the not too distant
+            future. Default value is configurable using
+            <a href="#dns_dns_setdefaultresultorder_order"
+              ><code>dns.setDefaultResultOrder()</code></a
+            >
+            or
+            <a href="cli.md#cli_dns_result_order_order"
+              ><code>--dns-result-order</code></a
+            >. New code should use <code>{ verbatim: true }</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Resolves a host name (e.g. <code>'nodejs.org'</code>) into the first found
+      A (IPv4) or AAAA (IPv6) record. All <code>option</code> properties are
+      optional. If <code>options</code> is an integer, then it must be
+      <code>4</code> or <code>6</code> – if <code>options</code> is not
+      provided, then IPv4 and IPv6 addresses are both returned if found.
+    </p>
+    <p>
+      With the <code>all</code> option set to <code>true</code>, the
+      <code>Promise</code> is resolved with <code>addresses</code> being an
+      array of objects with the properties <code>address</code> and
+      <code>family</code>.
+    </p>
+    <p>
+      On error, the <code>Promise</code> is rejected with an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is the error code. Keep in mind that
+      <code>err.code</code> will be set to <code>'ENOTFOUND'</code> not only
+      when the host name does not exist but also when the lookup fails in other
+      ways such as no available file descriptors.
+    </p>
+    <p>
+      <a href="#dns_dnspromises_lookup_hostname_options"
+        ><code>dnsPromises.lookup()</code></a
+      >
+      does not necessarily have anything to do with the DNS protocol. The
+      implementation uses an operating system facility that can associate names
+      with addresses, and vice versa. This implementation can have subtle but
+      important consequences on the behavior of any Node.js program. Please take
+      some time to consult the
+      <a href="#dns_implementation_considerations"
+        >Implementation considerations section</a
+      >
+      before using <code>dnsPromises.lookup()</code>.
+    </p>
+    <p>Example usage:</p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">const</span> dns <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">const</span> dnsPromises <span class="op">=</span> <span class="va">dns</span>.<span class="at">promises</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="dt">family</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="dt">hints</span><span class="op">:</span> <span class="va">dns</span>.<span class="at">ADDRCONFIG</span> <span class="op">|</span> <span class="va">dns</span>.<span class="at">V4MAPPED</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="op">};</span></a>
+<a class="sourceLine" id="cb14-7" title="7"></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="va">dnsPromises</span>.<span class="at">lookup</span>(<span class="st">&#39;example.com&#39;</span><span class="op">,</span> options).<span class="at">then</span>((result) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;address: %j family: IPv%s&#39;</span><span class="op">,</span> <span class="va">result</span>.<span class="at">address</span><span class="op">,</span> <span class="va">result</span>.<span class="at">family</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-10" title="10">  <span class="co">// address: &quot;2606:2800:220:1:248:1893:25c8:1946&quot; family: IPv6</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="co">// When options.all is true, the result will be an Array.</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="va">options</span>.<span class="at">all</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="va">dnsPromises</span>.<span class="at">lookup</span>(<span class="st">&#39;example.com&#39;</span><span class="op">,</span> options).<span class="at">then</span>((result) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;addresses: %j&#39;</span><span class="op">,</span> result)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="co">// addresses: [{&quot;address&quot;:&quot;2606:2800:220:1:248:1893:25c8:1946&quot;,&quot;family&quot;:6}]</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="dnspromises.lookupserviceaddress-port">
+      <code>dnsPromises.lookupService(address, port)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>address</code> {string}</li>
+      <li><code>port</code> {number}</li>
+    </ul>
+    <p>
+      Resolves the given <code>address</code> and <code>port</code> into a host
+      name and service using the operating system’s underlying
+      <code>getnameinfo</code> implementation.
+    </p>
+    <p>
+      If <code>address</code> is not a valid IP address, a
+      <code>TypeError</code> will be thrown. The <code>port</code> will be
+      coerced to a number. If it is not a legal port, a
+      <code>TypeError</code> will be thrown.
+    </p>
+    <p>
+      On error, the <code>Promise</code> is rejected with an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is the error code.
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">const</span> dnsPromises <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;dns&#39;</span>).<span class="at">promises</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="va">dnsPromises</span>.<span class="at">lookupService</span>(<span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span> <span class="dv">22</span>).<span class="at">then</span>((result) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">result</span>.<span class="at">hostname</span><span class="op">,</span> <span class="va">result</span>.<span class="at">service</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="co">// Prints: localhost ssh</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="dnspromises.resolvehostname-rrtype">
+      <code>dnsPromises.resolve(hostname[, rrtype])</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>rrtype</code> {string} Resource record type.
+        <strong>Default:</strong> <code>'A'</code>.
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a host name
+      (e.g. <code>'nodejs.org'</code>) into an array of the resource records.
+      When successful, the <code>Promise</code> is resolved with an array of
+      resource records. The type and structure of individual results vary based
+      on <code>rrtype</code>:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 13%" />
+        <col style="width: 39%" />
+        <col style="width: 15%" />
+        <col style="width: 31%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th><code>rrtype</code></th>
+          <th><code>records</code> contains</th>
+          <th>Result type</th>
+          <th>Shorthand method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'A'</code></td>
+          <td>IPv4 addresses (default)</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dnspromises_resolve4_hostname_options"
+              ><code>dnsPromises.resolve4()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'AAAA'</code></td>
+          <td>IPv6 addresses</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dnspromises_resolve6_hostname_options"
+              ><code>dnsPromises.resolve6()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'ANY'</code></td>
+          <td>any records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolveany_hostname"
+              ><code>dnsPromises.resolveAny()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'CAA'</code></td>
+          <td>CA authorization records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvecaa_hostname"
+              ><code>dnsPromises.resolveCaa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'CNAME'</code></td>
+          <td>canonical name records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvecname_hostname"
+              ><code>dnsPromises.resolveCname()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'MX'</code></td>
+          <td>mail exchange records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvemx_hostname"
+              ><code>dnsPromises.resolveMx()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'NAPTR'</code></td>
+          <td>name authority pointer records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvenaptr_hostname"
+              ><code>dnsPromises.resolveNaptr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'NS'</code></td>
+          <td>name server records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvens_hostname"
+              ><code>dnsPromises.resolveNs()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'PTR'</code></td>
+          <td>pointer records</td>
+          <td>{string}</td>
+          <td>
+            <a href="#dns_dnspromises_resolveptr_hostname"
+              ><code>dnsPromises.resolvePtr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'SOA'</code></td>
+          <td>start of authority records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvesoa_hostname"
+              ><code>dnsPromises.resolveSoa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'SRV'</code></td>
+          <td>service records</td>
+          <td>{Object}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvesrv_hostname"
+              ><code>dnsPromises.resolveSrv()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'TXT'</code></td>
+          <td>text records</td>
+          <td>{string[]}</td>
+          <td>
+            <a href="#dns_dnspromises_resolvetxt_hostname"
+              ><code>dnsPromises.resolveTxt()</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      On error, the <code>Promise</code> is rejected with an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is one of the
+      <a href="#dns_error_codes">DNS error codes</a>.
+    </p>
+    <h3 id="dnspromises.resolve4hostname-options">
+      <code>dnsPromises.resolve4(hostname[, options])</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>ttl</code> {boolean} Retrieve the Time-To-Live value (TTL) of
+            each record. When <code>true</code>, the <code>Promise</code> is
+            resolved with an array of
+            <code>{ address: '1.2.3.4', ttl: 60 }</code> objects rather than an
+            array of strings, with the TTL expressed in seconds.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve IPv4 addresses (<code>A</code> records)
+      for the <code>hostname</code>. On success, the <code>Promise</code> is
+      resolved with an array of IPv4 addresses (e.g. <code
+        >['74.125.79.104', '74.125.79.105', '74.125.79.106']</code
+      >).
+    </p>
+    <h3 id="dnspromises.resolve6hostname-options">
+      <code>dnsPromises.resolve6(hostname[, options])</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string} Host name to resolve.</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>ttl</code> {boolean} Retrieve the Time-To-Live value (TTL) of
+            each record. When <code>true</code>, the <code>Promise</code> is
+            resolved with an array of
+            <code>{ address: '0:1:2:3:4:5:6:7', ttl: 60 }</code> objects rather
+            than an array of strings, with the TTL expressed in seconds.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve IPv6 addresses (<code>AAAA</code>
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of IPv6 addresses.
+    </p>
+    <h3 id="dnspromises.resolveanyhostname">
+      <code>dnsPromises.resolveAny(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve all records (also known as
+      <code>ANY</code> or <code>*</code> query). On success, the
+      <code>Promise</code> is resolved with an array containing various types of
+      records. Each object has a property <code>type</code> that indicates the
+      type of the current record. And depending on the <code>type</code>,
+      additional properties will be present on the object:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 66%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'A'</code></td>
+          <td><code>address</code>/<code>ttl</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'AAAA'</code></td>
+          <td><code>address</code>/<code>ttl</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>'CNAME'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'MX'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dnspromises_resolvemx_hostname"
+              ><code>dnsPromises.resolveMx()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'NAPTR'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dnspromises_resolvenaptr_hostname"
+              ><code>dnsPromises.resolveNaptr()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'NS'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>'PTR'</code></td>
+          <td><code>value</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>'SOA'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dnspromises_resolvesoa_hostname"
+              ><code>dnsPromises.resolveSoa()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>'SRV'</code></td>
+          <td>
+            Refer to
+            <a href="#dns_dnspromises_resolvesrv_hostname"
+              ><code>dnsPromises.resolveSrv()</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>'TXT'</code></td>
+          <td>
+            This type of record contains an array property called
+            <code>entries</code> which refers to
+            <a href="#dns_dnspromises_resolvetxt_hostname"
+              ><code>dnsPromises.resolveTxt()</code></a
+            >, e.g. <code>{ entries: ['...'], type: 'TXT' }</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Here is an example of the result object:</p>
+    <!-- eslint-disable semi -->
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1">[ <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;A&#39;</span><span class="op">,</span> <span class="dt">address</span><span class="op">:</span> <span class="st">&#39;127.0.0.1&#39;</span><span class="op">,</span> <span class="dt">ttl</span><span class="op">:</span> <span class="dv">299</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;CNAME&#39;</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">&#39;example.com&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-3" title="3">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;MX&#39;</span><span class="op">,</span> <span class="dt">exchange</span><span class="op">:</span> <span class="st">&#39;alt4.aspmx.l.example.com&#39;</span><span class="op">,</span> <span class="dt">priority</span><span class="op">:</span> <span class="dv">50</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;NS&#39;</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">&#39;ns1.example.com&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;TXT&#39;</span><span class="op">,</span> <span class="dt">entries</span><span class="op">:</span> [ <span class="st">&#39;v=spf1 include:_spf.example.com ~all&#39;</span> ] <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="op">{</span> <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;SOA&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="dt">nsname</span><span class="op">:</span> <span class="st">&#39;ns1.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-8" title="8">    <span class="dt">hostmaster</span><span class="op">:</span> <span class="st">&#39;admin.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-9" title="9">    <span class="dt">serial</span><span class="op">:</span> <span class="dv">156696742</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-10" title="10">    <span class="dt">refresh</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-11" title="11">    <span class="dt">retry</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-12" title="12">    <span class="dt">expire</span><span class="op">:</span> <span class="dv">1800</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-13" title="13">    <span class="dt">minttl</span><span class="op">:</span> <span class="dv">60</span> <span class="op">}</span> ]</a></code></pre>
+    </div>
+    <h3 id="dnspromises.resolvecaahostname">
+      <code>dnsPromises.resolveCaa(hostname)</code>
+    </h3>
+    <!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve <code>CAA</code> records for the
+      <code>hostname</code>. On success, the <code>Promise</code> is resolved
+      with an array of objects containing available certification authority
+      authorization records available for the <code>hostname</code> (e.g. <code
+        >[{critical: 0, iodef: 'mailto:pki@example.com'},{critical: 128, issue:
+        'pki.example.com'}]</code
+      >).
+    </p>
+    <h3 id="dnspromises.resolvecnamehostname">
+      <code>dnsPromises.resolveCname(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve <code>CNAME</code> records for the
+      <code>hostname</code>. On success, the <code>Promise</code> is resolved
+      with an array of canonical name records available for the
+      <code>hostname</code> (e.g. <code>['bar.example.com']</code>).
+    </p>
+    <h3 id="dnspromises.resolvemxhostname">
+      <code>dnsPromises.resolveMx(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve mail exchange records (<code>MX</code>
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of objects containing both
+      a <code>priority</code> and <code>exchange</code> property (e.g.
+      <code>[{priority: 10, exchange: 'mx.example.com'}, ...]</code>).
+    </p>
+    <h3 id="dnspromises.resolvenaptrhostname">
+      <code>dnsPromises.resolveNaptr(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve regular expression based records (<code
+        >NAPTR</code
+      >
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of objects with the
+      following properties:
+    </p>
+    <ul>
+      <li><code>flags</code></li>
+      <li><code>service</code></li>
+      <li><code>regexp</code></li>
+      <li><code>replacement</code></li>
+      <li><code>order</code></li>
+      <li><code>preference</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">flags</span><span class="op">:</span> <span class="st">&#39;s&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">service</span><span class="op">:</span> <span class="st">&#39;SIP+D2U&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">regexp</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-5" title="5">  <span class="dt">replacement</span><span class="op">:</span> <span class="st">&#39;_sip._udp.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-6" title="6">  <span class="dt">order</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-7" title="7">  <span class="dt">preference</span><span class="op">:</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="dnspromises.resolvenshostname">
+      <code>dnsPromises.resolveNs(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve name server records (<code>NS</code>
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of name server records
+      available for <code>hostname</code> (e.g.
+      <code>['ns1.example.com', 'ns2.example.com']</code>).
+    </p>
+    <h3 id="dnspromises.resolveptrhostname">
+      <code>dnsPromises.resolvePtr(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve pointer records (<code>PTR</code>
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of strings containing the
+      reply records.
+    </p>
+    <h3 id="dnspromises.resolvesoahostname">
+      <code>dnsPromises.resolveSoa(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve a start of authority record (<code
+        >SOA</code
+      >
+      record) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an object with the following
+      properties:
+    </p>
+    <ul>
+      <li><code>nsname</code></li>
+      <li><code>hostmaster</code></li>
+      <li><code>serial</code></li>
+      <li><code>refresh</code></li>
+      <li><code>retry</code></li>
+      <li><code>expire</code></li>
+      <li><code>minttl</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">nsname</span><span class="op">:</span> <span class="st">&#39;ns.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-3" title="3">  <span class="dt">hostmaster</span><span class="op">:</span> <span class="st">&#39;root.example.com&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-4" title="4">  <span class="dt">serial</span><span class="op">:</span> <span class="dv">2013101809</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-5" title="5">  <span class="dt">refresh</span><span class="op">:</span> <span class="dv">10000</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="dt">retry</span><span class="op">:</span> <span class="dv">2400</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  <span class="dt">expire</span><span class="op">:</span> <span class="dv">604800</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb18-8" title="8">  <span class="dt">minttl</span><span class="op">:</span> <span class="dv">3600</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="dnspromises.resolvesrvhostname">
+      <code>dnsPromises.resolveSrv(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve service records (<code>SRV</code>
+      records) for the <code>hostname</code>. On success, the
+      <code>Promise</code> is resolved with an array of objects with the
+      following properties:
+    </p>
+    <ul>
+      <li><code>priority</code></li>
+      <li><code>weight</code></li>
+      <li><code>port</code></li>
+      <li><code>name</code></li>
+    </ul>
+    <!-- eslint-skip -->
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb19-2" title="2">  <span class="dt">priority</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-3" title="3">  <span class="dt">weight</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">port</span><span class="op">:</span> <span class="dv">21223</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb19-5" title="5">  <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;service.example.com&#39;</span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="dnspromises.resolvetxthostname">
+      <code>dnsPromises.resolveTxt(hostname)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>hostname</code> {string}</li>
+    </ul>
+    <p>
+      Uses the DNS protocol to resolve text queries (<code>TXT</code> records)
+      for the <code>hostname</code>. On success, the <code>Promise</code> is
+      resolved with a two-dimensional array of the text records available for
+      <code>hostname</code> (e.g.
+      <code>[ ['v=spf1 ip4:0.0.0.0 ', '~all' ] ]</code>). Each sub-array
+      contains TXT chunks of one record. Depending on the use case, these could
+      be either joined together or treated separately.
+    </p>
+    <h3 id="dnspromises.reverseip"><code>dnsPromises.reverse(ip)</code></h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li><code>ip</code> {string}</li>
+    </ul>
+    <p>
+      Performs a reverse DNS query that resolves an IPv4 or IPv6 address to an
+      array of host names.
+    </p>
+    <p>
+      On error, the <code>Promise</code> is rejected with an
+      <a href="errors.md#errors_class_error"><code>Error</code></a> object,
+      where <code>err.code</code> is one of the
+      <a href="#dns_error_codes">DNS error codes</a>.
+    </p>
+    <h3 id="dnspromises.setdefaultresultorderorder">
+      <code>dnsPromises.setDefaultResultOrder(order)</code>
+    </h3>
+    <!-- YAML
+added: v16.4.0
+-->
+    <ul>
+      <li>
+        <code>order</code> {string} must be <code>'ipv4first'</code> or
+        <code>'verbatim'</code>.
+      </li>
+    </ul>
+    <p>
+      Set the default value of <code>verbatim</code> in
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      and
+      <a href="#dns_dnspromises_lookup_hostname_options"
+        ><code>dnsPromises.lookup()</code></a
+      >. The value could be: * <code>ipv4first</code>: sets default
+      <code>verbatim</code> <code>false</code>. * <code>verbatim</code>: sets
+      default <code>verbatim</code> <code>true</code>.
+    </p>
+    <p>
+      The default is <code>ipv4first</code> and
+      <a href="#dns_dnspromises_setdefaultresultorder_order"
+        ><code>dnsPromises.setDefaultResultOrder()</code></a
+      >
+      have higher priority than
+      <a href="cli.md#cli_dns_result_order_order"
+        ><code>--dns-result-order</code></a
+      >. When using <a href="worker_threads.md">worker threads</a>,
+      <a href="#dns_dnspromises_setdefaultresultorder_order"
+        ><code>dnsPromises.setDefaultResultOrder()</code></a
+      >
+      from the main thread won’t affect the default dns orders in workers.
+    </p>
+    <h3 id="dnspromises.setserversservers">
+      <code>dnsPromises.setServers(servers)</code>
+    </h3>
+    <!-- YAML
+added: v10.6.0
+-->
+    <ul>
+      <li>
+        <code>servers</code> {string[]} array of
+        <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>
+        formatted addresses
+      </li>
+    </ul>
+    <p>
+      Sets the IP address and port of servers to be used when performing DNS
+      resolution. The <code>servers</code> argument is an array of
+      <a href="https://tools.ietf.org/html/rfc5952#section-6">RFC 5952</a>
+      formatted addresses. If the port is the IANA default DNS port (53) it can
+      be omitted.
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="va">dnsPromises</span>.<span class="at">setServers</span>([</a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="st">&#39;4.4.4.4&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="st">&#39;[2001:4860:4860::8888]&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="st">&#39;4.4.4.4:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-5" title="5">  <span class="st">&#39;[2001:4860:4860::8888]:1053&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb20-6" title="6">])<span class="op">;</span></a></code></pre>
+    </div>
+    <p>An error will be thrown if an invalid address is provided.</p>
+    <p>
+      The <code>dnsPromises.setServers()</code> method must not be called while
+      a DNS query is in progress.
+    </p>
+    <p>
+      This method works much like
+      <a href="https://man7.org/linux/man-pages/man5/resolv.conf.5.html"
+        >resolve.conf</a
+      >. That is, if attempting to resolve with the first server provided
+      results in a <code>NOTFOUND</code> error, the
+      <code>resolve()</code> method will <em>not</em> attempt to resolve with
+      subsequent servers provided. Fallback DNS servers will only be used if the
+      earlier ones time out or result in some other error.
+    </p>
+    <h2 id="error-codes">Error codes</h2>
+    <p>Each DNS query can return one of the following error codes:</p>
+    <ul>
+      <li><code>dns.NODATA</code>: DNS server returned answer with no data.</li>
+      <li>
+        <code>dns.FORMERR</code>: DNS server claims query was misformatted.
+      </li>
+      <li><code>dns.SERVFAIL</code>: DNS server returned general failure.</li>
+      <li><code>dns.NOTFOUND</code>: Domain name not found.</li>
+      <li>
+        <code>dns.NOTIMP</code>: DNS server does not implement requested
+        operation.
+      </li>
+      <li><code>dns.REFUSED</code>: DNS server refused query.</li>
+      <li><code>dns.BADQUERY</code>: Misformatted DNS query.</li>
+      <li><code>dns.BADNAME</code>: Misformatted host name.</li>
+      <li><code>dns.BADFAMILY</code>: Unsupported address family.</li>
+      <li><code>dns.BADRESP</code>: Misformatted DNS reply.</li>
+      <li><code>dns.CONNREFUSED</code>: Could not contact DNS servers.</li>
+      <li><code>dns.TIMEOUT</code>: Timeout while contacting DNS servers.</li>
+      <li><code>dns.EOF</code>: End of file.</li>
+      <li><code>dns.FILE</code>: Error reading file.</li>
+      <li><code>dns.NOMEM</code>: Out of memory.</li>
+      <li><code>dns.DESTRUCTION</code>: Channel is being destroyed.</li>
+      <li><code>dns.BADSTR</code>: Misformatted string.</li>
+      <li><code>dns.BADFLAGS</code>: Illegal flags specified.</li>
+      <li><code>dns.NONAME</code>: Given host name is not numeric.</li>
+      <li><code>dns.BADHINTS</code>: Illegal hints flags specified.</li>
+      <li>
+        <code>dns.NOTINITIALIZED</code>: c-ares library initialization not yet
+        performed.
+      </li>
+      <li>
+        <code>dns.LOADIPHLPAPI</code>: Error loading <code>iphlpapi.dll</code>.
+      </li>
+      <li>
+        <code>dns.ADDRGETNETWORKPARAMS</code>: Could not find
+        <code>GetNetworkParams</code> function.
+      </li>
+      <li><code>dns.CANCELLED</code>: DNS query cancelled.</li>
+    </ul>
+    <h2 id="implementation-considerations">Implementation considerations</h2>
+    <p>
+      Although
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      and the various <code>dns.resolve*()/dns.reverse()</code> functions have
+      the same goal of associating a network name with a network address (or
+      vice versa), their behavior is quite different. These differences can have
+      subtle but significant consequences on the behavior of Node.js programs.
+    </p>
+    <h3 id="dns.lookup"><code>dns.lookup()</code></h3>
+    <p>
+      Under the hood,
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      uses the same operating system facilities as most other programs. For
+      instance,
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      will almost always resolve a given name the same way as the
+      <code>ping</code> command. On most POSIX-like operating systems, the
+      behavior of the
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      function can be modified by changing settings in nsswitch.conf(5) and/or
+      resolv.conf(5), but changing these files will change the behavior of all
+      other programs running on the same operating system.
+    </p>
+    <p>
+      Though the call to <code>dns.lookup()</code> will be asynchronous from
+      JavaScript’s perspective, it is implemented as a synchronous call to
+      getaddrinfo(3) that runs on libuv’s threadpool. This can have surprising
+      negative performance implications for some applications, see the
+      <a href="cli.md#cli_uv_threadpool_size_size"
+        ><code>UV_THREADPOOL_SIZE</code></a
+      >
+      documentation for more information.
+    </p>
+    <p>
+      Various networking APIs will call <code>dns.lookup()</code> internally to
+      resolve host names. If that is an issue, consider resolving the host name
+      to an address using <code>dns.resolve()</code> and using the address
+      instead of a host name. Also, some networking APIs (such as
+      <a href="net.md#net_socket_connect_options_connectlistener"
+        ><code>socket.connect()</code></a
+      >
+      and
+      <a href="dgram.md#dgram_dgram_createsocket_options_callback"
+        ><code>dgram.createSocket()</code></a
+      >) allow the default resolver, <code>dns.lookup()</code>, to be replaced.
+    </p>
+    <h3 id="dns.resolve-dns.resolve-and-dns.reverse">
+      <code>dns.resolve()</code>, <code>dns.resolve*()</code> and
+      <code>dns.reverse()</code>
+    </h3>
+    <p>
+      These functions are implemented quite differently than
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >. They do not use getaddrinfo(3) and they <em>always</em> perform a DNS
+      query on the network. This network communication is always done
+      asynchronously, and does not use libuv’s threadpool.
+    </p>
+    <p>
+      As a result, these functions cannot have the same negative impact on other
+      processing that happens on libuv’s threadpool that
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      can have.
+    </p>
+    <p>
+      They do not use the same set of configuration files than what
+      <a href="#dns_dns_lookup_hostname_options_callback"
+        ><code>dns.lookup()</code></a
+      >
+      uses. For instance,
+      <em>they do not use the configuration from <code>/etc/hosts</code></em
+      >.
+    </p>
+  </body>
+</html>

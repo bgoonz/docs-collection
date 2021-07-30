@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>maintaining-icu</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="maintaining-icu-in-node.js">Maintaining ICU in Node.js</h1>
+<h2 id="background">Background</h2>
+<p>International Components for Unicode (<a href="http://site.icu-project.org/">ICU4C</a>) is used both by V8 and also by Node.js directly to provide internationalization functionality. To quote from icu-project.org:</p>
+<blockquote>
+<p>ICU is a mature, widely used set of C/C++ and Java libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms and between C/C++ and Java software.</p>
+</blockquote>
+<h2 id="data-dependencies">Data dependencies</h2>
+<p>ICU consumes and includes:</p>
+<ul>
+<li>Extracted locale data from <a href="http://cldr.unicode.org/">CLDR</a></li>
+<li>Extracted <a href="https://home.unicode.org/">Unicode</a> data.</li>
+<li>Time zone (<a href="https://www.iana.org/time-zones">tz</a>) data</li>
+</ul>
+<p>The current versions of these items can be viewed for node with <code>node -p process.versions</code>:</p>
+<pre class="console"><code>$ node -p process.versions
+
+{
+  …
+  cldr: &#39;35.1&#39;,
+  icu: &#39;64.2&#39;,
+  tz: &#39;2019a&#39;,
+  unicode: &#39;12.1&#39;
+}</code></pre>
+<h3 id="time-zone-data">Time zone data</h3>
+<p>Time zone data files are updated independently of ICU CLDR data. ICU and its main data files do not need to be upgraded in order to apply time zone data file fixes.</p>
+<p>The <a href="https://www.iana.org/time-zones">IANA tzdata</a> project releases new versions and announces them on the <a href="https://mm.icann.org/pipermail/tz-announce/"><code>tz-announce</code></a> mailing list.</p>
+<p>The Unicode project takes new releases and publishes <a href="https://github.com/unicode-org/icu-data/tree/HEAD/tzdata/icunew">updated time zone data files</a> in the icu/icu-data repository.</p>
+<p>All modern versions of Node.js use the version 44 ABI of the time zone data files.</p>
+<h4 id="example-updating-the-icu-.dat-file">Example: updating the ICU <code>.dat</code> file</h4>
+<ul>
+<li>Decompress <code>deps/icu/source/data/in/icudt##l.dat.bz2</code>, where <code>##</code> is the ICU major version number.</li>
+<li>Clone the icu/icu-data repository and copy the latest <code>tzdata</code> release <code>le</code> files into the <code>source/data/in</code> directory.</li>
+<li>Follow the upstream <a href="https://unicode-org.github.io/icu/userguide/datetime/timezone/">ICU instructions</a> to patch the ICU <code>.dat</code> file: &gt; <code>for i in zoneinfo64.res windowsZones.res timezoneTypes.res metaZones.res; &gt; do icupkg -a $i icudt*l.dat</code></li>
+<li>Optionally, verify that there is only one of the above files listed when using <code>icupkg -l</code>.</li>
+<li>Optionally, extract each file using <code>icupkg -x</code> and verify the <code>shasum</code> matches the desired value.</li>
+<li>Compress the <code>.dat</code> file with the same filename as in the first step.</li>
+<li>Build, test, verifying <code>process.versions.tz</code> matches the desired version.</li>
+<li>Create a new minor version release.</li>
+</ul>
+<h2 id="release-schedule">Release schedule</h2>
+<p>ICU typically has &gt;1 release a year, particularly coinciding with a major release of <a href="https://home.unicode.org/">Unicode</a>. The current release schedule is available on the <a href="http://site.icu-project.org/">ICU</a> website on the left sidebar.</p>
+<h3 id="v8-depends-on-icu">V8 depends on ICU</h3>
+<p>V8 will aggressively upgrade to a new ICU version, due to requirements for features/bugfixes needed for <a href="https://github.com/tc39/ecma402">Ecma402</a> support. The minimum required version of ICU is specified within the V8 source tree. If the ICU version is too old, V8 will not compile.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// deps/v8/src/objects/intl-objects.h</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="pp">#define V8_MINIMUM_ICU_VERSION 65</span></a></code></pre></div>
+<p>V8 in Node.js depends on the ICU version supplied by Node.js.</p>
+<p>The file <code>tools/icu/icu_versions.json</code> contains the current minimum version of ICU that Node.js is known to work with. This should be <em>at least</em> the same version as V8, so that users will find out earlier that their ICU is too old. A test case validates this when Node.js is built.</p>
+<h2 id="how-to-upgrade-icu">How to upgrade ICU</h2>
+<ul>
+<li>Make sure your Node.js workspace is clean (<code>git status</code> should be sufficient).</li>
+<li>Configure Node.js with the specific <a href="http://site.icu-project.org/download">ICU version</a> you want to upgrade to, for example:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">./configure</span> \</a>
+<a class="sourceLine" id="cb3-2" title="2">    --with-intl=full-icu \</a>
+<a class="sourceLine" id="cb3-3" title="3">    --with-icu-source=https://github.com/unicode-org/icu/releases/download/release-67-1/icu4c-67_1-src.tgz</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="fu">make</span></a></code></pre></div>
+<blockquote>
+<p><em>Note</em> in theory, the equivalent <code>vcbuild.bat</code> commands should work also, but the commands below are makefile-centric.</p>
+</blockquote>
+<ul>
+<li>If there are ICU version-specific changes needed, you may need to make changes in <code>tools/icu/icu-generic.gyp</code> or add patch files to <code>tools/icu/patches</code>.
+<ul>
+<li>Specifically, look for the lists in <code>sources!</code> in the <code>tools/icu/icu-generic.gyp</code> for files to exclude.</li>
+</ul></li>
+<li>Verify the Node.js build works:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">make</span> test-ci</a></code></pre></div>
+<p>Also running</p>
+<!-- eslint-disable strict -->
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">new</span> <span class="va">Intl</span>.<span class="at">DateTimeFormat</span>(<span class="st">&#39;es&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">month</span><span class="op">:</span> <span class="st">&#39;long&#39;</span> <span class="op">}</span>).<span class="at">format</span>(<span class="kw">new</span> <span class="at">Date</span>(<span class="fl">9E8</span>))<span class="op">;</span></a></code></pre></div>
+<p>…Should return <code>enero</code> not <code>January</code>.</p>
+<ul>
+<li>Now, run the shrink tool to update <code>deps/icu-small</code> from <code>deps/icu</code></li>
+</ul>
+<blockquote>
+<p>:warning: Do not modify any source code in <code>deps/icu-small</code> ! See section below about floating patches to ICU.</p>
+</blockquote>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">python</span> tools/icu/shrink-icu-src.py</a></code></pre></div>
+<ul>
+<li>Now, do a clean rebuild of Node.js to test:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">make</span> -k distclean</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">./configure</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="fu">make</span></a></code></pre></div>
+<ul>
+<li>Test this newly default-generated Node.js</li>
+</ul>
+<!-- eslint-disable strict -->
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">process</span>.<span class="va">versions</span>.<span class="at">icu</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">new</span> <span class="va">Intl</span>.<span class="at">DateTimeFormat</span>(<span class="st">&#39;es&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">month</span><span class="op">:</span> <span class="st">&#39;long&#39;</span> <span class="op">}</span>).<span class="at">format</span>(<span class="kw">new</span> <span class="at">Date</span>(<span class="fl">9E8</span>))<span class="op">;</span></a></code></pre></div>
+<p>(This should print your updated ICU version number, and also <code>enero</code> again.)</p>
+<p>You are ready to check in the updated <code>deps/icu-small</code>. This is a big commit, so make this a separate commit from the smaller changes.</p>
+<blockquote>
+<p>:warning: Do not modify any source code in <code>deps/icu-small</code> ! See section below about floating patches to ICU.</p>
+</blockquote>
+<ul>
+<li>Now, rebuild the Node.js license.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># clean up - remove deps/icu</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="fu">make</span> clean</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">tools/license-builder.sh</span></a></code></pre></div>
+<ul>
+<li>Update the URL and hash for the full ICU file in <code>tools/icu/current_ver.dep</code>. It should match the ICU URL used in the first step. When this is done, the following should build with small ICU.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># clean up</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">rm</span> -rf out deps/icu deps/icu4c*</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="ex">./configure</span> --with-intl=small-icu --download=all</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="fu">make</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="fu">make</span> test-ci</a></code></pre></div>
+<ul>
+<li><p>commit the change to <code>tools/icu/current_ver.dep</code> and <code>LICENSE</code> files.</p>
+<ul>
+<li>Note: To simplify review, I often will “pre-land” this patch, meaning that I run the patch through <code>curl -L https://github.com/nodejs/node/pull/xxx.patch | git am -3 --whitespace=fix</code> per the collaborator’s guide… and then push that patched branch into my PR’s branch. This reduces the whitespace changes that show up in the PR, since the final land will eliminate those anyway.</li>
+</ul></li>
+</ul>
+<h2 id="floating-patches-to-icu">Floating patches to ICU</h2>
+<p>Floating patches are applied at <code>configure</code> time. The “patch” files are used instead of the original source files. The patch files are complete <code>.cpp</code> files replacing the original contents.</p>
+<p>Patches are tied to a specific ICU version. They won’t apply to a future ICU version. We assume that you filed a bug against <a href="http://site.icu-project.org/">ICU</a> and upstreamed the fix, so the patch won’t be needed in a later ICU version.</p>
+<h3 id="example">Example</h3>
+<p>For example, to patch <code>source/tools/toolutil/pkg_genc.cpp</code> for ICU version 63:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># go to your Node.js source directory</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="bu">cd</span> <span class="op">&lt;</span>node<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co"># create the floating patch directory</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="fu">mkdir</span> -p tools/icu/patches/63</a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co"># create the subdirectory for the file(s) to patch:</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="fu">mkdir</span> -p tools/icu/patches/63/source/tools/toolutil/</a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co"># copy the file to patch</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="fu">cp</span> deps/icu-small/source/tools/toolutil/pkg_genc.cpp \</a>
+<a class="sourceLine" id="cb11-12" title="12">tools/icu/patches/63/source/tools/toolutil/pkg_genc.cpp</a>
+<a class="sourceLine" id="cb11-13" title="13"></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co"># Make any changes to this file:</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="kw">(</span><span class="ex">edit</span> tools/icu/patches/63/source/tools/toolutil/pkg_genc.cpp <span class="kw">)</span></a>
+<a class="sourceLine" id="cb11-16" title="16"></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="co"># test</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="fu">make</span> clean <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
+<p>You should see a message such as:</p>
+<pre class="console"><code>INFO: Using floating patch &quot;tools/icu/patches/63/source/tools/toolutil/pkg_genc.cpp&quot; from &quot;tools/icu&quot;</code></pre>
+<h3 id="clean-up">Clean up</h3>
+<p>Any patches older than the minimum version given in <code>tools/icu/icu_versions.json</code> ought to be deleted, because they will never be used.</p>
+<h3 id="why-not-just-modify-the-icu-source-directly">Why not just modify the ICU source directly?</h3>
+<p>Especially given the V8 dependencies above, there may be times when a floating patch to ICU is required. Though it seems expedient to simply change a file in <code>deps/icu-small</code>, this is not the right approach for the following reasons:</p>
+<ol type="1">
+<li><p><strong>Repeatability.</strong> Given the complexity of merging in a new ICU version, following the steps above in the prior section of this document ought to be repeatable without concern for overriding a patch.</p></li>
+<li><p><strong>Verifiability.</strong> Given the number of files modified in an ICU PR, a floating patch could easily be missed or dropped altogether next time something is landed.</p></li>
+<li><p><strong>Compatibility.</strong> There are a number of ways that ICU can be loaded into Node.js (see the top level README.md). Only modifying <code>icu-small</code> would cause the patch not to be landed in case the user specifies the ICU source code another way.</p></li>
+</ol>
+</body>
+</html>

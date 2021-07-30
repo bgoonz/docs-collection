@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>events</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="events">Events</h1>
+    <!--introduced_in=v0.10.0-->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!--type=module-->
+    <!-- source_link=lib/events.js -->
+    <p>
+      Much of the Node.js core API is built around an idiomatic asynchronous
+      event-driven architecture in which certain kinds of objects (called
+      “emitters”) emit named events that cause <code>Function</code> objects
+      (“listeners”) to be called.
+    </p>
+    <p>
+      For instance: a
+      <a href="net.md#net_class_net_server"><code>net.Server</code></a> object
+      emits an event each time a peer connects to it; a
+      <a href="fs.md#fs_class_fs_readstream"><code>fs.ReadStream</code></a>
+      emits an event when the file is opened; a
+      <a href="stream.md">stream</a> emits an event whenever data is available
+      to be read.
+    </p>
+    <p>
+      All objects that emit events are instances of the
+      <code>EventEmitter</code> class. These objects expose an
+      <code>eventEmitter.on()</code> function that allows one or more functions
+      to be attached to named events emitted by the object. Typically, event
+      names are camel-cased strings but any valid JavaScript property key can be
+      used.
+    </p>
+    <p>
+      When the <code>EventEmitter</code> object emits an event, all of the
+      functions attached to that specific event are called
+      <em>synchronously</em>. Any values returned by the called listeners are
+      <em>ignored</em> and discarded.
+    </p>
+    <p>
+      The following example shows a simple <code>EventEmitter</code> instance
+      with a single listener. The <code>eventEmitter.on()</code> method is used
+      to register listeners, while the <code>eventEmitter.emit()</code> method
+      is used to trigger the event.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> EventEmitter <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">class</span> MyEmitter <span class="kw">extends</span> EventEmitter <span class="op">{}</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;an event occurred!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="passing-arguments-and-this-to-listeners">
+      Passing arguments and <code>this</code> to listeners
+    </h2>
+    <p>
+      The <code>eventEmitter.emit()</code> method allows an arbitrary set of
+      arguments to be passed to the listener functions. Keep in mind that when
+      an ordinary listener function is called, the standard
+      <code>this</code> keyword is intentionally set to reference the
+      <code>EventEmitter</code> instance to which the listener is attached.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="kw">function</span>(a<span class="op">,</span> b) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(a<span class="op">,</span> b<span class="op">,</span> <span class="kw">this</span><span class="op">,</span> <span class="kw">this</span> <span class="op">===</span> myEmitter)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="co">//   a b MyEmitter {</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="co">//     domain: null,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="co">//     _events: { event: [Function] },</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="co">//     _eventsCount: 1,</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="co">//     _maxListeners: undefined } true</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="st">&#39;a&#39;</span><span class="op">,</span> <span class="st">&#39;b&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      It is possible to use ES6 Arrow Functions as listeners, however, when
+      doing so, the <code>this</code> keyword will no longer reference the
+      <code>EventEmitter</code> instance:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> (a<span class="op">,</span> b) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="va">console</span>.<span class="at">log</span>(a<span class="op">,</span> b<span class="op">,</span> <span class="kw">this</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="co">// Prints: a b {}</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="st">&#39;a&#39;</span><span class="op">,</span> <span class="st">&#39;b&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="asynchronous-vs.-synchronous">Asynchronous vs. synchronous</h2>
+    <p>
+      The <code>EventEmitter</code> calls all listeners synchronously in the
+      order in which they were registered. This ensures the proper sequencing of
+      events and helps avoid race conditions and logic errors. When appropriate,
+      listener functions can switch to an asynchronous mode of operation using
+      the <code>setImmediate()</code> or
+      <code>process.nextTick()</code> methods:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> (a<span class="op">,</span> b) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="at">setImmediate</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;this happens asynchronously&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="st">&#39;a&#39;</span><span class="op">,</span> <span class="st">&#39;b&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="handling-events-only-once">Handling events only once</h2>
+    <p>
+      When a listener is registered using the
+      <code>eventEmitter.on()</code> method, that listener is invoked
+      <em>every time</em> the named event is emitted.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">let</span> m <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="op">++</span>m)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">// Prints: 1</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">// Prints: 2</span></a></code></pre>
+    </div>
+    <p>
+      Using the <code>eventEmitter.once()</code> method, it is possible to
+      register a listener that is called at most once for a particular event.
+      Once the event is emitted, the listener is unregistered and
+      <em>then</em> called.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">let</span> m <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="va">myEmitter</span>.<span class="at">once</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="op">++</span>m)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">// Prints: 1</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">// Ignored</span></a></code></pre>
+    </div>
+    <h2 id="error-events">Error events</h2>
+    <p>
+      When an error occurs within an <code>EventEmitter</code> instance, the
+      typical action is for an <code>'error'</code> event to be emitted. These
+      are treated as special cases within Node.js.
+    </p>
+    <p>
+      If an <code>EventEmitter</code> does <em>not</em> have at least one
+      listener registered for the <code>'error'</code> event, and an
+      <code>'error'</code> event is emitted, the error is thrown, a stack trace
+      is printed, and the Node.js process exits.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;whoops!&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">// Throws and crashes Node.js</span></a></code></pre>
+    </div>
+    <p>
+      To guard against crashing the Node.js process the
+      <a href="domain.md"><code>domain</code></a> module can be used. (Note,
+      however, that the <code>domain</code> module is deprecated.)
+    </p>
+    <p>
+      As a best practice, listeners should always be added for the
+      <code>'error'</code> events.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;whoops! there was an error&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;whoops!&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">// Prints: whoops! there was an error</span></a></code></pre>
+    </div>
+    <p>
+      It is possible to monitor <code>'error'</code> events without consuming
+      the emitted error by installing a listener using the symbol
+      <code>events.errorMonitor</code>.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> errorMonitor <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="va">myEmitter</span>.<span class="at">on</span>(errorMonitor<span class="op">,</span> (err) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="va">MyMonitoringTool</span>.<span class="at">log</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;whoops!&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">// Still throws and crashes Node.js</span></a></code></pre>
+    </div>
+    <h2 id="capture-rejections-of-promises">Capture rejections of promises</h2>
+    <blockquote>
+      <p>Stability: 1 - captureRejections is experimental.</p>
+    </blockquote>
+    <p>
+      Using <code>async</code> functions with event handlers is problematic,
+      because it can lead to an unhandled rejection in case of a thrown
+      exception:
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="va">ee</span>.<span class="at">on</span>(<span class="st">&#39;something&#39;</span><span class="op">,</span> <span class="kw">async</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;kaboom&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>captureRejections</code> option in the
+      <code>EventEmitter</code> constructor or the global setting change this
+      behavior, installing a <code>.then(undefined, handler)</code> handler on
+      the <code>Promise</code>. This handler routes the exception asynchronously
+      to the
+      <a href="#events_emitter_symbol_for_nodejs_rejection_err_eventname_args"
+        ><code>Symbol.for('nodejs.rejection')</code></a
+      >
+      method if there is one, or to
+      <a href="#events_error_events"><code>'error'</code></a> event handler if
+      there is none.
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> ee1 <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>(<span class="op">{</span> <span class="dt">captureRejections</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="va">ee1</span>.<span class="at">on</span>(<span class="st">&#39;something&#39;</span><span class="op">,</span> <span class="kw">async</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;kaboom&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="va">ee1</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="va">console</span>.<span class="at">log</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">const</span> ee2 <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>(<span class="op">{</span> <span class="dt">captureRejections</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="va">ee2</span>.<span class="at">on</span>(<span class="st">&#39;something&#39;</span><span class="op">,</span> <span class="kw">async</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-10" title="10">  <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;kaboom&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-12" title="12"></a>
+<a class="sourceLine" id="cb11-13" title="13">ee2[<span class="va">Symbol</span>.<span class="at">for</span>(<span class="st">&#39;nodejs.rejection&#39;</span>)] <span class="op">=</span> <span class="va">console</span>.<span class="at">log</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Setting <code>events.captureRejections = true</code> will change the
+      default for all new instances of <code>EventEmitter</code>.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">const</span> events <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="va">events</span>.<span class="at">captureRejections</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">const</span> ee1 <span class="op">=</span> <span class="kw">new</span> <span class="va">events</span>.<span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="va">ee1</span>.<span class="at">on</span>(<span class="st">&#39;something&#39;</span><span class="op">,</span> <span class="kw">async</span> (value) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;kaboom&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-7" title="7"></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="va">ee1</span>.<span class="at">on</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="va">console</span>.<span class="at">log</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>'error'</code> events that are generated by the
+      <code>captureRejections</code> behavior do not have a catch handler to
+      avoid infinite error loops: the recommendation is to
+      <strong
+        >not use <code>async</code> functions as <code>'error'</code> event
+        handlers</strong
+      >.
+    </p>
+    <h2 id="class-eventemitter">Class: <code>EventEmitter</code></h2>
+    <!-- YAML
+added: v0.1.26
+changes:
+  - version:
+     - v13.4.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/27867
+    description: Added captureRejections option.
+-->
+    <p>
+      The <code>EventEmitter</code> class is defined and exposed by the
+      <code>events</code> module:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> EventEmitter <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      All <code>EventEmitter</code>s emit the event
+      <code>'newListener'</code> when new listeners are added and
+      <code>'removeListener'</code> when existing listeners are removed.
+    </p>
+    <p>It supports the following option:</p>
+    <ul>
+      <li>
+        <code>captureRejections</code> {boolean} It enables
+        <a href="#events_capture_rejections_of_promises"
+          >automatic capturing of promise rejection</a
+        >. <strong>Default:</strong> <code>false</code>.
+      </li>
+    </ul>
+    <h3 id="event-newlistener">Event: <code>'newListener'</code></h3>
+    <!-- YAML
+added: v0.1.26
+-->
+    <ul>
+      <li>
+        <code>eventName</code> {string|symbol} The name of the event being
+        listened for
+      </li>
+      <li><code>listener</code> {Function} The event handler function</li>
+    </ul>
+    <p>
+      The <code>EventEmitter</code> instance will emit its own
+      <code>'newListener'</code> event <em>before</em> a listener is added to
+      its internal array of listeners.
+    </p>
+    <p>
+      Listeners registered for the <code>'newListener'</code> event are passed
+      the event name and a reference to the listener being added.
+    </p>
+    <p>
+      The fact that the event is triggered before adding the listener has a
+      subtle but important side effect: any <em>additional</em> listeners
+      registered to the same <code>name</code> <em>within</em> the
+      <code>'newListener'</code> callback are inserted <em>before</em> the
+      listener that is in the process of being added.
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">class</span> MyEmitter <span class="kw">extends</span> EventEmitter <span class="op">{}</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">// Only do this once so we don&#39;t loop forever</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="va">myEmitter</span>.<span class="at">once</span>(<span class="st">&#39;newListener&#39;</span><span class="op">,</span> (event<span class="op">,</span> listener) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="cf">if</span> (event <span class="op">===</span> <span class="st">&#39;event&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    <span class="co">// Insert a new listener in front</span></a>
+<a class="sourceLine" id="cb14-8" title="8">    <span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-9" title="9">      <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;B&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-10" title="10">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;A&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="co">//   B</span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="co">//   A</span></a></code></pre>
+    </div>
+    <h3 id="event-removelistener">Event: <code>'removeListener'</code></h3>
+    <!-- YAML
+added: v0.9.3
+changes:
+  - version:
+    - v6.1.0
+    - v4.7.0
+    pr-url: https://github.com/nodejs/node/pull/6394
+    description: For listeners attached using `.once()`, the `listener` argument
+                 now yields the original listener function.
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol} The event name</li>
+      <li><code>listener</code> {Function} The event handler function</li>
+    </ul>
+    <p>
+      The <code>'removeListener'</code> event is emitted <em>after</em> the
+      <code>listener</code> is removed.
+    </p>
+    <h3 id="emitter.addlistenereventname-listener">
+      <code>emitter.addListener(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v0.1.26
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li><code>listener</code> {Function}</li>
+    </ul>
+    <p>Alias for <code>emitter.on(eventName, listener)</code>.</p>
+    <h3 id="emitter.emiteventname-...args">
+      <code>emitter.emit(eventName[, ...args])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.26
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li><code>...args</code> {any}</li>
+      <li>Returns: {boolean}</li>
+    </ul>
+    <p>
+      Synchronously calls each of the listeners registered for the event named
+      <code>eventName</code>, in the order they were registered, passing the
+      supplied arguments to each.
+    </p>
+    <p>
+      Returns <code>true</code> if the event had listeners,
+      <code>false</code> otherwise.
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">const</span> EventEmitter <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">// First listener</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="kw">function</span> <span class="at">firstListener</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-6" title="6">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Helloooo! first listener&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">// Second listener</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="kw">function</span> <span class="at">secondListener</span>(arg1<span class="op">,</span> arg2) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-10" title="10">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`event with parameters </span><span class="sc">${</span>arg1<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>arg2<span class="sc">}</span><span class="vs"> in second listener`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">// Third listener</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="kw">function</span> <span class="at">thirdListener</span>(...<span class="at">args</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-14" title="14">  <span class="kw">const</span> parameters <span class="op">=</span> <span class="va">args</span>.<span class="at">join</span>(<span class="st">&#39;, &#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-15" title="15">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`event with parameters </span><span class="sc">${</span>parameters<span class="sc">}</span><span class="vs"> in third listener`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-17" title="17"></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="va">console</span>.<span class="at">log</span>(<span class="va">myEmitter</span>.<span class="at">listeners</span>(<span class="st">&#39;event&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-19" title="19"></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-21" title="21"></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb15-23" title="23"><span class="co">// [</span></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="co">//   [Function: firstListener],</span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="co">//   [Function: secondListener],</span></a>
+<a class="sourceLine" id="cb15-26" title="26"><span class="co">//   [Function: thirdListener]</span></a>
+<a class="sourceLine" id="cb15-27" title="27"><span class="co">// ]</span></a>
+<a class="sourceLine" id="cb15-28" title="28"><span class="co">// Helloooo! first listener</span></a>
+<a class="sourceLine" id="cb15-29" title="29"><span class="co">// event with parameters 1, 2 in second listener</span></a>
+<a class="sourceLine" id="cb15-30" title="30"><span class="co">// event with parameters 1, 2, 3, 4, 5 in third listener</span></a></code></pre>
+    </div>
+    <h3 id="emitter.eventnames"><code>emitter.eventNames()</code></h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <ul>
+      <li>Returns: {Array}</li>
+    </ul>
+    <p>
+      Returns an array listing the events for which the emitter has registered
+      listeners. The values in the array are strings or <code>Symbol</code>s.
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> EventEmitter <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">const</span> myEE <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="va">myEE</span>.<span class="at">on</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="va">myEE</span>.<span class="at">on</span>(<span class="st">&#39;bar&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-5" title="5"></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="kw">const</span> sym <span class="op">=</span> <span class="at">Symbol</span>(<span class="st">&#39;symbol&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="va">myEE</span>.<span class="at">on</span>(sym<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-8" title="8"></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="va">console</span>.<span class="at">log</span>(<span class="va">myEE</span>.<span class="at">eventNames</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="co">// Prints: [ &#39;foo&#39;, &#39;bar&#39;, Symbol(symbol) ]</span></a></code></pre>
+    </div>
+    <h3 id="emitter.getmaxlisteners"><code>emitter.getMaxListeners()</code></h3>
+    <!-- YAML
+added: v1.0.0
+-->
+    <ul>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>
+      Returns the current max listener value for the
+      <code>EventEmitter</code> which is either set by
+      <a href="#events_emitter_setmaxlisteners_n"
+        ><code>emitter.setMaxListeners(n)</code></a
+      >
+      or defaults to
+      <a href="#events_events_defaultmaxlisteners"
+        ><code>events.defaultMaxListeners</code></a
+      >.
+    </p>
+    <h3 id="emitter.listenercounteventname">
+      <code>emitter.listenerCount(eventName)</code>
+    </h3>
+    <!-- YAML
+added: v3.2.0
+-->
+    <ul>
+      <li>
+        <code>eventName</code> {string|symbol} The name of the event being
+        listened for
+      </li>
+      <li>Returns: {integer}</li>
+    </ul>
+    <p>
+      Returns the number of listeners listening to the event named
+      <code>eventName</code>.
+    </p>
+    <h3 id="emitter.listenerseventname">
+      <code>emitter.listeners(eventName)</code>
+    </h3>
+    <!-- YAML
+added: v0.1.26
+changes:
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/6881
+    description: For listeners attached using `.once()` this returns the
+                 original listeners instead of wrapper functions now.
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li>Returns: {Function[]}</li>
+    </ul>
+    <p>
+      Returns a copy of the array of listeners for the event named
+      <code>eventName</code>.
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;someone connected!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="va">console</span>.<span class="at">log</span>(<span class="va">util</span>.<span class="at">inspect</span>(<span class="va">server</span>.<span class="at">listeners</span>(<span class="st">&#39;connection&#39;</span>)))<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="co">// Prints: [ [Function] ]</span></a></code></pre>
+    </div>
+    <h3 id="emitter.offeventname-listener">
+      <code>emitter.off(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v10.0.0
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li><code>listener</code> {Function}</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Alias for
+      <a href="#events_emitter_removelistener_eventname_listener"
+        ><code>emitter.removeListener()</code></a
+      >.
+    </p>
+    <h3 id="emitter.oneventname-listener">
+      <code>emitter.on(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v0.1.101
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol} The name of the event.</li>
+      <li><code>listener</code> {Function} The callback function</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Adds the <code>listener</code> function to the end of the listeners array
+      for the event named <code>eventName</code>. No checks are made to see if
+      the <code>listener</code> has already been added. Multiple calls passing
+      the same combination of <code>eventName</code> and
+      <code>listener</code> will result in the <code>listener</code> being
+      added, and called, multiple times.
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;someone connected!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <p>
+      By default, event listeners are invoked in the order they are added. The
+      <code>emitter.prependListener()</code> method can be used as an
+      alternative to add the event listener to the beginning of the listeners
+      array.
+    </p>
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> myEE <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="va">myEE</span>.<span class="at">on</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;a&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="va">myEE</span>.<span class="at">prependListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;b&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="co">//   b</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="co">//   a</span></a></code></pre>
+    </div>
+    <h3 id="emitter.onceeventname-listener">
+      <code>emitter.once(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v0.3.0
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol} The name of the event.</li>
+      <li><code>listener</code> {Function} The callback function</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Adds a <strong>one-time</strong> <code>listener</code> function for the
+      event named <code>eventName</code>. The next time
+      <code>eventName</code> is triggered, this listener is removed and then
+      invoked.
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="va">server</span>.<span class="at">once</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Ah, we have our first user!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <p>
+      By default, event listeners are invoked in the order they are added. The
+      <code>emitter.prependOnceListener()</code> method can be used as an
+      alternative to add the event listener to the beginning of the listeners
+      array.
+    </p>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">const</span> myEE <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="va">myEE</span>.<span class="at">once</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;a&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="va">myEE</span>.<span class="at">prependOnceListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;b&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb21-6" title="6"><span class="co">//   b</span></a>
+<a class="sourceLine" id="cb21-7" title="7"><span class="co">//   a</span></a></code></pre>
+    </div>
+    <h3 id="emitter.prependlistenereventname-listener">
+      <code>emitter.prependListener(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol} The name of the event.</li>
+      <li><code>listener</code> {Function} The callback function</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Adds the <code>listener</code> function to the <em>beginning</em> of the
+      listeners array for the event named <code>eventName</code>. No checks are
+      made to see if the <code>listener</code> has already been added. Multiple
+      calls passing the same combination of <code>eventName</code> and
+      <code>listener</code> will result in the <code>listener</code> being
+      added, and called, multiple times.
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="va">server</span>.<span class="at">prependListener</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;someone connected!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <h3 id="emitter.prependoncelistenereventname-listener">
+      <code>emitter.prependOnceListener(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v6.0.0
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol} The name of the event.</li>
+      <li><code>listener</code> {Function} The callback function</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Adds a <strong>one-time</strong> <code>listener</code> function for the
+      event named <code>eventName</code> to the <em>beginning</em> of the
+      listeners array. The next time <code>eventName</code> is triggered, this
+      listener is removed, and then invoked.
+    </p>
+    <div class="sourceCode" id="cb23">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="va">server</span>.<span class="at">prependOnceListener</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Ah, we have our first user!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <h3 id="emitter.removealllistenerseventname">
+      <code>emitter.removeAllListeners([eventName])</code>
+    </h3>
+    <!-- YAML
+added: v0.1.26
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Removes all listeners, or those of the specified <code>eventName</code>.
+    </p>
+    <p>
+      It is bad practice to remove listeners added elsewhere in the code,
+      particularly when the <code>EventEmitter</code> instance was created by
+      some other component or module (e.g. sockets or file streams).
+    </p>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <h3 id="emitter.removelistenereventname-listener">
+      <code>emitter.removeListener(eventName, listener)</code>
+    </h3>
+    <!-- YAML
+added: v0.1.26
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li><code>listener</code> {Function}</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      Removes the specified <code>listener</code> from the listener array for
+      the event named <code>eventName</code>.
+    </p>
+    <div class="sourceCode" id="cb24">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">const</span> callback <span class="op">=</span> (stream) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb24-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;someone connected!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="op">};</span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="va">server</span>.<span class="at">on</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> callback)<span class="op">;</span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="co">// ...</span></a>
+<a class="sourceLine" id="cb24-6" title="6"><span class="va">server</span>.<span class="at">removeListener</span>(<span class="st">&#39;connection&#39;</span><span class="op">,</span> callback)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <code>removeListener()</code> will remove, at most, one instance of a
+      listener from the listener array. If any single listener has been added
+      multiple times to the listener array for the specified
+      <code>eventName</code>, then <code>removeListener()</code> must be called
+      multiple times to remove each instance.
+    </p>
+    <p>
+      Once an event is emitted, all listeners attached to it at the time of
+      emitting are called in order. This implies that any
+      <code>removeListener()</code> or <code>removeAllListeners()</code> calls
+      <em>after</em> emitting and <em>before</em> the last listener finishes
+      execution will not remove them from <code>emit()</code> in progress.
+      Subsequent events behave as expected.
+    </p>
+    <div class="sourceCode" id="cb25">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">MyEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="kw">const</span> callbackA <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;A&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-5" title="5">  <span class="va">myEmitter</span>.<span class="at">removeListener</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> callbackB)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="op">};</span></a>
+<a class="sourceLine" id="cb25-7" title="7"></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="kw">const</span> callbackB <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb25-9" title="9">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;B&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-10" title="10"><span class="op">};</span></a>
+<a class="sourceLine" id="cb25-11" title="11"></a>
+<a class="sourceLine" id="cb25-12" title="12"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> callbackA)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-13" title="13"></a>
+<a class="sourceLine" id="cb25-14" title="14"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> callbackB)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-15" title="15"></a>
+<a class="sourceLine" id="cb25-16" title="16"><span class="co">// callbackA removes listener callbackB but it will still be called.</span></a>
+<a class="sourceLine" id="cb25-17" title="17"><span class="co">// Internal listener array at time of emit [callbackA, callbackB]</span></a>
+<a class="sourceLine" id="cb25-18" title="18"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-19" title="19"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb25-20" title="20"><span class="co">//   A</span></a>
+<a class="sourceLine" id="cb25-21" title="21"><span class="co">//   B</span></a>
+<a class="sourceLine" id="cb25-22" title="22"></a>
+<a class="sourceLine" id="cb25-23" title="23"><span class="co">// callbackB is now removed.</span></a>
+<a class="sourceLine" id="cb25-24" title="24"><span class="co">// Internal listener array [callbackA]</span></a>
+<a class="sourceLine" id="cb25-25" title="25"><span class="va">myEmitter</span>.<span class="at">emit</span>(<span class="st">&#39;event&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb25-26" title="26"><span class="co">// Prints:</span></a>
+<a class="sourceLine" id="cb25-27" title="27"><span class="co">//   A</span></a></code></pre>
+    </div>
+    <p>
+      Because listeners are managed using an internal array, calling this will
+      change the position indices of any listener registered <em>after</em> the
+      listener being removed. This will not impact the order in which listeners
+      are called, but it means that any copies of the listener array as returned
+      by the <code>emitter.listeners()</code> method will need to be recreated.
+    </p>
+    <p>
+      When a single function has been added as a handler multiple times for a
+      single event (as in the example below), <code>removeListener()</code> will
+      remove the most recently added instance. In the example the
+      <code>once('ping')</code> listener is removed:
+    </p>
+    <div class="sourceCode" id="cb26">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-2" title="2"></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="kw">function</span> <span class="at">pong</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;pong&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb26-6" title="6"></a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="va">ee</span>.<span class="at">on</span>(<span class="st">&#39;ping&#39;</span><span class="op">,</span> pong)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-8" title="8"><span class="va">ee</span>.<span class="at">once</span>(<span class="st">&#39;ping&#39;</span><span class="op">,</span> pong)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-9" title="9"><span class="va">ee</span>.<span class="at">removeListener</span>(<span class="st">&#39;ping&#39;</span><span class="op">,</span> pong)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-10" title="10"></a>
+<a class="sourceLine" id="cb26-11" title="11"><span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;ping&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-12" title="12"><span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;ping&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <h3 id="emitter.setmaxlistenersn">
+      <code>emitter.setMaxListeners(n)</code>
+    </h3>
+    <!-- YAML
+added: v0.3.5
+-->
+    <ul>
+      <li><code>n</code> {integer}</li>
+      <li>Returns: {EventEmitter}</li>
+    </ul>
+    <p>
+      By default <code>EventEmitter</code>s will print a warning if more than
+      <code>10</code> listeners are added for a particular event. This is a
+      useful default that helps finding memory leaks. The
+      <code>emitter.setMaxListeners()</code> method allows the limit to be
+      modified for this specific <code>EventEmitter</code> instance. The value
+      can be set to <code>Infinity</code> (or <code>0</code>) to indicate an
+      unlimited number of listeners.
+    </p>
+    <p>
+      Returns a reference to the <code>EventEmitter</code>, so that calls can be
+      chained.
+    </p>
+    <h3 id="emitter.rawlistenerseventname">
+      <code>emitter.rawListeners(eventName)</code>
+    </h3>
+    <!-- YAML
+added: v9.4.0
+-->
+    <ul>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li>Returns: {Function[]}</li>
+    </ul>
+    <p>
+      Returns a copy of the array of listeners for the event named
+      <code>eventName</code>, including any wrappers (such as those created by
+      <code>.once()</code>).
+    </p>
+    <div class="sourceCode" id="cb27">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">const</span> emitter <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="va">emitter</span>.<span class="at">once</span>(<span class="st">&#39;log&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;log once&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-3" title="3"></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="co">// Returns a new Array with a function `onceWrapper` which has a property</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="co">// `listener` which contains the original listener bound above</span></a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="kw">const</span> listeners <span class="op">=</span> <span class="va">emitter</span>.<span class="at">rawListeners</span>(<span class="st">&#39;log&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-7" title="7"><span class="kw">const</span> logFnWrapper <span class="op">=</span> listeners[<span class="dv">0</span>]<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-8" title="8"></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="co">// Logs &quot;log once&quot; to the console and does not unbind the `once` event</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="va">logFnWrapper</span>.<span class="at">listener</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-11" title="11"></a>
+<a class="sourceLine" id="cb27-12" title="12"><span class="co">// Logs &quot;log once&quot; to the console and removes the listener</span></a>
+<a class="sourceLine" id="cb27-13" title="13"><span class="at">logFnWrapper</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-14" title="14"></a>
+<a class="sourceLine" id="cb27-15" title="15"><span class="va">emitter</span>.<span class="at">on</span>(<span class="st">&#39;log&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;log persistently&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-16" title="16"><span class="co">// Will return a new Array with a single function bound by `.on()` above</span></a>
+<a class="sourceLine" id="cb27-17" title="17"><span class="kw">const</span> newListeners <span class="op">=</span> <span class="va">emitter</span>.<span class="at">rawListeners</span>(<span class="st">&#39;log&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-18" title="18"></a>
+<a class="sourceLine" id="cb27-19" title="19"><span class="co">// Logs &quot;log persistently&quot; twice</span></a>
+<a class="sourceLine" id="cb27-20" title="20">newListeners[<span class="dv">0</span>]()<span class="op">;</span></a>
+<a class="sourceLine" id="cb27-21" title="21"><span class="va">emitter</span>.<span class="at">emit</span>(<span class="st">&#39;log&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="emittersymbol.fornodejs.rejectionerr-eventname-...args">
+      <code
+        >emitter[Symbol.for('nodejs.rejection')](err, eventName[,
+        ...args])</code
+      >
+    </h3>
+    <!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+-->
+    <blockquote>
+      <p>Stability: 1 - captureRejections is experimental.</p>
+    </blockquote>
+    <ul>
+      <li><code>err</code> Error</li>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li><code>...args</code> {any}</li>
+    </ul>
+    <p>
+      The <code>Symbol.for('nodejs.rejection')</code> method is called in case a
+      promise rejection happens when emitting an event and
+      <a href="#events_capture_rejections_of_promises"
+        ><code>captureRejections</code></a
+      >
+      is enabled on the emitter. It is possible to use
+      <a href="#events_events_capturerejectionsymbol"
+        ><code>events.captureRejectionSymbol</code></a
+      >
+      in place of <code>Symbol.for('nodejs.rejection')</code>.
+    </p>
+    <div class="sourceCode" id="cb28">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> captureRejectionSymbol <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-2" title="2"></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="kw">class</span> MyClass <span class="kw">extends</span> EventEmitter <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-4" title="4">  <span class="at">constructor</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-5" title="5">    <span class="kw">super</span>(<span class="op">{</span> <span class="dt">captureRejections</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-7" title="7"></a>
+<a class="sourceLine" id="cb28-8" title="8">  [captureRejectionSymbol](err<span class="op">,</span> event<span class="op">,</span> ...<span class="at">args</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-9" title="9">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;rejection happened for&#39;</span><span class="op">,</span> event<span class="op">,</span> <span class="st">&#39;with&#39;</span><span class="op">,</span> err<span class="op">,</span> ...<span class="at">args</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-10" title="10">    <span class="kw">this</span>.<span class="at">destroy</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb28-11" title="11">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-12" title="12"></a>
+<a class="sourceLine" id="cb28-13" title="13">  <span class="at">destroy</span>(err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb28-14" title="14">    <span class="co">// Tear the resource down here.</span></a>
+<a class="sourceLine" id="cb28-15" title="15">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb28-16" title="16"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="events.defaultmaxlisteners">
+      <code>events.defaultMaxListeners</code>
+    </h2>
+    <!-- YAML
+added: v0.11.2
+-->
+    <p>
+      By default, a maximum of <code>10</code> listeners can be registered for
+      any single event. This limit can be changed for individual
+      <code>EventEmitter</code> instances using the
+      <a href="#events_emitter_setmaxlisteners_n"
+        ><code>emitter.setMaxListeners(n)</code></a
+      >
+      method. To change the default for <em>all</em>
+      <code>EventEmitter</code> instances, the
+      <code>events.defaultMaxListeners</code> property can be used. If this
+      value is not a positive number, a <code>RangeError</code> is thrown.
+    </p>
+    <p>
+      Take caution when setting the
+      <code>events.defaultMaxListeners</code> because the change affects
+      <em>all</em> <code>EventEmitter</code> instances, including those created
+      before the change is made. However, calling
+      <a href="#events_emitter_setmaxlisteners_n"
+        ><code>emitter.setMaxListeners(n)</code></a
+      >
+      still has precedence over <code>events.defaultMaxListeners</code>.
+    </p>
+    <p>
+      This is not a hard limit. The <code>EventEmitter</code> instance will
+      allow more listeners to be added but will output a trace warning to stderr
+      indicating that a “possible EventEmitter memory leak” has been detected.
+      For any single <code>EventEmitter</code>, the
+      <code>emitter.getMaxListeners()</code> and
+      <code>emitter.setMaxListeners()</code> methods can be used to temporarily
+      avoid this warning:
+    </p>
+    <div class="sourceCode" id="cb29">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb29-1" title="1"><span class="va">emitter</span>.<span class="at">setMaxListeners</span>(<span class="va">emitter</span>.<span class="at">getMaxListeners</span>() <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="va">emitter</span>.<span class="at">once</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb29-3" title="3">  <span class="co">// do stuff</span></a>
+<a class="sourceLine" id="cb29-4" title="4">  <span class="va">emitter</span>.<span class="at">setMaxListeners</span>(<span class="va">Math</span>.<span class="at">max</span>(<span class="va">emitter</span>.<span class="at">getMaxListeners</span>() <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The
+      <a href="cli.md#cli_trace_warnings"><code>--trace-warnings</code></a>
+      command-line flag can be used to display the stack trace for such
+      warnings.
+    </p>
+    <p>
+      The emitted warning can be inspected with
+      <a href="process.md#process_event_warning"
+        ><code>process.on('warning')</code></a
+      >
+      and will have the additional <code>emitter</code>, <code>type</code> and
+      <code>count</code> properties, referring to the event emitter instance,
+      the event’s name and the number of attached listeners, respectively. Its
+      <code>name</code> property is set to
+      <code>'MaxListenersExceededWarning'</code>.
+    </p>
+    <h2 id="events.errormonitor"><code>events.errorMonitor</code></h2>
+    <!-- YAML
+added:
+ - v13.6.0
+ - v12.17.0
+-->
+    <p>
+      This symbol shall be used to install a listener for only monitoring
+      <code>'error'</code> events. Listeners installed using this symbol are
+      called before the regular <code>'error'</code> listeners are called.
+    </p>
+    <p>
+      Installing a listener using this symbol does not change the behavior once
+      an <code>'error'</code> event is emitted, therefore the process will still
+      crash if no regular <code>'error'</code> listener is installed.
+    </p>
+    <h2 id="events.geteventlistenersemitterortarget-eventname">
+      <code>events.getEventListeners(emitterOrTarget, eventName)</code>
+    </h2>
+    <!-- YAML
+added:
+ - v15.2.0
+ - v14.17.0
+-->
+    <ul>
+      <li><code>emitterOrTarget</code> {EventEmitter|EventTarget}</li>
+      <li><code>eventName</code> {string|symbol}</li>
+      <li>Returns: {Function[]}</li>
+    </ul>
+    <p>
+      Returns a copy of the array of listeners for the event named
+      <code>eventName</code>.
+    </p>
+    <p>
+      For <code>EventEmitter</code>s this behaves exactly the same as calling
+      <code>.listeners</code> on the emitter.
+    </p>
+    <p>
+      For <code>EventTarget</code>s this is the only way to get the event
+      listeners for the event target. This is useful for debugging and
+      diagnostic purposes.
+    </p>
+    <div class="sourceCode" id="cb30">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">const</span> <span class="op">{</span> getEventListeners<span class="op">,</span> EventEmitter <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-2" title="2"></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="op">{</span></a>
+<a class="sourceLine" id="cb30-4" title="4">  <span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-5" title="5">  <span class="kw">const</span> listener <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Events are fun&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-6" title="6">  <span class="va">ee</span>.<span class="at">on</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> listener)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-7" title="7">  <span class="at">getEventListeners</span>(ee<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)<span class="op">;</span> <span class="co">// [listener]</span></a>
+<a class="sourceLine" id="cb30-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb30-9" title="9"><span class="op">{</span></a>
+<a class="sourceLine" id="cb30-10" title="10">  <span class="kw">const</span> et <span class="op">=</span> <span class="kw">new</span> <span class="at">EventTarget</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-11" title="11">  <span class="kw">const</span> listener <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Events are fun&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-12" title="12">  <span class="va">et</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> listener)<span class="op">;</span></a>
+<a class="sourceLine" id="cb30-13" title="13">  <span class="at">getEventListeners</span>(et<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)<span class="op">;</span> <span class="co">// [listener]</span></a>
+<a class="sourceLine" id="cb30-14" title="14"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="events.onceemitter-name-options">
+      <code>events.once(emitter, name[, options])</code>
+    </h2>
+    <!-- YAML
+added:
+ - v11.13.0
+ - v10.16.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/34912
+    description: The `signal` option is supported now.
+-->
+    <ul>
+      <li><code>emitter</code> {EventEmitter}</li>
+      <li><code>name</code> {string}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>signal</code> {AbortSignal} Can be used to cancel waiting for
+            the event.
+          </li>
+        </ul>
+      </li>
+      <li>Returns: {Promise}</li>
+    </ul>
+    <p>
+      Creates a <code>Promise</code> that is fulfilled when the
+      <code>EventEmitter</code> emits the given event or that is rejected if the
+      <code>EventEmitter</code> emits <code>'error'</code> while waiting. The
+      <code>Promise</code> will resolve with an array of all the arguments
+      emitted to the given event.
+    </p>
+    <p>
+      This method is intentionally generic and works with the web platform
+      <a href="https://dom.spec.whatwg.org/#interface-eventtarget"
+        >EventTarget</a
+      >
+      interface, which has no special <code>'error'</code> event semantics and
+      does not listen to the <code>'error'</code> event.
+    </p>
+    <div class="sourceCode" id="cb31">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">const</span> <span class="op">{</span> once<span class="op">,</span> EventEmitter <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-2" title="2"></a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="kw">async</span> <span class="kw">function</span> <span class="at">run</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-4" title="4">  <span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-5" title="5"></a>
+<a class="sourceLine" id="cb31-6" title="6">  <span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-7" title="7">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;myevent&#39;</span><span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-8" title="8">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-9" title="9"></a>
+<a class="sourceLine" id="cb31-10" title="10">  <span class="kw">const</span> [value] <span class="op">=</span> <span class="cf">await</span> <span class="at">once</span>(ee<span class="op">,</span> <span class="st">&#39;myevent&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-11" title="11">  <span class="va">console</span>.<span class="at">log</span>(value)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-12" title="12"></a>
+<a class="sourceLine" id="cb31-13" title="13">  <span class="kw">const</span> err <span class="op">=</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;kaboom&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-14" title="14">  <span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-15" title="15">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-16" title="16">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-17" title="17"></a>
+<a class="sourceLine" id="cb31-18" title="18">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-19" title="19">    <span class="cf">await</span> <span class="at">once</span>(ee<span class="op">,</span> <span class="st">&#39;myevent&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-20" title="20">  <span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb31-21" title="21">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;error happened&#39;</span><span class="op">,</span> err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb31-22" title="22">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb31-23" title="23"><span class="op">}</span></a>
+<a class="sourceLine" id="cb31-24" title="24"></a>
+<a class="sourceLine" id="cb31-25" title="25"><span class="at">run</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The special handling of the <code>'error'</code> event is only used when
+      <code>events.once()</code> is used to wait for another event. If
+      <code>events.once()</code> is used to wait for the ’<code>error'</code>
+      event itself, then it is treated as any other kind of event without
+      special handling:
+    </p>
+    <div class="sourceCode" id="cb32">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> once <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-2" title="2"></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-4" title="4"></a>
+<a class="sourceLine" id="cb32-5" title="5"><span class="at">once</span>(ee<span class="op">,</span> <span class="st">&#39;error&#39;</span>)</a>
+<a class="sourceLine" id="cb32-6" title="6">  .<span class="at">then</span>(([err]) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;ok&#39;</span><span class="op">,</span> <span class="va">err</span>.<span class="at">message</span>))</a>
+<a class="sourceLine" id="cb32-7" title="7">  .<span class="at">catch</span>((err) <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="va">err</span>.<span class="at">message</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-8" title="8"></a>
+<a class="sourceLine" id="cb32-9" title="9"><span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;error&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;boom&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-10" title="10"></a>
+<a class="sourceLine" id="cb32-11" title="11"><span class="co">// Prints: ok boom</span></a></code></pre>
+    </div>
+    <p>An {AbortSignal} can be used to cancel waiting for the event:</p>
+    <div class="sourceCode" id="cb33">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> once <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-2" title="2"></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="kw">const</span> ac <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-5" title="5"></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="kw">async</span> <span class="kw">function</span> <span class="at">foo</span>(emitter<span class="op">,</span> event<span class="op">,</span> signal) <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-7" title="7">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-8" title="8">    <span class="cf">await</span> <span class="at">once</span>(emitter<span class="op">,</span> event<span class="op">,</span> <span class="op">{</span> signal <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-9" title="9">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;event emitted!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-10" title="10">  <span class="op">}</span> <span class="cf">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-11" title="11">    <span class="cf">if</span> (<span class="va">error</span>.<span class="at">name</span> <span class="op">===</span> <span class="st">&#39;AbortError&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-12" title="12">      <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;Waiting for the event was canceled!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-13" title="13">    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb33-14" title="14">      <span class="va">console</span>.<span class="at">error</span>(<span class="st">&#39;There was an error&#39;</span><span class="op">,</span> <span class="va">error</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-15" title="15">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-16" title="16">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb33-17" title="17"><span class="op">}</span></a>
+<a class="sourceLine" id="cb33-18" title="18"></a>
+<a class="sourceLine" id="cb33-19" title="19"><span class="at">foo</span>(ee<span class="op">,</span> <span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="va">ac</span>.<span class="at">signal</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb33-20" title="20"><span class="va">ac</span>.<span class="at">abort</span>()<span class="op">;</span> <span class="co">// Abort waiting for the event</span></a>
+<a class="sourceLine" id="cb33-21" title="21"><span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span> <span class="co">// Prints: Waiting for the event was canceled!</span></a></code></pre>
+    </div>
+    <h3 id="awaiting-multiple-events-emitted-on-process.nexttick">
+      Awaiting multiple events emitted on <code>process.nextTick()</code>
+    </h3>
+    <p>
+      There is an edge case worth noting when using the
+      <code>events.once()</code> function to await multiple events emitted on in
+      the same batch of <code>process.nextTick()</code> operations, or whenever
+      multiple events are emitted synchronously. Specifically, because the
+      <code>process.nextTick()</code> queue is drained before the
+      <code>Promise</code> microtask queue, and because
+      <code>EventEmitter</code> emits all events synchronously, it is possible
+      for <code>events.once()</code> to miss an event.
+    </p>
+    <div class="sourceCode" id="cb34">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> once <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="kw">const</span> myEE <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-4" title="4"></a>
+<a class="sourceLine" id="cb34-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="at">foo</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb34-6" title="6">  <span class="cf">await</span> <span class="at">once</span>(myEE<span class="op">,</span> <span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-8" title="8"></a>
+<a class="sourceLine" id="cb34-9" title="9">  <span class="co">// This Promise will never resolve because the &#39;foo&#39; event will</span></a>
+<a class="sourceLine" id="cb34-10" title="10">  <span class="co">// have already been emitted before the Promise is created.</span></a>
+<a class="sourceLine" id="cb34-11" title="11">  <span class="cf">await</span> <span class="at">once</span>(myEE<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-12" title="12">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-13" title="13"><span class="op">}</span></a>
+<a class="sourceLine" id="cb34-14" title="14"></a>
+<a class="sourceLine" id="cb34-15" title="15"><span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb34-16" title="16">  <span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-17" title="17">  <span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-18" title="18"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb34-19" title="19"></a>
+<a class="sourceLine" id="cb34-20" title="20"><span class="at">foo</span>().<span class="at">then</span>(() <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;done&#39;</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      To catch both events, create each of the Promises <em>before</em> awaiting
+      either of them, then it becomes possible to use
+      <code>Promise.all()</code>, <code>Promise.race()</code>, or
+      <code>Promise.allSettled()</code>:
+    </p>
+    <div class="sourceCode" id="cb35">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> once <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-2" title="2"></a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="kw">const</span> myEE <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-4" title="4"></a>
+<a class="sourceLine" id="cb35-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="at">foo</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-6" title="6">  <span class="cf">await</span> <span class="va">Promise</span>.<span class="at">all</span>([<span class="at">once</span>(myEE<span class="op">,</span> <span class="st">&#39;bar&#39;</span>)<span class="op">,</span> <span class="at">once</span>(myEE<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)])<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb35-9" title="9"></a>
+<a class="sourceLine" id="cb35-10" title="10"><span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb35-11" title="11">  <span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-12" title="12">  <span class="va">myEE</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-13" title="13"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb35-14" title="14"></a>
+<a class="sourceLine" id="cb35-15" title="15"><span class="at">foo</span>().<span class="at">then</span>(() <span class="kw">=&gt;</span> <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;done&#39;</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="events.capturerejections"><code>events.captureRejections</code></h2>
+    <!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+-->
+    <blockquote>
+      <p>Stability: 1 - captureRejections is experimental.</p>
+    </blockquote>
+    <p>Value: {boolean}</p>
+    <p>
+      Change the default <code>captureRejections</code> option on all new
+      <code>EventEmitter</code> objects.
+    </p>
+    <h2 id="events.capturerejectionsymbol">
+      <code>events.captureRejectionSymbol</code>
+    </h2>
+    <!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+-->
+    <blockquote>
+      <p>Stability: 1 - captureRejections is experimental.</p>
+    </blockquote>
+    <p>Value: <code>Symbol.for('nodejs.rejection')</code></p>
+    <p>
+      See how to write a custom
+      <a href="#events_emitter_symbol_for_nodejs_rejection_err_eventname_args"
+        >rejection handler</a
+      >.
+    </p>
+    <h2 id="events.listenercountemitter-eventname">
+      <code>events.listenerCount(emitter, eventName)</code>
+    </h2>
+    <!-- YAML
+added: v0.9.12
+deprecated: v3.2.0
+-->
+    <blockquote>
+      <p>
+        Stability: 0 - Deprecated: Use
+        <a href="#events_emitter_listenercount_eventname"
+          ><code>emitter.listenerCount()</code></a
+        >
+        instead.
+      </p>
+    </blockquote>
+    <ul>
+      <li><code>emitter</code> {EventEmitter} The emitter to query</li>
+      <li><code>eventName</code> {string|symbol} The event name</li>
+    </ul>
+    <p>
+      A class method that returns the number of listeners for the given
+      <code>eventName</code> registered on the given <code>emitter</code>.
+    </p>
+    <div class="sourceCode" id="cb36">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">const</span> <span class="op">{</span> EventEmitter<span class="op">,</span> listenerCount <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="kw">const</span> myEmitter <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="va">myEmitter</span>.<span class="at">on</span>(<span class="st">&#39;event&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="at">listenerCount</span>(myEmitter<span class="op">,</span> <span class="st">&#39;event&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb36-6" title="6"><span class="co">// Prints: 2</span></a></code></pre>
+    </div>
+    <h2 id="events.onemitter-eventname-options">
+      <code>events.on(emitter, eventName[, options])</code>
+    </h2>
+    <!-- YAML
+added:
+ - v13.6.0
+ - v12.16.0
+-->
+    <ul>
+      <li><code>emitter</code> {EventEmitter}</li>
+      <li>
+        <code>eventName</code> {string|symbol} The name of the event being
+        listened for
+      </li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>signal</code> {AbortSignal} Can be used to cancel awaiting
+            events.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Returns: {AsyncIterator} that iterates <code>eventName</code> events
+        emitted by the <code>emitter</code>
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb37">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">const</span> <span class="op">{</span> on<span class="op">,</span> EventEmitter <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-2" title="2"></a>
+<a class="sourceLine" id="cb37-3" title="3">(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-4" title="4">  <span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-5" title="5"></a>
+<a class="sourceLine" id="cb37-6" title="6">  <span class="co">// Emit later on</span></a>
+<a class="sourceLine" id="cb37-7" title="7">  <span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-8" title="8">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-9" title="9">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb37-11" title="11"></a>
+<a class="sourceLine" id="cb37-12" title="12">  <span class="cf">for</span> <span class="cf">await</span> (<span class="kw">const</span> event <span class="kw">of</span> <span class="at">on</span>(ee<span class="op">,</span> <span class="st">&#39;foo&#39;</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb37-13" title="13">    <span class="co">// The execution of this inner block is synchronous and it</span></a>
+<a class="sourceLine" id="cb37-14" title="14">    <span class="co">// processes one event at a time (even with await). Do not use</span></a>
+<a class="sourceLine" id="cb37-15" title="15">    <span class="co">// if concurrent execution is required.</span></a>
+<a class="sourceLine" id="cb37-16" title="16">    <span class="va">console</span>.<span class="at">log</span>(event)<span class="op">;</span> <span class="co">// prints [&#39;bar&#39;] [42]</span></a>
+<a class="sourceLine" id="cb37-17" title="17">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb37-18" title="18">  <span class="co">// Unreachable here</span></a>
+<a class="sourceLine" id="cb37-19" title="19"><span class="op">}</span>)()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Returns an <code>AsyncIterator</code> that iterates
+      <code>eventName</code> events. It will throw if the
+      <code>EventEmitter</code> emits <code>'error'</code>. It removes all
+      listeners when exiting the loop. The <code>value</code> returned by each
+      iteration is an array composed of the emitted event arguments.
+    </p>
+    <p>An {AbortSignal} can be used to cancel waiting on events:</p>
+    <div class="sourceCode" id="cb38">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">const</span> <span class="op">{</span> on<span class="op">,</span> EventEmitter <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-2" title="2"><span class="kw">const</span> ac <span class="op">=</span> <span class="kw">new</span> <span class="at">AbortController</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-3" title="3"></a>
+<a class="sourceLine" id="cb38-4" title="4">(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb38-5" title="5">  <span class="kw">const</span> ee <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-6" title="6"></a>
+<a class="sourceLine" id="cb38-7" title="7">  <span class="co">// Emit later on</span></a>
+<a class="sourceLine" id="cb38-8" title="8">  <span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb38-9" title="9">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="st">&#39;bar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-10" title="10">    <span class="va">ee</span>.<span class="at">emit</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-11" title="11">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-12" title="12"></a>
+<a class="sourceLine" id="cb38-13" title="13">  <span class="cf">for</span> <span class="cf">await</span> (<span class="kw">const</span> event <span class="kw">of</span> <span class="at">on</span>(ee<span class="op">,</span> <span class="st">&#39;foo&#39;</span><span class="op">,</span> <span class="op">{</span> <span class="dt">signal</span><span class="op">:</span> <span class="va">ac</span>.<span class="at">signal</span> <span class="op">}</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb38-14" title="14">    <span class="co">// The execution of this inner block is synchronous and it</span></a>
+<a class="sourceLine" id="cb38-15" title="15">    <span class="co">// processes one event at a time (even with await). Do not use</span></a>
+<a class="sourceLine" id="cb38-16" title="16">    <span class="co">// if concurrent execution is required.</span></a>
+<a class="sourceLine" id="cb38-17" title="17">    <span class="va">console</span>.<span class="at">log</span>(event)<span class="op">;</span> <span class="co">// prints [&#39;bar&#39;] [42]</span></a>
+<a class="sourceLine" id="cb38-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb38-19" title="19">  <span class="co">// Unreachable here</span></a>
+<a class="sourceLine" id="cb38-20" title="20"><span class="op">}</span>)()<span class="op">;</span></a>
+<a class="sourceLine" id="cb38-21" title="21"></a>
+<a class="sourceLine" id="cb38-22" title="22"><span class="va">process</span>.<span class="at">nextTick</span>(() <span class="kw">=&gt;</span> <span class="va">ac</span>.<span class="at">abort</span>())<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="events.setmaxlistenersn-...eventtargets">
+      <code>events.setMaxListeners(n[, ...eventTargets])</code>
+    </h2>
+    <!-- YAML
+added: v15.4.0
+-->
+    <ul>
+      <li>
+        <code>n</code> {number} A non-negative number. The maximum number of
+        listeners per <code>EventTarget</code> event.
+      </li>
+      <li>
+        <code>...eventsTargets</code> {EventTarget[]|EventEmitter[]} Zero or
+        more {EventTarget} or {EventEmitter} instances. If none are specified,
+        <code>n</code> is set as the default max for all newly created
+        {EventTarget} and {EventEmitter} objects.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb39">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb39-1" title="1"><span class="kw">const</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb39-2" title="2">  setMaxListeners<span class="op">,</span></a>
+<a class="sourceLine" id="cb39-3" title="3">  EventEmitter</a>
+<a class="sourceLine" id="cb39-4" title="4"><span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;events&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb39-5" title="5"></a>
+<a class="sourceLine" id="cb39-6" title="6"><span class="kw">const</span> target <span class="op">=</span> <span class="kw">new</span> <span class="at">EventTarget</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb39-7" title="7"><span class="kw">const</span> emitter <span class="op">=</span> <span class="kw">new</span> <span class="at">EventEmitter</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb39-8" title="8"></a>
+<a class="sourceLine" id="cb39-9" title="9"><span class="at">setMaxListeners</span>(<span class="dv">5</span><span class="op">,</span> target<span class="op">,</span> emitter)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <a id="event-target-and-event-api"></a> ## <code>EventTarget</code> and
+      <code>Event</code> API
+      <!-- YAML
+added: v14.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37237
+    description: changed EventTarget error handling.
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/35949
+    description: No longer experimental.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description:
+      The `EventTarget` and `Event` classes are now available as globals.
+-->
+    </p>
+    <p>
+      The <code>EventTarget</code> and <code>Event</code> objects are a
+      Node.js-specific implementation of the
+      <a href="https://dom.spec.whatwg.org/#eventtarget"
+        ><code>EventTarget</code> Web API</a
+      >
+      that are exposed by some Node.js core APIs.
+    </p>
+    <div class="sourceCode" id="cb40">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">const</span> target <span class="op">=</span> <span class="kw">new</span> <span class="at">EventTarget</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb40-2" title="2"></a>
+<a class="sourceLine" id="cb40-3" title="3"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> (event) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb40-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;foo event happened!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb40-5" title="5"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="node.js-eventtarget-vs.-dom-eventtarget">
+      Node.js <code>EventTarget</code> vs. DOM <code>EventTarget</code>
+    </h3>
+    <p>
+      There are two key differences between the Node.js
+      <code>EventTarget</code> and the
+      <a href="https://dom.spec.whatwg.org/#eventtarget"
+        ><code>EventTarget</code> Web API</a
+      >:
+    </p>
+    <ol type="1">
+      <li>
+        Whereas DOM <code>EventTarget</code> instances <em>may</em> be
+        hierarchical, there is no concept of hierarchy and event propagation in
+        Node.js. That is, an event dispatched to an
+        <code>EventTarget</code> does not propagate through a hierarchy of
+        nested target objects that may each have their own set of handlers for
+        the event.
+      </li>
+      <li>
+        In the Node.js <code>EventTarget</code>, if an event listener is an
+        async function or returns a <code>Promise</code>, and the returned
+        <code>Promise</code> rejects, the rejection is automatically captured
+        and handled the same way as a listener that throws synchronously (see
+        <a href="#events_eventtarget_error_handling"
+          ><code>EventTarget</code> error handling</a
+        >
+        for details).
+      </li>
+    </ol>
+    <h3 id="nodeeventtarget-vs.-eventemitter">
+      <code>NodeEventTarget</code> vs. <code>EventEmitter</code>
+    </h3>
+    <p>
+      The <code>NodeEventTarget</code> object implements a modified subset of
+      the <code>EventEmitter</code> API that allows it to closely
+      <em>emulate</em> an <code>EventEmitter</code> in certain situations. A
+      <code>NodeEventTarget</code> is <em>not</em> an instance of
+      <code>EventEmitter</code> and cannot be used in place of an
+      <code>EventEmitter</code> in most cases.
+    </p>
+    <ol type="1">
+      <li>
+        Unlike <code>EventEmitter</code>, any given <code>listener</code> can be
+        registered at most once per event <code>type</code>. Attempts to
+        register a <code>listener</code> multiple times are ignored.
+      </li>
+      <li>
+        The <code>NodeEventTarget</code> does not emulate the full
+        <code>EventEmitter</code> API. Specifically the
+        <code>prependListener()</code>, <code>prependOnceListener()</code>,
+        <code>rawListeners()</code>, <code>setMaxListeners()</code>,
+        <code>getMaxListeners()</code>, and <code>errorMonitor</code> APIs are
+        not emulated. The <code>'newListener'</code> and
+        <code>'removeListener'</code> events will also not be emitted.
+      </li>
+      <li>
+        The <code>NodeEventTarget</code> does not implement any special default
+        behavior for events with type <code>'error'</code>.
+      </li>
+      <li>
+        The <code>NodeEventTarget</code> supports
+        <code>EventListener</code> objects as well as functions as handlers for
+        all event types.
+      </li>
+    </ol>
+    <h3 id="event-listener">Event listener</h3>
+    <p>
+      Event listeners registered for an event <code>type</code> may either be
+      JavaScript functions or objects with a <code>handleEvent</code> property
+      whose value is a function.
+    </p>
+    <p>
+      In either case, the handler function is invoked with the
+      <code>event</code> argument passed to the
+      <code>eventTarget.dispatchEvent()</code> function.
+    </p>
+    <p>
+      Async functions may be used as event listeners. If an async handler
+      function rejects, the rejection is captured and handled as described in
+      <a href="#events_eventtarget_error_handling"
+        ><code>EventTarget</code> error handling</a
+      >.
+    </p>
+    <p>
+      An error thrown by one handler function does not prevent the other
+      handlers from being invoked.
+    </p>
+    <p>The return value of a handler function is ignored.</p>
+    <p>Handlers are always invoked in the order they were added.</p>
+    <p>Handler functions may mutate the <code>event</code> object.</p>
+    <div class="sourceCode" id="cb41">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">function</span> <span class="at">handler1</span>(event) <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">type</span>)<span class="op">;</span>  <span class="co">// Prints &#39;foo&#39;</span></a>
+<a class="sourceLine" id="cb41-3" title="3">  <span class="va">event</span>.<span class="at">a</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb41-4" title="4"><span class="op">}</span></a>
+<a class="sourceLine" id="cb41-5" title="5"></a>
+<a class="sourceLine" id="cb41-6" title="6"><span class="kw">async</span> <span class="kw">function</span> <span class="at">handler2</span>(event) <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">type</span>)<span class="op">;</span>  <span class="co">// Prints &#39;foo&#39;</span></a>
+<a class="sourceLine" id="cb41-8" title="8">  <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">a</span>)<span class="op">;</span>  <span class="co">// Prints 1</span></a>
+<a class="sourceLine" id="cb41-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb41-10" title="10"></a>
+<a class="sourceLine" id="cb41-11" title="11"><span class="kw">const</span> handler3 <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-12" title="12">  <span class="at">handleEvent</span>(event) <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-13" title="13">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">type</span>)<span class="op">;</span>  <span class="co">// Prints &#39;foo&#39;</span></a>
+<a class="sourceLine" id="cb41-14" title="14">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb41-15" title="15"><span class="op">};</span></a>
+<a class="sourceLine" id="cb41-16" title="16"></a>
+<a class="sourceLine" id="cb41-17" title="17"><span class="kw">const</span> handler4 <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-18" title="18">  <span class="kw">async</span> <span class="at">handleEvent</span>(event) <span class="op">{</span></a>
+<a class="sourceLine" id="cb41-19" title="19">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">event</span>.<span class="at">type</span>)<span class="op">;</span>  <span class="co">// Prints &#39;foo&#39;</span></a>
+<a class="sourceLine" id="cb41-20" title="20">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb41-21" title="21"><span class="op">};</span></a>
+<a class="sourceLine" id="cb41-22" title="22"></a>
+<a class="sourceLine" id="cb41-23" title="23"><span class="kw">const</span> target <span class="op">=</span> <span class="kw">new</span> <span class="at">EventTarget</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-24" title="24"></a>
+<a class="sourceLine" id="cb41-25" title="25"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler1)<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-26" title="26"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler2)<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-27" title="27"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler3)<span class="op">;</span></a>
+<a class="sourceLine" id="cb41-28" title="28"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler4<span class="op">,</span> <span class="op">{</span> <span class="dt">once</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="eventtarget-error-handling">
+      <code>EventTarget</code> error handling
+    </h3>
+    <p>
+      When a registered event listener throws (or returns a Promise that
+      rejects), by default the error is treated as an uncaught exception on
+      <code>process.nextTick()</code>. This means uncaught exceptions in
+      <code>EventTarget</code>s will terminate the Node.js process by default.
+    </p>
+    <p>
+      Throwing within an event listener will <em>not</em> stop the other
+      registered handlers from being invoked.
+    </p>
+    <p>
+      The <code>EventTarget</code> does not implement any special default
+      handling for <code>'error'</code> type events like
+      <code>EventEmitter</code>.
+    </p>
+    <p>
+      Currently errors are first forwarded to the
+      <code>process.on('error')</code> event before reaching
+      <code>process.on('uncaughtException')</code>. This behavior is deprecated
+      and will change in a future release to align <code>EventTarget</code> with
+      other Node.js APIs. Any code relying on the
+      <code>process.on('error')</code> event should be aligned with the new
+      behavior.
+    </p>
+    <h3 id="class-event">Class: <code>Event</code></h3>
+    <!-- YAML
+added: v14.5.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description: The `Event` class is now available through the global object.
+-->
+    <p>
+      The <code>Event</code> object is an adaptation of the
+      <a href="https://dom.spec.whatwg.org/#event"><code>Event</code> Web API</a
+      >. Instances are created internally by Node.js.
+    </p>
+    <h4 id="event.bubbles"><code>event.bubbles</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {boolean} Always returns <code>false</code>.</li>
+    </ul>
+    <p>This is not used in Node.js and is provided purely for completeness.</p>
+    <h4 id="event.cancelbubble"><code>event.cancelBubble()</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>
+      Alias for <code>event.stopPropagation()</code>. This is not used in
+      Node.js and is provided purely for completeness.
+    </p>
+    <h4 id="event.cancelable"><code>event.cancelable</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        Type: {boolean} True if the event was created with the
+        <code>cancelable</code> option.
+      </li>
+    </ul>
+    <h4 id="event.composed"><code>event.composed</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {boolean} Always returns <code>false</code>.</li>
+    </ul>
+    <p>This is not used in Node.js and is provided purely for completeness.</p>
+    <h4 id="event.composedpath"><code>event.composedPath()</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>
+      Returns an array containing the current <code>EventTarget</code> as the
+      only entry or empty if the event is not being dispatched. This is not used
+      in Node.js and is provided purely for completeness.
+    </p>
+    <h4 id="event.currenttarget"><code>event.currentTarget</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        Type: {EventTarget} The <code>EventTarget</code> dispatching the event.
+      </li>
+    </ul>
+    <p>Alias for <code>event.target</code>.</p>
+    <h4 id="event.defaultprevented"><code>event.defaultPrevented</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {boolean}</li>
+    </ul>
+    <p>
+      Is <code>true</code> if <code>cancelable</code> is <code>true</code> and
+      <code>event.preventDefault()</code> has been called.
+    </p>
+    <h4 id="event.eventphase"><code>event.eventPhase</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        Type: {number} Returns <code>0</code> while an event is not being
+        dispatched, <code>2</code> while it is being dispatched.
+      </li>
+    </ul>
+    <p>This is not used in Node.js and is provided purely for completeness.</p>
+    <h4 id="event.istrusted"><code>event.isTrusted</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {boolean}</li>
+    </ul>
+    <p>
+      The {AbortSignal} <code>"abort"</code> event is emitted with
+      <code>isTrusted</code> set to <code>true</code>. The value is
+      <code>false</code> in all other cases.
+    </p>
+    <h4 id="event.preventdefault"><code>event.preventDefault()</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>
+      Sets the <code>defaultPrevented</code> property to <code>true</code> if
+      <code>cancelable</code> is <code>true</code>.
+    </p>
+    <h4 id="event.returnvalue"><code>event.returnValue</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {boolean} True if the event has not been canceled.</li>
+    </ul>
+    <p>This is not used in Node.js and is provided purely for completeness.</p>
+    <h4 id="event.srcelement"><code>event.srcElement</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        Type: {EventTarget} The <code>EventTarget</code> dispatching the event.
+      </li>
+    </ul>
+    <p>Alias for <code>event.target</code>.</p>
+    <h4 id="event.stopimmediatepropagation">
+      <code>event.stopImmediatePropagation()</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>
+      Stops the invocation of event listeners after the current one completes.
+    </p>
+    <h4 id="event.stoppropagation"><code>event.stopPropagation()</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <p>This is not used in Node.js and is provided purely for completeness.</p>
+    <h4 id="event.target"><code>event.target</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        Type: {EventTarget} The <code>EventTarget</code> dispatching the event.
+      </li>
+    </ul>
+    <h4 id="event.timestamp"><code>event.timeStamp</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {number}</li>
+    </ul>
+    <p>
+      The millisecond timestamp when the <code>Event</code> object was created.
+    </p>
+    <h4 id="event.type"><code>event.type</code></h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Type: {string}</li>
+    </ul>
+    <p>The event type identifier.</p>
+    <h3 id="class-eventtarget">Class: <code>EventTarget</code></h3>
+    <!-- YAML
+added: v14.5.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description:
+      The `EventTarget` class is now available through the global object.
+-->
+    <h4 id="eventtarget.addeventlistenertype-listener-options">
+      <code>eventTarget.addEventListener(type, listener[, options])</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li><code>listener</code> {Function|EventListener}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li>
+            <code>once</code> {boolean} When <code>true</code>, the listener is
+            automatically removed when it is first invoked.
+            <strong>Default:</strong> <code>false</code>.
+          </li>
+          <li>
+            <code>passive</code> {boolean} When <code>true</code>, serves as a
+            hint that the listener will not call the <code>Event</code> object’s
+            <code>preventDefault()</code> method. <strong>Default:</strong>
+            <code>false</code>.
+          </li>
+          <li>
+            <code>capture</code> {boolean} Not directly used by Node.js. Added
+            for API completeness. <strong>Default:</strong> <code>false</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Adds a new handler for the <code>type</code> event. Any given
+      <code>listener</code> is added only once per <code>type</code> and per
+      <code>capture</code> option value.
+    </p>
+    <p>
+      If the <code>once</code> option is <code>true</code>, the
+      <code>listener</code> is removed after the next time a
+      <code>type</code> event is dispatched.
+    </p>
+    <p>
+      The <code>capture</code> option is not used by Node.js in any functional
+      way other than tracking registered event listeners per the
+      <code>EventTarget</code> specification. Specifically, the
+      <code>capture</code> option is used as part of the key when registering a
+      <code>listener</code>. Any individual <code>listener</code> may be added
+      once with <code>capture = false</code>, and once with
+      <code>capture = true</code>.
+    </p>
+    <div class="sourceCode" id="cb42">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">function</span> <span class="at">handler</span>(event) <span class="op">{}</span></a>
+<a class="sourceLine" id="cb42-2" title="2"></a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="kw">const</span> target <span class="op">=</span> <span class="kw">new</span> <span class="at">EventTarget</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb42-4" title="4"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler<span class="op">,</span> <span class="op">{</span> <span class="dt">capture</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span>  <span class="co">// first</span></a>
+<a class="sourceLine" id="cb42-5" title="5"><span class="va">target</span>.<span class="at">addEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler<span class="op">,</span> <span class="op">{</span> <span class="dt">capture</span><span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span> <span class="co">// second</span></a>
+<a class="sourceLine" id="cb42-6" title="6"></a>
+<a class="sourceLine" id="cb42-7" title="7"><span class="co">// Removes the second instance of handler</span></a>
+<a class="sourceLine" id="cb42-8" title="8"><span class="va">target</span>.<span class="at">removeEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler)<span class="op">;</span></a>
+<a class="sourceLine" id="cb42-9" title="9"></a>
+<a class="sourceLine" id="cb42-10" title="10"><span class="co">// Removes the first instance of handler</span></a>
+<a class="sourceLine" id="cb42-11" title="11"><span class="va">target</span>.<span class="at">removeEventListener</span>(<span class="st">&#39;foo&#39;</span><span class="op">,</span> handler<span class="op">,</span> <span class="op">{</span> <span class="dt">capture</span><span class="op">:</span> <span class="kw">true</span> <span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h4 id="eventtarget.dispatcheventevent">
+      <code>eventTarget.dispatchEvent(event)</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>event</code> {Event}</li>
+      <li>
+        Returns: {boolean} <code>true</code> if either event’s
+        <code>cancelable</code> attribute value is false or its
+        <code>preventDefault()</code> method was not invoked, otherwise
+        <code>false</code>.
+      </li>
+    </ul>
+    <p>
+      Dispatches the <code>event</code> to the list of handlers for
+      <code>event.type</code>.
+    </p>
+    <p>
+      The registered event listeners is synchronously invoked in the order they
+      were registered.
+    </p>
+    <h4 id="eventtarget.removeeventlistenertype-listener">
+      <code>eventTarget.removeEventListener(type, listener)</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li><code>listener</code> {Function|EventListener}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li><code>capture</code> {boolean}</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Removes the <code>listener</code> from the list of handlers for event
+      <code>type</code>.
+    </p>
+    <h3 id="class-nodeeventtarget">Class: <code>NodeEventTarget</code></h3>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Extends: {EventTarget}</li>
+    </ul>
+    <p>
+      The <code>NodeEventTarget</code> is a Node.js-specific extension to
+      <code>EventTarget</code> that emulates a subset of the
+      <code>EventEmitter</code> API.
+    </p>
+    <h4 id="nodeeventtarget.addlistenertype-listener-options">
+      <code>nodeEventTarget.addListener(type, listener[, options])</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li><code>listener</code> {Function|EventListener}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li><code>once</code> {boolean}</li>
+        </ul>
+      </li>
+      <li>Returns: {EventTarget} this</li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class that
+      emulates the equivalent <code>EventEmitter</code> API. The only difference
+      between <code>addListener()</code> and <code>addEventListener()</code> is
+      that <code>addListener()</code> will return a reference to the
+      <code>EventTarget</code>.
+    </p>
+    <h4 id="nodeeventtarget.eventnames">
+      <code>nodeEventTarget.eventNames()</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>Returns: {string[]}</li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class that
+      returns an array of event <code>type</code> names for which event
+      listeners are registered.
+    </p>
+    <h4 id="nodeeventtarget.listenercounttype">
+      <code>nodeEventTarget.listenerCount(type)</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        <p><code>type</code> {string}</p>
+      </li>
+      <li><p>Returns: {number}</p></li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class that
+      returns the number of event listeners registered for the
+      <code>type</code>.
+    </p>
+    <h4 id="nodeeventtarget.offtype-listener">
+      <code>nodeEventTarget.off(type, listener)</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li>
+        <p><code>listener</code> {Function|EventListener}</p>
+      </li>
+      <li><p>Returns: {EventTarget} this</p></li>
+    </ul>
+    <p>Node.js-specific alias for <code>eventTarget.removeListener()</code>.</p>
+    <h4 id="nodeeventtarget.ontype-listener-options">
+      <code>nodeEventTarget.on(type, listener[, options])</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li><code>listener</code> {Function|EventListener}</li>
+      <li>
+        <code>options</code> {Object}
+        <ul>
+          <li><code>once</code> {boolean}</li>
+        </ul>
+      </li>
+      <li>Returns: {EventTarget} this</li>
+    </ul>
+    <p>Node.js-specific alias for <code>eventTarget.addListener()</code>.</p>
+    <h4 id="nodeeventtarget.oncetype-listener-options">
+      <code>nodeEventTarget.once(type, listener[, options])</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li><code>listener</code> {Function|EventListener}</li>
+      <li>
+        <p><code>options</code> {Object}</p>
+      </li>
+      <li><p>Returns: {EventTarget} this</p></li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class that adds
+      a <code>once</code> listener for the given event <code>type</code>. This
+      is equivalent to calling <code>on</code> with the <code>once</code> option
+      set to <code>true</code>.
+    </p>
+    <h4 id="nodeeventtarget.removealllistenerstype">
+      <code>nodeEventTarget.removeAllListeners([type])</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li>
+        <p><code>type</code> {string}</p>
+      </li>
+      <li><p>Returns: {EventTarget} this</p></li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class. If
+      <code>type</code> is specified, removes all registered listeners for
+      <code>type</code>, otherwise removes all registered listeners.
+    </p>
+    <h4 id="nodeeventtarget.removelistenertype-listener">
+      <code>nodeEventTarget.removeListener(type, listener)</code>
+    </h4>
+    <!-- YAML
+added: v14.5.0
+-->
+    <ul>
+      <li><code>type</code> {string}</li>
+      <li>
+        <p><code>listener</code> {Function|EventListener}</p>
+      </li>
+      <li><p>Returns: {EventTarget} this</p></li>
+    </ul>
+    <p>
+      Node.js-specific extension to the <code>EventTarget</code> class that
+      removes the <code>listener</code> for the given <code>type</code>. The
+      only difference between <code>removeListener()</code> and
+      <code>removeEventListener()</code> is that
+      <code>removeListener()</code> will return a reference to the
+      <code>EventTarget</code>.
+    </p>
+  </body>
+</html>

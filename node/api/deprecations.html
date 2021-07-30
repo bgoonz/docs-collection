@@ -1,0 +1,3642 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>deprecations</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="deprecated-apis">Deprecated APIs</h1>
+    <!--introduced_in=v7.7.0-->
+    <!-- type=misc -->
+    <p>Node.js APIs might be deprecated for any of the following reasons:</p>
+    <ul>
+      <li>Use of the API is unsafe.</li>
+      <li>An improved alternative API is available.</li>
+      <li>
+        Breaking changes to the API are expected in a future major release.
+      </li>
+    </ul>
+    <p>Node.js uses three kinds of Deprecations:</p>
+    <ul>
+      <li>Documentation-only</li>
+      <li>Runtime</li>
+      <li>End-of-Life</li>
+    </ul>
+    <p>
+      A Documentation-only deprecation is one that is expressed only within the
+      Node.js API docs. These generate no side-effects while running Node.js.
+      Some Documentation-only deprecations trigger a runtime warning when
+      launched with
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >
+      flag (or its alternative,
+      <code>NODE_PENDING_DEPRECATION=1</code> environment variable), similarly
+      to Runtime deprecations below. Documentation-only deprecations that
+      support that flag are explicitly labeled as such in the
+      <a href="#deprecations_list_of_deprecated_apis">list of Deprecated APIs</a
+      >.
+    </p>
+    <p>
+      A Runtime deprecation will, by default, generate a process warning that
+      will be printed to <code>stderr</code> the first time the deprecated API
+      is used. When the
+      <a href="cli.md#cli_throw_deprecation"
+        ><code>--throw-deprecation</code></a
+      >
+      command-line flag is used, a Runtime deprecation will cause an error to be
+      thrown.
+    </p>
+    <p>
+      An End-of-Life deprecation is used when functionality is or will soon be
+      removed from Node.js.
+    </p>
+    <h2 id="revoking-deprecations">Revoking deprecations</h2>
+    <p>
+      Occasionally, the deprecation of an API might be reversed. In such
+      situations, this document will be updated with information relevant to the
+      decision. However, the deprecation identifier will not be modified.
+    </p>
+    <h2 id="list-of-deprecated-apis">List of deprecated APIs</h2>
+    <h3 id="dep0001-http.outgoingmessage.prototype.flush">
+      DEP0001: <code>http.OutgoingMessage.prototype.flush</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/31164
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v1.6.0
+    pr-url: https://github.com/nodejs/node/pull/1156
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>OutgoingMessage.prototype.flush()</code> has been removed. Use
+      <code>OutgoingMessage.prototype.flushHeaders()</code> instead.
+    </p>
+    <h3 id="dep0002-require_linklist">
+      DEP0002: <code>require('_linklist')</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12113
+    description: End-of-Life.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v5.0.0
+    pr-url: https://github.com/nodejs/node/pull/3078
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>_linklist</code> module is deprecated. Please use a userland
+      alternative.
+    </p>
+    <h3 id="dep0003-_writablestate.buffer">
+      DEP0003: <code>_writableState.buffer</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/31165
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.15
+    pr-url: https://github.com/nodejs/node-v0.x-archive/pull/8826
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>_writableState.buffer</code> has been removed. Use
+      <code>_writableState.getBuffer()</code> instead.
+    </p>
+    <h3 id="dep0004-cryptostream.prototype.readystate">
+      DEP0004: <code>CryptoStream.prototype.readyState</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17882
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.4.0
+    commit: 9c7f89bf56abd37a796fea621ad2e47dd33d2b82
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>CryptoStream.prototype.readyState</code> property was removed.
+    </p>
+    <h3 id="dep0005-buffer-constructor">
+      DEP0005: <code>Buffer()</code> constructor
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19524
+    description: Runtime deprecation.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4682
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Runtime (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      The <code>Buffer()</code> function and
+      <code>new Buffer()</code> constructor are deprecated due to API usability
+      issues that can lead to accidental security issues.
+    </p>
+    <p>
+      As an alternative, use one of the following methods of constructing
+      <code>Buffer</code> objects:
+    </p>
+    <ul>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_alloc_size_fill_encoding"
+          ><code>Buffer.alloc(size[, fill[, encoding]])</code></a
+        >: Create a <code>Buffer</code> with <em>initialized</em> memory.
+      </li>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_allocunsafe_size"
+          ><code>Buffer.allocUnsafe(size)</code></a
+        >: Create a <code>Buffer</code> with <em>uninitialized</em> memory.
+      </li>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_allocunsafeslow_size"
+          ><code>Buffer.allocUnsafeSlow(size)</code></a
+        >: Create a <code>Buffer</code> with <em>uninitialized</em> memory.
+      </li>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_from_array"
+          ><code>Buffer.from(array)</code></a
+        >: Create a <code>Buffer</code> with a copy of <code>array</code>
+      </li>
+      <li>
+        <a
+          href="buffer.md#buffer_static_method_buffer_from_arraybuffer_byteoffset_length"
+          ><code>Buffer.from(arrayBuffer[, byteOffset[, length]])</code></a
+        >
+        - Create a <code>Buffer</code> that wraps the given
+        <code>arrayBuffer</code>.
+      </li>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_from_buffer"
+          ><code>Buffer.from(buffer)</code></a
+        >: Create a <code>Buffer</code> that copies <code>buffer</code>.
+      </li>
+      <li>
+        <a href="buffer.md#buffer_static_method_buffer_from_string_encoding"
+          ><code>Buffer.from(string[, encoding])</code></a
+        >: Create a <code>Buffer</code> that copies <code>string</code>.
+      </li>
+    </ul>
+    <p>
+      Without <code>--pending-deprecation</code>, runtime warnings occur only
+      for code not in <code>node_modules</code>. This means there will not be
+      deprecation warnings for <code>Buffer()</code> usage in dependencies. With
+      <code>--pending-deprecation</code>, a runtime warning results no matter
+      where the <code>Buffer()</code> usage occurs.
+    </p>
+    <h3 id="dep0006-child_process-options.customfds">
+      DEP0006: <code>child_process</code> <code>options.customFds</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25279
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.14
+    description: Runtime deprecation.
+  - version: v0.5.10
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Within the
+      <a href="child_process.md"><code>child_process</code></a> module’s
+      <code>spawn()</code>, <code>fork()</code>, and
+      <code>exec()</code> methods, the <code>options.customFds</code> option is
+      deprecated. The <code>options.stdio</code> option should be used instead.
+    </p>
+    <h3
+      id="dep0007-replace-cluster-worker.suicide-with-worker.exitedafterdisconnect"
+    >
+      DEP0007: Replace <code>cluster</code> <code>worker.suicide</code> with
+      <code>worker.exitedAfterDisconnect</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/13702
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/3747
+    description: Runtime deprecation.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/3743
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      In an earlier version of the Node.js <code>cluster</code>, a boolean
+      property with the name <code>suicide</code> was added to the
+      <code>Worker</code> object. The intent of this property was to provide an
+      indication of how and why the <code>Worker</code> instance exited. In
+      Node.js 6.0.0, the old property was deprecated and replaced with a new
+      <a href="cluster.md#cluster_worker_exitedafterdisconnect"
+        ><code>worker.exitedAfterDisconnect</code></a
+      >
+      property. The old property name did not precisely describe the actual
+      semantics and was unnecessarily emotion-laden.
+    </p>
+    <h3 id="dep0008-requireconstants">
+      DEP0008: <code>require('constants')</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6534
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <code>constants</code> module is deprecated. When requiring access to
+      constants relevant to specific Node.js builtin modules, developers should
+      instead refer to the <code>constants</code> property exposed by the
+      relevant module. For instance, <code>require('fs').constants</code> and
+      <code>require('os').constants</code>.
+    </p>
+    <h3 id="dep0009-crypto.pbkdf2-without-digest">
+      DEP0009: <code>crypto.pbkdf2</code> without digest
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/31166
+    description: End-of-Life (for `digest === null`).
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22861
+    description: Runtime deprecation (for `digest === null`).
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11305
+    description: End-of-Life (for `digest === undefined`).
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4047
+    description: Runtime deprecation (for `digest === undefined`).
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Use of the
+      <a
+        href="crypto.md#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback"
+        ><code>crypto.pbkdf2()</code></a
+      >
+      API without specifying a digest was deprecated in Node.js 6.0 because the
+      method defaulted to using the non-recommended <code>'SHA1'</code> digest.
+      Previously, a deprecation warning was printed. Starting in Node.js 8.0.0,
+      calling <code>crypto.pbkdf2()</code> or
+      <code>crypto.pbkdf2Sync()</code> with <code>digest</code> set to
+      <code>undefined</code> will throw a <code>TypeError</code>.
+    </p>
+    <p>
+      Beginning in Node.js v11.0.0, calling these functions with
+      <code>digest</code> set to <code>null</code> would print a deprecation
+      warning to align with the behavior when <code>digest</code> is
+      <code>undefined</code>.
+    </p>
+    <p>
+      Now, however, passing either <code>undefined</code> or
+      <code>null</code> will throw a <code>TypeError</code>.
+    </p>
+    <h3 id="dep0010-crypto.createcredentials">
+      DEP0010: <code>crypto.createCredentials</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/21153
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.13
+    pr-url: https://github.com/nodejs/node-v0.x-archive/pull/7265
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>crypto.createCredentials()</code> API was removed. Please use
+      <a href="tls.md#tls_tls_createsecurecontext_options"
+        ><code>tls.createSecureContext()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0011-crypto.credentials">
+      DEP0011: <code>crypto.Credentials</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/21153
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.13
+    pr-url: https://github.com/nodejs/node-v0.x-archive/pull/7265
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>crypto.Credentials</code> class was removed. Please use
+      <a href="tls.md#tls_tls_createsecurecontext_options"
+        ><code>tls.SecureContext</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0012-domain.dispose">DEP0012: <code>Domain.dispose</code></h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15412
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.7
+    pr-url: https://github.com/nodejs/node-v0.x-archive/pull/5021
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>Domain.dispose()</code> has been removed. Recover from failed I/O
+      actions explicitly via error event handlers set on the domain instead.
+    </p>
+    <h3 id="dep0013-fs-asynchronous-function-without-callback">
+      DEP0013: <code>fs</code> asynchronous function without callback
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18668
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/7897
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Calling an asynchronous function without a callback throws a
+      <code>TypeError</code> in Node.js 10.0.0 onwards. See
+      <a href="https://github.com/nodejs/node/pull/12562" class="uri"
+        >https://github.com/nodejs/node/pull/12562</a
+      >.
+    </p>
+    <h3 id="dep0014-fs.read-legacy-string-interface">
+      DEP0014: <code>fs.read</code> legacy String interface
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/9683
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4525
+    description: Runtime deprecation.
+  - version: v0.1.96
+    commit: c93e0aaf062081db3ec40ac45b3e2c979d5759d6
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_read_fd_buffer_offset_length_position_callback"
+        ><code>fs.read()</code></a
+      >
+      legacy <code>String</code> interface is deprecated. Use the
+      <code>Buffer</code> API as mentioned in the documentation instead.
+    </p>
+    <h3 id="dep0015-fs.readsync-legacy-string-interface">
+      DEP0015: <code>fs.readSync</code> legacy String interface
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/9683
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4525
+    description: Runtime deprecation.
+  - version: v0.1.96
+    commit: c93e0aaf062081db3ec40ac45b3e2c979d5759d6
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_readsync_fd_buffer_offset_length_position"
+        ><code>fs.readSync()</code></a
+      >
+      legacy <code>String</code> interface is deprecated. Use the
+      <code>Buffer</code> API as mentioned in the documentation instead.
+    </p>
+    <h3 id="dep0016-globalroot">
+      DEP0016: <code>GLOBAL</code>/<code>root</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/31167
+    description: End-of-Life.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/1838
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>GLOBAL</code> and <code>root</code> aliases for the
+      <code>global</code> property were deprecated in Node.js 6.0.0 and have
+      since been removed.
+    </p>
+    <h3 id="dep0017-intl.v8breakiterator">
+      DEP0017: <code>Intl.v8BreakIterator</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15238
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/8908
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>Intl.v8BreakIterator</code> was a non-standard extension and has
+      been removed. See
+      <a href="https://github.com/tc39/proposal-intl-segmenter"
+        ><code>Intl.Segmenter</code></a
+      >.
+    </p>
+    <h3 id="dep0018-unhandled-promise-rejections">
+      DEP0018: Unhandled promise rejections
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35316
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/8217
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Unhandled promise rejections are deprecated. By default, promise
+      rejections that are not handled terminate the Node.js process with a
+      non-zero exit code. To change the way Node.js treats unhandled rejections,
+      use the
+      <a href="cli.md#cli_unhandled_rejections_mode"
+        ><code>--unhandled-rejections</code></a
+      >
+      command-line option.
+    </p>
+    <h3 id="dep0019-require.-resolved-outside-directory">
+      DEP0019: <code>require('.')</code> resolved outside directory
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26973
+    description: Removed functionality.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v1.8.1
+    pr-url: https://github.com/nodejs/node/pull/1363
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      In certain cases, <code>require('.')</code> could resolve outside the
+      package directory. This behavior has been removed.
+    </p>
+    <h3 id="dep0020-server.connections">
+      DEP0020: <code>Server.connections</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33647
+    description: Server.connections has been removed.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.9.7
+    pr-url: https://github.com/nodejs/node-v0.x-archive/pull/4595
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>Server.connections</code> property was deprecated in Node.js
+      v0.9.7 and has been removed. Please use the
+      <a href="net.md#net_server_getconnections_callback"
+        ><code>Server.getConnections()</code></a
+      >
+      method instead.
+    </p>
+    <h3 id="dep0021-server.listenfd">DEP0021: <code>Server.listenFD</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27127
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.7.12
+    commit: 41421ff9da1288aa241a5e9dcf915b685ade1c23
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>Server.listenFD()</code> method was deprecated and removed.
+      Please use
+      <a href="net.md#net_server_listen_handle_backlog_callback"
+        ><code>Server.listen({fd: &lt;number&gt;})</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0022-os.tmpdir">DEP0022: <code>os.tmpDir()</code></h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/31169
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/6739
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>os.tmpDir()</code> API was deprecated in Node.js 7.0.0 and has
+      since been removed. Please use
+      <a href="os.md#os_os_tmpdir"><code>os.tmpdir()</code></a> instead.
+    </p>
+    <h3 id="dep0023-os.getnetworkinterfaces">
+      DEP0023: <code>os.getNetworkInterfaces()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25280
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.6.0
+    commit: 37bb37d151fb6ee4696730e63ff28bb7a4924f97
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>os.getNetworkInterfaces()</code> method is deprecated. Please
+      use the
+      <a href="os.md#os_os_networkinterfaces"
+        ><code>os.networkInterfaces()</code></a
+      >
+      method instead.
+    </p>
+    <h3 id="dep0024-replserver.prototype.converttocontext">
+      DEP0024: <code>REPLServer.prototype.convertToContext()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/13434
+    description: End-of-Life.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/7829
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>REPLServer.prototype.convertToContext()</code> API has been
+      removed.
+    </p>
+    <h3 id="dep0025-requiresys">DEP0025: <code>require('sys')</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v1.0.0
+    pr-url: https://github.com/nodejs/node/pull/317
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>sys</code> module is deprecated. Please use the
+      <a href="util.md"><code>util</code></a> module instead.
+    </p>
+    <h3 id="dep0026-util.print">DEP0026: <code>util.print()</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25377
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.3
+    commit: 896b2aa7074fc886efd7dd0a397d694763cac7ce
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>util.print()</code> has been removed. Please use
+      <a href="console.md#console_console_log_data_args"
+        ><code>console.log()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0027-util.puts">DEP0027: <code>util.puts()</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25377
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.3
+    commit: 896b2aa7074fc886efd7dd0a397d694763cac7ce
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>util.puts()</code> has been removed. Please use
+      <a href="console.md#console_console_log_data_args"
+        ><code>console.log()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0028-util.debug">DEP0028: <code>util.debug()</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25377
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.3
+    commit: 896b2aa7074fc886efd7dd0a397d694763cac7ce
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>util.debug()</code> has been removed. Please use
+      <a href="console.md#console_console_error_data_args"
+        ><code>console.error()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0029-util.error">DEP0029: <code>util.error()</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25377
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.3
+    commit: 896b2aa7074fc886efd7dd0a397d694763cac7ce
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>util.error()</code> has been removed. Please use
+      <a href="console.md#console_console_error_data_args"
+        ><code>console.error()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0030-slowbuffer">DEP0030: <code>SlowBuffer</code></h3>
+    <!-- YAML
+changes:
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5833
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="buffer.md#buffer_class_slowbuffer"><code>SlowBuffer</code></a>
+      class is deprecated. Please use
+      <a href="buffer.md#buffer_static_method_buffer_allocunsafeslow_size"
+        ><code>Buffer.allocUnsafeSlow(size)</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0031-ecdh.setpublickey">
+      DEP0031: <code>ecdh.setPublicKey()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v5.2.0
+    pr-url: https://github.com/nodejs/node/pull/3511
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="crypto.md#crypto_ecdh_setpublickey_publickey_encoding"
+        ><code>ecdh.setPublicKey()</code></a
+      >
+      method is now deprecated as its inclusion in the API is not useful.
+    </p>
+    <h3 id="dep0032-domain-module">DEP0032: <code>domain</code> module</h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v1.4.2
+    pr-url: https://github.com/nodejs/node/pull/943
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <a href="domain.md"><code>domain</code></a> module is deprecated and
+      should not be used.
+    </p>
+    <h3 id="dep0033-eventemitter.listenercount">
+      DEP0033: <code>EventEmitter.listenerCount()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v3.2.0
+    pr-url: https://github.com/nodejs/node/pull/2349
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="events.md#events_events_listenercount_emitter_eventname"
+        ><code>events.listenerCount(emitter, eventName)</code></a
+      >
+      API is deprecated. Please use
+      <a href="events.md#events_emitter_listenercount_eventname"
+        ><code>emitter.listenerCount(eventName)</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0034-fs.existspath-callback">
+      DEP0034: <code>fs.exists(path, callback)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v1.0.0
+    pr-url: https://github.com/nodejs/node/pull/166
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_exists_path_callback"
+        ><code>fs.exists(path, callback)</code></a
+      >
+      API is deprecated. Please use
+      <a href="fs.md#fs_fs_stat_path_options_callback"
+        ><code>fs.stat()</code></a
+      >
+      or
+      <a href="fs.md#fs_fs_access_path_mode_callback"
+        ><code>fs.access()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0035-fs.lchmodpath-mode-callback">
+      DEP0035: <code>fs.lchmod(path, mode, callback)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.4.7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_lchmod_path_mode_callback"
+        ><code>fs.lchmod(path, mode, callback)</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0036-fs.lchmodsyncpath-mode">
+      DEP0036: <code>fs.lchmodSync(path, mode)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.4.7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_lchmodsync_path_mode"
+        ><code>fs.lchmodSync(path, mode)</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0037-fs.lchownpath-uid-gid-callback">
+      DEP0037: <code>fs.lchown(path, uid, gid, callback)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.6.0
+    pr-url: https://github.com/nodejs/node/pull/21498
+    description: Deprecation revoked.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.4.7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Deprecation revoked</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_lchown_path_uid_gid_callback"
+        ><code>fs.lchown(path, uid, gid, callback)</code></a
+      >
+      API was deprecated. The deprecation was revoked because the requisite
+      supporting APIs were added in libuv.
+    </p>
+    <h3 id="dep0038-fs.lchownsyncpath-uid-gid">
+      DEP0038: <code>fs.lchownSync(path, uid, gid)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.6.0
+    pr-url: https://github.com/nodejs/node/pull/21498
+    description: Deprecation revoked.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.4.7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Deprecation revoked</p>
+    <p>
+      The
+      <a href="fs.md#fs_fs_lchownsync_path_uid_gid"
+        ><code>fs.lchownSync(path, uid, gid)</code></a
+      >
+      API was deprecated. The deprecation was revoked because the requisite
+      supporting APIs were added in libuv.
+    </p>
+    <h3 id="dep0039-require.extensions">
+      DEP0039: <code>require.extensions</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.10.6
+    commit: 7bd8a5a2a60b75266f89f9a32877d55294a3881c
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="modules.md#modules_require_extensions"
+        ><code>require.extensions</code></a
+      >
+      property is deprecated.
+    </p>
+    <h3 id="dep0040-punycode-module">DEP0040: <code>punycode</code> module</h3>
+    <!-- YAML
+changes:
+  - version: v16.6.0
+    pr-url: https://github.com/nodejs/node/pull/38444
+    description: Added support for `--pending-deprecation`.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/7941
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      The <a href="punycode.md"><code>punycode</code></a> module is deprecated.
+      Please use a userland alternative instead.
+    </p>
+    <h3 id="dep0041-node_repl_history_file-environment-variable">
+      DEP0041: <code>NODE_REPL_HISTORY_FILE</code> environment variable
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/13876
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v3.0.0
+    pr-url: https://github.com/nodejs/node/pull/2224
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>NODE_REPL_HISTORY_FILE</code> environment variable was removed.
+      Please use <code>NODE_REPL_HISTORY</code> instead.
+    </p>
+    <h3 id="dep0042-tls.cryptostream">
+      DEP0042: <code>tls.CryptoStream</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17882
+    description: End-of-Life.
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v0.11.3
+    commit: af80e7bc6e6f33c582eb1f7d37c7f5bbe9f910f7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The
+      <a href="tls.md#tls_class_tls_cryptostream"
+        ><code>tls.CryptoStream</code></a
+      >
+      class was removed. Please use
+      <a href="tls.md#tls_class_tls_tlssocket"><code>tls.TLSSocket</code></a>
+      instead.
+    </p>
+    <h3 id="dep0043-tls.securepair">DEP0043: <code>tls.SecurePair</code></h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11349
+    description: Runtime deprecation.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/6063
+    description: Documentation-only deprecation.
+  - version: v0.11.15
+    pr-url:
+      - https://github.com/nodejs/node-v0.x-archive/pull/8695
+      - https://github.com/nodejs/node-v0.x-archive/pull/8700
+    description: Deprecation revoked.
+  - version: v0.11.3
+    commit: af80e7bc6e6f33c582eb1f7d37c7f5bbe9f910f7
+    description: Runtime deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="tls.md#tls_class_tls_securepair"><code>tls.SecurePair</code></a>
+      class is deprecated. Please use
+      <a href="tls.md#tls_class_tls_tlssocket"><code>tls.TLSSocket</code></a>
+      instead.
+    </p>
+    <h3 id="dep0044-util.isarray">DEP0044: <code>util.isArray()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isarray_object"><code>util.isArray()</code></a>
+      API is deprecated. Please use <code>Array.isArray()</code> instead.
+    </p>
+    <h3 id="dep0045-util.isboolean">DEP0045: <code>util.isBoolean()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isboolean_object"
+        ><code>util.isBoolean()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0046-util.isbuffer">DEP0046: <code>util.isBuffer()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isbuffer_object"
+        ><code>util.isBuffer()</code></a
+      >
+      API is deprecated. Please use
+      <a href="buffer.md#buffer_static_method_buffer_isbuffer_obj"
+        ><code>Buffer.isBuffer()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0047-util.isdate">DEP0047: <code>util.isDate()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isdate_object"><code>util.isDate()</code></a>
+      API is deprecated.
+    </p>
+    <h3 id="dep0048-util.iserror">DEP0048: <code>util.isError()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_iserror_object"><code>util.isError()</code></a>
+      API is deprecated.
+    </p>
+    <h3 id="dep0049-util.isfunction">
+      DEP0049: <code>util.isFunction()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isfunction_object"
+        ><code>util.isFunction()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0050-util.isnull">DEP0050: <code>util.isNull()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isnull_object"><code>util.isNull()</code></a>
+      API is deprecated.
+    </p>
+    <h3 id="dep0051-util.isnullorundefined">
+      DEP0051: <code>util.isNullOrUndefined()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isnullorundefined_object"
+        ><code>util.isNullOrUndefined()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0052-util.isnumber">DEP0052: <code>util.isNumber()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isnumber_object"
+        ><code>util.isNumber()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0053-util.isobject">DEP0053: <code>util.isObject()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isobject_object"
+        ><code>util.isObject()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0054-util.isprimitive">
+      DEP0054: <code>util.isPrimitive()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isprimitive_object"
+        ><code>util.isPrimitive()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0055-util.isregexp">DEP0055: <code>util.isRegExp()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isregexp_object"
+        ><code>util.isRegExp()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0056-util.isstring">DEP0056: <code>util.isString()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isstring_object"
+        ><code>util.isString()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0057-util.issymbol">DEP0057: <code>util.isSymbol()</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_issymbol_object"
+        ><code>util.isSymbol()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0058-util.isundefined">
+      DEP0058: <code>util.isUndefined()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v6.12.0
+    - v4.8.6
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version:
+    - v4.0.0
+    - v3.3.1
+    pr-url: https://github.com/nodejs/node/pull/2447
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_isundefined_object"
+        ><code>util.isUndefined()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0059-util.log">DEP0059: <code>util.log()</code></h3>
+    <!-- YAML
+changes:
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/6161
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <a href="util.md#util_util_log_string"><code>util.log()</code></a> API
+      is deprecated.
+    </p>
+    <h3 id="dep0060-util._extend">DEP0060: <code>util._extend()</code></h3>
+    <!-- YAML
+changes:
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4903
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="util.md#util_util_extend_target_source"
+        ><code>util._extend()</code></a
+      >
+      API is deprecated.
+    </p>
+    <h3 id="dep0061-fs.syncwritestream">
+      DEP0061: <code>fs.SyncWriteStream</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/20735
+    description: End-of-Life.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10467
+    description: Runtime deprecation.
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/6749
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>fs.SyncWriteStream</code> class was never intended to be a
+      publicly accessible API and has been removed. No alternative API is
+      available. Please use a userland alternative.
+    </p>
+    <h3 id="dep0062-node---debug">DEP0062: <code>node --debug</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25828
+    description: End-of-Life.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10970
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>--debug</code> activates the legacy V8 debugger interface, which was
+      removed as of V8 5.8. It is replaced by Inspector which is activated with
+      <code>--inspect</code> instead.
+    </p>
+    <h3 id="dep0063-serverresponse.prototype.writeheader">
+      DEP0063: <code>ServerResponse.prototype.writeHeader()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11355
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <code>http</code> module
+      <code>ServerResponse.prototype.writeHeader()</code> API is deprecated.
+      Please use <code>ServerResponse.prototype.writeHead()</code> instead.
+    </p>
+    <p>
+      The <code>ServerResponse.prototype.writeHeader()</code> method was never
+      documented as an officially supported API.
+    </p>
+    <h3 id="dep0064-tls.createsecurepair">
+      DEP0064: <code>tls.createSecurePair()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11349
+    description: Runtime deprecation.
+  - version: v6.12.0
+    pr-url: https://github.com/nodejs/node/pull/10116
+    description: A deprecation code has been assigned.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/6063
+    description: Documentation-only deprecation.
+  - version: v0.11.15
+    pr-url:
+      - https://github.com/nodejs/node-v0.x-archive/pull/8695
+      - https://github.com/nodejs/node-v0.x-archive/pull/8700
+    description: Deprecation revoked.
+  - version: v0.11.3
+    commit: af80e7bc6e6f33c582eb1f7d37c7f5bbe9f910f7
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>tls.createSecurePair()</code> API was deprecated in
+      documentation in Node.js 0.11.3. Users should use
+      <code>tls.Socket</code> instead.
+    </p>
+    <h3 id="dep0065-repl.repl_mode_magic-and-node_repl_modemagic">
+      DEP0065: <code>repl.REPL_MODE_MAGIC</code> and
+      <code>NODE_REPL_MODE=magic</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19187
+    description: End-of-Life.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11599
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>repl</code> module’s <code>REPL_MODE_MAGIC</code> constant, used
+      for <code>replMode</code> option, has been removed. Its behavior has been
+      functionally identical to that of <code>REPL_MODE_SLOPPY</code> since
+      Node.js 6.0.0, when V8 5.0 was imported. Please use
+      <code>REPL_MODE_SLOPPY</code> instead.
+    </p>
+    <p>
+      The <code>NODE_REPL_MODE</code> environment variable is used to set the
+      underlying <code>replMode</code> of an interactive
+      <code>node</code> session. Its value, <code>magic</code>, is also removed.
+      Please use <code>sloppy</code> instead.
+    </p>
+    <h3
+      id="dep0066-outgoingmessage.prototype._headers-outgoingmessage.prototype._headernames"
+    >
+      DEP0066:
+      <code
+        >OutgoingMessage.prototype._headers,
+        OutgoingMessage.prototype._headerNames</code
+      >
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/24167
+    description: Runtime deprecation.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10941
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>http</code> module
+      <code>OutgoingMessage.prototype._headers</code> and
+      <code>OutgoingMessage.prototype._headerNames</code> properties are
+      deprecated. Use one of the public methods
+      (e.g. <code>OutgoingMessage.prototype.getHeader()</code>,
+      <code>OutgoingMessage.prototype.getHeaders()</code>,
+      <code>OutgoingMessage.prototype.getHeaderNames()</code>,
+      <code>OutgoingMessage.prototype.getRawHeaderNames()</code>,
+      <code>OutgoingMessage.prototype.hasHeader()</code>,
+      <code>OutgoingMessage.prototype.removeHeader()</code>,
+      <code>OutgoingMessage.prototype.setHeader()</code>) for working with
+      outgoing headers.
+    </p>
+    <p>
+      The <code>OutgoingMessage.prototype._headers</code> and
+      <code>OutgoingMessage.prototype._headerNames</code> properties were never
+      documented as officially supported properties.
+    </p>
+    <h3 id="dep0067-outgoingmessage.prototype._renderheaders">
+      DEP0067: <code>OutgoingMessage.prototype._renderHeaders</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/10941
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <code>http</code> module
+      <code>OutgoingMessage.prototype._renderHeaders()</code> API is deprecated.
+    </p>
+    <p>
+      The <code>OutgoingMessage.prototype._renderHeaders</code> property was
+      never documented as an officially supported API.
+    </p>
+    <h3 id="dep0068-node-debug">DEP0068: <code>node debug</code></h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33648
+    description: The legacy `node debug` command was removed.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11441
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>node debug</code> corresponds to the legacy CLI debugger which has
+      been replaced with a V8-inspector based CLI debugger available through
+      <code>node inspect</code>.
+    </p>
+    <h3 id="dep0069-vm.runindebugcontextstring">
+      DEP0069: <code>vm.runInDebugContext(string)</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/13295
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/12815
+    description: Runtime deprecation.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12243
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      DebugContext has been removed in V8 and is not available in Node.js 10+.
+    </p>
+    <p>DebugContext was an experimental API.</p>
+    <h3 id="dep0070-async_hooks.currentid">
+      DEP0070: <code>async_hooks.currentId()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14414
+    description: End-of-Life.
+  - version: v8.2.0
+    pr-url: https://github.com/nodejs/node/pull/13490
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>async_hooks.currentId()</code> was renamed to
+      <code>async_hooks.executionAsyncId()</code> for clarity.
+    </p>
+    <p>
+      This change was made while <code>async_hooks</code> was an experimental
+      API.
+    </p>
+    <h3 id="dep0071-async_hooks.triggerid">
+      DEP0071: <code>async_hooks.triggerId()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14414
+    description: End-of-Life.
+  - version: v8.2.0
+    pr-url: https://github.com/nodejs/node/pull/13490
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>async_hooks.triggerId()</code> was renamed to
+      <code>async_hooks.triggerAsyncId()</code> for clarity.
+    </p>
+    <p>
+      This change was made while <code>async_hooks</code> was an experimental
+      API.
+    </p>
+    <h3 id="dep0072-async_hooks.asyncresource.triggerid">
+      DEP0072: <code>async_hooks.AsyncResource.triggerId()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14414
+    description: End-of-Life.
+  - version: v8.2.0
+    pr-url: https://github.com/nodejs/node/pull/13490
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>async_hooks.AsyncResource.triggerId()</code> was renamed to
+      <code>async_hooks.AsyncResource.triggerAsyncId()</code> for clarity.
+    </p>
+    <p>
+      This change was made while <code>async_hooks</code> was an experimental
+      API.
+    </p>
+    <h3 id="dep0073-several-internal-properties-of-net.server">
+      DEP0073: Several internal properties of <code>net.Server</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17141
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14449
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Accessing several internal, undocumented properties of
+      <code>net.Server</code> instances with inappropriate names is deprecated.
+    </p>
+    <p>
+      As the original API was undocumented and not generally useful for
+      non-internal code, no replacement API is provided.
+    </p>
+    <h3 id="dep0074-replserver.bufferedcommand">
+      DEP0074: <code>REPLServer.bufferedCommand</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33286
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/13687
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>REPLServer.bufferedCommand</code> property was deprecated in
+      favor of
+      <a href="repl.md#repl_replserver_clearbufferedcommand"
+        ><code>REPLServer.clearBufferedCommand()</code></a
+      >.
+    </p>
+    <h3 id="dep0075-replserver.parsereplkeyword">
+      DEP0075: <code>REPLServer.parseREPLKeyword()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33286
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14223
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>REPLServer.parseREPLKeyword()</code> was removed from userland
+      visibility.
+    </p>
+    <h3 id="dep0076-tls.parsecertstring">
+      DEP0076: <code>tls.parseCertString()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14249
+    description: Runtime deprecation.
+  - version: v8.6.0
+    pr-url: https://github.com/nodejs/node/pull/14245
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <code>tls.parseCertString()</code> is a trivial parsing helper that was
+      made public by mistake. This function can usually be replaced with:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> querystring <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;querystring&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">querystring</span>.<span class="at">parse</span>(str<span class="op">,</span> <span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="st">&#39;=&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      This function is not completely equivalent to
+      <code>querystring.parse()</code>. One difference is that
+      <code>querystring.parse()</code> does url decoding:
+    </p>
+    <pre
+      class="console"
+    ><code>&gt; querystring.parse(&#39;%E5%A5%BD=1&#39;, &#39;\n&#39;, &#39;=&#39;);
+{ &#39;好&#39;: &#39;1&#39; }
+&gt; tls.parseCertString(&#39;%E5%A5%BD=1&#39;);
+{ &#39;%E5%A5%BD&#39;: &#39;1&#39; }</code></pre>
+    <h3 id="dep0077-module._debug">DEP0077: <code>Module._debug()</code></h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/13948
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p><code>Module._debug()</code> is deprecated.</p>
+    <p>
+      The <code>Module._debug()</code> function was never documented as an
+      officially supported API.
+    </p>
+    <h3 id="dep0078-replserver.turnoffeditormode">
+      DEP0078: <code>REPLServer.turnOffEditorMode()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33286
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15136
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>REPLServer.turnOffEditorMode()</code> was removed from userland
+      visibility.
+    </p>
+    <h3 id="dep0079-custom-inspection-function-on-objects-via-.inspect">
+      DEP0079: Custom inspection function on objects via <code>.inspect()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/20722
+    description: End-of-Life.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/16393
+    description: Runtime deprecation.
+  - version: v8.7.0
+    pr-url: https://github.com/nodejs/node/pull/15631
+    description: Documentation-only deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Using a property named <code>inspect</code> on an object to specify a
+      custom inspection function for
+      <a href="util.md#util_util_inspect_object_options"
+        ><code>util.inspect()</code></a
+      >
+      is deprecated. Use
+      <a href="util.md#util_util_inspect_custom"
+        ><code>util.inspect.custom</code></a
+      >
+      instead. For backward compatibility with Node.js prior to version 6.4.0,
+      both can be specified.
+    </p>
+    <h3 id="dep0080-path._makelong">DEP0080: <code>path._makeLong()</code></h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/14956
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The internal <code>path._makeLong()</code> was not intended for public
+      use. However, userland modules have found it useful. The internal API is
+      deprecated and replaced with an identical, public
+      <code>path.toNamespacedPath()</code> method.
+    </p>
+    <h3 id="dep0081-fs.truncate-using-a-file-descriptor">
+      DEP0081: <code>fs.truncate()</code> using a file descriptor
+    </h3>
+    <!-- YAML
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15990
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <code>fs.truncate()</code> <code>fs.truncateSync()</code> usage with a
+      file descriptor is deprecated. Please use <code>fs.ftruncate()</code> or
+      <code>fs.ftruncateSync()</code> to work with file descriptors.
+    </p>
+    <h3 id="dep0082-replserver.prototype.memory">
+      DEP0082: <code>REPLServer.prototype.memory()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33286
+    description: End-of-Life.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/16242
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>REPLServer.prototype.memory()</code> is only necessary for the
+      internal mechanics of the <code>REPLServer</code> itself. Do not use this
+      function.
+    </p>
+    <h3 id="dep0083-disabling-ecdh-by-setting-ecdhcurve-to-false">
+      DEP0083: Disabling ECDH by setting <code>ecdhCurve</code> to
+      <code>false</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19794
+    description: End-of-Life.
+  - version: v9.2.0
+    pr-url: https://github.com/nodejs/node/pull/16130
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life.</p>
+    <p>
+      The <code>ecdhCurve</code> option to
+      <code>tls.createSecureContext()</code> and
+      <code>tls.TLSSocket</code> could be set to <code>false</code> to disable
+      ECDH entirely on the server only. This mode was deprecated in preparation
+      for migrating to OpenSSL 1.1.0 and consistency with the client and is now
+      unsupported. Use the <code>ciphers</code> parameter instead.
+    </p>
+    <h3 id="dep0084-requiring-bundled-internal-dependencies">
+      DEP0084: requiring bundled internal dependencies
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25138
+    description: This functionality has been removed.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/16392
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Since Node.js versions 4.4.0 and 5.2.0, several modules only intended for
+      internal usage were mistakenly exposed to user code through
+      <code>require()</code>. These modules were:
+    </p>
+    <ul>
+      <li><code>v8/tools/codemap</code></li>
+      <li><code>v8/tools/consarray</code></li>
+      <li><code>v8/tools/csvparser</code></li>
+      <li><code>v8/tools/logreader</code></li>
+      <li><code>v8/tools/profile_view</code></li>
+      <li><code>v8/tools/profile</code></li>
+      <li><code>v8/tools/SourceMap</code></li>
+      <li><code>v8/tools/splaytree</code></li>
+      <li><code>v8/tools/tickprocessor-driver</code></li>
+      <li><code>v8/tools/tickprocessor</code></li>
+      <li><code>node-inspect/lib/_inspect</code> (from 7.6.0)</li>
+      <li>
+        <code>node-inspect/lib/internal/inspect_client</code> (from 7.6.0)
+      </li>
+      <li><code>node-inspect/lib/internal/inspect_repl</code> (from 7.6.0)</li>
+    </ul>
+    <p>
+      The <code>v8/*</code> modules do not have any exports, and if not imported
+      in a specific order would in fact throw errors. As such there are
+      virtually no legitimate use cases for importing them through
+      <code>require()</code>.
+    </p>
+    <p>
+      On the other hand, <code>node-inspect</code> can be installed locally
+      through a package manager, as it is published on the npm registry under
+      the same name. No source code modification is necessary if that is done.
+    </p>
+    <h3 id="dep0085-asynchooks-sensitive-api">
+      DEP0085: AsyncHooks sensitive API
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17147
+    description: End-of-Life.
+  - version:
+    - v9.4.0
+    - v8.10.0
+    pr-url: https://github.com/nodejs/node/pull/16972
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The AsyncHooks sensitive API was never documented and had various minor
+      issues. Use the <code>AsyncResource</code> API instead. See
+      <a href="https://github.com/nodejs/node/issues/15572" class="uri"
+        >https://github.com/nodejs/node/issues/15572</a
+      >.
+    </p>
+    <h3 id="dep0086-remove-runinasyncidscope">
+      DEP0086: Remove <code>runInAsyncIdScope</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17147
+    description: End-of-Life.
+  - version:
+    - v9.4.0
+    - v8.10.0
+    pr-url: https://github.com/nodejs/node/pull/16972
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>runInAsyncIdScope</code> doesn’t emit the <code>'before'</code> or
+      <code>'after'</code> event and can thus cause a lot of issues. See
+      <a href="https://github.com/nodejs/node/issues/14328" class="uri"
+        >https://github.com/nodejs/node/issues/14328</a
+      >.
+    </p>
+    <h3 id="dep0089-requireassert">DEP0089: <code>require('assert')</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.8.0
+    pr-url: https://github.com/nodejs/node/pull/28892
+    description: Deprecation revoked.
+  - version:
+      - v9.9.0
+      - v8.13.0
+    pr-url: https://github.com/nodejs/node/pull/17002
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Deprecation revoked</p>
+    <p>
+      Importing assert directly was not recommended as the exposed functions use
+      loose equality checks. The deprecation was revoked because use of the
+      <code>assert</code> module is not discouraged, and the deprecation caused
+      developer confusion.
+    </p>
+    <h3 id="dep0090-invalid-gcm-authentication-tag-lengths">
+      DEP0090: Invalid GCM authentication tag lengths
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/17825
+    description: End-of-Life.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18017
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Node.js used to support all GCM authentication tag lengths which are
+      accepted by OpenSSL when calling
+      <a href="crypto.md#crypto_decipher_setauthtag_buffer_encoding"
+        ><code>decipher.setAuthTag()</code></a
+      >. Beginning with Node.js v11.0.0, only authentication tag lengths of 128,
+      120, 112, 104, 96, 64, and 32 bits are allowed. Authentication tags of
+      other lengths are invalid per
+      <a
+        href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf"
+        >NIST SP 800-38D</a
+      >.
+    </p>
+    <h3 id="dep0091-crypto.default_encoding">
+      DEP0091: <code>crypto.DEFAULT_ENCODING</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18333
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The
+      <a href="crypto.md#crypto_crypto_default_encoding"
+        ><code>crypto.DEFAULT_ENCODING</code></a
+      >
+      property is deprecated.
+    </p>
+    <h3 id="dep0092-top-level-this-bound-to-module.exports">
+      DEP0092: Top-level <code>this</code> bound to <code>module.exports</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/16878
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      Assigning properties to the top-level <code>this</code> as an alternative
+      to <code>module.exports</code> is deprecated. Developers should use
+      <code>exports</code> or <code>module.exports</code> instead.
+    </p>
+    <h3 id="dep0093-crypto.fips-is-deprecated-and-replaced">
+      DEP0093: <code>crypto.fips</code> is deprecated and replaced
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18335
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="crypto.md#crypto_crypto_fips"><code>crypto.fips</code></a>
+      property is deprecated. Please use <code>crypto.setFips()</code> and
+      <code>crypto.getFips()</code> instead.
+    </p>
+    <h3 id="dep0094-using-assert.fail-with-more-than-one-argument">
+      DEP0094: Using <code>assert.fail()</code> with more than one argument
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18418
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Using <code>assert.fail()</code> with more than one argument is
+      deprecated. Use <code>assert.fail()</code> with only one argument or use a
+      different <code>assert</code> module method.
+    </p>
+    <h3 id="dep0095-timers.enroll">DEP0095: <code>timers.enroll()</code></h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18066
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <code>timers.enroll()</code> is deprecated. Please use the publicly
+      documented
+      <a href="timers.md#timers_settimeout_callback_delay_args"
+        ><code>setTimeout()</code></a
+      >
+      or
+      <a href="timers.md#timers_setinterval_callback_delay_args"
+        ><code>setInterval()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0096-timers.unenroll">
+      DEP0096: <code>timers.unenroll()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18066
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <code>timers.unenroll()</code> is deprecated. Please use the publicly
+      documented
+      <a href="timers.md#timers_cleartimeout_timeout"
+        ><code>clearTimeout()</code></a
+      >
+      or
+      <a href="timers.md#timers_clearinterval_timeout"
+        ><code>clearInterval()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0097-makecallback-with-domain-property">
+      DEP0097: <code>MakeCallback</code> with <code>domain</code> property
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17417
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Users of <code>MakeCallback</code> that add the
+      <code>domain</code> property to carry context, should start using the
+      <code>async_context</code> variant of <code>MakeCallback</code> or
+      <code>CallbackScope</code>, or the high-level
+      <code>AsyncResource</code> class.
+    </p>
+    <h3
+      id="dep0098-asynchooks-embedder-asyncresource.emitbefore-and-asyncresource.emitafter-apis"
+    >
+      DEP0098: AsyncHooks embedder <code>AsyncResource.emitBefore</code> and
+      <code>AsyncResource.emitAfter</code> APIs
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26530
+    description: End-of-Life.
+  - version:
+    - v10.0.0
+    - v9.6.0
+    - v8.12.0
+    pr-url: https://github.com/nodejs/node/pull/18632
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The embedded API provided by AsyncHooks exposes
+      <code>.emitBefore()</code> and <code>.emitAfter()</code> methods which are
+      very easy to use incorrectly which can lead to unrecoverable errors.
+    </p>
+    <p>
+      Use
+      <a
+        href="async_context.md#async_context_asyncresource_runinasyncscope_fn_thisarg_args"
+        ><code>asyncResource.runInAsyncScope()</code></a
+      >
+      API instead which provides a much safer, and more convenient, alternative.
+      See
+      <a href="https://github.com/nodejs/node/pull/18513" class="uri"
+        >https://github.com/nodejs/node/pull/18513</a
+      >.
+    </p>
+    <h3 id="dep0099-async-context-unaware-nodemakecallback-c-apis">
+      DEP0099: Async context-unaware <code>node::MakeCallback</code> C++ APIs
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18632
+    description: Compile-time deprecation.
+-->
+    <p>Type: Compile-time</p>
+    <p>
+      Certain versions of <code>node::MakeCallback</code> APIs available to
+      native modules are deprecated. Please use the versions of the API that
+      accept an <code>async_context</code> parameter.
+    </p>
+    <h3 id="dep0100-process.assert">DEP0100: <code>process.assert()</code></h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18666
+    description: Runtime deprecation.
+  - version: v0.3.7
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <code>process.assert()</code> is deprecated. Please use the
+      <a href="assert.md"><code>assert</code></a> module instead.
+    </p>
+    <p>This was never a documented feature.</p>
+    <h3 id="dep0101---with-lttng">DEP0101: <code>--with-lttng</code></h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18982
+    description: End-of-Life.
+-->
+    <p>Type: End-of-Life</p>
+    <p>The <code>--with-lttng</code> compile-time option has been removed.</p>
+    <h3 id="dep0102-using-noassert-in-bufferreadwrite-operations">
+      DEP0102: Using <code>noAssert</code> in
+      <code>Buffer#(read|write)</code> operations
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18395
+    description: End-of-Life.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Using the <code>noAssert</code> argument has no functionality anymore. All
+      input is going to be verified, no matter if it is set to true or not.
+      Skipping the verification could lead to hard to find errors and crashes.
+    </p>
+    <h3 id="dep0103-process.bindingutil.is...-typechecks">
+      DEP0103: <code>process.binding('util').is[...]</code> typechecks
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.9.0
+    pr-url: https://github.com/nodejs/node/pull/22004
+    description: Superseded by [DEP0111](#DEP0111).
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18415
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      Using <code>process.binding()</code> in general should be avoided. The
+      type checking methods in particular can be replaced by using
+      <a href="util.md#util_util_types"><code>util.types</code></a
+      >.
+    </p>
+    <p>
+      This deprecation has been superseded by the deprecation of the
+      <code>process.binding()</code> API (<a href="#DEP0111">DEP0111</a>).
+    </p>
+    <h3 id="dep0104-process.env-string-coercion">
+      DEP0104: <code>process.env</code> string coercion
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18990
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      When assigning a non-string property to
+      <a href="process.md#process_process_env"><code>process.env</code></a
+      >, the assigned value is implicitly converted to a string. This behavior
+      is deprecated if the assigned value is not a string, boolean, or number.
+      In the future, such assignment might result in a thrown error. Please
+      convert the property to a string before assigning it to
+      <code>process.env</code>.
+    </p>
+    <h3 id="dep0105-decipher.finaltol">
+      DEP0105: <code>decipher.finaltol</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/19941
+    description: End-of-Life.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19353
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>decipher.finaltol()</code> has never been documented and was an
+      alias for
+      <a href="crypto.md#crypto_decipher_final_outputencoding"
+        ><code>decipher.final()</code></a
+      >. This API has been removed, and it is recommended to use
+      <a href="crypto.md#crypto_decipher_final_outputencoding"
+        ><code>decipher.final()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0106-crypto.createcipher-and-crypto.createdecipher">
+      DEP0106: <code>crypto.createCipher</code> and
+      <code>crypto.createDecipher</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22089
+    description: Runtime deprecation.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19343
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Using
+      <a href="crypto.md#crypto_crypto_createcipher_algorithm_password_options"
+        ><code>crypto.createCipher()</code></a
+      >
+      and
+      <a
+        href="crypto.md#crypto_crypto_createdecipher_algorithm_password_options"
+        ><code>crypto.createDecipher()</code></a
+      >
+      should be avoided as they use a weak key derivation function (MD5 with no
+      salt) and static initialization vectors. It is recommended to derive a key
+      using
+      <a
+        href="crypto.md#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback"
+        ><code>crypto.pbkdf2()</code></a
+      >
+      or
+      <a
+        href="crypto.md#crypto_crypto_scrypt_password_salt_keylen_options_callback"
+        ><code>crypto.scrypt()</code></a
+      >
+      and to use
+      <a href="crypto.md#crypto_crypto_createcipheriv_algorithm_key_iv_options"
+        ><code>crypto.createCipheriv()</code></a
+      >
+      and
+      <a
+        href="crypto.md#crypto_crypto_createdecipheriv_algorithm_key_iv_options"
+        ><code>crypto.createDecipheriv()</code></a
+      >
+      to obtain the
+      <a href="crypto.md#crypto_class_cipher"><code>Cipher</code></a> and
+      <a href="crypto.md#crypto_class_decipher"><code>Decipher</code></a>
+      objects respectively.
+    </p>
+    <h3 id="dep0107-tls.convertnpnprotocols">
+      DEP0107: <code>tls.convertNPNProtocols()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/20736
+    description: End-of-Life.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19403
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      This was an undocumented helper function not intended for use outside
+      Node.js core and obsoleted by the removal of NPN (Next Protocol
+      Negotiation) support.
+    </p>
+    <h3 id="dep0108-zlib.bytesread">DEP0108: <code>zlib.bytesRead</code></h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/23308
+    description: Runtime deprecation.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19414
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Deprecated alias for
+      <a href="zlib.md#zlib_zlib_byteswritten"><code>zlib.bytesWritten</code></a
+      >. This original name was chosen because it also made sense to interpret
+      the value as the number of bytes read by the engine, but is inconsistent
+      with other streams in Node.js that expose values under these names.
+    </p>
+    <h3 id="dep0109-http-https-and-tls-support-for-invalid-urls">
+      DEP0109: <code>http</code>, <code>https</code>, and
+      <code>tls</code> support for invalid URLs
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/36853
+    description: End-of-Life.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/20270
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Some previously supported (but strictly invalid) URLs were accepted
+      through the
+      <a href="http.md#http_http_request_options_callback"
+        ><code>http.request()</code></a
+      >,
+      <a href="http.md#http_http_get_options_callback"
+        ><code>http.get()</code></a
+      >,
+      <a href="https.md#https_https_request_options_callback"
+        ><code>https.request()</code></a
+      >,
+      <a href="https.md#https_https_get_options_callback"
+        ><code>https.get()</code></a
+      >, and
+      <a href="tls.md#tls_tls_checkserveridentity_hostname_cert"
+        ><code>tls.checkServerIdentity()</code></a
+      >
+      APIs because those were accepted by the legacy
+      <code>url.parse()</code> API. The mentioned APIs now use the WHATWG URL
+      parser that requires strictly valid URLs. Passing an invalid URL is
+      deprecated and support will be removed in the future.
+    </p>
+    <h3 id="dep0110-vm.script-cached-data">
+      DEP0110: <code>vm.Script</code> cached data
+    </h3>
+    <!-- YAML
+changes:
+  - version: v10.6.0
+    pr-url: https://github.com/nodejs/node/pull/20300
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <code>produceCachedData</code> option is deprecated. Use
+      <a href="vm.md#vm_script_createcacheddata"
+        ><code>script.createCachedData()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0111-process.binding">
+      DEP0111: <code>process.binding()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.12.0
+    pr-url: https://github.com/nodejs/node/pull/26500
+    description: Added support for `--pending-deprecation`.
+  - version: v10.9.0
+    pr-url: https://github.com/nodejs/node/pull/22004
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      <code>process.binding()</code> is for use by Node.js internal code only.
+    </p>
+    <h3 id="dep0112-dgram-private-apis">
+      DEP0112: <code>dgram</code> private APIs
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22011
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>dgram</code> module previously contained several APIs that were
+      never meant to accessed outside of Node.js core:
+      <code>Socket.prototype._handle</code>,
+      <code>Socket.prototype._receiving</code>,
+      <code>Socket.prototype._bindState</code>,
+      <code>Socket.prototype._queue</code>,
+      <code>Socket.prototype._reuseAddr</code>,
+      <code>Socket.prototype._healthCheck()</code>,
+      <code>Socket.prototype._stopReceiving()</code>, and
+      <code>dgram._createSocketHandle()</code>.
+    </p>
+    <h3 id="dep0113-cipher.setauthtag-decipher.getauthtag">
+      DEP0113: <code>Cipher.setAuthTag()</code>,
+      <code>Decipher.getAuthTag()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26249
+    description: End-of-Life.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22126
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      <code>Cipher.setAuthTag()</code> and
+      <code>Decipher.getAuthTag()</code> are no longer available. They were
+      never documented and would throw when called.
+    </p>
+    <h3 id="dep0114-crypto._tobuf">DEP0114: <code>crypto._toBuf()</code></h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25338
+    description: End-of-Life.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22501
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The <code>crypto._toBuf()</code> function was not designed to be used by
+      modules outside of Node.js core and was removed.
+    </p>
+    <h3 id="dep0115-crypto.prng-crypto.pseudorandombytes-crypto.rng">
+      DEP0115: <code>crypto.prng()</code>,
+      <code>crypto.pseudoRandomBytes()</code>, <code>crypto.rng()</code>
+    </h3>
+    <!--lint disable nodejs-yaml-comments -->
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url:
+      - https://github.com/nodejs/node/pull/22519
+      - https://github.com/nodejs/node/pull/23017
+    description: Added documentation-only deprecation
+                 with `--pending-deprecation` support.
+-->
+    <!--lint enable nodejs-yaml-comments -->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      In recent versions of Node.js, there is no difference between
+      <a href="crypto.md#crypto_crypto_randombytes_size_callback"
+        ><code>crypto.randomBytes()</code></a
+      >
+      and <code>crypto.pseudoRandomBytes()</code>. The latter is deprecated
+      along with the undocumented aliases <code>crypto.prng()</code> and
+      <code>crypto.rng()</code> in favor of
+      <a href="crypto.md#crypto_crypto_randombytes_size_callback"
+        ><code>crypto.randomBytes()</code></a
+      >
+      and might be removed in a future release.
+    </p>
+    <h3 id="dep0116-legacy-url-api">DEP0116: Legacy URL API</h3>
+    <!-- YAML
+changes:
+  - version:
+      - v15.13.0
+      - v14.17.0
+    pr-url: https://github.com/nodejs/node/pull/37784
+    description: Deprecation revoked. Status changed to "Legacy".
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22715
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Deprecation revoked</p>
+    <p>
+      The <a href="url.md#url_legacy_url_api">Legacy URL API</a> is deprecated.
+      This includes
+      <a href="url.md#url_url_format_urlobject"><code>url.format()</code></a
+      >,
+      <a
+        href="url.md#url_url_parse_urlstring_parsequerystring_slashesdenotehost"
+        ><code>url.parse()</code></a
+      >, <a href="url.md#url_url_resolve_from_to"><code>url.resolve()</code></a
+      >, and the
+      <a href="url.md#url_legacy_urlobject">legacy <code>urlObject</code></a
+      >. Please use the
+      <a href="url.md#url_the_whatwg_url_api">WHATWG URL API</a> instead.
+    </p>
+    <h3 id="dep0117-native-crypto-handles">DEP0117: Native crypto handles</h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/27011
+    description: End-of-Life.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22747
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Previous versions of Node.js exposed handles to internal native objects
+      through the <code>_handle</code> property of the <code>Cipher</code>,
+      <code>Decipher</code>, <code>DiffieHellman</code>,
+      <code>DiffieHellmanGroup</code>, <code>ECDH</code>, <code>Hash</code>,
+      <code>Hmac</code>, <code>Sign</code>, and <code>Verify</code> classes. The
+      <code>_handle</code> property has been removed because improper use of the
+      native object can lead to crashing the application.
+    </p>
+    <h3 id="dep0118-dns.lookup-support-for-a-falsy-host-name">
+      DEP0118: <code>dns.lookup()</code> support for a falsy host name
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/23173
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Previous versions of Node.js supported <code>dns.lookup()</code> with a
+      falsy host name like <code>dns.lookup(false)</code> due to backward
+      compatibility. This behavior is undocumented and is thought to be unused
+      in real world apps. It will become an error in future versions of Node.js.
+    </p>
+    <h3 id="dep0119-process.bindinguv.errname-private-api">
+      DEP0119: <code>process.binding('uv').errname()</code> private API
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/23597
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      <code>process.binding('uv').errname()</code> is deprecated. Please use
+      <a href="util.md#util_util_getsystemerrorname_err"
+        ><code>util.getSystemErrorName()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0120-windows-performance-counter-support">
+      DEP0120: Windows Performance Counter support
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/24862
+    description: End-of-Life.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22485
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Windows Performance Counter support has been removed from Node.js. The
+      undocumented <code>COUNTER_NET_SERVER_CONNECTION()</code>,
+      <code>COUNTER_NET_SERVER_CONNECTION_CLOSE()</code>,
+      <code>COUNTER_HTTP_SERVER_REQUEST()</code>,
+      <code>COUNTER_HTTP_SERVER_RESPONSE()</code>,
+      <code>COUNTER_HTTP_CLIENT_REQUEST()</code>, and
+      <code>COUNTER_HTTP_CLIENT_RESPONSE()</code> functions have been
+      deprecated.
+    </p>
+    <h3 id="dep0121-net._setsimultaneousaccepts">
+      DEP0121: <code>net._setSimultaneousAccepts()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/23760
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The undocumented <code>net._setSimultaneousAccepts()</code> function was
+      originally intended for debugging and performance tuning when using the
+      <code>child_process</code> and <code>cluster</code> modules on Windows.
+      The function is not generally useful and is being removed. See discussion
+      here:
+      <a href="https://github.com/nodejs/node/issues/18391" class="uri"
+        >https://github.com/nodejs/node/issues/18391</a
+      >
+    </p>
+    <h3 id="dep0122-tls-server.prototype.setoptions">
+      DEP0122: <code>tls</code> <code>Server.prototype.setOptions()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/23820
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>Please use <code>Server.prototype.setSecureContext()</code> instead.</p>
+    <h3 id="dep0123-setting-the-tls-servername-to-an-ip-address">
+      DEP0123: setting the TLS ServerName to an IP address
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/23329
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Setting the TLS ServerName to an IP address is not permitted by
+      <a href="https://tools.ietf.org/html/rfc6066#section-3">RFC 6066</a>. This
+      will be ignored in a future version.
+    </p>
+    <h3 id="dep0124-using-replserver.rli">
+      DEP0124: using <code>REPLServer.rli</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/33286
+    description: End-of-Life.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26260
+    description: Runtime deprecation.
+-->
+    <p>Type: End-of-Life</p>
+    <p>This property is a reference to the instance itself.</p>
+    <h3 id="dep0125-require_stream_wrap">
+      DEP0125: <code>require('_stream_wrap')</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26245
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>The <code>_stream_wrap</code> module is deprecated.</p>
+    <h3 id="dep0126-timers.active">DEP0126: <code>timers.active()</code></h3>
+    <!-- YAML
+changes:
+  - version: v11.14.0
+    pr-url: https://github.com/nodejs/node/pull/26760
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The previously undocumented <code>timers.active()</code> is deprecated.
+      Please use the publicly documented
+      <a href="timers.md#timers_timeout_refresh"
+        ><code>timeout.refresh()</code></a
+      >
+      instead. If re-referencing the timeout is necessary,
+      <a href="timers.md#timers_timeout_ref"><code>timeout.ref()</code></a> can
+      be used with no performance impact since Node.js 10.
+    </p>
+    <h3 id="dep0127-timers._unrefactive">
+      DEP0127: <code>timers._unrefActive()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v11.14.0
+    pr-url: https://github.com/nodejs/node/pull/26760
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The previously undocumented and “private”
+      <code>timers._unrefActive()</code> is deprecated. Please use the publicly
+      documented
+      <a href="timers.md#timers_timeout_refresh"
+        ><code>timeout.refresh()</code></a
+      >
+      instead. If unreferencing the timeout is necessary,
+      <a href="timers.md#timers_timeout_unref"><code>timeout.unref()</code></a>
+      can be used with no performance impact since Node.js 10.
+    </p>
+    <h3 id="dep0128-modules-with-an-invalid-main-entry-and-an-index.js-file">
+      DEP0128: modules with an invalid <code>main</code> entry and an
+      <code>index.js</code> file
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37204
+    description: Runtime deprecation.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26823
+    description: Documentation-only.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Modules that have an invalid <code>main</code> entry (e.g.,
+      <code>./does-not-exist.js</code>) and also have an
+      <code>index.js</code> file in the top level directory will resolve the
+      <code>index.js</code> file. That is deprecated and is going to throw an
+      error in future Node.js versions.
+    </p>
+    <h3 id="dep0129-childprocess._channel">
+      DEP0129: <code>ChildProcess._channel</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/27949
+    description: Runtime deprecation.
+  - version: v11.14.0
+    pr-url: https://github.com/nodejs/node/pull/26982
+    description: Documentation-only.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>_channel</code> property of child process objects returned by
+      <code>spawn()</code> and similar functions is not intended for public use.
+      Use <code>ChildProcess.channel</code> instead.
+    </p>
+    <h3 id="dep0130-module.createrequirefrompath">
+      DEP0130: <code>Module.createRequireFromPath()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37201
+    description: End-of-life.
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/27951
+    description: Runtime deprecation.
+  - version: v12.2.0
+    pr-url: https://github.com/nodejs/node/pull/27405
+    description: Documentation-only.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      Use
+      <a href="module.md#module_module_createrequire_filename"
+        ><code>module.createRequire()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0131-legacy-http-parser">DEP0131: Legacy HTTP parser</h3>
+    <!-- YAML
+changes:
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/29589
+    description: This feature has been removed.
+  - version: v12.22.0
+    pr-url: https://github.com/nodejs/node/pull/37603
+    description: Runtime deprecation.
+  - version: v12.3.0
+    pr-url: https://github.com/nodejs/node/pull/27498
+    description: Documentation-only.
+-->
+    <p>Type: End-of-Life</p>
+    <p>
+      The legacy HTTP parser, used by default in versions of Node.js prior to
+      12.0.0, is deprecated and has been removed in v13.0.0. Prior to v13.0.0,
+      the <code>--http-parser=legacy</code> command-line flag could be used to
+      revert to using the legacy parser.
+    </p>
+    <h3 id="dep0132-worker.terminate-with-callback">
+      DEP0132: <code>worker.terminate()</code> with callback
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.5.0
+    pr-url: https://github.com/nodejs/node/pull/28021
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Passing a callback to
+      <a href="worker_threads.md#worker_threads_worker_terminate"
+        ><code>worker.terminate()</code></a
+      >
+      is deprecated. Use the returned <code>Promise</code> instead, or a
+      listener to the worker’s <code>'exit'</code> event.
+    </p>
+    <h3 id="dep0133-http-connection">
+      DEP0133: <code>http</code> <code>connection</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.12.0
+    pr-url: https://github.com/nodejs/node/pull/29015
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      Prefer
+      <a href="http.md#http_response_socket"><code>response.socket</code></a>
+      over
+      <a href="http.md#http_response_connection"
+        ><code>response.connection</code></a
+      >
+      and
+      <a href="http.md#http_request_socket"><code>request.socket</code></a> over
+      <a href="http.md#http_request_connection"
+        ><code>request.connection</code></a
+      >.
+    </p>
+    <h3 id="dep0134-process._tickcallback">
+      DEP0134: <code>process._tickCallback</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v12.12.0
+    pr-url: https://github.com/nodejs/node/pull/29781
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      The <code>process._tickCallback</code> property was never documented as an
+      officially supported API.
+    </p>
+    <h3 id="dep0135-writestream.open-and-readstream.open-are-internal">
+      DEP0135: <code>WriteStream.open()</code> and
+      <code>ReadStream.open()</code> are internal
+    </h3>
+    <!-- YAML
+changes:
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/29061
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      <a href="fs.md#fs_class_fs_writestream"
+        ><code>WriteStream.open()</code></a
+      >
+      and
+      <a href="fs.md#fs_class_fs_readstream"><code>ReadStream.open()</code></a>
+      are undocumented internal APIs that do not make sense to use in userland.
+      File streams should always be opened through their corresponding factory
+      methods
+      <a href="fs.md#fs_fs_createwritestream_path_options"
+        ><code>fs.createWriteStream()</code></a
+      >
+      and
+      <a href="fs.md#fs_fs_createreadstream_path_options"
+        ><code>fs.createReadStream()</code></a
+      >) or by passing a file descriptor in options.
+    </p>
+    <h3 id="dep0136-http-finished">
+      DEP0136: <code>http</code> <code>finished</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+     - v13.4.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/28679
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      <a href="http.md#http_response_finished"
+        ><code>response.finished</code></a
+      >
+      indicates whether
+      <a href="http.md#http_response_end_data_encoding_callback"
+        ><code>response.end()</code></a
+      >
+      has been called, not whether <code>'finish'</code> has been emitted and
+      the underlying data is flushed.
+    </p>
+    <p>
+      Use
+      <a href="http.md#http_response_writablefinished"
+        ><code>response.writableFinished</code></a
+      >
+      or
+      <a href="http.md#http_response_writableended"
+        ><code>response.writableEnded</code></a
+      >
+      accordingly instead to avoid the ambiguity.
+    </p>
+    <p>
+      To maintain existing behavior <code>response.finished</code> should be
+      replaced with <code>response.writableEnded</code>.
+    </p>
+    <h3 id="dep0137-closing-fs.filehandle-on-garbage-collection">
+      DEP0137: Closing fs.FileHandle on garbage collection
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/28396
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Allowing a
+      <a href="fs.md#fs_class_filehandle"><code>fs.FileHandle</code></a> object
+      to be closed on garbage collection is deprecated. In the future, doing so
+      might result in a thrown error that will terminate the process.
+    </p>
+    <p>
+      Please ensure that all <code>fs.FileHandle</code> objects are explicitly
+      closed using <code>FileHandle.prototype.close()</code> when the
+      <code>fs.FileHandle</code> is no longer needed:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> fsPromises <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>).<span class="at">promises</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">async</span> <span class="kw">function</span> <span class="at">openAndClose</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="kw">let</span> filehandle<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    filehandle <span class="op">=</span> <span class="cf">await</span> <span class="va">fsPromises</span>.<span class="at">open</span>(<span class="st">&#39;thefile.txt&#39;</span><span class="op">,</span> <span class="st">&#39;r&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="op">}</span> <span class="cf">finally</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="cf">if</span> (filehandle <span class="op">!==</span> <span class="kw">undefined</span>)</a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="cf">await</span> <span class="va">filehandle</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="dep0138-process.mainmodule">
+      DEP0138: <code>process.mainModule</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/32232
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      <a href="process.md#process_process_mainmodule"
+        ><code>process.mainModule</code></a
+      >
+      is a CommonJS-only feature while <code>process</code> global object is
+      shared with non-CommonJS environment. Its use within ECMAScript modules is
+      unsupported.
+    </p>
+    <p>
+      It is deprecated in favor of
+      <a href="modules.md#modules_accessing_the_main_module"
+        ><code>require.main</code></a
+      >, because it serves the same purpose and is only available on CommonJS
+      environment.
+    </p>
+    <h3 id="dep0139-process.umask-with-no-arguments">
+      DEP0139: <code>process.umask()</code> with no arguments
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v14.0.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/32499
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      Calling <code>process.umask()</code> with no argument causes the
+      process-wide umask to be written twice. This introduces a race condition
+      between threads, and is a potential security vulnerability. There is no
+      safe, cross-platform alternative API.
+    </p>
+    <h3 id="dep0140-use-request.destroy-instead-of-request.abort">
+      DEP0140: Use <code>request.destroy()</code> instead of
+      <code>request.abort()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version:
+    - v14.1.0
+    - v13.14.0
+    pr-url: https://github.com/nodejs/node/pull/32807
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      Use
+      <a href="http.md#http_request_destroy_error"
+        ><code>request.destroy()</code></a
+      >
+      instead of
+      <a href="http.md#http_request_abort"><code>request.abort()</code></a
+      >.
+    </p>
+    <h3 id="dep0141-repl.inputstream-and-repl.outputstream">
+      DEP0141: <code>repl.inputStream</code> and <code>repl.outputStream</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.3.0
+    pr-url: https://github.com/nodejs/node/pull/33294
+    description: Documentation-only (supports [`--pending-deprecation`][]).
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      The <code>repl</code> module exported the input and output stream twice.
+      Use <code>.input</code> instead of <code>.inputStream</code> and
+      <code>.output</code> instead of <code>.outputStream</code>.
+    </p>
+    <h3 id="dep0142-repl._builtinlibs">
+      DEP0142: <code>repl._builtinLibs</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.3.0
+    pr-url: https://github.com/nodejs/node/pull/33294
+    description: Documentation-only (supports [`--pending-deprecation`][]).
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The <code>repl</code> module exports a <code>_builtinLibs</code> property
+      that contains an array with native modules. It was incomplete so far and
+      instead it’s better to rely upon
+      <code>require('module').builtinModules</code>.
+    </p>
+    <h3 id="dep0143-transform._transformstate">
+      DEP0143: <code>Transform._transformState</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.5.0
+    pr-url: https://github.com/nodejs/node/pull/33126
+    description: Runtime deprecation.
+-->
+    <p>
+      Type: Runtime <code>Transform._transformState</code> will be removed in
+      future versions where it is no longer required due to simplification of
+      the implementation.
+    </p>
+    <h3 id="dep0144-module.parent">DEP0144: <code>module.parent</code></h3>
+    <!-- YAML
+changes:
+  - version:
+    - v14.6.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/32217
+    description: Documentation-only deprecation.
+-->
+    <p>
+      Type: Documentation-only (supports
+      <a href="cli.md#cli_pending_deprecation"
+        ><code>--pending-deprecation</code></a
+      >)
+    </p>
+    <p>
+      A CommonJS module can access the first module that required it using
+      <code>module.parent</code>. This feature is deprecated because it does not
+      work consistently in the presence of ECMAScript modules and because it
+      gives an inaccurate representation of the CommonJS module graph.
+    </p>
+    <p>
+      Some modules use it to check if they are the entry point of the current
+      process. Instead, it is recommended to compare
+      <code>require.main</code> and <code>module</code>:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">if</span> (<span class="va">require</span>.<span class="at">main</span> <span class="op">===</span> module) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="co">// Code section that will run only if current file is the entry point.</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      When looking for the CommonJS modules that have required the current one,
+      <code>require.cache</code> and <code>module.children</code> can be used:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> moduleParents <span class="op">=</span> <span class="va">Object</span>.<span class="at">values</span>(<span class="va">require</span>.<span class="at">cache</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2">  .<span class="at">filter</span>((m) <span class="kw">=&gt;</span> <span class="va">m</span>.<span class="va">children</span>.<span class="at">includes</span>(module))<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="dep0145-socket.buffersize">
+      DEP0145: <code>socket.bufferSize</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.6.0
+    pr-url: https://github.com/nodejs/node/pull/34088
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      <a href="net.md#net_socket_buffersize"><code>socket.bufferSize</code></a>
+      is just an alias for
+      <a href="stream.md#stream_writable_writablelength"
+        ><code>writable.writableLength</code></a
+      >.
+    </p>
+    <h3 id="dep0146-new-crypto.certificate">
+      DEP0146: <code>new crypto.Certificate()</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v14.9.0
+    pr-url: https://github.com/nodejs/node/pull/34697
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Documentation-only</p>
+    <p>
+      The
+      <a href="crypto.md#crypto_legacy_api"
+        ><code>crypto.Certificate()</code> constructor</a
+      >
+      is deprecated. Use
+      <a href="crypto.md#crypto_class_certificate"
+        >static methods of <code>crypto.Certificate()</code></a
+      >
+      instead.
+    </p>
+    <h3 id="dep0147-fs.rmdirpath-recursive-true">
+      DEP0147: <code>fs.rmdir(path, { recursive: true })</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37302
+    description: Runtime deprecation.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35562
+    description: Runtime deprecation for permissive behavior.
+  - version: v14.14.0
+    pr-url: https://github.com/nodejs/node/pull/35579
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      In future versions of Node.js, <code>recursive</code> option will be
+      ignored for <code>fs.rmdir</code>, <code>fs.rmdirSync</code>, and
+      <code>fs.promises.rmdir</code>.
+    </p>
+    <p>
+      Use <code>fs.rm(path, { recursive: true, force: true })</code>,
+      <code>fs.rmSync(path, { recursive: true, force: true })</code> or
+      <code>fs.promises.rm(path, { recursive: true, force: true })</code>
+      instead.
+    </p>
+    <h3 id="dep0148-folder-mappings-in-exports-trailing">
+      DEP0148: Folder mappings in <code>"exports"</code> (trailing
+      <code>"/"</code>)
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37215
+    description: Runtime deprecation.
+  - version: v15.1.0
+    pr-url: https://github.com/nodejs/node/pull/35747
+    description: Runtime deprecation for self-referencing imports.
+  - version: v14.13.0
+    pr-url: https://github.com/nodejs/node/pull/34718
+    description: Documentation-only deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Using a trailing <code>"/"</code> to define
+      <a href="packages.md#packages_subpath_folder_mappings"
+        >subpath folder mappings</a
+      >
+      in the
+      <a href="packages.md#packages_subpath_exports">subpath exports</a> or
+      <a href="packages.md#packages_subpath_imports">subpath imports</a> fields
+      is deprecated. Use
+      <a href="packages.md#packages_subpath_patterns">subpath patterns</a>
+      instead.
+    </p>
+    <h3 id="dep0149-http.incomingmessageconnection">
+      DEP0149: <code>http.IncomingMessage#connection</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/33768
+    description: Documentation-only deprecation.
+ -->
+    <p>Type: Documentation-only.</p>
+    <p>
+      Prefer
+      <a href="http.md#http_message_socket"><code>message.socket</code></a> over
+      <a href="http.md#http_message_connection"
+        ><code>message.connection</code></a
+      >.
+    </p>
+    <h3 id="dep0150-changing-the-value-of-process.config">
+      DEP0150: Changing the value of <code>process.config</code>
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/36902
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>process.config</code> property is intended to provide access to
+      configuration settings set when the Node.js binary was compiled. However,
+      the property has been mutable by user code making it impossible to rely
+      on. The ability to change the value has been deprecated and will be
+      disabled in the future.
+    </p>
+    <h3 id="dep0151-main-index-lookup-and-extension-searching">
+      DEP0151: Main index lookup and extension searching
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37206
+    description: Runtime deprecation.
+  - version: v15.8.0
+    pr-url: https://github.com/nodejs/node/pull/36918
+    description: Documentation-only deprecation
+                 with `--pending-deprecation` support.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      Previously, <code>index.js</code> and extension searching lookups would
+      apply to <code>import 'pkg'</code> main entry point resolution, even when
+      resolving ES modules.
+    </p>
+    <p>
+      With this deprecation, all ES module main entry point resolutions require
+      an explicit
+      <a href="packages.md#packages_main_entry_point_export"
+        ><code>"exports"</code> or <code>"main"</code> entry</a
+      >
+      with the exact file extension.
+    </p>
+    <h3 id="dep0152-extension-performanceentry-properties">
+      DEP0152: Extension PerformanceEntry properties
+    </h3>
+    <!-- YAML
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Runtime deprecation.
+-->
+    <p>Type: Runtime</p>
+    <p>
+      The <code>'gc'</code>, <code>'http2'</code>, and
+      <code>'http'</code> {PerformanceEntry} object types have additional
+      properties assigned to them that provide additional information. These
+      properties are now available within the standard
+      <code>detail</code> property of the <code>PerformanceEntry</code> object.
+      The existing accessors have been deprecated and should no longer be used.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>maintaining-npm</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="maintaining-npm-in-node.js">Maintaining npm in Node.js</h1>
+<p>New pull requests should be opened when a “next” version of npm has been released. Once the “next” version has been promoted to “latest” the PR should be updated as necessary.</p>
+<p>The specific Node.js release streams the new version will be able to land into are at the discretion of the release and LTS teams.</p>
+<p>This process only covers full updates to new versions of npm. Cherry-picked changes can be reviewed and landed via the normal consensus seeking process.</p>
+<h2 id="step-1-run-the-update-script">Step 1: Run the update script</h2>
+<p>In the following examples, <code>x.y.z</code> should match the npm version to update to.</p>
+<pre class="console"><code>$ ./tools/update-npm.sh x.y.z</code></pre>
+<h2 id="step-2-commit-new-npm">Step 2: Commit new npm</h2>
+<pre class="console"><code>$ git add -A deps/npm
+$ git commit -m &quot;deps: upgrade npm to x.y.z&quot;</code></pre>
+<h2 id="step-3-update-licenses">Step 3: Update licenses</h2>
+<pre class="console"><code>$ ./configure
+$ make -j4
+$ ./tools/license-builder.sh
+# The following commands are only necessary if there are changes
+$ git add .
+$ git commit -m &quot;doc: update npm LICENSE using license-builder.sh&quot;</code></pre>
+<p>Note: please ensure you are only making the updates that are changed by npm.</p>
+<h2 id="step-4-apply-whitespace-fix">Step 4: Apply whitespace fix</h2>
+<pre class="console"><code>$ git rebase --whitespace=fix master</code></pre>
+<h2 id="step-5-test-the-build">Step 5: Test the build</h2>
+<pre class="console"><code>$ make test-npm</code></pre>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>using-internal-errors</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="using-the-internalerrors.js-module">Using the internal/errors.js module</h1>
+<h2 id="what-is-internalerrors.js">What is internal/errors.js</h2>
+<p>The <code>require('internal/errors')</code> module is an internal-only module that can be used to produce <code>Error</code>, <code>TypeError</code> and <code>RangeError</code> instances that use a static, permanent error code and an optionally parameterized message.</p>
+<p>The intent of the module is to allow errors provided by Node.js to be assigned a permanent identifier. Without a permanent identifier, userland code may need to inspect error messages to distinguish one error from another. An unfortunate result of that practice is that changes to error messages result in broken code in the ecosystem. For that reason, Node.js has considered error message changes to be breaking changes. By providing a permanent identifier for a specific error, we reduce the need for userland code to inspect error messages.</p>
+<p>Switching an existing error to use the <code>internal/errors</code> module must be considered a <code>semver-major</code> change.</p>
+<h2 id="using-internalerrors.js">Using internal/errors.js</h2>
+<p>The <code>internal/errors</code> module exposes all custom errors as subclasses of the builtin errors. After being added, an error can be found in the <code>codes</code> object.</p>
+<p>For instance, an existing <code>Error</code> such as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> err <span class="op">=</span> <span class="kw">new</span> <span class="at">TypeError</span>(<span class="vs">`Expected string received </span><span class="sc">${</span>type<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a></code></pre></div>
+<p>Can be replaced by first adding a new error key into the <code>internal/errors.js</code> file:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="at">E</span>(<span class="st">&#39;FOO&#39;</span><span class="op">,</span> <span class="st">&#39;Expected string received %s&#39;</span><span class="op">,</span> TypeError)<span class="op">;</span></a></code></pre></div>
+<p>Then replacing the existing <code>new TypeError</code> in the code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> FOO <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;internal/errors&#39;</span>).<span class="at">codes</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">// ...</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">const</span> err <span class="op">=</span> <span class="kw">new</span> <span class="at">FOO</span>(type)<span class="op">;</span></a></code></pre></div>
+<h2 id="adding-new-errors">Adding new errors</h2>
+<p>New static error codes are added by modifying the <code>internal/errors.js</code> file and appending the new error codes to the end using the utility <code>E()</code> method.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="at">E</span>(<span class="st">&#39;EXAMPLE_KEY1&#39;</span><span class="op">,</span> <span class="st">&#39;This is the error value&#39;</span><span class="op">,</span> TypeError)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="at">E</span>(<span class="st">&#39;EXAMPLE_KEY2&#39;</span><span class="op">,</span> (a<span class="op">,</span> b) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>a<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>b<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> RangeError)<span class="op">;</span></a></code></pre></div>
+<p>The first argument passed to <code>E()</code> is the static identifier. The second argument is either a String with optional <code>util.format()</code> style replacement tags (e.g. <code>%s</code>, <code>%d</code>), or a function returning a String. The optional additional arguments passed to the <code>errors.message()</code> function (which is used by the <code>errors.Error</code>, <code>errors.TypeError</code> and <code>errors.RangeError</code> classes), will be used to format the error message. The third argument is the base class that the new error will extend.</p>
+<p>It is possible to create multiple derived classes by providing additional arguments. The other ones will be exposed as properties of the main class:</p>
+<!-- eslint-disable no-unreachable -->
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="at">E</span>(<span class="st">&#39;EXAMPLE_KEY&#39;</span><span class="op">,</span> <span class="st">&#39;Error message&#39;</span><span class="op">,</span> TypeError<span class="op">,</span> RangeError)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">// In another module</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">const</span> <span class="op">{</span> EXAMPLE_KEY <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;internal/errors&#39;</span>).<span class="at">codes</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">// TypeError</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="cf">throw</span> <span class="kw">new</span> <span class="at">EXAMPLE_KEY</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">// RangeError</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="cf">throw</span> <span class="kw">new</span> <span class="va">EXAMPLE_KEY</span>.<span class="at">RangeError</span>()<span class="op">;</span></a></code></pre></div>
+<h2 id="documenting-new-errors">Documenting new errors</h2>
+<p>Whenever a new static error code is added and used, corresponding documentation for the error code should be added to the <code>doc/api/errors.md</code> file. This will give users a place to go to easily look up the meaning of individual error codes.</p>
+<h2 id="testing-new-errors">Testing new errors</h2>
+<p>When adding a new error, corresponding test(s) for the error message formatting may also be required. If the message for the error is a constant string then no test is required for the error message formatting as we can trust the error helper implementation. An example of this kind of error would be:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="at">E</span>(<span class="st">&#39;ERR_SOCKET_ALREADY_BOUND&#39;</span><span class="op">,</span> <span class="st">&#39;Socket is already bound&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>If the error message is not a constant string then tests to validate the formatting of the message based on the parameters used when creating the error should be added to <code>test/parallel/test-internal-errors.js</code>. These tests should validate all of the different ways parameters can be used to generate the final message string. A simple example is:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// Test ERR_TLS_CERT_ALTNAME_INVALID</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="va">assert</span>.<span class="at">strictEqual</span>(</a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="va">errors</span>.<span class="at">message</span>(<span class="st">&#39;ERR_TLS_CERT_ALTNAME_INVALID&#39;</span><span class="op">,</span> [<span class="st">&#39;altname&#39;</span>])<span class="op">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="st">&#39;Hostname/IP does not match certificate</span><span class="sc">\&#39;</span><span class="st">s altnames: altname&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>In addition, there should also be tests which validate the use of the error based on where it is used in the codebase. If the error message is static, these tests should only validate that the expected code is received and NOT validate the message. This will reduce the amount of test change required when the message for an error changes.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="va">assert</span>.<span class="at">throws</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="va">socket</span>.<span class="at">bind</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="op">},</span> <span class="va">common</span>.<span class="at">expectsError</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">code</span><span class="op">:</span> <span class="st">&#39;ERR_SOCKET_ALREADY_BOUND&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="dt">type</span><span class="op">:</span> Error</a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="op">}</span>))<span class="op">;</span></a></code></pre></div>
+<p>Avoid changing the format of the message after the error has been created. If it does make sense to do this for some reason, then additional tests validating the formatting of the error message for those cases will likely be required.</p>
+<h2 id="api">API</h2>
+<h3 id="object-errors.codes">Object: errors.codes</h3>
+<p>Exposes all internal error classes to be used by Node.js APIs.</p>
+<h3 id="method-errors.messagekey-args">Method: errors.message(key, args)</h3>
+<ul>
+<li><code>key</code> {string} The static error identifier</li>
+<li><code>args</code> {Array} Zero or more optional arguments passed as an Array</li>
+<li>Returns: {string}</li>
+</ul>
+<p>Returns the formatted error message string for the given <code>key</code>.</p>
+</body>
+</html>

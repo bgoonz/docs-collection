@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>repl</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="repl">REPL</h1>
+<!--introduced_in=v0.10.0-->
+<blockquote>
+<p>Stability: 2 - Stable</p>
+</blockquote>
+<!-- source_link=lib/repl.js -->
+<p>The <code>repl</code> module provides a Read-Eval-Print-Loop (REPL) implementation that is available both as a standalone program or includible in other applications. It can be accessed using:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="design-and-features">Design and features</h2>
+<p>The <code>repl</code> module exports the <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> class. While running, instances of <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> will accept individual lines of user input, evaluate those according to a user-defined evaluation function, then output the result. Input and output may be from <code>stdin</code> and <code>stdout</code>, respectively, or may be connected to any Node.js <a href="stream.md">stream</a>.</p>
+<p>Instances of <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> support automatic completion of inputs, completion preview, simplistic Emacs-style line editing, multi-line inputs, <a href="https://en.wikipedia.org/wiki/Z_shell">ZSH</a>-like reverse-i-search, <a href="https://en.wikipedia.org/wiki/Z_shell">ZSH</a>-like substring-based history search, ANSI-styled output, saving and restoring current REPL session state, error recovery, and customizable evaluation functions. Terminals that do not support ANSI styles and Emacs-style line editing automatically fall back to a limited feature set.</p>
+<h3 id="commands-and-special-keys">Commands and special keys</h3>
+<p>The following special commands are supported by all REPL instances:</p>
+<ul>
+<li><code>.break</code>: When in the process of inputting a multi-line expression, enter the <code>.break</code> command (or press <kbd>Ctrl</kbd>+<kbd>C</kbd>) to abort further input or processing of that expression.</li>
+<li><code>.clear</code>: Resets the REPL <code>context</code> to an empty object and clears any multi-line expression being input.</li>
+<li><code>.exit</code>: Close the I/O stream, causing the REPL to exit.</li>
+<li><code>.help</code>: Show this list of special commands.</li>
+<li><code>.save</code>: Save the current REPL session to a file: <code>&gt; .save ./file/to/save.js</code></li>
+<li><code>.load</code>: Load a file into the current REPL session. <code>&gt; .load ./file/to/load.js</code></li>
+<li><code>.editor</code>: Enter editor mode (<kbd>Ctrl</kbd>+<kbd>D</kbd> to finish, <kbd>Ctrl</kbd>+<kbd>C</kbd> to cancel).</li>
+</ul>
+<pre class="console"><code>&gt; .editor
+// Entering editor mode (^D to finish, ^C to cancel)
+function welcome(name) {
+  return `Hello ${name}!`;
+}
+
+welcome(&#39;Node.js User&#39;);
+
+// ^D
+&#39;Hello Node.js User!&#39;
+&gt;</code></pre>
+<p>The following key combinations in the REPL have these special effects:</p>
+<ul>
+<li><kbd>Ctrl</kbd>+<kbd>C</kbd>: When pressed once, has the same effect as the <code>.break</code> command. When pressed twice on a blank line, has the same effect as the <code>.exit</code> command.</li>
+<li><kbd>Ctrl</kbd>+<kbd>D</kbd>: Has the same effect as the <code>.exit</code> command.</li>
+<li><kbd>Tab</kbd>: When pressed on a blank line, displays global and local (scope) variables. When pressed while entering other input, displays relevant autocompletion options.</li>
+</ul>
+<p>For key bindings related to the reverse-i-search, see <a href="#repl_reverse_i_search"><code>reverse-i-search</code></a>. For all other key bindings, see <a href="readline.md#readline_tty_keybindings">TTY keybindings</a>.</p>
+<h3 id="default-evaluation">Default evaluation</h3>
+<p>By default, all instances of <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> use an evaluation function that evaluates JavaScript expressions and provides access to Node.js built-in modules. This default behavior can be overridden by passing in an alternative evaluation function when the <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> instance is created.</p>
+<h4 id="javascript-expressions">JavaScript expressions</h4>
+<p>The default evaluator supports direct evaluation of JavaScript expressions:</p>
+<pre class="console"><code>&gt; 1 + 1
+2
+&gt; const m = 2
+undefined
+&gt; m + 1
+3</code></pre>
+<p>Unless otherwise scoped within blocks or functions, variables declared either implicitly or using the <code>const</code>, <code>let</code>, or <code>var</code> keywords are declared at the global scope.</p>
+<h4 id="global-and-local-scope">Global and local scope</h4>
+<p>The default evaluator provides access to any variables that exist in the global scope. It is possible to expose a variable to the REPL explicitly by assigning it to the <code>context</code> object associated with each <code>REPLServer</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">const</span> msg <span class="op">=</span> <span class="st">&#39;message&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="va">repl</span>.<span class="at">start</span>(<span class="st">&#39;&gt; &#39;</span>).<span class="va">context</span>.<span class="at">m</span> <span class="op">=</span> msg<span class="op">;</span></a></code></pre></div>
+<p>Properties in the <code>context</code> object appear as local within the REPL:</p>
+<pre class="console"><code>$ node repl_test.js
+&gt; m
+&#39;message&#39;</code></pre>
+<p>Context properties are not read-only by default. To specify read-only globals, context properties must be defined using <code>Object.defineProperty()</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">const</span> msg <span class="op">=</span> <span class="st">&#39;message&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">const</span> r <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>(<span class="st">&#39;&gt; &#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="va">Object</span>.<span class="at">defineProperty</span>(<span class="va">r</span>.<span class="at">context</span><span class="op">,</span> <span class="st">&#39;m&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="dt">configurable</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="dt">enumerable</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="dt">value</span><span class="op">:</span> msg</a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h4 id="accessing-core-node.js-modules">Accessing core Node.js modules</h4>
+<p>The default evaluator will automatically load Node.js core modules into the REPL environment when used. For instance, unless otherwise declared as a global or scoped variable, the input <code>fs</code> will be evaluated on-demand as <code>global.fs = require('fs')</code>.</p>
+<pre class="console"><code>&gt; fs.createReadStream(&#39;./some/file&#39;);</code></pre>
+<h4 id="global-uncaught-exceptions">Global uncaught exceptions</h4>
+<!-- YAML
+changes:
+  - version: v12.3.0
+    pr-url: https://github.com/nodejs/node/pull/27151
+    description: The `'uncaughtException'` event is from now on triggered if the
+                 repl is used as standalone program.
+-->
+<p>The REPL uses the <a href="domain.md"><code>domain</code></a> module to catch all uncaught exceptions for that REPL session.</p>
+<p>This use of the <a href="domain.md"><code>domain</code></a> module in the REPL has these side effects:</p>
+<ul>
+<li><p>Uncaught exceptions only emit the <a href="process.md#process_event_uncaughtexception"><code>'uncaughtException'</code></a> event in the standalone REPL. Adding a listener for this event in a REPL within another Node.js program results in <a href="errors.md#errors_err_invalid_repl_input"><code>ERR_INVALID_REPL_INPUT</code></a>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> r <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="va">r</span>.<span class="at">write</span>(<span class="st">&#39;process.on(&quot;uncaughtException&quot;, () =&gt; console.log(&quot;Foobar&quot;));</span><span class="sc">\n</span><span class="st">&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">// Output stream includes:</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">//   TypeError [ERR_INVALID_REPL_INPUT]: Listeners for `uncaughtException`</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">//   cannot be used in the REPL</span></a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="va">r</span>.<span class="at">close</span>()<span class="op">;</span></a></code></pre></div></li>
+<li><p>Trying to use <a href="process.md#process_process_setuncaughtexceptioncapturecallback_fn"><code>process.setUncaughtExceptionCaptureCallback()</code></a> throws an <a href="errors.md#errors_err_domain_cannot_set_uncaught_exception_capture"><code>ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE</code></a> error.</p></li>
+</ul>
+<h4 id="assignment-of-the-_-underscore-variable">Assignment of the <code>_</code> (underscore) variable</h4>
+<!-- YAML
+changes:
+  - version: v9.8.0
+    pr-url: https://github.com/nodejs/node/pull/18919
+    description: Added `_error` support.
+-->
+<p>The default evaluator will, by default, assign the result of the most recently evaluated expression to the special variable <code>_</code> (underscore). Explicitly setting <code>_</code> to a value will disable this behavior.</p>
+<pre class="console"><code>&gt; [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
+[ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
+&gt; _.length
+3
+&gt; _ += 1
+Expression assignment to _ now disabled.
+4
+&gt; 1 + 1
+2
+&gt; _
+4</code></pre>
+<p>Similarly, <code>_error</code> will refer to the last seen error, if there was any. Explicitly setting <code>_error</code> to a value will disable this behavior.</p>
+<pre class="console"><code>&gt; throw new Error(&#39;foo&#39;);
+Error: foo
+&gt; _error.message
+&#39;foo&#39;</code></pre>
+<h4 id="await-keyword"><code>await</code> keyword</h4>
+<p>Support for the <code>await</code> keyword is enabled at the top level.</p>
+<pre class="console"><code>&gt; await Promise.resolve(123)
+123
+&gt; await Promise.reject(new Error(&#39;REPL await&#39;))
+Error: REPL await
+    at repl:1:45
+&gt; const timeout = util.promisify(setTimeout);
+undefined
+&gt; const old = Date.now(); await timeout(1000); console.log(Date.now() - old);
+1002
+undefined</code></pre>
+<p>One known limitation of using the <code>await</code> keyword in the REPL is that it will invalidate the lexical scoping of the <code>const</code> and <code>let</code> keywords.</p>
+<p>For example:</p>
+<pre class="console"><code>&gt; const m = await Promise.resolve(123)
+undefined
+&gt; m
+123
+&gt; const m = await Promise.resolve(234)
+undefined
+&gt; m
+234</code></pre>
+<p><a href="cli.md#cli_no_experimental_repl_await"><code>--no-experimental-repl-await</code></a> shall disable top-level await in REPL.</p>
+<h3 id="reverse-i-search">Reverse-i-search</h3>
+<!-- YAML
+added:
+ - v13.6.0
+ - v12.17.0
+-->
+<p>The REPL supports bi-directional reverse-i-search similar to <a href="https://en.wikipedia.org/wiki/Z_shell">ZSH</a>. It is triggered with <kbd>Ctrl</kbd>+<kbd>R</kbd> to search backward and <kbd>Ctrl</kbd>+<kbd>S</kbd> to search forwards.</p>
+<p>Duplicated history entries will be skipped.</p>
+<p>Entries are accepted as soon as any key is pressed that doesn’t correspond with the reverse search. Cancelling is possible by pressing <kbd>Esc</kbd> or <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
+<p>Changing the direction immediately searches for the next entry in the expected direction from the current position on.</p>
+<h3 id="custom-evaluation-functions">Custom evaluation functions</h3>
+<p>When a new <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> is created, a custom evaluation function may be provided. This can be used, for instance, to implement fully customized REPL applications.</p>
+<p>The following illustrates a hypothetical example of a REPL that performs translation of text from one language to another:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> <span class="op">{</span> Translator <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;translator&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">const</span> myTranslator <span class="op">=</span> <span class="kw">new</span> <span class="at">Translator</span>(<span class="st">&#39;en&#39;</span><span class="op">,</span> <span class="st">&#39;fr&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="kw">function</span> <span class="at">myEval</span>(cmd<span class="op">,</span> context<span class="op">,</span> filename<span class="op">,</span> callback) <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-7" title="7">  <span class="at">callback</span>(<span class="kw">null</span><span class="op">,</span> <span class="va">myTranslator</span>.<span class="at">translate</span>(cmd))<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb13-9" title="9"></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span> <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;&gt; &#39;</span><span class="op">,</span> <span class="dt">eval</span><span class="op">:</span> myEval <span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h4 id="recoverable-errors">Recoverable errors</h4>
+<p>At the REPL prompt, pressing <kbd>Enter</kbd> sends the current line of input to the <code>eval</code> function. In order to support multi-line input, the <code>eval</code> function can return an instance of <code>repl.Recoverable</code> to the provided callback function:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">function</span> <span class="at">myEval</span>(cmd<span class="op">,</span> context<span class="op">,</span> filename<span class="op">,</span> callback) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="kw">let</span> result<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    result <span class="op">=</span> <span class="va">vm</span>.<span class="at">runInThisContext</span>(cmd)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="op">}</span> <span class="cf">catch</span> (e) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="cf">if</span> (<span class="at">isRecoverableError</span>(e)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">      <span class="cf">return</span> <span class="at">callback</span>(<span class="kw">new</span> <span class="va">repl</span>.<span class="at">Recoverable</span>(e))<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-10" title="10">  <span class="at">callback</span>(<span class="kw">null</span><span class="op">,</span> result)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="kw">function</span> <span class="at">isRecoverableError</span>(error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-14" title="14">  <span class="cf">if</span> (<span class="va">error</span>.<span class="at">name</span> <span class="op">===</span> <span class="st">&#39;SyntaxError&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-15" title="15">    <span class="cf">return</span> <span class="ss">/</span><span class="sc">^(</span><span class="ss">Unexpected end of input</span><span class="sc">|</span><span class="ss">Unexpected token</span><span class="sc">)</span><span class="ss">/</span>.<span class="at">test</span>(<span class="va">error</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="op">}</span></a></code></pre></div>
+<h3 id="customizing-repl-output">Customizing REPL output</h3>
+<p>By default, <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> instances format output using the <a href="util.md#util_util_inspect_object_options"><code>util.inspect()</code></a> method before writing the output to the provided <code>Writable</code> stream (<code>process.stdout</code> by default). The <code>showProxy</code> inspection option is set to true by default and the <code>colors</code> option is set to true depending on the REPL’s <code>useColors</code> option.</p>
+<p>The <code>useColors</code> boolean option can be specified at construction to instruct the default writer to use ANSI style codes to colorize the output from the <code>util.inspect()</code> method.</p>
+<p>If the REPL is run as standalone program, it is also possible to change the REPL’s <a href="util.md#util_util_inspect_object_options">inspection defaults</a> from inside the REPL by using the <code>inspect.replDefaults</code> property which mirrors the <code>defaultOptions</code> from <a href="util.md#util_util_inspect_object_options"><code>util.inspect()</code></a>.</p>
+<pre class="console"><code>&gt; util.inspect.replDefaults.compact = false;
+false
+&gt; [1]
+[
+  1
+]
+&gt;</code></pre>
+<p>To fully customize the output of a <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> instance pass in a new function for the <code>writer</code> option on construction. The following example, for instance, simply converts any input text to upper case:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">const</span> r <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span> <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;&gt; &#39;</span><span class="op">,</span> <span class="dt">eval</span><span class="op">:</span> myEval<span class="op">,</span> <span class="dt">writer</span><span class="op">:</span> myWriter <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="kw">function</span> <span class="at">myEval</span>(cmd<span class="op">,</span> context<span class="op">,</span> filename<span class="op">,</span> callback) <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="at">callback</span>(<span class="kw">null</span><span class="op">,</span> cmd)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb16-8" title="8"></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="kw">function</span> <span class="at">myWriter</span>(output) <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-10" title="10">  <span class="cf">return</span> <span class="va">output</span>.<span class="at">toUpperCase</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="op">}</span></a></code></pre></div>
+<h2 id="class-replserver">Class: <code>REPLServer</code></h2>
+<!-- YAML
+added: v0.1.91
+-->
+<ul>
+<li><code>options</code> {Object|string} See <a href="#repl_repl_start_options"><code>repl.start()</code></a></li>
+<li>Extends: {readline.Interface}</li>
+</ul>
+<p>Instances of <code>repl.REPLServer</code> are created using the <a href="#repl_repl_start_options"><code>repl.start()</code></a> method or directly using the JavaScript <code>new</code> keyword.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span> <span class="dt">useColors</span><span class="op">:</span> <span class="kw">true</span> <span class="op">};</span></a>
+<a class="sourceLine" id="cb17-4" title="4"></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="kw">const</span> firstInstance <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>(options)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="kw">const</span> secondInstance <span class="op">=</span> <span class="kw">new</span> <span class="va">repl</span>.<span class="at">REPLServer</span>(options)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-exit">Event: <code>'exit'</code></h3>
+<!-- YAML
+added: v0.7.7
+-->
+<p>The <code>'exit'</code> event is emitted when the REPL is exited either by receiving the <code>.exit</code> command as input, the user pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> twice to signal <code>SIGINT</code>, or by pressing <kbd>Ctrl</kbd>+<kbd>D</kbd> to signal <code>'end'</code> on the input stream. The listener callback is invoked without any arguments.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1"><span class="va">replServer</span>.<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Received &quot;exit&quot; event from repl!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" title="3">  <span class="va">process</span>.<span class="at">exit</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="event-reset">Event: <code>'reset'</code></h3>
+<!-- YAML
+added: v0.11.0
+-->
+<p>The <code>'reset'</code> event is emitted when the REPL’s context is reset. This occurs whenever the <code>.clear</code> command is received as input <em>unless</em> the REPL is using the default evaluator and the <code>repl.REPLServer</code> instance was created with the <code>useGlobal</code> option set to <code>true</code>. The listener callback will be called with a reference to the <code>context</code> object as the only argument.</p>
+<p>This can be used primarily to re-initialize REPL context to some pre-defined state:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="kw">function</span> <span class="at">initializeContext</span>(context) <span class="op">{</span></a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="va">context</span>.<span class="at">m</span> <span class="op">=</span> <span class="st">&#39;test&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="op">}</span></a>
+<a class="sourceLine" id="cb19-6" title="6"></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="kw">const</span> r <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span> <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;&gt; &#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-8" title="8"><span class="at">initializeContext</span>(<span class="va">r</span>.<span class="at">context</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb19-9" title="9"></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="va">r</span>.<span class="at">on</span>(<span class="st">&#39;reset&#39;</span><span class="op">,</span> initializeContext)<span class="op">;</span></a></code></pre></div>
+<p>When this code is executed, the global <code>'m'</code> variable can be modified but then reset to its initial value using the <code>.clear</code> command:</p>
+<pre class="console"><code>$ ./node example.js
+&gt; m
+&#39;test&#39;
+&gt; m = 1
+1
+&gt; m
+1
+&gt; .clear
+Clearing context...
+&gt; m
+&#39;test&#39;
+&gt;</code></pre>
+<h3 id="replserver.definecommandkeyword-cmd"><code>replServer.defineCommand(keyword, cmd)</code></h3>
+<!-- YAML
+added: v0.3.0
+-->
+<ul>
+<li><code>keyword</code> {string} The command keyword (<em>without</em> a leading <code>.</code> character).</li>
+<li><code>cmd</code> {Object|Function} The function to invoke when the command is processed.</li>
+</ul>
+<p>The <code>replServer.defineCommand()</code> method is used to add new <code>.</code>-prefixed commands to the REPL instance. Such commands are invoked by typing a <code>.</code> followed by the <code>keyword</code>. The <code>cmd</code> is either a <code>Function</code> or an <code>Object</code> with the following properties:</p>
+<ul>
+<li><code>help</code> {string} Help text to be displayed when <code>.help</code> is entered (Optional).</li>
+<li><code>action</code> {Function} The function to execute, optionally accepting a single string argument.</li>
+</ul>
+<p>The following example shows two new commands added to the REPL instance:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-2" title="2"></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">const</span> replServer <span class="op">=</span> <span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span> <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;&gt; &#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="va">replServer</span>.<span class="at">defineCommand</span>(<span class="st">&#39;sayhello&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">help</span><span class="op">:</span> <span class="st">&#39;Say hello&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="at">action</span>(name) <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-7" title="7">    <span class="kw">this</span>.<span class="at">clearBufferedCommand</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Hello, </span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">!`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-9" title="9">    <span class="kw">this</span>.<span class="at">displayPrompt</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb21-11" title="11"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-12" title="12"><span class="va">replServer</span>.<span class="at">defineCommand</span>(<span class="st">&#39;saybye&#39;</span><span class="op">,</span> <span class="kw">function</span> <span class="at">saybye</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-13" title="13">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Goodbye!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-14" title="14">  <span class="kw">this</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb21-15" title="15"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>The new commands can then be used from within the REPL instance:</p>
+<pre class="console"><code>&gt; .sayhello Node.js User
+Hello, Node.js User!
+&gt; .saybye
+Goodbye!</code></pre>
+<h3 id="replserver.displaypromptpreservecursor"><code>replServer.displayPrompt([preserveCursor])</code></h3>
+<!-- YAML
+added: v0.1.91
+-->
+<ul>
+<li><code>preserveCursor</code> {boolean}</li>
+</ul>
+<p>The <code>replServer.displayPrompt()</code> method readies the REPL instance for input from the user, printing the configured <code>prompt</code> to a new line in the <code>output</code> and resuming the <code>input</code> to accept new input.</p>
+<p>When multi-line input is being entered, an ellipsis is printed rather than the ‘prompt’.</p>
+<p>When <code>preserveCursor</code> is <code>true</code>, the cursor placement will not be reset to <code>0</code>.</p>
+<p>The <code>replServer.displayPrompt</code> method is primarily intended to be called from within the action function for commands registered using the <code>replServer.defineCommand()</code> method.</p>
+<h3 id="replserver.clearbufferedcommand"><code>replServer.clearBufferedCommand()</code></h3>
+<!-- YAML
+added: v9.0.0
+-->
+<p>The <code>replServer.clearBufferedCommand()</code> method clears any command that has been buffered but not yet executed. This method is primarily intended to be called from within the action function for commands registered using the <code>replServer.defineCommand()</code> method.</p>
+<h3 id="replserver.parsereplkeywordkeyword-rest"><code>replServer.parseREPLKeyword(keyword[, rest])</code></h3>
+<!-- YAML
+added: v0.8.9
+deprecated: v9.0.0
+-->
+<blockquote>
+<p>Stability: 0 - Deprecated.</p>
+</blockquote>
+<ul>
+<li><code>keyword</code> {string} the potential keyword to parse and execute</li>
+<li><code>rest</code> {any} any parameters to the keyword command</li>
+<li>Returns: {boolean}</li>
+</ul>
+<p>An internal method used to parse and execute <code>REPLServer</code> keywords. Returns <code>true</code> if <code>keyword</code> is a valid keyword, otherwise <code>false</code>.</p>
+<h3 id="replserver.setuphistoryhistorypath-callback"><code>replServer.setupHistory(historyPath, callback)</code></h3>
+<!-- YAML
+added: v11.10.0
+-->
+<ul>
+<li><code>historyPath</code> {string} the path to the history file</li>
+<li><code>callback</code> {Function} called when history writes are ready or upon error
+<ul>
+<li><code>err</code> {Error}</li>
+<li><code>repl</code> {repl.REPLServer}</li>
+</ul></li>
+</ul>
+<p>Initializes a history log file for the REPL instance. When executing the Node.js binary and using the command-line REPL, a history file is initialized by default. However, this is not the case when creating a REPL programmatically. Use this method to initialize a history log file when working with REPL instances programmatically.</p>
+<h2 id="repl.builtinmodules"><code>repl.builtinModules</code></h2>
+<!-- YAML
+added: v14.5.0
+-->
+<ul>
+<li>{string[]}</li>
+</ul>
+<p>A list of the names of all Node.js modules, e.g., <code>'http'</code>.</p>
+<h2 id="repl.startoptions"><code>repl.start([options])</code></h2>
+<!-- YAML
+added: v0.1.91
+changes:
+  - version:
+     - v13.4.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/30811
+    description: The `preview` option is now available.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26518
+    description: The `terminal` option now follows the default description in
+                 all cases and `useColors` checks `hasColors()` if available.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19187
+    description: The `REPL_MAGIC_MODE` `replMode` was removed.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakEvalOnSigint` option is supported now.
+  - version: v5.8.0
+    pr-url: https://github.com/nodejs/node/pull/5388
+    description: The `options` parameter is optional now.
+-->
+<ul>
+<li><code>options</code> {Object|string}
+<ul>
+<li><code>prompt</code> {string} The input prompt to display. <strong>Default:</strong> <code>'&gt; '</code> (with a trailing space).</li>
+<li><code>input</code> {stream.Readable} The <code>Readable</code> stream from which REPL input will be read. <strong>Default:</strong> <code>process.stdin</code>.</li>
+<li><code>output</code> {stream.Writable} The <code>Writable</code> stream to which REPL output will be written. <strong>Default:</strong> <code>process.stdout</code>.</li>
+<li><code>terminal</code> {boolean} If <code>true</code>, specifies that the <code>output</code> should be treated as a TTY terminal. <strong>Default:</strong> checking the value of the <code>isTTY</code> property on the <code>output</code> stream upon instantiation.</li>
+<li><code>eval</code> {Function} The function to be used when evaluating each given line of input. <strong>Default:</strong> an async wrapper for the JavaScript <code>eval()</code> function. An <code>eval</code> function can error with <code>repl.Recoverable</code> to indicate the input was incomplete and prompt for additional lines.</li>
+<li><code>useColors</code> {boolean} If <code>true</code>, specifies that the default <code>writer</code> function should include ANSI color styling to REPL output. If a custom <code>writer</code> function is provided then this has no effect. <strong>Default:</strong> checking color support on the <code>output</code> stream if the REPL instance’s <code>terminal</code> value is <code>true</code>.</li>
+<li><code>useGlobal</code> {boolean} If <code>true</code>, specifies that the default evaluation function will use the JavaScript <code>global</code> as the context as opposed to creating a new separate context for the REPL instance. The node CLI REPL sets this value to <code>true</code>. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>ignoreUndefined</code> {boolean} If <code>true</code>, specifies that the default writer will not output the return value of a command if it evaluates to <code>undefined</code>. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>writer</code> {Function} The function to invoke to format the output of each command before writing to <code>output</code>. <strong>Default:</strong> <a href="util.md#util_util_inspect_object_options"><code>util.inspect()</code></a>.</li>
+<li><code>completer</code> {Function} An optional function used for custom Tab auto completion. See <a href="readline.md#readline_use_of_the_completer_function"><code>readline.InterfaceCompleter</code></a> for an example.</li>
+<li><code>replMode</code> {symbol} A flag that specifies whether the default evaluator executes all JavaScript commands in strict mode or default (sloppy) mode. Acceptable values are:
+<ul>
+<li><code>repl.REPL_MODE_SLOPPY</code> to evaluate expressions in sloppy mode.</li>
+<li><code>repl.REPL_MODE_STRICT</code> to evaluate expressions in strict mode. This is equivalent to prefacing every repl statement with <code>'use strict'</code>.</li>
+</ul></li>
+<li><code>breakEvalOnSigint</code> {boolean} Stop evaluating the current piece of code when <code>SIGINT</code> is received, such as when <kbd>Ctrl</kbd>+<kbd>C</kbd> is pressed. This cannot be used together with a custom <code>eval</code> function. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>preview</code> {boolean} Defines if the repl prints autocomplete and output previews or not. <strong>Default:</strong> <code>true</code> with the default eval function and <code>false</code> in case a custom eval function is used. If <code>terminal</code> is falsy, then there are no previews and the value of <code>preview</code> has no effect.</li>
+</ul></li>
+<li>Returns: {repl.REPLServer}</li>
+</ul>
+<p>The <code>repl.start()</code> method creates and starts a <a href="#repl_class_replserver"><code>repl.REPLServer</code></a> instance.</p>
+<p>If <code>options</code> is a string, then it specifies the input prompt:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co">// a Unix style prompt</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="va">repl</span>.<span class="at">start</span>(<span class="st">&#39;$ &#39;</span>)<span class="op">;</span></a></code></pre></div>
+<h2 id="the-node.js-repl">The Node.js REPL</h2>
+<p>Node.js itself uses the <code>repl</code> module to provide its own interactive interface for executing JavaScript. This can be used by executing the Node.js binary without passing any arguments (or by passing the <code>-i</code> argument):</p>
+<pre class="console"><code>$ node
+&gt; const a = [1, 2, 3];
+undefined
+&gt; a
+[ 1, 2, 3 ]
+&gt; a.forEach((v) =&gt; {
+...   console.log(v);
+...   });
+1
+2
+3</code></pre>
+<h3 id="environment-variable-options">Environment variable options</h3>
+<p>Various behaviors of the Node.js REPL can be customized using the following environment variables:</p>
+<ul>
+<li><code>NODE_REPL_HISTORY</code>: When a valid path is given, persistent REPL history will be saved to the specified file rather than <code>.node_repl_history</code> in the user’s home directory. Setting this value to <code>''</code> (an empty string) will disable persistent REPL history. Whitespace will be trimmed from the value. On Windows platforms environment variables with empty values are invalid so set this variable to one or more spaces to disable persistent REPL history.</li>
+<li><code>NODE_REPL_HISTORY_SIZE</code>: Controls how many lines of history will be persisted if history is available. Must be a positive number. <strong>Default:</strong> <code>1000</code>.</li>
+<li><code>NODE_REPL_MODE</code>: May be either <code>'sloppy'</code> or <code>'strict'</code>. <strong>Default:</strong> <code>'sloppy'</code>, which will allow non-strict mode code to be run.</li>
+</ul>
+<h3 id="persistent-history">Persistent history</h3>
+<p>By default, the Node.js REPL will persist history between <code>node</code> REPL sessions by saving inputs to a <code>.node_repl_history</code> file located in the user’s home directory. This can be disabled by setting the environment variable <code>NODE_REPL_HISTORY=''</code>.</p>
+<h3 id="using-the-node.js-repl-with-advanced-line-editors">Using the Node.js REPL with advanced line-editors</h3>
+<p>For advanced line-editors, start Node.js with the environment variable <code>NODE_NO_READLINE=1</code>. This will start the main and debugger REPL in canonical terminal settings, which will allow use with <code>rlwrap</code>.</p>
+<p>For example, the following can be added to a <code>.bashrc</code> file:</p>
+<pre class="text"><code>alias node=&quot;env NODE_NO_READLINE=1 rlwrap node&quot;</code></pre>
+<h3 id="starting-multiple-repl-instances-against-a-single-running-instance">Starting multiple REPL instances against a single running instance</h3>
+<p>It is possible to create and run multiple REPL instances against a single running instance of Node.js that share a single <code>global</code> object but have separate I/O interfaces.</p>
+<p>The following example, for instance, provides separate REPLs on <code>stdin</code>, a Unix socket, and a TCP socket:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">const</span> net <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;net&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="kw">const</span> repl <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;repl&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="kw">let</span> connections <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb26-4" title="4"></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb26-6" title="6">  <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;Node.js via stdin&gt; &#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb26-7" title="7">  <span class="dt">input</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdin</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb26-8" title="8">  <span class="dt">output</span><span class="op">:</span> <span class="va">process</span>.<span class="at">stdout</span></a>
+<a class="sourceLine" id="cb26-9" title="9"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-10" title="10"></a>
+<a class="sourceLine" id="cb26-11" title="11"><span class="va">net</span>.<span class="at">createServer</span>((socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-12" title="12">  connections <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb26-13" title="13">  <span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb26-14" title="14">    <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;Node.js via Unix socket&gt; &#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb26-15" title="15">    <span class="dt">input</span><span class="op">:</span> socket<span class="op">,</span></a>
+<a class="sourceLine" id="cb26-16" title="16">    <span class="dt">output</span><span class="op">:</span> socket</a>
+<a class="sourceLine" id="cb26-17" title="17">  <span class="op">}</span>).<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-18" title="18">    <span class="va">socket</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-19" title="19">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-20" title="20"><span class="op">}</span>).<span class="at">listen</span>(<span class="st">&#39;/tmp/node-repl-sock&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-21" title="21"></a>
+<a class="sourceLine" id="cb26-22" title="22"><span class="va">net</span>.<span class="at">createServer</span>((socket) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-23" title="23">  connections <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb26-24" title="24">  <span class="va">repl</span>.<span class="at">start</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb26-25" title="25">    <span class="dt">prompt</span><span class="op">:</span> <span class="st">&#39;Node.js via TCP socket&gt; &#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb26-26" title="26">    <span class="dt">input</span><span class="op">:</span> socket<span class="op">,</span></a>
+<a class="sourceLine" id="cb26-27" title="27">    <span class="dt">output</span><span class="op">:</span> socket</a>
+<a class="sourceLine" id="cb26-28" title="28">  <span class="op">}</span>).<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-29" title="29">    <span class="va">socket</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-30" title="30">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb26-31" title="31"><span class="op">}</span>).<span class="at">listen</span>(<span class="dv">5001</span>)<span class="op">;</span></a></code></pre></div>
+<p>Running this application from the command line will start a REPL on stdin. Other REPL clients may connect through the Unix socket or TCP socket. <code>telnet</code>, for instance, is useful for connecting to TCP sockets, while <code>socat</code> can be used to connect to both Unix and TCP sockets.</p>
+<p>By starting a REPL from a Unix socket-based server instead of stdin, it is possible to connect to a long-running Node.js process without restarting it.</p>
+<p>For an example of running a “full-featured” (<code>terminal</code>) REPL over a <code>net.Server</code> and <code>net.Socket</code> instance, see: <a href="https://gist.github.com/TooTallNate/2209310" class="uri">https://gist.github.com/TooTallNate/2209310</a>.</p>
+<p>For an example of running a REPL instance over <a href="https://curl.haxx.se/docs/manpage.html"><code>curl(1)</code></a>, see: <a href="https://gist.github.com/TooTallNate/2053342" class="uri">https://gist.github.com/TooTallNate/2053342</a>.</p>
+</body>
+</html>

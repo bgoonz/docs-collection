@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>writing-tests</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="how-to-write-a-test-for-the-node.js-project">How to write a test for the Node.js project</h1>
+<h2 id="what-is-a-test">What is a test?</h2>
+<p>Most tests in Node.js core are JavaScript programs that exercise a functionality provided by Node.js and check that it behaves as expected. Tests should exit with code <code>0</code> on success. A test will fail if:</p>
+<ul>
+<li>It exits by setting <code>process.exitCode</code> to a non-zero number.
+<ul>
+<li>This is usually done by having an assertion throw an uncaught Error.</li>
+<li>Occasionally, using <code>process.exit(code)</code> may be appropriate.</li>
+</ul></li>
+<li>It never exits. In this case, the test runner will terminate the test because it sets a maximum time limit.</li>
+</ul>
+<p>Add tests when:</p>
+<ul>
+<li>Adding new functionality.</li>
+<li>Fixing regressions and bugs.</li>
+<li>Expanding test coverage.</li>
+</ul>
+<h2 id="test-directory-structure">Test directory structure</h2>
+<p>See <a href="https://github.com/nodejs/node/blob/HEAD/test/README.md#test-directories">directory structure overview</a> for outline of existing test and locations. When deciding on whether to expand an existing test file or create a new one, consider going through the files related to the subsystem. For example, look for <code>test-streams</code> when writing a test for <code>lib/streams.js</code>.</p>
+<h2 id="test-structure">Test structure</h2>
+<p>Let’s analyze this basic test from the Node.js test suite:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span>                                                          <span class="co">// 1</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span>                                   <span class="co">// 2</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">const</span> fixtures <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common/fixtures&#39;</span>)<span class="op">;</span>                        <span class="co">// 3</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">// This test ensures that the http-parser can handle UTF-8 characters  // 5</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">// in the http header.                                                 // 6</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span>                                      <span class="co">// 8</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw">const</span> http <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;http&#39;</span>)<span class="op">;</span>                                          <span class="co">// 9</span></a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="kw">const</span> server <span class="op">=</span> <span class="va">http</span>.<span class="at">createServer</span>(<span class="va">common</span>.<span class="at">mustCall</span>((req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span>       <span class="co">// 11</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="va">res</span>.<span class="at">end</span>(<span class="st">&#39;ok&#39;</span>)<span class="op">;</span>                                                       <span class="co">// 12</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="op">}</span>))<span class="op">;</span>                                                                   <span class="co">// 13</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="va">server</span>.<span class="at">listen</span>(<span class="dv">0</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span>                                               <span class="co">// 14</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="va">http</span>.<span class="at">get</span>(<span class="op">{</span>                                                           <span class="co">// 15</span></a>
+<a class="sourceLine" id="cb1-16" title="16">    <span class="dt">port</span><span class="op">:</span> <span class="va">server</span>.<span class="at">address</span>().<span class="at">port</span><span class="op">,</span>                                       <span class="co">// 16</span></a>
+<a class="sourceLine" id="cb1-17" title="17">    <span class="dt">headers</span><span class="op">:</span> <span class="op">{</span> <span class="st">&#39;Test&#39;</span><span class="op">:</span> <span class="st">&#39;Düsseldorf&#39; }                                  // 17</span></a>
+<a class="sourceLine" id="cb1-18" title="18">  <span class="op">},</span> <span class="va">common</span>.<span class="at">mustCall</span>((res) <span class="kw">=&gt;</span> <span class="op">{</span>                                        <span class="co">// 18</span></a>
+<a class="sourceLine" id="cb1-19" title="19">    <span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">res</span>.<span class="at">statusCode</span><span class="op">,</span> <span class="dv">200</span>)<span class="op">;</span>                           <span class="co">// 19</span></a>
+<a class="sourceLine" id="cb1-20" title="20">    <span class="va">server</span>.<span class="at">close</span>()<span class="op">;</span>                                                    <span class="co">// 20</span></a>
+<a class="sourceLine" id="cb1-21" title="21">  <span class="op">}</span>))<span class="op">;</span>                                                                 <span class="co">// 21</span></a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="op">}</span>)<span class="op">;</span>                                                                    <span class="co">// 22</span></a>
+<a class="sourceLine" id="cb1-23" title="23"><span class="co">// ...                                                                 // 23</span></a></code></pre></div>
+<h3 id="lines-1-3"><strong>Lines 1-3</strong></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> fixtures <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common/fixtures&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>The first line enables strict mode. All tests should be in strict mode unless the nature of the test requires that the test run without it.</p>
+<p>The second line loads the <code>common</code> module. The <a href="https://github.com/nodejs/node/blob/HEAD/test/common/README.md"><code>common</code> module</a> is a helper module that provides useful tools for the tests. Some common functionality has been extracted into submodules, which are required separately like the fixtures module here.</p>
+<p>Even if a test uses no functions or other properties exported by <code>common</code>, the test should still include the <code>common</code> module before any other modules. This is because the <code>common</code> module includes code that will cause a test to fail if the test leaks variables into the global space. In situations where a test uses no functions or other properties exported by <code>common</code>, include it without assigning it to an identifier:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="lines-5-6"><strong>Lines 5-6</strong></h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// This test ensures that the http-parser can handle UTF-8 characters</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">// in the http header.</span></a></code></pre></div>
+<p>A test should start with a comment containing a brief description of what it is designed to test.</p>
+<h3 id="lines-8-9"><strong>Lines 8-9</strong></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> http <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;http&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>The test checks functionality in the <code>http</code> module.</p>
+<p>Most tests use the <code>assert</code> module to confirm expectations of the test.</p>
+<p>The require statements are sorted in <a href="https://man7.org/linux/man-pages/man7/ascii.7.html">ASCII</a> order (digits, upper case, <code>_</code>, lower case).</p>
+<h3 id="lines-11-22"><strong>Lines 11-22</strong></h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> server <span class="op">=</span> <span class="va">http</span>.<span class="at">createServer</span>(<span class="va">common</span>.<span class="at">mustCall</span>((req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="va">res</span>.<span class="at">end</span>(<span class="st">&#39;ok&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="va">server</span>.<span class="at">listen</span>(<span class="dv">0</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="va">http</span>.<span class="at">get</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="dt">port</span><span class="op">:</span> <span class="va">server</span>.<span class="at">address</span>().<span class="at">port</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    <span class="dt">headers</span><span class="op">:</span> <span class="op">{</span> <span class="st">&#39;Test&#39;</span><span class="op">:</span> <span class="st">&#39;Düsseldorf&#39; }</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="op">},</span> <span class="va">common</span>.<span class="at">mustCall</span>((res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">res</span>.<span class="at">statusCode</span><span class="op">,</span> <span class="dv">200</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="va">server</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-11" title="11">  <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This is the body of the test. This test is simple, it just tests that an HTTP server accepts <code>non-ASCII</code> characters in the headers of an incoming request. Interesting things to notice:</p>
+<ul>
+<li>If the test doesn’t depend on a specific port number, then always use 0 instead of an arbitrary value, as it allows tests to run in parallel safely, as the operating system will assign a random port. If the test requires a specific port, for example if the test checks that assigning a specific port works as expected, then it is ok to assign a specific port number.</li>
+<li>The use of <code>common.mustCall</code> to check that some callbacks/listeners are called.</li>
+<li>The HTTP server closes once all the checks have run. This way, the test can exit gracefully. Remember that for a test to succeed, it must exit with a status code of 0.</li>
+</ul>
+<h2 id="general-recommendations">General recommendations</h2>
+<h3 id="timers">Timers</h3>
+<p>Avoid timers unless the test is specifically testing timers. There are multiple reasons for this. Mainly, they are a source of flakiness. For a thorough explanation go <a href="https://github.com/nodejs/testing/issues/27">here</a>.</p>
+<p>In the event a test needs a timer, consider using the <code>common.platformTimeout()</code> method. It allows setting specific timeouts depending on the platform:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> timer <span class="op">=</span> <span class="at">setTimeout</span>(fail<span class="op">,</span> <span class="va">common</span>.<span class="at">platformTimeout</span>(<span class="dv">4000</span>))<span class="op">;</span></a></code></pre></div>
+<p>will create a 4-second timeout on most platforms but a longer timeout on slower platforms.</p>
+<h3 id="the-common-api">The <em>common</em> API</h3>
+<p>Make use of the helpers from the <code>common</code> module as much as possible. Please refer to the <a href="https://github.com/nodejs/node/tree/HEAD/test/common">common file documentation</a> for the full details of the helpers.</p>
+<h4 id="common.mustcall">common.mustCall</h4>
+<p>One interesting case is <code>common.mustCall</code>. The use of <code>common.mustCall</code> may avoid the use of extra variables and the corresponding assertions. Let’s explain this with a real test from the test suite.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="kw">const</span> http <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;http&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="kw">let</span> request <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="kw">let</span> listening <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">let</span> response <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="va">process</span>.<span class="at">on</span>(<span class="st">&#39;exit&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">  <span class="va">assert</span>.<span class="at">equal</span>(request<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="st">&#39;http server &quot;request&quot; callback was not called&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-11" title="11">  <span class="va">assert</span>.<span class="at">equal</span>(listening<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="st">&#39;http server &quot;listening&quot; callback was not called&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-12" title="12">  <span class="va">assert</span>.<span class="at">equal</span>(response<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="st">&#39;http request &quot;response&quot; callback was not called&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-14" title="14"></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="kw">const</span> server <span class="op">=</span> <span class="va">http</span>.<span class="at">createServer</span>((req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-16" title="16">  request<span class="op">++;</span></a>
+<a class="sourceLine" id="cb8-17" title="17">  <span class="va">res</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="op">}</span>).<span class="at">listen</span>(<span class="dv">0</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-19" title="19">  listening<span class="op">++;</span></a>
+<a class="sourceLine" id="cb8-20" title="20">  <span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="dt">agent</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-22" title="22">    <span class="dt">port</span><span class="op">:</span> <span class="va">server</span>.<span class="at">address</span>().<span class="at">port</span></a>
+<a class="sourceLine" id="cb8-23" title="23">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb8-24" title="24">  <span class="va">http</span>.<span class="at">get</span>(options<span class="op">,</span> (res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-25" title="25">    response<span class="op">++;</span></a>
+<a class="sourceLine" id="cb8-26" title="26">    <span class="va">res</span>.<span class="at">resume</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-27" title="27">    <span class="va">server</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-28" title="28">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-29" title="29"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<p>This test could be greatly simplified by using <code>common.mustCall</code> like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">const</span> http <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;http&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw">const</span> server <span class="op">=</span> <span class="va">http</span>.<span class="at">createServer</span>(<span class="va">common</span>.<span class="at">mustCall</span>((req<span class="op">,</span> res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="va">res</span>.<span class="at">end</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="op">}</span>)).<span class="at">listen</span>(<span class="dv">0</span><span class="op">,</span> <span class="va">common</span>.<span class="at">mustCall</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="kw">const</span> options <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="dt">agent</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-10" title="10">    <span class="dt">port</span><span class="op">:</span> <span class="va">server</span>.<span class="at">address</span>().<span class="at">port</span></a>
+<a class="sourceLine" id="cb9-11" title="11">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb9-12" title="12">  <span class="va">http</span>.<span class="at">get</span>(options<span class="op">,</span> <span class="va">common</span>.<span class="at">mustCall</span>((res) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-13" title="13">    <span class="va">res</span>.<span class="at">resume</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-14" title="14">    <span class="va">server</span>.<span class="at">close</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-15" title="15">  <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="op">}</span>))<span class="op">;</span></a></code></pre></div>
+<p><strong>Note:</strong> Many functions invoke their callback with an <code>err</code> value as the first argument. It is not a good idea to simply pass <code>common.mustCall()</code> to those because <code>common.mustCall()</code> will ignore the error. Use <code>common.mustSucceed()</code> instead.</p>
+<h4 id="countdown-module">Countdown module</h4>
+<p>The common <a href="https://github.com/nodejs/node/tree/HEAD/test/common#countdown-module">Countdown module</a> provides a simple countdown mechanism for tests that require a particular action to be taken after a given number of completed tasks (for instance, shutting down an HTTP server after a specific number of requests).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">const</span> Countdown <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common/countdown&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">const</span> countdown <span class="op">=</span> <span class="kw">new</span> <span class="at">Countdown</span>(<span class="dv">2</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-6" title="6"></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="va">countdown</span>.<span class="at">dec</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="va">countdown</span>.<span class="at">dec</span>()<span class="op">;</span> <span class="co">// The countdown callback will be invoked now.</span></a></code></pre></div>
+<h4 id="testing-promises">Testing promises</h4>
+<p>When writing tests involving promises, it is generally good to wrap the <code>onFulfilled</code> handler, otherwise the test could successfully finish if the promise never resolves (pending promises do not keep the event loop alive). Node.js automatically crashes - and hence, the test fails - in the case of an <code>unhandledRejection</code> event.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> common <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>).<span class="at">promises</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">// Wrap the `onFulfilled` handler in `common.mustCall()`.</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="va">fs</span>.<span class="at">readFile</span>(<span class="st">&#39;test-file&#39;</span>).<span class="at">then</span>(</a>
+<a class="sourceLine" id="cb11-7" title="7">  <span class="va">common</span>.<span class="at">mustCall</span>(</a>
+<a class="sourceLine" id="cb11-8" title="8">    (content) <span class="kw">=&gt;</span> <span class="va">assert</span>.<span class="at">strictEqual</span>(<span class="va">content</span>.<span class="at">toString</span>()<span class="op">,</span> <span class="st">&#39;test2&#39;</span>)</a>
+<a class="sourceLine" id="cb11-9" title="9">  ))<span class="op">;</span></a></code></pre></div>
+<h3 id="flags">Flags</h3>
+<p>Some tests will require running Node.js with specific command line flags set. To accomplish this, add a <code>// Flags:</code> comment in the preamble of the test followed by the flags. For example, to allow a test to require some of the <code>internal/*</code> modules, add the <code>--expose-internals</code> flag. A test that would require <code>internal/freelist</code> could start like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb12-1" title="1"><span class="st">&#39;use strict&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">// Flags: --expose-internals</span></a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="at">require</span>(<span class="st">&#39;../common&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="kw">const</span> assert <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;assert&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">const</span> freelist <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;internal/freelist&#39;</span>)<span class="op">;</span></a></code></pre></div>
+<p>In specific scenarios it may be useful to get a hold of <code>primordials</code> or <code>internalBinding()</code>. You can do so using</p>
+<pre class="console"><code>node --expose-internals -r internal/test/binding lib/fs.js</code></pre>
+<p>This only works if you preload <code>internal/test/binding</code> by command line flag.</p>
+<h3 id="assertions">Assertions</h3>
+<p>When writing assertions, prefer the strict versions:</p>
+<ul>
+<li><code>assert.strictEqual()</code> over <code>assert.equal()</code></li>
+<li><code>assert.deepStrictEqual()</code> over <code>assert.deepEqual()</code></li>
+</ul>
+<p>When using <code>assert.throws()</code>, if possible, provide the full error message:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb14-1" title="1"><span class="va">assert</span>.<span class="at">throws</span>(</a>
+<a class="sourceLine" id="cb14-2" title="2">  () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;Wrong value&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="ss">/</span><span class="sc">^</span><span class="ss">Error: Wrong value</span><span class="sc">$</span><span class="ss">/</span> <span class="co">// Instead of something like /Wrong value/</span></a>
+<a class="sourceLine" id="cb14-6" title="6">)<span class="op">;</span></a></code></pre></div>
+<h3 id="console-output">Console output</h3>
+<p>Output written by tests to stdout or stderr, such as with <code>console.log()</code> or <code>console.error()</code>, can be useful when writing tests, as well as for debugging them during later maintenance. The output will be suppressed by the test runner (<code>./tools/test.py</code>) unless the test fails, but will always be displayed when running tests directly with <code>node</code>. For failing tests, the test runner will include the output along with the failed test assertion in the test report.</p>
+<p>Some output can help debugging by giving context to test failures. For example, when troubleshooting tests that timeout in CI. With no log statements, we have no idea where the test got hung up.</p>
+<p>There have been cases where tests fail without <code>console.log()</code>, and then pass when its added, so be cautious about its use, particularly in tests of the I/O and streaming APIs.</p>
+<p>Excessive use of console output is discouraged as it can overwhelm the display, including the Jenkins console and test report displays. Be particularly cautious of output in loops, or other contexts where output may be repeated many times in the case of failure.</p>
+<p>In some tests, it can be unclear whether a <code>console.log()</code> statement is required as part of the test (message tests, tests that check output from child processes, etc.), or is there as a debug aide. If there is any chance of confusion, use comments to make the purpose clear.</p>
+<h3 id="es.next-features">ES.Next features</h3>
+<p>For performance considerations, we only use a selected subset of ES.Next features in JavaScript code in the <code>lib</code> directory. However, when writing tests, for the ease of backporting, it is encouraged to use those ES.Next features that can be used directly without a flag in <a href="https://github.com/nodejs/lts">all maintained branches</a>. <a href="https://node.green/">node.green</a> lists available features in each release, such as:</p>
+<ul>
+<li><code>let</code> and <code>const</code> over <code>var</code></li>
+<li>Template literals over string concatenation</li>
+<li>Arrow functions when appropriate</li>
+</ul>
+<h2 id="naming-test-files">Naming test files</h2>
+<p>Test files are named using kebab casing. The first component of the name is <code>test</code>. The second is the module or subsystem being tested. The third is usually the method or event name being tested. Subsequent components of the name add more information about what is being tested.</p>
+<p>For example, a test for the <code>beforeExit</code> event on the <code>process</code> object might be named <code>test-process-before-exit.js</code>. If the test specifically checked that arrow functions worked correctly with the <code>beforeExit</code> event, then it might be named <code>test-process-before-exit-arrow-functions.js</code>.</p>
+<h2 id="imported-tests">Imported tests</h2>
+<h3 id="web-platform-tests">Web platform tests</h3>
+<p>See <a href="../../test/wpt/README.md"><code>test/wpt</code></a> for more information.</p>
+<h2 id="c-unit-test">C++ unit test</h2>
+<p>C++ code can be tested using <a href="https://github.com/google/googletest">Google Test</a>. Most features in Node.js can be tested using the methods described previously in this document. But there are cases where these might not be enough, for example writing code for Node.js that will only be called when Node.js is embedded.</p>
+<h3 id="adding-a-new-test">Adding a new test</h3>
+<p>The unit test should be placed in <code>test/cctest</code> and be named with the prefix <code>test</code> followed by the name of unit being tested. For example, the code below would be placed in <code>test/cctest/test_env.cc</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb15-1" title="1"><span class="pp">#include </span><span class="im">&quot;gtest/gtest.h&quot;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="pp">#include </span><span class="im">&quot;node_test_fixture.h&quot;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="pp">#include </span><span class="im">&quot;env.h&quot;</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="pp">#include </span><span class="im">&quot;node.h&quot;</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="pp">#include </span><span class="im">&quot;v8.h&quot;</span></a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="at">static</span> <span class="dt">bool</span> called_cb = <span class="kw">false</span>;</a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="at">static</span> <span class="dt">void</span> at_exit_callback(<span class="dt">void</span>* arg);</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="kw">class</span> EnvTest : <span class="kw">public</span> NodeTestFixture { };</a>
+<a class="sourceLine" id="cb15-11" title="11"></a>
+<a class="sourceLine" id="cb15-12" title="12">TEST_F(EnvTest, RunAtExit) {</a>
+<a class="sourceLine" id="cb15-13" title="13">  v8::HandleScope handle_scope(<span class="va">isolate_</span>);</a>
+<a class="sourceLine" id="cb15-14" title="14">  v8::Local&lt;v8::Context&gt; context = v8::Context::New(<span class="va">isolate_</span>);</a>
+<a class="sourceLine" id="cb15-15" title="15">  node::IsolateData* isolateData = node::CreateIsolateData(<span class="va">isolate_</span>, uv_default_loop());</a>
+<a class="sourceLine" id="cb15-16" title="16">  Argv argv{<span class="st">&quot;node&quot;</span>, <span class="st">&quot;-e&quot;</span>, <span class="st">&quot;;&quot;</span>};</a>
+<a class="sourceLine" id="cb15-17" title="17">  <span class="kw">auto</span> env = node::CreateEnvironment(isolateData, context, <span class="dv">1</span>, *argv, <span class="dv">2</span>, *argv);</a>
+<a class="sourceLine" id="cb15-18" title="18">  node::AtExit(env, at_exit_callback);</a>
+<a class="sourceLine" id="cb15-19" title="19">  node::RunAtExit(env);</a>
+<a class="sourceLine" id="cb15-20" title="20">  EXPECT_TRUE(called_cb);</a>
+<a class="sourceLine" id="cb15-21" title="21">}</a>
+<a class="sourceLine" id="cb15-22" title="22"></a>
+<a class="sourceLine" id="cb15-23" title="23"><span class="at">static</span> <span class="dt">void</span> at_exit_callback(<span class="dt">void</span>* arg) {</a>
+<a class="sourceLine" id="cb15-24" title="24">  called_cb = <span class="kw">true</span>;</a>
+<a class="sourceLine" id="cb15-25" title="25">}</a></code></pre></div>
+<p>Next add the test to the <code>sources</code> in the <code>cctest</code> target in node.gyp:</p>
+<pre class="console"><code>&#39;sources&#39;: [
+  &#39;test/cctest/test_env.cc&#39;,
+  ...
+],</code></pre>
+<p>The only sources that should be included in the cctest target are actual test or helper source files. There might be a need to include specific object files that are compiled by the <code>node</code> target and this can be done by adding them to the <code>libraries</code> section in the cctest target.</p>
+<p>The test can be executed by running the <code>cctest</code> target:</p>
+<pre class="console"><code>$ make cctest</code></pre>
+<p>A filter can be applied to run single/multiple test cases:</p>
+<pre class="console"><code>$ make cctest GTEST_FILTER=EnvironmentTest.AtExitWithArgument</code></pre>
+<p><code>cctest</code> can also be run directly which can be useful when debugging:</p>
+<pre class="console"><code>$ out/Release/cctest --gtest_filter=EnvironmentTest.AtExit\*</code></pre>
+<h3 id="node.js-test-fixture">Node.js test fixture</h3>
+<p>There is a <a href="https://github.com/google/googletest/blob/HEAD/docs/primer.md#test-fixtures-using-the-same-data-configuration-for-multiple-tests-same-data-multiple-tests">test fixture</a> named <code>node_test_fixture.h</code> which can be included by unit tests. The fixture takes care of setting up the Node.js environment and tearing it down after the tests have finished.</p>
+<p>It also contains a helper to create arguments to be passed into Node.js. It will depend on what is being tested if this is required or not.</p>
+<h3 id="test-coverage">Test coverage</h3>
+<p>To generate a test coverage report, see the <a href="https://github.com/nodejs/node/blob/HEAD/BUILDING.md#running-coverage">Test Coverage section of the Building guide</a>.</p>
+<p>Nightly coverage reports for the Node.js master branch are available at <a href="https://coverage.nodejs.org/" class="uri">https://coverage.nodejs.org/</a>.</p>
+</body>
+</html>
