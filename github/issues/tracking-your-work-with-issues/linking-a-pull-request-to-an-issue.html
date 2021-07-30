@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Linking a pull request to an issue</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Linking a pull request to an issue</h1>
+</header>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The special keywords in a pull request description are interpreted when the pull request targets the repository’s <em>default</em> branch. However, if the PR’s base is <em>any other branch</em>, then these keywords are ignored, no links are created and merging the PR has no effect on the issues. <strong>If you want to link a pull request to an issue using a keyword, the PR must be on the default branch.</strong></p>
+<p>{% endnote %}</p>
+<h2 id="about-linked-issues-and-pull-requests">About linked issues and pull requests</h2>
+<p>You can link an issue to a pull request {% ifversion fpt or ghes or ghae %}manually or {% endif %}using a supported keyword in the pull request description.</p>
+<p>When you link a pull request to the issue the pull request addresses, collaborators can see that someone is working on the issue.</p>
+<p>When you merge a linked pull request into the default branch of a repository, its linked issue is automatically closed. For more information about the default branch, see “<a href="/github/administering-a-repository/changing-the-default-branch">Changing the default branch</a>.”</p>
+<h2 id="linking-a-pull-request-to-an-issue-using-a-keyword">Linking a pull request to an issue using a keyword</h2>
+<p>You can link a pull request to an issue by using a supported keyword in the pull request’s description or in a commit message (please note that the pull request must be on the default branch).</p>
+<ul>
+<li>close</li>
+<li>closes</li>
+<li>closed</li>
+<li>fix</li>
+<li>fixes</li>
+<li>fixed</li>
+<li>resolve</li>
+<li>resolves</li>
+<li>resolved</li>
+</ul>
+<p>The syntax for closing keywords depends on whether the issue is in the same repository as the pull request.</p>
+<table>
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Linked issue</th>
+<th>Syntax</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Issue in the same repository</td>
+<td><em>KEYWORD</em> #<em>ISSUE-NUMBER</em></td>
+<td><code>Closes #10</code></td>
+</tr>
+<tr class="even">
+<td>Issue in a different repository</td>
+<td><em>KEYWORD</em> <em>OWNER</em>/<em>REPOSITORY</em>#<em>ISSUE-NUMBER</em></td>
+<td><code>Fixes octo-org/octo-repo#100</code></td>
+</tr>
+<tr class="odd">
+<td>Multiple issues</td>
+<td>Use full syntax for each issue</td>
+<td><code>Resolves #10, resolves #123, resolves octo-org/octo-repo#100</code></td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes or ghae %}Only manually linked pull requests can be manually unlinked. To unlink an issue that you linked using a keyword, you must edit the pull request description to remove the keyword.{% endif %}</p>
+<p>You can also use closing keywords in a commit message. The issue will be closed when you merge the commit into the default branch, but the pull request that contains the commit will not be listed as a linked pull request.</p>
+<p>{% ifversion fpt or ghes or ghae %} ## Manually linking a pull request to an issue</p>
+<p>Anyone with write permissions to a repository can manually link a pull request to an issue.</p>
+<p>You can manually link up to ten issues to each pull request. The issue and pull request must be in the same repository.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-pr %} 3. In the list of pull requests, click the pull request that you’d like to link to an issue. 4. In the right sidebar, click <strong>Linked issues</strong>. <img src="/assets/images/help/pull_requests/linked-issues.png" alt="Linked issues in the right sidebar" /> 5. Click the issue you want to link to the pull request. <img src="/assets/images/help/pull_requests/link-issue-drop-down.png" alt="Drop down to link issue" /> {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/autolinked-references-and-urls/#issues-and-pull-requests">Autolinked references and URLs</a>”</li>
+</ul>
+</body>
+</html>

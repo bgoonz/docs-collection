@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring visibility for organization membership</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring visibility for organization membership</h1>
+    </header>
+    <p>
+      {% ifversion ghes %} You can also enforce your default setting on all
+      current organization members in your instance using a command-line
+      utility. For example, if you’d like to require every organization member’s
+      visibility to be public, you can set the default to public and enforce the
+      default for all new members in the admin settings, and then use the
+      command-line utility to enforce the public setting on existing members. {%
+      endif %}
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 3. Under “Default
+      organization membership visibility”, use the drop-down menu, and click
+      <strong>Private</strong> or <strong>Public</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/default-organization-membership-visibility-drop-down-menu.png"
+        alt="Drop-down menu with option to configure default organization membership visibility as public or private"
+      />
+      4. Optionally, to prevent members from changing their membership
+      visibility from the default, select
+      <strong>Enforce on organization members</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/enforce-default-org-membership-visibility-setting.png"
+        alt="Checkbox to enforce the default setting on all members"
+      />{% ifversion ghes %} 5. If you’d like to enforce your new visibility
+      setting on all existing members, use the
+      <code>ghe-org-membership-update</code> command-line utility. For more
+      information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-org-membership-update"
+        >Command-line utilities</a
+      >.”{% endif %}
+    </p>
+  </body>
+</html>

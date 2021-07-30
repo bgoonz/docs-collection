@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Fork a repo</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Fork a repo</h1>
+</header>
+<h2 id="about-forks">About forks</h2>
+<p>Most commonly, forks are used to either propose changes to someone else’s project or to use someone else’s project as a starting point for your own idea. You can fork a repository to create a copy of the repository and make changes without affecting the upstream repository. For more information, see “<a href="/github/collaborating-with-issues-and-pull-requests/working-with-forks">Working with forks</a>.”</p>
+<h3 id="propose-changes-to-someone-elses-project">Propose changes to someone else’s project</h3>
+<p>For example, you can use forks to propose changes related to fixing a bug. Rather than logging an issue for a bug you’ve found, you can:</p>
+<ul>
+<li>Fork the repository.</li>
+<li>Make the fix.</li>
+<li>Submit a pull request to the project owner.</li>
+</ul>
+<h3 id="use-someone-elses-project-as-a-starting-point-for-your-own-idea.">Use someone else’s project as a starting point for your own idea.</h3>
+<p>Open source software is based on the idea that by sharing code, we can make better, more reliable software. For more information, see the “<a href="http://opensource.org/about">About the Open Source Initiative</a>” on the Open Source Initiative.</p>
+<p>For more information about applying open source principles to your organization’s development work on {% data variables.product.product_location %}, see {% data variables.product.prodname_dotcom %}’s white paper “<a href="https://resources.github.com/whitepapers/introduction-to-innersource/">An introduction to innersource</a>.”</p>
+<p>{% ifversion fpt or ghes %}</p>
+<p>When creating your public repository from a fork of someone’s project, make sure to include a license file that determines how you want your project to be shared with others. For more information, see “<a href="https://choosealicense.com/">Choose an open source license</a>” at choosealicense.com.</p>
+<p>{% data reusables.open-source.open-source-guide-repositories %} {% data reusables.open-source.open-source-learning-lab %}</p>
+<p>{% endif %}</p>
+<h2 id="prerequisties">Prerequisties</h2>
+<p>If you haven’t yet, you should first <a href="/articles/set-up-git">set up Git</a>. Don’t forget to <a href="/articles/set-up-git#next-steps-authenticating-with-github-from-git">set up authentication to {% data variables.product.product_location %} from Git</a> as well.</p>
+<h2 id="forking-a-repository">Forking a repository</h2>
+<p>{% include tool-switcher %} {% webui %}</p>
+<p>You might fork a project to propose changes to the upstream, or original, repository. In this case, it’s good practice to regularly sync your fork with the upstream repository. To do this, you’ll need to use Git on the command line. You can practice setting the upstream repository using the same <a href="https://github.com/octocat/Spoon-Knife">octocat/Spoon-Knife</a> repository you just forked.</p>
+<ol type="1">
+<li>On {% data variables.product.product_location %}, navigate to the <a href="https://github.com/octocat/Spoon-Knife">octocat/Spoon-Knife</a> repository.</li>
+<li>In the top-right corner of the page, click <strong>Fork</strong>. <img src="/assets/images/help/repository/fork_button.jpg" alt="Fork button" /></li>
+</ol>
+<p>{% endwebui %}</p>
+<p>{% cli %}</p>
+<p>{% data reusables.cli.download-cli %}</p>
+<p>To create a fork of a repository, use the <code>gh repo fork</code> subcommand.</p>
+<pre class="shell"><code>gh repo fork &lt;em&gt;repository&lt;/em&gt;</code></pre>
+<p>To create the fork in an organization, use the <code>--org</code> flag.</p>
+<pre class="shell"><code>gh repo fork &lt;em&gt;repository&lt;/em&gt; --org &quot;octo-org&quot;</code></pre>
+<p>{% endcli %}</p>
+<p>{% desktop %} {% enddesktop %}</p>
+<h2 id="cloning-your-forked-repository">Cloning your forked repository</h2>
+<p>Right now, you have a fork of the Spoon-Knife repository, but you don’t have the files in that repository locally your computer.</p>
+<p>{% include tool-switcher %} {% webui %}</p>
+<ol type="1">
+<li>On {% data variables.product.product_name %}, navigate to <strong>your fork</strong> of the Spoon-Knife repository. {% data reusables.repositories.copy-clone-url %} {% data reusables.command_line.open_the_multi_os_terminal %} {% data reusables.command_line.change-current-directory-clone %}</li>
+<li>Type <code>git clone</code>, and then paste the URL you copied earlier. It will look like this, with your {% data variables.product.product_name %} username instead of <code>YOUR-USERNAME</code>:</li>
+</ol>
+<pre class="shell"><code>$ git clone https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR-USERNAME&lt;/em&gt;/Spoon-Knife</code></pre>
+<ol start="5" type="1">
+<li>Press <strong>Enter</strong>. Your local clone will be created.</li>
+</ol>
+<pre class="shell"><code>$ git clone https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR-USERNAME&lt;/em&gt;/Spoon-Knife
+&gt; Cloning into `Spoon-Knife`...
+&gt; remote: Counting objects: 10, done.
+&gt; remote: Compressing objects: 100% (8/8), done.
+&gt; remove: Total 10 (delta 1), reused 10 (delta 1)
+&gt; Unpacking objects: 100% (10/10), done.</code></pre>
+<p>{% endwebui %}</p>
+<p>{% cli %}</p>
+<p>{% data reusables.cli.download-cli %}</p>
+<p>To create a clone of your fork, use the <code>--clone</code> flag.</p>
+<pre class="shell"><code>gh repo fork &lt;em&gt;repository&lt;/em&gt; --clone=true</code></pre>
+<p>{% endcli %}</p>
+<p>{% desktop %}</p>
+<p>{% data reusables.desktop.choose-clone-repository %} {% data reusables.desktop.cloning-location-tab %} {% data reusables.desktop.cloning-repository-list %} {% data reusables.desktop.choose-local-path %} {% data reusables.desktop.click-clone %}</p>
+<p>{% enddesktop %}</p>
+<h2 id="configuring-git-to-sync-your-fork-with-the-original-repository">Configuring Git to sync your fork with the original repository</h2>
+<p>When you fork a project in order to propose changes to the original repository, you can configure Git to pull changes from the original, or upstream, repository into the local clone of your fork.</p>
+<p>{% include tool-switcher %} {% webui %}</p>
+<ol type="1">
+<li>On {% data variables.product.product_name %}, navigate to the <a href="https://github.com/octocat/Spoon-Knife">octocat/Spoon-Knife</a> repository. {% data reusables.repositories.copy-clone-url %} {% data reusables.command_line.open_the_multi_os_terminal %}</li>
+<li>Change directories to the location of the fork you cloned.
+<ul>
+<li>To go to your home directory, type just <code>cd</code> with no other text.</li>
+<li>To list the files and folders in your current directory, type <code>ls</code>.</li>
+<li>To go into one of your listed directories, type <code>cd your_listed_directory</code>.</li>
+<li>To go up one directory, type <code>cd ..</code>.</li>
+</ul></li>
+<li>Type <code>git remote -v</code> and press <strong>Enter</strong>. You’ll see the current configured remote repository for your fork.</li>
+</ol>
+<pre class="shell"><code>$ git remote -v
+&gt; origin  https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR_USERNAME&lt;/em&gt;/&lt;em&gt;YOUR_FORK&lt;/em&gt;.git (fetch)
+&gt; origin  https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR_USERNAME&lt;/em&gt;/&lt;em&gt;YOUR_FORK&lt;/em&gt;.git (push)</code></pre>
+<ol start="6" type="1">
+<li>Type <code>git remote add upstream</code>, and then paste the URL you copied in Step 2 and press <strong>Enter</strong>. It will look like this:</li>
+</ol>
+<pre class="shell"><code>$ git remote add upstream https://{% data variables.command_line.codeblock %}/octocat/Spoon-Knife.git</code></pre>
+<ol start="7" type="1">
+<li>To verify the new upstream repository you’ve specified for your fork, type <code>git remote -v</code> again. You should see the URL for your fork as <code>origin</code>, and the URL for the original repository as <code>upstream</code>.</li>
+</ol>
+<pre class="shell"><code>$ git remote -v
+&gt; origin    https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR_USERNAME&lt;/em&gt;/&lt;em&gt;YOUR_FORK&lt;/em&gt;.git (fetch)
+&gt; origin    https://{% data variables.command_line.codeblock %}/&lt;em&gt;YOUR_USERNAME&lt;/em&gt;/&lt;em&gt;YOUR_FORK&lt;/em&gt;.git (push)
+&gt; upstream  https://{% data variables.command_line.codeblock %}/&lt;em&gt;ORIGINAL_OWNER&lt;/em&gt;/&lt;em&gt;ORIGINAL_REPOSITORY&lt;/em&gt;.git (fetch)
+&gt; upstream  https://{% data variables.command_line.codeblock %}/&lt;em&gt;ORIGINAL_OWNER&lt;/em&gt;/&lt;em&gt;ORIGINAL_REPOSITORY&lt;/em&gt;.git (push)</code></pre>
+<p>Now, you can keep your fork synced with the upstream repository with a few Git commands. For more information, see “<a href="/articles/syncing-a-fork">Syncing a fork</a>.”</p>
+<p>{% endwebui %}</p>
+<p>{% cli %}</p>
+<p>{% data reusables.cli.download-cli %}</p>
+<p>To configure a remote repository for the forked repository, use the <code>--remote</code> flag.</p>
+<pre class="shell"><code>gh repo fork &lt;em&gt;repository&lt;/em&gt; --remote=true</code></pre>
+<p>To specify the remote repository’s name, use the <code>--remote-name</code> flag.</p>
+<pre class="shell"><code>gh repo fork &lt;em&gt;repository&lt;/em&gt; --remote-name &quot;main-remote-repo&quot;</code></pre>
+<p>{% endcli %}</p>
+<h3 id="next-steps">Next steps</h3>
+<p>You can make any changes to a fork, including:</p>
+<ul>
+<li><strong>Creating branches:</strong> <a href="/articles/creating-and-deleting-branches-within-your-repository/"><em>Branches</em></a> allow you to build new features or test out ideas without putting your main project at risk.</li>
+<li><strong>Opening pull requests:</strong> If you are hoping to contribute back to the original repository, you can send a request to the original author to pull your fork into their repository by submitting a <a href="/articles/about-pull-requests">pull request</a>.</li>
+</ul>
+<h2 id="find-another-repository-to-fork">Find another repository to fork</h2>
+<p>Fork a repository to start contributing to a project. {% data reusables.repositories.you-can-fork %}</p>
+<p>{% ifversion fpt %}You can browse <a href="https://github.com/explore">Explore</a> to find projects and start contributing to open source repositories. For more information, see “<a href="/github/getting-started-with-github/finding-ways-to-contribute-to-open-source-on-github">Finding ways to contribute to open source on {% data variables.product.prodname_dotcom %}</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="celebrate">Celebrate</h2>
+<p>You have now forked a repository, practiced cloning your fork, and configured an upstream repository. For more information about cloning the fork and syncing the changes in a forked repository from your computer see “<a href="/articles/set-up-git">Set up Git</a>.”</p>
+<p>You can also create a new repository where you can put all your projects and share the code on {% data variables.product.prodname_dotcom %}. For more information see, “<a href="/articles/create-a-repo">Create a repository</a>.”</p>
+<p>Each repository in {% data variables.product.product_name %} is owned by a person or an organization. You can interact with the people, repositories, and organizations by connecting and following them on {% data variables.product.product_name %}. For more information see “<a href="/articles/be-social">Be social</a>.”</p>
+<p>{% data reusables.support.connect-in-the-forum-bootcamp %}</p>
+</body>
+</html>

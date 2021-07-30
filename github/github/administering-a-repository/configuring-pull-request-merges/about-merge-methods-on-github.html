@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About merge methods on GitHub</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About merge methods on GitHub</h1>
+</header>
+<p>{% data reusables.pull_requests.configure_pull_request_merges_intro %} You can enforce one type of merge method, such as commit squashing or rebasing, by only enabling the desired method for your repository.</p>
+<p>{% data reusables.pull_requests.default_merge_option %}</p>
+<p>{% ifversion fpt or ghae or ghes %} The default merge method creates a merge commit. You can prevent anyone from pushing merge commits to a protected branch by enforcing a linear commit history. For more information, see “<a href="/github/administering-a-repository/about-protected-branches#require-linear-history">About protected branches</a>.”{% endif %}</p>
+<h2 id="squashing-your-merge-commits">Squashing your merge commits</h2>
+<p>{% data reusables.pull_requests.squash_and_merge_summary %}</p>
+<p>Before enabling squashing commits, consider these disadvantages: - You lose information about when specific changes were originally made and who authored the squashed commits. - If you continue working on the head branch of a pull request after squashing and merging, and then create a new pull request between the same branches, commits that you previously squashed and merged will be listed in the new pull request. You may also have conflicts that you have to repeatedly resolve in each successive pull request. For more information, see “<a href="/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges#squashing-and-merging-a-long-running-branch">About pull request merges</a>.” - Some Git commands that use the “SHA” or “hash” ID may be harder to use since the SHA ID for the original commits is lost. For example, using <a href="https://git-scm.com/docs/git-rerere"><code>git rerere</code></a> may not be as effective.</p>
+<p>For more information, see “<a href="/articles/configuring-commit-squashing-for-pull-requests">Configuring commit squashing for pull requests</a>.”</p>
+<h2 id="rebasing-and-merging-your-commits">Rebasing and merging your commits</h2>
+<p>{% data reusables.pull_requests.rebase_and_merge_summary %}</p>
+<p>Before enabling commit rebasing, consider these disadvantages: - Repository contributors may have to rebase on the command line, resolve any conflicts, and force push their changes to the pull request’s topic branch (or remote head branch) before they can use the <strong>rebase and merge</strong> option on {% data variables.product.product_location %}. Force pushing must be done carefully so contributors don’t overwrite work that others have based their work on. To learn more about when the <strong>Rebase and merge</strong> option is disabled on {% data variables.product.product_location %} and the workflow to re-enable it, see “<a href="/articles/about-pull-request-merges/#rebase-and-merge-your-pull-request-commits">About pull request merges</a>.”</p>
+<p>For more information, see “<a href="/articles/configuring-commit-rebasing-for-pull-requests">Configuring commit rebasing for pull requests</a>.”</p>
+</body>
+</html>

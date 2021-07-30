@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Connecting a repository to a package</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Connecting a repository to a package</h1>
+</header>
+<p>By connecting a repository to a package, the package landing page will show information and links from the repository, such as the README.</p>
+<h2 id="connecting-a-repository-to-a-user-owned-package-on-data-variables.product.prodname_dotcom">Connecting a repository to a user-owned package on {% data variables.product.prodname_dotcom %}</h2>
+<p>{% data reusables.package_registry.package-settings-from-user-level %}</p>
+<p>{% data reusables.package_registry.repository_connection_steps %}</p>
+<h2 id="connecting-a-repository-to-an-organization-owned-package-on-data-variables.product.prodname_dotcom">Connecting a repository to an organization-owned package on {% data variables.product.prodname_dotcom %}</h2>
+<p>{% data reusables.package_registry.package-settings-from-org-level %}</p>
+<p>{% data reusables.package_registry.repository_connection_steps %}</p>
+<h2 id="connecting-a-repository-to-a-container-image-using-the-command-line">Connecting a repository to a container image using the command line</h2>
+<ol type="1">
+<li>In your Dockerfile, add this line, replacing <code>OWNER</code> and <code>REPO</code> with your details:</li>
+</ol>
+<pre class="shell"><code>LABEL org.opencontainers.image.source=https://github.com/&lt;em&gt;OWNER&lt;/em&gt;/&lt;em&gt;REPO&lt;/em&gt;</code></pre>
+<p>For example, if you’re the user <code>monalisa</code> and own <code>my-repo</code>, you would add this line to your Dockerfile: <code>shell  LABEL org.opencontainers.image.source=https://github.com/monalisa/my-repo</code> For more information, see “<a href="https://docs.docker.com/engine/reference/builder/#label">LABEL</a>” in the official Docker documentation and “<a href="https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys">Pre-defined Annotation Keys</a>” in the <code>opencontainers/image-spec</code> repository.</p>
+<ol start="2" type="1">
+<li>Build your container image. This example builds an image from the Dockerfile in the current directory and assigns the image name <code>hello_docker</code>.</li>
+</ol>
+<pre class="shell"><code>$ docker build -t hello_docker .</code></pre>
+<ol start="3" type="1">
+<li>Optionally, review details for the Docker image you want to tag.</li>
+</ol>
+<pre class="shell"><code>$ docker images
+&gt; REPOSITORY                                            TAG                 IMAGE ID            CREATED             SIZE
+&gt; ghcr.io/my-org/hello_docker         latest              38f737a91f39        47 hours ago        91.7MB
+&gt; ghcr.io/my-username/hello_docker    latest              38f737a91f39        47 hours ago        91.7MB
+&gt; hello-world                                           latest              fce289e99eb9        16 months ago       1.84kB</code></pre>
+<ol start="4" type="1">
+<li>Tag your Docker image with your desired image name and hosting destination.</li>
+</ol>
+<pre class="shell"><code>$ docker tag IMAGE_NAME ghcr.io/OWNER/NEW_IMAGE_NAME:TAG</code></pre>
+<p>For example: <code>shell   $ docker tag 38f737a91f39 ghcr.io/monalisa/hello_docker:latest</code></p>
+<ol start="5" type="1">
+<li>If you haven’t already, authenticate to the {% data variables.product.prodname_container_registry %}. For more information, see “<a href="/packages/managing-container-images-with-github-container-registry/pushing-and-pulling-docker-images#authenticating-to-the-container-registry">Authenticating to the {% data variables.product.prodname_container_registry %}</a>.” {% raw %} <code>shell  $ echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin  &gt; Login Succeeded</code> {% endraw %}</li>
+<li>Push your container image to the {% data variables.product.prodname_container_registry %}.</li>
+</ol>
+<pre class="shell"><code>$ docker push ghcr.io/OWNER/IMAGE-NAME:TAG</code></pre>
+<p>For example: <code>shell   $ docker push ghcr.io/monalisa/hello_docker:latest</code></p>
+</body>
+</html>

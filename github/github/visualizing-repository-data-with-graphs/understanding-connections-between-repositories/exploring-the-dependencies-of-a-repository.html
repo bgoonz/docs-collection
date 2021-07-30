@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Exploring the dependencies of a repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exploring the dependencies of a repository</h1>
+</header>
+<!--See /content/code-security/supply-chain-security/exploring-the-dependencies-of-a-repository for the latest version of this article -->
+<h2 id="viewing-the-dependency-graph">Viewing the dependency graph</h2>
+<p>{% data reusables.repositories.enable-security-alerts %}</p>
+<p>The dependency graph shows the dependencies of your repository. For information about the detection of dependencies and which ecosystems are supported, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>.”</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.accessing-repository-graphs %} {% data reusables.repositories.click-dependency-graph %}</p>
+<h3 id="dependencies-view">Dependencies view</h3>
+<p>{% ifversion ghes &gt; 2.21 %} Any direct and indirect dependencies that are specified in the repository’s manifest or lock files are listed, grouped by ecosystem. If vulnerabilities have been detected in the repository, these are shown at the top of the view for users with access to {% data variables.product.prodname_dependabot_alerts %}.</p>
+<figure>
+<img src="/assets/images/help/graphs/dependencies_graph_server.png" alt="Dependencies graph" /><figcaption>Dependencies graph</figcaption>
+</figure>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data variables.product.prodname_ghe_server %} does not populate the <strong>Dependents</strong> view.</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes &lt; 2.22 %} Any direct and indirect dependencies that are specified in the repository’s manifest or lock files are listed, grouped by ecosystem. If vulnerabilities have been detected in the repository, these are shown at the top of the view for users with access to security alerts.</p>
+<figure>
+<img src="/assets/images/help/graphs/dependencies_graph_server.png" alt="Dependencies graph" /><figcaption>Dependencies graph</figcaption>
+</figure>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data variables.product.prodname_ghe_server %} does not populate the <strong>Dependents</strong> view.</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<h2 id="troubleshooting-the-dependency-graph">Troubleshooting the dependency graph</h2>
+<p>If your dependency graph is empty, there may be a problem with the file containing your dependencies. Check the file to ensure that it’s correctly formatted for the file type.</p>
+<p>If a manifest or lock file is not processed, its dependencies are omitted from the dependency graph and they can’t be checked for vulnerable dependencies.</p>
+</body>
+</html>

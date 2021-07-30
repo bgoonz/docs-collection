@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pulls</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pulls</h1>
+</header>
+<p>The Pull Request API allows you to list, view, edit, create, and even merge pull requests. Comments on pull requests can be managed via the <a href="/rest/reference/issues#comments">Issue Comments API</a>.</p>
+<p>Every pull request is an issue, but not every issue is a pull request. For this reason, “shared” actions for both features, like manipulating assignees, labels and milestones, are provided within <a href="/rest/reference/issues">the Issues API</a>.</p>
+<h3 id="custom-media-types-for-pull-requests">Custom media types for pull requests</h3>
+<p>These are the supported media types for pull requests.</p>
+<pre><code>application/vnd.github.VERSION.raw+json
+application/vnd.github.VERSION.text+json
+application/vnd.github.VERSION.html+json
+application/vnd.github.VERSION.full+json
+application/vnd.github.VERSION.diff
+application/vnd.github.VERSION.patch</code></pre>
+<p>For more information, see “<a href="/rest/overview/media-types">Custom media types</a>.”</p>
+<p><a id="diff-error"></p>
+<p>If a diff is corrupt, contact {% data variables.contact.contact_support %}. Include the repository name and pull request ID in your message.</p>
+<h3 id="link-relations">Link Relations</h3>
+<p>Pull Requests have these possible link relations:</p>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>self</code></td>
+<td>The API location of this Pull Request.</td>
+</tr>
+<tr class="even">
+<td><code>html</code></td>
+<td>The HTML location of this Pull Request.</td>
+</tr>
+<tr class="odd">
+<td><code>issue</code></td>
+<td>The API location of this Pull Request’s <a href="/rest/reference/issues">Issue</a>.</td>
+</tr>
+<tr class="even">
+<td><code>comments</code></td>
+<td>The API location of this Pull Request’s <a href="/rest/reference/issues#comments">Issue comments</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>review_comments</code></td>
+<td>The API location of this Pull Request’s <a href="/rest/reference/pulls#comments">Review comments</a>.</td>
+</tr>
+<tr class="even">
+<td><code>review_comment</code></td>
+<td>The <a href="/rest#hypermedia">URL template</a> to construct the API location for a <a href="/rest/reference/pulls#comments">Review comment</a> in this Pull Request’s repository.</td>
+</tr>
+<tr class="odd">
+<td><code>commits</code></td>
+<td>The API location of this Pull Request’s <a href="#list-commits-on-a-pull-request">commits</a>.</td>
+</tr>
+<tr class="even">
+<td><code>statuses</code></td>
+<td>The API location of this Pull Request’s <a href="/rest/reference/repos#statuses">commit statuses</a>, which are the statuses of its <code>head</code> branch.</td>
+</tr>
+</tbody>
+</table>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="reviews">Reviews</h2>
+<p>Pull Request Reviews are groups of Pull Request Review Comments on the Pull Request, grouped together with a state and optional body comment.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘reviews’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="review-comments">Review comments</h2>
+<p>Pull request review comments are comments on a portion of the unified diff made during a pull request review. Commit comments and issue comments are different from pull request review comments. You apply commit comments directly to a commit and you apply issue comments without referencing a portion of the unified diff. For more information, see “<a href="/rest/reference/git#create-a-commit">Create a commit comment</a>” and “<a href="/rest/reference/issues#create-an-issue-comment">Create an issue comment</a>.”</p>
+<h3 id="custom-media-types-for-pull-request-review-comments">Custom media types for pull request review comments</h3>
+<p>These are the supported media types for pull request review comments.</p>
+<pre><code>application/vnd.github.VERSION.raw+json
+application/vnd.github.VERSION.text+json
+application/vnd.github.VERSION.html+json
+application/vnd.github.VERSION.full+json</code></pre>
+<p>For more information, see “<a href="/rest/overview/media-types">Custom media types</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘comments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="review-requests">Review requests</h2>
+<p>Pull request authors and repository owners and collaborators can request a pull request review from anyone with write access to the repository. Each requested reviewer will receive a notification asking them to review the pull request.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘review-requests’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

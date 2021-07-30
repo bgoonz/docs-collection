@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using SSH over the HTTPS port</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using SSH over the HTTPS port</h1>
+</header>
+<p>{% tip %}</p>
+<p><strong>{% data variables.product.prodname_ghe_server %} users</strong>: Accessing {% data variables.product.prodname_ghe_server %} via SSH over the HTTPS port is currently not supported.</p>
+<p>{% endtip %}</p>
+<p>To test if SSH over the HTTPS port is possible, run this SSH command:</p>
+<pre class="shell"><code>$ ssh -T -p 443 git@ssh.github.com
+&gt; Hi &lt;em&gt;username&lt;/em&gt;! You&#39;ve successfully authenticated, but GitHub does not
+&gt; provide shell access.</code></pre>
+<p>If that worked, great! If not, you may need to <a href="/articles/error-permission-denied-publickey">follow our troubleshooting guide</a>.</p>
+<h2 id="enabling-ssh-connections-over-https">Enabling SSH connections over HTTPS</h2>
+<p>If you are able to SSH into <code>git@ssh.{% data variables.command_line.backticks %}</code> over port 443, you can override your SSH settings to force any connection to {% data variables.product.product_location %} to run though that server and port.</p>
+<p>To set this in your ssh config, edit the file at <code>~/.ssh/config</code>, and add this section:</p>
+<pre><code>Host {% data variables.command_line.codeblock %}
+  Hostname ssh.{% data variables.command_line.codeblock %}
+  Port 443
+  User git</code></pre>
+<p>You can test that this works by connecting once more to {% data variables.product.product_location %}:</p>
+<pre class="shell"><code>$ ssh -T git@{% data variables.command_line.codeblock %}
+&gt; Hi &lt;em&gt;username&lt;/em&gt;! You&#39;ve successfully authenticated, but GitHub does not
+&gt; provide shell access.</code></pre>
+</body>
+</html>

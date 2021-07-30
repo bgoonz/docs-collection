@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authorizing GitHub Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authorizing GitHub Apps</h1>
+</header>
+<p>Third-party applications that need to verify your {% data variables.product.prodname_dotcom %} identity, or interact with the data on {% data variables.product.prodname_dotcom %} on your behalf, can ask you to authorize the {% data variables.product.prodname_github_app %} to do so.</p>
+<p>When authorizing the {% data variables.product.prodname_github_app %}, you should ensure you trust the application, review who it’s developed by, and review the kinds of information the application wants to access.</p>
+<p>During authorization, you’ll be prompted to grant the {% data variables.product.prodname_github_app %} permission to: * <strong>Verify your {% data variables.product.prodname_dotcom %} identity</strong><br/> When authorized, the {% data variables.product.prodname_github_app %} will be able to programmatically retrieve your public GitHub profile, as well as some private details (such as your email address), depending on the level of access requested. * <strong>Know which resources you can access</strong><br/> When authorized, the {% data variables.product.prodname_github_app %} will be able to programmatically read the <em>private</em> {% data variables.product.prodname_dotcom %} resources that you can access (such as private {% data variables.product.prodname_dotcom %} repositories) <em>where</em> an installation of the {% data variables.product.prodname_github_app %} is also present. The application may use this, for example, so that it can show you an appropriate list of repositories. * <strong>Act on your behalf</strong><br/> The application may need to perform tasks on {% data variables.product.prodname_dotcom %}, as you. This might include creating an issue, or commenting on a pull request. This ability to act on your behalf is limited to the {% data variables.product.prodname_dotcom %} resources where <em>both</em> you and the {% data variables.product.prodname_github_app %} have access. In some cases, however, the application may never make any changes on your behalf.</p>
+<h2 id="when-does-a-data-variables.product.prodname_github_app-act-on-your-behalf">When does a {% data variables.product.prodname_github_app %} act on your behalf?</h2>
+<p>The situations in which a {% data variables.product.prodname_github_app %} acts on your behalf vary according to the purpose of the {% data variables.product.prodname_github_app %} and the context in which it is being used.</p>
+<p>For example, an integrated development environment (IDE) may use a {% data variables.product.prodname_github_app %} to interact on your behalf in order to push changes you have authored through the IDE back to repositories on {% data variables.product.prodname_dotcom %}. The {% data variables.product.prodname_github_app %} will achieve this through a <a href="/get-started/quickstart/github-glossary#user-to-server-request">user-to-server request</a>.</p>
+<p>When a {% data variables.product.prodname_github_app %} acts on your behalf in this way, this is identified on GitHub via a special icon that shows a small avatar for the {% data variables.product.prodname_github_app %} overlaid onto your own avatar, similar to the one shown below.</p>
+<figure>
+<img src="/assets/images/help/apps/github-apps-new-issue.png" alt="An issue created by a “user-to-server” request from a {% data variables.product.prodname_github_app %}" /><figcaption>An issue created by a “user-to-server” request from a {% data variables.product.prodname_github_app %}</figcaption>
+</figure>
+<h2 id="to-what-extent-can-a-data-variables.product.prodname_github_app-know-which-resources-you-can-access-and-act-on-your-behalf">To what extent can a {% data variables.product.prodname_github_app %} know which resources you can access and act on your behalf?</h2>
+<p>The extent to which a {% data variables.product.prodname_github_app %} can know which resources you can access and act on your behalf, after you have authorized it, is limited by:</p>
+<ul>
+<li>The organizations or repositories on which the app is installed</li>
+<li>The permissions the app has requested</li>
+<li>Your access to {% data variables.product.prodname_dotcom %} resources</li>
+</ul>
+<p>Let’s use an example to explain this.</p>
+<p>{% data variables.product.prodname_dotcom %} user Alice logs into a third-party web application, ExampleApp, using their {% data variables.product.prodname_dotcom %} identity. During this process, Alice authorizes ExampleApp to perform actions on their behalf.</p>
+<p>However, the activity ExampleApp is able to perform on Alice’s behalf in {% data variables.product.prodname_dotcom %} is constrained by: the repositories on which ExampleApp is installed, the permissions ExampleApp has requested, and Alice’s access to {% data variables.product.prodname_dotcom %} resources.</p>
+<p>This means that, in order for ExampleApp to create an issue on Alice’s behalf, in a repository called Repo A, all of the following must be true:</p>
+<ul>
+<li>ExampleApp’s {% data variables.product.prodname_github_app %} requests write access to issues.</li>
+<li>A user having admin access for Repo A must have installed ExampleApp’s {% data variables.product.prodname_github_app %} on Repo A.</li>
+<li>Alice must have read permission for Repo A. For information about which permissions are required to perform various activities, see “<a href="/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization#repository-access-for-each-permission-level">Repository permission levels for an organization</a>.”</li>
+</ul>
+</body>
+</html>

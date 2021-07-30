@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Evacuating a cluster node</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Evacuating a cluster node</h1>
+    </header>
+    <p>
+      If you only have three nodes in your data services cluster, you can’t
+      evacuate the nodes, because <code>ghe-spokes</code> doesn’t have another
+      place to make a copy. If you have four or more,
+      <code>ghe-spokes</code> will move all the repositories off of the
+      evacuated node.
+    </p>
+    <p>
+      If you’re taking a node offline that has any data services (like git,
+      pages, or storage) evacuate each node before taking the node offline.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Find the <code>uuid</code> of the node in with the
+          <code>ghe-config</code>command.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ ghe-config cluster.&lt;em&gt;HOSTNAME&lt;/em&gt;.uuid</code></pre>
+      </li>
+      <li>
+        <p>
+          You’ll need to monitor the status of your node while the data is being
+          copied. Ideally, the node shouldn’t be taken offline until the copying
+          is complete. To monitor the status of your node, run any of the
+          following commands:
+        </p>
+        <p>
+          For Git <code>ghe-spokes evac-status</code> For {% data
+          variables.product.prodname_pages %}
+        </p>
+        <pre
+          class="shell"
+        ><code>echo &quot;select count(*) from pages_replicas where host = &#39;pages-server-&lt;em&gt;UUID&lt;/em&gt;&#39;&quot; | ghe-dbconsole -y</code></pre>
+        <p>For storage <code>ghe-storage evacuation-status</code></p>
+      </li>
+      <li>
+        <p>
+          After the copying is complete, you can evacuate the storage service.
+          Run any of the following commands:
+        </p>
+        <p>For Git</p>
+        <pre
+          class="shell"
+        ><code>ghe-spokes server evacuate git-server-&lt;em&gt;UUID&lt;/em&gt; \&#39;&lt;em&gt;REASON FOR EVACUATION&lt;/em&gt;\&#39;</code></pre>
+        <p>For {% data variables.product.prodname_pages %}</p>
+        <pre
+          class="shell"
+        ><code>ghe-dpages evacuate pages-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+        <p>For storage, take the node offline</p>
+        <pre
+          class="shell"
+        ><code>ghe-storage offline storage-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+        <p>then evacuate</p>
+        <pre
+          class="shell"
+        ><code>ghe-storage evacuate storage-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+      </li>
+    </ol>
+  </body>
+</html>

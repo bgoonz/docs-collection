@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Site admin dashboard</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Site admin dashboard</h1>
+    </header>
+    <p>
+      To access the dashboard, in the upper-right corner of any page, click {%
+      octicon “rocket” aria-label=“The rocket ship” %}.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/access-new-settings.png"
+        alt="Rocket ship icon for accessing site admin settings"
+      />
+    </p>
+    <p>{% ifversion ghes &gt; 2.21 %}</p>
+    <h2 id="search">Search</h2>
+    <p>
+      Refer to this section of the site admin dashboard to search for users and
+      repositories, and to query the <a href="#audit-log">audit log</a>.
+    </p>
+    <p>{% else %}</p>
+    <h2 id="license-info-search">License info &amp; search</h2>
+    <p>
+      Refer to this section of the site admin dashboard to check your current {%
+      data variables.product.prodname_enterprise %} license; to search for users
+      and repositories; and to query the <a href="#audit-log">audit log</a>.
+    </p>
+    <p>{% endif %}</p>
+    <h2 id="data-variables.enterprise.management_console">
+      {% data variables.enterprise.management_console %}
+    </h2>
+    <p>
+      Here you can launch the {% data variables.enterprise.management_console %}
+      to manage virtual appliance settings such as the domain, authentication,
+      and SSL.
+    </p>
+    <h2 id="explore">Explore</h2>
+    <p>
+      Data for GitHub’s
+      <a href="https://github.com/blog/1585-explore-what-is-trending-on-github"
+        >trending page</a
+      >
+      is calculated into daily, weekly, and monthly time spans for both
+      repositories and developers. You can see when this data was last cached
+      and queue up new trending calculation jobs from the
+      <strong>Explore</strong> section.
+    </p>
+    <h2 id="audit-log">Audit log</h2>
+    <p>
+      {% data variables.product.prodname_enterprise %} keeps a running log of
+      audited actions that you can query.
+    </p>
+    <p>
+      By default, the audit log shows you a list of all audited actions in
+      reverse chronological order. You can filter this list by entering
+      key-value pairs in the <strong>Query</strong> text box and then clicking
+      <strong>Search</strong>, as explained in “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/searching-the-audit-log"
+        >Searching the audit log</a
+      >.”
+    </p>
+    <p>
+      For more information on audit logging in general, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/audit-logging"
+        >Audit logging</a
+      >.” For a full list of audited actions, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/audited-actions"
+        >Audited actions</a
+      >.”
+    </p>
+    <h2 id="reports">Reports</h2>
+    <p>
+      If you need to get information on the users, organizations, and
+      repositories in {% data variables.product.product_location %}, you would
+      ordinarily fetch JSON data through the <a href="/rest">GitHub API</a>.
+      Unfortunately, the API may not provide all of the data that you want and
+      it requires a bit of technical expertise to use. The site admin dashboard
+      offers a <strong>Reports</strong> section as an alternative, making it
+      easy for you to download CSV reports with most of the information that you
+      are likely to need for users, organizations, and repositories.
+    </p>
+    <p>Specifically, you can download CSV reports that list</p>
+    <ul>
+      <li>all users</li>
+      <li>all users who have been active within the last month</li>
+      <li>all users who have been inactive for one month or more</li>
+      <li>all users who have been suspended</li>
+      <li>all organizations</li>
+      <li>all repositories</li>
+    </ul>
+    <p>
+      You can also access these reports programmatically via standard HTTP
+      authentication with a site admin account. You must use a personal access
+      token with the <code>site_admin</code> scope. For more information, see
+      “<a
+        href="/github/authenticating-to-github/creating-a-personal-access-token"
+        >Creating a personal access token</a
+      >.”
+    </p>
+    <p>
+      For example, here is how you would download the “all users” report using
+      cURL:
+    </p>
+    <pre
+      class="shell"
+    ><code>curl -L -u &lt;em&gt;username&lt;/em&gt;:&lt;em&gt;token&lt;/em&gt; http(s)://&lt;em&gt;hostname&lt;/em&gt;/stafftools/reports/all_users.csv</code></pre>
+    <p>
+      To access the other reports programmatically, replace
+      <code>all_users</code> with <code>active_users</code>,
+      <code>dormant_users</code>, <code>suspended_users</code>,
+      <code>all_organizations</code>, or <code>all_repositories</code>.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> The initial <code>curl</code> request will return a
+      202 HTTP response if there are no cached reports available; a report will
+      be generated in the background. You can send a second request to download
+      the report. You can use a password or an OAuth token with the
+      <code>site_admin</code> scope in place of a password.
+    </p>
+    <p>{% endnote %}</p>
+    <h3 id="user-reports">User reports</h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: right">Key</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: right"><code>created_at</code></td>
+          <td>When the user account was created (as an ISO 8601 timestamp)</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>id</code></td>
+          <td>Account ID for the user or organization</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>login</code></td>
+          <td>Account’s login name</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>email</code></td>
+          <td>Account’s primary email address</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>role</code></td>
+          <td>Whether the account is an admin or an ordinary user</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>suspended?</code></td>
+          <td>Whether the account has been suspended</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>last_logged_ip</code></td>
+          <td>Most recent IP address to log into the account</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>repos</code></td>
+          <td>Number of repositories owned by the account</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>ssh_keys</code></td>
+          <td>Number of SSH keys registered to the account</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>org_memberships</code></td>
+          <td>Number of organizations to which the account belongs</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>dormant?</code></td>
+          <td>Whether the account is dormant</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>last_active</code></td>
+          <td>When the account was last active (as an ISO 8601 timestamp)</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>raw_login</code></td>
+          <td>Raw login information (in JSON format)</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>2fa_enabled?</code></td>
+          <td>Whether the user has enabled two-factor authentication</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="organization-reports">Organization reports</h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: right">Key</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: right"><code>id</code></td>
+          <td>Organization ID</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>created_at</code></td>
+          <td>When the organization was created</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>login</code></td>
+          <td>Organization’s login name</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>email</code></td>
+          <td>Organization’s primary email address</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>owners</code></td>
+          <td>Number of organization owners</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>members</code></td>
+          <td>Number of organization members</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>teams</code></td>
+          <td>Number of organization teams</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>repos</code></td>
+          <td>Number of organization repositories</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>2fa_required?</code></td>
+          <td>Whether the organization requires two-factor authentication</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="repository-reports">Repository reports</h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: right">Key</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: right"><code>created_at</code></td>
+          <td>When the repository was created</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>owner_id</code></td>
+          <td>ID of the repository’s owner</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>owner_type</code></td>
+          <td>Whether the repository is owned by a user or an organization</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>owner_name</code></td>
+          <td>Name of the repository’s owner</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>id</code></td>
+          <td>Repository ID</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>name</code></td>
+          <td>Repository name</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>visibility</code></td>
+          <td>Whether the repository is public or private</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>readable_size</code></td>
+          <td>Repository’s size in a human-readable format</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>raw_size</code></td>
+          <td>Repository’s size as a number</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>collaborators</code></td>
+          <td>Number of repository collaborators</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: right"><code>fork?</code></td>
+          <td>Whether the repository is a fork</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: right"><code>deleted?</code></td>
+          <td>Whether the repository has been deleted</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="indexing">Indexing</h2>
+    <p>
+      GitHub’s
+      <a href="https://github.com/blog/1381-a-whole-new-code-search"
+        >code search</a
+      >
+      features are powered by
+      <a href="http://www.elasticsearch.org/">ElasticSearch</a>. This section of
+      the site admin dashboard shows you the current status of your
+      ElasticSearch cluster and provides you with several tools to control the
+      behavior of searching and indexing. These tools are split into the
+      following three categories.
+    </p>
+    <h3 id="code-search">Code search</h3>
+    <p>
+      This allows you to enable or disable both search and index operations on
+      source code.
+    </p>
+    <h3 id="code-search-index-repair">Code search index repair</h3>
+    <p>This controls how the code search index is repaired. You can</p>
+    <ul>
+      <li>enable or disable index repair jobs</li>
+      <li>start a new index repair job</li>
+      <li>reset all index repair state</li>
+    </ul>
+    <p>
+      {% data variables.product.prodname_enterprise %} uses repair jobs to
+      reconcile the state of the search index with data stored in a database
+      (issues, pull requests, repositories, and users) and data stored in Git
+      repositories (source code). This happens when
+    </p>
+    <ul>
+      <li>a new search index is created;</li>
+      <li>missing data needs to be backfilled; or</li>
+      <li>old search data needs to be updated.</li>
+    </ul>
+    <p>
+      In other words, repair jobs are started as needed and run in the
+      background—they are not scheduled by site admins in any way.
+    </p>
+    <p>
+      Furthermore, repair jobs use a “repair offset” for parallelization. This
+      is an offset into the database table for the record being reconciled.
+      Multiple background jobs can synchronize work based on this offset.
+    </p>
+    <p>
+      A progress bar shows the current status of a repair job across all of its
+      background workers. It is the percentage difference of the repair offset
+      with the highest record ID in the database. Don’t worry about the value
+      shown in the progress bar after a repair job has completed: because it
+      shows the difference between the repair offset and the highest record ID
+      in the database, it will decrease as more repositories are added to {%
+      data variables.product.product_location %} even though those repositories
+      are actually indexed.
+    </p>
+    <p>
+      You can start a new code-search index repair job at any time. It will use
+      a single CPU as it reconciles the search index with database and Git
+      repository data. To minimize the effects this will have on I/O performance
+      and reduce the chances of operations timing out, try to run a repair job
+      during off-peak hours first. Monitor your system’s load averages and CPU
+      usage with a utility like <code>top</code>; if you don’t notice any
+      significant changes, it should be safe to run an index repair job during
+      peak hours, as well.
+    </p>
+    <h3 id="issues-index-repair">Issues index repair</h3>
+    <p>
+      This controls how the
+      <a href="https://github.com/blog/831-issues-2-0-the-next-generation"
+        >Issues</a
+      >
+      index is repaired. You can
+    </p>
+    <ul>
+      <li>enable or disable index repair jobs</li>
+      <li>start a new index repair job</li>
+      <li>reset all index repair state</li>
+    </ul>
+    <p>{% ifversion ghes &gt; 2.21 %}</p>
+    <h2 id="enterprise-overview">Enterprise overview</h2>
+    <p>
+      Refer to this section of the site admin dashboard to manage organizations,
+      people, policies, and settings.
+    </p>
+    <p>{% endif %}</p>
+    <h2 id="repositories">Repositories</h2>
+    <p>
+      This is a list of the repositories on {% data
+      variables.product.product_location %}. You can click on a repository name
+      and access functions for administering the repository.
+    </p>
+    <ul>
+      <li>
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/developer-workflow/blocking-force-pushes-to-a-repository/"
+          >Blocking force pushes to a repository</a
+        >
+      </li>
+      <li>
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-git-large-file-storage/#configuring-git-large-file-storage-for-an-individual-repository"
+          >Configuring {% data variables.large_files.product_name_long %}</a
+        >
+      </li>
+      <li>
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/archiving-and-unarchiving-repositories/"
+          >Archiving and unarchiving repositories</a
+        >
+      </li>
+    </ul>
+    <h2 id="all-users">All users</h2>
+    <p>
+      Here you can see all of the users on {% data
+      variables.product.product_location %}—, and
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/auditing-ssh-keys"
+        >initiate an SSH key audit</a
+      >.
+    </p>
+    <h2 id="site-admins">Site admins</h2>
+    <p>
+      Here you can see all of the administrators on {% data
+      variables.product.product_location %}, and
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/auditing-ssh-keys"
+        >initiate an SSH key audit</a
+      >.
+    </p>
+    <h2 id="dormant-users">Dormant users</h2>
+    <p>
+      Here you can see and
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/suspending-and-unsuspending-users"
+        >suspend</a
+      >
+      all of the inactive users on {% data variables.product.product_location
+      %}. A user account is considered to be inactive (“dormant”) when it:
+    </p>
+    <ul>
+      <li>
+        Has existed for longer than the dormancy threshold that’s set for {%
+        data variables.product.product_location %}.
+      </li>
+      <li>Has not generated any activity within that time period.</li>
+      <li>Is not a site administrator.</li>
+    </ul>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.dormancy-threshold %} For
+      more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/managing-dormant-users/#configuring-the-dormancy-threshold"
+        >Managing dormant users</a
+      >.”
+    </p>
+    <h2 id="suspended-users">Suspended users</h2>
+    <p>
+      Here you can see all of the users who have been suspended on {% data
+      variables.product.product_location %}, and
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/auditing-ssh-keys"
+        >initiate an SSH key audit</a
+      >.
+    </p>
+  </body>
+</html>

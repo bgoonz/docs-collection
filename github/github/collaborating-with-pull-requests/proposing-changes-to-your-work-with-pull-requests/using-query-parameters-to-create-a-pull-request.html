@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using query parameters to create a pull request</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using query parameters to create a pull request</h1>
+</header>
+<p>You can use query parameters to open pull requests. Query parameters are optional parts of a URL you can customize to share a specific web page view, such as search filter results or a pull request template on {% data variables.product.prodname_dotcom %}. To create your own query parameters, you must match the key and value pair.</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> You can also create pull request templates that open with default labels, assignees, and an pull request title. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Using templates to encourage useful issues and pull requests</a>.”</p>
+<p>{% endtip %}</p>
+<p>You must have the proper permissions for any action to use the equivalent query parameter. For example, you must have permission to add a label to a pull request to use the <code>labels</code> query parameter. For more information, see “<a href="/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization#permission-levels-for-repositories-owned-by-an-organization">Repository permission levels for an organization</a>.”</p>
+<p>If you create an invalid URL using query parameters, or if you don’t have the proper permissions, the URL will return a <code>404 Not Found</code> error page. If you create a URL that exceeds the server limit, the URL will return a <code>414 URI Too Long</code> error page.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query parameter</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>quick_pull</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1</code> creates a pull request that compares the base branch <code>main</code> and head branch <code>my-branch</code>. The <code>quick_pull=1</code> query brings you directly to the “Open a pull request” page.</td>
+</tr>
+<tr class="even">
+<td><code>title</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;labels=bug&amp;title=Bug+fix+report</code> creates a pull request with the label “bug” and title “Bug fix.”</td>
+</tr>
+<tr class="odd">
+<td><code>body</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;title=Bug+fix&amp;body=Describe+the+fix.</code> creates a pull request with the title “Bug fix” and the comment “Describe the fix” in the pull request body.</td>
+</tr>
+<tr class="even">
+<td><code>labels</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;labels=help+wanted,bug</code> creates a pull request with the labels “help wanted” and “bug”.</td>
+</tr>
+<tr class="odd">
+<td><code>milestone</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;milestone=testing+milestones</code> creates a pull request with the milestone “testing milestones.”</td>
+</tr>
+<tr class="even">
+<td><code>assignees</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;assignees=octocat</code> creates a pull request and assigns it to <span class="citation" data-cites="octocat">@octocat</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>projects</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;title=Bug+fix&amp;projects=octo-org/1</code> creates a pull request with the title “Bug fix” and adds it to the organization’s project board 1.</td>
+</tr>
+<tr class="even">
+<td><code>template</code></td>
+<td><code>https://github.com/octo-org/octo-repo/compare/main...my-branch?quick_pull=1&amp;template=issue_template.md</code> creates a pull request with a template in the pull request body. The <code>template</code> query parameter works with templates stored in a <code>PULL_REQUEST_TEMPLATE</code> subdirectory within the root, <code>docs/</code> or <code>.github/</code> directory in a repository. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Using templates to encourage useful issues and pull requests</a>.”</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authorizing OAuth Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authorizing OAuth Apps</h1>
+</header>
+<p>{% data variables.product.product_name %}’s OAuth implementation supports the standard <a href="https://tools.ietf.org/html/rfc6749#section-4.1">authorization code grant type</a>{% ifversion fpt or ghes &gt; 2.21 or ghae %} and the OAuth 2.0 <a href="https://tools.ietf.org/html/rfc8628">Device Authorization Grant</a> for apps that don’t have access to a web browser{% endif %}.</p>
+<p>If you want to skip authorizing your app in the standard way, such as when testing your app, you can use the <a href="#non-web-application-flow">non-web application flow</a>.</p>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %}</p>
+<p>To authorize your OAuth app, consider which authorization flow best fits your app.</p>
+<ul>
+<li><a href="#web-application-flow">web application flow</a>: Used to authorize users for standard OAuth apps that run in the browser. (The <a href="https://tools.ietf.org/html/rfc6749#section-4.2">implicit grant type</a> is not supported.)</li>
+<li><a href="#device-flow">device flow</a>: Used for headless apps, such as CLI tools.</li>
+</ul>
+<p>{% else %}</p>
+<p>For standard apps that run in the browser, use the <a href="#web-application-flow">web application flow</a> to obtain an authorization code and exchange it for a token. (The <a href="https://tools.ietf.org/html/rfc6749#section-4.2">implicit grant type</a> is not supported.)</p>
+<p>{% endif %}</p>
+<h2 id="web-application-flow">Web application flow</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you are building a GitHub App, you can still use the OAuth web application flow, but the setup has some important differences. See “<a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">Identifying and authorizing users for GitHub Apps</a>” for more information.</p>
+<p>{% endnote %}</p>
+<p>The web application flow to authorize users for your app is:</p>
+<ol type="1">
+<li>Users are redirected to request their GitHub identity</li>
+<li>Users are redirected back to your site by GitHub</li>
+<li>Your app accesses the API with the user’s access token</li>
+</ol>
+<h3 id="request-a-users-github-identity">1. Request a user’s GitHub identity</h3>
+<pre><code>GET {% data variables.product.oauth_host_code %}/login/oauth/authorize</code></pre>
+<p>When your GitHub App specifies a <code>login</code> parameter, it prompts users with a specific account they can use for signing in and authorizing your app.</p>
+<h4 id="parameters">Parameters</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>client_id</code></td>
+<td><code>string</code></td>
+<td><strong>Required</strong>. The client ID you received from GitHub when you {% ifversion fpt %}<a href="https://github.com/settings/applications/new">registered</a>{% else %}registered{% endif %}.</td>
+</tr>
+<tr class="even">
+<td><code>redirect_uri</code></td>
+<td><code>string</code></td>
+<td>The URL in your application where users will be sent after authorization. See details below about <a href="#redirect-urls">redirect urls</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>login</code></td>
+<td><code>string</code></td>
+<td>Suggests a specific account to use for signing in and authorizing the app.</td>
+</tr>
+<tr class="even">
+<td><code>scope</code></td>
+<td><code>string</code></td>
+<td>A space-delimited list of <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">scopes</a>. If not provided, <code>scope</code> defaults to an empty list for users that have not authorized any scopes for the application. For users who have authorized scopes for the application, the user won’t be shown the OAuth authorization page with the list of scopes. Instead, this step of the flow will automatically complete with the set of scopes the user has authorized for the application. For example, if a user has already performed the web flow twice and has authorized one token with <code>user</code> scope and another token with <code>repo</code> scope, a third web flow that does not provide a <code>scope</code> will receive a token with <code>user</code> and <code>repo</code> scope.</td>
+</tr>
+<tr class="odd">
+<td><code>state</code></td>
+<td><code>string</code></td>
+<td>{% data reusables.apps.state_description %}</td>
+</tr>
+<tr class="even">
+<td><code>allow_signup</code></td>
+<td><code>string</code></td>
+<td>Whether or not unauthenticated users will be offered an option to sign up for GitHub during the OAuth flow. The default is <code>true</code>. Use <code>false</code> when a policy prohibits signups.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="users-are-redirected-back-to-your-site-by-github">2. Users are redirected back to your site by GitHub</h3>
+<p>If the user accepts your request, {% data variables.product.product_name %} redirects back to your site with a temporary <code>code</code> in a code parameter as well as the state you provided in the previous step in a <code>state</code> parameter. The temporary code will expire after 10 minutes. If the states don’t match, then a third party created the request, and you should abort the process.</p>
+<p>Exchange this <code>code</code> for an access token:</p>
+<pre><code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code></pre>
+<h4 id="parameters-1">Parameters</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>client_id</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The client ID you received from {% data variables.product.product_name %} for your {% data variables.product.prodname_oauth_app %}.</td>
+</tr>
+<tr class="even">
+<td><code>client_secret</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The client secret you received from {% data variables.product.product_name %} for your {% data variables.product.prodname_oauth_app %}.</td>
+</tr>
+<tr class="odd">
+<td><code>code</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The code you received as a response to Step 1.</td>
+</tr>
+<tr class="even">
+<td><code>redirect_uri</code></td>
+<td><code>string</code></td>
+<td>The URL in your application where users are sent after authorization.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response">Response</h4>
+<p>By default, the response takes the following form:</p>
+<pre><code>access_token={% ifversion fpt or ghes &gt; 3.1 or ghae-next %}gho_16C7e42F292c6912E7710c838347Ae178B4a{% else %}e72e16c7e42f292c6912e7710c838347ae178b4a{% endif %}&amp;token_type=bearer</code></pre>
+<p>You can also receive the content in different formats depending on the Accept header:</p>
+<pre><code>Accept: application/json
+{&quot;access_token&quot;:&quot;{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}gho_16C7e42F292c6912E7710c838347Ae178B4a{% else %}e72e16c7e42f292c6912e7710c838347ae178b4a{% endif %}&quot;, &quot;scope&quot;:&quot;repo,gist&quot;, &quot;token_type&quot;:&quot;bearer&quot;}
+
+Accept: application/xml
+&lt;OAuth&gt;
+  &lt;token_type&gt;bearer&lt;/token_type&gt;
+  &lt;scope&gt;repo,gist&lt;/scope&gt;
+  &lt;access_token&gt;{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}gho_16C7e42F292c6912E7710c838347Ae178B4a{% else %}e72e16c7e42f292c6912e7710c838347ae178b4a{% endif %}&lt;/access_token&gt;
+&lt;/OAuth&gt;</code></pre>
+<h3 id="use-the-access-token-to-access-the-api">3. Use the access token to access the API</h3>
+<p>The access token allows you to make requests to the API on a behalf of a user.</p>
+<pre><code>Authorization: token OAUTH-TOKEN
+GET {% data variables.product.api_url_code %}/user</code></pre>
+<p>For example, in curl you can set the Authorization header like this:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token OAUTH-TOKEN&quot; {% data variables.product.api_url_pre %}/user</code></pre>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %} ## Device flow</p>
+<p>{% ifversion ghes &lt; 3.1 %} {% note %}</p>
+<p><strong>Note:</strong> The device flow is in public beta and subject to change.</p>
+<p>{% endnote %} {% endif %}</p>
+<p>The device flow allows you to authorize users for a headless app, such as a CLI tool or Git credential manager.</p>
+<h3 id="overview-of-the-device-flow">Overview of the device flow</h3>
+<ol type="1">
+<li>Your app requests device and user verification codes and gets the authorization URL where the user will enter the user verification code.</li>
+<li>The app prompts the user to enter a user verification code at {% data variables.product.device_authorization_url %}.</li>
+<li>The app polls for the user authentication status. Once the user has authorized the device, the app will be able to make API calls with a new access token.</li>
+</ol>
+<h3 id="step-1-app-requests-the-device-and-user-verification-codes-from-github">Step 1: App requests the device and user verification codes from GitHub</h3>
+<pre><code>POST {% data variables.product.oauth_host_code %}/login/device/code</code></pre>
+<p>Your app must request a user verification code and verification URL that the app will use to prompt the user to authenticate in the next step. This request also returns a device verification code that the app must use to receive an access token and check the status of user authentication.</p>
+<h4 id="input-parameters">Input Parameters</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>client_id</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The client ID you received from {% data variables.product.product_name %} for your app.</td>
+</tr>
+<tr class="even">
+<td><code>scope</code></td>
+<td><code>string</code></td>
+<td>The scope that your app is requesting access to.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-1">Response</h4>
+<p>{% ifversion fpt %} <code>JSON   {     "device_code": "3584d83530557fdd1f46af8289938c8ef79f9dc5",     "user_code": "WDJB-MJHT",     "verification_uri": "https://github.com/login/device",     "expires_in": 900,     "interval": 5   }</code> {% else %} <code>JSON   {     "device_code": "3584d83530557fdd1f46af8289938c8ef79f9dc5",     "user_code": "WDJB-MJHT",     "verification_uri": "http(s)://[hostname]/login/device",     "expires_in": 900,     "interval": 5   }</code> {% endif %}</p>
+<h4 id="response-parameters">Response parameters</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>device_code</code></td>
+<td><code>string</code></td>
+<td>The device verification code is 40 characters and used to verify the device.</td>
+</tr>
+<tr class="even">
+<td><code>user_code</code></td>
+<td><code>string</code></td>
+<td>The user verification code is displayed on the device so the user can enter the code in a browser. This code is 8 characters with a hyphen in the middle.</td>
+</tr>
+<tr class="odd">
+<td><code>verification_uri</code></td>
+<td><code>string</code></td>
+<td>The verification URL where users need to enter the <code>user_code</code>: {% data variables.product.device_authorization_url %}.</td>
+</tr>
+<tr class="even">
+<td><code>expires_in</code></td>
+<td><code>integer</code></td>
+<td>The number of seconds before the <code>device_code</code> and <code>user_code</code> expire. The default is 900 seconds or 15 minutes.</td>
+</tr>
+<tr class="odd">
+<td><code>interval</code></td>
+<td><code>integer</code></td>
+<td>The minimum number of seconds that must pass before you can make a new access token request (<code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code>) to complete the device authorization. For example, if the interval is 5, then you cannot make a new request until 5 seconds pass. If you make more than one request over 5 seconds, then you will hit the rate limit and receive a <code>slow_down</code> error.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-prompt-the-user-to-enter-the-user-code-in-a-browser">Step 2: Prompt the user to enter the user code in a browser</h3>
+<p>Your device will show the user verification code and prompt the user to enter the code at {% data variables.product.device_authorization_url %}.</p>
+<figure>
+<img src="/assets/images/github-apps/device_authorization_page_for_user_code.png" alt="Field to enter the user verification code displayed on your device" /><figcaption>Field to enter the user verification code displayed on your device</figcaption>
+</figure>
+<h3 id="step-3-app-polls-github-to-check-if-the-user-authorized-the-device">Step 3: App polls GitHub to check if the user authorized the device</h3>
+<pre><code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code></pre>
+<p>Your app will make device authorization requests that poll <code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code>, until the device and user codes expire or the user has successfully authorized the app with a valid user code. The app must use the minimum polling <code>interval</code> retrieved in step 1 to avoid rate limit errors. For more information, see “<a href="#rate-limits-for-the-device-flow">Rate limits for the device flow</a>.”</p>
+<p>The user must enter a valid code within 15 minutes (or 900 seconds). After 15 minutes, you will need to request a new device authorization code with <code>POST {% data variables.product.oauth_host_code %}/login/device/code</code>.</p>
+<p>Once the user has authorized, the app will receive an access token that can be used to make requests to the API on behalf of a user.</p>
+<h4 id="input-parameters-1">Input parameters</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>client_id</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The client ID you received from {% data variables.product.product_name %} for your {% data variables.product.prodname_oauth_app %}.</td>
+</tr>
+<tr class="even">
+<td><code>device_code</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The device verification code you received from the <code>POST {% data variables.product.oauth_host_code %}/login/device/code</code> request.</td>
+</tr>
+<tr class="odd">
+<td><code>grant_type</code></td>
+<td><code>string</code></td>
+<td><strong>Required.</strong> The grant type must be <code>urn:ietf:params:oauth:grant-type:device_code</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-2">Response</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2"> <span class="dt">&quot;access_token&quot;</span><span class="fu">:</span> <span class="st">&quot;{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}gho_16C7e42F292c6912E7710c838347Ae178B4a{% else %}e72e16c7e42f292c6912e7710c838347ae178b4a{% endif %}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">&quot;token_type&quot;</span><span class="fu">:</span> <span class="st">&quot;bearer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">&quot;scope&quot;</span><span class="fu">:</span> <span class="st">&quot;user&quot;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<h3 id="rate-limits-for-the-device-flow">Rate limits for the device flow</h3>
+<p>When a user submits the verification code on the browser, there is a rate limit of 50 submissions in an hour per application.</p>
+<p>If you make more than one access token request (<code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code>) within the required minimum timeframe between requests (or <code>interval</code>), you’ll hit the rate limit and receive a <code>slow_down</code> error response. The <code>slow_down</code> error response adds 5 seconds to the last <code>interval</code>. For more information, see the <a href="#errors-for-the-device-flow">Errors for the device flow</a>.</p>
+<h3 id="error-codes-for-the-device-flow">Error codes for the device flow</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>authorization_pending</code></td>
+<td>This error occurs when the authorization request is pending and the user hasn’t entered the user code yet. The app is expected to keep polling the <code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code> request without exceeding the <a href="#response-parameters"><code>interval</code></a>, which requires a minimum number of seconds between each request.</td>
+</tr>
+<tr class="even">
+<td><code>slow_down</code></td>
+<td>When you receive the <code>slow_down</code> error, 5 extra seconds are added to the minimum <code>interval</code> or timeframe required between your requests using <code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code>. For example, if the starting interval required at least 5 seconds between requests and you get a <code>slow_down</code> error response, you must now wait a minimum of 10 seconds before making a new request for an OAuth access token. The error response includes the new <code>interval</code> that you must use.</td>
+</tr>
+<tr class="odd">
+<td><code>expired_token</code></td>
+<td>If the device code expired, then you will see the <code>token_expired</code> error. You must make a new request for a device code.</td>
+</tr>
+<tr class="even">
+<td><code>unsupported_grant_type</code></td>
+<td>The grant type must be <code>urn:ietf:params:oauth:grant-type:device_code</code> and included as an input parameter when you poll the OAuth token request <code>POST {% data variables.product.oauth_host_code %}/login/oauth/access_token</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>incorrect_client_credentials</code></td>
+<td>For the device flow, you must pass your app’s client ID, which you can find on your app settings page. The <code>client_secret</code> is not needed for the device flow.</td>
+</tr>
+<tr class="even">
+<td><code>incorrect_device_code</code></td>
+<td>The device_code provided is not valid.</td>
+</tr>
+<tr class="odd">
+<td><code>access_denied</code></td>
+<td>When a user clicks cancel during the authorization process, you’ll receive a <code>access_denied</code> error and the user won’t be able to use the verification code again.</td>
+</tr>
+</tbody>
+</table>
+<p>For more information, see the “<a href="https://tools.ietf.org/html/rfc8628#section-3.5">OAuth 2.0 Device Authorization Grant</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="non-web-application-flow">Non-Web application flow</h2>
+<p>Non-web authentication is available for limited situations like testing. If you need to, you can use <a href="/rest/overview/other-authentication-methods#basic-authentication">Basic Authentication</a> to create a personal access token using your <a href="/articles/creating-an-access-token-for-command-line-use">Personal access tokens settings page</a>. This technique enables the user to revoke access at any time.</p>
+<p>{% ifversion fpt or ghes %} {% note %}</p>
+<p><strong>Note:</strong> When using the non-web application flow to create an OAuth2 token, make sure to understand how to <a href="/rest/overview/other-authentication-methods#working-with-two-factor-authentication">work with two-factor authentication</a> if you or your users have two-factor authentication enabled.</p>
+<p>{% endnote %} {% endif %}</p>
+<h2 id="redirect-urls">Redirect URLs</h2>
+<p>The <code>redirect_uri</code> parameter is optional. If left out, GitHub will redirect users to the callback URL configured in the OAuth Application settings. If provided, the redirect URL’s host and port must exactly match the callback URL. The redirect URL’s path must reference a subdirectory of the callback URL.</p>
+<pre><code>CALLBACK: http://example.com/path
+
+GOOD: http://example.com/path
+GOOD: http://example.com/path/subdir/other
+BAD:  http://example.com/bar
+BAD:  http://example.com/
+BAD:  http://example.com:8080/path
+BAD:  http://oauth.example.com:8080/path
+BAD:  http://example.org</code></pre>
+<h3 id="localhost-redirect-urls">Localhost redirect urls</h3>
+<p>The optional <code>redirect_uri</code> parameter can also be used for localhost URLs. If the application specifies a localhost URL and a port, then after authorizing the application users will be redirected to the provided URL and port. The <code>redirect_uri</code> does not need to match the port specified in the callback url for the app.</p>
+<p>For the <code>http://localhost/path</code> callback URL, you can use this <code>redirect_uri</code>:</p>
+<pre><code>http://localhost:1234/path</code></pre>
+<h2 id="creating-multiple-tokens-for-oauth-apps">Creating multiple tokens for OAuth Apps</h2>
+<p>You can create multiple tokens for a user/application/scope combination to create tokens for specific use cases.</p>
+<p>This is useful if your OAuth App supports one workflow that uses GitHub for sign-in and only requires basic user information. Another workflow may require access to a user’s private repositories. Using multiple tokens, your OAuth App can perform the web flow for each use case, requesting only the scopes needed. If a user only uses your application to sign in, they are never required to grant your OAuth App access to their private repositories.</p>
+<p>{% data reusables.apps.oauth-token-limit %}</p>
+<p>{% data reusables.apps.deletes_ssh_keys %}</p>
+<h2 id="directing-users-to-review-their-access">Directing users to review their access</h2>
+<p>You can link to authorization information for an OAuth App so that users can review and revoke their application authorizations.</p>
+<p>To build this link, you’ll need your OAuth Apps <code>client_id</code> that you received from GitHub when you registered the application.</p>
+<pre><code>{% data variables.product.oauth_host_code %}/settings/connections/applications/:client_id</code></pre>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> To learn more about the resources that your OAuth App can access for a user, see “<a href="/rest/guides/discovering-resources-for-a-user">Discovering resources for a user</a>.”</p>
+<p>{% endtip %}</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li>“<a href="/apps/managing-oauth-apps/troubleshooting-authorization-request-errors">Troubleshooting authorization request errors</a>”</li>
+<li>“<a href="/apps/managing-oauth-apps/troubleshooting-oauth-app-access-token-request-errors">Troubleshooting OAuth App access token request errors</a>” {% ifversion fpt or ghes &gt; 2.21 or ghae %}</li>
+<li>“<a href="#errors-for-the-device-flow">Device flow errors</a>” {% endif %}</li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/authenticating-to-github/about-authentication-to-github">About authentication to {% data variables.product.prodname_dotcom %}</a>”</li>
+</ul>
+</body>
+</html>

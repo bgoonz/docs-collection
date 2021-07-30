@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Building and testing PowerShell</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Building and testing PowerShell</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you how to use PowerShell for CI. It describes how to use
+      Pester, install dependencies, test your module, and publish to the
+      PowerShell Gallery.
+    </p>
+    <p>
+      {% data variables.product.prodname_dotcom %}-hosted runners have a tools
+      cache with pre-installed software, which includes PowerShell and Pester.
+    </p>
+    <p>
+      {% ifversion ghae %}For instructions on how to make sure your {% data
+      variables.actions.hosted_runner %} has the required software installed,
+      see “<a href="/actions/using-github-hosted-runners/creating-custom-images"
+        >Creating custom images</a
+      >.” {% else %}For a full list of up-to-date software and the pre-installed
+      versions of PowerShell and Pester, see “<a
+        href="/actions/reference/specifications-for-github-hosted-runners/#supported-software"
+        >Specifications for {% data variables.product.prodname_dotcom %}-hosted
+        runners</a
+      >”. {% endif %}
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      You should be familiar with YAML and the syntax for {% data
+      variables.product.prodname_actions %}. For more information, see “<a
+        href="/actions/learn-github-actions"
+        >Learn {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      We recommend that you have a basic understanding of PowerShell and Pester.
+      For more information, see: -
+      <a
+        href="https://docs.microsoft.com/powershell/scripting/learn/ps101/01-getting-started"
+        >Getting started with PowerShell</a
+      >
+      - <a href="https://pester.dev">Pester</a>
+    </p>
+    <p>{% data reusables.actions.enterprise-setup-prereq %}</p>
+    <h2 id="adding-a-workflow-for-pester">Adding a workflow for Pester</h2>
+    <p>
+      To automate your testing with PowerShell and Pester, you can add a
+      workflow that runs every time a change is pushed to your repository. In
+      the following example, <code>Test-Path</code> is used to check that a file
+      called <code>resultsfile.log</code> is present.
+    </p>
+    <p>
+      This example workflow file must be added to your repository’s
+      <code>.github/workflows/</code> directory:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">name:</span><span class="at"> Test PowerShell on Ubuntu</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">on:</span><span class="at"> push</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="fu">pester-test:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">name:</span><span class="at"> Pester test</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-9" title="9">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Check out repository code</span></a>
+<a class="sourceLine" id="cb1-10" title="10">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Perform a Pester test from the command-line</span></a>
+<a class="sourceLine" id="cb1-12" title="12">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb1-13" title="13">        <span class="fu">run:</span><span class="at"> Test-Path resultsfile.log | Should -Be $true</span></a>
+<a class="sourceLine" id="cb1-14" title="14">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Perform a Pester test from the Tests.ps1 file</span></a>
+<a class="sourceLine" id="cb1-15" title="15">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb1-17" title="17">          Invoke-Pester Unit.Tests.ps1 -Passthru</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <ul>
+      <li>
+        <code>shell: pwsh</code> - Configures the job to use PowerShell when
+        running the <code>run</code> commands.
+      </li>
+      <li>
+        <code>run: Test-Path resultsfile.log</code> - Check whether a file
+        called <code>resultsfile.log</code> is present in the repository’s root
+        directory.
+      </li>
+      <li>
+        <p>
+          <code>Should -Be $true</code> - Uses Pester to define an expected
+          result. If the result is unexpected, then {% data
+          variables.product.prodname_actions %} flags this as a failed test. For
+          example:
+        </p>
+        <p>
+          {% ifversion fpt or ghes &gt; 3.0 or ghae %}
+          <img
+            src="/assets/images/help/repository/actions-failed-pester-test-updated.png"
+            alt="Failed Pester test"
+          />
+          {% else %}
+          <img
+            src="/assets/images/help/repository/actions-failed-pester-test.png"
+            alt="Failed Pester test"
+          />
+          {% endif %}
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>Invoke-Pester Unit.Tests.ps1 -Passthru</code> - Uses Pester to
+          execute tests defined in a file called <code>Unit.Tests.ps1</code>.
+          For example, to perform the same test described above, the
+          <code>Unit.Tests.ps1</code> will contain the following:
+        </p>
+        <pre><code>Describe &quot;Check results file is present&quot; {
+    It &quot;Check results file is present&quot; {
+        Test-Path resultsfile.log | Should -Be $true
+    }
+}</code></pre>
+      </li>
+    </ul>
+    <h2 id="powershell-module-locations">PowerShell module locations</h2>
+    <p>
+      The table below describes the locations for various PowerShell modules in
+      each {% data variables.product.prodname_dotcom %}-hosted runner.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 24%" />
+        <col style="width: 20%" />
+        <col style="width: 34%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th></th>
+          <th>Ubuntu</th>
+          <th>macOS</th>
+          <th>Windows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>PowerShell system modules</strong></td>
+          <td><code>/opt/microsoft/powershell/7/Modules/*</code></td>
+          <td><code>/usr/local/microsoft/powershell/7/Modules/*</code></td>
+          <td><code>C:\program files\powershell\7\Modules\*</code></td>
+        </tr>
+        <tr class="even">
+          <td><strong>PowerShell add-on modules</strong></td>
+          <td><code>/usr/local/share/powershell/Modules/*</code></td>
+          <td><code>/usr/local/share/powershell/Modules/*</code></td>
+          <td><code>C:\Modules\*</code></td>
+        </tr>
+        <tr class="odd">
+          <td><strong>User-installed modules</strong></td>
+          <td><code>/home/runner/.local/share/powershell/Modules/*</code></td>
+          <td><code>/Users/runner/.local/share/powershell/Modules/*</code></td>
+          <td>
+            <code>C:\Users\runneradmin\Documents\PowerShell\Modules\*</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="installing-dependencies">Installing dependencies</h2>
+    <p>
+      {% data variables.product.prodname_dotcom %}-hosted runners have
+      PowerShell 7 and Pester installed. You can use
+      <code>Install-Module</code> to install additional dependencies from the
+      PowerShell Gallery before building and testing your code.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> The pre-installed packages (such as Pester) used by
+      {% data variables.product.prodname_dotcom %}-hosted runners are regularly
+      updated, and can introduce significant changes. As a result, it is
+      recommended that you always specify the required package versions by using
+      <code>Install-Module</code> with <code>-MaximumVersion</code>.
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      When using {% data variables.product.prodname_dotcom %}-hosted runners,
+      you can also cache dependencies to speed up your workflow. For more
+      information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >.”
+    </p>
+    <p>
+      For example, the following job installs the <code>SqlServer</code> and
+      <code>PSScriptAnalyzer</code> modules:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">install-dependencies:</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">name:</span><span class="at"> Install dependencies</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb3-7" title="7">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install from PSGallery</span></a>
+<a class="sourceLine" id="cb3-8" title="8">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb3-10" title="10">          Set-PSRepository PSGallery -InstallationPolicy Trusted</a>
+<a class="sourceLine" id="cb3-11" title="11">          Install-Module SqlServer, PSScriptAnalyzer</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> By default, no repositories are trusted by
+      PowerShell. When installing modules from the PowerShell Gallery, you must
+      explicitly set the installation policy for <code>PSGallery</code> to
+      <code>Trusted</code>.
+    </p>
+    <p>{% endnote %}</p>
+    <h3 id="caching-dependencies">Caching dependencies</h3>
+    <p>
+      When using {% data variables.product.prodname_dotcom %}-hosted runners,
+      you can cache PowerShell dependencies using a unique key, which allows you
+      to restore the dependencies for future workflows with the
+      <a href="https://github.com/marketplace/actions/cache"
+        ><code>cache</code></a
+      >
+      action. For more information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >.”
+    </p>
+    <p>
+      PowerShell caches its dependencies in different locations, depending on
+      the runner’s operating system. For example, the <code>path</code> location
+      used in the following Ubuntu example will be different for a Windows
+      operating system.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Setup PowerShell module cache</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="fu">id:</span><span class="at"> cacher</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">uses:</span><span class="at"> actions/cache@v2</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="fu">path:</span><span class="at"> </span><span class="st">&quot;~/.local/share/powershell/Modules&quot;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">      <span class="fu">key:</span><span class="at"> ${{ runner.os }}-SqlServer-PSScriptAnalyzer</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install required PowerShell modules</span></a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="fu">if:</span><span class="at"> steps.cacher.outputs.cache-hit != &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="fu">    run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb4-13" title="13">      Set-PSRepository PSGallery -InstallationPolicy Trusted</a>
+<a class="sourceLine" id="cb4-14" title="14">      Install-Module SqlServer, PSScriptAnalyzer -ErrorAction Stop</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <h2 id="testing-your-code">Testing your code</h2>
+    <p>
+      You can use the same commands that you use locally to build and test your
+      code.
+    </p>
+    <h3 id="using-psscriptanalyzer-to-lint-code">
+      Using PSScriptAnalyzer to lint code
+    </h3>
+    <p>
+      The following example installs <code>PSScriptAnalyzer</code> and uses it
+      to lint all <code>ps1</code> files in the repository. For more
+      information, see
+      <a href="https://github.com/PowerShell/PSScriptAnalyzer"
+        >PSScriptAnalyzer on GitHub</a
+      >.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1">  <span class="fu">lint-with-PSScriptAnalyzer:</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="fu">name:</span><span class="at"> Install and run PSScriptAnalyzer</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb5-6" title="6">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install PSScriptAnalyzer module</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb5-9" title="9">          Set-PSRepository PSGallery -InstallationPolicy Trusted</a>
+<a class="sourceLine" id="cb5-10" title="10">          Install-Module PSScriptAnalyzer -ErrorAction Stop</a>
+<a class="sourceLine" id="cb5-11" title="11">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Lint with PSScriptAnalyzer</span></a>
+<a class="sourceLine" id="cb5-12" title="12">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb5-14" title="14">          Invoke-ScriptAnalyzer -Path *.ps1 -Recurse -Outvariable issues</a>
+<a class="sourceLine" id="cb5-15" title="15">          $errors   = $issues.Where({$_.Severity -eq &#39;Error&#39;})</a>
+<a class="sourceLine" id="cb5-16" title="16">          $warnings = $issues.Where({$_.Severity -eq &#39;Warning&#39;})</a>
+<a class="sourceLine" id="cb5-17" title="17">          if ($errors) {</a>
+<a class="sourceLine" id="cb5-18" title="18">              Write-Error &quot;There were $($errors.Count) errors and $($warnings.Count) warnings total.&quot; -ErrorAction Stop</a>
+<a class="sourceLine" id="cb5-19" title="19">          } else {</a>
+<a class="sourceLine" id="cb5-20" title="20">              Write-Output &quot;There were $($errors.Count) errors and $($warnings.Count) warnings total.&quot;</a>
+<a class="sourceLine" id="cb5-21" title="21">          }</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <h2 id="packaging-workflow-data-as-artifacts">
+      Packaging workflow data as artifacts
+    </h2>
+    <p>
+      You can upload artifacts to view after a workflow completes. For example,
+      you may need to save log files, core dumps, test results, or screenshots.
+      For more information, see “<a
+        href="/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts"
+        >Persisting workflow data using artifacts</a
+      >.”
+    </p>
+    <p>
+      The following example demonstrates how you can use the
+      <code>upload-artifact</code> action to archive the test results received
+      from <code>Invoke-Pester</code>. For more information, see the
+      <a href="https://github.com/actions/upload-artifact"
+        ><code>upload-artifact</code> action</a
+      >.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">name:</span><span class="at"> Upload artifact from Ubuntu</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="fu">upload-pester-results:</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    <span class="fu">name:</span><span class="at"> Run Pester and upload results</span></a>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Test with Pester</span></a>
+<a class="sourceLine" id="cb6-12" title="12">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb6-13" title="13">        <span class="fu">run:</span><span class="at"> Invoke-Pester Unit.Tests.ps1 -Passthru | Export-CliXml -Path Unit.Tests.xml</span></a>
+<a class="sourceLine" id="cb6-14" title="14">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Upload test results</span></a>
+<a class="sourceLine" id="cb6-15" title="15">        <span class="fu">uses:</span><span class="at"> actions/upload-artifact@v2</span></a>
+<a class="sourceLine" id="cb6-16" title="16">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-17" title="17">          <span class="fu">name:</span><span class="at"> ubuntu-Unit-Tests</span></a>
+<a class="sourceLine" id="cb6-18" title="18">          <span class="fu">path:</span><span class="at"> Unit.Tests.xml</span></a>
+<a class="sourceLine" id="cb6-19" title="19">    <span class="fu">if:</span><span class="at"> ${{ always() }}</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      The <code>always()</code> function configures the job to continue
+      processing even if there are test failures. For more information, see “<a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions#always"
+        >always</a
+      >.”
+    </p>
+    <h2 id="publishing-to-powershell-gallery">
+      Publishing to PowerShell Gallery
+    </h2>
+    <p>
+      You can configure your workflow to publish your PowerShell module to the
+      PowerShell Gallery when your CI tests pass. You can use secrets to store
+      any tokens or credentials needed to publish your package. For more
+      information, see “<a
+        href="/github/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+        >Creating and using encrypted secrets</a
+      >.”
+    </p>
+    <p>
+      The following example creates a package and uses
+      <code>Publish-Module</code> to publish it to the PowerShell Gallery:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">name:</span><span class="at"> Publish PowerShell Module</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="fu">release:</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="fu">types:</span><span class="at"> </span><span class="kw">[</span>created<span class="kw">]</span></a>
+<a class="sourceLine" id="cb7-6" title="6"></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="fu">publish-to-gallery:</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-11" title="11">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb7-12" title="12">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Build and publish</span></a>
+<a class="sourceLine" id="cb7-13" title="13">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb7-14" title="14">          <span class="fu">NUGET_KEY:</span><span class="at"> ${{ secrets.NUGET_KEY }}</span></a>
+<a class="sourceLine" id="cb7-15" title="15">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb7-17" title="17">          ./build.ps1 -Path /tmp/samplemodule</a>
+<a class="sourceLine" id="cb7-18" title="18">          Publish-Module -Path /tmp/samplemodule -NuGetApiKey $env:NUGET_KEY -Verbose</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+  </body>
+</html>

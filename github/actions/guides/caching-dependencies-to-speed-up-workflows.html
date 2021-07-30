@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Caching dependencies to speed up workflows</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Caching dependencies to speed up workflows</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <h2 id="about-caching-workflow-dependencies">
+      About caching workflow dependencies
+    </h2>
+    <p>
+      Workflow runs often reuse the same outputs or downloaded dependencies from
+      one run to another. For example, package and dependency management tools
+      such as Maven, Gradle, npm, and Yarn keep a local cache of downloaded
+      dependencies.
+    </p>
+    <p>
+      Jobs on {% data variables.product.prodname_dotcom %}-hosted runners start
+      in a clean virtual environment and must download dependencies each time,
+      causing increased network utilization, longer runtime, and increased cost.
+      To help speed up the time it takes to recreate these files, {% data
+      variables.product.prodname_dotcom %} can cache dependencies you frequently
+      use in workflows.
+    </p>
+    <p>
+      To cache dependencies for a job, you’ll need to use {% data
+      variables.product.prodname_dotcom %}’s <code>cache</code> action. The
+      action retrieves a cache identified by a unique key. For more information,
+      see
+      <a href="https://github.com/actions/cache"><code>actions/cache</code></a
+      >.
+    </p>
+    <p>
+      If you are caching Ruby gems, instead consider using the Ruby maintained
+      action, which can cache bundle installs on initiation. For more
+      information, see
+      <a
+        href="https://github.com/ruby/setup-ruby#caching-bundle-install-automatically"
+        ><code>ruby/setup-ruby</code></a
+      >.
+    </p>
+    <p>
+      To cache and restore dependencies for npm, Yarn, or pnpm, you can use the
+      <a href="https://github.com/actions/setup-node"
+        ><code>actions/setup-node</code> action</a
+      >.
+    </p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning</strong>: We recommend that you don’t store any sensitive
+      information in the cache of public repositories. For example, sensitive
+      information can include access tokens or login credentials stored in a
+      file in the cache path. Also, command line interface (CLI) programs like
+      <code>docker login</code> can save access credentials in a configuration
+      file. Anyone with read access can create a pull request on a repository
+      and access the contents of the cache. Forks of a repository can also
+      create pull requests on the base branch and access caches on the base
+      branch.
+    </p>
+    <p>{% endwarning %}</p>
+    <h2 id="comparing-artifacts-and-dependency-caching">
+      Comparing artifacts and dependency caching
+    </h2>
+    <p>
+      Artifacts and caching are similar because they provide the ability to
+      store files on {% data variables.product.prodname_dotcom %}, but each
+      feature offers different use cases and cannot be used interchangeably.
+    </p>
+    <ul>
+      <li>
+        Use caching when you want to reuse files that don’t change often between
+        jobs or workflow runs.
+      </li>
+      <li>
+        Use artifacts when you want to save files produced by a job to view
+        after a workflow has ended. For more information, see “<a
+          href="/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts"
+          >Persisting workflow data using artifacts</a
+        >.”
+      </li>
+    </ul>
+    <h2 id="restrictions-for-accessing-a-cache">
+      Restrictions for accessing a cache
+    </h2>
+    <p>
+      With <code>v2</code> of the <code>cache</code> action, you can access the
+      cache in workflows triggered by any event that has a
+      <code>GITHUB_REF</code>. If you are using <code>v1</code> of the
+      <code>cache</code> action, you can only access the cache in workflows
+      triggered by <code>push</code> and <code>pull_request</code> events,
+      except for the <code>pull_request</code> <code>closed</code> event. For
+      more information, see “<a
+        href="/actions/reference/events-that-trigger-workflows"
+        >Events that trigger workflows</a
+      >.”
+    </p>
+    <p>
+      A workflow can access and restore a cache created in the current branch,
+      the base branch (including base branches of forked repositories), or the
+      default branch (usually <code>main</code>). For example, a cache created
+      on the default branch would be accessible from any pull request. Also, if
+      the branch <code>feature-b</code> has the base branch
+      <code>feature-a</code>, a workflow triggered on
+      <code>feature-b</code> would have access to caches created in the default
+      branch (<code>main</code>), <code>feature-a</code>, and
+      <code>feature-b</code>.
+    </p>
+    <p>
+      Access restrictions provide cache isolation and security by creating a
+      logical boundary between different workflows and branches. For example, a
+      cache created for the branch <code>feature-a</code> (with the base
+      <code>main</code>) would not be accessible to a pull request for the
+      branch <code>feature-b</code> (with the base <code>main</code>).
+    </p>
+    <h2 id="using-the-cache-action">Using the <code>cache</code> action</h2>
+    <p>
+      The <code>cache</code> action will attempt to restore a cache based on the
+      <code>key</code> you provide. When the action finds a cache, the action
+      restores the cached files to the <code>path</code> you configure.
+    </p>
+    <p>
+      If there is no exact match, the action creates a new cache entry if the
+      job completes successfully. The new cache will use the
+      <code>key</code> you provided and contains the files in the
+      <code>path</code> directory.
+    </p>
+    <p>
+      You can optionally provide a list of <code>restore-keys</code> to use when
+      the <code>key</code> doesn’t match an existing cache. A list of
+      <code>restore-keys</code> is useful when you are restoring a cache from
+      another branch because <code>restore-keys</code> can partially match cache
+      keys. For more information about matching <code>restore-keys</code>, see
+      “<a href="#matching-a-cache-key">Matching a cache key</a>.”
+    </p>
+    <p>
+      For more information, see
+      <a href="https://github.com/actions/cache"><code>actions/cache</code></a
+      >.
+    </p>
+    <h3 id="input-parameters-for-the-cache-action">
+      Input parameters for the <code>cache</code> action
+    </h3>
+    <ul>
+      <li>
+        <code>key</code>: <strong>Required</strong> The key created when saving
+        a cache and the key used to search for a cache. Can be any combination
+        of variables, context values, static strings, and functions. Keys have a
+        maximum length of 512 characters, and keys longer than the maximum
+        length will cause the action to fail.
+      </li>
+      <li>
+        <code>path</code>: <strong>Required</strong> The file path on the runner
+        to cache or restore. The path can be an absolute path or relative to the
+        working directory.
+        <ul>
+          <li>
+            Paths can be either directories or single files, and glob patterns
+            are supported.
+          </li>
+          <li>
+            <p>
+              With <code>v2</code> of the <code>cache</code> action, you can
+              specify a single path, or you can add multiple paths on separate
+              lines. For example:
+            </p>
+            <pre><code>- name: Cache Gradle packages
+  uses: actions/cache@v2
+  with:
+    path: |
+      ~/.gradle/caches
+      ~/.gradle/wrapper</code></pre>
+          </li>
+          <li>
+            With <code>v1</code> of the <code>cache</code> action, only a single
+            path is supported and it must be a directory. You cannot cache a
+            single file.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>restore-keys</code>: <strong>Optional</strong> An ordered list of
+        alternative keys to use for finding the cache if no cache hit occurred
+        for <code>key</code>.
+      </li>
+    </ul>
+    <h3 id="output-parameters-for-the-cache-action">
+      Output parameters for the <code>cache</code> action
+    </h3>
+    <ul>
+      <li>
+        <code>cache-hit</code>: A boolean value to indicate an exact match was
+        found for the key.
+      </li>
+    </ul>
+    <h3 id="example-using-the-cache-action">
+      Example using the <code>cache</code> action
+    </h3>
+    <p>
+      This example creates a new cache when the packages in
+      <code>package-lock.json</code> file change, or when the runner’s operating
+      system changes. The cache key uses contexts and expressions to generate a
+      key that includes the runner’s operating system and a SHA-256 hash of the
+      <code>package-lock.json</code> file.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Caching with npm
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles(&#39;**/package-lock.json&#39;) }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm build
+
+      - name: Test
+        run: npm test</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      When <code>key</code> matches an existing cache, it’s called a cache hit,
+      and the action restores the cached files to the
+      <code>path</code> directory.
+    </p>
+    <p>
+      When <code>key</code> doesn’t match an existing cache, it’s called a cache
+      miss, and a new cache is created if the job completes successfully. When a
+      cache miss occurs, the action searches for alternate keys called
+      <code>restore-keys</code>.
+    </p>
+    <ol type="1">
+      <li>
+        If you provide <code>restore-keys</code>, the <code>cache</code> action
+        sequentially searches for any caches that match the list of
+        <code>restore-keys</code>.
+        <ul>
+          <li>
+            When there is an exact match, the action restores the files in the
+            cache to the <code>path</code> directory.
+          </li>
+          <li>
+            If there are no exact matches, the action searches for partial
+            matches of the restore keys. When the action finds a partial match,
+            the most recent cache is restored to the
+            <code>path</code> directory.
+          </li>
+        </ul>
+      </li>
+      <li>
+        The <code>cache</code> action completes and the next workflow step in
+        the job runs.
+      </li>
+      <li>
+        If the job completes successfully, the action creates a new cache with
+        the contents of the <code>path</code> directory.
+      </li>
+    </ol>
+    <p>
+      To cache files in more than one directory, you will need a step that uses
+      the
+      <a href="https://github.com/actions/cache"><code>cache</code></a> action
+      for each directory. Once you create a cache, you cannot change the
+      contents of an existing cache but you can create a new cache with a new
+      key.
+    </p>
+    <h3 id="using-contexts-to-create-cache-keys">
+      Using contexts to create cache keys
+    </h3>
+    <p>
+      A cache key can include any of the contexts, functions, literals, and
+      operators supported by {% data variables.product.prodname_actions %}. For
+      more information, see “<a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions"
+        >Context and expression syntax for {% data
+        variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      Using expressions to create a <code>key</code> allows you to automatically
+      create a new cache when dependencies have changed. For example, you can
+      create a <code>key</code> using an expression that calculates the hash of
+      an npm <code>package-lock.json</code> file.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1">npm-$<span class="kw">{</span>{ hashFiles(<span class="st">&#39;package-lock.json&#39;</span>) <span class="kw">}</span>}</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      {% data variables.product.prodname_dotcom %} evaluates the expression
+      <code>hash "package-lock.json"</code> to derive the final
+      <code>key</code>.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1">npm-d5ea0750</a></code></pre>
+    </div>
+    <h2 id="matching-a-cache-key">Matching a cache key</h2>
+    <p>
+      The <code>cache</code> action first searches for cache hits for
+      <code>key</code> and <code>restore-keys</code> in the branch containing
+      the workflow run. If there are no hits in the current branch, the
+      <code>cache</code> action searches for <code>key</code> and
+      <code>restore-keys</code> in the parent branch and upstream branches.
+    </p>
+    <p>
+      You can provide a list of restore keys to use when there is a cache miss
+      on <code>key</code>. You can create multiple restore keys ordered from the
+      most specific to least specific. The <code>cache</code> action searches
+      for <code>restore-keys</code> in sequential order. When a key doesn’t
+      match directly, the action searches for keys prefixed with the restore
+      key. If there are multiple partial matches for a restore key, the action
+      returns the most recently created cache.
+    </p>
+    <h3 id="example-using-multiple-restore-keys">
+      Example using multiple restore keys
+    </h3>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">restore-keys:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  npm-foobar-${{ hashFiles(&#39;package-lock.json&#39;) }}</a>
+<a class="sourceLine" id="cb5-3" title="3">  npm-foobar-</a>
+<a class="sourceLine" id="cb5-4" title="4">  npm-</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      The runner evaluates the expressions, which resolve to these
+      <code>restore-keys</code>:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">restore-keys:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  npm-foobar-d5ea0750</a>
+<a class="sourceLine" id="cb6-3" title="3">  npm-foobar-</a>
+<a class="sourceLine" id="cb6-4" title="4">  npm-</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      The restore key <code>npm-foobar-</code> matches any key that starts with
+      the string <code>npm-foobar-</code>. For example, both of the keys
+      <code>npm-foobar-fd3052de</code> and
+      <code>npm-foobar-a9b253ff</code> match the restore key. The cache with the
+      most recent creation date would be used. The keys in this example are
+      searched in the following order:
+    </p>
+    <ol type="1">
+      <li>
+        <strong><code>npm-foobar-d5ea0750</code></strong> matches a specific
+        hash.
+      </li>
+      <li>
+        <strong><code>npm-foobar-</code></strong> matches cache keys prefixed
+        with <code>npm-foobar-</code>.
+      </li>
+      <li>
+        <strong><code>npm-</code></strong> matches any keys prefixed with
+        <code>npm-</code>.
+      </li>
+    </ol>
+    <h4 id="example-of-search-priority">Example of search priority</h4>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">key:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  npm-feature-d5ea0750</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="fu">restore-keys:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  npm-feature-</a>
+<a class="sourceLine" id="cb7-5" title="5">  npm-</a></code></pre>
+    </div>
+    <p>
+      For example, if a pull request contains a <code>feature</code> branch (the
+      current scope) and targets the default branch (<code>main</code>), the
+      action searches for <code>key</code> and <code>restore-keys</code> in the
+      following order:
+    </p>
+    <ol type="1">
+      <li>
+        Key <code>npm-feature-d5ea0750</code> in the <code>feature</code> branch
+        scope
+      </li>
+      <li>
+        Key <code>npm-feature-</code> in the <code>feature</code> branch scope
+      </li>
+      <li>Key <code>npm-</code> in the <code>feature</code> branch scope</li>
+      <li>
+        Key <code>npm-feature-d5ea0750</code> in the <code>main</code> branch
+        scope
+      </li>
+      <li>
+        Key <code>npm-feature-</code> in the <code>main</code> branch scope
+      </li>
+      <li>Key <code>npm-</code> in the <code>main</code> branch scope</li>
+    </ol>
+    <h2 id="usage-limits-and-eviction-policy">
+      Usage limits and eviction policy
+    </h2>
+    <p>
+      {% data variables.product.prodname_dotcom %} will remove any cache entries
+      that have not been accessed in over 7 days. There is no limit on the
+      number of caches you can store, but the total size of all caches in a
+      repository is limited to 5 GB. If you exceed this limit, {% data
+      variables.product.prodname_dotcom %} will save your cache but will begin
+      evicting caches until the total size is less than 5 GB.
+    </p>
+  </body>
+</html>

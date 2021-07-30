@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Basics of authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Basics of authentication</h1>
+</header>
+<p>In this section, we’re going to focus on the basics of authentication. Specifically, we’re going to create a Ruby server (using <a href="http://www.sinatrarb.com/">Sinatra</a>) that implements the <a href="/apps/building-oauth-apps/authorizing-oauth-apps/">web flow</a> of an application in several different ways.</p>
+<p>{% tip %}</p>
+<p>You can download the complete source code for this project <a href="https://github.com/github/platform-samples/tree/master/api/">from the platform-samples repo</a>.</p>
+<p>{% endtip %}</p>
+<h2 id="registering-your-app">Registering your app</h2>
+<p>First, you’ll need to <a href="https://github.com/settings/applications/new">register your application</a>. Every registered OAuth application is assigned a unique Client ID and Client Secret. The Client Secret should not be shared! That includes checking the string into your repository.</p>
+<p>You can fill out every piece of information however you like, except the <strong>Authorization callback URL</strong>. This is easily the most important piece to setting up your application. It’s the callback URL that {% data variables.product.product_name %} returns the user to after successful authentication.</p>
+<p>Since we’re running a regular Sinatra server, the location of the local instance is set to <code>http://localhost:4567</code>. Let’s fill in the callback URL as <code>http://localhost:4567/callback</code>.</p>
+<h2 id="accepting-user-authorization">Accepting user authorization</h2>
+<p>{% data reusables.apps.deprecating_auth_with_query_parameters %}</p>
+<p>Now, let’s start filling out our simple server. Create a file called <em>server.rb</em> and paste this into it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;sinatra&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">require <span class="st">&#39;rest-client&#39;</span></a>
+<a class="sourceLine" id="cb1-3" title="3">require <span class="st">&#39;json&#39;</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="dt">CLIENT_ID</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_BASIC_CLIENT_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="dt">CLIENT_SECRET</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_BASIC_SECRET_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">get <span class="ch">&#39;/&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  erb <span class="st">:index</span>, <span class="st">:locals</span> =&gt; {<span class="st">:client_id</span> =&gt; <span class="dt">CLIENT_ID</span>}</a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">end</span></a></code></pre></div>
+<p>Your client ID and client secret keys come from <a href="https://github.com/settings/developers">your application’s configuration page</a>.{% ifversion fpt %} You should <strong>never, <em>ever</em></strong> store these values in {% data variables.product.product_name %}–or any other public place, for that matter.{% endif %} We recommend storing them as <a href="http://en.wikipedia.org/wiki/Environment_variable#Getting_and_setting_environment_variables">environment variables</a>–which is exactly what we’ve done here.</p>
+<p>Next, in <em>views/index.erb</em>, paste this content:</p>
+<pre class="erb"><code>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      Well, hello there!
+    &lt;/p&gt;
+    &lt;p&gt;
+      We&#39;re going to now talk to the GitHub API. Ready?
+      &lt;a href=&quot;https://github.com/login/oauth/authorize?scope=user:email&amp;client_id=&lt;%= client_id %&gt;&quot;&gt;Click here&lt;/a&gt; to begin!&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      If that link doesn&#39;t work, remember to provide your own &lt;a href=&quot;/apps/building-oauth-apps/authorizing-oauth-apps/&quot;&gt;Client ID&lt;/a&gt;!
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>(If you’re unfamiliar with how Sinatra works, we recommend <a href="https://github.com/sinatra/sinatra-book/blob/master/book/Introduction.markdown#hello-world-application">reading the Sinatra guide</a>.)</p>
+<p>Also, notice that the URL uses the <code>scope</code> query parameter to define the <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">scopes</a> requested by the application. For our application, we’re requesting <code>user:email</code> scope for reading private email addresses.</p>
+<p>Navigate your browser to <code>http://localhost:4567</code>. After clicking on the link, you should be taken to {% data variables.product.product_name %}, and presented with a dialog that looks something like this: <img src="/assets/images/oauth_prompt.png" alt="GitHub’s OAuth Prompt" /></p>
+<p>If you trust yourself, click <strong>Authorize App</strong>. Wuh-oh! Sinatra spits out a <code>404</code> error. What gives?!</p>
+<p>Well, remember when we specified a Callback URL to be <code>callback</code>? We didn’t provide a route for it, so {% data variables.product.product_name %} doesn’t know where to drop the user after they authorize the app. Let’s fix that now!</p>
+<h3 id="providing-a-callback">Providing a callback</h3>
+<p>In <em>server.rb</em>, add a route to specify what the callback should do:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1">get <span class="st">&#39;/callback&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="co"># get temporary GitHub code...</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  session_code = request.env[<span class="st">&#39;rack.request.query_hash&#39;</span>][<span class="st">&#39;code&#39;</span>]</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="co"># ... and POST it back to GitHub</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  result = <span class="dt">RestClient</span>.post(<span class="st">&#39;https://github.com/login/oauth/access_token&#39;</span>,</a>
+<a class="sourceLine" id="cb3-7" title="7">                          {<span class="st">:client_id</span> =&gt; <span class="dt">CLIENT_ID</span>,</a>
+<a class="sourceLine" id="cb3-8" title="8">                           <span class="st">:client_secret</span> =&gt; <span class="dt">CLIENT_SECRET</span>,</a>
+<a class="sourceLine" id="cb3-9" title="9">                           <span class="st">:code</span> =&gt; session_code},</a>
+<a class="sourceLine" id="cb3-10" title="10">                           <span class="st">:accept</span> =&gt; <span class="st">:json</span>)</a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="co"># extract the token and granted scopes</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  access_token = <span class="dt">JSON</span>.parse(result)[<span class="st">&#39;access_token&#39;</span>]</a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="kw">end</span></a></code></pre></div>
+<p>After a successful app authentication, {% data variables.product.product_name %} provides a temporary <code>code</code> value. You’ll need to <code>POST</code> this code back to {% data variables.product.product_name %} in exchange for an <code>access_token</code>. To simplify our GET and POST HTTP requests, we’re using the <a href="https://github.com/archiloque/rest-client">rest-client</a>. Note that you’ll probably never access the API through REST. For a more serious application, you should probably use <a href="/libraries/">a library written in the language of your choice</a>.</p>
+<h3 id="checking-granted-scopes">Checking granted scopes</h3>
+<p>Users can edit the scopes you requested by directly changing the URL. This can grant your application less access than you originally asked for. Before making any requests with the token, check the scopes that were granted for the token by the user. For more information about requested and granted scopes, see “<a href="/developers/apps/scopes-for-oauth-apps#requested-scopes-and-granted-scopes">Scopes for OAuth Apps</a>.”</p>
+<p>The scopes that were granted are returned as a part of the response from exchanging a token.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb4-1" title="1">get <span class="st">&#39;/callback&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="co"># ...</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="co"># Get the access_token using the code sample above</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="co"># ...</span></a>
+<a class="sourceLine" id="cb4-5" title="5"></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="co"># check if we were granted user:email scope</span></a>
+<a class="sourceLine" id="cb4-7" title="7">  scopes = <span class="dt">JSON</span>.parse(result)[<span class="st">&#39;scope&#39;</span>].split(<span class="ch">&#39;,&#39;</span>)</a>
+<a class="sourceLine" id="cb4-8" title="8">  has_user_email_scope = scopes.include? <span class="st">&#39;user:email&#39;</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="kw">end</span></a></code></pre></div>
+<p>In our application, we’re using <code>scopes.include?</code> to check if we were granted the <code>user:email</code> scope needed for fetching the authenticated user’s private email addresses. Had the application asked for other scopes, we would have checked for those as well.</p>
+<p>Also, since there’s a hierarchical relationship between scopes, you should check that you were granted the lowest level of required scopes. For example, if the application had asked for <code>user</code> scope, it might have been granted only <code>user:email</code> scope. In that case, the application wouldn’t have been granted what it asked for, but the granted scopes would have still been sufficient.</p>
+<p>Checking for scopes only before making requests is not enough since it’s possible that users will change the scopes in between your check and the actual request. In case that happens, API calls you expected to succeed might fail with a <code>404</code> or <code>401</code> status, or return a different subset of information.</p>
+<p>To help you gracefully handle these situations, all API responses for requests made with valid tokens also contain an <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/"><code>X-OAuth-Scopes</code> header</a>. This header contains the list of scopes of the token that was used to make the request. In addition to that, the OAuth Applications API provides an endpoint to {% ifversion fpt or ghes %} <a href="/rest/reference/apps#check-a-token">check a token for validity</a>{% else %}<a href="/rest/reference/apps#check-an-authorization">check a token for validity</a>{% endif %}. Use this information to detect changes in token scopes, and inform your users of changes in available application functionality.</p>
+<h3 id="making-authenticated-requests">Making authenticated requests</h3>
+<p>At last, with this access token, you’ll be able to make authenticated requests as the logged in user:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># fetch user information</span></a>
+<a class="sourceLine" id="cb5-2" title="2">auth_result = <span class="dt">JSON</span>.parse(<span class="dt">RestClient</span>.get(<span class="st">&#39;{% data variables.product.api_url_code %}/user&#39;</span>,</a>
+<a class="sourceLine" id="cb5-3" title="3">                                        {<span class="st">:params</span> =&gt; {<span class="st">:access_token</span> =&gt; access_token}}))</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co"># if the user authorized it, fetch private emails</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">if</span> has_user_email_scope</a>
+<a class="sourceLine" id="cb5-7" title="7">  auth_result[<span class="st">&#39;private_emails&#39;</span>] =</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="dt">JSON</span>.parse(<span class="dt">RestClient</span>.get(<span class="st">&#39;{% data variables.product.api_url_code %}/user/emails&#39;</span>,</a>
+<a class="sourceLine" id="cb5-9" title="9">                              {<span class="st">:params</span> =&gt; {<span class="st">:access_token</span> =&gt; access_token}}))</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12">erb <span class="st">:basic</span>, <span class="st">:locals</span> =&gt; auth_result</a></code></pre></div>
+<p>We can do whatever we want with our results. In this case, we’ll just dump them straight into <em>basic.erb</em>:</p>
+<pre class="erb"><code>&lt;p&gt;Hello, &lt;%= login %&gt;!&lt;/p&gt;
+&lt;p&gt;
+  &lt;% if !email.nil? &amp;&amp; !email.empty? %&gt; It looks like your public email address is &lt;%= email %&gt;.
+  &lt;% else %&gt; It looks like you don&#39;t have a public email. That&#39;s cool.
+  &lt;% end %&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;% if defined? private_emails %&gt;
+  With your permission, we were also able to dig up your private email addresses:
+  &lt;%= private_emails.map{ |private_email_address| private_email_address[&quot;email&quot;] }.join(&#39;, &#39;) %&gt;
+  &lt;% else %&gt;
+  Also, you&#39;re a bit secretive about your private email addresses.
+  &lt;% end %&gt;
+&lt;/p&gt;</code></pre>
+<h2 id="implementing-persistent-authentication">Implementing “persistent” authentication</h2>
+<p>It’d be a pretty bad model if we required users to log into the app every single time they needed to access the web page. For example, try navigating directly to <code>http://localhost:4567/basic</code>. You’ll get an error.</p>
+<p>What if we could circumvent the entire “click here” process, and just <em>remember</em> that, as long as the user’s logged into {% data variables.product.product_name %}, they should be able to access this application? Hold on to your hat, because <em>that’s exactly what we’re going to do</em>.</p>
+<p>Our little server above is rather simple. In order to wedge in some intelligent authentication, we’re going to switch over to using sessions for storing tokens. This will make authentication transparent to the user.</p>
+<p>Also, since we’re persisting scopes within the session, we’ll need to handle cases when the user updates the scopes after we checked them, or revokes the token. To do that, we’ll use a <code>rescue</code> block and check that the first API call succeeded, which verifies that the token is still valid. After that, we’ll check the <code>X-OAuth-Scopes</code> response header to verify that the user hasn’t revoked the <code>user:email</code> scope.</p>
+<p>Create a file called <em>advanced_server.rb</em>, and paste these lines into it:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb7-1" title="1">require <span class="st">&#39;sinatra&#39;</span></a>
+<a class="sourceLine" id="cb7-2" title="2">require <span class="st">&#39;rest_client&#39;</span></a>
+<a class="sourceLine" id="cb7-3" title="3">require <span class="st">&#39;json&#39;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co"># if ENV[&#39;GITHUB_CLIENT_ID&#39;] &amp;&amp; ENV[&#39;GITHUB_CLIENT_SECRET&#39;]</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#  CLIENT_ID        = ENV[&#39;GITHUB_CLIENT_ID&#39;]</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">#  CLIENT_SECRET    = ENV[&#39;GITHUB_CLIENT_SECRET&#39;]</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co"># end</span></a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="dt">CLIENT_ID</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_BASIC_CLIENT_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="dt">CLIENT_SECRET</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_BASIC_SECRET_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb7-14" title="14"></a>
+<a class="sourceLine" id="cb7-15" title="15">use <span class="dt">Rack</span>::<span class="dt">Session</span>::<span class="dt">Pool</span>, <span class="st">:cookie_only</span> =&gt; <span class="dv">false</span></a>
+<a class="sourceLine" id="cb7-16" title="16"></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="kw">def</span> authenticated?</a>
+<a class="sourceLine" id="cb7-18" title="18">  session[<span class="st">:access_token</span>]</a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-20" title="20"></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="kw">def</span> authenticate!</a>
+<a class="sourceLine" id="cb7-22" title="22">  erb <span class="st">:index</span>, <span class="st">:locals</span> =&gt; {<span class="st">:client_id</span> =&gt; <span class="dt">CLIENT_ID</span>}</a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-24" title="24"></a>
+<a class="sourceLine" id="cb7-25" title="25">get <span class="ch">&#39;/&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-26" title="26">  <span class="kw">if</span> !authenticated?</a>
+<a class="sourceLine" id="cb7-27" title="27">    authenticate!</a>
+<a class="sourceLine" id="cb7-28" title="28">  <span class="kw">else</span></a>
+<a class="sourceLine" id="cb7-29" title="29">    access_token = session[<span class="st">:access_token</span>]</a>
+<a class="sourceLine" id="cb7-30" title="30">    scopes = []</a>
+<a class="sourceLine" id="cb7-31" title="31"></a>
+<a class="sourceLine" id="cb7-32" title="32">    <span class="kw">begin</span></a>
+<a class="sourceLine" id="cb7-33" title="33">      auth_result = <span class="dt">RestClient</span>.get(<span class="st">&#39;{% data variables.product.api_url_code %}/user&#39;</span>,</a>
+<a class="sourceLine" id="cb7-34" title="34">                                   {<span class="st">:params</span> =&gt; {<span class="st">:access_token</span> =&gt; access_token},</a>
+<a class="sourceLine" id="cb7-35" title="35">                                    <span class="st">:accept</span> =&gt; <span class="st">:json</span>})</a>
+<a class="sourceLine" id="cb7-36" title="36">    <span class="kw">rescue</span> =&gt; e</a>
+<a class="sourceLine" id="cb7-37" title="37">      <span class="co"># request didn&#39;t succeed because the token was revoked so we</span></a>
+<a class="sourceLine" id="cb7-38" title="38">      <span class="co"># invalidate the token stored in the session and render the</span></a>
+<a class="sourceLine" id="cb7-39" title="39">      <span class="co"># index page so that the user can start the OAuth flow again</span></a>
+<a class="sourceLine" id="cb7-40" title="40"></a>
+<a class="sourceLine" id="cb7-41" title="41">      session[<span class="st">:access_token</span>] = <span class="dv">nil</span></a>
+<a class="sourceLine" id="cb7-42" title="42">      <span class="kw">return</span> authenticate!</a>
+<a class="sourceLine" id="cb7-43" title="43">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-44" title="44"></a>
+<a class="sourceLine" id="cb7-45" title="45">    <span class="co"># the request succeeded, so we check the list of current scopes</span></a>
+<a class="sourceLine" id="cb7-46" title="46">    <span class="kw">if</span> auth_result.headers.include? <span class="st">:x_oauth_scopes</span></a>
+<a class="sourceLine" id="cb7-47" title="47">      scopes = auth_result.headers[<span class="st">:x_oauth_scopes</span>].split(<span class="st">&#39;, &#39;</span>)</a>
+<a class="sourceLine" id="cb7-48" title="48">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-49" title="49"></a>
+<a class="sourceLine" id="cb7-50" title="50">    auth_result = <span class="dt">JSON</span>.parse(auth_result)</a>
+<a class="sourceLine" id="cb7-51" title="51"></a>
+<a class="sourceLine" id="cb7-52" title="52">    <span class="kw">if</span> scopes.include? <span class="st">&#39;user:email&#39;</span></a>
+<a class="sourceLine" id="cb7-53" title="53">      auth_result[<span class="st">&#39;private_emails&#39;</span>] =</a>
+<a class="sourceLine" id="cb7-54" title="54">        <span class="dt">JSON</span>.parse(<span class="dt">RestClient</span>.get(<span class="st">&#39;{% data variables.product.api_url_code %}/user/emails&#39;</span>,</a>
+<a class="sourceLine" id="cb7-55" title="55">                       {<span class="st">:params</span> =&gt; {<span class="st">:access_token</span> =&gt; access_token},</a>
+<a class="sourceLine" id="cb7-56" title="56">                        <span class="st">:accept</span> =&gt; <span class="st">:json</span>}))</a>
+<a class="sourceLine" id="cb7-57" title="57">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-58" title="58"></a>
+<a class="sourceLine" id="cb7-59" title="59">    erb <span class="st">:advanced</span>, <span class="st">:locals</span> =&gt; auth_result</a>
+<a class="sourceLine" id="cb7-60" title="60">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-61" title="61"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-62" title="62"></a>
+<a class="sourceLine" id="cb7-63" title="63">get <span class="st">&#39;/callback&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-64" title="64">  session_code = request.env[<span class="st">&#39;rack.request.query_hash&#39;</span>][<span class="st">&#39;code&#39;</span>]</a>
+<a class="sourceLine" id="cb7-65" title="65"></a>
+<a class="sourceLine" id="cb7-66" title="66">  result = <span class="dt">RestClient</span>.post(<span class="st">&#39;https://github.com/login/oauth/access_token&#39;</span>,</a>
+<a class="sourceLine" id="cb7-67" title="67">                          {<span class="st">:client_id</span> =&gt; <span class="dt">CLIENT_ID</span>,</a>
+<a class="sourceLine" id="cb7-68" title="68">                           <span class="st">:client_secret</span> =&gt; <span class="dt">CLIENT_SECRET</span>,</a>
+<a class="sourceLine" id="cb7-69" title="69">                           <span class="st">:code</span> =&gt; session_code},</a>
+<a class="sourceLine" id="cb7-70" title="70">                           <span class="st">:accept</span> =&gt; <span class="st">:json</span>)</a>
+<a class="sourceLine" id="cb7-71" title="71"></a>
+<a class="sourceLine" id="cb7-72" title="72">  session[<span class="st">:access_token</span>] = <span class="dt">JSON</span>.parse(result)[<span class="st">&#39;access_token&#39;</span>]</a>
+<a class="sourceLine" id="cb7-73" title="73"></a>
+<a class="sourceLine" id="cb7-74" title="74">  redirect <span class="ch">&#39;/&#39;</span></a>
+<a class="sourceLine" id="cb7-75" title="75"><span class="kw">end</span></a></code></pre></div>
+<p>Much of the code should look familiar. For example, we’re still using <code>RestClient.get</code> to call out to the {% data variables.product.product_name %} API, and we’re still passing our results to be rendered in an ERB template (this time, it’s called <code>advanced.erb</code>).</p>
+<p>Also, we now have the <code>authenticated?</code> method which checks if the user is already authenticated. If not, the <code>authenticate!</code> method is called, which performs the OAuth flow and updates the session with the granted token and scopes.</p>
+<p>Next, create a file in <em>views</em> called <em>advanced.erb</em>, and paste this markup into it:</p>
+<pre class="erb"><code>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;Well, well, well, &lt;%= login %&gt;!&lt;/p&gt;
+    &lt;p&gt;
+      &lt;% if !email.empty? %&gt; It looks like your public email address is &lt;%= email %&gt;.
+      &lt;% else %&gt; It looks like you don&#39;t have a public email. That&#39;s cool.
+      &lt;% end %&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;% if defined? private_emails %&gt;
+      With your permission, we were also able to dig up your private email addresses:
+      &lt;%= private_emails.map{ |private_email_address| private_email_address[&quot;email&quot;] }.join(&#39;, &#39;) %&gt;
+      &lt;% else %&gt;
+      Also, you&#39;re a bit secretive about your private email addresses.
+      &lt;% end %&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>From the command line, call <code>ruby advanced_server.rb</code>, which starts up your server on port <code>4567</code> – the same port we used when we had a simple Sinatra app. When you navigate to <code>http://localhost:4567</code>, the app calls <code>authenticate!</code> which redirects you to <code>/callback</code>. <code>/callback</code> then sends us back to <code>/</code>, and since we’ve been authenticated, renders <em>advanced.erb</em>.</p>
+<p>We could completely simplify this roundtrip routing by simply changing our callback URL in {% data variables.product.product_name %} to <code>/</code>. But, since both <em>server.rb</em> and <em>advanced.rb</em> are relying on the same callback URL, we’ve got to do a little bit of wonkiness to make it work.</p>
+<p>Also, if we had never authorized this application to access our {% data variables.product.product_name %} data, we would’ve seen the same confirmation dialog from earlier pop-up and warn us.</p>
+</body>
+</html>

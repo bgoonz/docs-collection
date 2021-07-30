@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring issue templates for your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring issue templates for your repository</h1>
+</header>
+<p>{% ifversion fpt or ghes %}</p>
+<p>{% data reusables.repositories.default-issue-templates %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes %}</p>
+<h2 id="creating-issue-templates">Creating issue templates</h2>
+<p>{% endif %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. In the “Features” section, under “Issues,” click <strong>Set up templates</strong>. <img src="/assets/images/help/repository/set-up-templates.png" alt="Start template setup button" /> 4. Use the Add template drop-down menu, and click on the type of template you’d like to create. <img src="/assets/images/help/repository/add-template-drop-down-menu.png" alt="Add template drop-down menu" /> 5. To preview or edit the template before committing it to the repository, click <strong>Preview and edit</strong>. <img src="/assets/images/help/repository/preview-and-edit-button.png" alt="Preview and edit button" /> 6. To edit the template, click {% octicon “pencil” aria-label=“The edit icon” %}, and type in the fields to edit their contents. <img src="/assets/images/help/repository/issue-template-edit-button.png" alt="Issue template edit button" /> 7. To automatically set a default issue title, assign the issue to people with read access to the repository, or apply labels to your issue template, enter these details under “Optional additional information.” You can also add these details in the issue template with <code>title</code>, <code>labels</code>, or <code>assignees</code> in a YAML frontmatter format. <img src="/assets/images/help/repository/additional-issue-template-info.png" alt="Additional info for issue template" /> 8. When you’re finished editing and previewing your template, click <strong>Propose changes</strong> in the upper right corner of the page. <img src="/assets/images/help/repository/propose-changes-button.png" alt="Propose changes button" /> 9. Enter a commit message describing your changes. <img src="/assets/images/help/repository/issue-template-commit-message-field.png" alt="Issue template commit message field" /> 10. Below the commit message fields, decide whether to commit your template directly to the default branch, or to create a new branch and open a pull request. For more information about pull requests, see “<a href="/articles/about-pull-requests">About pull requests</a>.” <img src="/assets/images/help/repository/issue-template-commit-to-master-or-open-pull-request.png" alt="Issue template commit to main or open pull request choice" /> 11. Click <strong>Commit changes</strong>. Once these changes are merged into the default branch, the template will be available for contributors to use when they open new issues in the repository.</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="creating-issue-forms">Creating issue forms</h2>
+<p>{% data reusables.community.issue-forms-beta %}</p>
+<p>With issue forms, you can create issue templates that have customizable web form fields. You can encourage contributors to include specific, structured information by using issue forms in your repository. Issue forms are written in YAML using the {% data variables.product.prodname_dotcom %} form schema. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema">Syntax for {% data variables.product.prodname_dotcom %}’s form schema</a>.” {% data reusables.actions.learn-more-about-yaml %}</p>
+<p>To use an issue form in your repository, you must create a new file and add it to the <code>.github/ISSUE_TEMPLATE</code> folder in your repository.</p>
+<p>Here is an example of an issue form configuration file.</p>
+<p>{% data reusables.community.issue-forms-sample %}</p>
+<p>Here is the rendered version of the issue form. <img src="/assets/images/help/repository/sample-issue-form.png" alt="A rendered issue form" /></p>
+<ol type="1">
+<li>Choose a repository where you want to create an issue form. You can use an existing repository that you have write access to, or you can create a new repository. For more information about creating a repository, see “<a href="/articles/creating-a-new-repository">Creating a new repository</a>.”</li>
+<li>In your repository, create a file called <code>.github/ISSUE_TEMPLATE/FORM-NAME.yml</code>, replacing <code>FORM-NAME</code> with the name for your issue form. For more information about creating new files on GitHub, see “<a href="/github/managing-files-in-a-repository/creating-new-files">Creating new files</a>.”</li>
+<li>In the body of the new file, type the contents of your issue form. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms">Syntax for issue forms</a>.”</li>
+<li>Commit your file to the default branch of your repository. For more information, see “<a href="/github/managing-files-in-a-repository/creating-new-files">Creating new files</a>.”</li>
+</ol>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes %} ## Configuring the template chooser</p>
+<p>{% data reusables.repositories.issue-template-config %}</p>
+<p>You can encourage contributors to use issue templates by setting <code>blank_issues_enabled</code> to <code>false</code>. If you set <code>blank_issues_enabled</code> to <code>true</code>, people will have the option to open a blank issue.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you used the legacy workflow to manually create an <code>issue_template.md</code> file and enable blank issues in your <em>config.yml</em> file, the template in <code>issue_template.md</code> will be used when people chose to open a blank issue. If you disable blank issues, the template will never be used.</p>
+<p>{% endnote %}</p>
+<p>If you prefer to receive certain reports outside of {% data variables.product.product_name %}, you can direct people to external sites with <code>contact_links</code>.</p>
+<p>Here is an example <em>config.yml</em> file.</p>
+<pre class="shell"><code>blank_issues_enabled: false
+contact_links:
+  - name: {% data variables.product.prodname_gcf %}
+    url: https://github.community/
+    about: Please ask and answer questions here.
+  - name: {% data variables.product.prodname_dotcom %} Security Bug Bounty
+    url: https://bounty.github.com/
+    about: Please report security vulnerabilities here.</code></pre>
+<p>Your configuration file will customize the template chooser when the file is merged into the repository’s default branch.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.files.add-file %} 3. In the file name field, type <code>.github/ISSUE_TEMPLATE/config.yml</code>. <img src="/assets/images/help/repository/template-config-file-name.png" alt="Configuration filename" /> 4. In the body of the new file, type the contents of your configuration file. <img src="/assets/images/help/repository/template-config-file-content.png" alt="Configuration file content" /> {% data reusables.files.write_commit_message %} {% data reusables.files.choose_commit_branch %} {% data reusables.files.propose_new_file %} {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-issue-and-pull-request-templates">About issue and pull request templates</a>”</li>
+<li>“<a href="/articles/manually-creating-a-single-issue-template-for-your-repository">Manually creating a single issue template for your repository</a>”</li>
+</ul>
+</body>
+</html>

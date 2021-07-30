@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Remote HEAD refers to nonexistent ref, unable to checkout</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Remote HEAD refers to nonexistent ref, unable to checkout</h1>
+</header>
+<p>Detecting this error is simple; Git will warn you when you try to clone the repository:</p>
+<pre class="shell"><code>$ git clone https://{% data variables.command_line.codeblock %}/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;.git
+# Clone a repo
+&gt; Cloning into &#39;repo&#39;...
+&gt; remote: Counting objects: 66179, done.
+&gt; remote: Compressing objects: 100% (15587/15587), done.
+&gt; remote: Total 66179 (delta 46985), reused 65596 (delta 46402)
+&gt; Receiving objects: 100% (66179/66179), 51.66 MiB | 667 KiB/s, done.
+&gt; Resolving deltas: 100% (46985/46985), done.
+&gt; warning: remote HEAD refers to nonexistent ref, unable to checkout.</code></pre>
+<p>To fix the error, you’ll need to be an administrator of the repository on {% data variables.product.product_location %}. You’ll want to <a href="/github/administering-a-repository/changing-the-default-branch">change the default branch</a> of the repository.</p>
+<p>After that, you can get a list of all the available branches from the command line:</p>
+<pre class="shell"><code>$ git branch -a
+# Lists ALL the branches
+&gt;   remotes/origin/awesome
+&gt;   remotes/origin/more-work
+&gt;   remotes/origin/new-main</code></pre>
+<p>Then, you can just switch to your new branch:</p>
+<pre class="shell"><code>$ git checkout new-main
+# Create and checkout a tracking branch
+&gt; Branch new-main set up to track remote branch new-main from origin.
+&gt; Switched to a new branch &#39;new-main&#39;</code></pre>
+</body>
+</html>

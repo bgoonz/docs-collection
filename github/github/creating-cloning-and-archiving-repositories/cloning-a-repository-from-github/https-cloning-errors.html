@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>HTTPS cloning errors</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">HTTPS cloning errors</h1>
+</header>
+<p>Here’s an example of an HTTPS error you might receive:</p>
+<pre class="shell"><code>&gt; error: The requested URL returned error: 401 while accessing
+&gt; https://{% data variables.command_line.codeblock %}/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;.git/info/refs?service=git-receive-pack
+&gt; fatal: HTTP request failed</code></pre>
+<pre class="shell"><code>&gt; Error: The requested URL returned error: 403 while accessing
+&gt; https://{% data variables.command_line.codeblock %}/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;.git/info/refs
+&gt; fatal: HTTP request failed</code></pre>
+<pre class="shell"><code>&gt; Error: https://{% data variables.command_line.codeblock %}/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;.git/info/refs not found: did you run git
+&gt; update-server-info on the server?</code></pre>
+<h2 id="check-your-git-version">Check your Git version</h2>
+<p>There’s no minimum Git version necessary to interact with {% data variables.product.product_name %}, but we’ve found version 1.7.10 to be a comfortable stable version that’s available on many platforms. You can always <a href="https://git-scm.com/downloads">download the latest version on the Git website</a>.</p>
+<h2 id="ensure-the-remote-is-correct">Ensure the remote is correct</h2>
+<p>The repository you’re trying to fetch must exist on {% data variables.product.product_location %}, and the URL is case-sensitive.</p>
+<p>You can find the URL of the local repository by opening the command line and typing <code>git remote -v</code>:</p>
+<pre class="shell"><code>$ git remote -v
+# View existing remotes
+&gt; origin  https://github.com/ghost/reactivecocoa.git (fetch)
+&gt; origin  https://github.com/ghost/reactivecocoa.git (push)
+
+$ git remote set-url origin https://github.com/ghost/ReactiveCocoa.git
+# Change the &#39;origin&#39; remote&#39;s URL
+
+$ git remote -v
+# Verify new remote URL
+&gt; origin  https://github.com/ghost/ReactiveCocoa.git (fetch)
+&gt; origin  https://github.com/ghost/ReactiveCocoa.git (push)</code></pre>
+<p>Alternatively, you can change the URL through our <a href="https://desktop.github.com/">{% data variables.product.prodname_desktop %}</a> application.</p>
+<h2 id="provide-an-access-token">Provide an access token</h2>
+<p>To access {% data variables.product.prodname_dotcom %}, you must authenticate with a personal access token instead of your password. For more information, see “<a href="/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>.”</p>
+<p>{% data reusables.command_line.provide-an-access-token %}</p>
+<h2 id="check-your-permissions">Check your permissions</h2>
+<p>When prompted for a username and password, make sure you use an account that has access to the repository.</p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: If you don’t want to enter your credentials every time you interact with the remote repository, you can turn on <a href="/github/getting-started-with-github/caching-your-github-credentials-in-git">credential caching</a>. If you are already using credential caching, please make sure that your computer has the correct credentials cached. Incorrect or out of date credentials will cause authentication to fail.</p>
+<p>{% endtip %}</p>
+<h2 id="use-ssh-instead">Use SSH instead</h2>
+<p>If you’ve previously set up SSH keys, you can use the SSH clone URL instead of HTTPS. For more information, see “<a href="/github/getting-started-with-github/about-remote-repositories">About remote repositories</a>.”</p>
+</body>
+</html>

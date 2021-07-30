@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: SSL certificate problem, verify that the CA cert is OK</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: SSL certificate problem, verify that the CA cert is OK</h1>
+</header>
+<p>The error you receive may look like the following:</p>
+<pre class="shell"><code>$ git push -u github.main
+&gt; fatal: &#39;github.main&#39; does not appear to be a git repository
+&gt; fatal: The remote end hung up unexpectedly
+
+$ git pull -u github
+&gt; error: SSL certificate problem, verify that the CA cert is OK. Details:
+&gt; error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed while accessing https://github.com/tqisjim/google-oauth.git/info/refs
+&gt; fatal: HTTP request failed</code></pre>
+<p>A “CA” is shorthand for a “certificate authority,” a third-party group responsible for handling secure connections around the web. They establish digital “certificates,” which are a way of ensuring that there are valid connections between two machines (like your computer and GitHub.com). Without a certificate, the security risk between two machines is greater.</p>
+<p>When you receive this error, it likely means that your CA is out-of-date and needs to be updated. Generally, updating your operating system also updates your CA, and solves the problem.</p>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring Git to handle line endings</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring Git to handle line endings</h1>
+</header>
+<h2 id="about-line-endings">About line endings</h2>
+<p>Every time you press <kbd>return</kbd> on your keyboard you insert an invisible character called a line ending. Different operating systems handle line endings differently.</p>
+<p>When you’re collaborating on projects with Git and {% data variables.product.product_name %}, Git might produce unexpected results if, for example, you’re working on a Windows machine, and your collaborator has made a change in macOS.</p>
+<p>You can configure Git to handle line endings automatically so you can collaborate effectively with people who use different operating systems.</p>
+<h2 id="global-settings-for-line-endings">Global settings for line endings</h2>
+<p>The <code>git config core.autocrlf</code> command is used to change how Git handles line endings. It takes a single argument.</p>
+<p>{% mac %}</p>
+<p>On macOS, you simply pass <code>input</code> to the configuration. For example:</p>
+<pre class="shell"><code>$ git config --global core.autocrlf input
+# Configure Git to ensure line endings in files you checkout are correct for macOS</code></pre>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<p>On Windows, you simply pass <code>true</code> to the configuration. For example:</p>
+<pre class="shell"><code>$ git config --global core.autocrlf true
+# Configure Git to ensure line endings in files you checkout are correct for Windows.
+# For compatibility, line endings are converted to Unix style when you commit files.</code></pre>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<p>On Linux, you simply pass <code>input</code> to the configuration. For example:</p>
+<pre class="shell"><code>$ git config --global core.autocrlf input
+# Configure Git to ensure line endings in files you checkout are correct for Linux</code></pre>
+<p>{% endlinux %}</p>
+<h2 id="per-repository-settings">Per-repository settings</h2>
+<p>Optionally, you can configure a <em>.gitattributes</em> file to manage how Git reads line endings in a specific repository. When you commit this file to a repository, it overrides the <code>core.autocrlf</code> setting for all repository contributors. This ensures consistent behavior for all users, regardless of their Git settings and environment.</p>
+<p>The <em>.gitattributes</em> file must be created in the root of the repository and committed like any other file.</p>
+<p>A <em>.gitattributes</em> file looks like a table with two columns:</p>
+<ul>
+<li>On the left is the file name for Git to match.</li>
+<li>On the right is the line ending configuration that Git should use for those files.</li>
+</ul>
+<h3 id="example">Example</h3>
+<p>Here’s an example <em>.gitattributes</em> file. You can use it as a template for your repositories:</p>
+<pre><code># Set the default behavior, in case people don&#39;t have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text
+*.h text
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary</code></pre>
+<p>You’ll notice that files are matched—<code>*.c</code>, <code>*.sln</code>, <code>*.png</code>—, separated by a space, then given a setting—<code>text</code>, <code>text eol=crlf</code>, <code>binary</code>. We’ll go over some possible settings below.</p>
+<ul>
+<li><p><code>text=auto</code> Git will handle the files in whatever way it thinks is best. This is a good default option.</p></li>
+<li><p><code>text eol=crlf</code> Git will always convert line endings to <code>CRLF</code> on checkout. You should use this for files that must keep <code>CRLF</code> endings, even on OSX or Linux.</p></li>
+<li><p><code>text eol=lf</code> Git will always convert line endings to <code>LF</code> on checkout. You should use this for files that must keep LF endings, even on Windows.</p></li>
+<li><p><code>binary</code> Git will understand that the files specified are not text, and it should not try to change them. The <code>binary</code> setting is also an alias for <code>-text -diff</code>.</p></li>
+</ul>
+<h2 id="refreshing-a-repository-after-changing-line-endings">Refreshing a repository after changing line endings</h2>
+<p>When you set the <code>core.autocrlf</code> option or commit a <em>.gitattributes</em> file, you may find that Git reports changes to files that you have not modified. Git has changed line endings to match your new configuration.</p>
+<p>To ensure that all the line endings in your repository match your new configuration, backup your files with Git, delete all files in your repository (except the <code>.git</code> directory), then restore the files all at once.</p>
+<ol type="1">
+<li>Save your current files in Git, so that none of your work is lost.</li>
+</ol>
+<pre class="shell"><code>$ git add . -u
+$ git commit -m &quot;Saving files before refreshing line endings&quot;</code></pre>
+<ol start="2" type="1">
+<li>Add all your changed files back and normalize the line endings.</li>
+</ol>
+<pre class="shell"><code>$ git add --renormalize .</code></pre>
+<ol start="3" type="1">
+<li>Show the rewritten, normalized files.</li>
+</ol>
+<pre class="shell"><code>$ git status</code></pre>
+<ol start="4" type="1">
+<li>Commit the changes to your repository.</li>
+</ol>
+<pre class="shell"><code>$ git commit -m &quot;Normalize all the line endings&quot;</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/Customizing-Git-Git-Attributes">Customizing Git - Git Attributes</a> in the Pro Git book</li>
+<li><a href="https://git-scm.com/docs/git-config">git-config</a> in the man pages for Git</li>
+<li><a href="https://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup">Getting Started - First-Time Git Setup</a> in the Pro Git book</li>
+<li><a href="http://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/">Mind the End of Your Line</a> by <a href="https://github.com/tclem">Tim Clem</a></li>
+</ul>
+</body>
+</html>

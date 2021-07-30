@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Troubleshooting Jekyll build errors for GitHub Pages sites</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Troubleshooting Jekyll build errors for GitHub Pages sites</h1>
+</header>
+<h2 id="troubleshooting-build-errors">Troubleshooting build errors</h2>
+<p>If Jekyll encounters an error building your {% data variables.product.prodname_pages %} site locally or on {% data variables.product.product_name %}, you can use error messages to troubleshoot. For more information about error messages and how to view them, see “<a href="/articles/about-jekyll-build-errors-for-github-pages-sites">About Jekyll build errors for {% data variables.product.prodname_pages %} sites</a>.”</p>
+<p>If you received a generic error message, check for common issues. - You’re using unsupported plugins. For more information, see “<a href="/articles/about-github-pages-and-jekyll#plugins">About {% data variables.product.prodname_pages %} and Jekyll</a>.”{% ifversion fpt %} - Your repository has exceeded our repository size limits. For more information, see “<a href="/articles/what-is-my-disk-quota">What is my disk quota?</a>”{% endif %} - You changed the <code>source</code> setting in your *_config.yml* file. {% data variables.product.prodname_pages %} overrides this setting during the build process. - A filename in your publishing source contains a colon (<code>:</code>) which is not supported.</p>
+<p>If you received a specific error message, review the troubleshooting information for the error message below.</p>
+<p>After you’ve fixed any errors, push the changes to your site’s publishing source to trigger another build on {% data variables.product.product_name %}.</p>
+<h2 id="config-file-error">Config file error</h2>
+<p>This error means that your site failed to build because the *_config.yml* file contains syntax errors.</p>
+<p>To troubleshoot, make sure that your *_config.yml* file follows these rules:</p>
+<p>{% data reusables.pages.yaml-rules %}</p>
+<p>{% data reusables.pages.yaml-linter %}</p>
+<h2 id="date-is-not-a-valid-datetime">Date is not a valid datetime</h2>
+<p>This error means that one of the pages on your site includes an invalid datetime.</p>
+<p>To troubleshoot, search the file in the error message and the file’s layouts for calls to any date-related Liquid filters. Make sure that any variables passed into date-related Liquid filters have values in all cases and never pass <code>nil</code> or <code>""</code>. For more information, see “<a href="https://help.shopify.com/en/themes/liquid/filters">Liquid filters</a>” in the Liquid documentation.</p>
+<h2 id="file-does-not-exist-in-includes-directory">File does not exist in includes directory</h2>
+<p>This error means that your code references a file that doesn’t exist in your *_includes* directory.</p>
+<p>{% data reusables.pages.search-for-includes %} If any of the files you’ve referenced aren’t in the *_includes* directory, copy or move the files into the *_includes* directory.</p>
+<h2 id="file-is-a-symlink">File is a symlink</h2>
+<p>This error means that your code references a symlinked file that does not exist in the publishing source for your site.</p>
+<p>{% data reusables.pages.search-for-includes %} If any of the files you’ve referenced are symlinked, copy or move the files into the *_includes* directory.</p>
+<h2 id="file-is-not-properly-utf-8-encoded">File is not properly UTF-8 encoded</h2>
+<p>This error means that you used non-Latin characters, like <code>日本語</code>, without telling the computer to expect these symbols.</p>
+<p>To troubleshoot, force UTF-8 encoding by adding the following line to your *_config.yml* file:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">encoding:</span><span class="at"> UTF-8</span></a></code></pre></div>
+<h2 id="invalid-highlighter-language">Invalid highlighter language</h2>
+<p>This error means that you specified any syntax highlighter other than <a href="https://github.com/jneen/rouge">Rouge</a> or <a href="http://pygments.org/">Pygments</a> in your configuration file.</p>
+<p>To troubleshoot, update your *_config.yml* file to specify <a href="https://github.com/jneen/rouge">Rouge</a> or <a href="http://pygments.org/">Pygments</a>. For more information, see “<a href="/articles/about-github-pages-and-jekyll#syntax-highlighting">About {% data variables.product.product_name %} and Jekyll</a>.”</p>
+<h2 id="invalid-post-date">Invalid post date</h2>
+<p>This error means that a post on your site contains an invalid date in the filename or YAML front matter.</p>
+<p>To troubleshoot, make sure all dates are formatted as YYYY-MM-DD HH:MM:SS for UTC and are actual calendar dates. To specify a time zone with an offset from UTC, use the format YYYY-MM-DD HH:MM:SS +/-TTTT, like <code>2014-04-18 11:30:00 +0800</code>.</p>
+<p>If you specify a date format in your *_config.yml* file, make sure the format is correct.</p>
+<h2 id="invalid-sass-or-scss">Invalid Sass or SCSS</h2>
+<p>This error means your repository contains a Sass or SCSS file with invalid content.</p>
+<p>To troubleshoot, review the line number included in the error message for invalid Sass or SCSS. To help prevent future errors, install a Sass or SCSS linter for your favorite text editor.</p>
+<h2 id="invalid-submodule">Invalid submodule</h2>
+<p>This error means that your repository includes a submodule that hasn’t been properly initialized.</p>
+<p>{% data reusables.pages.remove-submodule %}</p>
+<p>If do you want to use the submodule, make sure you use <code>https://</code> when referencing the submodule (not <code>http://</code>) and that the submodule is in a public repository.</p>
+<h2 id="invalid-yaml-in-data-file">Invalid YAML in data file</h2>
+<p>This error means that one of more files in the *_data* folder contains invalid YAML.</p>
+<p>To troubleshoot, make sure the YAML files in your *_data* folder follow these rules:</p>
+<p>{% data reusables.pages.yaml-rules %}</p>
+<p>{% data reusables.pages.yaml-linter %}</p>
+<p>For more information about Jekyll data files, see “<a href="https://jekyllrb.com/docs/datafiles/">Data Files</a>” in the Jekyll documentation.</p>
+<h2 id="markdown-errors">Markdown errors</h2>
+<p>This error means that your repository contains Markdown errors.</p>
+<p>To troubleshoot, make sure you are using a supported Markdown processor. For more information, see “<a href="/articles/setting-a-markdown-processor-for-your-github-pages-site-using-jekyll">Setting a Markdown processor for your {% data variables.product.prodname_pages %} site using Jekyll</a>.”</p>
+<p>Then, make sure the file in the error message uses valid Markdown syntax. For more information, see “<a href="https://daringfireball.net/projects/markdown/syntax">Markdown: Syntax</a>” on Daring Fireball.</p>
+<h2 id="missing-docs-folder">Missing docs folder</h2>
+<p>This error means that you have chosen the <code>docs</code> folder on a branch as your publishing source, but there is no <code>docs</code> folder in the root of your repository on that branch.</p>
+<p>To troubleshoot, if your <code>docs</code> folder was accidentally moved, try moving the <code>docs</code> folder back to the root of your repository on the branch you chose for your publishing source. If the <code>docs</code> folder was accidentally deleted, you can either: - Use Git to revert or undo the deletion. For more information, see “<a href="https://git-scm.com/docs/git-revert.html">git-revert</a>” in the Git documentation. - Create a new <code>docs</code> folder in the root of your repository on the branch you chose for your publishing source and add your site’s source files to the folder. For more information, see “<a href="/articles/creating-new-files">Creating new files</a>.” - Change your publishing source. For more information, see “<a href="/articles/configuring-a-publishing-source-for-github-pages">Configuring a publishing source for {% data variables.product.prodname_pages %}</a>.”</p>
+<h2 id="missing-submodule">Missing submodule</h2>
+<p>This error means that your repository includes a submodule that doesn’t exist or hasn’t been properly initialized.</p>
+<p>{% data reusables.pages.remove-submodule %}</p>
+<p>If you do want to use a submodule, initialize the submodule. For more information, see “<a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git Tools - Submodules</a>” in the <em>Pro Git</em> book.</p>
+<h2 id="relative-permalinks-configured">Relative permalinks configured</h2>
+<p>This errors means that you have relative permalinks, which are not supported by {% data variables.product.prodname_pages %}, in your *_config.yml* file.</p>
+<p>Permalinks are permanent URLs that reference a particular page on your site. Absolute permalinks begin with the root of the site, while relative permalinks begin with the folder containing the referenced page. {% data variables.product.prodname_pages %} and Jekyll no longer support relative permalinks. For more information about permalinks, see “<a href="https://jekyllrb.com/docs/permalinks/">Permalinks</a>” in the Jekyll documentation.</p>
+<p>To troubleshoot, remove the <code>relative_permalinks</code> line from your *_config.yml* file and reformat any relative permalinks in your site with absolute permalinks. For more information, see “<a href="/articles/editing-files-in-your-repository">Editing files in your repository</a>.”</p>
+<h2 id="symlink-does-not-exist-within-your-sites-repository">Symlink does not exist within your site’s repository</h2>
+<p>This error means that your site includes a symbolic link (symlink) that does not exist in the publishing source for your site. For more information about symlinks, see “<a href="https://en.wikipedia.org/wiki/Symbolic_link">Symbolic link</a>” on Wikipedia.</p>
+<p>To troubleshoot, determine if the file in the error message is used to build your site. If not, or if you don’t want the file to be a symlink, delete the file. If the symlinked file is necessary to build your site, make sure the file or directory the symlink references is in the publishing source for your site. To include external assets, consider using {% ifversion fpt %}<code>git submodule</code> or {% endif %}a third-party package manager such as <a href="https://bower.io/">Bower</a>.{% ifversion fpt %} For more information, see “<a href="/articles/using-submodules-with-github-pages">Using submodules with {% data variables.product.prodname_pages %}</a>.”{% endif %}</p>
+<h2 id="syntax-error-in-for-loop">Syntax error in ‘for’ loop</h2>
+<p>This error means that your code includes invalid syntax in a Liquid <code>for</code> loop declaration.</p>
+<p>To troubleshoot, make sure all <code>for</code> loops in the file in the error message have proper syntax. For more information about proper syntax for <code>for</code> loops, see “<a href="https://help.shopify.com/en/themes/liquid/tags/iteration-tags#for">Iteration tags</a>” in the Liquid documentation.</p>
+<h2 id="tag-not-properly-closed">Tag not properly closed</h2>
+<p>This error message means that your code includes a logic tag that is not properly closed. For example, {% raw %}<code>{% capture example_variable %}</code> must be closed by <code>{% endcapture %}</code>{% endraw %}.</p>
+<p>To troubleshoot, make sure all logic tags in the file in the error message are properly closed. For more information, see “<a href="https://help.shopify.com/en/themes/liquid/tags">Liquid tags</a>” in the Liquid documentation.</p>
+<h2 id="tag-not-properly-terminated">Tag not properly terminated</h2>
+<p>This error means that your code includes an output tag that is not properly terminated. For example, {% raw %}<code>{{ page.title }</code> instead of <code>{{ page.title }}</code>{% endraw %}.</p>
+<p>To troubleshoot, make sure all output tags in the file in the error message are terminated with <code>}}</code>. For more information, see “<a href="https://help.shopify.com/en/themes/liquid/objects">Liquid objects</a>” in the Liquid documentation.</p>
+<h2 id="unknown-tag-error">Unknown tag error</h2>
+<p>This error means that your code contains an unrecognized Liquid tag.</p>
+<p>To troubleshoot, make sure all Liquid tags in the file in the error message match Jekyll’s default variables and there are no typos in the tag names. For a list of default variables, see “<a href="https://jekyllrb.com/docs/variables/">Variables</a>” in the Jekyll documentation.</p>
+<p>Unsupported plugins are a common source of unrecognized tags. If you use an unsupported plugin in your site by generating your site locally and pushing your static files to {% data variables.product.product_name %}, make sure the plugin is not introducing tags that are not in Jekyll’s default variables. For a list of supported plugins, see “<a href="/articles/about-github-pages-and-jekyll#plugins">About {% data variables.product.prodname_pages %} and Jekyll</a>.”</p>
+</body>
+</html>

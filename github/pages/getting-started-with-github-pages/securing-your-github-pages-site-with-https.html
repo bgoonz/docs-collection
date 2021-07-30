@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Securing your GitHub Pages site with HTTPS</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Securing your GitHub Pages site with HTTPS</h1>
+</header>
+<p>People with admin permissions for a repository can enforce HTTPS for a {% data variables.product.prodname_pages %} site.</p>
+<h2 id="about-https-and-data-variables.product.prodname_pages">About HTTPS and {% data variables.product.prodname_pages %}</h2>
+<p>All {% data variables.product.prodname_pages %} sites, including sites that are correctly configured with a custom domain, support HTTPS and HTTPS enforcement. For more information about custom domains, see “<a href="/articles/about-custom-domains-and-github-pages">About custom domains and {% data variables.product.prodname_pages %}</a>” and “<a href="/articles/troubleshooting-custom-domains-and-github-pages#https-errors">Troubleshooting custom domains and {% data variables.product.prodname_pages %}</a>.”</p>
+<p>{% data reusables.pages.no_sensitive_data_pages %}</p>
+<p>{% data reusables.pages.private_pages_are_public_warning %}</p>
+<h2 id="enforcing-https-for-your-data-variables.product.prodname_pages-site">Enforcing HTTPS for your {% data variables.product.prodname_pages %} site</h2>
+<p>{% data reusables.pages.navigate-site-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.pages.sidebar-pages %} 3. Under “{% data variables.product.prodname_pages %},” select <strong>Enforce HTTPS</strong>. <img src="/assets/images/help/pages/enforce-https-checkbox.png" alt="Enforce HTTPS checkbox" /></p>
+<h2 id="resolving-problems-with-mixed-content">Resolving problems with mixed content</h2>
+<p>If you enable HTTPS for your {% data variables.product.prodname_pages %} site but your site’s HTML still references images, CSS, or JavaScript over HTTP, then your site is serving <em>mixed content</em>. Serving mixed content may make your site less secure and cause trouble loading assets.</p>
+<p>To remove your site’s mixed content, make sure all your assets are served over HTTPS by changing <code>http://</code> to <code>https://</code> in your site’s HTML.</p>
+<p>Assets are commonly found in the following locations: - If your site uses Jekyll, your HTML files will probably be found in the *_layouts* folder. - CSS is usually found in the <code>&lt;head&gt;</code> section of your HTML file. - JavaScript is usually found in the <code>&lt;head&gt;</code> section or just before the closing <code>&lt;/body&gt;</code> tag. - Images are often found in the <code>&lt;body&gt;</code> section.</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> If you can’t find your assets in your site’s source files, try searching your site’s source files for <code>http</code> in your text editor or on {% data variables.product.product_name %}.</p>
+<p>{% endtip %}</p>
+<h3 id="examples-of-assets-referenced-in-an-html-file">Examples of assets referenced in an HTML file</h3>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 47%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Asset type</th>
+<th style="text-align: center;">HTTP</th>
+<th style="text-align: center;">HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">CSS</td>
+<td style="text-align: center;"><code>&lt;link rel="stylesheet" href="http://example.com/css/main.css"&gt;</code></td>
+<td style="text-align: center;"><code>&lt;link rel="stylesheet" href="https://example.com/css/main.css"&gt;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">JavaScript</td>
+<td style="text-align: center;"><code>&lt;script type="text/javascript" src="http://example.com/js/main.js"&gt;&lt;/script&gt;</code></td>
+<td style="text-align: center;"><code>&lt;script type="text/javascript" src="https://example.com/js/main.js"&gt;&lt;/script&gt;</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Image</td>
+<td style="text-align: center;"><code>&lt;A HREF="http://www.somesite.com"&gt;&lt;IMG SRC="http://www.example.com/logo.jpg" alt="Logo"&gt;&lt;/a&gt;</code></td>
+<td style="text-align: center;"><code>&lt;A HREF="https://www.somesite.com"&gt;&lt;IMG SRC="https://www.example.com/logo.jpg" alt="Logo"&gt;&lt;/a&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

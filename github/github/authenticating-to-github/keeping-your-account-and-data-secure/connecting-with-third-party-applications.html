@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Connecting with third-party applications</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Connecting with third-party applications</h1>
+</header>
+<p>When a third-party application wants to identify you by your {% data variables.product.product_name %} login, you’ll see a page with the developer contact information and a list of the specific data that’s being requested.</p>
+<h2 id="contacting-the-application-developer">Contacting the application developer</h2>
+<p>Because an application is developed by a third-party who isn’t {% data variables.product.product_name %}, we don’t know exactly how an application uses the data it’s requesting access to. You can use the developer information at the top of the page to contact the application admin if you have questions or concerns about their application.</p>
+<figure>
+<img src="/assets/images/help/platform/oauth_owner_bar.png" alt="{% data variables.product.prodname_oauth_app %} owner information" /><figcaption>{% data variables.product.prodname_oauth_app %} owner information</figcaption>
+</figure>
+<p>If the developer has chosen to supply it, the right-hand side of the page provides a detailed description of the application, as well as its associated website.</p>
+<figure>
+<img src="/assets/images/help/platform/oauth_app_info.png" alt="OAuth application information and website" /><figcaption>OAuth application information and website</figcaption>
+</figure>
+<h2 id="types-of-application-access-and-data">Types of application access and data</h2>
+<p>Applications can have <em>read</em> or <em>write</em> access to your {% data variables.product.product_name %} data.</p>
+<ul>
+<li><strong>Read access</strong> only allows an application to <em>look at</em> your data.</li>
+<li><strong>Write access</strong> allows an application to <em>change</em> your data.</li>
+</ul>
+<h3 id="about-oauth-scopes">About OAuth scopes</h3>
+<p><em>Scopes</em> are named groups of permissions that an application can request to access both public and non-public data.</p>
+<p>When you want to use a third-party application that integrates with {% data variables.product.product_name %}, that application lets you know what type of access to your data will be required. If you grant access to the application, then the application will be able to perform actions on your behalf, such as reading or modifying data. For example, if you want to use an app that requests <code>user:email</code> scope, the app will have read-only access to your private email addresses. For more information, see “<a href="/apps/building-integrations/setting-up-and-registering-oauth-apps/about-scopes-for-oauth-apps">About scopes for {% data variables.product.prodname_oauth_apps %}</a>.”</p>
+<p>{% tip %}</p>
+<p><strong>Note:</strong> Currently, you can’t scope source code access to read-only.</p>
+<p>{% endtip %}</p>
+<h3 id="types-of-requested-data">Types of requested data</h3>
+<p>There are several types of data that applications can request.</p>
+<figure>
+<img src="/assets/images/help/platform/oauth_access_types.png" alt="OAuth access details" /><figcaption>OAuth access details</figcaption>
+</figure>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> {% data reusables.user_settings.review_oauth_tokens_tip %}</p>
+<p>{% endtip %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type of data</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Commit status</td>
+<td>You can grant access for a third-party application to report your commit status. Commit status access allows applications to determine if a build is a successful against a specific commit. Applications won’t have access to your code, but they <em>can</em> read and write status information against a specific commit.</td>
+</tr>
+<tr class="even">
+<td>Deployments</td>
+<td>Deployment status access allows applications to determine if a deployment is successful against a specific commit for a repository. Applications won’t have access to your code.</td>
+</tr>
+<tr class="odd">
+<td>Gists</td>
+<td><a href="https://gist.github.com">Gist</a> access allows applications to read or write to {% ifversion not ghae %}both your public and{% else %}both your internal and{% endif %} secret Gists.</td>
+</tr>
+<tr class="even">
+<td>Hooks</td>
+<td><a href="/webhooks">Webhooks</a> access allows applications to read or write hook configurations on repositories you manage.</td>
+</tr>
+<tr class="odd">
+<td>Notifications</td>
+<td>Notification access allows applications to read your {% data variables.product.product_name %} notifications, such as comments on issues and pull requests. However, applications remain unable to access anything in your repositories.</td>
+</tr>
+<tr class="even">
+<td>Organizations and teams</td>
+<td>Organization and teams access allows apps to access and manage organization and team membership.</td>
+</tr>
+<tr class="odd">
+<td>Personal user data</td>
+<td>User data includes information found in your user profile, like your name, e-mail address, and location.</td>
+</tr>
+<tr class="even">
+<td>Repositories</td>
+<td>Repository information includes the names of contributors, the branches you’ve created, and the actual files within your repository. Applications can request access for either {% ifversion not ghae %}public{% else %}internal{% endif %} or private repositories on a user-wide level.</td>
+</tr>
+<tr class="odd">
+<td>Repository delete</td>
+<td>Applications can request to delete repositories that you administer, but they won’t have access to your code.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="requesting-updated-permissions">Requesting updated permissions</h2>
+<p>Applications can request new access privileges. When asking for updated permissions, the application will notify you of the differences.</p>
+<figure>
+<img src="/assets/images/help/platform/oauth_existing_access_pane.png" alt="Changing third-party application access" /><figcaption>Changing third-party application access</figcaption>
+</figure>
+</body>
+</html>

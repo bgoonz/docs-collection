@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring rate limits</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring rate limits</h1>
+    </header>
+    <h2
+      id="enabling-rate-limits-for-data-variables.product.prodname_enterprise_api"
+    >
+      Enabling rate limits for {% data variables.product.prodname_enterprise_api
+      %}
+    </h2>
+    <p>
+      Enabling rate limits on {% data variables.product.prodname_enterprise_api
+      %} can prevent overuse of resources by individual or unauthenticated
+      users. For more information, see “<a
+        href="/rest/overview/resources-in-the-rest-api#rate-limiting"
+        >Resources in the REST API</a
+      >.”
+    </p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %} You can exempt a list of users from API
+      rate limits using the <code>ghe-config</code> utility in the
+      administrative shell. For more information, see “<a
+        href="/enterprise/admin/configuration/command-line-utilities#ghe-config"
+        >Command-line utilities</a
+      >.” {% endif %}
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> The {% data variables.enterprise.management_console
+      %} lists the time period (per minute or per hour) for each rate limit.
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 2.
+      Under “Rate Limiting”, select <strong>Enable API Rate Limiting</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/api-rate-limits-checkbox.png"
+        alt="Checkbox for enabling API rate limiting"
+      />
+      3. Type limits for authenticated and unauthenticated requests for each
+      API, or accept the pre-filled default limits. {% data
+      reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2 id="enabling-abuse-rate-limits">Enabling abuse rate limits</h2>
+    <p>
+      Setting abuse rate limits protects the overall level of service on {% data
+      variables.product.product_location %}.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 2.
+      Under “Rate Limiting”, select <strong>Enable Abuse Rate Limiting</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/abuse-rate-limits-checkbox.png"
+        alt="Checkbox for enabling abuse rate limiting"
+      />
+      3. Type limits for Total Requests, CPU Limit, and CPU Limit for Searching,
+      or accept the pre-filled default limits. {% data
+      reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2 id="enabling-git-rate-limits">Enabling Git rate limits</h2>
+    <p>
+      You can apply Git rate limits per repository network or per user ID. Git
+      rate limits are expressed in concurrent operations per minute, and are
+      adaptive based on the current CPU load.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 2.
+      Under “Rate Limiting”, select <strong>Enable Git Rate Limiting</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/git-rate-limits-checkbox.png"
+        alt="Checkbox for enabling Git rate limiting"
+      />
+      3. Type limits for each repository network or user ID.
+      <img
+        src="/assets/images/enterprise/management-console/example-git-rate-limits.png"
+        alt="Fields for repository network and user ID limits"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting changes from a remote repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting changes from a remote repository</h1>
+</header>
+<h2 id="options-for-getting-changes">Options for getting changes</h2>
+<p>These commands are very useful when interacting with <a href="/github/getting-started-with-github/about-remote-repositories">a remote repository</a>. <code>clone</code> and <code>fetch</code> download remote code from a repository’s remote URL to your local computer, <code>merge</code> is used to merge different people’s work together with yours, and <code>pull</code> is a combination of <code>fetch</code> and <code>merge</code>.</p>
+<h2 id="cloning-a-repository">Cloning a repository</h2>
+<p>To grab a complete copy of another user’s repository, use <code>git clone</code> like this:</p>
+<pre class="shell"><code>$ git clone https://{% data variables.command_line.codeblock %}/&lt;em&gt;USERNAME&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git
+# Clones a repository to your computer</code></pre>
+<p>You can choose from <a href="/github/getting-started-with-github/about-remote-repositories">several different URLs</a> when cloning a repository. While logged in to {% data variables.product.prodname_dotcom %}, these URLs are available below the repository details:</p>
+<figure>
+<img src="/assets/images/help/repository/remotes-url.png" alt="Remote URL list" /><figcaption>Remote URL list</figcaption>
+</figure>
+<p>When you run <code>git clone</code>, the following actions occur: - A new folder called <code>repo</code> is made - It is initialized as a Git repository - A remote named <code>origin</code> is created, pointing to the URL you cloned from - All of the repository’s files and commits are downloaded there - The default branch is checked out</p>
+<p>For every branch <code>foo</code> in the remote repository, a corresponding remote-tracking branch <code>refs/remotes/origin/foo</code> is created in your local repository. You can usually abbreviate such remote-tracking branch names to <code>origin/foo</code>.</p>
+<h2 id="fetching-changes-from-a-remote-repository">Fetching changes from a remote repository</h2>
+<p>Use <code>git fetch</code> to retrieve new work done by other people. Fetching from a repository grabs all the new remote-tracking branches and tags <em>without</em> merging those changes into your own branches.</p>
+<p>If you already have a local repository with a remote URL set up for the desired project, you can grab all the new information by using <code>git fetch *remotename*</code> in the terminal:</p>
+<pre class="shell"><code>$ git fetch &lt;em&gt;remotename&lt;/em&gt;
+# Fetches updates made to a remote repository</code></pre>
+<p>Otherwise, you can always add a new remote and then fetch. For more information, see “<a href="/github/getting-started-with-github/managing-remote-repositories">Managing remote repositories</a>.”</p>
+<h2 id="merging-changes-into-your-local-branch">Merging changes into your local branch</h2>
+<p>Merging combines your local changes with changes made by others.</p>
+<p>Typically, you’d merge a remote-tracking branch (i.e., a branch fetched from a remote repository) with your local branch:</p>
+<pre class="shell"><code>$ git merge &lt;em&gt;remotename&lt;/em&gt;/&lt;em&gt;branchname&lt;/em&gt;
+# Merges updates made online with your local work</code></pre>
+<h2 id="pulling-changes-from-a-remote-repository">Pulling changes from a remote repository</h2>
+<p><code>git pull</code> is a convenient shortcut for completing both <code>git fetch</code> and <code>git merge</code>in the same command:</p>
+<pre class="shell"><code>$ git pull &lt;em&gt;remotename&lt;/em&gt; &lt;em&gt;branchname&lt;/em&gt;
+# Grabs online updates and merges them with your local work</code></pre>
+<p>Because <code>pull</code> performs a merge on the retrieved changes, you should ensure that your local work is committed before running the <code>pull</code> command. If you run into <a href="/articles/resolving-a-merge-conflict-using-the-command-line">a merge conflict</a> you cannot resolve, or if you decide to quit the merge, you can use <code>git merge --abort</code> to take the branch back to where it was in before you pulled.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/Git-Basics-Working-with-Remotes">“Working with Remotes” from the <em>Pro Git</em> book</a>"{% ifversion fpt %}</li>
+<li>“<a href="/articles/troubleshooting-connectivity-problems">Troubleshooting connectivity problems</a>”{% endif %}</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Securing your webhooks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Securing your webhooks</h1>
+</header>
+<p>Once your server is configured to receive payloads, it’ll listen for any payload sent to the endpoint you configured. For security reasons, you probably want to limit requests to those coming from GitHub. There are a few ways to go about this–for example, you could opt to allow requests from GitHub’s IP address–but a far easier method is to set up a secret token and validate the information.</p>
+<p>{% data reusables.webhooks.webhooks-rest-api-links %}</p>
+<h2 id="setting-your-secret-token">Setting your secret token</h2>
+<p>You’ll need to set up your secret token in two places: GitHub and your server.</p>
+<p>To set your token on GitHub:</p>
+<ol type="1">
+<li>Navigate to the repository where you’re setting up your webhook.</li>
+<li>Fill out the Secret textbox. Use a random string with high entropy (e.g., by taking the output of <code>ruby -rsecurerandom -e 'puts SecureRandom.hex(20)'</code> at the terminal). <img src="/assets/images/webhook_secret_token.png" alt="Webhook secret token field" /></li>
+<li>Click <strong>Update Webhook</strong>.</li>
+</ol>
+<p>Next, set up an environment variable on your server that stores this token. Typically, this is as simple as running:</p>
+<pre class="shell"><code>$ export SECRET_TOKEN=&lt;em&gt;your_token&lt;/em&gt;</code></pre>
+<p><strong>Never</strong> hardcode the token into your app!</p>
+<h2 id="validating-payloads-from-github">Validating payloads from GitHub</h2>
+<p>When your secret token is set, {% data variables.product.product_name %} uses it to create a hash signature with each payload. This hash signature is included with the headers of each request as {% ifversion fpt or ghes &gt; 2.22 or ghae %}<code>X-Hub-Signature-256</code>{% elsif ghes &lt; 3.0 %}<code>X-Hub-Signature</code>{% endif %}.</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} {% note %}</p>
+<p><strong>Note:</strong> For backward-compatibility, we also include the <code>X-Hub-Signature</code> header that is generated using the SHA-1 hash function. If possible, we recommend that you use the <code>X-Hub-Signature-256</code> header for improved security. The example below demonstrates using the <code>X-Hub-Signature-256</code> header.</p>
+<p>{% endnote %} {% endif %}</p>
+<p>For example, if you have a basic server that listens for webhooks, it might be configured similar to this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1">require <span class="st">&#39;sinatra&#39;</span></a>
+<a class="sourceLine" id="cb2-2" title="2">require <span class="st">&#39;json&#39;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4">post <span class="st">&#39;/payload&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  request.body.rewind</a>
+<a class="sourceLine" id="cb2-6" title="6">  push = <span class="dt">JSON</span>.parse(request.body.read)</a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="st">&quot;I got some JSON: </span><span class="ot">#{</span>push.inspect<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">end</span></a></code></pre></div>
+<p>The intention is to calculate a hash using your <code>SECRET_TOKEN</code>, and ensure that the result matches the hash from {% data variables.product.product_name %}. {% data variables.product.product_name %} uses an HMAC hex digest to compute the hash, so you could reconfigure your server to look a little like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1">post <span class="st">&#39;/payload&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  request.body.rewind</a>
+<a class="sourceLine" id="cb3-3" title="3">  payload_body = request.body.read</a>
+<a class="sourceLine" id="cb3-4" title="4">  verify_signature(payload_body)</a>
+<a class="sourceLine" id="cb3-5" title="5">  push = <span class="dt">JSON</span>.parse(payload_body)</a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="st">&quot;I got some JSON: </span><span class="ot">#{</span>push.inspect<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9">{% ifversion fpt <span class="kw">or</span> ghes &gt; <span class="fl">2.22</span> <span class="kw">or</span> ghae <span class="ot">%}</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="st">def verify_signature(payload_body)</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="st">  signature = &#39;sha256=&#39; + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new(&#39;sha256&#39;), ENV[&#39;SECRET_TOKEN&#39;], payload_body)</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="st">  return halt 500, &quot;Signatures didn&#39;t match!&quot; unless Rack::Utils.secure_compare(signature, request.env[&#39;HTTP_X_HUB_SIGNATURE_256&#39;])</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="st">end{% elsif ghes &lt; 3.0 %</span><span class="ot">}</span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="kw">def</span> verify_signature(payload_body)</a>
+<a class="sourceLine" id="cb3-15" title="15">  signature = <span class="st">&#39;sha1=&#39;</span> + <span class="dt">OpenSSL</span>::<span class="dt">HMAC</span>.hexdigest(<span class="dt">OpenSSL</span>::<span class="dt">Digest</span>.new(<span class="st">&#39;sha1&#39;</span>), <span class="dt">ENV</span>[<span class="st">&#39;SECRET_TOKEN&#39;</span>], payload_body)</a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="kw">return</span> halt <span class="dv">500</span>, <span class="st">&quot;Signatures didn&#39;t match!&quot;</span> <span class="kw">unless</span> <span class="dt">Rack</span>::<span class="dt">Utils</span>.secure_compare(signature, request.env[<span class="st">&#39;HTTP_X_HUB_SIGNATURE&#39;</span>])</a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="kw">end</span>{% endif <span class="ot">%}</span></a></code></pre></div>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Webhook payloads can contain unicode characters. If your language and server implementation specifies a character encoding, ensure that you handle the payload as UTF-8.</p>
+<p>{% endnote %}</p>
+<p>Your language and server implementations may differ from this example code. However, there are a number of very important things to point out:</p>
+<ul>
+<li><p>No matter which implementation you use, the hash signature starts with {% ifversion fpt or ghes &gt; 2.22 or ghae %}<code>sha256=</code>{% elsif ghes &lt; 3.0 %}<code>sha1=</code>{% endif %}, using the key of your secret token and your payload body.</p></li>
+<li><p>Using a plain <code>==</code> operator is <strong>not advised</strong>. A method like <a href="https://rubydoc.info/github/rack/rack/master/Rack/Utils:secure_compare"><code>secure_compare</code></a> performs a “constant time” string comparison, which helps mitigate certain timing attacks against regular equality operators.</p></li>
+</ul>
+</body>
+</html>

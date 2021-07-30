@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Building and testing Java with Maven</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Building and testing Java with Maven</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you how to create a workflow that performs continuous
+      integration (CI) for your Java project using the Maven software project
+      management tool. The workflow you create will allow you to see when
+      commits to a pull request cause build or test failures against your
+      default branch; this approach can help ensure that your code is always
+      healthy. You can extend your CI workflow to cache files and upload
+      artifacts from a workflow run.
+    </p>
+    <p>
+      {% ifversion ghae %}For instructions on how to make sure your {% data
+      variables.actions.hosted_runner %} has the required software installed,
+      see “<a href="/actions/using-github-hosted-runners/creating-custom-images"
+        >Creating custom images</a
+      >.” {% else %} {% data variables.product.prodname_dotcom %}-hosted runners
+      have a tools cache with pre-installed software, which includes Java
+      Development Kits (JDKs) and Maven. For a list of software and the
+      pre-installed versions for JDK and Maven, see “<a
+        href="/actions/reference/specifications-for-github-hosted-runners/#supported-software"
+        >Specifications for {% data variables.product.prodname_dotcom %}-hosted
+        runners</a
+      >”. {% endif %}
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      You should be familiar with YAML and the syntax for {% data
+      variables.product.prodname_actions %}. For more information, see: - “<a
+        href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >” - “<a href="/actions/learn-github-actions"
+        >Learn {% data variables.product.prodname_actions %}</a
+      >”
+    </p>
+    <p>
+      We recommend that you have a basic understanding of Java and the Maven
+      framework. For more information, see the
+      <a href="http://maven.apache.org/guides/getting-started/index.html"
+        >Maven Getting Started Guide</a
+      >
+      in the Maven documentation.
+    </p>
+    <p>{% data reusables.actions.enterprise-setup-prereq %}</p>
+    <h2 id="starting-with-a-maven-workflow-template">
+      Starting with a Maven workflow template
+    </h2>
+    <p>
+      {% data variables.product.prodname_dotcom %} provides a Maven workflow
+      template that will work for most Maven-based Java projects. For more
+      information, see the
+      <a
+        href="https://github.com/actions/starter-workflows/blob/main/ci/maven.yml"
+        >Maven workflow template</a
+      >.
+    </p>
+    <p>
+      To get started quickly, you can choose the preconfigured Maven template
+      when you create a new workflow. For more information, see the “<a
+        href="/actions/quickstart"
+        >{% data variables.product.prodname_actions %} quickstart</a
+      >.”
+    </p>
+    <p>
+      You can also add this workflow manually by creating a new file in the
+      <code>.github/workflows</code> directory of your repository.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Java CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: &#39;11&#39;
+          distribution: &#39;adopt&#39;
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify</code></pre>
+    <p>{% endraw %}</p>
+    <p>This workflow performs the following steps:</p>
+    <ol type="1">
+      <li>
+        The <code>checkout</code> step downloads a copy of your repository on
+        the runner.
+      </li>
+      <li>
+        The <code>setup-java</code> step configures the Java 11 JDK by Adoptium.
+      </li>
+      <li>
+        The “Build with Maven” step runs the Maven <code>package</code> target
+        in non-interactive mode to ensure that your code builds, tests pass, and
+        a package can be created.
+      </li>
+    </ol>
+    <p>
+      The default workflow templates are excellent starting points when creating
+      your build and test workflow, and you can customize the template to suit
+      your project’s needs.
+    </p>
+    <p>{% data reusables.github-actions.example-github-runner %}</p>
+    <p>{% data reusables.github-actions.java-jvm-architecture %}</p>
+    <h2 id="building-and-testing-your-code">Building and testing your code</h2>
+    <p>
+      You can use the same commands that you use locally to build and test your
+      code.
+    </p>
+    <p>
+      The starter workflow will run the <code>package</code> target by default.
+      In the default Maven configuration, this command will download
+      dependencies, build classes, run tests, and package classes into their
+      distributable format, for example, a JAR file.
+    </p>
+    <p>
+      If you use different commands to build your project, or you want to use a
+      different target, you can specify those. For example, you may want to run
+      the <code>verify</code> target that’s configured in a
+      <em>pom-ci.xml</em> file.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v2
+    with:
+      java-version: &#39;11&#39;
+      distribution: &#39;adopt&#39;
+  - name: Run the Maven verify phase
+    run: mvn --batch-mode --update-snapshots verify</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="caching-dependencies">Caching dependencies</h2>
+    <p>
+      When using {% data variables.product.prodname_dotcom %}-hosted runners,
+      you can cache your dependencies to speed up your workflow runs. After a
+      successful run, your local Maven repository will be stored on GitHub
+      Actions infrastructure. In future workflow runs, the cache will be
+      restored so that dependencies don’t need to be downloaded from remote
+      Maven repositories. For more information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >” and the
+      <a href="https://github.com/marketplace/actions/cache"
+        ><code>cache</code> action</a
+      >.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  - uses: actions/checkout@v2
+  - name: Set up JDK 11
+    uses: actions/setup-java@v2
+    with:
+      java-version: &#39;11&#39;
+      distribution: &#39;adopt&#39;
+  - name: Cache Maven packages
+    uses: actions/cache@v2
+    with:
+      path: ~/.m2
+      key: ${{ runner.os }}-m2-${{ hashFiles(&#39;**/pom.xml&#39;) }}
+      restore-keys: ${{ runner.os }}-m2
+  - name: Build with Maven
+    run: mvn --batch-mode --update-snapshots verify</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      This workflow will save the contents of your local Maven repository,
+      located in the <code>.m2</code> directory of the runner’s home directory.
+      The cache key will be the hashed contents of <em>pom.xml</em>, so changes
+      to <em>pom.xml</em> will invalidate the cache.
+    </p>
+    <h2 id="packaging-workflow-data-as-artifacts">
+      Packaging workflow data as artifacts
+    </h2>
+    <p>
+      After your build has succeeded and your tests have passed, you may want to
+      upload the resulting Java packages as a build artifact. This will store
+      the built packages as part of the workflow run, and allow you to download
+      them. Artifacts can help you test and debug pull requests in your local
+      environment before they’re merged. For more information, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts"
+        >Persisting workflow data using artifacts</a
+      >.”
+    </p>
+    <p>
+      Maven will usually create output files like JARs, EARs, or WARs in the
+      <code>target</code> directory. To upload those as artifacts, you can copy
+      them into a new directory that contains artifacts to upload. For example,
+      you can create a directory called <code>staging</code>. Then you can
+      upload the contents of that directory using the
+      <code>upload-artifact</code> action.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v2
+    with:
+      java-version: &#39;11&#39;
+      distribution: &#39;adopt&#39;
+  - run: mvn --batch-mode --update-snapshots verify
+  - run: mkdir staging &amp;&amp; cp target/*.jar staging
+  - uses: actions/upload-artifact@v2
+    with:
+      name: Package
+      path: staging</code></pre>
+    <p>{% endraw %}</p>
+  </body>
+</html>

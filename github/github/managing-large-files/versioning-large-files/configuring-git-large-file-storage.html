@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring Git Large File Storage</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring Git Large File Storage</h1>
+</header>
+<p>If there are existing files in your repository that you’d like to use {% data variables.product.product_name %} with, you need to first remove them from the repository and then add them to {% data variables.large_files.product_name_short %} locally. For more information, see “<a href="/articles/moving-a-file-in-your-repository-to-git-large-file-storage">Moving a file in your repository to {% data variables.large_files.product_name_short %}</a>.”</p>
+<p>{% data reusables.large_files.resolving-upload-failures %}</p>
+<p>{% ifversion ghes or ghae %}</p>
+<p>{% tip %}</p>
+<p><strong>Note:</strong> Before trying to push a large file to {% data variables.product.product_name %}, make sure that you’ve enabled {% data variables.large_files.product_name_short %} on your enterprise. For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-git-large-file-storage-on-github-enterprise-server/">Configuring Git Large File Storage on GitHub Enterprise Server</a>.”</p>
+<p>{% endtip %}</p>
+<p>{% endif %}</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Change your current working directory to an existing repository you’d like to use with {% data variables.large_files.product_name_short %}. 3. To associate a file type in your repository with {% data variables.large_files.product_name_short %}, enter <code>git {% data variables.large_files.command_name %} track</code> followed by the name of the file extension you want to automatically upload to {% data variables.large_files.product_name_short %}.</p>
+<p>For example, to associate a <em>.psd</em> file, enter the following command: <code>shell   $ git {% data variables.large_files.command_name %} track "*.psd"   &gt; Adding path *.psd</code> Every file type you want to associate with {% data variables.large_files.product_name_short %} will need to be added with <code>git {% data variables.large_files.command_name %} track</code>. This command amends your repository’s <em>.gitattributes</em> file and associates large files with {% data variables.large_files.product_name_short %}.</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> We strongly suggest that you commit your local <em>.gitattributes</em> file into your repository. Relying on a global <em>.gitattributes</em> file associated with {% data variables.large_files.product_name_short %} may cause conflicts when contributing to other Git projects.</p>
+<p>{% endtip %}</p>
+<ol start="4" type="1">
+<li>Add a file to the repository matching the extension you’ve associated:</li>
+</ol>
+<pre class="shell"><code>$ git add path/to/file.psd</code></pre>
+<ol start="5" type="1">
+<li>Commit the file and push it to {% data variables.product.product_name %}:</li>
+</ol>
+<pre class="shell"><code>$ git commit -m &quot;add file.psd&quot;
+$ git push</code></pre>
+<p>You should see some diagnostic information about your file upload: <code>shell   &gt; Sending file.psd   &gt; 44.74 MB / 81.04 MB  55.21 % 14s   &gt; 64.74 MB / 81.04 MB  79.21 % 3s</code></p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/collaboration-with-git-large-file-storage/">Collaboration with {% data variables.large_files.product_name_long %}</a>”{% ifversion fpt or ghes &gt; 3.0 or ghae %}</li>
+<li>“<a href="/github/administering-a-repository/managing-git-lfs-objects-in-archives-of-your-repository">Managing {% data variables.large_files.product_name_short %} objects in archives of your repository</a>”{% endif %}</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>About geo-replication</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">About geo-replication</h1>
+    </header>
+    <p>
+      Multiple active replicas can provide a shorter distance to the nearest
+      replica. For example, an organization with offices in San Francisco, New
+      York, and London could run the primary appliance in a datacenter near New
+      York and two replicas in datacenters near San Francisco and London. Using
+      geolocation-aware DNS, users can be directed to the closest server
+      available and access repository data faster. Designating the appliance
+      near New York as the primary helps reduce the latency between the hosts,
+      compared to the appliance near San Francisco being the primary which has a
+      higher latency to London.
+    </p>
+    <p>
+      The active replica proxies requests that it can’t process itself to the
+      primary instance. The replicas function as a point of presence terminating
+      all SSL connections. Traffic between hosts is sent through an encrypted
+      VPN connection, similar to a two-node high availability configuration
+      without geo-replication.
+    </p>
+    <p>
+      Git requests and specific file server requests, such as LFS and file
+      uploads, can be served directly from the replica without loading any data
+      from the primary. Web requests are always routed to the primary, but if
+      the replica is closer to the user the requests are faster due to the
+      closer SSL termination.
+    </p>
+    <p>
+      Geo DNS, such as
+      <a
+        href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html#routing-policy-geo"
+        >Amazon’s Route 53 service</a
+      >, is required for geo-replication to work seamlessly. The hostname for
+      the instance should resolve to the replica that is closest to the user’s
+      location.
+    </p>
+    <h2 id="limitations">Limitations</h2>
+    <p>
+      Writing requests to the replica requires sending the data to the primary
+      and all replicas. This means that the performance of all writes are
+      limited by the slowest replica, although new geo-replicas can seed the
+      majority of their data from existing co-located geo-replicas, rather than
+      from the primary. Geo-replication will not add capacity to a {% data
+      variables.product.prodname_ghe_server %} instance or solve performance
+      issues related to insufficient CPU or memory resources. If the primary
+      appliance is offline, active replicas will be unable to serve any read or
+      write requests.
+    </p>
+    <p>{% data reusables.enterprise_installation.replica-limit %}</p>
+    <h2 id="monitoring-a-geo-replication-configuration">
+      Monitoring a geo-replication configuration
+    </h2>
+    <p>{% data reusables.enterprise_installation.monitoring-replicas %}</p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/creating-a-high-availability-replica/#creating-geo-replication-replicas"
+          >Creating geo-replication replicas</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

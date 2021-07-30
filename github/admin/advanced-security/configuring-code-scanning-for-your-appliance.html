@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring code scanning for your appliance</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring code scanning for your appliance</h1>
+    </header>
+    <p>{% data reusables.code-scanning.beta %}</p>
+    <h2 id="about-data-variables.product.prodname_code_scanning">
+      About {% data variables.product.prodname_code_scanning %}
+    </h2>
+    <p>{% data reusables.code-scanning.about-code-scanning %}</p>
+    <p>
+      You can configure {% data variables.product.prodname_code_scanning %} to
+      run {% data variables.product.prodname_codeql %} analysis and third-party
+      analysis. {% data variables.product.prodname_code_scanning_capc %} also
+      supports running analysis natively using {% data
+      variables.product.prodname_actions %} or externally using existing CI/CD
+      infrastructure. The table below summarizes all the options available to
+      users when you configure {% data variables.product.product_location %} to
+      allow {% data variables.product.prodname_code_scanning %} using actions.
+    </p>
+    <p>{% data reusables.code-scanning.enabling-options %}</p>
+    <h2 id="prerequisites-for-data-variables.product.prodname_code_scanning">
+      Prerequisites for {% data variables.product.prodname_code_scanning %}
+    </h2>
+    <ul>
+      <li>
+        <p>
+          A license for {% data variables.product.prodname_GH_advanced_security
+          %}{% ifversion ghes &gt; 3.0 %} (see “<a
+            href="/admin/advanced-security/about-licensing-for-github-advanced-security"
+            >About licensing for {% data
+            variables.product.prodname_GH_advanced_security %}</a
+          >”){% endif %}
+        </p>
+      </li>
+      <li>
+        <p>
+          {% data variables.product.prodname_code_scanning_capc %} enabled in
+          the management console (see “<a
+            href="/admin/advanced-security/enabling-github-advanced-security-for-your-enterprise"
+            >Enabling {% data variables.product.prodname_GH_advanced_security %}
+            for your enterprise</a
+          >”)
+        </p>
+      </li>
+      <li>
+        <p>
+          A VM or container for {% data variables.product.prodname_code_scanning
+          %} analysis to run in.
+        </p>
+      </li>
+    </ul>
+    <h2
+      id="running-data-variables.product.prodname_code_scanning-using-data-variables.product.prodname_actions"
+    >
+      Running {% data variables.product.prodname_code_scanning %} using {% data
+      variables.product.prodname_actions %}
+    </h2>
+    <h3 id="setting-up-a-self-hosted-runner">
+      Setting up a self-hosted runner
+    </h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} can run {% data
+      variables.product.prodname_code_scanning %} using a {% data
+      variables.product.prodname_actions %} workflow. First, you need to
+      provision one or more self-hosted {% data
+      variables.product.prodname_actions %} runners in your environment. You can
+      provision self-hosted runners at the repository, organization, or
+      enterprise account level. For more information, see “<a
+        href="/actions/hosting-your-own-runners/about-self-hosted-runners"
+        >About self-hosted runners</a
+      >” and “<a
+        href="/actions/hosting-your-own-runners/adding-self-hosted-runners"
+        >Adding self-hosted runners</a
+      >.”
+    </p>
+    <p>
+      You must ensure that Git is in the PATH variable on any self-hosted
+      runners you use to run {% data variables.product.prodname_codeql %}
+      actions.
+    </p>
+    <h3
+      id="provisioning-the-actions-for-data-variables.product.prodname_code_scanning"
+    >
+      Provisioning the actions for {% data
+      variables.product.prodname_code_scanning %}
+    </h3>
+    <p>
+      {% ifversion ghes &gt; 2.22 %} If you want to use actions to run {% data
+      variables.product.prodname_code_scanning %} on {% data
+      variables.product.prodname_ghe_server %}, the actions must be available on
+      your appliance.
+    </p>
+    <p>
+      The {% data variables.product.prodname_codeql %} action is included in
+      your installation of {% data variables.product.prodname_ghe_server %}. If
+      {% data variables.product.prodname_ghe_server %} has access to the
+      internet, the action will automatically download the {% data
+      variables.product.prodname_codeql %} bundle required to perform analysis.
+      Alternatively, you can use a synchronization tool to make the {% data
+      variables.product.prodname_codeql %} analysis bundle available locally.
+      For more information, see “<a
+        href="#configuring-codeql-analysis-on-a-server-without-internet-access"
+        >Configuring {% data variables.product.prodname_codeql %} analysis on a
+        server without internet access</a
+      >” below.
+    </p>
+    <p>
+      You can also make third-party actions available to users for {% data
+      variables.product.prodname_code_scanning %}, by setting up {% data
+      variables.product.prodname_github_connect %}. For more information, see
+      “<a
+        href="/enterprise/admin/configuration/configuring-code-scanning-for-your-appliance#configuring-github-connect-to-sync-github-actions"
+        >Configuring {% data variables.product.prodname_github_connect %} to
+        sync {% data variables.product.prodname_actions %}</a
+      >” below.
+    </p>
+    <h3
+      id="configuring-data-variables.product.prodname_codeql-analysis-on-a-server-without-internet-access"
+    >
+      Configuring {% data variables.product.prodname_codeql %} analysis on a
+      server without internet access
+    </h3>
+    <p>
+      If the server on which you are running {% data
+      variables.product.prodname_ghe_server %} is not connected to the internet,
+      and you want to allow users to enable {% data
+      variables.product.prodname_codeql %} {% data
+      variables.product.prodname_code_scanning %} for their repositories, you
+      must use the {% data variables.product.prodname_codeql %} action sync tool
+      to copy the {% data variables.product.prodname_codeql %} analysis bundle
+      from {% data variables.product.prodname_dotcom_the_website %} to your
+      server. The tool, and details of how to use it, are available at
+      <a href="https://github.com/github/codeql-action-sync-tool/"
+        >https://github.com/github/codeql-action-sync-tool</a
+      >.
+    </p>
+    <p>
+      If you set up the {% data variables.product.prodname_codeql %} action sync
+      tool, you can use it to sync the latest releases of the {% data
+      variables.product.prodname_codeql %} action and associated {% data
+      variables.product.prodname_codeql %} analysis bundle. These are compatible
+      with {% data variables.product.prodname_ghe_server %}.
+    </p>
+    <p>{% endif %}</p>
+    <p>
+      {% ifversion ghes = 2.22 %} To run {% data
+      variables.product.prodname_code_scanning %} on {% data
+      variables.product.prodname_ghe_server %} with {% data
+      variables.product.prodname_actions %}, the appropriate actions must be
+      available locally. You can make the actions available in three ways.
+    </p>
+    <ul>
+      <li>
+        <strong>Recommended</strong>: You can use
+        <a
+          href="/enterprise/admin/configuration/connecting-github-enterprise-server-to-github-enterprise-cloud"
+          >{% data variables.product.prodname_github_connect %}</a
+        >
+        to automatically download actions from {% data
+        variables.product.prodname_dotcom_the_website %}. The machine that hosts
+        your instance must be able to access {% data
+        variables.product.prodname_dotcom_the_website %}. This approach ensures
+        that you get the latest software automatically. For more information,
+        see “<a
+          href="/enterprise/admin/configuration/configuring-code-scanning-for-your-appliance#configuring-github-connect-to-sync-github-actions"
+          >Configuring {% data variables.product.prodname_github_connect %} to
+          sync {% data variables.product.prodname_actions %}</a
+        >.”
+      </li>
+      <li>
+        If you want to use the {% data
+        variables.product.prodname_codeql_workflow %}, you can sync the
+        repository from {% data variables.product.prodname_dotcom_the_website %}
+        to {% data variables.product.prodname_ghe_server %}, by using the {%
+        data variables.product.prodname_codeql %} Action sync tool available at
+        <a href="https://github.com/github/codeql-action-sync-tool/"
+          >https://github.com/github/codeql-action-sync-tool</a
+        >. You can use this tool regardless of whether {% data
+        variables.product.product_location %} or your {% data
+        variables.product.prodname_actions %} runners have access to the
+        internet, as long as you can access both {% data
+        variables.product.product_location %} and {% data
+        variables.product.prodname_dotcom_the_website %} simultaneously on your
+        computer.
+      </li>
+      <li>
+        You can create a local copy of an action’s repository on your server, by
+        cloning the {% data variables.product.prodname_dotcom_the_website %}
+        repository that contains the action. For example, if you want to use the
+        actions for {% data variables.product.prodname_codeql %} {% data
+        variables.product.prodname_code_scanning %}, you can create a repository
+        in your instance called <code>github/codeql-action</code>, then clone
+        the
+        <a href="https://github.com/github/codeql-action">repository</a> from {%
+        data variables.product.prodname_dotcom_the_website %}, and then push
+        that repository to your instance’s
+        <code>github/codeql-action</code> repository. You will also need to
+        download any of the releases from the repository on {% data
+        variables.product.prodname_dotcom_the_website %} and upload them to your
+        instance’s <code>github/codeql-action</code> repository as releases. {%
+        endif %}
+      </li>
+    </ul>
+    <h3
+      id="configuring-data-variables.product.prodname_github_connect-to-sync-data-variables.product.prodname_actions"
+    >
+      Configuring {% data variables.product.prodname_github_connect %} to sync
+      {% data variables.product.prodname_actions %}
+    </h3>
+    <ol type="1">
+      <li>
+        If you want to download action workflows on demand from {% data
+        variables.product.prodname_dotcom_the_website %}, you need to enable {%
+        data variables.product.prodname_github_connect %}. For more information,
+        see “<a
+          href="/enterprise/admin/configuration/connecting-github-enterprise-server-to-github-enterprise-cloud#enabling-github-connect"
+          >Enabling {% data variables.product.prodname_github_connect %}</a
+        >.”
+      </li>
+      <li>
+        You’ll also need to enable {% data variables.product.prodname_actions %}
+        for {% data variables.product.product_location %}. For more information,
+        see “<a
+          href="/admin/github-actions/getting-started-with-github-actions-for-github-enterprise-server"
+          >Getting started with {% data variables.product.prodname_actions %}
+          for {% data variables.product.prodname_ghe_server %}</a
+        >.”
+      </li>
+      <li>
+        The next step is to configure access to actions on {% data
+        variables.product.prodname_dotcom_the_website %} using {% data
+        variables.product.prodname_github_connect %}. For more information, see
+        “<a
+          href="/enterprise/admin/github-actions/enabling-automatic-access-to-githubcom-actions-using-github-connect"
+          >Enabling automatic access to {% data
+          variables.product.prodname_dotcom_the_website %} actions using {% data
+          variables.product.prodname_github_connect %}</a
+        >.”
+      </li>
+      <li>
+        Add a self-hosted runner to your repository, organization, or enterprise
+        account. For more information, see “<a
+          href="/actions/hosting-your-own-runners/adding-self-hosted-runners"
+          >Adding self-hosted runners</a
+        >.”
+      </li>
+    </ol>
+    <h2
+      id="running-data-variables.product.prodname_code_scanning-using-the-data-variables.product.prodname_codeql_runner"
+    >
+      Running {% data variables.product.prodname_code_scanning %} using the {%
+      data variables.product.prodname_codeql_runner %}
+    </h2>
+    <p>
+      If you don’t want to use {% data variables.product.prodname_actions %},
+      you can run {% data variables.product.prodname_code_scanning %} using the
+      {% data variables.product.prodname_codeql_runner %}.
+    </p>
+    <p>
+      The {% data variables.product.prodname_codeql_runner %} is a command-line
+      tool that you can add to your third-party CI/CD system. The tool runs {%
+      data variables.product.prodname_codeql %} analysis on a checkout of a {%
+      data variables.product.prodname_dotcom %} repository. For more
+      information, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-your-ci-system"
+        >Running {% data variables.product.prodname_code_scanning %} in your CI
+        system</a
+      >.”
+    </p>
+  </body>
+</html>

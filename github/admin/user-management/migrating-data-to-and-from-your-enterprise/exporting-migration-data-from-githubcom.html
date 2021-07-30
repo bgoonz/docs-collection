@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Exporting migration data from GitHub.com</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exporting migration data from GitHub.com</h1>
+</header>
+<h2 id="preparing-the-source-organization-on-data-variables.product.prodname_dotcom">Preparing the source organization on {% data variables.product.prodname_dotcom %}</h2>
+<ol type="1">
+<li><p>Ensure that you have <a href="/articles/permission-levels-for-an-organization/">owner permissions</a> on the source organization’s repositories.</p></li>
+<li><p>{% data reusables.enterprise_migrations.token-generation %} on {% data variables.product.prodname_dotcom_the_website %}.</p></li>
+</ol>
+<p>{% data reusables.enterprise_migrations.make-a-list %}</p>
+<h2 id="exporting-the-organizations-repositories">Exporting the organization’s repositories</h2>
+<p>{% data reusables.enterprise_migrations.fork-persistence %}</p>
+<p>To export repository data from {% data variables.product.prodname_dotcom_the_website %}, use <a href="/rest/reference/migrations" class="dotcom-only">the Migrations API</a>.</p>
+<p>The Migrations API is currently in a preview period, which means that the endpoints and parameters may change in the future. To access the Migrations API, you must provide a custom <a href="/rest/overview/media-types">media type</a> in the <code>Accept</code> header: <code>application/vnd.github.wyandotte-preview+json</code>. The examples below include the custom media type.</p>
+<h2 id="generating-a-migration-archive">Generating a migration archive</h2>
+<p>{% data reusables.enterprise_migrations.locking-repositories %}</p>
+<ol type="1">
+<li><p>Notify members of your organization that you’ll be performing a migration. The export can take several minutes, depending on the number of repositories being exported. The full migration including import may take several hours so we recommend doing a trial run in order to determine how long the full process will take. For more information, see “<a href="/enterprise/admin/migrations/about-migrations#types-of-migrations">About Migrations</a>.”</p></li>
+<li>Start a migration by sending a <code>POST</code> request to <a href="/rest/reference/migrations#start-an-organization-migration" class="dotcom-only">the migration endpoint</a>. You’ll need:
+<ul>
+<li>Your access token for authentication.</li>
+<li><p>A <a href="/rest/reference/repos#list-organization-repositories">list of the repositories</a> you want to migrate:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token &lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt;&quot; -X POST \
+-H &quot;Accept: application/vnd.github.wyandotte-preview+json&quot; \
+-d&#39;{&quot;lock_repositories&quot;:true,&quot;repositories&quot;:[&quot;&lt;em&gt;orgname&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt;&quot;, &quot;&lt;em&gt;orgname&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt;&quot;]}&#39; \
+https://api.github.com/orgs/&lt;em&gt;orgname&lt;/em&gt;/migrations</code></pre></li>
+<li>If you want to lock the repositories before migrating them, make sure <code>lock_repositories</code> is set to <code>true</code>. This is highly recommended.</li>
+<li><p>You can exclude file attachments by passing <code>exclude_attachments: true</code> to the endpoint. {% data reusables.enterprise_migrations.exclude-file-attachments %} The final archive size must be less than 20 GB.</p></li>
+</ul></li>
+</ol>
+<p>This request returns a unique <code>id</code> which represents your migration. You’ll need it for subsequent calls to the Migrations API.</p>
+<ol start="3" type="1">
+<li>Send a <code>GET</code> request to <a href="/rest/reference/migrations#get-an-organization-migration-status" class="dotcom-only">the migration status endpoint</a> to fetch the status of a migration. You’ll need:
+<ul>
+<li>Your access token for authentication.</li>
+<li><p>The unique <code>id</code> of the migration:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token &lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt;&quot; \
+-H &quot;Accept: application/vnd.github.wyandotte-preview+json&quot; \
+https://api.github.com/orgs/&lt;em&gt;orgname&lt;/em&gt;/migrations/&lt;em&gt;id&lt;/em&gt;</code></pre></li>
+</ul></li>
+</ol>
+<p>A migration can be in one of the following states: * <code>pending</code>, which means the migration hasn’t started yet. * <code>exporting</code>, which means the migration is in progress. * <code>exported</code>, which means the migration finished successfully. * <code>failed</code>, which means the migration failed.</p>
+<ol start="4" type="1">
+<li>After your migration has exported, download the migration archive by sending a <code>GET</code> request to <a href="/rest/reference/migrations#download-an-organization-migration-archive" class="dotcom-only">the migration download endpoint</a>. You’ll need:
+<ul>
+<li>Your access token for authentication.</li>
+<li><p>The unique <code>id</code> of the migration:</p>
+<pre class="shell"><code>curl -H &quot;Accept: application/vnd.github.wyandotte-preview+json&quot; \
+-u &lt;em&gt;GITHUB_USERNAME&lt;/em&gt;:&lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt; \
+-L -o migration_archive.tar.gz \
+https://api.github.com/orgs/&lt;em&gt;orgname&lt;/em&gt;/migrations/&lt;em&gt;id&lt;/em&gt;/archive</code></pre></li>
+</ul></li>
+<li>The migration archive is automatically deleted after seven days. If you would prefer to delete it sooner, you can send a <code>DELETE</code> request to <a href="/rest/reference/migrations#delete-an-organization-migration-archive" class="dotcom-only">the migration archive delete endpoint</a>. You’ll need:
+<ul>
+<li>Your access token for authentication.</li>
+<li><p>The unique <code>id</code> of the migration:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token &lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt;&quot; -X DELETE \
+-H &quot;Accept: application/vnd.github.wyandotte-preview+json&quot; \
+https://api.github.com/orgs/&lt;em&gt;orgname&lt;/em&gt;/migrations/&lt;em&gt;id&lt;/em&gt;/archive</code></pre>
+<p>{% data reusables.enterprise_migrations.ready-to-import-migrations %}</p></li>
+</ul></li>
+</ol>
+</body>
+</html>

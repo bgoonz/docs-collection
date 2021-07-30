@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Renaming a branch</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Renaming a branch</h1>
+</header>
+<h2 id="about-renaming-branches">About renaming branches</h2>
+<p>You can rename a branch in a repository on {% data variables.product.product_location %}. For more information about branches, see “<a href="/github/collaborating-with-issues-and-pull-requests/about-branches">About branches</a>.”</p>
+<p>When you rename a branch on {% data variables.product.product_location %}, any URLs that contain the old branch name are automatically redirected to the equivalent URL for the renamed branch. Branch protection policies are also updated, as well as the base branch for open pull requests (including those for forks) and draft releases. After the rename is complete, {% data variables.product.prodname_dotcom %} provides instructions on the repository’s home page directing contributors to update their local Git environments.</p>
+<p>Although file URLs are automatically redirected, raw file URLs are not redirected. Also, {% data variables.product.prodname_dotcom %} does not perform any redirects if users perform a <code>git pull</code> for the previous branch name.</p>
+<p>{% data variables.product.prodname_actions %} workflows do not follow renames, so if your repository publishes an action, anyone using that action with <code>@{old-branch-name}</code> will break. You should consider adding a new branch with the original content plus an additional commit reporting that the branch name is deprecated and suggesting that users migrate to the new branch name.</p>
+<h2 id="renaming-a-branch">Renaming a branch</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.navigate-to-branches %} 1. In the list of branches, to the right of the branch you want to rename, click {% octicon “pencil” aria-label=“The edit icon” %}. <img src="/assets/images/help/branch/branch-rename-edit.png" alt="Pencil icon to the right of branch you want to rename" /> 1. Type a new name for the branch. <img src="/assets/images/help/branch/branch-rename-type.png" alt="Text field for typing new branch name" /> 1. Review the information about local environments, then click <strong>Rename branch</strong>. <img src="/assets/images/help/branch/branch-rename-rename.png" alt="Local environment information and “Rename branch” button" /></p>
+<h2 id="updating-a-local-clone-after-a-branch-name-changes">Updating a local clone after a branch name changes</h2>
+<p>After you rename a branch in a repository on {% data variables.product.product_name %}, any collaborator with a local clone of the repository will need to update the clone.</p>
+<p>From the local clone of the repository on a computer, run the following commands to update the name of the default branch.</p>
+<pre class="shell"><code>$ git branch -m &lt;em&gt;OLD-BRANCH-NAME&lt;/em&gt; &lt;em&gt;NEW-BRANCH-NAME&lt;/em&gt;
+$ git fetch origin
+$ git branch -u origin/&lt;em&gt;NEW-BRANCH-NAME&lt;/em&gt; &lt;em&gt;NEW-BRANCH-NAME&lt;/em&gt;
+$ git remote set-head origin -a</code></pre>
+<p>Optionally, run the following command to remove tracking references to the old branch name.</p>
+<pre><code>$ git remote prune origin</code></pre>
+</body>
+</html>

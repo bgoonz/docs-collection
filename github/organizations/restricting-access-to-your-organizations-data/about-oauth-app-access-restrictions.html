@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About OAuth App access restrictions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About OAuth App access restrictions</h1>
+</header>
+<p>When {% data variables.product.prodname_oauth_app %} access restrictions are enabled, organization members cannot authorize {% data variables.product.prodname_oauth_app %} access to organization resources. Organization members can request owner approval for {% data variables.product.prodname_oauth_apps %} they’d like to use, and organization owners receive a notification of pending requests.</p>
+<p>{% data reusables.organizations.oauth_app_restrictions_default %}</p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: When an organization has not set up {% data variables.product.prodname_oauth_app %} access restrictions, any {% data variables.product.prodname_oauth_app %} authorized by an organization member can also access the organization’s private resources.</p>
+<p>{% endtip %}</p>
+<h2 id="setting-up-data-variables.product.prodname_oauth_app-access-restrictions">Setting up {% data variables.product.prodname_oauth_app %} access restrictions</h2>
+<p>When an organization owner sets up {% data variables.product.prodname_oauth_app %} access restrictions for the first time:</p>
+<ul>
+<li><strong>Applications that are owned by the organization</strong> are automatically given access to the organization’s resources.</li>
+<li><strong>{% data variables.product.prodname_oauth_apps %}</strong> immediately lose access to the organization’s resources.</li>
+<li><strong>SSH keys created before February 2014</strong> immediately lose access to the organization’s resources (this includes user and deploy keys).</li>
+<li><strong>SSH keys created by {% data variables.product.prodname_oauth_apps %} during or after February 2014</strong> immediately lose access to the organization’s resources.</li>
+<li><strong>Hook deliveries from private organization repositories</strong> will no longer be sent to unapproved {% data variables.product.prodname_oauth_apps %}.</li>
+<li><strong>API access</strong> to private organization resources is not available for unapproved {% data variables.product.prodname_oauth_apps %}. In addition, there are no privileged create, update, or delete actions on public organization resources.</li>
+<li><strong>Hooks created by users and hooks created before May 2014</strong> will not be affected.</li>
+<li><strong>Private forks of organization-owned repositories</strong> are subject to the organization’s access restrictions.</li>
+</ul>
+<h2 id="resolving-ssh-access-failures">Resolving SSH access failures</h2>
+<p>When an SSH key created before February 2014 loses access to an organization with {% data variables.product.prodname_oauth_app %} access restrictions enabled, subsequent SSH access attempts will fail. Users will encounter an error message directing them to a URL where they can approve the key or upload a trusted key in its place.</p>
+<h2 id="webhooks">Webhooks</h2>
+<p>When an {% data variables.product.prodname_oauth_app %} is granted access to the organization after restrictions are enabled, any pre-existing webhooks created by that {% data variables.product.prodname_oauth_app %} will resume dispatching.</p>
+<p>When an organization removes access from a previously-approved {% data variables.product.prodname_oauth_app %}, any pre-existing webhooks created by that application will no longer be dispatched (these hooks will be disabled, but not deleted).</p>
+<h2 id="re-enabling-access-restrictions">Re-enabling access restrictions</h2>
+<p>If an organization disables {% data variables.product.prodname_oauth_app %} access application restrictions, and later re-enables them, previously approved {% data variables.product.prodname_oauth_app %} are automatically granted access to the organization’s resources.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/enabling-oauth-app-access-restrictions-for-your-organization">Enabling {% data variables.product.prodname_oauth_app %} access restrictions for your organization</a>”</li>
+<li>“<a href="/articles/approving-oauth-apps-for-your-organization">Approving {% data variables.product.prodname_oauth_apps %} for your organization</a>”</li>
+<li>“<a href="/articles/reviewing-your-organization-s-installed-integrations">Reviewing your organization’s installed integrations</a>”</li>
+<li>“<a href="/articles/denying-access-to-a-previously-approved-oauth-app-for-your-organization">Denying access to a previously approved {% data variables.product.prodname_oauth_app %} for your organization</a>”</li>
+<li>“<a href="/articles/disabling-oauth-app-access-restrictions-for-your-organization">Disabling {% data variables.product.prodname_oauth_app %} access restrictions for your organization</a>”</li>
+<li>“<a href="/articles/requesting-organization-approval-for-oauth-apps">Requesting organization approval for {% data variables.product.prodname_oauth_apps %}</a>”</li>
+<li>“<a href="/github/authenticating-to-github/keeping-your-account-and-data-secure/authorizing-oauth-apps">Authorizing {% data variables.product.prodname_oauth_apps %}</a>”</li>
+</ul>
+</body>
+</html>

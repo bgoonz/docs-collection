@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Agent admitted failure to sign</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Agent admitted failure to sign</h1>
+</header>
+<p>When trying to SSH into {% data variables.product.product_location %} on a Linux computer, you may see the following message in your terminal:</p>
+<pre class="shell"><code>$ ssh -vT git@{% data variables.command_line.codeblock %}
+&gt; ...
+&gt; Agent admitted failure to sign using the key.
+&gt; debug1: No more authentication methods to try.
+&gt; Permission denied (publickey).</code></pre>
+<p>For more details, see <a href="https://bugs.launchpad.net/ubuntu/+source/gnome-keyring/+bug/201786" data-proofer-ignore>this issue report</a>.</p>
+<h2 id="resolution">Resolution</h2>
+<p>You should be able to fix this error by loading your keys into your SSH agent with <code>ssh-add</code>:</p>
+<pre class="shell"><code># start the ssh-agent in the background
+$ eval &quot;$(ssh-agent -s)&quot;
+&gt; Agent pid 59566
+$ ssh-add
+&gt; Enter passphrase for /home/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa: &lt;em&gt;[tippy tap]&lt;/em&gt;
+&gt; Identity added: /home/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (/home/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa)</code></pre>
+<p>If your key does not have the default filename (<code>/.ssh/id_rsa</code>), you’ll have to pass that path to <code>ssh-add</code>:</p>
+<pre class="shell"><code># start the ssh-agent in the background
+$ eval &quot;$(ssh-agent -s)&quot;
+&gt; Agent pid 59566
+$ ssh-add ~/.ssh/my_other_key
+&gt; Enter passphrase for /home/&lt;em&gt;you&lt;/em&gt;/.ssh/my_other_key: &lt;em&gt;[tappity tap tap]&lt;/em&gt;
+&gt; Identity added: /home/&lt;em&gt;you&lt;/em&gt;/.ssh/my_other_key (/home/&lt;em&gt;you&lt;/em&gt;/.ssh/my_other_key)</code></pre>
+</body>
+</html>

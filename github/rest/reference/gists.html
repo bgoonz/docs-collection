@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Gists</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Gists</h1>
+</header>
+<h3 id="authentication">Authentication</h3>
+<p>You can read public gists {% ifversion ghae or ghes %}and create them for anonymous users without a token.{% else %} anonymously, but you must be signed into GitHub to create gists.{% endif %} To read or write gists on a user’s behalf, you need the gist OAuth scope and a token. For more information, see “<a href="/developers/apps/scopes-for-oauth-apps">Scopes for OAuth Apps</a>.”</p>
+<!-- When an OAuth client does not have the gists scope, the API will return a 404 "Not Found" response regardless of the validity of the credentials. The API will return a 401 "Bad credentials" response if the gists scope was given to the application but the credentials are invalid. -->
+<h3 id="truncation">Truncation</h3>
+<p>The Gist API provides up to one megabyte of content for each file in the gist. Each file returned for a gist through the API has a key called <code>truncated</code>. If <code>truncated</code> is <code>true</code>, the file is too large and only a portion of the contents were returned in <code>content</code>.</p>
+<p>If you need the full contents of the file, you can make a <code>GET</code> request to the URL specified by <code>raw_url</code>. Be aware that for files larger than ten megabytes, you’ll need to clone the gist via the URL provided by <code>git_pull_url</code>.</p>
+<p>In addition to a specific file’s contents being truncated, the entire files list may be truncated if the total number exceeds 300 files. If the top level <code>truncated</code> key is <code>true</code>, only the first 300 files have been returned in the files list. If you need to fetch all of the gist’s files, you’ll need to clone the gist via the URL provided by <code>git_pull_url</code>.</p>
+<h3 id="custom-media-types-for-gists">Custom media types for gists</h3>
+<p>These are the supported media types for fetching gist contents.</p>
+<pre><code>application/vnd.github.VERSION.raw
+application/vnd.github.VERSION.base64</code></pre>
+<p>For more information, see “<a href="/rest/overview/media-types">Media types</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="comments">Comments</h2>
+<h3 id="custom-media-types-for-gist-comments">Custom media types for Gist comments</h3>
+<p>These are the supported media types for gist comments.</p>
+<pre><code>application/vnd.github.VERSION.raw
+application/vnd.github.VERSION.base64</code></pre>
+<p>For more information about media types, see “<a href="/rest/overview/media-types">Custom media types</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘comments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

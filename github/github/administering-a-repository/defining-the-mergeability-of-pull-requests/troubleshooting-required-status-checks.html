@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Troubleshooting required status checks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Troubleshooting required status checks</h1>
+</header>
+<p>If you have a check and a status with the same name, and you select that name as a required status check, both the check and the status are required. For more information, see “<a href="/rest/reference/checks">Checks</a>.”</p>
+<p>After you enable required status checks, your branch may need to be up-to-date with the base branch before merging. This ensures that your branch has been tested with the latest code from the base branch. If your branch is out of date, you’ll need to merge the base branch into your branch. For more information, see “<a href="/github/administering-a-repository/about-protected-branches#require-status-checks-before-merging">About protected branches</a>.”</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You can also bring your branch up to date with the base branch using Git rebase. For more information, see “<a href="/github/getting-started-with-github/about-git-rebase">About Git rebase</a>.”</p>
+<p>{% endnote %}</p>
+<p>You won’t be able to push local changes to a protected branch until all required status checks pass. Instead, you’ll receive an error message similar to the following.</p>
+<pre class="shell"><code>remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote: error: Required status check &quot;ci-build&quot; is failing</code></pre>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Pull requests that are up-to-date and pass required status checks can be merged locally and pushed to the protected branch. This can be done without status checks running on the merge commit itself.</p>
+<p>{% endnote %}</p>
+<p>{% ifversion fpt or ghae or ghes %}</p>
+<p>Sometimes, the results of the status checks for the test merge commit and head commit will conflict. If the test merge commit has a status, the test merge commit must pass. Otherwise, the status of the head commit must pass before you can merge the branch. For more information about test merge commits, see “<a href="/rest/reference/pulls#get-a-pull-request">Pulls</a>.”</p>
+<p><img src="/assets/images/help/repository/req-status-check-conflicting-merge-commits.png" alt="Branch with conflicting merge commits" /> {% endif %}</p>
+</body>
+</html>

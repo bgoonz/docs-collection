@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Manually syncing actions from GitHub.com</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Manually syncing actions from GitHub.com</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>{% data reusables.actions.enterprise-no-internet-actions %}</p>
+    <p>
+      The recommended approach of enabling access to actions from {% data
+      variables.product.prodname_dotcom_the_website %} is to enable automatic
+      access to all actions. You can do this by using {% data
+      variables.product.prodname_github_connect %} to integrate {% data
+      variables.product.product_name %} with {% data
+      variables.product.prodname_ghe_cloud %} . For more information, see “<a
+        href="/enterprise/admin/github-actions/enabling-automatic-access-to-githubcom-actions-using-github-connect"
+        >Enabling automatic access to {% data
+        variables.product.prodname_dotcom_the_website %} actions using {% data
+        variables.product.prodname_github_connect %}</a
+      >”.
+    </p>
+    <p>
+      However, if you want stricter control over which actions are allowed in
+      your enterprise, you can follow this guide to use {% data
+      variables.product.company_short %}’s open source
+      <a href="https://github.com/actions/actions-sync"
+        ><code>actions-sync</code></a
+      >
+      tool to sync individual action repositories from {% data
+      variables.product.prodname_dotcom_the_website %} to your enterprise.
+    </p>
+    <h2 id="about-the-actions-sync-tool">
+      About the <code>actions-sync</code> tool
+    </h2>
+    <p>
+      The <code>actions-sync</code> tool must be run on a machine that can
+      access the {% data variables.product.prodname_dotcom_the_website %} API
+      and your {% data variables.product.product_name %} instance’s API. The
+      machine doesn’t need to be connected to both at the same time.
+    </p>
+    <p>
+      If your machine has access to both systems at the same time, you can do
+      the sync with a single <code>actions-sync sync</code> command. If you can
+      only access one system at a time, you can use the
+      <code>actions-sync pull</code> and <code>push</code> commands.
+    </p>
+    <p>
+      The <code>actions-sync</code> tool can only download actions from {% data
+      variables.product.prodname_dotcom_the_website %} that are stored in public
+      repositories.
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <ul>
+      <li>
+        Before using the <code>actions-sync</code> tool, you must ensure that
+        all destination organizations already exist in your enterprise. The
+        following example demonstrates how to sync actions to an organization
+        named <code>synced-actions</code>. For more information, see “<a
+          href="/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch"
+          >Creating a new organization from scratch</a
+        >.”
+      </li>
+      <li>
+        You must create a personal access token (PAT) on your enterprise that
+        can create and write to repositories in the destination organizations.
+        For more information, see “<a
+          href="/github/authenticating-to-github/creating-a-personal-access-token"
+          >Creating a personal access token</a
+        >.”
+      </li>
+      <li>
+        <p>
+          If you want to sync the bundled actions in the
+          <code>actions</code> organization on {% data
+          variables.product.product_location %}, you must be an owner of the
+          <code>actions</code> organization.
+        </p>
+        <p>{% note %}</p>
+        <p>
+          <strong>Note:</strong> By default, even site administrators are not
+          owners of the bundled <code>actions</code> organization.
+        </p>
+        <p>{% endnote %}</p>
+        <p>
+          Site administrators can use the
+          <code>ghe-org-admin-promote</code> command in the administrative shell
+          to promote a user to be an owner of the bundled
+          <code>actions</code> organization. For more information, see “<a
+            href="/admin/configuration/accessing-the-administrative-shell-ssh"
+            >Accessing the administrative shell (SSH)</a
+          >” and “<a
+            href="/admin/configuration/command-line-utilities#ghe-org-admin-promote"
+            ><code>ghe-org-admin-promote</code></a
+          >.”
+        </p>
+        <pre
+          class="shell"
+        ><code>ghe-org-admin-promote -u &lt;em&gt;USERNAME&lt;/em&gt; -o actions</code></pre>
+      </li>
+    </ul>
+    <h2 id="example-using-the-actions-sync-tool">
+      Example: Using the <code>actions-sync</code> tool
+    </h2>
+    <p>
+      This example demonstrates using the <code>actions-sync</code> tool to sync
+      an individual action from {% data
+      variables.product.prodname_dotcom_the_website %} to an enterprise
+      instance.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> This example uses the
+      <code>actions-sync sync</code> command, which requires concurrent access
+      to both the {% data variables.product.prodname_dotcom_the_website %} API
+      and your enterprise instance’s API from your machine. If you can only
+      access one system at a time, you can use the
+      <code>actions-sync pull</code> and <code>push</code> commands. For more
+      information, see the
+      <a href="https://github.com/actions/actions-sync#not-connected-instances"
+        ><code>actions-sync</code> README</a
+      >.
+    </p>
+    <p>{% endnote %}</p>
+    <ol type="1">
+      <li>
+        Download and extract the latest
+        <a href="https://github.com/actions/actions-sync/releases"
+          ><code>actions-sync</code> release</a
+        >
+        for your machine’s operating system.
+      </li>
+      <li>Create a directory to store cache files for the tool.</li>
+      <li>
+        <p>Run the <code>actions-sync sync</code> command:</p>
+        <pre class="shell"><code>./actions-sync sync \
+  --cache-dir &quot;cache&quot; \
+  --destination-token &quot;aabbccddeeffgg&quot; \
+  --destination-url &quot;https://my-ghes-instance&quot; \
+  --repo-name &quot;actions/stale:synced-actions/actions-stale&quot;</code></pre>
+        <p>The above command uses the following arguments:</p>
+        <ul>
+          <li>
+            <code>--cache-dir</code>: The cache directory on the machine running
+            the command.
+          </li>
+          <li>
+            <code>--destination-token</code>: A personal access token for the
+            destination enterprise instance.
+          </li>
+          <li>
+            <code>--destination-url</code>: The URL of the destination
+            enterprise instance.
+          </li>
+          <li>
+            <p>
+              <code>--repo-name</code>: The action repository to sync. This
+              takes the format of
+              <code
+                >owner/repository:destination_owner/destination_repository</code
+              >.
+            </p>
+            <ul>
+              <li>
+                The above example syncs the
+                <a href="https://github.com/actions/stale"
+                  ><code>actions/stale</code></a
+                >
+                repository to the
+                <code>synced-actions/actions-stale</code> repository on the
+                destination enterprise instance. You must create the
+                organization named <code>synced-actions</code> in your
+                enterprise before running the above command.
+              </li>
+              <li>
+                If you omit
+                <code>:destination_owner/destination_repository</code>, the tool
+                uses the original owner and repository name for your enterprise.
+                Before running the command, you must create a new organization
+                in your enterprise that matches the owner name of the action.
+                Consider using a central organization to store the synced
+                actions in your enterprise, as this means you will not need to
+                create multiple new organizations if you sync actions from
+                different owners.
+              </li>
+              <li>
+                You can sync multiple actions by replacing the
+                <code>--repo-name</code> parameter with
+                <code>--repo-name-list</code> or
+                <code>--repo-name-list-file</code>. For more information, see
+                the
+                <a href="https://github.com/actions/actions-sync#actions-sync"
+                  ><code>actions-sync</code> README</a
+                >.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          After the action repository is created in your enterprise, people in
+          your enterprise can use the destination repository to reference the
+          action in their workflows. For the example action shown above:
+        </p>
+        <div class="sourceCode" id="cb3">
+          <pre
+            class="sourceCode yaml"
+          ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">uses:</span><span class="at"> synced-actions/actions-stale@v1</span></a></code></pre>
+        </div>
+        <p>
+          For more information, see “<a
+            href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses"
+            >Workflow syntax for GitHub Actions</a
+          >.”
+        </p>
+      </li>
+    </ol>
+  </body>
+</html>

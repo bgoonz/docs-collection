@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Setting repository visibility</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Setting repository visibility</h1>
+</header>
+<h2 id="about-repository-visibility-changes">About repository visibility changes</h2>
+<p>Organization owners can restrict the ability to change repository visibility to organization owners only. For more information, see “<a href="/organizations/managing-organization-settings/restricting-repository-visibility-changes-in-your-organization">Restricting repository visibility changes in your organization</a>.”</p>
+<p>We recommend reviewing the following caveats before you change the visibility of a repository.</p>
+<p>{% ifversion ghes or ghae %}</p>
+<p>{% warning %}</p>
+<p><strong>Warning:</strong> Changes to the visibility of a large repository or repository network may affect data integrity. Visibility changes can also have unintended effects on forks. {% data variables.product.company_short %} recommends the following before changing the visibility of a repository network.</p>
+<ul>
+<li><p>Wait for a period of reduced activity on {% data variables.product.product_location %}.</p></li>
+<li><p>Contact your {% ifversion ghes %}site administrator{% elsif ghae %}enterprise owner{% endif %} before proceeding. Your {% ifversion ghes %}site administrator{% elsif ghae %}enterprise owner{% endif %} can contact {% data variables.contact.contact_ent_support %} for further guidance.</p></li>
+</ul>
+<p>{% endwarning %}</p>
+<p>{% endif %}</p>
+<h3 id="making-a-repository-private">Making a repository private</h3>
+<p>{% ifversion fpt or ghes %} * {% data variables.product.product_name %} will detach public forks of the public repository and put them into a new network. Public forks are not made private.{% endif %} * If you change a repository’s visibility from internal to private, {% data variables.product.prodname_dotcom %} will remove forks that belong to any user without access to the newly private repository. {% ifversion fpt or ghes %}The visibility of any forks will also change to private.{% elsif ghae %}If the internal repository has any forks, the visibility of the forks is already private.{% endif %} For more information, see “<a href="/articles/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility">What happens to forks when a repository is deleted or changes visibility?</a>”{% ifversion fpt %} * If you’re using {% data variables.product.prodname_free_user %} for user accounts or organizations, some features won’t be available in the repository after you change the visibility to private. {% data reusables.gated-features.more-info %}{% endif %} * Any published {% data variables.product.prodname_pages %} site will be automatically unpublished.{% ifversion fpt %} If you added a custom domain to the {% data variables.product.prodname_pages %} site, you should remove or update your DNS records before making the repository private, to avoid the risk of a domain takeover. For more information, see “<a href="/articles/managing-a-custom-domain-for-your-github-pages-site">Managing a custom domain for your {% data variables.product.prodname_pages %} site</a>.”{% endif %}{% ifversion fpt %} * {% data variables.product.prodname_dotcom %} will no longer include the repository in the {% data variables.product.prodname_archive %}. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-archiving-content-and-data-on-github#about-the-github-archive-program">About archiving content and data on {% data variables.product.prodname_dotcom %}</a>.”{% endif %}{% ifversion fpt %} * {% data variables.product.prodname_GH_advanced_security %} features, such as {% data variables.product.prodname_code_scanning %}, will stop working unless the repository is owned by an organization that is part of an enterprise with a license for {% data variables.product.prodname_advanced_security %} and sufficient spare seats. {% data reusables.advanced-security.more-info-ghas %}{% endif %}{% ifversion ghes %} * Anonymous Git read access is no longer available. For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">Enabling anonymous Git read access for a repository</a>.”{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes %}</p>
+<h3 id="making-a-repository-internal">Making a repository internal</h3>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data reusables.gated-features.internal-repos %}</p>
+<p>{% endnote %}</p>
+<ul>
+<li>Any forks of the repository will remain in the repository network, and {% data variables.product.product_name %} maintains the relationship between the root repository and the fork. For more information, see “<a href="/articles/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility">What happens to forks when a repository is deleted or changes visibility?</a>”</li>
+</ul>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes %}</p>
+<h3 id="making-a-repository-public">Making a repository public</h3>
+<ul>
+<li>{% data variables.product.product_name %} will detach private forks and turn them into a standalone private repository. For more information, see “<a href="/articles/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility#changing-a-private-repository-to-a-public-repository">What happens to forks when a repository is deleted or changes visibility?</a>”{% ifversion fpt %}</li>
+<li>If you’re converting your private repository to a public repository as part of a move toward creating an open source project, see the <a href="http://opensource.guide">Open Source Guides</a> for helpful tips and guidelines. You can also take a free course on managing an open source project with <a href="%7B%%20data%20variables.product.prodname_learning_link%20%%7D">{% data variables.product.prodname_learning %}</a>. Once your repository is public, you can also view your repository’s community profile to see whether your project meets best practices for supporting contributors. For more information, see “<a href="/articles/viewing-your-community-profile">Viewing your community profile</a>.”</li>
+<li>The repository will automatically gain access to {% data variables.product.prodname_GH_advanced_security %} features.</li>
+</ul>
+<p>For information about improving repository security, see “<a href="/code-security/getting-started/securing-your-repository">Securing your repository</a>.”{% endif %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes &gt; 2.21 %}</p>
+<h2 id="changing-a-repositorys-visibility">Changing a repository’s visibility</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. Under “Danger Zone”, to the right of to “Change repository visibility”, click <strong>Change visibility</strong>. <img src="/assets/images/help/repository/repo-change-vis.png" alt="Change visibility button" /> 4. Select a visibility. {% ifversion fpt %} <img src="/assets/images/help/repository/repo-change-select.png" alt="Dialog of options for repository visibility" />{% else %} <img src="/assets/images/enterprise/repos/repo-change-select.png" alt="Dialog of options for repository visibility" />{% endif %} 5. To verify that you’re changing the correct repository’s visibility, type the name of the repository you want to change the visibility of. 6. Click <strong>I understand, change repository visibility</strong>. {% ifversion fpt %} <img src="/assets/images/help/repository/repo-change-confirm.png" alt="Confirm change of repository visibility button" />{% else %} <img src="/assets/images/enterprise/repos/repo-change-confirm.png" alt="Confirm change of repository visibility button" />{% endif %} {% endif %}</p>
+<p>{% ifversion ghes &lt; 2.22 %}</p>
+<h2 id="making-a-repository-private-1">Making a repository private</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. Under “Danger Zone”, next to “Make this repository private”, click <strong>Make private</strong>. <img src="/assets/images/help/repository/repo-makeprivate.png" alt="Make private button" /> 4. Read the warnings about making a repository private. <img src="/assets/images/help/repository/repo-privateconfirm.png" alt="Warnings popup" /> 5. Type the name of the repository that you want to make private, for example <code>accountname/reponame</code>. 6. Click <strong>I understand, make this repository private</strong>.</p>
+<h2 id="making-a-repository-public-1">Making a repository public</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. Under “Danger Zone”, next to “Make this repository public”, click <strong>Make public</strong>. <img src="/assets/images/help/repository/repo-makepublic.png" alt="Make public button" /> 4. Read the warnings about making a repository public. <img src="/assets/images/help/repository/repo-publicconfirm.png" alt="Pop-up with information about making a private repository public" /> 5. Type the name of the repository that you want to make public, for example <code>accountname/reponame</code>. 6. Click <strong>I understand, make this repository public</strong>.</p>
+<p>{% ifversion ghes %} ## Making a repository internal</p>
+<p>{% data reusables.organizations.internal-repos-enterprise %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. Under “Danger Zone”, next to “Make this repository internal”, click <strong>Make internal</strong>. <img src="/assets/images/help/repository/repo-makeinternal.png" alt="Make internal button" /> 4. Read the warnings about making a repository internal. <img src="/assets/images/help/repository/repo-internalconfirm.png" alt="Warnings popup" /> 5. Type the name of the repository that you want to make internal, for example <code>accountname/reponame</code>. 6. Click <strong>I understand, make this repository internal</strong>. {% endif %}</p>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility">About repository visibility</a>”</li>
+</ul>
+</body>
+</html>

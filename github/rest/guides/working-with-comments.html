@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with comments</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with comments</h1>
+</header>
+<p>For any Pull Request, {% data variables.product.product_name %} provides three kinds of comment views: <a href="https://github.com/octocat/Spoon-Knife/pull/1176#issuecomment-24114792">comments on the Pull Request</a> as a whole, <a href="https://github.com/octocat/Spoon-Knife/pull/1176#discussion_r6252889">comments on a specific line</a> within the Pull Request, and <a href="https://github.com/octocat/Spoon-Knife/commit/cbc28e7c8caee26febc8c013b0adfb97a4edd96e#commitcomment-4049848">comments on a specific commit</a> within the Pull Request.</p>
+<p>Each of these types of comments goes through a different portion of the {% data variables.product.product_name %} API. In this guide, we’ll explore how you can access and manipulate each one. For every example, we’ll be using <a href="https://github.com/octocat/Spoon-Knife/pull/1176">this sample Pull Request made</a> on the “octocat” repository. As always, samples can be found in <a href="https://github.com/github/platform-samples/tree/master/api/ruby/working-with-comments">our platform-samples repository</a>.</p>
+<h2 id="pull-request-comments">Pull Request Comments</h2>
+<p>To access comments on a Pull Request, you’ll go through <a href="/rest/reference/issues#comments">the Issues API</a>. This may seem counterintuitive at first. But once you understand that a Pull Request is just an Issue with code, it makes sense to use the Issues API to create comments on a Pull Request.</p>
+<p>We’ll demonstrate fetching Pull Request comments by creating a Ruby script using <a href="https://github.com/octokit/octokit.rb">Octokit.rb</a>. You’ll also want to create a <a href="/articles/creating-an-access-token-for-command-line-use">personal access token</a>.</p>
+<p>The following code should help you get started accessing comments from a Pull Request using Octokit.rb:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb1-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7">client.issue_comments(<span class="st">&quot;octocat/Spoon-Knife&quot;</span>, <span class="dv">1176</span>).each <span class="kw">do</span> |comment|</a>
+<a class="sourceLine" id="cb1-8" title="8">  username = comment[<span class="st">:user</span>][<span class="st">:login</span>]</a>
+<a class="sourceLine" id="cb1-9" title="9">  post_date = comment[<span class="st">:created_at</span>]</a>
+<a class="sourceLine" id="cb1-10" title="10">  content = comment[<span class="st">:body</span>]</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12">  puts <span class="st">&quot;</span><span class="ot">#{</span>username<span class="ot">}</span><span class="st"> made a comment on </span><span class="ot">#{</span>post_date<span class="ot">}</span><span class="st">. It says:\n&#39;</span><span class="ot">#{</span>content<span class="ot">}</span><span class="st">&#39;\n&quot;</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="kw">end</span></a></code></pre></div>
+<p>Here, we’re specifically calling out to the Issues API to get the comments (<code>issue_comments</code>), providing both the repository’s name (<code>octocat/Spoon-Knife</code>), and the Pull Request ID we’re interested in (<code>1176</code>). After that, it’s simply a matter of iterating through the comments to fetch information about each one.</p>
+<h2 id="pull-request-comments-on-a-line">Pull Request Comments on a Line</h2>
+<p>Within the diff view, you can start a discussion on a particular aspect of a singular change made within the Pull Request. These comments occur on the individual lines within a changed file. The endpoint URL for this discussion comes from <a href="/rest/reference/pulls#comments">the Pull Request Review API</a>.</p>
+<p>The following code fetches all the Pull Request comments made on files, given a single Pull Request number:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb2-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">client.pull_request_comments(<span class="st">&quot;octocat/Spoon-Knife&quot;</span>, <span class="dv">1176</span>).each <span class="kw">do</span> |comment|</a>
+<a class="sourceLine" id="cb2-8" title="8">  username = comment[<span class="st">:user</span>][<span class="st">:login</span>]</a>
+<a class="sourceLine" id="cb2-9" title="9">  post_date = comment[<span class="st">:created_at</span>]</a>
+<a class="sourceLine" id="cb2-10" title="10">  content = comment[<span class="st">:body</span>]</a>
+<a class="sourceLine" id="cb2-11" title="11">  path = comment[<span class="st">:path</span>]</a>
+<a class="sourceLine" id="cb2-12" title="12">  position = comment[<span class="st">:position</span>]</a>
+<a class="sourceLine" id="cb2-13" title="13"></a>
+<a class="sourceLine" id="cb2-14" title="14">  puts <span class="st">&quot;</span><span class="ot">#{</span>username<span class="ot">}</span><span class="st"> made a comment on </span><span class="ot">#{</span>post_date<span class="ot">}</span><span class="st"> for the file called </span><span class="ot">#{</span>path<span class="ot">}</span><span class="st">, on line </span><span class="ot">#{</span>position<span class="ot">}</span><span class="st">. It says:\n&#39;</span><span class="ot">#{</span>content<span class="ot">}</span><span class="st">&#39;\n&quot;</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="kw">end</span></a></code></pre></div>
+<p>You’ll notice that it’s incredibly similar to the example above. The difference between this view and the Pull Request comment is the focus of the conversation. A comment made on a Pull Request should be reserved for discussion or ideas on the overall direction of the code. A comment made as part of a Pull Request review should deal specifically with the way a particular change was implemented within a file.</p>
+<h2 id="commit-comments">Commit Comments</h2>
+<p>The last type of comments occur specifically on individual commits. For this reason, they make use of <a href="/rest/reference/repos#get-a-commit-comment">the commit comment API</a>.</p>
+<p>To retrieve the comments on a commit, you’ll want to use the SHA1 of the commit. In other words, you won’t use any identifier related to the Pull Request. Here’s an example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb3-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7">client.commit_comments(<span class="st">&quot;octocat/Spoon-Knife&quot;</span>, <span class="st">&quot;cbc28e7c8caee26febc8c013b0adfb97a4edd96e&quot;</span>).each <span class="kw">do</span> |comment|</a>
+<a class="sourceLine" id="cb3-8" title="8">  username = comment[<span class="st">:user</span>][<span class="st">:login</span>]</a>
+<a class="sourceLine" id="cb3-9" title="9">  post_date = comment[<span class="st">:created_at</span>]</a>
+<a class="sourceLine" id="cb3-10" title="10">  content = comment[<span class="st">:body</span>]</a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12">  puts <span class="st">&quot;</span><span class="ot">#{</span>username<span class="ot">}</span><span class="st"> made a comment on </span><span class="ot">#{</span>post_date<span class="ot">}</span><span class="st">. It says:\n&#39;</span><span class="ot">#{</span>content<span class="ot">}</span><span class="st">&#39;\n&quot;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="kw">end</span></a></code></pre></div>
+<p>Note that this API call will retrieve single line comments, as well as comments made on the entire commit.</p>
+</body>
+</html>

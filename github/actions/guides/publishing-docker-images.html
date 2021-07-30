@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Publishing Docker images</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Publishing Docker images</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you how to create a workflow that performs a Docker
+      build, and then publishes Docker images to Docker Hub or {% data
+      variables.product.prodname_registry %}. With a single workflow, you can
+      publish images to a single registry or to multiple registries.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> If you want to push to another third-party Docker
+      registry, the example in the “<a
+        href="#publishing-images-to-github-packages"
+        >Publishing images to {% data variables.product.prodname_registry %}</a
+      >” section can serve as a good template.
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      We recommend that you have a basic understanding of workflow configuration
+      options and how to create a workflow file. For more information, see “<a
+        href="/actions/learn-github-actions"
+        >Learn {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      You might also find it helpful to have a basic understanding of the
+      following:
+    </p>
+    <ul>
+      <li>
+        “<a href="/actions/reference/encrypted-secrets">Encrypted secrets</a>”
+      </li>
+      <li>
+        “<a href="/actions/reference/authentication-in-a-workflow"
+          >Authentication in a workflow</a
+        >”{% ifversion fpt %}
+      </li>
+      <li>
+        “<a
+          href="/packages/working-with-a-github-packages-registry/working-with-the-container-registry"
+          >Working with the {% data
+          variables.product.prodname_container_registry %}</a
+        >”{% else %}
+      </li>
+      <li>
+        “<a
+          href="/packages/working-with-a-github-packages-registry/working-with-the-docker-registry"
+          >Working with the Docker registry</a
+        >”{% endif %}
+      </li>
+    </ul>
+    <h2 id="about-image-configuration">About image configuration</h2>
+    <p>
+      This guide assumes that you have a complete definition for a Docker image
+      stored in a {% data variables.product.prodname_dotcom %} repository. For
+      example, your repository must contain a <em>Dockerfile</em>, and any other
+      files needed to perform a Docker build to create an image.
+    </p>
+    <p>
+      In this guide, we will use the Docker
+      <code>build-push-action</code> action to build the Docker image and push
+      it to one or more Docker registries. For more information, see
+      <a
+        href="https://github.com/marketplace/actions/build-and-push-docker-images"
+        ><code>build-push-action</code></a
+      >.
+    </p>
+    <p>{% data reusables.actions.enterprise-marketplace-actions %}</p>
+    <h2 id="publishing-images-to-docker-hub">
+      Publishing images to Docker Hub
+    </h2>
+    <p>{% data reusables.github-actions.release-trigger-workflow %}</p>
+    <p>
+      In the example workflow below, we use the Docker
+      <code>login-action</code> and <code>build-push-action</code> actions to
+      build the Docker image and, if the build succeeds, push the built image to
+      Docker Hub.
+    </p>
+    <p>
+      To push to Docker Hub, you will need to have a Docker Hub account, and
+      have a Docker Hub repository created. For more information, see “<a
+        href="https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub"
+        >Pushing a Docker container image to Docker Hub</a
+      >” in the Docker documentation.
+    </p>
+    <p>
+      The <code>login-action</code> options required for Docker Hub are: *
+      <code>username</code> and <code>password</code>: This is your Docker Hub
+      username and password. We recommend storing your Docker Hub username and
+      password as secrets so they aren’t exposed in your workflow file. For more
+      information, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+        >Creating and using encrypted secrets</a
+      >.”
+    </p>
+    <p>
+      The <code>metadata-action</code> option required for Docker Hub is: *
+      <code>images</code>: The namespace and name for the Docker image you are
+      building/pushing to Docker Hub.
+    </p>
+    <p>
+      The <code>build-push-action</code> options required for Docker Hub are: *
+      <code>tags</code>: The tag of your new image in the format
+      <code>DOCKER-HUB-NAMESPACE/DOCKER-HUB-REPOSITORY:VERSION</code>. You can
+      set a single tag as shown below, or specify multiple tags in a list. *
+      <code>push</code>: If set to <code>true</code>, the image will be pushed
+      to the registry if it is built successfully.
+    </p>
+    <pre
+      class="yaml{:copy}"
+    ><code>{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+name: Publish Docker image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: {% raw %}${{ secrets.DOCKER_USERNAME }}{% endraw %}
+          password: {% raw %}${{ secrets.DOCKER_PASSWORD }}{% endraw %}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: my-docker-hub-namespace/my-docker-hub-repository
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
+          labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}</code></pre>
+    <p>
+      The above workflow checks out the {% data
+      variables.product.prodname_dotcom %} repository, uses the
+      <code>login-action</code> to log in to the registry, and then uses the
+      <code>build-push-action</code> action to: build a Docker image based on
+      your repository’s <code>Dockerfile</code>; push the image to Docker Hub,
+      and apply a tag to the image.
+    </p>
+    <h2 id="publishing-images-to-data-variables.product.prodname_registry">
+      Publishing images to {% data variables.product.prodname_registry %}
+    </h2>
+    <p>{% data reusables.github-actions.release-trigger-workflow %}</p>
+    <p>
+      In the example workflow below, we use the Docker
+      <code>login-action</code>{% ifversion fpt %},
+      <code>metadata-action</code>,{% endif %} and
+      <code>build-push-action</code> actions to build the Docker image, and if
+      the build succeeds, push the built image to {% data
+      variables.product.prodname_registry %}.
+    </p>
+    <p>
+      The <code>login-action</code> options required for {% data
+      variables.product.prodname_registry %} are: * <code>registry</code>: Must
+      be set to {% ifversion fpt %}<code>ghcr.io</code>{% else
+      %}<code>docker.pkg.github.com</code>{% endif %}. * <code>username</code>:
+      You can use the {% raw %}<code>${{ github.actor }}</code>{% endraw %}
+      context to automatically use the username of the user that triggered the
+      workflow run. For more information, see “<a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions#github-context"
+        >Context and expression syntax for GitHub Actions</a
+      >.” * <code>password</code>: You can use the automatically-generated
+      <code>GITHUB_TOKEN</code> secret for the password. For more information,
+      see “<a
+        href="/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token"
+        >Authenticating with the GITHUB_TOKEN</a
+      >.”
+    </p>
+    <p>
+      {% ifversion fpt %} The <code>metadata-action</code> option required for
+      {% data variables.product.prodname_registry %} is: * <code>images</code>:
+      The namespace and name for the Docker image you are building. {% endif %}
+    </p>
+    <p>
+      The <code>build-push-action</code> options required for {% data
+      variables.product.prodname_registry %} are:{% ifversion fpt %} *
+      <code>context</code>: Defines the build’s context as the set of files
+      located in the specified path.{% endif %} * <code>push</code>: If set to
+      <code>true</code>, the image will be pushed to the registry if it is built
+      successfully.{% ifversion fpt %} * <code>tags</code> and
+      <code>labels</code>: These are populated by output from
+      <code>metadata-action</code>.{% else %} * <code>tags</code>: Must be set
+      in the format
+      <code>docker.pkg.github.com/OWNER/REPOSITORY/IMAGE_NAME:VERSION</code>.
+      For example, for an image named <code>octo-image</code> stored on {% data
+      variables.product.prodname_dotcom %} at
+      <code>http://github.com/octo-org/octo-repo</code>, the
+      <code>tags</code> option should be set to
+      <code>docker.pkg.github.com/octo-org/octo-repo/octo-image:latest</code>.
+      You can set a single tag as shown below, or specify multiple tags in a
+      list.{% endif %}
+    </p>
+    <p>
+      {% ifversion fpt %} {% data
+      reusables.package_registry.publish-docker-image %}
+    </p>
+    <p>
+      The above workflow if triggered by a push to the “release” branch. It
+      checks out the GitHub repository, and uses the
+      <code>login-action</code> to log in to the {% data
+      variables.product.prodname_container_registry %}. It then extracts labels
+      and tags for the Docker image. Finally, it and uses the
+      <code>build-push-action</code> action to build the image and publish it on
+      the {% data variables.product.prodname_container_registry %}.
+    </p>
+    <p>{% else %}</p>
+    <pre
+      class="yaml{:copy}"
+    ><code>{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+name: Publish Docker image
+
+on:
+  release:
+    types: [published]
+jobs:
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+    permissions:
+      packages: write
+      contents: read{% endif %}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}
+          username: {% raw %}${{ github.actor }}{% endraw %}
+          password: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: |
+            {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}{% raw %}/${{ github.repository }}/octo-image:${{ github.sha }}{% endraw %}
+            {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}{% raw %}/${{ github.repository }}/octo-image:${{ github.event.release.tag_name }}{% endraw %}</code></pre>
+    <p>
+      The above workflow checks out the {% data
+      variables.product.prodname_dotcom %} repository, uses the
+      <code>login-action</code> to log in to the registry, and then uses the
+      <code>build-push-action</code> action to: build a Docker image based on
+      your repository’s <code>Dockerfile</code>; push the image to the Docker
+      registry, and apply the commit SHA and release version as image tags. {%
+      endif %}
+    </p>
+    <h2
+      id="publishing-images-to-docker-hub-and-data-variables.product.prodname_registry"
+    >
+      Publishing images to Docker Hub and {% data
+      variables.product.prodname_registry %}
+    </h2>
+    <p>
+      In a single workflow, you can publish your Docker image to multiple
+      registries by using the <code>login-action</code> and
+      <code>build-push-action</code> actions for each registry.
+    </p>
+    <p>
+      The following example workflow uses the steps from the previous sections
+      (“<a href="#publishing-images-to-docker-hub"
+        >Publishing images to Docker Hub</a
+      >” and “<a href="#publishing-images-to-github-packages"
+        >Publishing images to {% data variables.product.prodname_registry %}</a
+      >”) to create a single workflow that pushes to both registries.
+    </p>
+    <pre
+      class="yaml{:copy}"
+    ><code>{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+name: Publish Docker image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  push_to_registries:
+    name: Push Docker image to multiple registries
+    runs-on: ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+    permissions:
+      packages: write
+      contents: read{% endif %}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: {% raw %}${{ secrets.DOCKER_USERNAME }}{% endraw %}
+          password: {% raw %}${{ secrets.DOCKER_PASSWORD }}{% endraw %}
+      
+      - name: Log in to the {% ifversion fpt %}Container{% else %}Docker{% endif %} registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: {% ifversion fpt %}ghcr.io{% elsif ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}
+          username: {% raw %}${{ github.actor }}{% endraw %}
+          password: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: |
+            my-docker-hub-namespace/my-docker-hub-repository
+            {% ifversion fpt %}ghcr.io/{% raw %}${{ github.repository }}{% endraw %}{% elsif ghae %}{% raw %}docker.YOUR-HOSTNAME.com/${{ github.repository }}/my-image{% endraw %}{% else %}{% raw %}docker.pkg.github.com/${{ github.repository }}/my-image{% endraw %}{% endif %}
+      
+      - name: Build and push Docker images
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
+          labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}</code></pre>
+    <p>
+      The above workflow checks out the {% data
+      variables.product.prodname_dotcom %} repository, uses the
+      <code>login-action</code> twice to log in to both registries and generates
+      tags and labels with the <code>metadata-action</code> action. Then the
+      <code>build-push-action</code> action builds and pushes the Docker image
+      to Docker Hub and the {% ifversion fpt %}{% data
+      variables.product.prodname_container_registry %}{% else %}Docker
+      registry{% endif %}.
+    </p>
+  </body>
+</html>

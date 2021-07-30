@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating a high availability replica</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating a high availability replica</h1>
+    </header>
+    <p>{% data reusables.enterprise_installation.replica-limit %}</p>
+    <h2 id="creating-a-high-availability-replica">
+      Creating a high availability replica
+    </h2>
+    <ol type="1">
+      <li>
+        Set up a new {% data variables.product.prodname_ghe_server %} appliance
+        on your desired platform. The replica appliance should mirror the
+        primary appliance’s CPU, RAM, and storage settings. We recommend that
+        you install the replica appliance in an independent environment. The
+        underlying hardware, software, and network components should be isolated
+        from those of the primary appliance. If you are a using a cloud
+        provider, use a separate region or zone. For more information, see
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/setting-up-a-github-enterprise-server-instance"
+          >“Setting up a {% data variables.product.prodname_ghe_server %}
+          instance”</a
+        >.
+      </li>
+      <li>
+        In a browser, navigate to the new replica appliance’s IP address and
+        upload your {% data variables.product.prodname_enterprise %} license.
+      </li>
+      <li>
+        Set an admin password that matches the password on the primary appliance
+        and continue.
+      </li>
+      <li>
+        Click <strong>Configure as Replica</strong>.
+        <img
+          src="/assets/images/enterprise/management-console/configure-as-replica.png"
+          alt="Installation options with link to configure your new instance as a replica"
+        />
+      </li>
+      <li>
+        Under “Add new SSH key”, type your SSH key.
+        <img
+          src="/assets/images/enterprise/management-console/add-ssh-key.png"
+          alt="Add SSH key"
+        />
+      </li>
+      <li>
+        Click <strong>Add key</strong>, then click <strong>Continue</strong>.
+      </li>
+      <li>Connect to the replica appliance’s IP address using SSH.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;REPLICA IP&lt;/em&gt;</code></pre>
+    <ol start="7" type="1">
+      <li>
+        To generate a key pair for replication, use the
+        <code>ghe-repl-setup</code> command with the primary appliance’s IP
+        address and copy the public key that it returns.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-repl-setup &lt;em&gt;PRIMARY IP&lt;/em&gt;</code></pre>
+    <p>
+      {% data reusables.enterprise_installation.add-ssh-key-to-primary %} 9. To
+      verify the connection to the primary and enable replica mode for the new
+      replica, run <code>ghe-repl-setup</code> again.
+      <code>shell $ ghe-repl-setup &lt;em&gt;PRIMARY IP&lt;/em&gt;</code> {%
+      data reusables.enterprise_installation.replication-command %} 11. To
+      verify the status of each datastore’s replication channel, use the
+      <code>ghe-repl-status</code> command. <code>shell $ ghe-repl-status</code>
+    </p>
+    <h2 id="creating-geo-replication-replicas">
+      Creating geo-replication replicas
+    </h2>
+    <p>
+      This example configuration uses a primary and two replicas, which are
+      located in three different geographic regions. While the three nodes can
+      be in different networks, all nodes are required to be reachable from all
+      the other nodes. At the minimum, the required administrative ports should
+      be open to all the other nodes. For more information about the port
+      requirements, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/network-ports/#administrative-ports"
+        >Network Ports</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>
+        Create the first replica the same way you would for a standard two node
+        configuration by running <code>ghe-repl-setup</code> on the first
+        replica.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>(replica1)$ ghe-repl-setup &lt;em&gt;PRIMARY IP&lt;/em&gt;
+(replica1)$ ghe-repl-start</code></pre>
+    <ol start="2" type="1">
+      <li>
+        Create a second replica and use the
+        <code>ghe-repl-setup --add</code> command. The <code>--add</code> flag
+        prevents it from overwriting the existing replication configuration and
+        adds the new replica to the configuration.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>(replica2)$ ghe-repl-setup --add &lt;em&gt;PRIMARY IP&lt;/em&gt;
+(replica2)$ ghe-repl-start</code></pre>
+    <ol start="3" type="1">
+      <li>
+        By default, replicas are configured to the same datacenter, and will now
+        attempt to seed from an existing node in the same datacenter. Configure
+        the replicas for different datacenters by setting a different value for
+        the datacenter option. The specific values can be anything you would
+        like as long as they are different from each other. Run the
+        <code>ghe-repl-node</code> command on each node and specify the
+        datacenter.
+      </li>
+    </ol>
+    <p>
+      On the primary:
+      <code
+        >shell (primary)$ ghe-repl-node --datacenter &lt;em&gt;[PRIMARY DC
+        NAME]&lt;/em&gt;</code
+      >
+      On the first replica:
+      <code
+        >shell (replica1)$ ghe-repl-node --datacenter &lt;em&gt;[FIRST REPLICA
+        DC NAME]&lt;/em&gt;</code
+      >
+      On the second replica:
+      <code
+        >shell (replica2)$ ghe-repl-node --datacenter &lt;em&gt;[SECOND REPLICA
+        DC NAME]&lt;/em&gt;</code
+      >
+      {% tip %}
+    </p>
+    <p>
+      <strong>Tip:</strong> You can set the <code>--datacenter</code> and
+      <code>--active</code> options at the same time.
+    </p>
+    <p>
+      {% endtip %} 4. An active replica node will store copies of the appliance
+      data and service end user requests. An inactive node will store copies of
+      the appliance data but will be unable to service end user requests. Enable
+      active mode using the <code>--active</code> flag or inactive mode using
+      the <code>--inactive</code> flag.
+    </p>
+    <p>
+      On the first replica:
+      <code>shell (replica1)$ ghe-repl-node --active</code> On the second
+      replica: <code>shell (replica2)$ ghe-repl-node --active</code> 5. To apply
+      the configuration, use the <code>ghe-config-apply</code> command on the
+      primary. <code>shell (primary)$ ghe-config-apply</code>
+    </p>
+    <h2 id="configuring-dns-for-geo-replication">
+      Configuring DNS for geo-replication
+    </h2>
+    <p>
+      Configure Geo DNS using the IP addresses of the primary and replica nodes.
+      You can also create a DNS CNAME for the primary node
+      (e.g. <code>primary.github.example.com</code>) to access the primary node
+      via SSH or to back it up via <code>backup-utils</code>.
+    </p>
+    <p>
+      For testing, you can add entries to the local workstation’s
+      <code>hosts</code> file (for example, <code>/etc/hosts</code>). These
+      example entries will resolve requests for <code>HOSTNAME</code> to
+      <code>replica2</code>. You can target specific hosts by commenting out
+      different lines.
+    </p>
+    <pre><code># &lt;primary IP&gt;     &lt;em&gt;HOSTNAME&lt;/em&gt;
+# &lt;replica1 IP&gt;    &lt;em&gt;HOSTNAME&lt;/em&gt;
+&lt;replica2 IP&gt;    &lt;em&gt;HOSTNAME&lt;/em&gt;</code></pre>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-high-availability-configuration"
+          >About high availability configuration</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-high-availability-configuration/#utilities-for-replication-management"
+          >Utilities for replication management</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-geo-replication/"
+          >About geo-replication</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Initiating a failover to your replica cluster</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Initiating a failover to your replica cluster</h1>
+    </header>
+    <h2 id="about-failover-to-your-replica-cluster">
+      About failover to your replica cluster
+    </h2>
+    <p>
+      In the event of a failure at your primary datacenter, you can fail over to
+      the replica nodes in the secondary datacenter if you configure a passive
+      replica node for each node in your active cluster.
+    </p>
+    <p>
+      The time required to fail over depends on how long it takes to manually
+      promote the replica cluster and redirect traffic.
+    </p>
+    <p>
+      Promoting a replica cluster does not automatically set up replication for
+      the existing cluster. After promoting a replica cluster, you can
+      reconfigure replication from the new active cluster. For more information,
+      see “<a
+        href="/enterprise/admin/enterprise-management/configuring-high-availability-replication-for-a-cluster#reconfiguring-high-availability-replication-after-a-failover"
+        >Configuring high availability for a cluster</a
+      >.”
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      To fail over to passive replica nodes, you must have configured high
+      availability for your cluster. For more information, see “<a
+        href="/enterprise/admin/enterprise-management/configuring-high-availability-replication-for-a-cluster"
+        >Configuring high availability for a cluster</a
+      >.”
+    </p>
+    <h2 id="initiating-a-failover-to-your-replica-cluster">
+      Initiating a failover to your replica cluster
+    </h2>
+    <ol type="1">
+      <li>
+        <p>
+          SSH into any passive node in the secondary datacenter for your
+          cluster. For more information, see “<a
+            href="/enterprise/admin/configuration/accessing-the-administrative-shell-ssh#enabling-access-to-the-administrative-shell-via-ssh"
+            >Accessing the administrative shell (SSH)</a
+          >.”
+        </p>
+      </li>
+      <li>
+        <p>
+          Initialize the failover to the secondary cluster and configure it to
+          act as the active nodes.
+        </p>
+        <pre class="shell"><code> ghe-cluster-failover</code></pre>
+      </li>
+    </ol>
+    <p>{% data reusables.enterprise_clustering.configuration-finished %}</p>
+    <ol start="3" type="1">
+      <li>
+        Update the DNS record to point to the IP address of the load balancer
+        for your passive cluster. Traffic is directed to the replica after the
+        TTL period elapses.
+      </li>
+    </ol>
+    <p>
+      After {% data variables.product.prodname_ghe_server %} returns you to the
+      prompt and your DNS updates have propagated, you’ve finished failing over.
+      Users can access {% data variables.product.prodname_ghe_server %} using
+      the usual hostname for your cluster.
+    </p>
+  </body>
+</html>

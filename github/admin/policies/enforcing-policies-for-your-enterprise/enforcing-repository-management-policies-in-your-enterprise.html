@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enforcing repository management policies in your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Enforcing repository management policies in your enterprise
+      </h1>
+    </header>
+    <h2
+      id="configuring-the-default-visibility-of-new-repositories-in-your-enterprise"
+    >
+      Configuring the default visibility of new repositories in your enterprise
+    </h2>
+    <p>
+      Each time someone creates a new repository on your enterprise, that person
+      must choose a visibility for the repository. When you configure a default
+      visibility setting for the enterprise, you choose which visibility is
+      selected by default. For more information on repository visibility, see
+      “<a
+        href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility"
+        >About repository visibility</a
+      >.”
+    </p>
+    <p>
+      If an enterprise owner disallows members from creating certain types of
+      repositories, members will not be able to create that type of repository
+      even if the visibility setting defaults to that type. For more
+      information, see “<a href="#setting-a-policy-for-repository-creation"
+        >Setting a policy for repository creation</a
+      >.”
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 1. Under “Default repository
+      visibility”, use the drop-down menu and select a default visibility.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/default-repository-visibility-settings.png"
+        alt="Drop-down menu to choose the default repository visibility for your enterprise"
+      />
+    </p>
+    <p>
+      {% data reusables.enterprise_installation.image-urls-viewable-warning %}
+    </p>
+    <h2 id="setting-a-policy-for-changing-a-repositorys-visibility">
+      Setting a policy for changing a repository’s visibility
+    </h2>
+    <p>
+      When you prevent members from changing repository visibility, only
+      enterprise owners can change the visibility of a repository.
+    </p>
+    <p>
+      If an enterprise owner has restricted repository creation to organization
+      owners only, then members will not be able to change repository
+      visibility. If an enterprise owner has restricted member repository
+      creation to private repositories only, then members will only be able to
+      change the visibility of a repository to private. For more information,
+      see “<a href="#setting-a-policy-for-repository-creation"
+        >Setting a policy for repository creation</a
+      >.”
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.repositories-tab %} 5. Under “Repository
+      visibility change”, review the information about changing the setting. {%
+      data reusables.enterprise-accounts.view-current-policy-config-orgs %}
+    </p>
+    <p>{% data reusables.enterprise-accounts.repository-visibility-policy %}</p>
+    <h2 id="setting-a-policy-for-repository-creation">
+      Setting a policy for repository creation
+    </h2>
+    <p>{% data reusables.organizations.repo-creation-constants %}</p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.repositories-tab %} 5. Under “Repository
+      creation”, review the information about changing the setting. {% data
+      reusables.enterprise-accounts.view-current-policy-config-orgs %} {%
+      ifversion ghes or ghae %} {% data
+      reusables.enterprise-accounts.repo-creation-policy %} {% data
+      reusables.enterprise-accounts.repo-creation-types %} {% else %} 6. Under
+      “Repository creation”, use the drop-down menu and choose a policy.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/repository-creation-drop-down.png"
+        alt="Drop-down menu with repository creation policies"
+      />
+      {% endif %}
+    </p>
+    <h2 id="enforcing-a-policy-on-forking-private-or-internal-repositories">
+      Enforcing a policy on forking private or internal repositories
+    </h2>
+    <p>
+      Across all organizations owned by your enterprise, you can allow people
+      with access to a private or internal repository to fork the repository,
+      never allow forking of private or internal repositories, or allow owners
+      to administer the setting on the organization level.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} 3. On the
+      <strong>Repository policies</strong> tab, under “Repository forking”,
+      review the information about changing the setting. {% data
+      reusables.enterprise-accounts.view-current-policy-config-orgs %} 4. Under
+      “Repository forking”, use the drop-down menu and choose a policy.
+      <img
+        src="/assets/images/help/business-accounts/repository-forking-policy-drop-down.png"
+        alt="Drop-down menu with repository forking policy options"
+      />
+    </p>
+    <h2 id="setting-a-policy-for-repository-deletion-and-transfer">
+      Setting a policy for repository deletion and transfer
+    </h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.repositories-tab %} 5. Under “Repository
+      deletion and transfer”, review the information about changing the setting.
+      {% data reusables.enterprise-accounts.view-current-policy-config-orgs %}
+    </p>
+    <p>{% data reusables.enterprise-accounts.repository-deletion-policy %}</p>
+    <h2 id="setting-a-policy-for-git-push-limits">
+      Setting a policy for Git push limits
+    </h2>
+    <p>
+      To keep your repository size manageable and prevent performance issues,
+      you can configure a file size limit for repositories in your enterprise.
+    </p>
+    <p>
+      By default, when you enforce repository upload limits, people cannot add
+      or update files larger than 100 MB.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 4. Under “Repository upload
+      limit”, use the drop-down menu and click a maximum object size.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/repo-upload-limit-dropdown.png"
+        alt="Drop-down menu with maximum object size options"
+      />
+      5. Optionally, to enforce a maximum upload limit for all repositories in
+      your enterprise, select <strong>Enforce on all repositories</strong>
+      <img
+        src="/assets/images/enterprise/site-admin-settings/all-repo-upload-limit-option.png"
+        alt="Enforce maximum object size on all repositories option"
+      />
+    </p>
+    <h2
+      id="configuring-the-merge-conflict-editor-for-pull-requests-between-repositories"
+    >
+      Configuring the merge conflict editor for pull requests between
+      repositories
+    </h2>
+    <p>
+      Requiring users to resolve merge conflicts locally on their computer can
+      prevent people from inadvertently writing to an upstream repository from a
+      fork.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 1. Under “Conflict editor for
+      pull requests between repositories”, use the drop-down menu, and click
+      <strong>Disabled</strong>.
+      <img
+        src="/assets/images/enterprise/settings/conflict-editor-settings.png"
+        alt="Drop-down menu with option to disable the merge conflict editor"
+      />
+    </p>
+    <h2 id="configuring-force-pushes">Configuring force pushes</h2>
+    <p>
+      Each repository inherits a default force push setting from the settings of
+      the user account or organization to which it belongs. Likewise, each
+      organization and user account inherits a default force push setting from
+      the force push setting for the enterprise. If you change the force push
+      setting for the enterprise, it will change for all repositories owned by
+      any user or organization.
+    </p>
+    <h3 id="blocking-all-force-pushes-on-your-appliance">
+      Blocking all force pushes on your appliance
+    </h3>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 4. Under “Force pushes”, use
+      the drop-down menu, and click <strong>Allow</strong>,
+      <strong>Block</strong> or <strong>Block to the default branch</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/force-pushes-dropdown.png"
+        alt="Force pushes dropdown"
+      />
+      5. Optionally, select <strong>Enforce on all repositories</strong>, which
+      will override organization and repository level settings for force pushes.
+    </p>
+    <h3 id="blocking-force-pushes-to-a-specific-repository">
+      Blocking force pushes to a specific repository
+    </h3>
+    <p>{% data reusables.enterprise_site_admin_settings.override-policy %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.sign-in %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.repository-search %} {% data
+      reusables.enterprise_site_admin_settings.click-repo %} {% data
+      reusables.enterprise_site_admin_settings.admin-top-tab %} {% data
+      reusables.enterprise_site_admin_settings.admin-tab %} 4. Select
+      <strong>Block</strong> or
+      <strong>Block to the default branch</strong> under
+      <strong>Push and Pull</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/repo/repo-block-force-pushes.png"
+        alt="Block force pushes"
+      />
+    </p>
+    <h3
+      id="blocking-force-pushes-to-repositories-owned-by-a-user-account-or-organization"
+    >
+      Blocking force pushes to repositories owned by a user account or
+      organization
+    </h3>
+    <p>
+      Repositories inherit force push settings from the user account or
+      organization to which they belong. User accounts and organizations in turn
+      inherit their force push settings from the force push settings for the
+      enterprise.
+    </p>
+    <p>
+      You can override the default inherited settings by configuring the
+      settings for a user account or organization.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.sign-in %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.search-user-or-org %} {% data
+      reusables.enterprise_site_admin_settings.click-user-or-org %} {% data
+      reusables.enterprise_site_admin_settings.admin-top-tab %} {% data
+      reusables.enterprise_site_admin_settings.admin-tab %} 5. Under “Repository
+      default settings” in the “Force pushes” section, select -
+      <strong>Block</strong> to block force pushes to all branches. -
+      <strong>Block to the default branch</strong> to only block force pushes to
+      the default branch.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/user/user-block-force-pushes.png"
+        alt="Block force pushes"
+      />
+      6. Optionally, select <strong>Enforce on all repositories</strong> to
+      override repository-specific settings. Note that this will
+      <strong>not</strong> override an enterprise-wide policy.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/user/user-block-all-force-pushes.png"
+        alt="Block force pushes"
+      />
+    </p>
+    <p>{% ifversion ghes %}</p>
+    <h2 id="configuring-anonymous-git-read-access">
+      Configuring anonymous Git read access
+    </h2>
+    <p>
+      {% data
+      reusables.enterprise_user_management.disclaimer-for-git-read-access %}
+    </p>
+    <p>
+      {% ifversion ghes %}If you have
+      <a href="/enterprise/admin/configuration/enabling-private-mode"
+        >enabled private mode</a
+      >
+      on your enterprise, you {% else %}You {% endif %}can allow repository
+      administrators to enable anonymous Git read access to public repositories.
+    </p>
+    <p>
+      Enabling anonymous Git read access allows users to bypass authentication
+      for custom tools on your enterprise. When you or a repository
+      administrator enable this access setting for a repository, unauthenticated
+      Git operations (and anyone with network access to {% data
+      variables.product.product_name %}) will have read access to the repository
+      without authentication.
+    </p>
+    <p>
+      If necessary, you can prevent repository administrators from changing
+      anonymous Git access settings for repositories on your enterprise by
+      locking the repository’s access settings. After you lock a repository’s
+      Git read access setting, only a site administrator can change the setting.
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_site_admin_settings.list-of-repos-with-anonymous-git-read-access-enabled
+      %}
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_user_management.exceptions-for-enabling-anonymous-git-read-access
+      %}
+    </p>
+    <h3 id="setting-anonymous-git-read-access-for-all-repositories">
+      Setting anonymous Git read access for all repositories
+    </h3>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 4. Under “Anonymous Git read
+      access”, use the drop-down menu, and click <strong>Enabled</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/enable-anonymous-git-read-access.png"
+        alt="Anonymous Git read access drop-down menu showing menu options “Enabled” and “Disabled”"
+      />
+      3. Optionally, to prevent repository admins from changing anonymous Git
+      read access settings in all repositories on your enterprise, select
+      <strong
+        >Prevent repository admins from changing anonymous Git read
+        access</strong
+      >.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/globally-lock-repos-from-changing-anonymous-git-read-access.png"
+        alt="Select checkbox to prevent repository admins from changing anonymous Git read access settings for all repositories on your enterprise"
+      />
+    </p>
+    <h3 id="setting-anonymous-git-read-access-for-a-specific-repository">
+      Setting anonymous Git read access for a specific repository
+    </h3>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.repository-search %} {% data
+      reusables.enterprise_site_admin_settings.click-repo %} {% data
+      reusables.enterprise_site_admin_settings.admin-top-tab %} {% data
+      reusables.enterprise_site_admin_settings.admin-tab %} 6. Under “Danger
+      Zone”, next to “Enable Anonymous Git read access”, click
+      <strong>Enable</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/site-admin-enable-anonymous-git-read-access.png"
+        alt="“Enabled” button under “Enable anonymous Git read access” in danger zone of a repository’s site admin settings"
+      />
+      7. Review the changes. To confirm, click
+      <strong>Yes, enable anonymous Git read access.</strong>
+      <img
+        src="/assets/images/enterprise/site-admin-settings/confirm-anonymous-git-read-access-for-specific-repo-as-site-admin.png"
+        alt="Confirm anonymous Git read access setting in pop-up window"
+      />
+      8. Optionally, to prevent repository admins from changing this setting for
+      this repository, select
+      <strong
+        >Prevent repository admins from changing anonymous Git read
+        access</strong
+      >.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/lock_anonymous_git_access_for_specific_repo.png"
+        alt="Select checkbox to prevent repository admins from changing anonymous Git read access for this repository"
+      />
+    </p>
+    <p>{% endif %}</p>
+    <p>
+      {% ifversion ghes &gt; 2.22 or ghae %} ## Enforcing a policy on the
+      default branch name
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} 3. On the
+      <strong>Repository policies</strong> tab, under “Default branch name”,
+      enter the default branch name that new repositories should use.
+      <img
+        src="/assets/images/help/business-accounts/default-branch-name-text.png"
+        alt="Text box for entering default branch name"
+      />
+      4. Optionally, to enforce the default branch name for all organizations in
+      the enterprise, select <strong>Enforce across this enterprise</strong>.
+      <img
+        src="/assets/images/help/business-accounts/default-branch-name-enforce.png"
+        alt="Enforcement checkbox"
+      />
+      5. Click <strong>Update</strong>.
+      <img
+        src="/assets/images/help/business-accounts/default-branch-name-update.png"
+        alt="Update button"
+      />
+      {% endif %}
+    </p>
+  </body>
+</html>

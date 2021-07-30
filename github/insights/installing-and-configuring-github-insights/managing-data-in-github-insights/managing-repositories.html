@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing repositories</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing repositories</h1>
+</header>
+<h2 id="about-repository-management">About repository management</h2>
+<p>For {% data variables.product.prodname_insights %} to include data from a repository in {% data variables.product.prodname_enterprise %}, you must add the organization that owns the repository to {% data variables.product.prodname_insights %}. For more information, see “<a href="/github/installing-and-configuring-github-insights/managing-organizations">Managing organizations</a>.”</p>
+<p>After you add an organization to {% data variables.product.prodname_insights %}, each repository owned by the organization is automatically imported if the repository: - Has at least one commit - Is not private - Is not archived - Has been pushed to in the last 6 months</p>
+<p>Repository data is updated through webhooks and periodic synchronizations. You can manually refresh repository data at any time or cancel a data import that is in progress.</p>
+<p>{% data reusables.github-insights.repository-groups %}</p>
+<p>You can exclude specific files from {% data variables.product.prodname_insights %} for a specific repository or for all repositories.</p>
+<h2 id="about-import-times">About import times</h2>
+<p>{% data variables.product.prodname_insights %} imports the last three years of data for each repository. Depending on the size and complexity of your repositories, the initial import can some time, during which {% data variables.product.prodname_insights %} data is incomplete. Typically, the initial import of a few teams will take one or two days. Large and complex initial imports can take up to two weeks.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Repository Size</th>
+<th>Initial import time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>&lt; 10,000 commits</td>
+<td>&lt; 1 hour</td>
+</tr>
+<tr class="even">
+<td>10,000 to 300,000 commits</td>
+<td>1 to 10 days</td>
+</tr>
+<tr class="odd">
+<td>300,000 commits or more</td>
+<td>10 days +</td>
+</tr>
+</tbody>
+</table>
+<p>Once the initial import is complete, subsequent imports from incremental changes should take two minutes or less.</p>
+<p>To reduce import times, you can exclude any third party libraries in non-standard folders from {% data variables.product.prodname_insights %} before importing. For more information, see using “<a href="#managing-exclusion-filters">Managing exclusion filters</a>.”</p>
+<p>If you have many large repositories, you can improve initial import times by providing the application server with more cores. Application servers with more cores can perform more parallel import jobs.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Application server cores</th>
+<th>Parallel initial import jobs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16 core</td>
+<td>1 job</td>
+</tr>
+<tr class="even">
+<td>32 core</td>
+<td>4 jobs</td>
+</tr>
+</tbody>
+</table>
+<p>Importing a large number of pull requests can trigger rate-limiting from {% data variables.product.prodname_enterprise %}. In this case, importing will pause for one hour before resuming. You can temporarily increase the {% data variables.product.prodname_enterprise %} rate limit to improve import times. For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/configuring-rate-limits">Configuring rate limits</a>.”</p>
+<h2 id="viewing-and-managing-repositories">Viewing and managing repositories</h2>
+<p>You can view imported repositories and repositories that are available to import. If an import is in progress, you can see the import’s status and a time estimate for the import’s completion.</p>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.repositories-tab %} 3. Optionally, to add a repository which has not been imported, to the right of the repository’s name, click <strong>Add</strong>. <img src="/assets/images/help/insights/add-button.png" alt="Add button" /> 4. Optionally, to manually refresh repository data, to the right of the repository’s name, click <strong>{% octicon “sync” aria-label=“The refresh icon” %}</strong> the refresh icon. <img src="/assets/images/help/insights/refresh-button.png" alt="Refresh button" /> 5. Optionally, to cancel an import in progress, to the right of the repository’s name, click <strong>Cancel</strong>. <img src="/assets/images/help/insights/cancel-button.png" alt="Cancel button" /> 6. Optionally, to remove an imported repository, to the right of the repository’s name, click <strong>Remove</strong>. <img src="/assets/images/help/insights/remove-button.png" alt="Remove button" /></p>
+<h2 id="managing-repository-groups-for-reports">Managing repository groups for reports</h2>
+<p>You can create a repository group, add or remove repositories to a group, and delete a repository group.</p>
+<h3 id="creating-a-repository-group">Creating a repository group</h3>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.repo-groups-tab %} 2. In the upper-right corner, click <strong>Create Group</strong>. <img src="/assets/images/help/insights/create-group.png" alt="Create Group button" /> 3. Under “Group Name”, type a name for your group. <img src="/assets/images/help/insights/group-name.png" alt="Group Name field" /> 4. Click <strong>Create</strong>.</p>
+<h3 id="adding-a-repository-to-a-repository-group">Adding a repository to a repository group</h3>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.repo-groups-tab %} {% data reusables.github-insights.edit-group %} 4. Under “Repositories”, use the drop-down menu and select a repository to add to the group. <img src="/assets/images/help/insights/repositories-drop-down.png" alt="Repositories drop-down menu" /> 5. Click <strong>Done</strong>.</p>
+<h3 id="deleting-a-repository-group">Deleting a repository group</h3>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.repo-groups-tab %} {% data reusables.github-insights.edit-group %} 4. Click <strong>Delete Group</strong>. <img src="/assets/images/help/insights/delete-group.png" alt="Delete Group button" /> 5. Click <strong>Confirm</strong>.</p>
+<h2 id="managing-exclusion-filters">Managing exclusion filters</h2>
+<p>You can create a list of file exclusion rules to omit specified files from all {% data variables.product.prodname_insights %} data. File exclusion rules follow the same rules used in <em>.gitignore</em> files. For more information, see “<a href="https://git-scm.com/docs/gitignore">gitignore</a>” in the Git documentation.</p>
+<h3 id="adding-a-file-exclusion-rule-for-all-repositories">Adding a file exclusion rule for all repositories</h3>
+<p>Changes to global file exclusions only apply to newly imported data and will not retroactively affect existing data. To apply new exclusion rules to existing data, you can remove and re-add repositories to {% data variables.product.prodname_insights %}.</p>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.exclude-files-tab %} 3. Optionally, under “Exclude files”, select <strong>Include all binaries</strong>. <img src="/assets/images/help/insights/include-all-binaries-global.png" alt="Include all binaries checkbox" /> 4. In the code editor, add a new exclusion rule to the list. <img src="/assets/images/help/insights/global-exclusion-list.png" alt="Code editor to add global exclusion rule" /> 5. Click <strong>Save Changes</strong>.</p>
+<h3 id="adding-a-file-exclusion-rule-for-a-repository">Adding a file exclusion rule for a repository</h3>
+<p>{% data reusables.github-insights.settings-tab %} {% data reusables.github-insights.exclude-files-tab %} 3. To the right of “Repositories with File Filters”, click <strong>Add Filter</strong>. <img src="/assets/images/help/insights/add-filter.png" alt="Add Filter button" /> 4. Use the “Repository” drop-down menu, and select a repository. <img src="/assets/images/help/insights/repository-drop-down-exclude.png" alt="Repository drop-down menu" /> 5. Optionally, to apply exclusion rules to existing data, select <strong>Re-import</strong>. <img src="/assets/images/help/insights/re-import-checkbox.png" alt="Re-import checkbox" /> 6. Optionally, select <strong>Include all binaries</strong>. <img src="/assets/images/help/insights/include-all-binaries-repo.png" alt="Include all binaries checkbox" /> 7. In the code editor, add exclusion rules you want to apply to the repository. <img src="/assets/images/help/insights/repo-exclusion-list.png" alt="Code editor to add repository exclusion rule" /> 8. Click <strong>Create Filter</strong>.</p>
+</body>
+</html>

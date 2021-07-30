@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Git database</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Git database</h1>
+</header>
+<p>The Git Database API gives you access to read and write raw Git objects to your Git database on {% data variables.product.product_name %} and to list and update your references (branch heads and tags). For more information about using the Git Database API, see “<a href="/rest/guides/getting-started-with-the-git-database-api">Getting started with the Git data API</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="blobs">Blobs</h2>
+<p>A Git blob (binary large object) is the object type used to store the contents of each file in a repository. The file’s SHA-1 hash is computed and stored in the blob object. These endpoints allow you to read and write <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-Objects">blob objects</a> to your Git database on {% data variables.product.product_name %}. Blobs leverage <a href="#custom-media-types-for-blobs">these custom media types</a>. You can read more about the use of media types in the API <a href="/rest/overview/media-types">here</a>.</p>
+<h3 id="custom-media-types-for-blobs">Custom media types for blobs</h3>
+<p>These are the supported media types for blobs.</p>
+<pre><code>application/json
+application/vnd.github.VERSION.raw</code></pre>
+<p>For more information, see “<a href="/rest/overview/media-types">Media types</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘blobs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="commits">Commits</h2>
+<p>A Git commit is a snapshot of the hierarchy (<a href="/rest/reference/git#trees">Git tree</a>) and the contents of the files (<a href="/rest/reference/git#blobs">Git blob</a>) in a Git repository. These endpoints allow you to read and write <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-Objects#Commit-Objects">commit objects</a> to your Git database on {% data variables.product.product_name %}.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘commits’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="references">References</h2>
+<p>A Git reference (<code>git ref</code>) is just a file that contains a Git commit SHA-1 hash. When referring to a Git commit, you can use the Git reference, which is an easy-to-remember name, rather than the hash. The Git reference can be rewritten to point to a new commit. A branch is just a Git reference that stores the new Git commit hash. These endpoints allow you to read and write <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-References">references</a> to your Git database on {% data variables.product.product_name %}.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘refs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="tags">Tags</h2>
+<p>A Git tag is similar to a <a href="/rest/reference/git#refs">Git reference</a>, but the Git commit that it points to never changes. Git tags are helpful when you want to point to specific releases. These endpoints allow you to read and write <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-References#Tags">tag objects</a> to your Git database on {% data variables.product.product_name %}. The Git tags API only supports <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-References#Tags">annotated tag objects</a>, not lightweight tags.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘tags’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="trees">Trees</h2>
+<p>A Git tree object creates the hierarchy between files in a Git repository. You can use the Git tree object to create the relationship between directories and the files they contain. These endpoints allow you to read and write <a href="https://git-scm.com/book/en/v1/Git-Internals-Git-Objects#Tree-Objects">tree objects</a> to your Git database on {% data variables.product.product_name %}.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘trees’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

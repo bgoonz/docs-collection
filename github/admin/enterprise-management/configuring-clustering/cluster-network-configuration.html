@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Cluster network configuration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Cluster network configuration</h1>
+    </header>
+    <h2 id="network-considerations">Network considerations</h2>
+    <p>
+      The simplest network design for clustering is to place the nodes on a
+      single LAN. If a cluster must span subnetworks, we do not recommend
+      configuring any firewall rules between the networks. The latency between
+      nodes should be less than 1 millisecond.
+    </p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %}For high availability, the latency between
+      the network with the active nodes and the network with the passive nodes
+      must be less than 70 milliseconds. We don’t recommend configuring a
+      firewall between the two networks.{% endif %}
+    </p>
+    <h3 id="application-ports-for-end-users">
+      Application ports for end users
+    </h3>
+    <p>
+      Application ports provide web application and Git access for end users.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Port</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Encrypted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">22/TCP</td>
+          <td style="text-align: left">Git over SSH</td>
+          <td style="text-align: left">Yes</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">25/TCP</td>
+          <td style="text-align: left">SMTP</td>
+          <td style="text-align: left">Requires STARTTLS</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">80/TCP</td>
+          <td style="text-align: left">HTTP</td>
+          <td style="text-align: left">
+            No<br />(When SSL is enabled this port redirects to HTTPS)
+          </td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">443/TCP</td>
+          <td style="text-align: left">HTTPS</td>
+          <td style="text-align: left">Yes</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">9418/TCP</td>
+          <td style="text-align: left">
+            Simple Git protocol port<br />(Disabled in private mode)
+          </td>
+          <td style="text-align: left">No</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="administrative-ports">Administrative ports</h3>
+    <p>
+      Administrative ports are not required for basic application use by end
+      users.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Port</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Encrypted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">ICMP</td>
+          <td style="text-align: left">ICMP Ping</td>
+          <td style="text-align: left">No</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">122/TCP</td>
+          <td style="text-align: left">Administrative SSH</td>
+          <td style="text-align: left">Yes</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">161/UDP</td>
+          <td style="text-align: left">SNMP</td>
+          <td style="text-align: left">No</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">8080/TCP</td>
+          <td style="text-align: left">Management Console HTTP</td>
+          <td style="text-align: left">
+            No<br />(When SSL is enabled this port redirects to HTTPS)
+          </td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8443/TCP</td>
+          <td style="text-align: left">Management Console HTTPS</td>
+          <td style="text-align: left">Yes</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="cluster-communication-ports">Cluster communication ports</h3>
+    <p>
+      If a network level firewall is in place between nodes, these ports will
+      need to be accessible. The communication between nodes is not encrypted.
+      These ports should not be accessible externally.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Port</th>
+          <th style="text-align: left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">1336/TCP</td>
+          <td style="text-align: left">Internal API</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">3033/TCP</td>
+          <td style="text-align: left">Internal SVN access</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">3037/TCP</td>
+          <td style="text-align: left">Internal SVN access</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">3306/TCP</td>
+          <td style="text-align: left">MySQL</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">4486/TCP</td>
+          <td style="text-align: left">Governor access</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">5115/TCP</td>
+          <td style="text-align: left">Storage backend</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">5208/TCP</td>
+          <td style="text-align: left">Internal SVN access</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">6379/TCP</td>
+          <td style="text-align: left">Redis</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8001/TCP</td>
+          <td style="text-align: left">Grafana</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">8090/TCP</td>
+          <td style="text-align: left">Internal GPG access</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8149/TCP</td>
+          <td style="text-align: left">GitRPC file server access</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">8300/TCP</td>
+          <td style="text-align: left">Consul</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8301/TCP</td>
+          <td style="text-align: left">Consul</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">8302/TCP</td>
+          <td style="text-align: left">Consul</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">9000/TCP</td>
+          <td style="text-align: left">Git Daemon</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">9102/TCP</td>
+          <td style="text-align: left">Pages file server</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">9105/TCP</td>
+          <td style="text-align: left">LFS server</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">9200/TCP</td>
+          <td style="text-align: left">Elasticsearch</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">9203/TCP</td>
+          <td style="text-align: left">Semantic code service</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">9300/TCP</td>
+          <td style="text-align: left">Elasticsearch</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">11211/TCP</td>
+          <td style="text-align: left">Memcache</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">161/UDP</td>
+          <td style="text-align: left">SNMP</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8125/UDP</td>
+          <td style="text-align: left">Statsd</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">8301/UDP</td>
+          <td style="text-align: left">Consul</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">8302/UDP</td>
+          <td style="text-align: left">Consul</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">25827/UDP</td>
+          <td style="text-align: left">Collectd</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="configuring-a-load-balancer">Configuring a load balancer</h2>
+    <p>
+      We recommend an external TCP-based load balancer that supports the PROXY
+      protocol to distribute traffic across nodes. Consider these load balancer
+      configurations:
+    </p>
+    <ul>
+      <li>
+        TCP ports (shown below) should be forwarded to nodes running the
+        <code>web-server</code> service. These are the only nodes that serve
+        external client requests.
+      </li>
+      <li>Sticky sessions shouldn’t be enabled.</li>
+    </ul>
+    <p>{% data reusables.enterprise_installation.terminating-tls %}</p>
+    <h2 id="handling-client-connection-information">
+      Handling client connection information
+    </h2>
+    <p>
+      Because client connections to the cluster come from the load balancer, the
+      client IP address can be lost. To properly capture the client connection
+      information, additional consideration is required.
+    </p>
+    <p>{% data reusables.enterprise_clustering.proxy_preference %}</p>
+    <p>{% data reusables.enterprise_clustering.proxy_xff_firewall_warning %}</p>
+    <h3
+      id="enabling-proxy-support-on-data-variables.product.prodname_ghe_server"
+    >
+      Enabling PROXY support on {% data variables.product.prodname_ghe_server %}
+    </h3>
+    <p>
+      We strongly recommend enabling PROXY support for both your instance and
+      the load balancer.
+    </p>
+    <ul>
+      <li>For your instance, use this command:</li>
+    </ul>
+    <pre
+      class="shell"
+    ><code>$ ghe-config &#39;loadbalancer.proxy-protocol&#39; &#39;true&#39; &amp;&amp; ghe-cluster-config-apply</code></pre>
+    <ul>
+      <li>
+        For the load balancer, use the instructions provided by your vendor.
+      </li>
+    </ul>
+    <p>{% data reusables.enterprise_clustering.proxy_protocol_ports %}</p>
+    <h3
+      id="enabling-x-forwarded-for-support-on-data-variables.product.prodname_ghe_server"
+    >
+      Enabling X-Forwarded-For support on {% data
+      variables.product.prodname_ghe_server %}
+    </h3>
+    <p>{% data reusables.enterprise_clustering.x-forwarded-for %}</p>
+    <p>To enable the <code>X-Forwarded-For</code> header, use this command:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-config &#39;loadbalancer.http-forward&#39; &#39;true&#39; &amp;&amp; ghe-cluster-config-apply</code></pre>
+    <p>
+      {% data reusables.enterprise_clustering.without_proxy_protocol_ports %}
+    </p>
+    <h3 id="configuring-health-checks">Configuring Health Checks</h3>
+    <p>
+      Health checks allow a load balancer to stop sending traffic to a node that
+      is not responding if a pre-configured check fails on that node. If a
+      cluster node fails, health checks paired with redundant nodes provides
+      high availability.
+    </p>
+    <p>
+      {% data reusables.enterprise_clustering.health_checks %} {% data
+      reusables.enterprise_site_admin_settings.maintenance-mode-status %}
+    </p>
+    <h2 id="dns-requirements">DNS Requirements</h2>
+    <p>{% data reusables.enterprise_clustering.load_balancer_dns %}</p>
+  </body>
+</html>

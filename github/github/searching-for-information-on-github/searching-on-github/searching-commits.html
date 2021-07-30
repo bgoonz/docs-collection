@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching commits</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching commits</h1>
+</header>
+<p>You can search for commits globally across all of {% data variables.product.product_name %}, or search for commits within a particular repository or organization. For more information, see “<a href="/articles/about-searching-on-github">About searching on {% data variables.product.company_short %}</a>.”</p>
+<p>When you search for commits, only the <a href="/articles/about-branches">default branch</a> of a repository is searched.</p>
+<p>{% data reusables.search.syntax_tips %}</p>
+<h2 id="search-within-commit-messages">Search within commit messages</h2>
+<p>You can find commits that contain particular words in the message. For example, <a href="https://github.com/search?q=fix+typo&amp;type=Commits"><strong>fix typo</strong></a> matches commits containing the words “fix” and “typo.”</p>
+<h2 id="search-by-author-or-committer">Search by author or committer</h2>
+<p>You can find commits by a particular user with the <code>author</code> or <code>committer</code> qualifiers.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>author:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=author%3Adefunkt&amp;type=Commits"><strong>author:defunkt</strong></a> matches commits authored by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+<tr class="even">
+<td><code>committer:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=committer%3Adefunkt&amp;type=Commits"><strong>committer:defunkt</strong></a> matches commits committed by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>author-name</code> and <code>committer-name</code> qualifiers match commits by the name of the author or committer.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>author-name:<em>NAME</em></code></td>
+<td><a href="https://github.com/search?q=author-name%3Awanstrath&amp;type=Commits"><strong>author-name:wanstrath</strong></a> matches commits with “wanstrath” in the author name.</td>
+</tr>
+<tr class="even">
+<td><code>committer-name:<em>NAME</em></code></td>
+<td><a href="https://github.com/search?q=committer-name%3Awanstrath&amp;type=Commits"><strong>committer-name:wanstrath</strong></a> matches commits with “wanstrath” in the committer name.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>author-email</code> and <code>committer-email</code> qualifiers match commits by the author’s or committer’s full email address.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>author-email:<em>EMAIL</em></code></td>
+<td><a href="https://github.com/search?q=author-email%3Achris%40github.com&amp;type=Commits"><strong>author-email:chris@github.com</strong></a> matches commits authored by chris@github.com.</td>
+</tr>
+<tr class="even">
+<td><code>committer-email:<em>EMAIL</em></code></td>
+<td><a href="https://github.com/search?q=committer-email%3Achris%40github.com&amp;type=Commits"><strong>committer-email:chris@github.com</strong></a> matches commits committed by chris@github.com.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-authored-or-committed-date">Search by authored or committed date</h2>
+<p>Use the <code>author-date</code> and <code>committer-date</code> qualifiers to match commits authored or committed within the specified date range.</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>author-date:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=author-date%3A%3C2016-01-01&amp;type=Commits"><strong>author-date:&lt;2016-01-01</strong></a> matches commits authored before 2016-01-01.</td>
+</tr>
+<tr class="even">
+<td><code>committer-date:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=committer-date%3A%3E2016-01-01&amp;type=Commits"><strong>committer-date:&gt;2016-01-01</strong></a> matches commits committed after 2016-01-01.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filter-merge-commits">Filter merge commits</h2>
+<p>The <code>merge</code> qualifier filters merge commits.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>merge:true</code></td>
+<td><a href="https://github.com/search?q=merge%3Atrue&amp;type=Commits"><strong>merge:true</strong></a> matches merge commits.</td>
+</tr>
+<tr class="even">
+<td><code>merge:false</code></td>
+<td><a href="https://github.com/search?q=merge%3Afalse&amp;type=Commits"><strong>merge:false</strong></a> matches non-merge commits.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-hash">Search by hash</h2>
+<p>The <code>hash</code> qualifier matches commits with the specified SHA-1 hash.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hash:<em>HASH</em></code></td>
+<td><a href="https://github.com/github/gitignore/search?q=hash%3A124a9a0ee1d8f1e15e833aff432fbb3b02632105&amp;type=Commits"><strong>hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105</strong></a> matches commits with the hash <code>124a9a0ee1d8f1e15e833aff432fbb3b02632105</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-parent">Search by parent</h2>
+<p>The <code>parent</code> qualifier matches commits whose parent has the specified SHA-1 hash.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>parent:<em>HASH</em></code></td>
+<td><a href="https://github.com/github/gitignore/search?q=parent%3A124a9a0ee1d8f1e15e833aff432fbb3b02632105&amp;type=Commits&amp;utf8=%E2%9C%93"><strong>parent:124a9a0ee1d8f1e15e833aff432fbb3b02632105</strong></a> matches children of commits with the hash <code>124a9a0ee1d8f1e15e833aff432fbb3b02632105</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-tree">Search by tree</h2>
+<p>The <code>tree</code> qualifier matches commits with the specified SHA-1 git tree hash.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tree:<em>HASH</em></code></td>
+<td><a href="https://github.com/github/gitignore/search?q=tree%3A99ca967&amp;type=Commits"><strong>tree:99ca967</strong></a> matches commits that refer to the tree hash <code>99ca967</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-within-a-users-or-organizations-repositories">Search within a user’s or organization’s repositories</h2>
+<p>To search commits in all repositories owned by a certain user or organization, use the <code>user</code> or <code>org</code> qualifier. To search commits in a specific repository, use the <code>repo</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=gibberish+user%3Adefunkt&amp;type=Commits&amp;utf8=%E2%9C%93"><strong>gibberish user:defunkt</strong></a> matches commit messages with the word “gibberish” in repositories owned by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+<tr class="even">
+<td><code>org:<em>ORGNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=test+org%3Agithub&amp;type=Commits"><strong>test org:github</strong></a> matches commit messages with the word “test” in repositories owned by <span class="citation" data-cites="github">@github</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>repo:<em>USERNAME/REPO</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=language+repo%3Adefunkt%2Fgibberish&amp;type=Commits"><strong>language repo:defunkt/gibberish</strong></a> matches commit messages with the word “language” in <span class="citation" data-cites="defunkt">@defunkt</span>’s “gibberish” repository.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filter-by-repository-visibility">Filter by repository visibility</h2>
+<p>The <code>is</code> qualifier matches commits from repositories with the specified visibility. For more information, see "<a href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility">About repository visibility</a>.</p>
+<div class="line-block">Qualifier | Example<br />
+————- | ————- |{% ifversion fpt or ghes %}<br />
+<code>is:public</code> | <a href="https://github.com/search?q=is%3Apublic&amp;type=Commits"><strong>is:public</strong></a> matches commits to public repositories.{% endif %}<br />
+<code>is:internal</code> | <a href="https://github.com/search?q=is%3Ainternal&amp;type=Commits"><strong>is:internal</strong></a> matches commits to internal repositories.<br />
+<code>is:private</code> | <a href="https://github.com/search?q=is%3Aprivate&amp;type=Commits"><strong>is:private</strong></a> matches commits to private repositories.</div>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+</ul>
+</body>
+</html>

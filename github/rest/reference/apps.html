@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Apps</h1>
+</header>
+<p>The GitHub Apps API enables you to get high-level information about a GitHub App as well as specific information about installations of the app. To learn more about GitHub Apps, see “<a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app">Authenticating as a GitHub App</a>.”</p>
+<p>{% data reusables.apps.general-apps-restrictions %}</p>
+<p>This page lists endpoints that you can access while authenticated as a GitHub App. See “<a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app">Authenticating as a GitHub App</a>” to learn more.</p>
+<p>When authenticated as a GitHub App, the GitHub Apps API enables you to get high-level information about a GitHub App as well as specific information about installations of an app.</p>
+<p>You can access REST API v3 endpoints while authenticated as a GitHub App. These endpoints have a “Notes” section that contains a bullet point that says “Works with GitHub Apps.” You can also access these endpoints while authenticated as a user.</p>
+<p>A subset of REST API v3 endpoints requires authenticating as a GitHub App installation. See <a href="/rest/reference/apps#installations">Installations</a> for a list of these endpoints.</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="oauth-applications-api">OAuth Applications API</h2>
+<p>You can use this API to manage the OAuth tokens an OAuth application uses to access people’s {% data variables.product.prodname_dotcom %} accounts.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘oauth-applications’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="installations">Installations</h2>
+<p>The Installations API enables you to get information about installations of your GitHub App and perform actions within those installations. An <em>installation</em> refers to any user or organization account that has installed the app. For information on how to authenticate as an installation and limit access to specific repositories, see “<a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation">Authenticating as an installation</a>.”</p>
+<p>To list all GitHub App installations for an organization, see “<a href="/rest/reference/orgs#list-app-installations-for-an-organization">List app installations for an organization</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘installations’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt %} ## Marketplace</p>
+<p>For more information about {% data variables.product.prodname_marketplace %}, see “<a href="/marketplace/">GitHub Marketplace</a>.”</p>
+<p>The {% data variables.product.prodname_marketplace %} API allows you to see which customers are using a pricing plan, see a customer’s purchases, and see if an account has an active subscription.</p>
+<h3 id="testing-with-stubbed-endpoints">Testing with stubbed endpoints</h3>
+<p>This API includes endpoints that allow you to <a href="/marketplace/integrating-with-the-github-marketplace-api/testing-github-marketplace-apps/">test your {% data variables.product.prodname_github_app %}</a> with <strong>stubbed data</strong>. Stubbed data is hard-coded, fake data that will not change based on actual subscriptions.</p>
+<p>To test with stubbed data, use a stubbed endpoint in place of its production counterpart. This allows you to test whether API logic succeeds before listing {% data variables.product.prodname_github_apps %} on {% data variables.product.prodname_marketplace %}.</p>
+<p>Be sure to replace stubbed endpoints with production endpoints before deploying your {% data variables.product.prodname_github_app %}.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘marketplace’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Webhooks</p>
+<p>A {% data variables.product.prodname_github_app %}’s webhook allows you to receive HTTP <code>POST</code> payloads whenever certain events happen for an app. {% data reusables.webhooks.webhooks-rest-api-links %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘webhooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Introduction to GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Introduction to GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>
+      {% data variables.product.prodname_actions %} help you automate tasks
+      within your software development life cycle. {% data
+      variables.product.prodname_actions %} are event-driven, meaning that you
+      can run a series of commands after a specified event has occurred. For
+      example, every time someone creates a pull request for a repository, you
+      can automatically run a command that executes a software testing script.
+    </p>
+    <p>
+      This diagram demonstrates how you can use {% data
+      variables.product.prodname_actions %} to automatically run your software
+      testing scripts. An event automatically triggers the <em>workflow</em>,
+      which contains a <em>job</em>. The job then uses <em>steps</em> to control
+      the order in which <em>actions</em> are run. These actions are the
+      commands that automate your software testing.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/images/overview-actions-simple.png"
+        alt="Workflow overview"
+      />
+      <figcaption>Workflow overview</figcaption>
+    </figure>
+    <h2 id="the-components-of-data-variables.product.prodname_actions">
+      The components of {% data variables.product.prodname_actions %}
+    </h2>
+    <p>
+      Below is a list of the multiple {% data variables.product.prodname_actions
+      %} components that work together to run jobs. You can see how these
+      components interact with each other.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/images/overview-actions-design.png"
+        alt="Component and service overview"
+      />
+      <figcaption>Component and service overview</figcaption>
+    </figure>
+    <h3 id="workflows">Workflows</h3>
+    <p>
+      The workflow is an automated procedure that you add to your repository.
+      Workflows are made up of one or more jobs and can be scheduled or
+      triggered by an event. The workflow can be used to build, test, package,
+      release, or deploy a project on {% data variables.product.prodname_dotcom
+      %}.
+    </p>
+    <h3 id="events">Events</h3>
+    <p>
+      An event is a specific activity that triggers a workflow. For example,
+      activity can originate from {% data variables.product.prodname_dotcom %}
+      when someone pushes a commit to a repository or when an issue or pull
+      request is created. You can also use the
+      <a href="/rest/reference/repos#create-a-repository-dispatch-event"
+        >repository dispatch webhook</a
+      >
+      to trigger a workflow when an external event occurs. For a complete list
+      of events that can be used to trigger workflows, see
+      <a href="/actions/reference/events-that-trigger-workflows"
+        >Events that trigger workflows</a
+      >.
+    </p>
+    <h3 id="jobs">Jobs</h3>
+    <p>
+      A job is a set of steps that execute on the same runner. By default, a
+      workflow with multiple jobs will run those jobs in parallel. You can also
+      configure a workflow to run jobs sequentially. For example, a workflow can
+      have two sequential jobs that build and test code, where the test job is
+      dependent on the status of the build job. If the build job fails, the test
+      job will not run.
+    </p>
+    <h3 id="steps">Steps</h3>
+    <p>
+      A step is an individual task that can run commands in a job. A step can be
+      either an <em>action</em> or a shell command. Each step in a job executes
+      on the same runner, allowing the actions in that job to share data with
+      each other.
+    </p>
+    <h3 id="actions">Actions</h3>
+    <p>
+      <em>Actions</em> are standalone commands that are combined into
+      <em>steps</em> to create a <em>job</em>. Actions are the smallest portable
+      building block of a workflow. You can create your own actions, or use
+      actions created by the {% data variables.product.prodname_dotcom %}
+      community. To use an action in a workflow, you must include it as a step.
+    </p>
+    <h3 id="runners">Runners</h3>
+    <p>
+      {% ifversion ghae %}A runner is a server that has the
+      <a href="https://github.com/actions/runner"
+        >{% data variables.product.prodname_actions %} runner application</a
+      >
+      installed. For {% data variables.product.prodname_ghe_managed %}, you can
+      use the security hardened {% data variables.actions.hosted_runner %}s
+      which are bundled with your instance in the cloud. A runner listens for
+      available jobs, runs one job at a time, and reports the progress, logs,
+      and results back to {% data variables.product.prodname_dotcom %}. {% data
+      variables.actions.hosted_runner %}s run each workflow job in a fresh
+      virtual environment. For more information, see “<a
+        href="/actions/using-github-hosted-runners/about-ae-hosted-runners"
+        >About {% data variables.actions.hosted_runner %}s</a
+      >.” {% else %} A runner is a server that has the
+      <a href="https://github.com/actions/runner"
+        >{% data variables.product.prodname_actions %} runner application</a
+      >
+      installed. You can use a runner hosted by {% data
+      variables.product.prodname_dotcom %}, or you can host your own. A runner
+      listens for available jobs, runs one job at a time, and reports the
+      progress, logs, and results back to {% data
+      variables.product.prodname_dotcom %}. {% data
+      variables.product.prodname_dotcom %}-hosted runners are based on Ubuntu
+      Linux, Microsoft Windows, and macOS, and each job in a workflow runs in a
+      fresh virtual environment. For information on {% data
+      variables.product.prodname_dotcom %}-hosted runners, see “<a
+        href="/actions/using-github-hosted-runners/about-github-hosted-runners"
+        >About {% data variables.product.prodname_dotcom %}-hosted runners</a
+      >.” If you need a different operating system or require a specific
+      hardware configuration, you can host your own runners. For information on
+      self-hosted runners, see “<a href="/actions/hosting-your-own-runners"
+        >Hosting your own runners</a
+      >.” {% endif %}
+    </p>
+    <h2 id="create-an-example-workflow">Create an example workflow</h2>
+    <p>
+      {% data variables.product.prodname_actions %} uses YAML syntax to define
+      the events, jobs, and steps. These YAML files are stored in your code
+      repository, in a directory called <code>.github/workflows</code>.
+    </p>
+    <p>
+      You can create an example workflow in your repository that automatically
+      triggers a series of commands whenever code is pushed. In this workflow,
+      {% data variables.product.prodname_actions %} checks out the pushed code,
+      installs the software dependencies, and runs <code>bats -v</code>.
+    </p>
+    <ol type="1">
+      <li>
+        In your repository, create the <code>.github/workflows/</code> directory
+        to store your workflow files.
+      </li>
+      <li>
+        In the <code>.github/workflows/</code> directory, create a new file
+        called <code>learn-github-actions.yml</code> and add the following code.
+        <code
+          >yaml name: learn-github-actions on: [push] jobs: check-bats-version:
+          runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 - uses:
+          actions/setup-node@v2 with: node-version: '14' - run: npm install -g
+          bats - run: bats -v</code
+        >
+      </li>
+      <li>
+        Commit these changes and push them to your {% data
+        variables.product.prodname_dotcom %} repository.
+      </li>
+    </ol>
+    <p>
+      Your new {% data variables.product.prodname_actions %} workflow file is
+      now installed in your repository and will run automatically each time
+      someone pushes a change to the repository. For details about a job’s
+      execution history, see “<a
+        href="/actions/learn-github-actions/introduction-to-github-actions#viewing-the-jobs-activity"
+        >Viewing the workflow’s activity</a
+      >.”
+    </p>
+    <h2 id="understanding-the-workflow-file">
+      Understanding the workflow file
+    </h2>
+    <p>
+      To help you understand how YAML syntax is used to create a workflow file,
+      this section explains each line of the introduction’s example:
+    </p>
+    <table>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb1">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">name:</span><span class="at"> learn-github-actions</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          <em>Optional</em> - The name of the workflow as it will appear in the
+          Actions tab of the {% data variables.product.prodname_dotcom %}
+          repository.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb2">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Specify the event that automatically triggers the workflow file. This
+          example uses the <code>push</code> event, so that the jobs run every
+          time someone pushes a change to the repository. You can set up the
+          workflow to only run on certain branches, paths, or tags. For syntax
+          examples including or excluding branches, paths, or tags, see
+          <a
+            href="https://docs.github.com/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths"
+            >“Workflow syntax for {% data variables.product.prodname_actions
+            %}.”</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb3">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">jobs:</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Groups together all the jobs that run in the
+          <code>learn-github-actions</code> workflow file.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb4">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">check-bats-version:</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Defines the name of the <code>check-bats-version</code> job stored
+          within the <code>jobs</code> section.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb5">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1">  <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Configures the job to run on an Ubuntu Linux runner. This means that
+          the job will execute on a fresh virtual machine hosted by GitHub. For
+          syntax examples using other runners, see
+          <a
+            href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on"
+            >“Workflow syntax for {% data variables.product.prodname_actions
+            %}.”</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb6">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1">  <span class="fu">steps:</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Groups together all the steps that run in the
+          <code>check-bats-version</code> job. Each item nested under this
+          section is a separate action or shell command.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb7">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          The <code>uses</code> keyword tells the job to retrieve
+          <code>v2</code> of the community action named
+          <code>actions/checkout@v2</code>. This is an action that checks out
+          your repository and downloads it to the runner, allowing you to run
+          actions against your code (such as testing tools). You must use the
+          checkout action any time your workflow will run against the
+          repository’s code or you are using an action defined in the
+          repository.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb8">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/setup-node@v2</span></a>
+<a class="sourceLine" id="cb8-2" title="2">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb8-3" title="3">        <span class="fu">node-version:</span><span class="at"> </span><span class="st">&#39;14&#39;</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          This step uses the <code>actions/setup-node@v2</code> action to
+          install the specified version of the <code>node</code> software
+          package on the runner, which gives you access to the
+          <code>npm</code> command.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb9">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1">    <span class="kw">-</span> <span class="fu">run:</span><span class="at"> npm install -g bats</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          The <code>run</code> keyword tells the job to execute a command on the
+          runner. In this case, you are using <code>npm</code> to install the
+          <code>bats</code> software testing package.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb10">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" title="1">    <span class="kw">-</span> <span class="fu">run:</span><span class="at"> bats -v</span></a></code></pre>
+          </div>
+        </td>
+        <td>
+          Finally, you’ll run the <code>bats</code> command with a parameter
+          that outputs the software version.
+        </td>
+      </tr>
+    </table>
+    <h3 id="visualizing-the-workflow-file">Visualizing the workflow file</h3>
+    <p>
+      In this diagram, you can see the workflow file you just created and how
+      the {% data variables.product.prodname_actions %} components are organized
+      in a hierarchy. Each step executes a single action or shell command. Steps
+      1 and 2 use prebuilt community actions. Steps 3 and 4 run shell commands
+      directly on the runner. To find more prebuilt actions for your workflows,
+      see “<a
+        href="/actions/learn-github-actions/finding-and-customizing-actions"
+        >Finding and customizing actions</a
+      >.”
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/images/overview-actions-event.png"
+        alt="Workflow overview"
+      />
+      <figcaption>Workflow overview</figcaption>
+    </figure>
+    <h2 id="viewing-the-jobs-activity">Viewing the job’s activity</h2>
+    <p>
+      Once your job has started running, you can {% ifversion fpt or ghes &gt;
+      3.0 or ghae %}see a visualization graph of the run’s progress and {% endif
+      %}view each step’s activity on {% data variables.product.prodname_dotcom
+      %}.
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} 1. Under your
+      repository name, click <strong>Actions</strong>.
+      <img
+        src="/assets/images/help/images/learn-github-actions-repository.png"
+        alt="Navigate to repository"
+      />
+      1. In the left sidebar, click the workflow you want to see.
+      <img
+        src="/assets/images/help/images/learn-github-actions-workflow.png"
+        alt="Screenshot of workflow results"
+      />
+      1. Under “Workflow runs”, click the name of the run you want to see.
+      <img
+        src="/assets/images/help/images/learn-github-actions-run.png"
+        alt="Screenshot of workflow runs"
+      />
+      {% ifversion fpt or ghes &gt; 3.0 or ghae %} 1. Under
+      <strong>Jobs</strong> or in the visualization graph, click the job you
+      want to see.
+      <img
+        src="/assets/images/help/images/overview-actions-result-navigate.png"
+        alt="Select job"
+      />
+      {% endif %} {% ifversion fpt or ghes &gt; 3.0 or ghae %} 1. View the
+      results of each step.
+      <img
+        src="/assets/images/help/images/overview-actions-result-updated-2.png"
+        alt="Screenshot of workflow run details"
+      />
+      {% elsif ghes &gt; 2.22 %} 1. Click on the job name to see the results of
+      each step.
+      <img
+        src="/assets/images/help/images/overview-actions-result-updated.png"
+        alt="Screenshot of workflow run details"
+      />
+      {% else %} 1. Click on the job name to see the results of each step.
+      <img
+        src="/assets/images/help/images/overview-actions-result.png"
+        alt="Screenshot of workflow run details"
+      />
+      {% endif %}
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>
+      To continue learning about {% data variables.product.prodname_actions %},
+      see “<a
+        href="/actions/learn-github-actions/finding-and-customizing-actions"
+        >Finding and customizing actions</a
+      >.”
+    </p>
+    <p>
+      To understand how billing works for {% data
+      variables.product.prodname_actions %}, see “<a
+        href="/actions/reference/usage-limits-billing-and-administration#about-billing-for-github-actions"
+        >About billing for {% data variables.product.prodname_actions %}</a
+      >”.
+    </p>
+    <h2 id="contacting-support">Contacting support</h2>
+    <p>{% data reusables.github-actions.contacting-support %}</p>
+  </body>
+</html>

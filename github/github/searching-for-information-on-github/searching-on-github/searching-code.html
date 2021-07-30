@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching code</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching code</h1>
+</header>
+<p>{% data reusables.search.you-can-search-globally %} For more information, see “<a href="/articles/about-searching-on-github">About searching on GitHub</a>.”</p>
+<p>You can only search code using these code search qualifiers. Search qualifiers specifically for repositories, users, or commits, will not work when searching for code.</p>
+<p>{% data reusables.search.syntax_tips %}</p>
+<h2 id="considerations-for-code-search">Considerations for code search</h2>
+<p>Due to the complexity of searching code, there are some restrictions on how searches are performed:</p>
+<p>{% ifversion fpt or ghes %} - {% data reusables.search.required_login %}{% endif %} - Code in <a href="/articles/about-forks">forks</a> is only searchable if the fork has more stars than the parent repository. Forks with fewer stars than the parent repository are <strong>not</strong> indexed for code search. To include forks with more stars than their parent in the search results, you will need to add <code>fork:true</code> or <code>fork:only</code> to your query. For more information, see “<a href="/articles/searching-in-forks">Searching in forks</a>.” - Only the <em>default branch</em> is indexed for code search.{% ifversion fpt %} - Only files smaller than 384 KB are searchable.{% else %}* Only files smaller than 5 MB are searchable. - Only the first 500 KB of each file is searchable.{% endif %} - Only repositories with fewer than 500,000 files are searchable.{% ifversion fpt %} - Only repositories that have had activity or have been returned in search results in the last year are searchable.{% endif %} - Except with <a href="#search-by-filename"><code>filename</code></a> searches, you must always include at least one search term when searching source code. For example, searching for <a href="https://github.com/search?utf8=%E2%9C%93&amp;q=language%3Ajavascript&amp;type=Code&amp;ref=searchresults"><code>language:javascript</code></a> is not valid, while <a href="https://github.com/search?utf8=%E2%9C%93&amp;q=amazing+language%3Ajavascript&amp;type=Code&amp;ref=searchresults"><code>amazing language:javascript</code></a> is. - At most, search results can show two fragments from the same file, but there may be more results within the file. - You can’t use the following wildcard characters as part of your search query: <code>. , : ; /  ` ’ " = * ! ? # $ &amp; + ^ | ~ &lt; &gt; ( ) { } [ ] @</code>. The search will simply ignore these symbols.</p>
+<h2 id="search-by-the-file-contents-or-file-path">Search by the file contents or file path</h2>
+<p>With the <code>in</code> qualifier you can restrict your search to the contents of the source code file, the file path, or both. When you omit this qualifier, only the file contents are searched.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>in:file</code></td>
+<td><a href="https://github.com/search?q=octocat+in%3Afile&amp;type=Code"><strong>octocat in:file</strong></a> matches code where “octocat” appears in the file contents.</td>
+</tr>
+<tr class="even">
+<td><code>in:path</code></td>
+<td><a href="https://github.com/search?q=octocat+in%3Apath&amp;type=Code"><strong>octocat in:path</strong></a> matches code where “octocat” appears in the file path.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=octocat+in%3Afile%2Cpath&amp;type=Code"><strong>octocat in:file,path</strong></a> matches code where “octocat” appears in the file contents or the file path.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-within-a-users-or-organizations-repositories">Search within a user’s or organization’s repositories</h2>
+<p>To search the code in all repositories owned by a certain user or organization, you can use the <code>user</code> or <code>org</code> qualifier. To search the code in a specific repository, you can use the <code>repo</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=user%3Agithub+extension%3Arb&amp;type=Code"><strong>user:defunkt extension:rb</strong></a> matches code from <span class="citation" data-cites="defunkt">@defunkt</span> that ends in <em>.rb</em>.</td>
+</tr>
+<tr class="even">
+<td><code>org:<em>ORGNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=org%3Agithub+extension%3Ajs&amp;type=Code"><strong>org:github extension:js</strong></a> matches code from GitHub that ends in <em>.js</em>.</td>
+</tr>
+<tr class="odd">
+<td><code>repo:<em>USERNAME/REPOSITORY</em></code></td>
+<td><a href="https://github.com/search?q=repo%3Amozilla%2Fshumway+extension%3Aas&amp;type=Code"><strong>repo:mozilla/shumway extension:as</strong></a> matches code from <span class="citation" data-cites="mozilla">@mozilla</span>’s shumway project that ends in <em>.as</em>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-file-location">Search by file location</h2>
+<p>You can use the <code>path</code> qualifier to search for source code that appears at a specific location in a repository. Use <code>path:/</code> to search for files that are located at the root level of a repository. Or specify a directory name or the path to a directory to search for files that are located within that directory or any of its subdirectories.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>path:/</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=octocat+filename%3Areadme+path%3A%2F&amp;type=Code"><strong>octocat filename:readme path:/</strong></a> matches <em>readme</em> files with the word “octocat” that are located at the root level of a repository.</td>
+</tr>
+<tr class="even">
+<td><code>path:<em>DIRECTORY</em></code></td>
+<td><a href="https://github.com/search?q=form+path%3Acgi-bin+language%3Aperl&amp;type=Code"><strong>form path:cgi-bin language:perl</strong></a> matches Perl files with the word “form” in a <em>cgi-bin</em> directory, or in any of its subdirectories.</td>
+</tr>
+<tr class="odd">
+<td><code>path:<em>PATH/TO/DIRECTORY</em></code></td>
+<td><a href="https://github.com/search?q=console+path%3A%22app%2Fpublic%22+language%3Ajavascript&amp;type=Code"><strong>console path:app/public language:javascript</strong></a> matches JavaScript files with the word “console” in an <em>app/public</em> directory, or in any of its subdirectories (even if they reside in <em>app/public/js/form-validators</em>).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-language">Search by language</h2>
+<!-- If you make changes to this feature, update /getting-started-with-github/github-language-support to reflect any changes. -->
+<p>You can search for code based on what language it’s written in. The <code>language</code> qualifier can be the language name or alias. For a full list of supported languages with their names and aliases, see the <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml">github/linguist repository</a>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>language:<em>LANGUAGE</em></code></td>
+<td><a href="https://github.com/search?q=element+language%3Axml+size%3A100&amp;type=Code"><strong>element language:xml size:100</strong></a> matches code with the word “element” that’s marked as being XML and has exactly 100 bytes.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=display+language%3Ascss&amp;type=Code"><strong>display language:scss</strong></a> matches code with the word “display,” that’s marked as being SCSS.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=org%3Amozilla+language%3Amarkdown&amp;type=Code"><strong>org:mozilla language:markdown</strong></a> matches code from all <span class="citation" data-cites="mozilla">@mozilla</span>’s repositories that’s marked as Markdown.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-file-size">Search by file size</h2>
+<p>You can use the <code>size</code> qualifier to search for source code based on the size of the file where the code exists. The <code>size</code> qualifier uses <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a> to filter results based on the byte size of the file in which the code is found.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>size:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=function+size%3A%3E10000+language%3Apython&amp;type=Code"><strong>function size:&gt;10000 language:python</strong></a> matches code with the word “function,” written in Python, in files that are larger than 10 KB.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-filename">Search by filename</h2>
+<p>The <code>filename</code> qualifier matches code files with a certain filename. You can also find a file in a repository using the file finder. For more information, see “<a href="/articles/finding-files-on-github">Finding files on GitHub</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>filename:<em>FILENAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=filename%3Alinguist&amp;type=Code"><strong>filename:linguist</strong></a> matches files named “linguist.”</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=filename%3A.vimrc+commands&amp;type=Code"><strong>filename:.vimrc commands</strong></a> matches <em>.vimrc</em> files with the word “commands.”</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=minitest+filename%3Atest_helper+path%3Atest+language%3Aruby&amp;type=Code"><strong>filename:test_helper path:test language:ruby</strong></a> matches Ruby files named <em>test_helper</em> within the <em>test</em> directory.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-file-extension">Search by file extension</h2>
+<p>The <code>extension</code> qualifier matches code files with a certain file extension.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>extension:<em>EXTENSION</em></code></td>
+<td><a href="https://github.com/search?q=form+path%3Acgi-bin+extension%3Apm&amp;type=Code"><strong>form path:cgi-bin extension:pm</strong></a> matches code with the word “form,” under <em>cgi-bin</em>, with the <em>.pm</em> file extension.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=icon+size%3A%3E200000+extension%3Acss&amp;type=Code"><strong>icon size:&gt;200000 extension:css</strong></a> matches files larger than 200 KB that end in .css and have the word “icon.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+<li>“<a href="/articles/searching-in-forks">Searching in forks</a>”{% ifversion fpt %}</li>
+<li>“<a href="/github/managing-files-in-a-repository/navigating-code-on-github">Navigating code on {% data variables.product.prodname_dotcom %}</a>”{% endif %}</li>
+</ul>
+</body>
+</html>

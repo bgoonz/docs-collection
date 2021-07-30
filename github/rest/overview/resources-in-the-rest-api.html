@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Resources in the REST API</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Resources in the REST API</h1>
+</header>
+<p>This describes the resources that make up the official {% data variables.product.product_name %} REST API. If you have any problems or requests, please contact {% data variables.contact.contact_support %}.</p>
+<h2 id="current-version">Current version</h2>
+<p>By default, all requests to <code>{% data variables.product.api_url_code %}</code> receive the <strong>v3</strong> <a href="/developers/overview/about-githubs-apis">version</a> of the REST API. We encourage you to <a href="/rest/overview/media-types#request-specific-version">explicitly request this version via the <code>Accept</code> header</a>.</p>
+<pre><code>Accept: application/vnd.github.v3+json</code></pre>
+<p>{% ifversion fpt %}</p>
+<p>For information about GitHub’s GraphQL API, see the <a href="/graphql">v4 documentation</a>. For information about migrating to GraphQL, see “<a href="/graphql/guides/migrating-from-rest-to-graphql">Migrating from REST</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="schema">Schema</h2>
+<p>{% ifversion fpt %}All API access is over HTTPS, and{% else %}The API is{% endif %} accessed from <code>{% data variables.product.api_url_code %}</code>. All data is sent and received as JSON.</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %}/users/octocat/orgs
+
+&gt; HTTP/2 200
+&gt; Server: nginx
+&gt; Date: Fri, 12 Oct 2012 23:33:14 GMT
+&gt; Content-Type: application/json; charset=utf-8
+&gt; ETag: &quot;a00049ba79152d03380c34652f2cb612&quot;
+&gt; X-GitHub-Media-Type: github.v3
+&gt; X-RateLimit-Limit: 5000
+&gt; X-RateLimit-Remaining: 4987
+&gt; X-RateLimit-Reset: 1350085394{% ifversion ghes %}
+&gt; X-GitHub-Enterprise-Version: {{ currentVersion | remove: &quot;enterprise-server@&quot; }}.0{% elsif ghae %}
+&gt; X-GitHub-Enterprise-Version: GitHub AE{% endif %}
+&gt; Content-Length: 5
+&gt; Cache-Control: max-age=0, private, must-revalidate
+&gt; X-Content-Type-Options: nosniff</code></pre>
+<p>Blank fields are included as <code>null</code> instead of being omitted.</p>
+<p>All timestamps return in ISO 8601 format:</p>
+<pre><code>YYYY-MM-DDTHH:MM:SSZ</code></pre>
+<p>For more information about timezones in timestamps, see <a href="#timezones">this section</a>.</p>
+<h3 id="summary-representations">Summary representations</h3>
+<p>When you fetch a list of resources, the response includes a <em>subset</em> of the attributes for that resource. This is the “summary” representation of the resource. (Some attributes are computationally expensive for the API to provide. For performance reasons, the summary representation excludes those attributes. To obtain those attributes, fetch the “detailed” representation.)</p>
+<p><strong>Example</strong>: When you get a list of repositories, you get the summary representation of each repository. Here, we fetch the list of repositories owned by the <a href="https://github.com/octokit">octokit</a> organization:</p>
+<pre><code>GET /orgs/octokit/repos</code></pre>
+<h3 id="detailed-representations">Detailed representations</h3>
+<p>When you fetch an individual resource, the response typically includes <em>all</em> attributes for that resource. This is the “detailed” representation of the resource. (Note that authorization sometimes influences the amount of detail included in the representation.)</p>
+<p><strong>Example</strong>: When you get an individual repository, you get the detailed representation of the repository. Here, we fetch the <a href="https://github.com/octokit/octokit.rb">octokit/octokit.rb</a> repository:</p>
+<pre><code>GET /repos/octokit/octokit.rb</code></pre>
+<p>The documentation provides an example response for each API method. The example response illustrates all attributes that are returned by that method.</p>
+<h2 id="authentication">Authentication</h2>
+<p>{% ifversion ghae %} We recommend authenticating to the {% data variables.product.product_name %} REST API by creating an OAuth2 token through the <a href="/developers/apps/authorizing-oauth-apps#web-application-flow">web application flow</a>. {% else %} There are two ways to authenticate through {% data variables.product.product_name %} REST API.{% endif %} Requests that require authentication will return <code>404 Not Found</code>, instead of <code>403 Forbidden</code>, in some places. This is to prevent the accidental leakage of private repositories to unauthorized users.</p>
+<h3 id="basic-authentication">Basic authentication</h3>
+<pre class="shell"><code>$ curl -u &quot;username&quot; {% data variables.product.api_url_pre %}</code></pre>
+<h3 id="oauth2-token-sent-in-a-header">OAuth2 token (sent in a header)</h3>
+<pre class="shell"><code>$ curl -H &quot;Authorization: token &lt;em&gt;OAUTH-TOKEN&lt;/em&gt;&quot; {% data variables.product.api_url_pre %}</code></pre>
+<p>{% note %}</p>
+<p>Note: GitHub recommends sending OAuth tokens using the Authorization header.</p>
+<p>{% endnote %}</p>
+<p>Read <a href="/apps/building-oauth-apps/">more about OAuth2</a>. Note that OAuth2 tokens can be acquired using the <a href="/developers/apps/authorizing-oauth-apps#web-application-flow">web application flow</a> for production applications.</p>
+<p>{% ifversion fpt or ghes %} ### OAuth2 key/secret</p>
+<p>{% data reusables.apps.deprecating_auth_with_query_parameters %}</p>
+<pre class="shell"><code>curl -u my_client_id:my_client_secret &#39;{% data variables.product.api_url_pre %}/user/repos&#39;</code></pre>
+<p>Using your <code>client_id</code> and <code>client_secret</code> does <em>not</em> authenticate as a user, it will only identify your OAuth application to increase your rate limit. Permissions are only granted to users, not applications, and you will only get back data that an unauthenticated user would see. For this reason, you should only use the OAuth2 key/secret in server-to-server scenarios. Don’t leak your OAuth application’s client secret to your users.</p>
+<p>You will be unable to authenticate using your OAuth2 key and secret while in private mode, and trying to authenticate will return <code>401 Unauthorized</code>. For more information, see “<a href="/enterprise/admin/installation/enabling-private-mode">Enabling private mode</a>”. {% endif %}</p>
+<p>{% ifversion fpt %}</p>
+<p>Read <a href="#increasing-the-unauthenticated-rate-limit-for-oauth-applications">more about unauthenticated rate limiting</a>.</p>
+<p>{% endif %}</p>
+<h3 id="failed-login-limit">Failed login limit</h3>
+<p>Authenticating with invalid credentials will return <code>401 Unauthorized</code>:</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %} -u foo:bar
+&gt; HTTP/2 401
+
+&gt; {
+&gt;   &quot;message&quot;: &quot;Bad credentials&quot;,
+&gt;   &quot;documentation_url&quot;: &quot;{% data variables.product.doc_url_pre %}&quot;
+&gt; }</code></pre>
+<p>After detecting several requests with invalid credentials within a short period, the API will temporarily reject all authentication attempts for that user (including ones with valid credentials) with <code>403 Forbidden</code>:</p>
+<pre class="shell"><code>$ curl -i {% data variables.product.api_url_pre %} -u {% ifversion fpt or ghae %}
+-u &lt;em&gt;valid_username&lt;/em&gt;:&lt;em&gt;valid_token&lt;/em&gt; {% endif %}{% ifversion ghes %}-u &lt;em&gt;valid_username&lt;/em&gt;:&lt;em&gt;valid_password&lt;/em&gt; {% endif %}
+&gt; HTTP/2 403
+&gt; {
+&gt;   &quot;message&quot;: &quot;Maximum number of login attempts exceeded. Please try again later.&quot;,
+&gt;   &quot;documentation_url&quot;: &quot;{% data variables.product.doc_url_pre %}&quot;
+&gt; }</code></pre>
+<h2 id="parameters">Parameters</h2>
+<p>Many API methods take optional parameters. For <code>GET</code> requests, any parameters not specified as a segment in the path can be passed as an HTTP query string parameter:</p>
+<pre class="shell"><code>$ curl -i &quot;{% data variables.product.api_url_pre %}/repos/vmg/redcarpet/issues?state=closed&quot;</code></pre>
+<p>In this example, the ‘vmg’ and ‘redcarpet’ values are provided for the <code>:owner</code> and <code>:repo</code> parameters in the path while <code>:state</code> is passed in the query string.</p>
+<p>For <code>POST</code>, <code>PATCH</code>, <code>PUT</code>, and <code>DELETE</code> requests, parameters not included in the URL should be encoded as JSON with a Content-Type of ‘application/json’:</p>
+<pre class="shell"><code>$ curl -i -u username -d &#39;{&quot;scopes&quot;:[&quot;repo_deployment&quot;]}&#39; {% data variables.product.api_url_pre %}/authorizations</code></pre>
+<h2 id="root-endpoint">Root endpoint</h2>
+<p>You can issue a <code>GET</code> request to the root endpoint to get all the endpoint categories that the REST API supports:</p>
+<pre class="shell"><code>$ curl {% ifversion fpt or ghae %}
+-u &lt;em&gt;username&lt;/em&gt;:&lt;em&gt;token&lt;/em&gt; {% endif %}{% ifversion ghes %}-u &lt;em&gt;username&lt;/em&gt;:&lt;em&gt;password&lt;/em&gt; {% endif %}{% data variables.product.api_url_pre %}</code></pre>
+<h2 id="graphql-global-node-ids">GraphQL global node IDs</h2>
+<p>See the guide on “<a href="/graphql/guides/using-global-node-ids">Using Global Node IDs</a>” for detailed information about how to find <code>node_id</code>s via the REST API and use them in GraphQL operations.</p>
+<h2 id="client-errors">Client errors</h2>
+<p>There are three possible types of client errors on API calls that receive request bodies:</p>
+<ol type="1">
+<li><p>Sending invalid JSON will result in a <code>400 Bad Request</code> response.</p>
+<pre><code> HTTP/2 400
+ Content-Length: 35
+
+ {&quot;message&quot;:&quot;Problems parsing JSON&quot;}</code></pre></li>
+<li><p>Sending the wrong type of JSON values will result in a <code>400 Bad Request</code> response.</p>
+<pre><code> HTTP/2 400
+ Content-Length: 40
+
+ {&quot;message&quot;:&quot;Body should be a JSON object&quot;}</code></pre></li>
+<li><p>Sending invalid fields will result in a <code>422 Unprocessable Entity</code> response.</p>
+<pre><code> HTTP/2 422
+ Content-Length: 149
+
+ {
+   &quot;message&quot;: &quot;Validation Failed&quot;,
+   &quot;errors&quot;: [
+     {
+       &quot;resource&quot;: &quot;Issue&quot;,
+       &quot;field&quot;: &quot;title&quot;,
+       &quot;code&quot;: &quot;missing_field&quot;
+     }
+   ]
+ }</code></pre></li>
+</ol>
+<p>All error objects have resource and field properties so that your client can tell what the problem is. There’s also an error code to let you know what is wrong with the field. These are the possible validation error codes:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error code name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>missing</code></td>
+<td>A resource does not exist.</td>
+</tr>
+<tr class="even">
+<td><code>missing_field</code></td>
+<td>A required field on a resource has not been set.</td>
+</tr>
+<tr class="odd">
+<td><code>invalid</code></td>
+<td>The formatting of a field is invalid. Review the documentation for more specific information.</td>
+</tr>
+<tr class="even">
+<td><code>already_exists</code></td>
+<td>Another resource has the same value as this field. This can happen in resources that must have some unique key (such as label names).</td>
+</tr>
+<tr class="odd">
+<td><code>unprocessable</code></td>
+<td>The inputs provided were invalid.</td>
+</tr>
+</tbody>
+</table>
+<p>Resources may also send custom validation errors (where <code>code</code> is <code>custom</code>). Custom errors will always have a <code>message</code> field describing the error, and most errors will also include a <code>documentation_url</code> field pointing to some content that might help you resolve the error.</p>
+<h2 id="http-redirects">HTTP redirects</h2>
+<p>API v3 uses HTTP redirection where appropriate. Clients should assume that any request may result in a redirection. Receiving an HTTP redirection is <em>not</em> an error and clients should follow that redirect. Redirect responses will have a <code>Location</code> header field which contains the URI of the resource to which the client should repeat the requests.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Status Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>301</code></td>
+<td>Permanent redirection. The URI you used to make the request has been superseded by the one specified in the <code>Location</code> header field. This and all future requests to this resource should be directed to the new URI.</td>
+</tr>
+<tr class="even">
+<td><code>302</code>, <code>307</code></td>
+<td>Temporary redirection. The request should be repeated verbatim to the URI specified in the <code>Location</code> header field but clients should continue to use the original URI for future requests.</td>
+</tr>
+</tbody>
+</table>
+<p>Other redirection status codes may be used in accordance with the HTTP 1.1 spec.</p>
+<h2 id="http-verbs">HTTP verbs</h2>
+<p>Where possible, API v3 strives to use appropriate HTTP verbs for each action.</p>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Verb</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>HEAD</code></td>
+<td>Can be issued against any resource to get just the HTTP header info.</td>
+</tr>
+<tr class="even">
+<td><code>GET</code></td>
+<td>Used for retrieving resources.</td>
+</tr>
+<tr class="odd">
+<td><code>POST</code></td>
+<td>Used for creating resources.</td>
+</tr>
+<tr class="even">
+<td><code>PATCH</code></td>
+<td>Used for updating resources with partial JSON data. For instance, an Issue resource has <code>title</code> and <code>body</code> attributes. A <code>PATCH</code> request may accept one or more of the attributes to update the resource.</td>
+</tr>
+<tr class="odd">
+<td><code>PUT</code></td>
+<td>Used for replacing resources or collections. For <code>PUT</code> requests with no <code>body</code> attribute, be sure to set the <code>Content-Length</code> header to zero.</td>
+</tr>
+<tr class="even">
+<td><code>DELETE</code></td>
+<td>Used for deleting resources.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hypermedia">Hypermedia</h2>
+<p>All resources may have one or more <code>*_url</code> properties linking to other resources. These are meant to provide explicit URLs so that proper API clients don’t need to construct URLs on their own. It is highly recommended that API clients use these. Doing so will make future upgrades of the API easier for developers. All URLs are expected to be proper <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a> URI templates.</p>
+<p>You can then expand these templates using something like the <a href="https://github.com/hannesg/uri_template">uri_template</a> gem:</p>
+<pre><code>&gt;&gt; tmpl = URITemplate.new(&#39;/notifications{?since,all,participating}&#39;)
+&gt;&gt; tmpl.expand
+=&gt; &quot;/notifications&quot;
+
+&gt;&gt; tmpl.expand :all =&gt; 1
+=&gt; &quot;/notifications?all=1&quot;
+
+&gt;&gt; tmpl.expand :all =&gt; 1, :participating =&gt; 1
+=&gt; &quot;/notifications?all=1&amp;participating=1&quot;</code></pre>
+<h2 id="pagination">Pagination</h2>
+<p>Requests that return multiple items will be paginated to 30 items by default. You can specify further pages with the <code>page</code> parameter. For some resources, you can also set a custom page size up to 100 with the <code>per_page</code> parameter. Note that for technical reasons not all endpoints respect the <code>per_page</code> parameter, see <a href="/rest/reference/activity#events">events</a> for example.</p>
+<pre class="shell"><code>$ curl &#39;{% data variables.product.api_url_pre %}/user/repos?page=2&amp;per_page=100&#39;</code></pre>
+<p>Note that page numbering is 1-based and that omitting the <code>page</code> parameter will return the first page.</p>
+<p>Some endpoints use cursor-based pagination. A cursor is a string that points to a location in the result set. With cursor-based pagination, there is no fixed concept of “pages” in the result set, so you can’t navigate to a specific page. Instead, you can traverse the results by using the <code>before</code> or <code>after</code> parameters.</p>
+<p>For more information on pagination, check out our guide on <a href="/guides/traversing-with-pagination">Traversing with Pagination</a>.</p>
+<h3 id="link-header">Link header</h3>
+<p>{% note %}</p>
+<p><strong>Note:</strong> It’s important to form calls with Link header values instead of constructing your own URLs.</p>
+<p>{% endnote %}</p>
+<p>The <a href="http://tools.ietf.org/html/rfc5988">Link header</a> includes pagination information. For example:</p>
+<pre><code>Link: &lt;{% data variables.product.api_url_code %}/user/repos?page=3&amp;per_page=100&gt;; rel=&quot;next&quot;,
+  &lt;{% data variables.product.api_url_code %}/user/repos?page=50&amp;per_page=100&gt;; rel=&quot;last&quot;</code></pre>
+<p><em>The example includes a line break for readability.</em></p>
+<p>Or, if the endpoint uses cursor-based pagination:</p>
+<pre><code>Link: &lt;{% data variables.product.api_url_code %}/orgs/ORG/audit-log?after=MTYwMTkxOTU5NjQxM3xZbGI4VE5EZ1dvZTlla09uWjhoZFpR&amp;before=&gt;; rel=&quot;next&quot;,</code></pre>
+<p>This <code>Link</code> response header contains one or more <a href="/rest#hypermedia">Hypermedia</a> link relations, some of which may require expansion as <a href="http://tools.ietf.org/html/rfc6570">URI templates</a>.</p>
+<p>The possible <code>rel</code> values are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>next</code></td>
+<td>The link relation for the immediate next page of results.</td>
+</tr>
+<tr class="even">
+<td><code>last</code></td>
+<td>The link relation for the last page of results.</td>
+</tr>
+<tr class="odd">
+<td><code>first</code></td>
+<td>The link relation for the first page of results.</td>
+</tr>
+<tr class="even">
+<td><code>prev</code></td>
+<td>The link relation for the immediate previous page of results.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rate-limiting">Rate limiting</h2>
+<p>For API requests using Basic Authentication or OAuth, you can make up to 5,000 requests per hour. Authenticated requests are associated with the authenticated user, regardless of whether <a href="#basic-authentication">Basic Authentication</a> or <a href="#oauth2-token-sent-in-a-header">an OAuth token</a> was used. This means that all OAuth applications authorized by a user share the same quota of 5,000 requests per hour when they authenticate with different tokens owned by the same user.</p>
+<p>{% ifversion fpt %}</p>
+<p>For users that belong to a {% data variables.product.prodname_ghe_cloud %} account, requests made using an OAuth token to resources owned by the same {% data variables.product.prodname_ghe_cloud %} account have an increased limit of 15,000 requests per hour.</p>
+<p>{% endif %}</p>
+<p>When using the built-in <code>GITHUB_TOKEN</code> in GitHub Actions, the rate limit is 1,000 requests per hour per repository. For organizations that belong to a GitHub Enterprise Cloud account, this limit is 15,000 requests per hour per repository.</p>
+<p>For unauthenticated requests, the rate limit allows for up to 60 requests per hour. Unauthenticated requests are associated with the originating IP address, and not the user making requests.</p>
+<p>{% data reusables.enterprise.rate_limit %}</p>
+<p>Note that <a href="/rest/reference/search#rate-limit">the Search API has custom rate limit rules</a>.</p>
+<p>The returned HTTP headers of any API request show your current rate limit status:</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %}/users/octocat
+&gt; HTTP/2 200
+&gt; Date: Mon, 01 Jul 2013 17:27:06 GMT
+&gt; X-RateLimit-Limit: 60
+&gt; X-RateLimit-Remaining: 56
+&gt; X-RateLimit-Reset: 1372700873</code></pre>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>X-RateLimit-Limit</code></td>
+<td>The maximum number of requests you’re permitted to make per hour.</td>
+</tr>
+<tr class="even">
+<td><code>X-RateLimit-Remaining</code></td>
+<td>The number of requests remaining in the current rate limit window.</td>
+</tr>
+<tr class="odd">
+<td><code>X-RateLimit-Reset</code></td>
+<td>The time at which the current rate limit window resets in <a href="http://en.wikipedia.org/wiki/Unix_time">UTC epoch seconds</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>If you need the time in a different format, any modern programming language can get the job done. For example, if you open up the console on your web browser, you can easily get the reset time as a JavaScript Date object.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">new</span> <span class="at">Date</span>(<span class="dv">1372700873</span> <span class="op">*</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="co">// =&gt; Mon Jul 01 2013 13:47:53 GMT-0400 (EDT)</span></a></code></pre></div>
+<p>If you exceed the rate limit, an error response returns:</p>
+<pre class="shell"><code>&gt; HTTP/2 403
+&gt; Date: Tue, 20 Aug 2013 14:50:41 GMT
+&gt; X-RateLimit-Limit: 60
+&gt; X-RateLimit-Remaining: 0
+&gt; X-RateLimit-Reset: 1377013266
+
+&gt; {
+&gt;    &quot;message&quot;: &quot;API rate limit exceeded for xxx.xxx.xxx.xxx. (But here&#39;s the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)&quot;,
+&gt;    &quot;documentation_url&quot;: &quot;{% data variables.product.doc_url_pre %}/overview/resources-in-the-rest-api#rate-limiting&quot;
+&gt; }</code></pre>
+<p>You can <a href="/rest/reference/rate-limit">check your rate limit status</a> without incurring an API hit.</p>
+<h3 id="increasing-the-unauthenticated-rate-limit-for-oauth-applications">Increasing the unauthenticated rate limit for OAuth applications</h3>
+<p>If your OAuth application needs to make unauthenticated calls with a higher rate limit, you can pass your app’s client ID and secret before the endpoint route.</p>
+<pre class="shell"><code>$ curl -u my_client_id:my_client_secret {% data variables.product.api_url_pre %}/user/repos
+&gt; HTTP/2 200
+&gt; Date: Mon, 01 Jul 2013 17:27:06 GMT
+&gt; X-RateLimit-Limit: 5000
+&gt; X-RateLimit-Remaining: 4966
+&gt; X-RateLimit-Reset: 1372700873</code></pre>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Never share your client secret with anyone or include it in client-side browser code. Use the method shown here only for server-to-server calls.</p>
+<p>{% endnote %}</p>
+<h3 id="staying-within-the-rate-limit">Staying within the rate limit</h3>
+<p>If you exceed your rate limit using Basic Authentication or OAuth, you can likely fix the issue by caching API responses and using <a href="#conditional-requests">conditional requests</a>.</p>
+<h3 id="abuse-rate-limits">Abuse rate limits</h3>
+<p>In order to provide quality service on {% data variables.product.product_name %}, additional rate limits may apply to some actions when using the API. For example, using the API to rapidly create content, poll aggressively instead of using webhooks, make multiple concurrent requests, or repeatedly request data that is computationally expensive may result in abuse rate limiting.</p>
+<p>Abuse rate limits are not intended to interfere with legitimate use of the API. Your normal rate limits should be the only limit you target. To ensure you’re acting as a good API citizen, check out our <a href="/guides/best-practices-for-integrators/">Best Practices guidelines</a>.</p>
+<p>If your application triggers this rate limit, you’ll receive an informative response:</p>
+<pre class="shell"><code>&gt; HTTP/2 403
+&gt; Content-Type: application/json; charset=utf-8
+&gt; Connection: close
+
+&gt; {
+&gt;   &quot;message&quot;: &quot;You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.&quot;,
+&gt;   &quot;documentation_url&quot;: &quot;{% data variables.product.doc_url_pre %}/overview/resources-in-the-rest-api#abuse-rate-limits&quot;
+&gt; }</code></pre>
+<p>{% ifversion fpt %}</p>
+<h2 id="user-agent-required">User agent required</h2>
+<p>All API requests MUST include a valid <code>User-Agent</code> header. Requests with no <code>User-Agent</code> header will be rejected. We request that you use your {% data variables.product.product_name %} username, or the name of your application, for the <code>User-Agent</code> header value. This allows us to contact you if there are problems.</p>
+<p>Here’s an example:</p>
+<pre class="shell"><code>User-Agent: Awesome-Octocat-App</code></pre>
+<p>cURL sends a valid <code>User-Agent</code> header by default. If you provide an invalid <code>User-Agent</code> header via cURL (or via an alternative client), you will receive a <code>403 Forbidden</code> response:</p>
+<pre class="shell"><code>$ curl -IH &#39;User-Agent: &#39; {% data variables.product.api_url_pre %}/meta
+&gt; HTTP/1.0 403 Forbidden
+&gt; Connection: close
+&gt; Content-Type: text/html
+
+&gt; Request forbidden by administrative rules.
+&gt; Please make sure your request has a User-Agent header.
+&gt; Check  for other possible causes.</code></pre>
+<p>{% endif %}</p>
+<h2 id="conditional-requests">Conditional requests</h2>
+<p>Most responses return an <code>ETag</code> header. Many responses also return a <code>Last-Modified</code> header. You can use the values of these headers to make subsequent requests to those resources using the <code>If-None-Match</code> and <code>If-Modified-Since</code> headers, respectively. If the resource has not changed, the server will return a <code>304 Not Modified</code>.</p>
+<p>{% ifversion fpt %}</p>
+<p>{% tip %}</p>
+<p><strong>Note</strong>: Making a conditional request and receiving a 304 response does not count against your <a href="#rate-limiting">Rate Limit</a>, so we encourage you to use it whenever possible.</p>
+<p>{% endtip %}</p>
+<p>{% endif %}</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %}/user
+&gt; HTTP/2 200
+&gt; Cache-Control: private, max-age=60
+&gt; ETag: &quot;644b5b0155e6404a9cc4bd9d8b1ae730&quot;
+&gt; Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
+&gt; Vary: Accept, Authorization, Cookie
+&gt; X-RateLimit-Limit: 5000
+&gt; X-RateLimit-Remaining: 4996
+&gt; X-RateLimit-Reset: 1372700873
+
+$ curl -I {% data variables.product.api_url_pre %}/user -H &#39;If-None-Match: &quot;644b5b0155e6404a9cc4bd9d8b1ae730&quot;&#39;
+&gt; HTTP/2 304
+&gt; Cache-Control: private, max-age=60
+&gt; ETag: &quot;644b5b0155e6404a9cc4bd9d8b1ae730&quot;
+&gt; Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
+&gt; Vary: Accept, Authorization, Cookie
+&gt; X-RateLimit-Limit: 5000
+&gt; X-RateLimit-Remaining: 4996
+&gt; X-RateLimit-Reset: 1372700873
+
+$ curl -I {% data variables.product.api_url_pre %}/user -H &quot;If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT&quot;
+&gt; HTTP/2 304
+&gt; Cache-Control: private, max-age=60
+&gt; Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
+&gt; Vary: Accept, Authorization, Cookie
+&gt; X-RateLimit-Limit: 5000
+&gt; X-RateLimit-Remaining: 4996
+&gt; X-RateLimit-Reset: 1372700873</code></pre>
+<h2 id="cross-origin-resource-sharing">Cross origin resource sharing</h2>
+<p>The API supports Cross Origin Resource Sharing (CORS) for AJAX requests from any origin. You can read the <a href="http://www.w3.org/TR/cors/">CORS W3C Recommendation</a>, or <a href="https://code.google.com/archive/p/html5security/wikis/CrossOriginRequestSecurity.wiki">this intro</a> from the HTML 5 Security Guide.</p>
+<p>Here’s a sample request sent from a browser hitting <code>http://example.com</code>:</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %} -H &quot;Origin: http://example.com&quot;
+HTTP/2 302
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval</code></pre>
+<p>This is what the CORS preflight request looks like:</p>
+<pre class="shell"><code>$ curl -I {% data variables.product.api_url_pre %} -H &quot;Origin: http://example.com&quot; -X OPTIONS
+HTTP/2 204
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-GitHub-OTP, X-Requested-With
+Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE
+Access-Control-Expose-Headers: ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+Access-Control-Max-Age: 86400</code></pre>
+<h2 id="json-p-callbacks">JSON-P callbacks</h2>
+<p>You can send a <code>?callback</code> parameter to any GET call to have the results wrapped in a JSON function. This is typically used when browsers want to embed {% data variables.product.product_name %} content in web pages by getting around cross domain issues. The response includes the same data output as the regular API, plus the relevant HTTP Header information.</p>
+<pre class="shell"><code>$ curl {% data variables.product.api_url_pre %}?callback=foo
+
+&gt; /**/foo({
+&gt;   &quot;meta&quot;: {
+&gt;     &quot;status&quot;: 200,
+&gt;     &quot;X-RateLimit-Limit&quot;: &quot;5000&quot;,
+&gt;     &quot;X-RateLimit-Remaining&quot;: &quot;4966&quot;,
+&gt;     &quot;X-RateLimit-Reset&quot;: &quot;1372700873&quot;,
+&gt;     &quot;Link&quot;: [ // pagination headers and other links
+&gt;       [&quot;{% data variables.product.api_url_pre %}?page=2&quot;, {&quot;rel&quot;: &quot;next&quot;}]
+&gt;     ]
+&gt;   },
+&gt;   &quot;data&quot;: {
+&gt;     // the data
+&gt;   }
+&gt; })</code></pre>
+<p>You can write a JavaScript handler to process the callback. Here’s a minimal example you can try out:</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+function foo(response) {
+  var meta = response.meta;
+  var data = response.data;
+  console.log(meta);
+  console.log(data);
+}
+
+var script = document.createElement(&#39;script&#39;);
+script.src = &#39;{% data variables.product.api_url_code %}?callback=foo&#39;;
+
+document.getElementsByTagName(&#39;head&#39;)[0].appendChild(script);
+&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;p&gt;Open up your browser&#39;s console.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>All of the headers are the same String value as the HTTP Headers with one notable exception: Link. Link headers are pre-parsed for you and come through as an array of <code>[url, options]</code> tuples.</p>
+<p>A link that looks like this:</p>
+<pre><code>Link: &lt;url1&gt;; rel=&quot;next&quot;, &lt;url2&gt;; rel=&quot;foo&quot;; bar=&quot;baz&quot;</code></pre>
+<p>… will look like this in the Callback output:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb34-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb34-2" title="2">  <span class="dt">&quot;Link&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb34-3" title="3">    <span class="ot">[</span></a>
+<a class="sourceLine" id="cb34-4" title="4">      <span class="st">&quot;url1&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb34-5" title="5">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb34-6" title="6">        <span class="dt">&quot;rel&quot;</span><span class="fu">:</span> <span class="st">&quot;next&quot;</span></a>
+<a class="sourceLine" id="cb34-7" title="7">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb34-8" title="8">    <span class="ot">],</span></a>
+<a class="sourceLine" id="cb34-9" title="9">    <span class="ot">[</span></a>
+<a class="sourceLine" id="cb34-10" title="10">      <span class="st">&quot;url2&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb34-11" title="11">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb34-12" title="12">        <span class="dt">&quot;rel&quot;</span><span class="fu">:</span> <span class="st">&quot;foo&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb34-13" title="13">        <span class="dt">&quot;bar&quot;</span><span class="fu">:</span> <span class="st">&quot;baz&quot;</span></a>
+<a class="sourceLine" id="cb34-14" title="14">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb34-15" title="15">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb34-16" title="16">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb34-17" title="17"><span class="fu">}</span></a></code></pre></div>
+<h2 id="timezones">Timezones</h2>
+<p>Some requests that create new data, such as creating a new commit, allow you to provide time zone information when specifying or generating timestamps. We apply the following rules, in order of priority, to determine timezone information for API calls.</p>
+<ul>
+<li><a href="#explicitly-providing-an-iso-8601-timestamp-with-timezone-information">Explicitly providing an ISO 8601 timestamp with timezone information</a></li>
+<li><a href="#using-the-time-zone-header">Using the <code>Time-Zone</code> header</a></li>
+<li><a href="#using-the-last-known-timezone-for-the-user">Using the last known timezone for the user</a></li>
+<li><a href="#defaulting-to-utc-without-other-timezone-information">Defaulting to UTC without other timezone information</a></li>
+</ul>
+<h3 id="explicitly-providing-an-iso-8601-timestamp-with-timezone-information">Explicitly providing an ISO 8601 timestamp with timezone information</h3>
+<p>For API calls that allow for a timestamp to be specified, we use that exact timestamp. An example of this is the <a href="/rest/reference/git#commits">Commits API</a>.</p>
+<p>These timestamps look something like <code>2014-02-27T15:05:06+01:00</code>. Also see <a href="/rest/reference/git#example-input">this example</a> for how these timestamps can be specified.</p>
+<h3 id="using-the-time-zone-header">Using the <code>Time-Zone</code> header</h3>
+<p>It is possible to supply a <code>Time-Zone</code> header which defines a timezone according to the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">list of names from the Olson database</a>.</p>
+<pre class="shell"><code>$ curl -H &quot;Time-Zone: Europe/Amsterdam&quot; -X POST {% data variables.product.api_url_pre %}/repos/github/linguist/contents/new_file.md</code></pre>
+<p>This means that we generate a timestamp for the moment your API call is made in the timezone this header defines. For example, the <a href="/rest/reference/repos#contents">Contents API</a> generates a git commit for each addition or change and uses the current time as the timestamp. This header will determine the timezone used for generating that current timestamp.</p>
+<h3 id="using-the-last-known-timezone-for-the-user">Using the last known timezone for the user</h3>
+<p>If no <code>Time-Zone</code> header is specified and you make an authenticated call to the API, we use the last known timezone for the authenticated user. The last known timezone is updated whenever you browse the {% data variables.product.product_name %} website.</p>
+<h3 id="defaulting-to-utc-without-other-timezone-information">Defaulting to UTC without other timezone information</h3>
+<p>If the steps above don’t result in any information, we use UTC as the timezone to create the git commit.</p>
+</body>
+</html>

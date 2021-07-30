@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Changelog</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Changelog</h1>
+</header>
+<p>Breaking changes include changes that will break existing queries or could affect the runtime behavior of clients. For a list of breaking changes and when they will occur, see our <a href="/graphql/overview/breaking-changes">breaking changes log</a>.</p>
+<p>{% for entry in graphql.changelog %} ## Schema Changes for {{ entry.date }}</p>
+<p>{% for schemaChange in entry.schemaChanges %} {{ schemaChange.title }}</p>
+<p>{% for change in schemaChange.changes %} * {{ change }} {% endfor %} {% endfor %}</p>
+<p>{% for previewChange in entry.previewChanges %} {{ previewChange.title }}</p>
+<p>{% for change in previewChange.changes %} * {{ change }} {% endfor %} {% endfor %}</p>
+<p>{% for upcomingChange in entry.upcomingChanges %} {{ upcomingChange.title }}</p>
+<p>{% for change in upcomingChange.changes %} * {{ change }} {% endfor %} {% endfor %}</p>
+<p>{% endfor %}</p>
+</body>
+</html>

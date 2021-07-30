@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Replacing GitHub Services</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Replacing GitHub Services</h1>
+</header>
+<p>We have deprecated GitHub Services in favor of integrating with webhooks. This guide helps you transition to webhooks from GitHub Services. For more information on this announcement, see the <a href="https://developer.github.com/changes/2018-10-01-denying-new-github-services">blog post</a>.</p>
+<p>{% note %}</p>
+<p>As an alternative to the email service, you can now start using email notifications for pushes to your repository. See “<a href="/github/receiving-notifications-about-activity-on-github/about-email-notifications-for-pushes-to-your-repository/">About email notifications for pushes to your repository</a>” to learn how to configure commit email notifications.</p>
+<p>{% endnote %}</p>
+<h2 id="deprecation-timeline">Deprecation timeline</h2>
+<ul>
+<li><strong>October 1, 2018</strong>: GitHub discontinued allowing users to install services. We removed GitHub Services from the GitHub.com user interface.</li>
+<li><strong>January 29, 2019</strong>: As an alternative to the email service, you can now start using email notifications for pushes to your repository. See “<a href="/github/receiving-notifications-about-activity-on-github/about-email-notifications-for-pushes-to-your-repository/">About email notifications for pushes to your repository</a>” to learn how to configure commit email notifications.</li>
+<li><strong>January 31, 2019</strong>: GitHub will stop delivering installed services’ events on GitHub.com.</li>
+</ul>
+<h2 id="github-services-background">GitHub Services background</h2>
+<p>GitHub Services (sometimes referred to as Service Hooks) is the legacy method of integrating where GitHub hosted a portion of our integrator’s services via <a href="https://github.com/github/github-services">the <code>github-services</code> repository</a>. Actions performed on GitHub trigger these services, and you can use these services to trigger actions outside of GitHub.</p>
+<p>{% ifversion ghes or ghae %} ## Finding repositories that use GitHub Services We provide a command-line script that helps you identify which repositories on your appliance use GitHub Services. For more information, see <a href="/enterprise/%7B%7BcurrentVersion%7D%7D/admin/articles/command-line-utilities/#ghe-legacy-github-services-report">ghe-legacy-github-services-report</a>.{% endif %}</p>
+<h2 id="github-services-vs.-webhooks">GitHub Services vs. webhooks</h2>
+<p>The key differences between GitHub Services and webhooks: - <strong>Configuration</strong>: GitHub Services have service-specific configuration options, while webhooks are simply configured by specifying a URL and a set of events. - <strong>Custom logic</strong>: GitHub Services can have custom logic to respond with multiple actions as part of processing a single event, while webhooks have no custom logic. - <strong>Types of requests</strong>: GitHub Services can make HTTP and non-HTTP requests, while webhooks can make HTTP requests only.</p>
+<h2 id="replacing-services-with-webhooks">Replacing Services with webhooks</h2>
+<p>To replace GitHub Services with Webhooks:</p>
+<ol type="1">
+<li><p>Identify the relevant webhook events you’ll need to subscribe to from <a href="/webhooks/#events">this list</a>.</p></li>
+<li><p>Change your configuration depending on how you currently use GitHub Services:</p>
+<ul>
+<li><strong>GitHub Apps</strong>: Update your app’s permissions and subscribed events to configure your app to receive the relevant webhook events.</li>
+<li><strong>OAuth Apps</strong>: Request either the <code>repo_hook</code> and/or <code>org_hook</code> scope(s) to manage the relevant events on behalf of users.</li>
+<li><strong>GitHub Service providers</strong>: Request that users manually configure a webhook with the relevant events sent to you, or take this opportunity to build an app to manage this functionality. For more information, see “<a href="/apps/about-apps/">About apps</a>.”</li>
+</ul></li>
+<li><p>Move additional configuration from outside of GitHub. Some GitHub Services require additional, custom configuration on the configuration page within GitHub. If your service does this, you will need to move this functionality into your application or rely on GitHub or OAuth Apps where applicable.</p></li>
+</ol>
+<h2 id="supporting-data-variables.product.prodname_ghe_server">Supporting {% data variables.product.prodname_ghe_server %}</h2>
+<ul>
+<li><strong>{% data variables.product.prodname_ghe_server %} 2.17</strong>: {% data variables.product.prodname_ghe_server %} release 2.17 and higher will discontinue allowing admins to install services. Admins will continue to be able to modify existing service hooks and receive service hooks in {% data variables.product.prodname_ghe_server %} release 2.17 through 2.19. As an alternative to the email service, you will be able to use email notifications for pushes to your repository in {% data variables.product.prodname_ghe_server %} 2.17 and higher. See <a href="https://developer.github.com/changes/2019-01-29-life-after-github-services">this blog post</a> to learn more.</li>
+<li><strong>{% data variables.product.prodname_ghe_server %} 2.20</strong>: {% data variables.product.prodname_ghe_server %} release 2.20 and higher will stop delivering all installed services’ events.</li>
+</ul>
+<p>The {% data variables.product.prodname_ghe_server %} 2.17 release will be the first release that does not allow admins to install GitHub Services. We will only support existing GitHub Services until the {% data variables.product.prodname_ghe_server %} 2.20 release. We will also accept any critical patches for your GitHub Service running on {% data variables.product.prodname_ghe_server %} until October 1, 2019.</p>
+<h2 id="migrating-with-our-help">Migrating with our help</h2>
+<p>Please <a href="https://github.com/contact?form%5Bsubject%5D=GitHub+Services+Deprecation">contact us</a> with any questions.</p>
+<p>As a high-level overview, the process of migration typically involves: - Identifying how and where your product is using GitHub Services. - Identifying the corresponding webhook events you need to configure in order to move to plain webhooks. - Implementing the design using either <a href="/apps/building-oauth-apps/">{% data variables.product.prodname_oauth_apps %}</a> or <a href="/apps/building-github-apps/">{% data variables.product.prodname_github_apps %}. {% data variables.product.prodname_github_apps %}</a> are preferred. To learn more about why {% data variables.product.prodname_github_apps %} are preferred, see “<a href="/apps/migrating-oauth-apps-to-github-apps/#reasons-for-switching-to-github-apps">Reasons for switching to {% data variables.product.prodname_github_apps %}</a>.”</p>
+</body>
+</html>

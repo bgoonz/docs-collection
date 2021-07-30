@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating custom images</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating custom images</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <h2
+      id="creating-an-data-variables.actions.hosted_runner-with-a-custom-image"
+    >
+      Creating an {% data variables.actions.hosted_runner %} with a custom image
+    </h2>
+    <p>
+      {% data variables.actions.hosted_runner %}s can use operating system
+      images that you’ve customized to suit your needs. This article includes
+      the high level steps for creating the image in Azure and preparing it for
+      {% data variables.product.prodname_ghe_managed %}. For more information,
+      refer to
+      <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/"
+        >the Azure documentation</a
+      >.
+    </p>
+    <p>
+      During this beta, to be able to create a custom image for {% data
+      variables.actions.hosted_runner %}s, you will need an Azure subscription
+      that is able to provision a virtual machine.
+    </p>
+    <ol type="1">
+      <li>
+        Provision a new VM in your tenant using a marketplace image or a virtual
+        hard drive(VHD).
+      </li>
+      <li>Optionally, install your required software on the VM.</li>
+      <li>
+        Deprovision the VM:
+        <ul>
+          <li>
+            For Linux: <code>ssh</code> to the VM and run:
+            <code>sh $ sudo waagent -deprovision+user</code>
+          </li>
+          <li>
+            For Windows: Follow the steps described at
+            <a
+              href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/upload-generalized-managed#generalize-the-source-vm-by-using-sysprep"
+              >"Generalize the source VM by using Sysprep</a
+            >."
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          Use the Azure CLI to deallocate and generalize the VM: ```powershell
+          $resourceGroupName = “octocat-testgroup” $vmName = “octo-vm”
+        </p>
+        Stop-AzVM -ResourceGroupName $resourceGroupName -Name $vmName Set-AzVM
+        -ResourceGroupName $resourceGroupName -Name $vmName -Generalized ``<code
+          >- Replace</code
+        >octo-vm` with the name of your virtual machine.
+        <ul>
+          <li>
+            For more information regarding these steps, see “<a
+              href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image#step-1-deprovision-the-vm"
+              >How to create a managed image of a virtual machine or VHD</a
+            >.”
+          </li>
+        </ul>
+      </li>
+      <li>
+        Generate a SAS URI for the VM’s operating system disk.
+        <ul>
+          <li>
+            Using the Azure Portal: On the disk resource, navigate to
+            <strong>Disk Export</strong>, set
+            <code>URL expires in (seconds)</code> to <code>86400</code> (24
+            hours), and generate the URL.
+          </li>
+          <li>
+            <p>
+              Using the Azure CLI: ```powershell $resourceGroupName =
+              “octocat-testgroup” $vmName = “octo-vm”
+            </p>
+            <p>
+              $vm = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmName
+              Grant-AzDiskAccess
+              <code>-ResourceGroupName $resourceGroupName</code> -DiskName
+              $vm.StorageProfile.OsDisk.Name
+              <code>-Access Read</code> -DurationInSecond 86400 ``<code
+                >- Replace</code
+              >octo-vm` with the name of your virtual machine.
+            </p>
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <p>
+      Once you’ve created the image, you can have it added to {% data
+      variables.product.prodname_ghe_managed %}. For more information, see
+      <a
+        href="/actions/using-github-hosted-runners/adding-ae-hosted-runners#adding-an-ae-hosted-runner-with-a-custom-image"
+        >“Adding an {% data variables.actions.hosted_runner %} with a custom
+        image”</a
+      >.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Upgrading from Dependabot.com to GitHub-native Dependabot</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Upgrading from Dependabot.com to GitHub-native Dependabot</h1>
+</header>
+<p>{% warning %}</p>
+<p>Dependabot Preview will be shut down on August 3rd, 2021. In order to keep getting Dependabot updates, please migrate to GitHub-native Dependabot before then.</p>
+<p>After that date, any open pull requests from Dependabot Preview will remain open, but the bot itself will no longer work on your {% data variables.product.prodname_dotcom %} accounts and organizations.</p>
+<p>{% endwarning %}</p>
+<h2 id="about-upgrading-from-dependabot-preview-to-data-variables.product.prodname_dotcom--native-data-variables.product.prodname_dependabot">About upgrading from Dependabot Preview to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}</h2>
+<p>Dependabot Preview has been built directly into {% data variables.product.prodname_dotcom %}, so you can use {% data variables.product.prodname_dependabot %} alongside all the other functionality in {% data variables.product.prodname_dotcom %} without having to install and use a separate application. By migrating to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, we can also focus on bringing lots of exciting new features to {% data variables.product.prodname_dependabot %}, including more <a href="https://github.com/github/roadmap/issues/150">ecosystem updates</a>, <a href="https://github.com/github/roadmap/issues/133">improved notifications</a>, and {% data variables.product.prodname_dependabot %} support for <a href="https://github.com/github/roadmap/issues/86">{% data variables.product.prodname_ghe_server %}</a> and <a href="https://github.com/github/roadmap/issues/135">{% data variables.product.prodname_ghe_managed %}</a>.</p>
+<h2 id="differences-between-dependabot-preview-and-data-variables.product.prodname_dotcom--native-data-variables.product.prodname_dependabot">Differences between Dependabot Preview and {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}</h2>
+<p>While most of the Dependabot Preview features exist in {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, a few remain unavailable: - <strong>Live updates:</strong> We hope to bring these back in the future. For now, you can run {% data variables.product.prodname_dotcom %} {% data variables.product.prodname_dependabot %} daily to catch new packages within one day of release. - <strong>PHP environment variable registries:</strong> For projects that rely on the <code>ACF_PRO_KEY</code> environment variable, you may be able to vendor your licensed copy of the Advanced Custom Fields plugin. For an example, see <a href="https://github.com/dependabot/acf-php-example#readme">dependabot/acf-php-example</a>. For other environment variables, you can use {% data variables.product.prodname_actions %} to fetch dependencies from these registries. - <strong>Auto-merge:</strong> We always recommend verifying your dependencies before merging them; therefore, auto-merge will not be supported for the foreseeable future. For those of you who have vetted your dependencies, or are only using internal dependencies, we recommend adding third-party auto-merge apps, or setting up GitHub Actions to merge.</p>
+<p>In {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, you can configure all version updates using the configuration file. This file is similar to the Dependabot Preview configuration file with a few changes and improvements that will be automatically included in your upgrade pull request. For more information about the upgrade pull request, see “<a href="/code-security/supply-chain-security/upgrading-from-dependabotcom-to-github-native-dependabot#upgrading-to-github-native-dependabot">Upgrading to GitHub-native Dependabot</a>”.</p>
+<p>To see update logs for {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %} that were previously on the Dependabot.com dashboard:</p>
+<ol type="1">
+<li>Navigate to your repository’s <strong>Insights</strong> page.</li>
+<li>Click <strong>Dependency graph</strong> to the left.</li>
+<li>Click <strong>{% data variables.product.prodname_dependabot %}</strong>.</li>
+</ol>
+<p>For more information about version updates with {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, see “<a href="/code-security/supply-chain-security/about-dependabot-version-updates">About Dependabot version updates</a>.”</p>
+<h2 id="upgrading-to-data-variables.product.prodname_dotcom--native-data-variables.product.prodname_dependabot">Upgrading to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}</h2>
+<p>Upgrading from Dependabot Preview to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %} requires you to merge the <em>Upgrade to GitHub-native Dependabot</em> pull request in your repository. This pull request includes the updated configuration file needed for {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}.</p>
+<p>If you are using private repositories, you will have to grant Dependabot access to these repositories in your organization’s security and analysis settings. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization#allowing-dependabot-to-access-private-dependencies">Allowing Dependabot to access private dependencies</a>”. Previously, Dependabot had access to all repositories within an organization, but we implemented this change because it is much safer to use the principle of least privilege for Dependabot.</p>
+<p>If you are using private registries, you will have to add your existing Dependabot Preview secrets to your repository’s or organization’s “Dependabot secrets”. For more information, see “<a href="/code-security/supply-chain-security/managing-encrypted-secrets-for-dependabot">Managing encrypted secrets for Dependabot</a>”.</p>
+<p>If you have any questions or need help migrating, you can view or open issues in the <a href="https://github.com/dependabot/dependabot-core/issues/new?assignees=%40dependabot%2Fpreview-migration-reviewers&amp;labels=E%3A+preview-migration&amp;template=migration-issue.md&amp;title=">dependabot/dependabot-core</a> repository.</p>
+</body>
+</html>

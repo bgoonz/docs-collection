@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring an outbound web proxy server</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring an outbound web proxy server</h1>
+    </header>
+    <p>
+      When a proxy server is enabled for {% data
+      variables.product.product_location %}, outbound messages sent by {% data
+      variables.product.prodname_ghe_server %} are first sent through the proxy
+      server, unless the destination host is added as an HTTP proxy exclusion.
+      Types of outbound messages include outgoing webhooks, uploading bundles,
+      and fetching legacy avatars. The proxy server’s URL is the protocol,
+      domain or IP address, plus the port number, for example
+      <code>http://127.0.0.1:8123</code>.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> To connect {% data
+      variables.product.product_location %} to {% data
+      variables.product.prodname_dotcom_the_website %}, your proxy configuration
+      must allow connectivity to <code>github.com</code> and
+      <code>api.github.com</code>. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/developer-workflow/connecting-github-enterprise-server-to-github-com"
+        >Connecting {% data variables.product.prodname_ghe_server %} to {% data
+        variables.product.prodname_dotcom_the_website %}</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.privacy %} 4. Under
+      <strong>HTTP Proxy Server</strong>, type the URL of your proxy server.
+      <img
+        src="/assets/images/enterprise/management-console/http-proxy-field.png"
+        alt="Field to type the HTTP Proxy Server URL"
+      />
+    </p>
+    <ol start="5" type="1">
+      <li>
+        Optionally, under <strong>HTTP Proxy Exclusion</strong>, type any hosts
+        that do not require proxy access, separating hosts with commas. To
+        exclude all hosts in a domain from requiring proxy access, you can use
+        <code>.</code> as a wildcard prefix. For example:
+        <code>.octo-org.tentacle</code>
+        <img
+          src="/assets/images/enterprise/management-console/http-proxy-exclusion-field.png"
+          alt="Field to type any HTTP Proxy Exclusions"
+        />
+      </li>
+    </ol>
+    <p>{% data reusables.enterprise_management_console.save-settings %}</p>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing code scanning alerts for your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing code scanning alerts for your repository</h1>
+</header>
+<!--See /content/code-security/secure-coding for the latest version of this article -->
+<p>{% data reusables.code-scanning.beta %}</p>
+<h2 id="about-alerts-from-data-variables.product.prodname_code_scanning">About alerts from {% data variables.product.prodname_code_scanning %}</h2>
+<p>You can set up {% data variables.product.prodname_code_scanning %} to check the code in a repository using the default {% data variables.product.prodname_codeql %} analysis, a third-party analysis, or multiple types of analysis. When the analysis is complete, the resulting alerts are displayed alongside each other in the security view of the repository. Results from third-party tools or from custom queries may not include all of the properties that you see for alerts detected by {% data variables.product.company_short %}’s default {% data variables.product.prodname_codeql %} analysis. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>.”</p>
+<p>By default, {% data variables.product.prodname_code_scanning %} analyzes your code periodically on the default branch and during pull requests. For information about managing alerts on a pull request, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">Triaging {% data variables.product.prodname_code_scanning %} alerts in pull requests</a>.”</p>
+<p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
+<h2 id="about-alerts-details">About alerts details</h2>
+<p>Each alert highlights a problem with the code and the name of the tool that identified it. You can see the line of code that triggered the alert, as well as properties of the alert, such as the severity and the nature of the problem. Alerts also tell you when the issue was first introduced. For alerts identified by {% data variables.product.prodname_codeql %} analysis, you will also see information on how to fix the problem.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-alert.png" alt="Example alert from {% data variables.product.prodname_code_scanning %}" /><figcaption>Example alert from {% data variables.product.prodname_code_scanning %}</figcaption>
+</figure>
+<p>If you set up {% data variables.product.prodname_code_scanning %} using {% data variables.product.prodname_codeql %}, this can also detect data-flow problems in your code. Data-flow analysis finds potential security issues in code, such as: using data insecurely, passing dangerous arguments to functions, and leaking sensitive information.</p>
+<p>When {% data variables.product.prodname_code_scanning %} reports data-flow alerts, {% data variables.product.prodname_dotcom %} shows you how data moves through the code. {% data variables.product.prodname_code_scanning_capc %} allows you to identify the areas of your code that leak sensitive information, and that could be the entry point for attacks by malicious users.</p>
+<h2 id="viewing-the-alerts-for-a-repository">Viewing the alerts for a repository</h2>
+<p>Anyone with read permission for a repository can see {% data variables.product.prodname_code_scanning %} annotations on pull requests. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">Triaging {% data variables.product.prodname_code_scanning %} alerts in pull requests</a>.”</p>
+<p>You need write permission to view a summary of all the alerts for a repository on the <strong>Security</strong> tab. By default, alerts are shown for the default branch.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-security %} {% data reusables.repositories.sidebar-code-scanning-alerts %} 1. Under “{% data variables.product.prodname_code_scanning_capc %},” click the alert you’d like to explore. <img src="/assets/images/enterprise/3.1/help/repository/code-scanning-click-alert.png" alt="Summary of alerts" /> 1. Optionally, if the alert highlights a problem with data flow, click <strong>Show paths</strong> to display the path from the data source to the sink where it’s used. <img src="/assets/images/help/repository/code-scanning-show-paths.png" alt="The “Show paths” link on an alert" /> 1. Alerts from {% data variables.product.prodname_codeql %} analysis include a description of the problem. Click <strong>Show more</strong> for guidance on how to fix your code. <img src="/assets/images/help/repository/code-scanning-alert-details.png" alt="Details for an alert" /></p>
+<h2 id="fixing-an-alert">Fixing an alert</h2>
+<p>Anyone with write permission for a repository can fix an alert by committing a correction to the code. If the repository has {% data variables.product.prodname_code_scanning %} scheduled to run on pull requests, it’s best to raise a pull request with your correction. This will trigger {% data variables.product.prodname_code_scanning %} analysis of the changes and test that your fix doesn’t introduce any new problems. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning">Configuring {% data variables.product.prodname_code_scanning %}</a>” and “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">Triaging {% data variables.product.prodname_code_scanning %} alerts in pull requests</a>.”</p>
+<p>If you have write permission for a repository, you can view fixed alerts by viewing the summary of alerts and clicking <strong>Closed</strong>. For more information, see “<a href="#viewing-the-alerts-for-a-repository">Viewing the alerts for a repository</a>.” The “Closed” list shows fixed alerts and alerts that users have closed.</p>
+<p>Alerts may be fixed in one branch but not in another. You can use the “Branch” drop-down menu, on the summary of alerts, to check whether an alert is fixed in a particular branch.</p>
+<figure>
+<img src="/assets/images/enterprise/3.1/help/repository/code-scanning-branch-filter.png" alt="Filtering alerts by branch" /><figcaption>Filtering alerts by branch</figcaption>
+</figure>
+<h2 id="closing-an-alert">Closing an alert</h2>
+<p>Closing an alert is a way to resolve an alert that you don’t think needs to be fixed. {% data reusables.code-scanning.close-alert-examples %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-security %} {% data reusables.repositories.sidebar-code-scanning-alerts %} {% data reusables.code-scanning.click-alert-in-list %}<br />
+1. Select the <strong>Close</strong> drop-down menu and click a reason for closing the alert.<br />
+<img src="/assets/images/help/repository/code-scanning-alert-close-drop-down.png" alt="Choosing reason for closing the alert via the Close drop-down" /></p>
+<p>{% data reusables.code-scanning.false-positive-fix-codeql %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">Triaging {% data variables.product.prodname_code_scanning %} alerts in pull requests</a>”</li>
+<li>“<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>”</li>
+<li>“<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/about-integration-with-code-scanning">About integration with {% data variables.product.prodname_code_scanning %}</a>”</li>
+</ul>
+</body>
+</html>

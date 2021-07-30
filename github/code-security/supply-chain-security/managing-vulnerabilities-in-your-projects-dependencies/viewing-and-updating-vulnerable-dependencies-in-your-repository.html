@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Viewing and updating vulnerable dependencies in your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Viewing and updating vulnerable dependencies in your repository</h1>
+</header>
+<p>Your repository’s {% data variables.product.prodname_dependabot %} alerts tab lists all open and closed {% data variables.product.prodname_dependabot_alerts %}{% ifversion fpt %} and corresponding {% data variables.product.prodname_dependabot_security_updates %}{% endif %}. You can sort the list of alerts using the drop-down menu, and you can click into specific alerts for more details. For more information, see “<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.”</p>
+<p>{% ifversion fpt %} You can enable automatic security updates for any repository that uses {% data variables.product.prodname_dependabot_alerts %} and the dependency graph. For more information, see “<a href="/github/managing-security-vulnerabilities/about-dependabot-security-updates">About {% data variables.product.prodname_dependabot_security_updates %}</a>.”</p>
+<p>{% data reusables.repositories.dependency-review %}</p>
+<h2 id="about-updates-for-vulnerable-dependencies-in-your-repository">About updates for vulnerable dependencies in your repository</h2>
+<p>{% data variables.product.product_name %} generates {% data variables.product.prodname_dependabot_alerts %} when we detect that your codebase is using dependencies with known vulnerabilities. For repositories where {% data variables.product.prodname_dependabot_security_updates %} are enabled, when {% data variables.product.product_name %} detects a vulnerable dependency in the default branch, {% data variables.product.prodname_dependabot %} creates a pull request to fix it. The pull request will upgrade the dependency to the minimum possible secure version needed to avoid the vulnerability. {% endif %}</p>
+<h2 id="viewing-and-updating-vulnerable-dependencies">Viewing and updating vulnerable dependencies</h2>
+<p>{% ifversion fpt %} {% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-security %} {% data reusables.repositories.sidebar-dependabot-alerts %} 1. Click the alert you’d like to view. <img src="/assets/images/help/graphs/click-alert-in-alerts-list.png" alt="Alert selected in list of alerts" /> 1. Review the details of the vulnerability and, if available, the pull request containing the automated security update. 1. Optionally, if there isn’t already a {% data variables.product.prodname_dependabot_security_updates %} update for the alert, to create a pull request to resolve the vulnerability, click <strong>Create {% data variables.product.prodname_dependabot %} security update</strong>. <img src="/assets/images/help/repository/create-dependabot-security-update-button.png" alt="Create {% data variables.product.prodname_dependabot %} security update button" /> 1. When you’re ready to update your dependency and resolve the vulnerability, merge the pull request. Each pull request raised by {% data variables.product.prodname_dependabot %} includes information on commands you can use to control {% data variables.product.prodname_dependabot %}. For more information, see “<a href="/github/administering-a-repository/managing-pull-requests-for-dependency-updates#managing-dependabot-pull-requests-with-comment-commands">Managing pull requests for dependency updates</a>.” 1. Optionally, if the alert is being fixed, if it’s incorrect, or located in unused code, use the “Dismiss” drop-down, and click a reason for dismissing the alert. <img src="/assets/images/help/repository/dependabot-alert-dismiss-drop-down.png" alt="Choosing reason for dismissing the alert via the “Dismiss” drop-down" /></p>
+<p>{% elsif ghes &gt; 3.0 %} {% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-security %} {% data reusables.repositories.sidebar-dependabot-alerts %} 1. Click the alert you’d like to view. <img src="/assets/images/enterprise/graphs/click-alert-in-alerts-list.png" alt="Alert selected in list of alerts" /> 1. Review the details of the vulnerability and determine whether or not you need to update the dependency. 1. When you merge a pull request that updates the manifest or lock file to a secure version of the dependency, this will resolve the alert. Alternatively, if you decide not to update the dependency, click the <strong>Dismiss</strong> drop-down, and select a reason for dismissing the alert. <img src="/assets/images/enterprise/repository/dependabot-alert-dismiss-drop-down.png" alt="Choosing reason for dismissing the alert via the “Dismiss” drop-down" /></p>
+<p>{% else %} {% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.accessing-repository-graphs %} {% data reusables.repositories.click-dependency-graph %} 1. Click the version number of the vulnerable dependency to display detailed information. <img src="/assets/images/enterprise/3.0/dependabot-alert-info.png" alt="Detailed information on the vulnerable dependency" /> 1. Review the details of the vulnerability and determine whether or not you need to update the dependency. When you merge a pull request that updates the manifest or lock file to a secure version of the dependency, this will resolve the alert. 1. The banner at the top of the <strong>Dependencies</strong> tab is displayed until all the vulnerable dependencies are resolved or you dismiss it. Click <strong>Dismiss</strong> in the top right corner of the banner and select a reason for dismissing the alert. <img src="/assets/images/enterprise/3.0/dependabot-alert-dismiss.png" alt="Dismiss security banner" /> {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>”{% ifversion fpt %}</li>
+<li>“<a href="/github/managing-security-vulnerabilities/configuring-dependabot-security-updates">Configuring {% data variables.product.prodname_dependabot_security_updates %}</a>”{% endif %}</li>
+<li>“<a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository">Managing security and analysis settings for your repository</a>”</li>
+<li>“<a href="/github/managing-security-vulnerabilities/troubleshooting-the-detection-of-vulnerable-dependencies">Troubleshooting the detection of vulnerable dependencies</a>”{% ifversion fpt %}</li>
+<li>“<a href="/github/managing-security-vulnerabilities/troubleshooting-dependabot-errors">Troubleshooting {% data variables.product.prodname_dependabot %} errors</a>”{% endif %}</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Security best practices for apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Security best practices for apps</h1>
+</header>
+<p>If you follow these best practices it will help you to provide a secure user experience.</p>
+<h2 id="authorization-authentication-and-access-control">Authorization, authentication, and access control</h2>
+<p>We recommend creating a GitHub App rather than an OAuth App. {% data reusables.marketplace.github_apps_preferred %}. See “<a href="/apps/differences-between-apps/">Differences between GitHub Apps and OAuth Apps</a>” for more details. - Apps should use the principle of least privilege and should only request the OAuth scopes and GitHub App permissions that the app needs to perform its intended functionality. For more information, see <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege">Principle of least privilege</a> in Wikipedia. - Apps should provide customers with a way to delete their account, without having to email or call a support person. - Apps should not share tokens between different implementations of the app. For example, a desktop app should have a separate token from a web-based app. Individual tokens allow each app to request the access needed for GitHub resources separately. - Design your app with different user roles, depending on the functionality needed by each type of user. For example, a standard user should not have access to admin functionality, and billing managers might not need push access to repository code. - Apps should not share service accounts such as email or database services to manage your SaaS service. - All services used in your app should have unique login and password credentials. - Admin privilege access to the production hosting infrastructure should only be given to engineers and employees with administrative duties. - Apps should not use personal access tokens to authenticate and should authenticate as an <a href="/apps/about-apps/#about-oauth-apps">OAuth App</a> or a <a href="/apps/about-apps/#about-github-apps">GitHub App</a>: - OAuth Apps should authenticate using an <a href="/apps/building-oauth-apps/authorizing-oauth-apps/">OAuth token</a>. - GitHub Apps should authenticate using either a <a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app">JSON Web Token (JWT)</a>, <a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">OAuth token</a>, or <a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation">installation access token</a>.</p>
+<h2 id="data-protection">Data protection</h2>
+<ul>
+<li>Apps should encrypt data transferred over the public internet using HTTPS, with a valid TLS certificate, or SSH for Git.</li>
+<li>Apps should store client ID and client secret keys securely. We recommend storing them as <a href="http://en.wikipedia.org/wiki/Environment_variable#Getting_and_setting_environment_variables">environmental variables</a>.</li>
+<li>Apps should delete all GitHub user data within 30 days of receiving a request from the user, or within 30 days of the end of the user’s legal relationship with GitHub.</li>
+<li>Apps should not require the user to provide their GitHub password.</li>
+<li>Apps should encrypt tokens, client IDs, and client secrets.</li>
+</ul>
+<h2 id="logging-and-monitoring">Logging and monitoring</h2>
+<p>Apps should have logging and monitoring capabilities. App logs should be retained for at least 30 days and archived for at least one year. A security log should include:</p>
+<ul>
+<li>Authentication and authorization events</li>
+<li>Service configuration changes</li>
+<li>Object reads and writes</li>
+<li>All user and group permission changes</li>
+<li>Elevation of role to admin</li>
+<li>Consistent timestamping for each event</li>
+<li>Source users, IP addresses, and/or hostnames for all logged actions</li>
+</ul>
+<h2 id="incident-response-workflow">Incident response workflow</h2>
+<p>To provide a secure experience for users, you should have a clear incident response plan in place before listing your app. We recommend having a security and operations incident response team in your company rather than using a third-party vendor. You should have the capability to notify {% data variables.product.product_name %} within 24 hours of a confirmed incident.</p>
+<p>For an example of an incident response workflow, see the “Data Breach Response Policy” on the <a href="https://www.sans.org/information-security-policy/">SANS Institute website</a>. A short document with clear steps to take in the event of an incident is more valuable than a lengthy policy template.</p>
+<h2 id="vulnerability-management-and-patching-workflow">Vulnerability management and patching workflow</h2>
+<p>You should conduct regular vulnerability scans of production infrastructure. You should triage the results of vulnerability scans and define a period of time in which you agree to remediate the vulnerability.</p>
+<p>If you are not ready to set up a full vulnerability management program, it’s useful to start by creating a patching process. For guidance in creating a patch management policy, see this TechRepublic article “<a href="https://www.techrepublic.com/blog/it-security/establish-a-patch-management-policy-87756/">Establish a patch management policy</a>.”</p>
+</body>
+</html>

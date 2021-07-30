@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Interactions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Interactions</h1>
+</header>
+<p>Users interact with repositories by commenting, opening issues, and creating pull requests. The Interactions APIs allow people with owner or admin access to temporarily restrict interaction with public repositories to a certain type of user.</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="organization">Organization</h2>
+<p>The Organization Interactions API allows organization owners to temporarily restrict which type of user can comment, open issues, or create pull requests in the organization’s public repositories. {% data reusables.interactions.interactions-detail %} Here’s more about the types of {% data variables.product.product_name %} users:</p>
+<ul>
+<li>{% data reusables.interactions.existing-user-limit-definition %} in the organization.</li>
+<li>{% data reusables.interactions.contributor-user-limit-definition %} in the organization.</li>
+<li>{% data reusables.interactions.collaborator-user-limit-definition %} in the organization.</li>
+</ul>
+<p>Setting the interaction limit at the organization level will overwrite any interaction limits that are set for individual repositories owned by the organization. To set different interaction limits for individual repositories owned by the organization, use the <a href="#repository">Repository</a> interactions endpoints instead.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘orgs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="repository">Repository</h2>
+<p>The Repository Interactions API allows people with owner or admin access to temporarily restrict which type of user can comment, open issues, or create pull requests in a public repository. {% data reusables.interactions.interactions-detail %} Here’s more about the types of {% data variables.product.product_name %} users:</p>
+<ul>
+<li>{% data reusables.interactions.existing-user-limit-definition %} in the repository.</li>
+<li>{% data reusables.interactions.contributor-user-limit-definition %} in the repository.</li>
+<li>{% data reusables.interactions.collaborator-user-limit-definition %} in the repository.</li>
+</ul>
+<p>If an interaction limit is enabled for the user or organization that owns the repository, the limit cannot be changed for the individual repository. Instead, use the <a href="#user">User</a> or <a href="#organization">Organization</a> interactions endpoints to change the interaction limit.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘repos’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="user">User</h2>
+<p>The User Interactions API allows you to temporarily restrict which type of user can comment, open issues, or create pull requests on your public repositories. {% data reusables.interactions.interactions-detail %} Here’s more about the types of {% data variables.product.product_name %} users:</p>
+<ul>
+<li>{% data reusables.interactions.existing-user-limit-definition %} from interacting with your repositories.</li>
+<li>{% data reusables.interactions.contributor-user-limit-definition %} from interacting with your repositories.</li>
+<li>{% data reusables.interactions.collaborator-user-limit-definition %} from interacting with your repositories.</li>
+</ul>
+<p>Setting the interaction limit at the user level will overwrite any interaction limits that are set for individual repositories owned by the user. To set different interaction limits for individual repositories owned by the user, use the <a href="#repository">Repository</a> interactions endpoints instead.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘user’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Differences between clustering and high availability (HA)</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Differences between clustering and high availability (HA)
+      </h1>
+    </header>
+    <h2 id="failure-scenarios">Failure scenarios</h2>
+    <p>
+      High Availability (HA) and Clustering both provide redundancy by
+      eliminating the single node as a point of failure. They are able to
+      provide availability in these scenarios:
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_installation.ha-and-clustering-failure-scenarios %}
+    </p>
+    <h2 id="scalability">Scalability</h2>
+    <p>
+      {% data reusables.enterprise_clustering.clustering-scalability %} In HA,
+      the scale of the appliance is dependent exclusively on the primary node
+      and the load is not distributed to the replica server.
+    </p>
+    <h2 id="differences-in-failover-method-and-configuration">
+      Differences in failover method and configuration
+    </h2>
+    <table>
+      <colgroup>
+        <col style="width: 43%" />
+        <col style="width: 43%" />
+        <col style="width: 12%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Feature</th>
+          <th style="text-align: left">Failover configuration</th>
+          <th style="text-align: left">Failover method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">High Availability Configuration</td>
+          <td style="text-align: left">
+            DNS record with a low TTL pointed to the primary appliance, or load
+            balancer.
+          </td>
+          <td style="text-align: left">
+            You must manually promote the replica appliance in both DNS failover
+            and load balancer configurations.
+          </td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">Clustering</td>
+          <td style="text-align: left">
+            DNS record must point to a load balancer.
+          </td>
+          <td style="text-align: left">
+            If a node behind the load balancer fails, traffic is automatically
+            sent to the other functioning nodes.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="backups-and-disaster-recovery">Backups and disaster recovery</h2>
+    <p>
+      Neither HA or Clustering should be considered a replacement for regular
+      backups. For more information, see “<a
+        href="/enterprise/admin/guides/installation/configuring-backups-on-your-appliance"
+        >Configuring backups on your appliance</a
+      >.”
+    </p>
+    <h2 id="monitoring">Monitoring</h2>
+    <p>
+      Availability features, especially ones with automatic failover such as
+      Clustering, can mask a failure since service is usually not disrupted when
+      something fails. Whether you are using HA or Clustering, monitoring the
+      health of each instance is important so that you are aware when a failure
+      occurs. For more information on monitoring, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/recommended-alert-thresholds/"
+        >Recommended alert thresholds</a
+      >” and “<a
+        href="/enterprise/%7B%7B%20currentVersion%7D%7D/admin/guides/clustering/monitoring-cluster-nodes/"
+        >Monitoring cluster nodes</a
+      >.”
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        For more information about {% data variables.product.prodname_ghe_server
+        %} Clustering, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%7D%7D/admin/guides/clustering/about-clustering/"
+          >About clustering</a
+        >.”
+      </li>
+      <li>
+        For more information about HA, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-github-enterprise-server-for-high-availability/"
+          >Configuring {% data variables.product.prodname_ghe_server %} for High
+          Availability</a
+        >.”
+      </li>
+    </ul>
+  </body>
+</html>

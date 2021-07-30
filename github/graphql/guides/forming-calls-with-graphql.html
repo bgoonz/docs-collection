@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Forming calls with GraphQL</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Forming calls with GraphQL</h1>
+</header>
+<h2 id="authenticating-with-graphql">Authenticating with GraphQL</h2>
+<p>To communicate with the GraphQL server, you’ll need an OAuth token with the right scopes.</p>
+<p>Follow the steps in “<a href="/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>” to create a token. The scopes you require depends on the type of data you’re trying to request. For example, select the <strong>User</strong> scopes to request user data. If you need access to repository information, select the appropriate <strong>Repository</strong> scopes.</p>
+<p>{% ifversion fpt %}</p>
+<p>To match the behavior of the <a href="/graphql/guides/using-the-explorer">GraphQL Explorer</a>, request the following scopes:</p>
+<p>{% else %}</p>
+<p>The following scopes are recommended:</p>
+<p>{% endif %}</p>
+<pre><code>user{% ifversion not ghae %}
+public_repo{% endif %}
+repo
+repo_deployment
+repo:status
+read:repo_hook
+read:org
+read:public_key
+read:gpg_key</code></pre>
+<p>The API notifies you if a resource requires a specific scope.</p>
+<h2 id="the-graphql-endpoint">The GraphQL endpoint</h2>
+<p>The REST API has numerous endpoints; the GraphQL API has a single endpoint:</p>
+<pre>{% data variables.product.graphql_url_pre %}</pre>
+<p>The endpoint remains constant no matter what operation you perform.</p>
+<h2 id="communicating-with-graphql">Communicating with GraphQL</h2>
+<p>Because GraphQL operations consist of multiline JSON, GitHub recommends using the <a href="/graphql/guides/using-the-explorer">Explorer</a> to make GraphQL calls. You can also use cURL or any other HTTP-speaking library.</p>
+<p>In REST, <a href="/rest#http-verbs">HTTP verbs</a> determine the operation performed. In GraphQL, you’ll provide a JSON-encoded body whether you’re performing a query or a mutation, so the HTTP verb is <code>POST</code>. The exception is an <a href="/graphql/guides/introduction-to-graphql#discovering-the-graphql-api">introspection query</a>, which is a simple <code>GET</code> to the endpoint. For more information on GraphQL versus REST, see “<a href="/graphql/guides/migrating-from-rest-to-graphql">Migrating from REST to GraphQL</a>.”</p>
+<p>To query GraphQL using cURL, make a <code>POST</code> request with a JSON payload. The payload must contain a string called <code>query</code>:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: bearer &lt;em&gt;token&lt;/em&gt;&quot; -X POST -d &quot; \
+ { \
+   \&quot;query\&quot;: \&quot;query { viewer { login }}\&quot; \
+ } \
+&quot; {% data variables.product.graphql_url_code %}</code></pre>
+<p>{% tip %}</p>
+<p><strong>Note</strong>: The string value of <code>"query"</code> must escape newline characters or the schema will not parse it correctly. For the <code>POST</code> body, use outer double quotes and escaped inner double quotes.</p>
+<p>{% endtip %}</p>
+<h3 id="about-query-and-mutation-operations">About query and mutation operations</h3>
+<p>The two types of allowed operations in GitHub’s GraphQL API are <em>queries</em> and <em>mutations</em>. Comparing GraphQL to REST, queries operate like <code>GET</code> requests, while mutations operate like <code>POST</code>/<code>PATCH</code>/<code>DELETE</code>. The <a href="/graphql/reference/mutations">mutation name</a> determines which modification is executed.</p>
+<p>For information about rate limiting, see “<a href="/graphql/overview/resource-limitations">GraphQL resource limitations</a>.”</p>
+<p>Queries and mutations share similar forms, with some important differences.</p>
+<h3 id="about-queries">About queries</h3>
+<p>GraphQL queries return only the data you specify. To form a query, you must specify <a href="/graphql/guides/introduction-to-graphql#field">fields within fields</a> (also known as <em>nested subfields</em>) until you return only <a href="/graphql/reference/scalars">scalars</a>.</p>
+<p>Queries are structured like this:</p>
+<pre>query {
+  <em>JSON objects to return</em>
+}</pre>
+<p>For a real-world example, see “<a href="#example-query">Example query</a>.”</p>
+<h3 id="about-mutations">About mutations</h3>
+<p>To form a mutation, you must specify three things:</p>
+<ol type="1">
+<li><em>Mutation name</em>. The type of modification you want to perform.</li>
+<li><em>Input object</em>. The data you want to send to the server, composed of <em>input fields</em>. Pass it as an argument to the mutation name.</li>
+<li><em>Payload object</em>. The data you want to return from the server, composed of <em>return fields</em>. Pass it as the body of the mutation name.</li>
+</ol>
+<p>Mutations are structured like this:</p>
+<pre>mutation {
+  <em>mutationName</em>(input: {<em>MutationNameInput!</em>}) {
+    <em>MutationNamePayload</em>
+  }
+}</pre>
+<p>The input object in this example is <code>MutationNameInput</code>, and the payload object is <code>MutationNamePayload</code>.</p>
+<p>In the <a href="/graphql/reference/mutations">mutations</a> reference, the listed <em>input fields</em> are what you pass as the input object. The listed <em>return fields</em> are what you pass as the payload object.</p>
+<p>For a real-world example, see “<a href="#example-mutation">Example mutation</a>.”</p>
+<h2 id="working-with-variables">Working with variables</h2>
+<p><a href="https://graphql.github.io/learn/queries/#variables">Variables</a> can make queries more dynamic and powerful, and they can reduce complexity when passing mutation input objects.</p>
+<p>{% note %}</p>
+<p><strong>Note</strong>: If you’re using the Explorer, make sure to enter variables in the separate <a href="/graphql/guides/using-the-explorer#using-the-variable-pane">Query Variables pane</a>, and do not include the word <code>variables</code> before the JSON object.</p>
+<p>{% endnote %}</p>
+<p>Here’s an example query with a single variable:</p>
+<pre class="graphql"><code>query($number_of_repos:Int!) {
+  viewer {
+    name
+     repositories(last: $number_of_repos) {
+       nodes {
+         name
+       }
+     }
+   }
+}
+variables {
+   &quot;number_of_repos&quot;: 3
+}</code></pre>
+<p>There are three steps to using variables:</p>
+<ol type="1">
+<li>Define the variable outside the operation in a <code>variables</code> object:</li>
+</ol>
+<pre class="graphql"><code>variables {
+   &quot;number_of_repos&quot;: 3
+}</code></pre>
+<p>The object must be valid JSON. This example shows a simple <code>Int</code> variable type, but it’s possible to define more complex variable types, such as input objects. You can also define multiple variables here.</p>
+<ol start="2" type="1">
+<li>Pass the variable to the operation as an argument:</li>
+</ol>
+<pre class="graphql"><code>query($number_of_repos:Int!){</code></pre>
+<p>The argument is a key-value pair, where the key is the <em>name</em> starting with <code>$</code> (e.g., <code>$number_of_repos</code>), and the value is the <em>type</em> (e.g., <code>Int</code>). Add a <code>!</code> to indicate whether the type is required. If you’ve defined multiple variables, include them here as multiple arguments.</p>
+<ol start="3" type="1">
+<li>Use the variable within the operation:</li>
+</ol>
+<pre class="graphql"><code>repositories(last: $number_of_repos) {</code></pre>
+<p>In this example, we substitute the variable for the number of repositories to retrieve. We specify a type in step 2 because GraphQL enforces strong typing.</p>
+<p>This process makes the query argument dynamic. We can now simply change the value in the <code>variables</code> object and keep the rest of the query the same.</p>
+<p>Using variables as arguments lets you dynamically update values in the <code>variables</code> object without changing the query.</p>
+<h2 id="example-query">Example query</h2>
+<p>Let’s walk through a more complex query and put this information in context.</p>
+<p>The following query looks up the <code>octocat/Hello-World</code> repository, finds the 20 most recent closed issues, and returns each issue’s title, URL, and first 5 labels:</p>
+<pre class="graphql"><code>query {
+  repository(owner:&quot;octocat&quot;, name:&quot;Hello-World&quot;) {
+    issues(last:20, states:CLOSED) {
+      edges {
+        node {
+          title
+          url
+          labels(first:5) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>Looking at the composition line by line:</p>
+<ul>
+<li><p><code>query {</code></p>
+<p>Because we want to read data from the server, not modify it, <code>query</code> is the root operation. (If you don’t specify an operation, <code>query</code> is also the default.)</p></li>
+<li><p><code>repository(owner:"octocat", name:"Hello-World") {</code></p>
+<p>To begin the query, we want to find a <a href="/graphql/reference/objects#repository"><code>repository</code></a> object. The schema validation indicates this object requires an <code>owner</code> and a <code>name</code> argument.</p></li>
+<li><p><code>issues(last:20, states:CLOSED) {</code></p>
+<p>To account for all issues in the repository, we call the <code>issues</code> object. (We <em>could</em> query a single <code>issue</code> on a <code>repository</code>, but that would require us to know the number of the issue we want to return and provide it as an argument.)</p>
+<p>Some details about the <code>issues</code> object:</p>
+<ul>
+<li>The <a href="/graphql/reference/objects#repository">docs</a> tell us this object has the type <code>IssueConnection</code>.</li>
+<li>Schema validation indicates this object requires a <code>last</code> or <code>first</code> number of results as an argument, so we provide <code>20</code>.</li>
+<li>The <a href="/graphql/reference/objects#repository">docs</a> also tell us this object accepts a <code>states</code> argument, which is an <a href="/graphql/reference/enums#issuestate"><code>IssueState</code></a> enum that accepts <code>OPEN</code> or <code>CLOSED</code> values. To find only closed issues, we give the <code>states</code> key a value of <code>CLOSED</code>.</li>
+</ul></li>
+<li><p><code>edges {</code></p>
+<p>We know <code>issues</code> is a connection because it has the <code>IssueConnection</code> type. To retrieve data about individual issues, we have to access the node via <code>edges</code>.</p></li>
+<li><p><code>node {</code></p>
+<p>Here we retrieve the node at the end of the edge. The <a href="/graphql/reference/objects#issueconnection"><code>IssueConnection</code> docs</a> indicate the node at the end of the <code>IssueConnection</code> type is an <code>Issue</code> object.</p></li>
+<li><p>Now that we know we’re retrieving an <code>Issue</code> object, we can look at the <a href="/graphql/reference/objects#issue">docs</a> and specify the fields we want to return:</p>
+<pre class="graphql"><code>title
+url
+labels(first:5) {
+  edges {
+    node {
+      name
+    }
+  }
+}</code></pre>
+<p>Here we specify the <code>title</code>, <code>url</code>, and <code>labels</code> fields of the <code>Issue</code> object.</p>
+<p>The <code>labels</code> field has the type <a href="/graphql/reference/objects#labelconnection"><code>LabelConnection</code></a>. As with the <code>issues</code> object, because <code>labels</code> is a connection, we must travel its edges to a connected node: the <code>label</code> object. At the node, we can specify the <code>label</code> object fields we want to return, in this case, <code>name</code>.</p></li>
+</ul>
+<p>You may notice that running this query on the Octocat’s {% ifversion not ghae %}public{% endif %} <code>Hello-World</code> repository won’t return many labels. Try running it on one of your own repositories that does use labels, and you’ll likely see a difference.</p>
+<h2 id="example-mutation">Example mutation</h2>
+<p>Mutations often require information that you can only find out by performing a query first. This example shows two operations:</p>
+<ol type="1">
+<li>A query to get an issue ID.</li>
+<li>A mutation to add an emoji reaction to the issue.</li>
+</ol>
+<pre class="graphql"><code>query FindIssueID {
+  repository(owner:&quot;octocat&quot;, name:&quot;Hello-World&quot;) {
+    issue(number:349) {
+      id
+    }
+  }
+}
+
+mutation AddReactionToIssue {
+  addReaction(input:{subjectId:&quot;MDU6SXNzdWUyMzEzOTE1NTE=&quot;,content:HOORAY}) {
+    reaction {
+      content
+    }
+    subject {
+      id
+    }
+  }
+}</code></pre>
+<p>{% tip %}</p>
+<p>Although you can include a query and a mutation in the same Explorer window if you give them names (<code>FindIssueID</code> and <code>AddReactionToIssue</code> in this example), the operations will be executed as separate calls to the GraphQL endpoint. It’s not possible to perform a query at the same time as a mutation, or vice versa.</p>
+<p>{% endtip %}</p>
+<p>Let’s walk through the example. The task sounds simple: add an emoji reaction to an issue.</p>
+<p>So how do we know to begin with a query? We don’t, yet.</p>
+<p>Because we want to modify data on the server (attach an emoji to an issue), we begin by searching the schema for a helpful mutation. The reference docs show the <a href="/graphql/reference/mutations#addreaction"><code>addReaction</code></a> mutation, with this description: <code>Adds a reaction to a subject.</code> Perfect!</p>
+<p>The docs for the mutation list three input fields:</p>
+<ul>
+<li><code>clientMutationId</code> (<code>String</code>)</li>
+<li><code>subjectId</code> (<code>ID!</code>)</li>
+<li><code>content</code> (<code>ReactionContent!</code>)</li>
+</ul>
+<p>The <code>!</code>s indicate that <code>subjectId</code> and <code>content</code> are required fields. A required <code>content</code> makes sense: we want to add a reaction, so we’ll need to specify which emoji to use.</p>
+<p>But why is <code>subjectId</code> required? It’s because the <code>subjectId</code> is the only way to identify <em>which</em> issue in <em>which</em> repository to react to.</p>
+<p>This is why we start this example with a query: to get the <code>ID</code>.</p>
+<p>Let’s examine the query line by line:</p>
+<ul>
+<li><p><code>query FindIssueID {</code></p>
+<p>Here we’re performing a query, and we name it <code>FindIssueID</code>. Note that naming a query is optional; we give it a name here so that we can include it in same Explorer window as the mutation.</p></li>
+<li><p><code>repository(owner:"octocat", name:"Hello-World") {</code></p>
+<p>We specify the repository by querying the <code>repository</code> object and passing <code>owner</code> and <code>name</code> arguments.</p></li>
+<li><p><code>issue(number:349) {</code></p>
+<p>We specify the issue to react to by querying the <code>issue</code> object and passing a <code>number</code> argument.</p></li>
+<li><p><code>id</code></p>
+<p>This is where we retrieve the <code>id</code> of <code>https://github.com/octocat/Hello-World/issues/349</code> to pass as the <code>subjectId</code>.</p></li>
+</ul>
+<p>When we run the query, we get the <code>id</code>: <code>MDU6SXNzdWUyMzEzOTE1NTE=</code></p>
+<p>{% tip %}</p>
+<p><strong>Note</strong>: The <code>id</code> returned in the query is the value we’ll pass as the <code>subjectID</code> in the mutation. Neither the docs nor schema introspection will indicate this relationship; you’ll need to understand the concepts behind the names to figure this out.</p>
+<p>{% endtip %}</p>
+<p>With the ID known, we can proceed with the mutation:</p>
+<ul>
+<li><p><code>mutation AddReactionToIssue {</code></p>
+<p>Here we’re performing a mutation, and we name it <code>AddReactionToIssue</code>. As with queries, naming a mutation is optional; we give it a name here so we can include it in the same Explorer window as the query.</p></li>
+<li><p><code>addReaction(input:{subjectId:"MDU6SXNzdWUyMzEzOTE1NTE=",content:HOORAY}) {</code></p>
+<p>Let’s examine this line:</p>
+<ul>
+<li><code>addReaction</code> is the name of the mutation.</li>
+<li><code>input</code> is the required argument key. This will always be <code>input</code> for a mutation.</li>
+<li><code>{subjectId:"MDU6SXNzdWUyMzEzOTE1NTE=",content:HOORAY}</code> is the required argument value. This will always be an <a href="/graphql/reference/input-objects">input object</a> (hence the curly braces) composed of input fields (<code>subjectId</code> and <code>content</code> in this case) for a mutation.</li>
+</ul>
+<p>How do we know which value to use for the content? The <a href="/graphql/reference/mutations#addreaction"><code>addReaction</code> docs</a> tell us the <code>content</code> field has the type <a href="/graphql/reference/enums#reactioncontent"><code>ReactionContent</code></a>, which is an <a href="/graphql/reference/enums">enum</a> because only certain emoji reactions are supported on GitHub issues. These are the allowed values for reactions (note some values differ from their corresponding emoji names):</p>
+<p>{% data reusables.repositories.reaction_list %}</p></li>
+<li><p>The rest of the call is composed of the payload object. This is where we specify the data we want the server to return after we’ve performed the mutation. These lines come from the <a href="/graphql/reference/mutations#addreaction"><code>addReaction</code> docs</a>, which three possible return fields:</p>
+<ul>
+<li><code>clientMutationId</code> (<code>String</code>)</li>
+<li><code>reaction</code> (<code>Reaction!</code>)</li>
+<li><code>subject</code> (<code>Reactable!</code>)</li>
+</ul>
+<p>In this example, we return the two required fields (<code>reaction</code> and <code>subject</code>), both of which have required subfields (respectively, <code>content</code> and <code>id</code>).</p></li>
+</ul>
+<p>When we run the mutation, this is the response:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">&quot;addReaction&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">      <span class="dt">&quot;reaction&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">        <span class="dt">&quot;content&quot;</span><span class="fu">:</span> <span class="st">&quot;HOORAY&quot;</span></a>
+<a class="sourceLine" id="cb10-6" title="6">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb10-7" title="7">      <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-8" title="8">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDU6SXNzdWUyMTc5NTQ0OTc=&quot;</span></a>
+<a class="sourceLine" id="cb10-9" title="9">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-11" title="11">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="fu">}</span></a></code></pre></div>
+<p>That’s it! Check out your <a href="https://github.com/octocat/Hello-World/issues/349">reaction to the issue</a> by hovering over the :tada: to find your username.</p>
+<p>One final note: when you pass multiple fields in an input object, the syntax can get unwieldy. Moving the fields into a <a href="#working-with-variables">variable</a> can help. Here’s how you could rewrite the original mutation using a variable:</p>
+<pre class="graphql"><code>mutation($myVar:AddReactionInput!) {
+  addReaction(input:$myVar) {
+    reaction {
+      content
+    }
+    subject {
+      id
+    }
+  }
+}
+variables {
+  &quot;myVar&quot;: {
+    &quot;subjectId&quot;:&quot;MDU6SXNzdWUyMTc5NTQ0OTc=&quot;,
+    &quot;content&quot;:&quot;HOORAY&quot;
+  }
+}</code></pre>
+<p>{% note %}</p>
+<p>You may notice that the <code>content</code> field value in the earlier example (where it’s used directly in the mutation) does not have quotes around <code>HOORAY</code>, but it does have quotes when used in the variable. There’s a reason for this: * When you use <code>content</code> directly in the mutation, the schema expects the value to be of type <a href="/graphql/reference/enums#reactioncontent"><code>ReactionContent</code></a>, which is an <em>enum</em>, not a string. Schema validation will throw an error if you add quotes around the enum value, as quotes are reserved for strings. * When you use <code>content</code> in a variable, the variables section must be valid JSON, so the quotes are required. Schema validation correctly interprets the <code>ReactionContent</code> type when the variable is passed into the mutation during execution.</p>
+<p>For more information on the difference between enums and strings, see the <a href="https://graphql.github.io/graphql-spec/June2018/#sec-Enums">official GraphQL spec</a>.</p>
+<p>{% endnote %}</p>
+<h2 id="further-reading">Further reading</h2>
+<p>There is a <em>lot</em> more you can do when forming GraphQL calls. Here are some places to look next:</p>
+<ul>
+<li><a href="https://graphql.org/learn/pagination/">Pagination</a></li>
+<li><a href="https://graphql.org/learn/queries/#fragments">Fragments</a></li>
+<li><a href="https://graphql.org/learn/queries/#inline-fragments">Inline fragments</a></li>
+<li><a href="https://graphql.org/learn/queries/#directives">Directives</a></li>
+</ul>
+</body>
+</html>

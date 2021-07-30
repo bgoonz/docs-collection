@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Recommended alert thresholds</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Recommended alert thresholds</h1>
+    </header>
+    <h2 id="monitoring-storage">Monitoring storage</h2>
+    <p>
+      We recommend that you monitor both the root and user storage devices and
+      configure an alert with values that allow for ample response time when
+      available disk space is low.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Severity</th>
+          <th>Threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>Warning</strong></td>
+          <td>Disk use exceeds 70% of total available</td>
+        </tr>
+        <tr class="even">
+          <td><strong>Critical</strong></td>
+          <td>Disk use exceeds 85% of total available</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      You can adjust these values based on the total amount of storage
+      allocated, historical growth patterns, and expected time to respond. We
+      recommend over-allocating storage resources to allow for growth and
+      prevent the downtime required to allocate additional storage.
+    </p>
+    <h2 id="monitoring-cpu-and-load-average-usage">
+      Monitoring CPU and load average usage
+    </h2>
+    <p>
+      Although it is normal for CPU usage to fluctuate based on resource-intense
+      Git operations, we recommend configuring an alert for abnormally high CPU
+      utilization, as prolonged spikes can mean your instance is
+      under-provisioned. We recommend monitoring the fifteen-minute system load
+      average for values nearing or exceeding the number of CPU cores allocated
+      to the virtual machine.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Severity</th>
+          <th>Threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>Warning</strong></td>
+          <td>Fifteen minute load average exceeds 1x CPU cores</td>
+        </tr>
+        <tr class="even">
+          <td><strong>Critical</strong></td>
+          <td>Fifteen minute load average exceeds 2x CPU cores</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      We also recommend that you monitor virtualization “steal” time to ensure
+      that other virtual machines running on the same host system are not using
+      all of the instance’s resources.
+    </p>
+    <h2 id="monitoring-memory-usage">Monitoring memory usage</h2>
+    <p>
+      The amount of physical memory allocated to {% data
+      variables.product.product_location %} can have a large impact on overall
+      performance and application responsiveness. The system is designed to make
+      heavy use of the kernel disk cache to speed up Git operations. We
+      recommend that the normal RSS working set fit within 50% of total
+      available RAM at peak usage.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Severity</th>
+          <th>Threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>Warning</strong></td>
+          <td>Sustained RSS usage exceeds 50% of total available memory</td>
+        </tr>
+        <tr class="even">
+          <td><strong>Critical</strong></td>
+          <td>Sustained RSS usage exceeds 70% of total available memory</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      If memory is exhausted, the kernel OOM killer will attempt to free memory
+      resources by forcibly killing RAM heavy application processes, which could
+      result in a disruption of service. We recommend allocating more memory to
+      the virtual machine than is required in the normal course of operations.
+    </p>
+  </body>
+</html>

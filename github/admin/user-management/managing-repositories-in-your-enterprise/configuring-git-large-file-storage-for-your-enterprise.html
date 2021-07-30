@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring Git Large File Storage for your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Configuring Git Large File Storage for your enterprise
+      </h1>
+    </header>
+    <h2 id="about-data-variables.large_files.product_name_long">
+      About {% data variables.large_files.product_name_long %}
+    </h2>
+    <p>
+      {% data
+      reusables.enterprise_site_admin_settings.configuring-large-file-storage-short-description
+      %} You can use {% data variables.large_files.product_name_long %} with a
+      single repository, all of your personal or organization repositories, or
+      with every repository in your enterprise. Before you can enable {% data
+      variables.large_files.product_name_short %} for specific repositories or
+      organizations, you need to enable {% data
+      variables.large_files.product_name_short %} for your enterprise.
+    </p>
+    <p>
+      {% data reusables.large_files.storage_assets_location %} {% data
+      reusables.large_files.rejected_pushes %}
+    </p>
+    <p>
+      For more information, see “<a
+        href="/articles/about-git-large-file-storage"
+        >About {% data variables.large_files.product_name_long %}</a
+      >”, “<a href="/enterprise/user/articles/versioning-large-files/"
+        >Versioning large files</a
+      >,” and the
+      <a href="https://git-lfs.github.com/"
+        >{% data variables.large_files.product_name_long %} project site</a
+      >.
+    </p>
+    <p>{% data reusables.large_files.can-include-lfs-objects-archives %}</p>
+    <h2
+      id="configuring-data-variables.large_files.product_name_long-for-your-enterprise"
+    >
+      Configuring {% data variables.large_files.product_name_long %} for your
+      enterprise
+    </h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% ifversion
+      ghes &gt; 2.21 or ghae %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% else %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% endif %} {% data
+      reusables.enterprise-accounts.options-tab %} 4. Under “{% data
+      variables.large_files.product_name_short %} access”, use the drop-down
+      menu, and click <strong>Enabled</strong> or <strong>Disabled</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/git-lfs-admin-center.png"
+        alt="Git LFS Access"
+      />
+    </p>
+    <h2
+      id="configuring-data-variables.large_files.product_name_long-for-an-individual-repository"
+    >
+      Configuring {% data variables.large_files.product_name_long %} for an
+      individual repository
+    </h2>
+    <p>{% data reusables.enterprise_site_admin_settings.override-policy %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.repository-search %} {% data
+      reusables.enterprise_site_admin_settings.click-repo %} {% data
+      reusables.enterprise_site_admin_settings.admin-top-tab %} {% data
+      reusables.enterprise_site_admin_settings.admin-tab %} {% data
+      reusables.enterprise_site_admin_settings.git-lfs-toggle %}
+    </p>
+    <h2
+      id="configuring-data-variables.large_files.product_name_long-for-every-repository-owned-by-a-user-account-or-organization"
+    >
+      Configuring {% data variables.large_files.product_name_long %} for every
+      repository owned by a user account or organization
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.search-user-or-org %} {%
+      data reusables.enterprise_site_admin_settings.click-user-or-org %} {% data
+      reusables.enterprise_site_admin_settings.admin-top-tab %} {% data
+      reusables.enterprise_site_admin_settings.admin-tab %} {% data
+      reusables.enterprise_site_admin_settings.git-lfs-toggle %}
+    </p>
+    <p>
+      {% ifversion ghes %} ## Configuring Git Large File Storage to use a third
+      party server
+    </p>
+    <p>
+      {% data reusables.large_files.storage_assets_location %} {% data
+      reusables.large_files.rejected_pushes %}
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Disable {% data variables.large_files.product_name_short %} on {% data
+          variables.product.product_location %}. For more information, see “<a
+            href="#configuring-git-large-file-storage-for-your-enterprise"
+            >Configuring {% data variables.large_files.product_name_long %} for
+            your enterprise</a
+          >.”
+        </p>
+      </li>
+      <li>
+        Create a {% data variables.large_files.product_name_short %}
+        configuration file that points to the third party server.
+      </li>
+    </ol>
+    <pre class="shell"><code># Show default configuration
+$ git lfs env
+&gt; git-lfs/1.1.0 (GitHub; darwin amd64; go 1.5.1; git 94d356c)
+&gt; git version 2.7.4 (Apple Git-66)
+&amp;nbsp;
+&gt; Endpoint=https://&lt;em&gt;GITHUB-ENTERPRISE-HOST&lt;/em&gt;/path/to/repo/info/lfs (auth=basic)
+&amp;nbsp;
+# Create .lfsconfig that points to third party server.
+$ git config -f .lfsconfig remote.origin.lfsurl https://&lt;em&gt;THIRD-PARTY-LFS-SERVER&lt;/em&gt;/path/to/repo
+$ git lfs env
+&gt; git-lfs/1.1.0 (GitHub; darwin amd64; go 1.5.1; git 94d356c)
+&gt; git version 2.7.4 (Apple Git-66)
+&amp;nbsp;
+&gt; Endpoint=https://&lt;em&gt;THIRD-PARTY-LFS-SERVER&lt;/em&gt;/path/to/repo/info/lfs (auth=none)
+&amp;nbsp;
+# Show the contents of .lfsconfig
+$ cat .lfsconfig
+[remote &quot;origin&quot;]
+lfsurl = https://&lt;em&gt;THIRD-PARTY-LFS-SERVER&lt;/em&gt;/path/to/repo</code></pre>
+    <ol start="3" type="1">
+      <li>
+        To keep the same {% data variables.large_files.product_name_short %}
+        configuration for each user, commit a custom
+        <code>.lfsconfig</code> file to the repository.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ git add .lfsconfig
+$ git commit -m &quot;Adding LFS config file&quot;</code></pre>
+    <ol start="3" type="1">
+      <li>
+        Migrate any existing {% data variables.large_files.product_name_short %}
+        assets. For more information, see “<a
+          href="#migrating-to-a-different-git-large-file-storage-server"
+          >Migrating to a different {% data
+          variables.large_files.product_name_long %} server</a
+        >.”
+      </li>
+    </ol>
+    <h2 id="migrating-to-a-different-git-large-file-storage-server">
+      Migrating to a different Git Large File Storage server
+    </h2>
+    <p>
+      Before migrating to a different {% data
+      variables.large_files.product_name_long %} server, you must configure {%
+      data variables.large_files.product_name_short %} to use a third party
+      server. For more information, see “<a
+        href="#configuring-git-large-file-storage-to-use-a-third-party-server"
+        >Configuring {% data variables.large_files.product_name_long %} to use a
+        third party server</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>Configure the repository with a second remote.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ git remote add &lt;em&gt;NEW-REMOTE&lt;/em&gt; https://&lt;em&gt;NEW-REMOTE-HOSTNAME&lt;/em&gt;/path/to/repo
+&amp;nbsp;
+$ git lfs env
+&gt; git-lfs/1.1.0 (GitHub; darwin amd64; go 1.5.1; git 94d356c)
+&gt; git version 2.7.4 (Apple Git-66)
+&amp;nbsp;
+&gt; Endpoint=https://&lt;em&gt;GITHUB-ENTERPRISE-HOST&lt;/em&gt;/path/to/repo/info/lfs (auth=basic)
+&gt; Endpoint (&lt;em&gt;NEW-REMOTE&lt;/em&gt;)=https://&lt;em&gt;NEW-REMOTE-HOSTNAME&lt;/em&gt;/path/to/repo/info/lfs (auth=none)</code></pre>
+    <ol start="2" type="1">
+      <li>Fetch all objects from the old remote.</li>
+    </ol>
+    <pre class="shell"><code>$ git lfs fetch origin --all
+&gt; Scanning for all objects ever referenced...
+&gt; ✔ 16 objects found
+&gt; Fetching objects...
+&gt; Git LFS: (16 of 16 files) 48.71 MB / 48.85 MB</code></pre>
+    <ol start="3" type="1">
+      <li>Push all objects to the new remote.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ git lfs push &lt;em&gt;NEW-REMOTE&lt;/em&gt; --all
+&gt; Scanning for all objects ever referenced...
+&gt; ✔ 16 objects found
+&gt; Pushing objects...
+&gt; Git LFS: (16 of 16 files) 48.00 MB / 48.85 MB, 879.10 KB skipped</code></pre>
+    <p>{% endif %}</p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        <a href="https://git-lfs.github.com/"
+          >{% data variables.large_files.product_name_long %} project site</a
+        >
+      </li>
+    </ul>
+  </body>
+</html>

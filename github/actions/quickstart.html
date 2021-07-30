@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Quickstart for GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Quickstart for GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      You only need a {% data variables.product.prodname_dotcom %} repository to
+      create and run a {% data variables.product.prodname_actions %} workflow.
+      In this guide, you’ll add a workflow that demonstrates some of the
+      essential features of {% data variables.product.prodname_actions %}.
+    </p>
+    <p>
+      The following example shows you how {% data
+      variables.product.prodname_actions %} jobs can be automatically triggered,
+      where they run, and how they can interact with the code in your
+      repository.
+    </p>
+    <h2 id="creating-your-first-workflow">Creating your first workflow</h2>
+    <ol type="1">
+      <li>
+        From your repository on {% data variables.product.prodname_dotcom %},
+        create a new file in the <code>.github/workflows</code> directory named
+        <code>github-actions-demo.yml</code>. For more information, see “<a
+          href="/github/managing-files-in-a-repository/creating-new-files"
+          >Creating new files</a
+        >.”
+      </li>
+      <li>
+        <p>
+          Copy the following YAML contents into the
+          <code>github-actions-demo.yml</code> file: {% raw %} ```yaml{:copy}
+          name: GitHub Actions Demo on: [push] jobs: Explore-GitHub-Actions:
+          runs-on: ubuntu-latest steps: - run: echo “🎉 The job was
+          automatically triggered by a ${{ github.event_name }} event.” - run:
+          echo “🐧 This job is now running on a ${{ runner.os }} server hosted
+          by GitHub!” - run: echo “🔎 The name of your branch is ${{ github.ref
+          }} and your repository is ${{ github.repository }}.” - name: Check out
+          repository code uses: actions/checkout@v2 - run: echo “💡 The ${{
+          github.repository }} repository has been cloned to the runner.” - run:
+          echo “🖥️ The workflow is now ready to test your code on the runner.” -
+          name: List files in the repository run: | ls ${{ github.workspace }} -
+          run: echo “🍏 This job’s status is ${{ job.status }}.”
+        </p>
+        ``` {% endraw %}
+      </li>
+      <li>
+        <p>
+          Scroll to the bottom of the page and select
+          <strong
+            >Create a new branch for this commit and start a pull
+            request</strong
+          >. Then, to create a pull request, click
+          <strong>Propose new file</strong>.
+          <img
+            src="/assets/images/help/repository/actions-quickstart-commit-new-file.png"
+            alt="Commit workflow file"
+          />
+        </p>
+      </li>
+    </ol>
+    <p>
+      Committing the workflow file to a branch in your repository triggers the
+      <code>push</code> event and runs your workflow.
+    </p>
+    <h2 id="viewing-your-workflow-results">Viewing your workflow results</h2>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} 1. In the left sidebar, click the
+      workflow you want to see.
+    </p>
+    <p>
+      <img
+        src="/assets/images/help/repository/actions-quickstart-workflow-sidebar.png"
+        alt="Workflow list in left sidebar"
+      />
+      1. From the list of workflow runs, click the name of the run you want to
+      see.
+    </p>
+    <p>
+      <img
+        src="/assets/images/help/repository/actions-quickstart-run-name.png"
+        alt="Name of workflow run"
+      />
+      1. Under <strong>Jobs</strong> , click the
+      <strong>Explore-GitHub-Actions</strong> job.
+    </p>
+    <p>
+      <img
+        src="/assets/images/help/repository/actions-quickstart-job.png"
+        alt="Locate job"
+      />
+      1. The log shows you how each of the steps was processed. Expand any of
+      the steps to view its details.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/repository/actions-quickstart-logs.png"
+        alt="Example workflow results"
+      />
+      <figcaption>Example workflow results</figcaption>
+    </figure>
+    <p>
+      For example, you can see the list of files in your repository:
+      <img
+        src="/assets/images/help/repository/actions-quickstart-log-detail.png"
+        alt="Example action detail"
+      />
+    </p>
+    <h2 id="more-workflow-templates">More workflow templates</h2>
+    <p>{% data reusables.actions.workflow-template-overview %}</p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>
+      The example workflow you just added runs each time code is pushed to the
+      branch, and shows you how {% data variables.product.prodname_actions %}
+      can work with the contents of your repository. But this is only the
+      beginning of what you can do with {% data
+      variables.product.prodname_actions %}:
+    </p>
+    <ul>
+      <li>
+        Your repository can contain multiple workflows that trigger different
+        jobs based on different events.
+      </li>
+      <li>
+        You can use a workflow to install software testing apps and have them
+        automatically test your code on {% data
+        variables.product.prodname_dotcom %}’s runners.
+      </li>
+    </ul>
+    <p>
+      {% data variables.product.prodname_actions %} can help you automate nearly
+      every aspect of your application development processes. Ready to get
+      started? Here are some helpful resources for taking your next steps with
+      {% data variables.product.prodname_actions %}:
+    </p>
+    <ul>
+      <li>
+        “<a href="/actions/learn-github-actions"
+          >Learn {% data variables.product.prodname_actions %}</a
+        >” for an in-depth tutorial.
+      </li>
+      <li>
+        “<a href="/actions/guides">Guides</a>” for specific uses cases and
+        examples.
+      </li>
+    </ul>
+  </body>
+</html>

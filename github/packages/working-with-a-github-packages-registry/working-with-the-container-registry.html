@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with the Container registry</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with the Container registry</h1>
+</header>
+<h2 id="about-data-variables.product.prodname_container_registry-support">About {% data variables.product.prodname_container_registry %} support</h2>
+<p>The {% data variables.product.prodname_container_registry %} currently supports the following container image formats:</p>
+<ul>
+<li><a href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker Image Manifest V2, Schema 2</a></li>
+<li><a href="https://github.com/opencontainers/image-spec">Open Container Initiative (OCI) Specifications</a></li>
+</ul>
+<p>When installing or publishing a Docker image, the {% data variables.product.prodname_container_registry %} supports foreign layers, such as Windows images.</p>
+<h2 id="authenticating-to-the-data-variables.product.prodname_container_registry">Authenticating to the {% data variables.product.prodname_container_registry %}</h2>
+<p>{% data reusables.package_registry.authenticate_with_pat_for_container_registry %}</p>
+<p>{% data reusables.package_registry.authenticate-to-container-registry-steps %}</p>
+<h2 id="pushing-container-images">Pushing container images</h2>
+<p>This example pushes the latest version of <code>IMAGE-NAME</code>. <code>shell   $ docker push ghcr.io/OWNER/IMAGE_NAME:latest</code></p>
+<p>This example pushes the <code>2.5</code> version of the image. <code>shell   $ docker push ghcr.io/OWNER/IMAGE-NAME:2.5</code></p>
+<p>When you first publish a package, the default visibility is private. To change the visibility or set access permissions, see “<a href="/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility">Configuring a package’s access control and visibility</a>.”</p>
+<h2 id="pulling-container-images">Pulling container images</h2>
+<h3 id="pull-by-digest">Pull by digest</h3>
+<p>To ensure you’re always using the same image, you can specify the exact container image version you want to pull by the <code>digest</code> SHA value.</p>
+<ol type="1">
+<li>To find the digest SHA value, use <code>docker inspect</code> or <code>docker pull</code> and copy the SHA value after <code>Digest:</code></li>
+</ol>
+<pre class="shell"><code>$ docker inspect ghcr.io/OWNER/IMAGE_NAME</code></pre>
+<ol start="2" type="1">
+<li>Remove image locally as needed.</li>
+</ol>
+<pre class="shell"><code>$ docker rmi  ghcr.io/OWNER/IMAGE_NAME:latest</code></pre>
+<ol start="3" type="1">
+<li>Pull the container image with <code>@YOUR_SHA_VALUE</code> after the image name.</li>
+</ol>
+<pre class="shell"><code>$ docker pull ghcr.io/OWNER/IMAGE_NAME@sha256:82jf9a84u29hiasldj289498uhois8498hjs29hkuhs</code></pre>
+<h3 id="pull-by-name">Pull by name</h3>
+<pre class="shell"><code>$ docker pull ghcr.io/OWNER/IMAGE_NAME</code></pre>
+<h3 id="pull-by-name-and-version">Pull by name and version</h3>
+<p>Docker CLI example showing an image pulled by its name and the <code>1.14.1</code> version tag: <code>shell   $ docker pull ghcr.io/OWNER/IMAGE_NAME:1.14.1   &gt; 5e35bd43cf78: Pull complete   &gt; 0c48c2209aab: Pull complete   &gt; fd45dd1aad5a: Pull complete   &gt; db6eb50c2d36: Pull complete   &gt; Digest: sha256:ae3b135f133155b3824d8b1f62959ff8a72e9cf9e884d88db7895d8544010d8e   &gt; Status: Downloaded newer image for ghcr.io/orgname/image-name/release:1.14.1   &gt; ghcr.io/orgname/image-name/release:1.14.1</code></p>
+<h3 id="pull-by-name-and-latest-version">Pull by name and latest version</h3>
+<pre class="shell"><code>$ docker pull ghcr.io/OWNER/IMAGE_NAME:latest
+&gt; latest: Pulling from user/image-name
+&gt; Digest: sha256:b3d3e366b55f9a54599220198b3db5da8f53592acbbb7dc7e4e9878762fc5344
+&gt; Status: Downloaded newer image for ghcr.io/user/image-name:latest
+&gt; ghcr.io/user/image-name:latest</code></pre>
+<h2 id="building-container-images">Building container images</h2>
+<p>This example builds the <code>hello_docker</code> image: <code>shell   $ docker build -t hello_docker .</code></p>
+<h2 id="tagging-container-images">Tagging container images</h2>
+<ol type="1">
+<li>Find the ID for the Docker image you want to tag.</li>
+</ol>
+<pre class="shell"><code>$ docker images
+&gt; REPOSITORY                                            TAG                 IMAGE ID            CREATED             SIZE
+&gt; ghcr.io/my-org/hello_docker         latest              38f737a91f39        47 hours ago        91.7MB
+&gt; ghcr.io/my-username/hello_docker    latest              38f737a91f39        47 hours ago        91.7MB
+&gt; hello-world                                           latest              fce289e99eb9        16 months ago       1.84kB</code></pre>
+<ol start="2" type="1">
+<li>Tag your Docker image using the image ID and your desired image name and hosting destination.</li>
+</ol>
+<pre class="shell"><code>$ docker tag 38f737a91f39 ghcr.io/OWNER/NEW_IMAGE_NAME:latest</code></pre>
+</body>
+</html>

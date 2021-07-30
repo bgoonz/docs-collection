@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Reviewing your security log</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Reviewing your security log</h1>
+</header>
+<h2 id="accessing-your-security-log">Accessing your security log</h2>
+<p>The security log lists all actions performed within the last 90 days.</p>
+<p>{% data reusables.user_settings.access_settings %} {% ifversion fpt or ghae or ghes %} 2. In the user settings sidebar, click <strong>Security log</strong>. <img src="/assets/images/help/settings/audit-log-tab.png" alt="Security log tab" /> {% else %} {% data reusables.user_settings.security %} 3. Under “Security history,” your log is displayed. <img src="/assets/images/help/settings/user_security_log.png" alt="Security log" /> 4. Click on an entry to see more information about the event. <img src="/assets/images/help/settings/user_security_history_action.png" alt="Security log" /> {% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes %} ## Searching your security log</p>
+<p>{% data reusables.audit_log.audit-log-search %}</p>
+<h3 id="search-based-on-the-action-performed">Search based on the action performed</h3>
+<p>{% else %} ## Understanding events in your security log {% endif %}</p>
+<p>The events listed in your security log are triggered by your actions. Actions are grouped into the following categories:</p>
+<div class="line-block">Category name | Description</div>
+<p>|——————|——————-{% ifversion fpt %} | <a href="#account_recovery_token-category-actions"><code>account_recovery_token</code></a> | Contains all activities related to <a href="/articles/configuring-two-factor-authentication-recovery-methods">adding a recovery token</a>. | <a href="#billing-category-actions"><code>billing</code></a> | Contains all activities related to your billing information. | <a href="#codespaces-category-actions"><code>codespaces</code></a> | Contains all activities related to {% data variables.product.prodname_codespaces %}. For more information, see “<a href="/github/developing-online-with-codespaces/about-codespaces">About {% data variables.product.prodname_codespaces %}</a>.” | <a href="#marketplace_agreement_signature-category-actions"><code>marketplace_agreement_signature</code></a> | Contains all activities related to signing the {% data variables.product.prodname_marketplace %} Developer Agreement. | <a href="#marketplace_listing-category-actions"><code>marketplace_listing</code></a> | Contains all activities related to listing apps in {% data variables.product.prodname_marketplace %}.{% endif %} | <a href="#oauth_access-category-actions"><code>oauth_access</code></a> | Contains all activities related to <a href="/github/authenticating-to-github/keeping-your-account-and-data-secure/authorizing-oauth-apps">{% data variables.product.prodname_oauth_apps %}</a> you’ve connected with.{% ifversion fpt %} | <a href="#payment_method-category-actions"><code>payment_method</code></a> | Contains all activities related to paying for your {% data variables.product.prodname_dotcom %} subscription.{% endif %} | <a href="#profile_picture-category-actions"><code>profile_picture</code></a> | Contains all activities related to your profile picture. | <a href="#project-category-actions"><code>project</code></a> | Contains all activities related to project boards. | <a href="#public_key-category-actions"><code>public_key</code></a> | Contains all activities related to <a href="/articles/adding-a-new-ssh-key-to-your-github-account">your public SSH keys</a>. | <a href="#repo-category-actions"><code>repo</code></a> | Contains all activities related to the repositories you own.{% ifversion fpt %} | <a href="#sponsors-category-actions"><code>sponsors</code></a> | Contains all events related to {% data variables.product.prodname_sponsors %} and sponsor buttons (see “<a href="/sponsors/getting-started-with-github-sponsors/about-github-sponsors">About {% data variables.product.prodname_sponsors %}</a>” and “<a href="/articles/displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</a>”){% endif %}{% ifversion ghes or ghae %} | <a href="#team-category-actions"><code>team</code></a> | Contains all activities related to teams you are a part of.{% endif %}{% ifversion not ghae %} | <a href="#two_factor_authentication-category-actions"><code>two_factor_authentication</code></a> | Contains all activities related to <a href="/articles/securing-your-account-with-two-factor-authentication-2fa">two-factor authentication</a>.{% endif %} | <a href="#user-category-actions"><code>user</code></a> | Contains all activities related to your account.</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="exporting-your-security-log">Exporting your security log</h2>
+<p>{% data reusables.audit_log.export-log %} {% data reusables.audit_log.exported-log-keys-and-values %}</p>
+<p>{% endif %}</p>
+<h2 id="security-log-actions">Security log actions</h2>
+<p>An overview of some of the most common actions that are recorded as events in the security log.</p>
+<p>{% ifversion fpt %}</p>
+<h3 id="account_recovery_token-category-actions"><code>account_recovery_token</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>confirm</code></td>
+<td>Triggered when you successfully <a href="/articles/configuring-two-factor-authentication-recovery-methods">store a new token with a recovery provider</a>.</td>
+</tr>
+<tr class="even">
+<td><code>recover</code></td>
+<td>Triggered when you successfully <a href="/articles/recovering-your-account-if-you-lose-your-2fa-credentials">redeem an account recovery token</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>recover_error</code></td>
+<td>Triggered when a token is used but {% data variables.product.prodname_dotcom %} is not able to validate it.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="billing-category-actions"><code>billing</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>change_billing_type</code></td>
+<td>Triggered when you <a href="/articles/adding-or-editing-a-payment-method">change how you pay</a> for {% data variables.product.prodname_dotcom %}.</td>
+</tr>
+<tr class="even">
+<td><code>change_email</code></td>
+<td>Triggered when you <a href="/articles/changing-your-primary-email-address">change your email address</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="codespaces-category-actions"><code>codespaces</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you <a href="/github/developing-online-with-codespaces/creating-a-codespace">create a codespace</a>.</td>
+</tr>
+<tr class="even">
+<td><code>resume</code></td>
+<td>Triggered when you resume a suspended codespace.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when you <a href="/github/developing-online-with-codespaces/deleting-a-codespace">delete a codespace</a>.</td>
+</tr>
+<tr class="even">
+<td><code>manage_access_and_security</code></td>
+<td>Triggered when you update <a href="/github/developing-online-with-codespaces/managing-access-and-security-for-codespaces">the repositories a codespace has access to</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>trusted_repositories_access_update</code></td>
+<td>Triggered when you change your user account’s <a href="/github/developing-online-with-codespaces/managing-access-and-security-for-codespaces">access and security setting for {% data variables.product.prodname_codespaces %}</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="marketplace_agreement_signature-category-actions"><code>marketplace_agreement_signature</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you sign the {% data variables.product.prodname_marketplace %} Developer Agreement.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="marketplace_listing-category-actions"><code>marketplace_listing</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>approve</code></td>
+<td>Triggered when your listing is approved for inclusion in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when you create a listing for your app in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="odd">
+<td><code>delist</code></td>
+<td>Triggered when your listing is removed from {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="even">
+<td><code>redraft</code></td>
+<td>Triggered when your listing is sent back to draft state.</td>
+</tr>
+<tr class="odd">
+<td><code>reject</code></td>
+<td>Triggered when your listing is not accepted for inclusion in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="oauth_access-category-actions"><code>oauth_access</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you <a href="/github/authenticating-to-github/keeping-your-account-and-data-secure/authorizing-oauth-apps">grant access to an {% data variables.product.prodname_oauth_app %}</a>.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when you <a href="/articles/reviewing-your-authorized-integrations">revoke an {% data variables.product.prodname_oauth_app %}’s access to your account</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %}</p>
+<h3 id="payment_method-category-actions"><code>payment_method</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clear</code></td>
+<td>Triggered when <a href="/articles/removing-a-payment-method">a payment method</a> on file is removed.</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when a new payment method is added, such as a new credit card or PayPal account.</td>
+</tr>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when an existing payment method is updated.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="profile_picture-category-actions"><code>profile_picture</code> category actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when you <a href="/articles/setting-your-profile-picture/">set or update your profile picture</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="project-category-actions"><code>project</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>access</code></td>
+<td>Triggered when a project board’s visibility is changed.</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when a project board is created.</td>
+</tr>
+<tr class="odd">
+<td><code>rename</code></td>
+<td>Triggered when a project board is renamed.</td>
+</tr>
+<tr class="even">
+<td><code>update</code></td>
+<td>Triggered when a project board is updated.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when a project board is deleted.</td>
+</tr>
+<tr class="even">
+<td><code>link</code></td>
+<td>Triggered when a repository is linked to a project board.</td>
+</tr>
+<tr class="odd">
+<td><code>unlink</code></td>
+<td>Triggered when a repository is unlinked from a project board.</td>
+</tr>
+<tr class="even">
+<td><code>update_user_permission</code></td>
+<td>Triggered when an outside collaborator is added to or removed from a project board or has their permission level changed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="public_key-category-actions"><code>public_key</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you <a href="/articles/adding-a-new-ssh-key-to-your-github-account">add a new public SSH key to your {% data variables.product.product_name %} account</a>.</td>
+</tr>
+<tr class="even">
+<td><code>delete</code></td>
+<td>Triggered when you <a href="/articles/reviewing-your-ssh-keys">remove a public SSH key to your {% data variables.product.product_name %} account</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="repo-category-actions"><code>repo</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>access</code></td>
+<td>Triggered when you a repository you own is <a href="/articles/making-a-private-repository-public">switched from “private” to “public”</a> (or vice versa).</td>
+</tr>
+<tr class="even">
+<td><code>add_member</code></td>
+<td>Triggered when a {% data variables.product.product_name %} user is {% ifversion fpt %}<a href="/articles/inviting-collaborators-to-a-personal-repository">invited to have collaboration access</a>{% else %}<a href="/articles/inviting-collaborators-to-a-personal-repository">given collaboration access</a>{% endif %} to a repository.</td>
+</tr>
+<tr class="odd">
+<td><code>add_topic</code></td>
+<td>Triggered when a repository owner <a href="/articles/classifying-your-repository-with-topics">adds a topic</a> to a repository.</td>
+</tr>
+<tr class="even">
+<td><code>archived</code></td>
+<td>Triggered when a repository owner <a href="/articles/about-archiving-repositories">archives a repository</a>.{% ifversion ghes %}</td>
+</tr>
+<tr class="odd">
+<td><code>config.disable_anonymous_git_access</code></td>
+<td>Triggered when <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">anonymous Git read access is disabled</a> in a public repository.</td>
+</tr>
+<tr class="even">
+<td><code>config.enable_anonymous_git_access</code></td>
+<td>Triggered when <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">anonymous Git read access is enabled</a> in a public repository.</td>
+</tr>
+<tr class="odd">
+<td><code>config.lock_anonymous_git_access</code></td>
+<td>Triggered when a repository’s <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/preventing-users-from-changing-anonymous-git-read-access">anonymous Git read access setting is locked</a>.</td>
+</tr>
+<tr class="even">
+<td><code>config.unlock_anonymous_git_access</code></td>
+<td>Triggered when a repository’s <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/preventing-users-from-changing-anonymous-git-read-access">anonymous Git read access setting is unlocked</a>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when <a href="/articles/creating-a-new-repository">a new repository is created</a>.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when <a href="/articles/deleting-a-repository">a repository is deleted</a>.{% ifversion fpt %}</td>
+</tr>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when a repository is disabled (e.g., for <a href="/articles/unlocking-a-locked-account">insufficient funds</a>).{% endif %}{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when a repository is re-enabled.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>remove_member</code></td>
+<td>Triggered when a {% data variables.product.product_name %} user is <a href="/articles/removing-a-collaborator-from-a-personal-repository">removed from a repository as a collaborator</a>.</td>
+</tr>
+<tr class="even">
+<td><code>remove_topic</code></td>
+<td>Triggered when a repository owner removes a topic from a repository.</td>
+</tr>
+<tr class="odd">
+<td><code>rename</code></td>
+<td>Triggered when <a href="/articles/renaming-a-repository">a repository is renamed</a>.</td>
+</tr>
+<tr class="even">
+<td><code>transfer</code></td>
+<td>Triggered when <a href="/articles/how-to-transfer-a-repository">a repository is transferred</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>transfer_start</code></td>
+<td>Triggered when a repository transfer is about to occur.</td>
+</tr>
+<tr class="even">
+<td><code>unarchived</code></td>
+<td>Triggered when a repository owner unarchives a repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %} ### <code>sponsors</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>custom_amount_settings_change</code></td>
+<td>Triggered when you enable or disable custom amounts, or when you change the suggested custom amount (see “<a href="/github/supporting-the-open-source-community-with-github-sponsors/managing-your-sponsorship-tiers">Managing your sponsorship tiers</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>repo_funding_links_file_action</code></td>
+<td>Triggered when you change the FUNDING file in your repository (see “<a href="/articles/displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_cancel</code></td>
+<td>Triggered when you cancel a sponsorship (see “<a href="/articles/downgrading-a-sponsorship">Downgrading a sponsorship</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsor_sponsorship_create</code></td>
+<td>Triggered when you sponsor an account (see “<a href="/sponsors/sponsoring-open-source-contributors/sponsoring-an-open-source-contributor">Sponsoring an open source contributor</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_payment_complete</code></td>
+<td>Triggered after you sponsor an account and your payment has been processed (see “<a href="/sponsors/sponsoring-open-source-contributors/sponsoring-an-open-source-contributor">Sponsoring an open source contributor</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsor_sponsorship_preference_change</code></td>
+<td>Triggered when you change whether you receive email updates from a sponsored developer (see “<a href="/sponsors/sponsoring-open-source-contributors/managing-your-sponsorship">Managing your sponsorship</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_tier_change</code></td>
+<td>Triggered when you upgrade or downgrade your sponsorship (see “<a href="/articles/upgrading-a-sponsorship">Upgrading a sponsorship</a>” and “<a href="/articles/downgrading-a-sponsorship">Downgrading a sponsorship</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_approve</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is approved (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account">Setting up {% data variables.product.prodname_sponsors %} for your user account</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_create</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is created (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account">Setting up {% data variables.product.prodname_sponsors %} for your user account</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_disable</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is disabled</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_redraft</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is returned to draft state from approved state</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_profile_update</code></td>
+<td>Triggered when you edit your sponsored developer profile (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/editing-your-profile-details-for-github-sponsors">Editing your profile details for {% data variables.product.prodname_sponsors %}</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_request_approval</code></td>
+<td>Triggered when you submit your application for {% data variables.product.prodname_sponsors %} for approval (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account">Setting up {% data variables.product.prodname_sponsors %} for your user account</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_tier_description_update</code></td>
+<td>Triggered when you change the description for a sponsorship tier (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/managing-your-sponsorship-tiers">Managing your sponsorship tiers</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_update_newsletter_send</code></td>
+<td>Triggered when you send an email update to your sponsors (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/contacting-your-sponsors">Contacting your sponsors</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>waitlist_invite_sponsored_developer</code></td>
+<td>Triggered when you are invited to join {% data variables.product.prodname_sponsors %} from the waitlist (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account">Setting up {% data variables.product.prodname_sponsors %} for your user account</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>waitlist_join</code></td>
+<td>Triggered when you join the waitlist to become a sponsored developer (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account">Setting up {% data variables.product.prodname_sponsors %} for your user account</a>”)</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>successor_invitation</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>accept</code></td>
+<td>Triggered when you accept a succession invitation (see “<a href="/github/setting-up-and-managing-your-github-user-account/maintaining-ownership-continuity-of-your-user-accounts-repositories">Maintaining ownership continuity of your user account’s repositories</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>cancel</code></td>
+<td>Triggered when you cancel a succession invitation (see “<a href="/github/setting-up-and-managing-your-github-user-account/maintaining-ownership-continuity-of-your-user-accounts-repositories">Maintaining ownership continuity of your user account’s repositories</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you create a succession invitation (see “<a href="/github/setting-up-and-managing-your-github-user-account/maintaining-ownership-continuity-of-your-user-accounts-repositories">Maintaining ownership continuity of your user account’s repositories</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>decline</code></td>
+<td>Triggered when you decline a succession invitation (see “<a href="/github/setting-up-and-managing-your-github-user-account/maintaining-ownership-continuity-of-your-user-accounts-repositories">Maintaining ownership continuity of your user account’s repositories</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>revoke</code></td>
+<td>Triggered when you revoke a succession invitation (see “<a href="/github/setting-up-and-managing-your-github-user-account/maintaining-ownership-continuity-of-your-user-accounts-repositories">Maintaining ownership continuity of your user account’s repositories</a>”)</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion ghes or ghae %}</p>
+<h3 id="team-category-actions"><code>team</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>add_member</code></td>
+<td>Triggered when a member of an organization you belong to <a href="/articles/adding-organization-members-to-a-team">adds you to a team</a>.</td>
+</tr>
+<tr class="even">
+<td><code>add_repository</code></td>
+<td>Triggered when a team you are a member of is given control of a repository.</td>
+</tr>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a new team in an organization you belong to is created.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when a team you are a member of is deleted from the organization.</td>
+</tr>
+<tr class="odd">
+<td><code>remove_member</code></td>
+<td>Triggered when a member of an organization is <a href="/articles/removing-organization-members-from-a-team">removed from a team</a> you are a member of.</td>
+</tr>
+<tr class="even">
+<td><code>remove_repository</code></td>
+<td>Triggered when a repository is no longer under a team’s control.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion not ghae %} ### <code>two_factor_authentication</code> category actions</p>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>enabled</code></td>
+<td>Triggered when <a href="/articles/securing-your-account-with-two-factor-authentication-2fa">two-factor authentication</a> is enabled.</td>
+</tr>
+<tr class="even">
+<td><code>disabled</code></td>
+<td>Triggered when two-factor authentication is disabled.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="user-category-actions"><code>user</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>add_email</code></td>
+<td>Triggered when you {% ifversion not ghae %}<a href="/articles/changing-your-primary-email-address">add a new email address</a>{% else %}add a new email address{% endif %}.{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><code>codespaces_trusted_repo_access_granted</code></td>
+<td>Triggered when you [allow the codespaces you create for a repository to access other repositories owned by your user account](/github/developing-online-with-codespaces/managing-access-and-security-for-codespaces.</td>
+</tr>
+<tr class="odd">
+<td><code>codespaces_trusted_repo_access_revoked</code></td>
+<td>Triggered when you [disallow the codespaces you create for a repository to access other repositories owned by your user account](/github/developing-online-with-codespaces/managing-access-and-security-for-codespaces. {% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when you create a new user account.{% ifversion not ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>change_password</code></td>
+<td>Triggered when you change your password.</td>
+</tr>
+<tr class="even">
+<td><code>forgot_password</code></td>
+<td>Triggered when you ask for <a href="/articles/how-can-i-reset-my-password">a password reset</a>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>hide_private_contributions_count</code></td>
+<td>Triggered when you <a href="/articles/publicizing-or-hiding-your-private-contributions-on-your-profile">hide private contributions on your profile</a>.</td>
+</tr>
+<tr class="even">
+<td><code>login</code></td>
+<td>Triggered when you log in to {% data variables.product.product_location %}.{% ifversion ghes &gt; 2.22 or ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>mandatory_message_viewed</code></td>
+<td>Triggered when you view a mandatory message (see “<a href="/admin/user-management/customizing-user-messages-for-your-enterprise">Customizing user messages</a>” for details)</td>
+</tr>
+<tr class="even">
+<td><code>failed_login</code></td>
+<td>Triggered when you failed to log in successfully.</td>
+</tr>
+<tr class="odd">
+<td><code>remove_email</code></td>
+<td>Triggered when you remove an email address.</td>
+</tr>
+<tr class="even">
+<td><code>rename</code></td>
+<td>Triggered when you rename your account.{% ifversion fpt %}</td>
+</tr>
+<tr class="odd">
+<td><code>report_content</code></td>
+<td>Triggered when you <a href="/communities/maintaining-your-safety-on-github/reporting-abuse-or-spam">report an issue or pull request, or a comment on an issue, pull request, or commit</a>.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>show_private_contributions_count</code></td>
+<td>Triggered when you <a href="/articles/publicizing-or-hiding-your-private-contributions-on-your-profile">publicize private contributions on your profile</a>.{% ifversion not ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>two_factor_requested</code></td>
+<td>Triggered when {% data variables.product.product_name %} asks you for <a href="/articles/accessing-github-using-two-factor-authentication">your two-factor authentication code</a>.{% endif %}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="user_status-category-actions"><code>user_status</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when you set or change the status on your profile. For more information, see “<a href="/articles/personalizing-your-profile/#setting-a-status">Setting a status</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when you clear the status on your profile.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

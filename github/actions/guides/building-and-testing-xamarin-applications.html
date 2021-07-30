@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Building and testing Xamarin applications</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Building and testing Xamarin applications</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you how to create a workflow that performs continuous
+      integration (CI) for your Xamarin project. The workflow you create will
+      allow you to see when commits to a pull request cause build or test
+      failures against your default branch; this approach can help ensure that
+      your code is always healthy.
+    </p>
+    <p>
+      For a full list of available Xamarin SDK versions on the {% data
+      variables.product.prodname_actions %}-hosted macOS runners, see the
+      documentation:
+    </p>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/actions/virtual-environments/blob/main/images/macos/macos-10.15-Readme.md#xamarin-bundles"
+          >macOS 10.15</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md#xamarin-bundles"
+          >macOS 11</a
+        >
+      </li>
+    </ul>
+    <p>{% data reusables.github-actions.macos-runner-preview %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      We recommend that you have a basic understanding of Xamarin, .NET Core
+      SDK, YAML, workflow configuration options, and how to create a workflow
+      file. For more information, see:
+    </p>
+    <ul>
+      <li>
+        “<a
+          href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions"
+          >Workflow syntax for {% data variables.product.prodname_actions %}</a
+        >”
+      </li>
+      <li>
+        “<a href="https://dotnet.microsoft.com/learn"
+          >Getting started with .NET</a
+        >”
+      </li>
+      <li>
+        “<a href="https://dotnet.microsoft.com/learn/xamarin">Learn Xamarin</a>”
+      </li>
+    </ul>
+    <h2 id="building-xamarin.ios-apps">Building Xamarin.iOS apps</h2>
+    <p>
+      The example below demonstrates how to change the default Xamarin SDK
+      versions and build a Xamarin.iOS application.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">name:</span><span class="at"> Build Xamarin.iOS app</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="fu">runs-on:</span><span class="at"> macos-latest</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set default Xamarin SDK versions</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="fu">      run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb1-14" title="14">        $VM_ASSETS/select-xamarin-sdk-v2.sh --mono=6.12 --ios=14.10</a>
+<a class="sourceLine" id="cb1-15" title="15">    </a>
+<a class="sourceLine" id="cb1-16" title="16">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set default Xcode 12.3</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="fu">      run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb1-18" title="18">        XCODE_ROOT=/Applications/Xcode_12.3.0.app</a>
+<a class="sourceLine" id="cb1-19" title="19">        echo &quot;MD_APPLE_SDK_ROOT=$XCODE_ROOT&quot; &gt;&gt; $GITHUB_ENV</a>
+<a class="sourceLine" id="cb1-20" title="20">        sudo xcode-select -s $XCODE_ROOT</a>
+<a class="sourceLine" id="cb1-21" title="21"></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Setup .NET Core SDK 5.0.x</span></a>
+<a class="sourceLine" id="cb1-23" title="23">      <span class="fu">uses:</span><span class="at"> actions/setup-dotnet@v1</span></a>
+<a class="sourceLine" id="cb1-24" title="24">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb1-25" title="25">        <span class="fu">dotnet-version:</span><span class="at"> </span><span class="st">&#39;5.0.x&#39;</span></a>
+<a class="sourceLine" id="cb1-26" title="26"></a>
+<a class="sourceLine" id="cb1-27" title="27">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install dependencies</span></a>
+<a class="sourceLine" id="cb1-28" title="28">      <span class="fu">run:</span><span class="at"> nuget restore &lt;sln_file_path&gt;</span></a>
+<a class="sourceLine" id="cb1-29" title="29"></a>
+<a class="sourceLine" id="cb1-30" title="30">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Build</span></a>
+<a class="sourceLine" id="cb1-31" title="31">      <span class="fu">run:</span><span class="at"> msbuild &lt;csproj_file_path&gt; /p:Configuration=Debug /p:Platform=iPhoneSimulator /t:Rebuild</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <h2 id="building-xamarin.android-apps">Building Xamarin.Android apps</h2>
+    <p>
+      The example below demonstrates how to change default Xamarin SDK versions
+      and build a Xamarin.Android application.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">name:</span><span class="at"> Build Xamarin.Android app</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="fu">runs-on:</span><span class="at"> macos-latest</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set default Xamarin SDK versions</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="fu">      run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb2-14" title="14">        $VM_ASSETS/select-xamarin-sdk-v2.sh --mono=6.10 --android=10.2</a>
+<a class="sourceLine" id="cb2-15" title="15"></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Setup .NET Core SDK 5.0.x</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="fu">uses:</span><span class="at"> actions/setup-dotnet@v1</span></a>
+<a class="sourceLine" id="cb2-18" title="18">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb2-19" title="19">        <span class="fu">dotnet-version:</span><span class="at"> </span><span class="st">&#39;5.0.x&#39;</span></a>
+<a class="sourceLine" id="cb2-20" title="20"></a>
+<a class="sourceLine" id="cb2-21" title="21">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install dependencies</span></a>
+<a class="sourceLine" id="cb2-22" title="22">      <span class="fu">run:</span><span class="at"> nuget restore &lt;sln_file_path&gt;</span></a>
+<a class="sourceLine" id="cb2-23" title="23"></a>
+<a class="sourceLine" id="cb2-24" title="24">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Build</span></a>
+<a class="sourceLine" id="cb2-25" title="25">      <span class="fu">run:</span><span class="at"> msbuild &lt;csproj_file_path&gt; /t:PackageForAndroid /p:Configuration=Debug</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <h2 id="specifying-a-.net-version">Specifying a .NET version</h2>
+    <p>
+      To use a preinstalled version of the .NET Core SDK on a {% data
+      variables.product.prodname_dotcom %}-hosted runner, use the
+      <code>setup-dotnet</code> action. This action finds a specific version of
+      .NET from the tools cache on each runner, and adds the necessary binaries
+      to <code>PATH</code>. These changes will persist for the remainder of the
+      job.
+    </p>
+    <p>
+      The <code>setup-dotnet</code> action is the recommended way of using .NET
+      with {% data variables.product.prodname_actions %}, because it ensures
+      consistent behavior across different runners and different versions of
+      .NET. If you are using a self-hosted runner, you must install .NET and add
+      it to <code>PATH</code>. For more information, see the
+      <a href="https://github.com/marketplace/actions/setup-net-core-sdk"
+        ><code>setup-dotnet</code></a
+      >
+      action.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Deleting a package</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Deleting a package</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}</p>
+<p>{% ifversion not ghae %}At this time, {% data variables.product.prodname_registry %} on {% data variables.product.product_location %} does not support deleting public packages.{% endif %}</p>
+<p>You can only delete a specified version of a {% ifversion not ghae %}private {% endif %}package on {% data variables.product.product_name %} or with the GraphQL API. To remove an entire {% ifversion not ghae %}private {% endif %}package from appearing on {% data variables.product.product_name %}, you must delete every version of the package first.</p>
+<h2 id="deleting-a-version-of-a-ifversion-not-ghae-private-endif-package-on-data-variables.product.product_name">Deleting a version of a {% ifversion not ghae %}private {% endif %}package on {% data variables.product.product_name %}</h2>
+<p>To delete a {% ifversion not ghae %}private {% endif %}package version, you must have admin permissions in the repository.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.package_registry.packages-from-code-tab %} 3. Click the name of the package that you want to delete. <img src="/assets/images/help/package-registry/select-pkg-cloud.png" alt="Package name" /> 4. On the right, use the <strong>Edit package</strong> drop-down and select “Manage versions”. <img src="/assets/images/help/package-registry/manage-versions.png" alt="Package name" /> 5. To the right of the version you want to delete, click <strong>Delete</strong>. <img src="/assets/images/help/package-registry/delete-package-button.png" alt="Delete package button" /> 6. To confirm deletion, type the package name and click <strong>I understand the consequences, delete this version</strong>. <img src="/assets/images/help/package-registry/confirm-package-deletion.png" alt="Confirm package deletion button" /></p>
+<h2 id="deleting-a-version-of-a-ifversion-not-ghae-private-endif-package-with-graphql">Deleting a version of a {% ifversion not ghae %}private {% endif %}package with GraphQL</h2>
+<p>Use the <code>deletePackageVersion</code> mutation in the GraphQL API. You must use a token with the <code>read:packages</code>, <code>delete:packages</code>, and <code>repo</code> scopes. For more information about tokens, see “<a href="/packages/publishing-and-managing-packages/about-github-packages#authenticating-to-github-packages">About {% data variables.product.prodname_registry %}</a>.”</p>
+<p>Here is an example cURL command to delete a package version with the package version ID of <code>MDIyOlJlZ2lzdHJ5UGFja2FnZVZlcnNpb243MTExNg</code>, using a personal access token.</p>
+<pre class="shell"><code>curl -X POST \
+-H &quot;Accept: application/vnd.github.package-deletes-preview+json&quot; \
+-H &quot;Authorization: bearer TOKEN&quot; \
+-d &#39;{&quot;query&quot;:&quot;mutation { deletePackageVersion(input:{packageVersionId:\&quot;MDIyOlJlZ2lzdHJ5UGFja2FnZVZlcnNpb243MTExNg==\&quot;}) { success }}&quot;}&#39; \
+HOSTNAME/graphql</code></pre>
+<p>To find all of the {% ifversion not ghae %}private {% endif %}packages you have published to {% data variables.product.prodname_registry %}, along with the version IDs for the packages, you can use the <code>packages</code> connection through the <code>repository</code> object. You will need a token with the <code>read:packages</code> and <code>repo</code> scopes. For more information, see the <a href="/graphql/reference/objects#repository"><code>packages</code></a> connection or the <a href="/graphql/reference/interfaces#packageowner"><code>PackageOwner</code></a> interface.</p>
+<p>For more information about the <code>deletePackageVersion</code> mutation, see “<a href="/graphql/reference/mutations#deletepackageversion"><code>deletePackageVersion</code></a>.”</p>
+<p>You cannot delete an entire package, but if you delete every version of a package, the package will no longer show on {% data variables.product.product_name %}.</p>
+</body>
+</html>

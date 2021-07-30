@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring two-factor authentication recovery methods</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring two-factor authentication recovery methods</h1>
+</header>
+<p>In addition to securely storing your two-factor authentication recovery codes, we strongly recommend configuring one or more additional recovery methods.</p>
+<h2 id="downloading-your-two-factor-authentication-recovery-codes">Downloading your two-factor authentication recovery codes</h2>
+<p>{% data reusables.two_fa.about-recovery-codes %} You can also download your recovery codes at any point after enabling two-factor authentication.</p>
+<p>To keep your account secure, don’t share or distribute your recovery codes. We recommend saving them with a secure password manager, such as: - <a href="https://1password.com/">1Password</a> - <a href="https://keepersecurity.com/">Keeper</a> - <a href="https://lastpass.com/">LastPass</a></p>
+<p>If you generate new recovery codes or disable and re-enable 2FA, the recovery codes in your security settings automatically update.</p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.security %} {% data reusables.two_fa.show-recovery-codes %} 4. Save your recovery codes in a safe place. Your recovery codes can help you get back into your account if you lose access. - To save your recovery codes on your device, click <strong>Download</strong>. - To save a hard copy of your recovery codes, click <strong>Print</strong>. - To copy your recovery codes for storage in a password manager, click <strong>Copy</strong>. <img src="/assets/images/help/2fa/download-print-or-copy-recovery-codes-before-continuing.png" alt="List of recovery codes with option to download, print, or copy the codes" /></p>
+<h2 id="generating-a-new-set-of-recovery-codes">Generating a new set of recovery codes</h2>
+<p>Once you use a recovery code to regain access to your account, it cannot be reused. If you’ve used all 16 recovery codes, you can generate another list of codes. Generating a new set of recovery codes will invalidate any codes you previously generated.</p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.security %} {% data reusables.two_fa.show-recovery-codes %} 3. To create another batch of recovery codes, click <strong>Generate new recovery codes</strong>. <img src="/assets/images/help/2fa/generate-new-recovery-codes.png" alt="Generate new recovery codes button" /></p>
+<h2 id="configuring-a-security-key-as-an-additional-two-factor-authentication-method">Configuring a security key as an additional two-factor authentication method</h2>
+<p>You can set up a security key as a secondary two-factor authentication method, and use the security key to regain access to your account. For more information, see “<a href="/articles/configuring-two-factor-authentication#configuring-two-factor-authentication-using-a-security-key">Configuring two-factor authentication</a>.”</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="setting-a-fallback-authentication-number">Setting a fallback authentication number</h2>
+<p>You can provide a second number for a fallback device. If you lose access to both your primary device and your recovery codes, a backup SMS number can get you back in to your account.</p>
+<p>You can use a fallback number regardless of whether you’ve configured authentication via text message or TOTP mobile application.</p>
+<p>{% warning %}</p>
+<p><strong>Warning:</strong> Using a fallback number is a last resort. We recommend configuring additional recovery methods if you set a fallback authentication number. - Bad actors may attack cell phone carriers, so SMS authentication is risky. - SMS messages are only supported for certain countries outside the US; for the list, see “<a href="/articles/countries-where-sms-authentication-is-supported">Countries where SMS authentication is supported</a>”.</p>
+<p>{% endwarning %}</p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.security %} 3. Next to “Fallback SMS number”, click <strong>Add</strong>. <img src="/assets/images/help/2fa/add-fallback-sms-number-button.png" alt="Add fallback SMS number button" /> 4. Under “Fallback SMS number”, click <strong>Add fallback SMS number</strong>. <img src="/assets/images/help/2fa/add_fallback_sms_number_text.png" alt="Add fallback SMS number text" /> 5. Select your country code and type your mobile phone number, including the area code. When your information is correct, click <strong>Set fallback</strong>. <img src="/assets/images/help/2fa/2fa-fallback-number.png" alt="Set fallback SMS number" /></p>
+<p>After setup, the backup device will receive a confirmation SMS.</p>
+<h2 id="adding-a-fallback-authentication-method-with-recover-accounts-elsewhere">Adding a fallback authentication method with Recover Accounts Elsewhere</h2>
+<p>You can generate an extra authentication credential for your account and store it with a partner recovery provider.</p>
+<h3 id="about-recover-accounts-elsewhere">About Recover Accounts Elsewhere</h3>
+<p>With Recover Accounts Elsewhere, you can add an extra security factor to your {% data variables.product.product_name %} account in case you lose access to your two-factor authentication method or recovery codes.</p>
+<p>Recover Accounts Elsewhere lets you associate your {% data variables.product.product_name %} account with your Facebook account. You can store an authentication credential in the form of an <em>account recovery token</em> for your {% data variables.product.product_name %} account with Facebook.</p>
+<p>If you lose access to your {% data variables.product.product_name %} account because you no longer have access to your two-factor authentication method or recovery codes, you can retrieve your account recovery token from the recovery provider to help prove that you’re the owner of your {% data variables.product.product_name %} account.</p>
+<p>After you retrieve your token, {% data variables.contact.contact_support %} may be able to disable two-factor authentication for your account. Then, you can provide or reset your password to regain access to your account.</p>
+<p>When you generate or retrieve an account recovery token, an event is added to your account’s audit log. For more information, see “<a href="/articles/reviewing-your-security-log">Reviewing your security log</a>.”</p>
+<h3 id="generating-and-storing-an-account-recovery-token">Generating and storing an account recovery token</h3>
+<p>You can generate an account recovery token and store it with a partner recovery provider.</p>
+<ol type="1">
+<li>Sign in to your Facebook account, then return to {% data variables.product.product_name %}. {% data reusables.user_settings.access_settings %} {% data reusables.user_settings.security %}</li>
+<li>To generate a new token, under “Recovery tokens,” click <strong>Store new token</strong>. <img src="/assets/images/help/settings/store-new-recovery-token.png" alt="Button for storing a new recovery token" /></li>
+<li>Read the information about account recovery tokens, then click <strong>Connect with https://www.facebook.com</strong>. <img src="/assets/images/help/settings/connect-recovery-token-with-facebook.png" alt="Button for connecting a recovery token with Facebook" /></li>
+<li>After you’re redirected to Facebook, read the information about turning on account recovery with Facebook before you click <strong>Save as [<em>YOUR NAME</em>]</strong>. (If you save multiple tokens within a short period of time, Facebook may skip this confirmation step after you save your first token.) <img src="/assets/images/help/settings/security-turn-on-rae-facebook.png" alt="Facebook page with button for turning on account recovery" /></li>
+</ol>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-two-factor-authentication">About two-factor authentication</a>”</li>
+<li>“<a href="/articles/configuring-two-factor-authentication">Configuring two-factor authentication</a>”</li>
+<li>“<a href="/articles/accessing-github-using-two-factor-authentication">Accessing {% data variables.product.prodname_dotcom %} using two-factor authentication</a>”</li>
+<li>“<a href="/articles/recovering-your-account-if-you-lose-your-2fa-credentials">Recovering your account if you lose your two-factor authentication credentials</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using a staging environment</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using a staging environment</h1>
+    </header>
+    <p>
+      It can be useful to have a staging or testing environment for {% data
+      variables.product.product_location %}, so that you can test updates or new
+      features before implementing them in your production environment.
+    </p>
+    <p>
+      A common way to create the staging environment is to use a backup of your
+      production instance and restore it to the staging environment.
+    </p>
+    <p>
+      When setting up a {% data variables.product.prodname_ghe_server %} staging
+      environment that has {% data variables.product.prodname_actions %}
+      enabled, you must use a different external storage configuration for {%
+      data variables.product.prodname_actions %} storage than your production
+      environment uses. Otherwise, your staging environment will write to the
+      same external storage as production.
+    </p>
+    <p>
+      Expect to see <code>404</code> errors in your staging environment when
+      trying to view logs or artifacts from existing {% data
+      variables.product.prodname_actions %} workflow runs, because that data
+      will be missing from your staging storage location.
+    </p>
+    <p>
+      Although it is not required for {% data variables.product.prodname_actions
+      %} to be functional in your staging environment, you can optionally copy
+      the files from the production storage location to the staging storage
+      location.
+    </p>
+    <ul>
+      <li>
+        <p>
+          For an Azure storage account, you can use
+          <a
+            href="https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs#copy-all-containers-directories-and-blobs-to-another-storage-account"
+            ><code>azcopy</code></a
+          >. For example:
+        </p>
+        <pre
+          class="shell"
+        ><code>azcopy copy &#39;https://&lt;em&gt;SOURCE-STORAGE-ACCOUNT-NAME&lt;/em&gt;.blob.core.windows.net/&lt;em&gt;SAS-TOKEN&lt;/em&gt;&#39; &#39;https://&lt;em&gt;DESTINATION-STORAGE-ACCOUNT-NAME&lt;/em&gt;.blob.core.windows.net/&#39; --recursive</code></pre>
+      </li>
+      <li>
+        <p>
+          For Amazon S3 buckets, you can use
+          <a
+            href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/sync.html"
+            ><code>aws s3 sync</code></a
+          >. For example:
+        </p>
+        <pre
+          class="shell"
+        ><code>aws s3 sync s3://&lt;em&gt;SOURCE-BUCKET&lt;/em&gt; s3://&lt;em&gt;DESTINATION-BUCKET&lt;/em&gt;</code></pre>
+      </li>
+    </ul>
+  </body>
+</html>

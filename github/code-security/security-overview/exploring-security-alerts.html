@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Exploring security alerts</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exploring security alerts</h1>
+</header>
+<p>{% data reusables.security-center.beta %}</p>
+<h2 id="about-the-security-overview">About the security overview</h2>
+<p>You can use the security overview for a high-level view of the security status of your organization or to identify problematic repositories that require intervention. At the organization-level, the security overview displays aggregate and repository-specific security information for repositories owned by your organization. At the team-level, the security overview displays repository-specific security information for repositories that the team has admin privileges for. For more information, see “<a href="/organizations/managing-access-to-your-organizations-repositories/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a>.”</p>
+<p>The security overview indicates whether {% data variables.product.prodname_GH_advanced_security %} features are enabled for repositories owned by your organization and consolidates alerts from {% data variables.product.prodname_advanced_security %} features, including {% data variables.product.prodname_code_scanning %} alerts, {% data variables.product.prodname_dependabot_alerts %}, and {% data variables.product.prodname_secret_scanning %} alerts. For more information, see “<a href="/code-security/getting-started/securing-your-repository">Securing your repository</a>” and “<a href="/code-security/getting-started/securing-your-organization">Securing your organization</a>.”</p>
+<p>In the security overview, you can view, sort, and filter alerts to understand the security risks in your organization and in specific repositories. You can apply multiple filters to focus on areas of interest. For example, you can identify private repositories that have a high number of {% data variables.product.prodname_dependabot_alerts %} or repositories that have no {% data variables.product.prodname_code_scanning %} alerts.</p>
+<figure>
+<img src="/assets/images/help/organizations/security-overview.png" alt="The security overview for an organization" /><figcaption>The security overview for an organization</figcaption>
+</figure>
+<p>For each repository in the security overview, you will see icons for each type of {% data variables.product.prodname_advanced_security %} feature and how many alerts there are of each type. If an {% data variables.product.prodname_advanced_security %} feature is not enabled for a repository, the icon for that feature will be grayed out.</p>
+<figure>
+<img src="/assets/images/help/organizations/security-overview-icons.png" alt="Icons in the security overview" /><figcaption>Icons in the security overview</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Icon</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>{% octicon “code-square” aria-label=“Code scanning alerts” %}</td>
+<td>{% data variables.product.prodname_code_scanning_capc %} alerts. For more information, see “<a href="/code-security/secure-coding/about-code-scanning">About {% data variables.product.prodname_code_scanning %}</a>.”</td>
+</tr>
+<tr class="even">
+<td>{% octicon “key” aria-label=“Secret scanning alerts” %}</td>
+<td>{% data variables.product.prodname_secret_scanning_caps %} alerts. For more information, see “<a href="/code-security/secret-security/about-secret-scanning">About {% data variables.product.prodname_secret_scanning %}</a>.”</td>
+</tr>
+<tr class="odd">
+<td>{% octicon “hubot” aria-label=“Dependabot alerts” %}</td>
+<td>{% data variables.product.prodname_dependabot_alerts %}. For more information, see “<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.”</td>
+</tr>
+<tr class="even">
+<td>{% octicon “check” aria-label=“Check” %}</td>
+<td>The {% data variables.product.prodname_advanced_security %} feature is enabled, but does not raise alerts in this repository.</td>
+</tr>
+<tr class="odd">
+<td>{% octicon “x” aria-label=“x” %}</td>
+<td>The {% data variables.product.prodname_advanced_security %} feature is not supported in this repository.</td>
+</tr>
+</tbody>
+</table>
+<p>By default, archived repositories are excluded from the security overview for an organization. You can apply filters to view archived repositories in the security overview. For more information, see “<a href="#filtering-the-list-of-alerts">Filtering the list of alerts</a>.”</p>
+<p>The security overview displays active alerts raised by {% data variables.product.prodname_GH_advanced_security %} features. If there are no alerts in the security overview for a repository, undetected security vulnerabilities or code errors may still exist.</p>
+<h2 id="viewing-the-security-overview-for-an-organization">Viewing the security overview for an organization</h2>
+<p>Organization owners can view the security overview for an organization.</p>
+<p>{% data reusables.organizations.navigate-to-org %} {% data reusables.organizations.security-overview %} 1. To view aggregate information about alert types, click <strong>Show more</strong>. <img src="/assets/images/help/organizations/security-overview-show-more-button.png" alt="Show more button" /> {% data reusables.organizations.filter-security-overview %}</p>
+<h2 id="viewing-the-security-overview-for-a-team">Viewing the security overview for a team</h2>
+<p>Members of a team can see the security overview for repositories that the team has admin privileges for.</p>
+<p>{% data reusables.profile.access_org %} {% data reusables.user_settings.access_org %} {% data reusables.organizations.specific_team %} {% data reusables.organizations.team-security-overview %} {% data reusables.organizations.filter-security-overview %}</p>
+<h2 id="filtering-the-list-of-alerts">Filtering the list of alerts</h2>
+<h3 id="filter-by-level-of-risk-for-repositories">Filter by level of risk for repositories</h3>
+<p>The level of risk for a repository is determined by the number and severity of alerts from {% data variables.product.prodname_advanced_security %} features. If one or more {% data variables.product.prodname_advanced_security %} features are not enabled for a repository, the repository will have an unknown level of risk. If a repository has no risks that are detected by {% data variables.product.prodname_advanced_security %} features, the repository will have a clear level of risk.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>risk:high</code></td>
+<td>Display repositories that are at high risk.</td>
+</tr>
+<tr class="even">
+<td><code>risk:medium</code></td>
+<td>Display repositories that are at medium risk.</td>
+</tr>
+<tr class="odd">
+<td><code>risk:low</code></td>
+<td>Display repositories that are at low risk.</td>
+</tr>
+<tr class="even">
+<td><code>risk:unknown</code></td>
+<td>Display repositories that are at an unknown level of risk.</td>
+</tr>
+<tr class="odd">
+<td><code>risk:clear</code></td>
+<td>Display repositories that have no detected level of risk.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-by-number-of-alerts">Filter by number of alerts</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>code-scanning-alerts:<em>n</em></code></td>
+<td>Display repositories that have <em>n</em> {% data variables.product.prodname_code_scanning %} alerts. This qualifier can use &amp;gt and &amp;lt comparison operators.</td>
+</tr>
+<tr class="even">
+<td><code>secret-scanning-alerts:<em>n</em></code></td>
+<td>Display repositories that have <em>n</em> {% data variables.product.prodname_secret_scanning %} alerts. This qualifier can use &amp;gt and &amp;lt comparison operators.</td>
+</tr>
+<tr class="odd">
+<td><code>dependabot-alerts:<em>n</em></code></td>
+<td>Display repositories that have <em>n</em> {% data variables.product.prodname_dependabot_alerts %}. This qualifier can use &amp;gt and &amp;lt comparison operators.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-by-whether-data-variables.product.prodname_advanced_security-features-are-enabled">Filter by whether {% data variables.product.prodname_advanced_security %} features are enabled</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>enabled:code-scanning</code></td>
+<td>Display repositories that have {% data variables.product.prodname_code_scanning %} enabled.</td>
+</tr>
+<tr class="even">
+<td><code>not-enabled:code-scanning</code></td>
+<td>Display repositories that do not have {% data variables.product.prodname_code_scanning %} enabled.</td>
+</tr>
+<tr class="odd">
+<td><code>enabled:secret-scanning</code></td>
+<td>Display repositories that have {% data variables.product.prodname_secret_scanning %} enabled.</td>
+</tr>
+<tr class="even">
+<td><code>not-enabled:secret-scanning</code></td>
+<td>Display repositories that have {% data variables.product.prodname_secret_scanning %} enabled.</td>
+</tr>
+<tr class="odd">
+<td><code>enabled:dependabot-alerts</code></td>
+<td>Display repositories that have {% data variables.product.prodname_dependabot_alerts %} enabled.</td>
+</tr>
+<tr class="even">
+<td><code>not-enabled:dependabot-alerts</code></td>
+<td>Display repositories that do not have {% data variables.product.prodname_dependabot_alerts %} enabled.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-by-repository-type">Filter by repository type</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is:public</code></td>
+<td>Display public repositories.</td>
+</tr>
+<tr class="even">
+<td><code>is:internal</code></td>
+<td>Display internal repositories.</td>
+</tr>
+<tr class="odd">
+<td><code>is:private</code></td>
+<td>Display private repositories.</td>
+</tr>
+<tr class="even">
+<td><code>archived:true</code></td>
+<td>Display archived repositories.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-by-team">Filter by team</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>team:<em>TEAM-NAME</em></code></td>
+<td>Displays repositories that <em>TEAM-NAME</em> has admin privileges for.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-by-topic">Filter by topic</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>topic:<em>TOPIC-NAME</em></code></td>
+<td>Displays repositories that are classified with <em>TOPIC-NAME</em>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sort-the-list-of-alerts">Sort the list of alerts</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sort:risk</code></td>
+<td>Sorts the repositories in your security overview by risk.</td>
+</tr>
+<tr class="even">
+<td><code>sort:repos</code></td>
+<td>Sorts the repositories in your security overview alphabetically by name.</td>
+</tr>
+<tr class="odd">
+<td><code>sort:code-scanning-alerts</code></td>
+<td>Sorts the repositories in your security overview by number of {% data variables.product.prodname_code_scanning %} alerts.</td>
+</tr>
+<tr class="even">
+<td><code>sort:secret-scanning-alerts</code></td>
+<td>Sorts the repositories in your security overview by number of {% data variables.product.prodname_secret_scanning %} alerts.</td>
+</tr>
+<tr class="odd">
+<td><code>sort:dependabot-alerts</code></td>
+<td>Sorts the repositories in your security overview by number of {% data variables.product.prodname_dependabot_alerts %}.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

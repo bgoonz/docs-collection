@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Signing commits</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Signing commits</h1>
+</header>
+<p>{% data reusables.gpg.desktop-support-for-commit-signing %}</p>
+<p>{% tip %}</p>
+<p><strong>Tips:</strong></p>
+<p>To configure your Git client to sign commits by default for a local repository, in Git versions 2.0.0 and above, run <code>git config commit.gpgsign true</code>. To sign all commits by default in any local repository on your computer, run <code>git config --global commit.gpgsign true</code>.</p>
+<p>To store your GPG key passphrase so you don’t have to enter it every time you sign a commit, we recommend using the following tools: - For Mac users, the <a href="https://gpgtools.org/">GPG Suite</a> allows you to store your GPG key passphrase in the Mac OS Keychain. - For Windows users, the <a href="https://www.gpg4win.org/">Gpg4win</a> integrates with other Windows tools.</p>
+<p>You can also manually configure <a href="http://linux.die.net/man/1/gpg-agent">gpg-agent</a> to save your GPG key passphrase, but this doesn’t integrate with Mac OS Keychain like ssh-agent and requires more setup.</p>
+<p>{% endtip %}</p>
+<p>If you have multiple keys or are attempting to sign commits or tags with a key that doesn’t match your committer identity, you should <a href="/articles/telling-git-about-your-signing-key">tell Git about your signing key</a>.</p>
+<ol type="1">
+<li>When committing changes in your local branch, add the -S flag to the git commit command:</li>
+</ol>
+<pre class="shell"><code>$ git commit -S -m &lt;em&gt;your commit message&lt;/em&gt;
+# Creates a signed commit</code></pre>
+<ol start="2" type="1">
+<li>If you’re using GPG, after you create your commit, provide the passphrase you set up when you <a href="/articles/generating-a-new-gpg-key">generated your GPG key</a>.</li>
+<li>When you’ve finished creating commits locally, push them to your remote repository on {% data variables.product.product_name %}:</li>
+</ol>
+<pre class="shell"><code>$ git push
+# Pushes your local commits to the remote repository</code></pre>
+<ol start="4" type="1">
+<li>On {% data variables.product.product_name %}, navigate to your pull request. {% data reusables.repositories.review-pr-commits %}</li>
+<li>To view more detailed information about the verified signature, click Verified. <img src="/assets/images/help/commits/gpg-signed-commit-verified-without-details.png" alt="Signed commit" /></li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/checking-for-existing-gpg-keys">Checking for existing GPG keys</a>”</li>
+<li>“<a href="/articles/generating-a-new-gpg-key">Generating a new GPG key</a>”</li>
+<li>“<a href="/articles/adding-a-new-gpg-key-to-your-github-account">Adding a new GPG key to your GitHub account</a>”</li>
+<li>“<a href="/articles/telling-git-about-your-signing-key">Telling Git about your signing key</a>”</li>
+<li>“<a href="/articles/associating-an-email-with-your-gpg-key">Associating an email with your GPG key</a>”</li>
+<li>“<a href="/articles/signing-tags">Signing tags</a>”</li>
+</ul>
+</body>
+</html>

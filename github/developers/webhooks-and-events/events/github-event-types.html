@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>GitHub event types</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">GitHub event types</h1>
+</header>
+<p>The Events API can return different types of events triggered by activity on GitHub. Each event response contains shared properties, but has a unique <code>payload</code> object determined by its event type. The <a href="#event-object-common-properties">Event object common properties</a> describes the properties shared by all events, and each event type describes the <code>payload</code> properties that are unique to the specific event.</p>
+<p>{% ifversion fpt %}</p>
+<p>{% endif %}</p>
+<h2 id="event-object-common-properties">Event object common properties</h2>
+<p>The event objects returned from the Events API endpoints have the same structure.</p>
+<table>
+<colgroup>
+<col style="width: 66%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event API attribute name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>Unique identifier for the event.</td>
+</tr>
+<tr class="even">
+<td><code>type</code></td>
+<td>The type of event. Events uses PascalCase for the name.</td>
+</tr>
+<tr class="odd">
+<td><code>actor</code></td>
+<td>The user that triggered the event.</td>
+</tr>
+<tr class="even">
+<td><code>actor.id</code></td>
+<td>The unique identifier for the actor.</td>
+</tr>
+<tr class="odd">
+<td><code>actor.login</code></td>
+<td>The username of the actor.</td>
+</tr>
+<tr class="even">
+<td><code>actor.display_login</code></td>
+<td>The specific display format of the username.</td>
+</tr>
+<tr class="odd">
+<td><code>actor.gravatar_id</code></td>
+<td>The unique identifier of the Gravatar profile for the actor.</td>
+</tr>
+<tr class="even">
+<td><code>actor.url</code></td>
+<td>The REST API URL used to retrieve the user object, which includes additional user information.</td>
+</tr>
+<tr class="odd">
+<td><code>actor.avatar_url</code></td>
+<td>The URL of the actor’s profile image.</td>
+</tr>
+<tr class="even">
+<td><code>repo</code></td>
+<td>The repository object where the event occurred.</td>
+</tr>
+<tr class="odd">
+<td><code>repo.id</code></td>
+<td>The unique identifier of the repository.</td>
+</tr>
+<tr class="even">
+<td><code>repo.name</code></td>
+<td>The name of the repository, which includes the owner and repository name. For example, <code>octocat/hello-world</code> is the name of the <code>hello-world</code> repository owned by the <code>octocat</code> user account.</td>
+</tr>
+<tr class="odd">
+<td><code>repo.url</code></td>
+<td>The REST API URL used to retrieve the repository object, which includes additional repository information.</td>
+</tr>
+<tr class="even">
+<td><code>payload</code></td>
+<td>The event payload object is unique to the event type. See the event type below for the event API <code>payload</code> object.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-watchevent-event-object">Example WatchEvent event object</h3>
+<p>This example shows the format of the <a href="#watchevent">WatchEvent</a> response when using the <a href="/rest/reference/activity#events">Events API</a>.</p>
+<pre><code>HTTP/2 200
+Link: &lt;https://api.github.com/resource?page=2&gt;; rel=&quot;next&quot;,
+      &lt;https://api.github.com/resource?page=5&gt;; rel=&quot;last&quot;</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;WatchEvent&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">&quot;public&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="dt">&quot;repo&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;octocat/Hello-World&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.github.com/repos/octocat/Hello-World&quot;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="dt">&quot;actor&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="dt">&quot;login&quot;</span><span class="fu">:</span> <span class="st">&quot;octocat&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="dt">&quot;gravatar_id&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="dt">&quot;avatar_url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/images/error/octocat_happy.gif&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.github.com/users/octocat&quot;</span></a>
+<a class="sourceLine" id="cb2-18" title="18">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-19" title="19">    <span class="dt">&quot;org&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-20" title="20">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-21" title="21">      <span class="dt">&quot;login&quot;</span><span class="fu">:</span> <span class="st">&quot;github&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-22" title="22">      <span class="dt">&quot;gravatar_id&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-23" title="23">      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.github.com/orgs/github&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-24" title="24">      <span class="dt">&quot;avatar_url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/images/error/octocat_happy.gif&quot;</span></a>
+<a class="sourceLine" id="cb2-25" title="25">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-26" title="26">    <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2011-09-06T17:26:27Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-27" title="27">    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;12345&quot;</span></a>
+<a class="sourceLine" id="cb2-28" title="28">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="ot">]</span></a></code></pre></div>
+<h2 id="commitcommentevent">CommitCommentEvent</h2>
+<p>{% data reusables.webhooks.commit_comment_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.commit_comment_properties %}</p>
+<h2 id="createevent">CreateEvent</h2>
+<p>{% data reusables.webhooks.create_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-1">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.create_properties %}</p>
+<h2 id="deleteevent">DeleteEvent</h2>
+<p>{% data reusables.webhooks.delete_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-2">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.delete_properties %}</p>
+<h2 id="forkevent">ForkEvent</h2>
+<p>{% data reusables.webhooks.fork_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-3">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.fork_properties %}</p>
+<h2 id="gollumevent">GollumEvent</h2>
+<p>{% data reusables.webhooks.gollum_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-4">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.gollum_properties %}</p>
+<h2 id="issuecommentevent">IssueCommentEvent</h2>
+<p>{% data reusables.webhooks.issue_comment_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-5">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.issue_comment_webhook_properties %} {% data reusables.webhooks.issue_comment_properties %}</p>
+<h2 id="issuesevent">IssuesEvent</h2>
+<p>{% data reusables.webhooks.issues_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-6">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.issue_event_api_properties %} {% data reusables.webhooks.issue_properties %}</p>
+<h2 id="memberevent">MemberEvent</h2>
+<p>{% data reusables.webhooks.member_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-7">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.member_event_api_properties %} {% data reusables.webhooks.member_properties %}</p>
+<p>{% ifversion fpt or ghes %} ## PublicEvent</p>
+<p>{% data reusables.webhooks.public_short_desc %} ### Event <code>payload</code> object</p>
+<p>This event returns an empty <code>payload</code> object. {% endif %} ## PullRequestEvent</p>
+<p>{% data reusables.webhooks.pull_request_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-8">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.pull_request_event_api_properties %} {% data reusables.webhooks.pull_request_properties %}</p>
+<h2 id="pullrequestreviewevent">PullRequestReviewEvent</h2>
+<p>{% data reusables.webhooks.pull_request_review_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-9">Event <code>payload</code> object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action that was performed. Can be <code>created</code>.</td>
+</tr>
+<tr class="even">
+<td><code>pull_request</code></td>
+<td><code>object</code></td>
+<td>The pull request the review pertains to.</td>
+</tr>
+<tr class="odd">
+<td><code>review</code></td>
+<td><code>object</code></td>
+<td>The review that was affected.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pullrequestreviewcommentevent">PullRequestReviewCommentEvent</h2>
+<p>{% data reusables.webhooks.pull_request_review_comment_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-10">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.pull_request_review_comment_event_api_properties %} {% data reusables.webhooks.pull_request_review_comment_properties %}</p>
+<h2 id="pushevent">PushEvent</h2>
+<p>{% data reusables.webhooks.push_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-11">Event <code>payload</code> object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>push_id</code></td>
+<td><code>integer</code></td>
+<td>Unique identifier for the push.</td>
+</tr>
+<tr class="even">
+<td><code>size</code></td>
+<td><code>integer</code></td>
+<td>The number of commits in the push.</td>
+</tr>
+<tr class="odd">
+<td><code>distinct_size</code></td>
+<td><code>integer</code></td>
+<td>The number of distinct commits in the push.</td>
+</tr>
+<tr class="even">
+<td><code>ref</code></td>
+<td><code>string</code></td>
+<td>The full <a href="/rest/reference/git#refs"><code>git ref</code></a> that was pushed. Example: <code>refs/heads/main</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>head</code></td>
+<td><code>string</code></td>
+<td>The SHA of the most recent commit on <code>ref</code> after the push.</td>
+</tr>
+<tr class="even">
+<td><code>before</code></td>
+<td><code>string</code></td>
+<td>The SHA of the most recent commit on <code>ref</code> before the push.</td>
+</tr>
+<tr class="odd">
+<td><code>commits</code></td>
+<td><code>array</code></td>
+<td>An array of commit objects describing the pushed commits. (The array includes a maximum of 20 commits. If necessary, you can use the <a href="/rest/reference/repos#commits">Commits API</a> to fetch additional commits. This limit is applied to timeline events only and isn’t applied to webhook deliveries.)</td>
+</tr>
+<tr class="even">
+<td><code>commits[][sha]</code></td>
+<td><code>string</code></td>
+<td>The SHA of the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][message]</code></td>
+<td><code>string</code></td>
+<td>The commit message.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][author]</code></td>
+<td><code>object</code></td>
+<td>The git author of the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][author][name]</code></td>
+<td><code>string</code></td>
+<td>The git author’s name.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][author][email]</code></td>
+<td><code>string</code></td>
+<td>The git author’s email address.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][url]</code></td>
+<td><code>url</code></td>
+<td>URL that points to the commit API resource.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][distinct]</code></td>
+<td><code>boolean</code></td>
+<td>Whether this commit is distinct from any that have been pushed before.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="releaseevent">ReleaseEvent</h2>
+<p>{% data reusables.webhooks.release_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-12">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.release_event_api_properties %} {% data reusables.webhooks.release_properties %}</p>
+<p>{% ifversion fpt %} ## SponsorshipEvent</p>
+<p>{% data reusables.webhooks.sponsorship_short_desc %}</p>
+<h3 id="event-payload-object-13">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.sponsorship_event_api_properties %} {% data reusables.webhooks.sponsorship_properties %} {% endif %}</p>
+<h2 id="watchevent">WatchEvent</h2>
+<p>{% data reusables.webhooks.watch_short_desc %}</p>
+<p>{% data reusables.webhooks.events_api_payload %}</p>
+<h3 id="event-payload-object-14">Event <code>payload</code> object</h3>
+<p>{% data reusables.webhooks.watch_properties %}</p>
+</body>
+</html>

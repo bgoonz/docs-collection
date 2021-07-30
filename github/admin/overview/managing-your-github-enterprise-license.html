@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Managing your GitHub Enterprise license</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Managing your GitHub Enterprise license</h1>
+    </header>
+    <h2 id="about-data-variables.product.prodname_enterprise-licenses">
+      About {% data variables.product.prodname_enterprise %} licenses
+    </h2>
+    <p>
+      When you purchase or renew {% data variables.product.prodname_enterprise
+      %}, you receive a license file to validate your application. A license
+      file has an expiration date and controls the number of user licenses you
+      can add to {% data variables.product.prodname_enterprise %}. After you
+      download and install {% data variables.product.prodname_enterprise %},
+      uploading the license file unlocks the application for you to use. For
+      more information about downloading {% data
+      variables.product.prodname_enterprise %}, see the
+      <a href="https://enterprise.github.com/releases/"
+        >{% data variables.product.prodname_enterprise %} Releases</a
+      >
+      website. For information about setting up {% data
+      variables.product.product_location %}, see “<a
+        href="/admin/installation/setting-up-a-github-enterprise-server-instance"
+        >Setting up a {% data variables.product.prodname_enterprise %}
+        instance</a
+      >.”
+    </p>
+    <p>
+      You can allocate the user licenses included in your {% data
+      variables.product.prodname_enterprise %} license to users in {% data
+      variables.product.product_location_enterprise %} and a {% data
+      variables.product.prodname_ghe_cloud %} enterprise account. When you add a
+      user to either environment, they will consume a license. If a user has
+      accounts in both environments, to consume only one license, their primary
+      {% data variables.product.prodname_enterprise %} email address must be the
+      same as their verified {% data variables.product.prodname_ghe_cloud %}
+      email address. You can sync license count and usage between the
+      environments.
+    </p>
+    <p>
+      If your {% data variables.product.prodname_ghe_server %} license expires,
+      you won’t be able to access {% data
+      variables.product.product_location_enterprise %} via a web browser or Git.
+      If needed, you will be able to use command-line utilities to back up all
+      your data. For more information, see “<a
+        href="/enterprise/admin/guides/installation/configuring-backups-on-your-appliance"
+        >Configuring backups on your appliance</a
+      >.” If you have any questions about renewing your license, contact {% data
+      variables.contact.contact_enterprise_sales %}.
+    </p>
+    <p>
+      You can download your {% data variables.product.prodname_ghe_server %}
+      license from your
+      <a href="https://enterprise.github.com/download">enterprise account</a>.
+      For more information, see “<a
+        href="/admin/overview/managing-your-github-enterprise-license#downloading-a-new-license-and-uploading-it-to-github-enterprise-server"
+        >Managing your {% data variables.product.prodname_enterprise %}
+        license</a
+      >.”
+    </p>
+    <h2
+      id="downloading-a-new-license-and-uploading-it-to-data-variables.product.prodname_ghe_server"
+    >
+      Downloading a new license and uploading it to {% data
+      variables.product.prodname_ghe_server %}
+    </h2>
+    <p>
+      After you purchase a new license or upgrade an existing license from {%
+      data variables.contact.contact_enterprise_sales %}, you must download your
+      new license file, then upload the file to {% data
+      variables.product.prodname_ghe_server %} to unlock your new user licenses.
+    </p>
+    <p>
+      If you’d like to renew or add user licenses to {% data
+      variables.product.prodname_enterprise %}, contact {% data
+      variables.contact.contact_enterprise_sales %}. Your new license file will
+      be available for download immediately after you complete your order.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise-on-dotcom %} {%
+      data reusables.enterprise-accounts.settings-tab %} 3. In the left sidebar,
+      click <strong>Enterprise licensing</strong>.
+      <img
+        src="/assets/images/help/enterprises/enterprise-licensing-tab.png"
+        alt="“Enterprise licensing” tab in the enterprise account settings sidebar"
+      />
+      4. Under “Enterprise Server Instances”, click {% octicon “download”
+      aria-label=“The download icon” %} to download your license file.
+      <img
+        src="/assets/images/help/business-accounts/download-ghes-license.png"
+        alt="Download GitHub Enterprise Server license"
+      />
+      5. Log into your {% data variables.product.prodname_ghe_server %} instance
+      as a site administrator. {% data
+      reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.license-tab %} 12. Under “Quick links”,
+      click <strong>Update license</strong>.
+      <img
+        src="/assets/images/enterprise/business-accounts/update-license-link.png"
+        alt="Update license link"
+      />
+      13. To select your license, click <strong>License file</strong>, or drag
+      your license file onto <strong>License file</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/upload-license.png"
+        alt="Upload license file"
+      />
+      14. Click <strong>Upload</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/begin-upload.png"
+        alt="Begin upload"
+      />
+    </p>
+    <p>
+      {% ifversion ghes &lt; 3.0 %}If the web UI for {% data
+      variables.product.prodname_ghe_server %} doesn’t reflect your updated
+      license immediately, see “<a href="#troubleshooting">Troubleshooting</a
+      >.”{% endif %}
+    </p>
+    <h2 id="viewing-license-usage">Viewing license usage</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise-on-dotcom %} {%
+      data reusables.enterprise-accounts.settings-tab %} 3. In the left sidebar,
+      click <strong>Enterprise licensing</strong>.
+      <img
+        src="/assets/images/help/enterprises/enterprise-licensing-tab.png"
+        alt="“Enterprise licensing” tab in the enterprise account settings sidebar"
+      />
+      4. Review your current {% data variables.product.prodname_enterprise %}
+      license, as well as consumed and available user licenses. {% ifversion
+      ghes &gt; 3.0 %}If your license includes {% data
+      variables.product.prodname_GH_advanced_security %}, you can review your
+      total seat use as well as a per-organization breakdown of committers. For
+      more information, see “<a href="/admin/advanced-security"
+        >Managing {% data variables.product.prodname_GH_advanced_security %} for
+        your enterprise</a
+      >.”{% endif %}
+    </p>
+    <h2
+      id="automatically-syncing-user-license-usage-with-data-variables.product.prodname_ghe_cloud"
+    >
+      Automatically syncing user license usage with {% data
+      variables.product.prodname_ghe_cloud %}
+    </h2>
+    <p>
+      You can use {% data variables.product.prodname_github_connect %} to
+      automatically sync user license count and usage between {% data
+      variables.product.prodname_ghe_server %} and {% data
+      variables.product.prodname_ghe_cloud %}. For more information, see “<a
+        href="/enterprise/%7B%7BcurrentVersion%7D%7D/admin/installation/enabling-automatic-user-license-sync-between-github-enterprise-server-and-github-enterprise-cloud"
+        >Enabling automatic user license sync between {% data
+        variables.product.prodname_ghe_server %} and {% data
+        variables.product.prodname_ghe_cloud %}</a
+      >.”
+    </p>
+    <h2
+      id="manually-syncing-user-license-usage-between-data-variables.product.prodname_ghe_server-and-data-variables.product.prodname_ghe_cloud"
+    >
+      Manually syncing user license usage between {% data
+      variables.product.prodname_ghe_server %} and {% data
+      variables.product.prodname_ghe_cloud %}
+    </h2>
+    <p>
+      You can download a JSON file from {% data
+      variables.product.prodname_ghe_server %} and upload the file to {% data
+      variables.product.prodname_ghe_cloud %} to manually sync user license
+      usage between the two deployments.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.license-tab %} 5. Under “Quick links”, to
+      download a file containing your current license usage on {% data
+      variables.product.prodname_ghe_server %}, click
+      <strong>Export license usage</strong>.
+      <img
+        src="/assets/images/enterprise/business-accounts/export-license-usage-link.png"
+        alt="Export license usage link"
+      />
+      {% data reusables.enterprise-accounts.access-enterprise-on-dotcom %} {%
+      data reusables.enterprise-accounts.settings-tab %} 8. In the left sidebar,
+      click <strong>Enterprise licensing</strong>.
+      <img
+        src="/assets/images/help/enterprises/enterprise-licensing-tab.png"
+        alt="“Enterprise licensing” tab in the enterprise account settings sidebar"
+      />
+      {% data reusables.enterprise-accounts.license-tab %} 10. Under “Enterprise
+      Server Instances”, click <strong>Add server usage</strong>.
+      <img
+        src="/assets/images/help/business-accounts/upload-ghe-server-usage-link.png"
+        alt="Upload GitHub Enterprise Servers usage link"
+      />
+      11. Upload the JSON file you downloaded from {% data
+      variables.product.prodname_ghe_server %}.
+      <img
+        src="/assets/images/help/business-accounts/upload-ghe-server-usage-file.png"
+        alt="Drag and drop or select a file to upload"
+      />
+    </p>
+    <p>{% ifversion ghes &lt; 3.0 %}</p>
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <p>
+      In some scenarios, the web UI for {% data
+      variables.product.prodname_ghe_server %} may not immediately reflect your
+      new license. You can force the system to detect the license by restarting
+      two system services.
+    </p>
+    <p>
+      {% data reusables.enterprise_installation.ssh-into-instance %} 1. Restart
+      the services for Git authentication and the HTTP server.
+    </p>
+    <pre><code>{% warning %}
+
+**Warning**: Running the following command will result in a few minutes of user-facing downtime for {% data variables.product.prodname_ghe_server %}. Run the command with care.
+
+{% endwarning %}
+
+    sudo systemctl restart github-gitauth github-unicorn</code></pre>
+    <ol type="1">
+      <li>
+        After {% data variables.product.prodname_ghe_server %} returns you to a
+        prompt, try accessing {% data variables.product.prodname_ghe_server %}
+        via the command line or web UI again.
+      </li>
+    </ol>
+    <p>{% endif %}</p>
+  </body>
+</html>

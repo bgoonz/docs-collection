@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Monitoring cluster nodes</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Monitoring cluster nodes</h1>
+    </header>
+    <h2 id="manually-checking-cluster-status">
+      Manually checking cluster status
+    </h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} has a built-in command
+      line utility for monitoring the health of the cluster. From the
+      administrative shell, running the <code>ghe-cluster-status</code> command
+      executes a series of health checks on each node including verification of
+      connectivity and service status. The output shows all test results
+      including the text <code>ok</code> or <code>error</code>. For example, to
+      only display failing tests, run:
+    </p>
+    <pre
+      class="shell"
+    ><code>admin@ghe-data-node-0:~$ &lt;em&gt;ghe-cluster-status | grep error&lt;/em&gt;
+&gt; mysql-replication ghe-data-node-0: error Stopped
+&gt; mysql cluster: error</code></pre>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> If there are no failing tests, this command
+      produces no output. This indicates the cluster is healthy.
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="monitoring-cluster-status-with-nagios">
+      Monitoring cluster status with Nagios
+    </h2>
+    <p>
+      You can configure <a href="https://www.nagios.org/">Nagios</a> to monitor
+      {% data variables.product.prodname_ghe_server %}. In addition to
+      monitoring basic connectivity to each of the cluster nodes, you can check
+      the cluster status by configuring Nagios to use the
+      <code>ghe-cluster-status -n</code> command. This returns output in a
+      format that Nagios understands.
+    </p>
+    <h3 id="prerequisites">Prerequisites</h3>
+    <ul>
+      <li>Linux host running Nagios.</li>
+      <li>
+        Network access to the {% data variables.product.prodname_ghe_server %}
+        cluster.
+      </li>
+    </ul>
+    <h3 id="configuring-the-nagios-host">Configuring the Nagios host</h3>
+    <ol type="1">
+      <li>
+        Generate an SSH key with a blank passphrase. Nagios uses this to
+        authenticate to the {% data variables.product.prodname_ghe_server %}
+        cluster.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>nagiosuser@nagios:~$ &lt;em&gt;ssh-keygen -t ed25519&lt;/em&gt;
+&gt; Generating public/private ed25519 key pair.
+&gt; Enter file in which to save the key (/home/nagiosuser/.ssh/id_ed25519):
+&gt; Enter passphrase (empty for no passphrase): &lt;em&gt;leave blank by pressing enter&lt;/em&gt;
+&gt; Enter same passphrase again: &lt;em&gt;press enter again&lt;/em&gt;
+&gt; Your identification has been saved in /home/nagiosuser/.ssh/id_ed25519.
+&gt; Your public key has been saved in /home/nagiosuser/.ssh/id_ed25519.pub.</code></pre>
+    <p>{% danger %}</p>
+    <p>
+      <strong>Security Warning:</strong> An SSH key without a passphrase can
+      pose a security risk if authorized for full access to a host. Limit this
+      key’s authorization to a single read-only command.
+    </p>
+    <p>{% enddanger %} {% note %}</p>
+    <p>
+      <strong>Note:</strong> If you’re using a distribution of Linux that
+      doesn’t support the Ed25519 algorithm, use the command:
+      <code>shell nagiosuser@nagios:~$ ssh-keygen -t rsa -b 4096</code>
+    </p>
+    <p>
+      {% endnote %} 2. Copy the private key (<code>id_ed25519</code>) to the
+      <code>nagios</code> home folder and set the appropriate ownership.
+      <code
+        >shell nagiosuser@nagios:~$ &lt;em&gt;sudo cp .ssh/id_ed25519
+        /var/lib/nagios/.ssh/&lt;/em&gt; nagiosuser@nagios:~$ &lt;em&gt;sudo
+        chown nagios:nagios /var/lib/nagios/.ssh/id_ed25519&lt;/em&gt;</code
+      >
+    </p>
+    <ol start="3" type="1">
+      <li>
+        <p>
+          To authorize the public key to run <em>only</em> the
+          <code>ghe-cluster-status -n</code> command, use a
+          <code>command=</code> prefix in the
+          <code>/data/user/common/authorized_keys</code> file. From the
+          administrative shell on any node, modify this file to add the public
+          key generated in step 1. For example:
+          <code
+            >command="/usr/local/bin/ghe-cluster-status -n" ssh-ed25519
+            AAAA....</code
+          >
+        </p>
+      </li>
+      <li>
+        <p>
+          Validate and copy the configuration to each node in the cluster by
+          running <code>ghe-cluster-config-apply</code> on the node where you
+          modified the <code>/data/user/common/authorized_keys</code> file.
+        </p>
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>admin@ghe-data-node-0:~$ &lt;em&gt;ghe-cluster-config-apply&lt;/em&gt;
+&gt; Validating configuration
+&gt; ...
+&gt; Finished cluster configuration</code></pre>
+    <ol start="5" type="1">
+      <li>
+        To test that the Nagios plugin can successfully execute the command, run
+        it interactively from Nagios host.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>nagiosuser@nagios:~$ /usr/lib/nagios/plugins/check_by_ssh -l admin -p 122 -H &lt;em&gt;hostname&lt;/em&gt; -C &quot;ghe-cluster-status -n&quot; -t 30
+&gt; OK - No errors detected</code></pre>
+    <ol start="6" type="1">
+      <li>
+        Create a command definition in your Nagios configuration. ###### Example
+        definition
+      </li>
+    </ol>
+    <pre><code>define command {
+      command_name    check_ssh_ghe_cluster
+      command_line    $USER1$/check_by_ssh -H $HOSTADDRESS$ -C &quot;ghe-cluster-status -n&quot; -l admin -p 122 -t 30
+}</code></pre>
+    <ol start="7" type="1">
+      <li>
+        Add this command to a service definition for a node in the {% data
+        variables.product.prodname_ghe_server %} cluster.
+      </li>
+    </ol>
+    <p>###### Example definition</p>
+    <pre><code>define host{
+      use                     generic-host
+      host_name               ghe-data-node-0
+      alias                   ghe-data-node-0
+      address                 10.11.17.180
+      }
+
+define service{
+        use                             generic-service
+        host_name                       ghe-data-node-0
+        service_description             GitHub Cluster Status
+        check_command                   check_ssh_ghe_cluster
+        }</code></pre>
+    <p>
+      Once you add the definition to Nagios, the service check executes
+      according to your configuration. You should be able to see the newly
+      configured service in the Nagios web interface.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/cluster/nagios-example.png"
+        alt="Nagios Example"
+      />
+      <figcaption>Nagios Example</figcaption>
+    </figure>
+  </body>
+</html>

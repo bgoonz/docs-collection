@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>System overview for GitHub Insights</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">System overview for GitHub Insights</h1>
+</header>
+<h2 id="requirements-for-running-data-variables.product.prodname_insights">Requirements for running {% data variables.product.prodname_insights %}</h2>
+<p>{% data variables.product.prodname_insights %} requires a supported version of {% data variables.product.prodname_ghe_server %}.</p>
+<p>{% data reusables.github-insights.requires-machine %} Standard type machines with a base OS of Debian Buster, Debian Stretch, or any LTS versions of Ubuntu 16.04+ are supported.</p>
+<p>To provision {% data variables.product.prodname_insights %}, the application server must be able to run certain dependencies, including Docker. {% data reusables.github-insights.docker-requirements %} For more information, see “<a href="/insights/installing-and-configuring-github-insights/installing-github-insights#prerequisites">Installing {% data variables.product.prodname_insights %}</a>.”</p>
+<p>The application server should meet minimum specifications.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Specification</th>
+<th>Minimum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vCPUs</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>RAM</td>
+<td>64GB</td>
+</tr>
+<tr class="odd">
+<td>Disk</td>
+<td>250GB</td>
+</tr>
+</tbody>
+</table>
+<p>If you’ll use {% data variables.product.prodname_insights %} to import large amounts of data, we recommend greater minimum specifications. For more information, see “<a href="/github/installing-and-configuring-github-insights/managing-repositories#about-import-times">Managing repositories</a>.”</p>
+<h2 id="security-and-authentication-for-data-variables.product.prodname_insights">Security and authentication for {% data variables.product.prodname_insights %}</h2>
+<p>{% data variables.product.prodname_insights %} runs on your infrastructure and is governed by your existing information security controls. {% data variables.product.prodname_insights %} uses existing user accounts in {% data variables.product.prodname_enterprise %} for authentication and access permissions.</p>
+<h3 id="network-security">Network Security</h3>
+<p>{% data variables.product.prodname_insights %}’s internal firewall restricts network access to the application server’s services. Only services necessary for the application server to function are available over the network.</p>
+<p>{% data variables.product.prodname_insights %} requires the following ports to be open for inbound and outbound traffic.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Port</th>
+<th>Service</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>22</td>
+<td>SSH USER</td>
+<td>TCP</td>
+</tr>
+<tr class="even">
+<td>80</td>
+<td>HTTP USER</td>
+<td>TCP</td>
+</tr>
+<tr class="odd">
+<td>443</td>
+<td>HTTPS USER</td>
+<td>TCP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="authentication-and-access-permissions">Authentication and access permissions</h3>
+<p>Authentication for {% data variables.product.prodname_insights %} is handled through {% data variables.product.prodname_enterprise %}. During installation, you will create a {% data variables.product.prodname_github_app %}, which allows {% data variables.product.prodname_insights %} to authorize users. The {% data variables.product.prodname_github_app %} is also used to interact with {% data variables.product.prodname_enterprise %} within the scope of the user and app’s permissions.</p>
+<p>{% data reusables.github-insights.permissions-levels %}</p>
+<p>Data access in {% data variables.product.prodname_insights %} is restricted according to each user’s data access in {% data variables.product.prodname_enterprise %}. A user will never see data in {% data variables.product.prodname_insights %} for repositories the user does not have access to in {% data variables.product.prodname_enterprise %}.</p>
+<h2 id="architecture-of-data-variables.product.prodname_insights">Architecture of {% data variables.product.prodname_insights %}</h2>
+<figure>
+<img src="/assets/images/help/insights/github-isights-system-diagram.png" alt="System architecture" /><figcaption>System architecture</figcaption>
+</figure>
+</body>
+</html>

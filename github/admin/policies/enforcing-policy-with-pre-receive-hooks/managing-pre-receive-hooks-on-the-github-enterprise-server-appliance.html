@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>
+      Managing pre-receive hooks on the GitHub Enterprise Server appliance
+    </title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Managing pre-receive hooks on the GitHub Enterprise Server appliance
+      </h1>
+    </header>
+    <h2 id="creating-pre-receive-hooks">Creating pre-receive hooks</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.hooks-tab %} 4. Click
+      <strong>Add pre-receive hook</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/add-pre-receive-hook.png"
+        alt="Add pre-receive hook"
+      />
+      5. In the <strong>Hook name</strong> field, enter the name of the hook
+      that you want to create.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/hook-name.png"
+        alt="Name pre-receive hook"
+      />
+      6. From the <strong>Environment</strong> drop-down menu, select the
+      environment on which you want the hook to run.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/environment.png"
+        alt="Hook environment"
+      />
+      7. Under <strong>Script</strong>, from the
+      <strong>Select hook repository</strong> drop-down menu, select the
+      repository that contains your pre-receive hook script. From the
+      <strong>Select file</strong> drop-down menu, select the filename of the
+      pre-receive hook script.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/hook-script.png"
+        alt="Hook script"
+      />
+      8. Select
+      <strong>Use the exit-status to accept or reject pushes</strong> to enforce
+      your script. Unselecting this option allows you to test the script while
+      the exit-status value is ignored. In this mode, the output of the script
+      will be visible to the user in the command-line but not on the web
+      interface.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/use-exit-status.png"
+        alt="Use exit-status"
+      />
+      9. Select
+      <strong
+        >Enable this pre-receive hook on all repositories by default</strong
+      >
+      if you want the pre-receive hook to run on all repositories.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/enable-hook-all-repos.png"
+        alt="Enable hook all repositories"
+      />
+      10. Select
+      <strong>Administrators can enable and disable this hook</strong> to allow
+      organization members with admin or owner permissions to select whether
+      they wish to enable or disable this pre-receive hook.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/admins-enable-hook.png"
+        alt="Admins enable or disable hook"
+      />
+    </p>
+    <h2 id="editing-pre-receive-hooks">Editing pre-receive hooks</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.hooks-tab %} 1. Next to the pre-receive hook
+      that you want to edit, click {% octicon “pencil” aria-label=“The edit
+      icon” %}.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/edit-pre-receive-hook.png"
+        alt="Edit pre-receive"
+      />
+    </p>
+    <h2 id="deleting-pre-receive-hooks">Deleting pre-receive hooks</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.hooks-tab %} 2. Next to the pre-receive hook
+      that you want to delete, click {% octicon “x” aria-label=“X symbol” %}.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/delete-pre-receive-hook.png"
+        alt="Edit pre-receive"
+      />
+    </p>
+    <h2 id="configure-pre-receive-hooks-for-an-organization">
+      Configure pre-receive hooks for an organization
+    </h2>
+    <p>
+      An organization administrator can only configure hook permissions for an
+      organization if the site administrator selected the
+      <strong>Administrators can enable or disable this hook</strong> option
+      when they created the pre-receive hook. To configure pre-receive hooks for
+      a repository, you must be an organization administrator or owner.
+    </p>
+    <p>
+      {% data reusables.profile.access_org %} {% data
+      reusables.profile.org_settings %} 4. In the left sidebar, click
+      <strong>Hooks</strong>.
+      <img
+        src="/assets/images/enterprise/orgs-and-teams/hooks-sidebar.png"
+        alt="Hooks sidebar"
+      />
+      5. Next to the pre-receive hook that you want to configure, click the
+      <strong>Hook permissions</strong> drop-down menu. Select whether to enable
+      or disable the pre-receive hook, or allow it to be configured by the
+      repository administrators.
+      <img
+        src="/assets/images/enterprise/orgs-and-teams/hook-permissions.png"
+        alt="Hook permissions"
+      />
+    </p>
+    <h2 id="configure-pre-receive-hooks-for-a-repository">
+      Configure pre-receive hooks for a repository
+    </h2>
+    <p>
+      A repository owner can only configure a hook if the site administrator
+      selected the
+      <strong>Administrators can enable or disable this hook</strong> option
+      when they created the pre-receive hook. In an organization, the
+      organization owner must also have selected the
+      <strong>Configurable</strong> hook permission. To configure pre-receive
+      hooks for a repository, you must be a repository owner.
+    </p>
+    <p>
+      {% data reusables.profile.enterprise_access_profile %} 2. Click
+      <strong>Repositories</strong> and select which repository you want to
+      configure pre-receive hooks for.
+      <img
+        src="/assets/images/enterprise/repos/repositories.png"
+        alt="Repositories"
+      />
+      {% data reusables.repositories.sidebar-settings %} 4. In the left sidebar,
+      click <strong>Hooks &amp; Services</strong>.
+      <img
+        src="/assets/images/enterprise/repos/hooks-services.png"
+        alt="Hooks and services"
+      />
+      5. Next to the pre-receive hook that you want to configure, click the
+      <strong>Hook permissions</strong> drop-down menu. Select whether to enable
+      or disable the pre-receive hook.
+      <img
+        src="/assets/images/enterprise/repos/repo-hook-permissions.png"
+        alt="Repository hook permissions"
+      />
+    </p>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Supported operating systems</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Supported operating systems</h1>
+</header>
+<h2 id="about-supported-operating-systems">About supported operating systems</h2>
+<p>The following operating systems are supported for {% data variables.product.prodname_desktop %}. - {% data variables.desktop.mac-osx-versions %} - {% data variables.desktop.windows-versions %}. You must have a 64-bit operating system to run {% data variables.product.prodname_desktop %}.</p>
+<h2 id="troubleshooting-problems-on-macos">Troubleshooting problems on macOS</h2>
+<p>If you’re encountering problems using {% data variables.product.prodname_desktop %} on macOS, here are resolutions to try. For more information, see <a href="https://github.com/desktop/desktop/blob/development/docs/known-issues.md"><code>known-issues</code></a>.</p>
+<h3 id="the-username-or-passphrase-you-entered-is-not-correct-error-after-signing-into-your-account"><code>The username or passphrase you entered is not correct</code> error after signing into your account</h3>
+<p>This error can occur when {% data variables.product.prodname_desktop %} can’t access your stored credentials on Keychain.</p>
+<p>To troubleshoot this error, follow these steps.</p>
+<ol type="1">
+<li>Open the “Keychain Access” app.</li>
+<li>Right-click on <strong>login</strong> and then click <strong>Lock Keychain “login”</strong>. <img src="/assets/images/help/desktop/mac-lock-keychain.png" alt="The “Lock Keychain”login&quot; option" /></li>
+<li>Right-click on <strong>login</strong> and then click <strong>Unlock Keychain “login”</strong>. Follow any onscreen prompts to finish unlocking the Keychain “login.” <img src="/assets/images/help/desktop/mac-unlock-keychain.png" alt="The “Unlock Keychain”login&quot; option" /></li>
+<li>Re-authenticate your account on {% data variables.product.prodname_dotcom %} or {% data variables.product.prodname_enterprise %}.</li>
+</ol>
+<h3 id="could-not-create-temporary-directory-permission-denied-error-after-checking-for-updates"><code>Could not create temporary directory: Permission denied</code> error after checking for updates</h3>
+<p>This error can be caused by missing permissions for the <code>~/Library/Caches/com.github.GitHubClient.ShipIt</code> directory. {% data variables.product.prodname_desktop %} uses this directory to create and unpack temporary files as part of updating the application.</p>
+<p>To troubleshoot this error, follow these steps.</p>
+<ol type="1">
+<li>Close {% data variables.product.prodname_desktop %}.</li>
+<li>Open “Finder” and navigate to <code>~/Library/Caches/</code>.</li>
+<li>Right-click <code>com.github.GitHubClient.ShipIt</code> and then click <strong>Get Info</strong>.</li>
+<li>Click the arrow to the left of “Sharing &amp; Permissions.”</li>
+<li>If the Privilege to the right of your user account does not say “Read &amp; Write,” click the text and then click <strong>Read &amp; Write</strong>. <img src="/assets/images/help/desktop/mac-adjust-permissions.png" alt="The “Sharing &amp; Permissions” options" /></li>
+<li>Open {% data variables.product.prodname_desktop %} and check for updates.</li>
+</ol>
+<h2 id="troubleshooting-problems-on-windows">Troubleshooting problems on Windows</h2>
+<p>If you’re encountering problems using {% data variables.product.prodname_desktop %} on Windows, here are resolutions to try. For more information, see <a href="https://github.com/desktop/desktop/blob/development/docs/known-issues.md"><code>known-issues</code></a>.</p>
+<h3 id="the-revocation-function-was-unable-to-check-revocation-for-the-certificate.-error"><code>The revocation function was unable to check revocation for the certificate.</code> error</h3>
+<p>This error can occur if you are using {% data variables.product.prodname_desktop %} on a corporate network that blocks Windows from checking the revocation status of a certificate.</p>
+<p>To troubleshoot, contact your system administrator.</p>
+<h3 id="git-clone-failed-error-while-cloning-a-repository-configured-with-folder-redirection"><code>git clone failed</code> error while cloning a repository configured with Folder Redirection</h3>
+<p>{% data variables.product.prodname_desktop %} does not support repositories configured with Folder Redirection.</p>
+<h3 id="cygheap-base-mismatch-detected-error"><code>cygheap base mismatch detected</code> error</h3>
+<p>This error can occur when Mandatory ASLR is enabled. Enabling Mandatory ASLR affects the MSYS2 core library, which {% data variables.product.prodname_desktop %} relies upon to emulate process forking.</p>
+<p>To troubleshoot this error, either disable Mandatory ASLR or explicitly allow all executables under <code>&lt;Git&gt;\usr\bin</code> which depend on MSYS2.</p>
+</body>
+</html>

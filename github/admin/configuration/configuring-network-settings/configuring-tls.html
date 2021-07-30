@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring TLS</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring TLS</h1>
+    </header>
+    <h2 id="about-transport-layer-security">About Transport Layer Security</h2>
+    <p>
+      TLS, which replaced SSL, is enabled and configured with a self-signed
+      certificate when {% data variables.product.prodname_ghe_server %} is
+      started for the first time. As self-signed certificates are not trusted by
+      web browsers and Git clients, these clients will report certificate
+      warnings until you disable TLS or upload a certificate signed by a trusted
+      authority, such as Let’s Encrypt.
+    </p>
+    <p>
+      The {% data variables.product.prodname_ghe_server %} appliance will send
+      HTTP Strict Transport Security headers when SSL is enabled. Disabling TLS
+      will cause users to lose access to the appliance, because their browsers
+      will not allow a protocol downgrade to HTTP. For more information, see “<a
+        href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security"
+        >HTTP Strict Transport Security (HSTS)</a
+      >” on Wikipedia.
+    </p>
+    <p>{% data reusables.enterprise_installation.terminating-tls %}</p>
+    <p>
+      To allow users to use FIDO U2F for two-factor authentication, you must
+      enable TLS for your instance. For more information, see “<a
+        href="/articles/configuring-two-factor-authentication"
+        >Configuring two-factor authentication</a
+      >.”
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      To use TLS in production, you must have a certificate in an unencrypted
+      PEM format signed by a trusted certificate authority.
+    </p>
+    <p>
+      Your certificate will also need Subject Alternative Names configured for
+      the subdomains listed in “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-subdomain-isolation#about-subdomain-isolation"
+        >Enabling subdomain isolation</a
+      >” and will need to include the full certificate chain if it has been
+      signed by an intermediate certificate authority. For more information, see
+      “<a href="http://en.wikipedia.org/wiki/SubjectAltName"
+        >Subject Alternative Name</a
+      >” on Wikipedia.
+    </p>
+    <p>
+      You can generate a certificate signing request (CSR) for your instance
+      using the <code>ghe-ssl-generate-csr</code> command. For more information,
+      see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities/#ghe-ssl-generate-csr"
+        >Command-line utilities</a
+      >.”
+    </p>
+    <h2 id="uploading-a-custom-tls-certificate">
+      Uploading a custom TLS certificate
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.privacy %} {% data
+      reusables.enterprise_management_console.select-tls-only %} 4. Under “TLS
+      Protocol support”, select the protocols you want to allow.
+      <img
+        src="/assets/images/enterprise/management-console/tls-protocol-support.png"
+        alt="Radio buttons with options to choose TLS protocols"
+      />
+      5. Under “Certificate”, click <strong>Choose File</strong> to choose a TLS
+      certificate or certificate chain (in PEM format) to install. This file
+      will usually have a <em>.pem</em>, <em>.crt</em>, or
+      <em>.cer</em> extension.
+      <img
+        src="/assets/images/enterprise/management-console/install-tls-certificate.png"
+        alt="Button to find TLS certificate file"
+      />
+      6. Under “Unencrypted key”, click <strong>Choose File</strong> to choose a
+      TLS key (in PEM format) to install. This file will usually have a
+      <em>.key</em> extension.
+      <img
+        src="/assets/images/enterprise/management-console/install-tls-key.png"
+        alt="Button to find TLS key file"
+      />
+    </p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning</strong>: Your TLS key must not have a passphrase. For
+      more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/troubleshooting-ssl-errors#removing-the-passphrase-from-your-key-file"
+        >Removing the passphrase from your key file</a
+      >”.
+    </p>
+    <p>
+      {% endwarning %} {% data
+      reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2 id="about-lets-encrypt-support">About Let’s Encrypt support</h2>
+    <p>
+      Let’s Encrypt is a public certificate authority that issues free,
+      automated TLS certificates that are trusted by browsers using the ACME
+      protocol. You can automatically obtain and renew Let’s Encrypt
+      certificates on your appliance without any required manual maintenance.
+    </p>
+    <p>
+      {% data reusables.enterprise_installation.lets-encrypt-prerequisites %}
+    </p>
+    <p>
+      When you enable automation of TLS certificate management using Let’s
+      Encrypt, {% data variables.product.product_location %} will contact the
+      Let’s Encrypt servers to obtain a certificate. To renew a certificate,
+      Let’s Encrypt servers must validate control of the configured domain name
+      with inbound HTTP requests.
+    </p>
+    <p>
+      You can also use the <code>ghe-ssl-acme</code> command line utility on {%
+      data variables.product.product_location %} to automatically generate a
+      Let’s Encrypt certificate. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-ssl-acme"
+        >Command-line utilities</a
+      >.”
+    </p>
+    <h2 id="configuring-tls-using-lets-encrypt">
+      Configuring TLS using Let’s Encrypt
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.lets-encrypt-prerequisites %}
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.privacy %} {% data
+      reusables.enterprise_management_console.select-tls-only %} 5. Select
+      <strong
+        >Enable automation of TLS certificate management using Let’s
+        Encrypt</strong
+      >.
+      <img
+        src="/assets/images/enterprise/management-console/lets-encrypt-checkbox.png"
+        alt="Checkbox to enable Let’s Encrypt"
+      />
+      {% data reusables.enterprise_management_console.save-settings %} {% data
+      reusables.enterprise_management_console.privacy %} 7. Click
+      <strong>Request TLS certificate</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/request-tls-button.png"
+        alt="Request TLS certificate button"
+      />
+      8. Click <strong>Save configuration</strong>.
+    </p>
+  </body>
+</html>

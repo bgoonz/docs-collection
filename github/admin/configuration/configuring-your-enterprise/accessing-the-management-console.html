@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Accessing the management console</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Accessing the management console</h1>
+    </header>
+    <h2 id="about-the-data-variables.enterprise.management_console">
+      About the {% data variables.enterprise.management_console %}
+    </h2>
+    <p>
+      Use the {% data variables.enterprise.management_console %} for basic
+      administrative activities: - <strong>Initial setup</strong>: Walk through
+      the initial setup process when first launching {% data
+      variables.product.product_location %} by visiting {% data
+      variables.product.product_location %}’s IP address in your browser. -
+      <strong>Configuring basic settings for your instance</strong>: Configure
+      DNS, hostname, SSL, user authentication, email, monitoring services, and
+      log forwarding on the Settings page. -
+      <strong>Scheduling maintenance windows</strong>: Take {% data
+      variables.product.product_location %} offline while performing maintenance
+      using the {% data variables.enterprise.management_console %} or
+      administrative shell. - <strong>Troubleshooting</strong>: Generate a
+      support bundle or view high level diagnostic information. -
+      <strong>License management</strong>: View or update your {% data
+      variables.product.prodname_enterprise %} license.
+    </p>
+    <p>
+      You can always reach the {% data variables.enterprise.management_console
+      %} using {% data variables.product.product_location %}’s IP address, even
+      when the instance is in maintenance mode, or there is a critical
+      application failure or hostname or SSL misconfiguration.
+    </p>
+    <p>
+      To access the {% data variables.enterprise.management_console %}, you must
+      use the administrator password established during initial setup of {% data
+      variables.product.product_location %}. You must also be able to connect to
+      the virtual machine host on port 8443. If you’re having trouble reaching
+      the {% data variables.enterprise.management_console %}, please check
+      intermediate firewall and security group configurations.
+    </p>
+    <h2
+      id="accessing-the-data-variables.enterprise.management_console-as-a-site-administrator"
+    >
+      Accessing the {% data variables.enterprise.management_console %} as a site
+      administrator
+    </h2>
+    <p>
+      The first time that you access the {% data
+      variables.enterprise.management_console %} as a site administrator, you
+      must upload your {% data variables.product.prodname_enterprise %} license
+      file to authenticate into the app. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/managing-your-github-enterprise-license"
+        >Managing your {% data variables.product.prodname_enterprise %}
+        license</a
+      >.”
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data
+      reusables.enterprise_management_console.type-management-console-password
+      %}
+    </p>
+    <h2
+      id="accessing-the-data-variables.enterprise.management_console-as-an-unauthenticated-user"
+    >
+      Accessing the {% data variables.enterprise.management_console %} as an
+      unauthenticated user
+    </h2>
+    <ol type="1">
+      <li>
+        Visit this URL in your browser, replacing <code>hostname</code> with
+        your actual {% data variables.product.prodname_ghe_server %} hostname or
+        IP address:
+      </li>
+    </ol>
+    <pre class="shell"><code>http(s)://HOSTNAME/setup</code></pre>
+    <p>
+      {% data
+      reusables.enterprise_management_console.type-management-console-password
+      %}
+    </p>
+    <h2
+      id="unlocking-the-data-variables.enterprise.management_console-after-failed-login-attempts"
+    >
+      Unlocking the {% data variables.enterprise.management_console %} after
+      failed login attempts
+    </h2>
+    <p>
+      The {% data variables.enterprise.management_console %} locks after ten
+      failed login attempts are made in the span of ten minutes. You must wait
+      for the login screen to automatically unlock before attempting to log in
+      again. The login screen automatically unlocks as soon as the previous ten
+      minute period contains fewer than ten failed login attempts. The counter
+      resets after a successful login occurs.
+    </p>
+    <p>
+      To immediately unlock the {% data variables.enterprise.management_console
+      %}, use the <code>ghe-reactivate-admin-login</code> command via the
+      administrative shell. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-reactivate-admin-login"
+        >Command line utilities</a
+      >” and “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-administrative-shell-ssh/"
+        >Accessing the administrative shell (SSH)</a
+      >.”
+    </p>
+  </body>
+</html>

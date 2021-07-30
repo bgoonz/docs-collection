@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Checking out pull requests locally</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Checking out pull requests locally</h1>
+</header>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Pull request authors can give upstream repository maintainers, or those with push access to the upstream repository, permission to make commits to their pull request’s compare branch in a user-owned fork. For more information, see “<a href="/articles/allowing-changes-to-a-pull-request-branch-created-from-a-fork">Allowing changes to a pull request branch created from a fork</a>.”</p>
+<p>{% endnote %}</p>
+<p>{% ifversion fpt or ghae or ghes %} {% tip %}</p>
+<p><strong>Tip</strong>: You can also check out a pull request locally using the {% data variables.product.prodname_cli %}. For more information, see “<a href="https://cli.github.com/manual/gh_pr_checkout"><code>gh pr checkout</code></a>” in the {% data variables.product.prodname_cli %} documentation.</p>
+<p>{% endtip %} {% endif %}</p>
+<h2 id="modifying-an-active-pull-request-locally">Modifying an active pull request locally</h2>
+<p>{% data reusables.repositories.sidebar-pr %} 2. In the list of pull requests, click the pull request you’d like to modify.{% ifversion fpt %} 3. To choose where you’d like to open the pull request, select the <strong>Open with {% octicon “triangle-down” aria-label=“The down triangle icon” %}</strong> drop-down and click one of the tabs. <img src="/assets/images/help/pull_requests/open-with-button.png" alt="Link to access command line pull request instructions" />{% else %} 3. In the merge box, click <strong>command line instructions</strong>. Follow the sequence of steps to bring down the proposed pull request. <img src="/assets/images/help/pull_requests/pull_request_show_command_line_merge.png" alt="Link to access command line pull request instructions" /> 4. Optionally, to view proposed changes in {% data variables.product.prodname_desktop %}, click <strong>open this in {% data variables.product.prodname_desktop %}</strong>. <img src="/assets/images/help/desktop/open-pr-in-desktop.png" alt="Link to open a pull request locally in Desktop" />{% endif %}</p>
+<h2 id="modifying-an-inactive-pull-request-locally">Modifying an inactive pull request locally</h2>
+<p>If a pull request’s author is unresponsive to requests or has deleted their fork, the pull request can still be merged. However, if you want to make changes to a pull request and the author is not responding, you’ll need to perform some additional steps to update the pull request.</p>
+<p>Once a pull request is opened, {% data variables.product.product_name %} stores all of the changes remotely. In other words, commits in a pull request are available in a repository even before the pull request is merged. You can fetch an open pull request and recreate it as your own.</p>
+<p>Anyone can work with a previously opened pull request to continue working on it, test it out, or even open a new pull request with additional changes. However, only collaborators with push access can merge pull requests.</p>
+<p>{% data reusables.repositories.sidebar-issue-pr %} 2. In the “Pull Requests” list, click the pull request you’d like to merge. 3. Find the ID number of the inactive pull request. This is the sequence of digits right after the pull request’s title. <img src="/assets/images/help/pull_requests/pull_request_id_number.png" alt="Pull Requests ID number" /> {% data reusables.command_line.open_the_multi_os_terminal %} 5. Fetch the reference to the pull request based on its ID number, creating a new branch in the process. <code>shell   $ git fetch origin pull/&lt;em&gt;ID&lt;/em&gt;/head:&lt;em&gt;BRANCHNAME&lt;/em&gt;</code> 6. Switch to the new branch that’s based on this pull request: <code>shell   [main] $ git checkout &lt;em&gt;BRANCHNAME&lt;/em&gt;   &gt; Switched to a new branch '&lt;em&gt;BRANCHNAME&lt;/em&gt;'</code> 7. At this point, you can do anything you want with this branch. You can run some local tests, or merge other branches into the branch. 8. When you’re ready, you can push the new branch up: <code>shell   [pull-inactive-pull-request] $ git push origin &lt;em&gt;BRANCHNAME&lt;/em&gt;   &gt; Counting objects: 32, done.   &gt; Delta compression using up to 8 threads.   &gt; Compressing objects: 100% (26/26), done.   &gt; Writing objects: 100% (29/29), 74.94 KiB | 0 bytes/s, done.   &gt; Total 29 (delta 8), reused 0 (delta 0)   &gt; To https://{% data variables.command_line.codeblock %}/&lt;em&gt;username&lt;/em&gt;/&lt;em&gt;repository&lt;/em&gt;.git   &gt;  * [new branch]      &lt;em&gt;BRANCHNAME&lt;/em&gt; -&gt; &lt;em&gt;BRANCHNAME&lt;/em&gt;</code> 9. <a href="/articles/creating-a-pull-request">Create a new pull request</a> with your new branch.</p>
+<h2 id="error-failed-to-push-some-refs">Error: Failed to push some refs</h2>
+<p>The remote <code>refs/pull/</code> namespace is <em>read-only</em>. If you try to push any commits there, you’ll see this error:</p>
+<pre class="shell"><code>! [remote rejected] HEAD -&gt; refs/pull/1/head (deny updating a hidden ref)
+error: failed to push some refs to &#39;git@github.local:&lt;em&gt;USERNAME&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git&#39;</code></pre>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> When you remove or rename a remote reference, your local <code>refs/pull/origin/</code> namespace will not be affected by calls to <code>git-remote</code>.</p>
+<p>{% endtip %}</p>
+</body>
+</html>

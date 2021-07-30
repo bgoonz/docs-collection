@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Building and testing Swift</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Building and testing Swift</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>This guide shows you how to build and test a Swift package.</p>
+    <p>
+      {% ifversion ghae %} To build and test your Swift project on {% data
+      variables.product.prodname_ghe_managed %}, you will need to create a
+      custom operating system image that includes the necessary Swift
+      dependencies. For instructions on how to make sure your {% data
+      variables.actions.hosted_runner %} has the required software installed,
+      see “<a href="/actions/using-github-hosted-runners/creating-custom-images"
+        >Creating custom images</a
+      >.” {% else %}{% data variables.product.prodname_dotcom %}-hosted runners
+      have a tools cache with preinstalled software, and the Ubuntu and macOS
+      runners include the dependencies for building Swift packages. For a full
+      list of up-to-date software and the preinstalled versions of Swift and
+      Xcode, see “<a
+        href="/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software"
+        >About GitHub-hosted runners</a
+      >.”{% endif %}
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      You should already be familiar with YAML syntax and how it’s used with {%
+      data variables.product.prodname_actions %}. For more information, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      We recommend that you have a basic understanding of Swift packages. For
+      more information, see “<a
+        href="https://developer.apple.com/documentation/swift_packages"
+        >Swift Packages</a
+      >” in the Apple developer documentation.
+    </p>
+    <h2 id="starting-with-the-swift-workflow-template">
+      Starting with the Swift workflow template
+    </h2>
+    <p>
+      {% data variables.product.prodname_dotcom %} provides a Swift workflow
+      template that should work for most Swift projects, and this guide includes
+      examples that show you how to customize this template. For more
+      information, see the
+      <a
+        href="https://github.com/actions/starter-workflows/blob/main/ci/swift.yml"
+        >Swift workflow template</a
+      >.
+    </p>
+    <p>
+      To get started quickly, add the template to the
+      <code>.github/workflows</code> directory of your repository.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Swift
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="specifying-a-swift-version">Specifying a Swift version</h2>
+    <p>
+      To use a specific preinstalled version of Swift on a {% data
+      variables.product.prodname_dotcom %}-hosted runner, use the
+      <code>fwal/setup-swift</code> action. This action finds a specific version
+      of Swift from the tools cache on the runner and adds the necessary
+      binaries to <code>PATH</code>. These changes will persist for the
+      remainder of a job. For more information, see the
+      <a href="https://github.com/marketplace/actions/setup-swift"
+        ><code>fwal/setup-swift</code></a
+      >
+      action.
+    </p>
+    <p>
+      If you are using a self-hosted runner, you must install your desired Swift
+      versions and add them to <code>PATH</code>.
+    </p>
+    <p>
+      The examples below demonstrate using the
+      <code>fwal/setup-swift</code> action.
+    </p>
+    <h3 id="using-multiple-swift-versions">Using multiple Swift versions</h3>
+    <p>
+      You can configure your job to use a multiple versions of Swift in a build
+      matrix.
+    </p>
+    <pre
+      class="yaml{:copy}"
+    ><code>{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+name: Swift
+
+on: [push]
+
+jobs:
+  build:
+    name: {% raw %}Swift ${{ matrix.swift }} on ${{ matrix.os }}{% endraw %}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        swift: [&quot;5.2&quot;, &quot;5.3&quot;]
+    runs-on: {% raw %}${{ matrix.os }}{% endraw %}
+    steps:
+      - uses: fwal/setup-swift@d43a564349d1341cd990cfbd70d94d63b8899475
+        with:
+          swift-version: {% raw %}${{ matrix.swift }}{% endraw %}
+      - uses: actions/checkout@
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test</code></pre>
+    <h3 id="using-a-single-specific-swift-version">
+      Using a single specific Swift version
+    </h3>
+    <p>
+      You can configure your job to use a single specific version of Swift, such
+      as <code>5.3.3</code>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  - uses: fwal/setup-swift@d43a564349d1341cd990cfbd70d94d63b8899475
+    with:
+      swift-version: &quot;5.3.3&quot;
+  - name: Get swift version
+    run: swift --version # Swift 5.3.3</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="building-and-testing-your-code">Building and testing your code</h2>
+    <p>
+      You can use the same commands that you use locally to build and test your
+      code using Swift. This example demonstrates how to use
+      <code>swift build</code> and <code>swift test</code> in a job:
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  - uses: actions/checkout@v2
+  - uses: fwal/setup-swift@d43a564349d1341cd990cfbd70d94d63b8899475
+    with:
+      swift-version: &quot;5.3.3&quot;
+  - name: Build
+    run: swift build
+  - name: Run tests
+    run: swift test</code></pre>
+    <p>{% endraw %}</p>
+  </body>
+</html>

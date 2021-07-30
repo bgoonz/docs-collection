@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Creating a GitHub Pages site with Jekyll</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Creating a GitHub Pages site with Jekyll</h1>
+</header>
+<p>{% data reusables.pages.org-owners-can-restrict-pages-creation %}</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before you can use Jekyll to create a {% data variables.product.prodname_pages %} site, you must install Jekyll and Git. For more information, see <a href="https://jekyllrb.com/docs/installation/">Installation</a> in the Jekyll documentation and “<a href="/articles/set-up-git">Set up Git</a>.”</p>
+<p>{% data reusables.pages.recommend-bundler %}</p>
+<p>{% data reusables.pages.jekyll-install-troubleshooting %}</p>
+<h2 id="creating-a-repository-for-your-site">Creating a repository for your site</h2>
+<p>{% data reusables.pages.new-or-existing-repo %}</p>
+<p>{% data reusables.repositories.create_new %} {% data reusables.repositories.owner-drop-down %} {% data reusables.pages.create-repo-name %} {% data reusables.repositories.choose-repo-visibility %}</p>
+<h2 id="creating-your-site">Creating your site</h2>
+<p>{% data reusables.pages.must-have-repo-first %}</p>
+<p>{% data reusables.pages.private_pages_are_public_warning %}</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. If you don’t already have a local copy of your repository, navigate to the location where you want to store your site’s source files, replacing <em>PARENT-FOLDER</em> with the folder you want to contain the folder for your repository. <code>shell   $ cd &lt;em&gt;PARENT-FOLDER&lt;/em&gt;</code> 3. If you haven’t already, initialize a local Git repository, replacing <em>REPOSITORY-NAME</em> with the name of your repository. <code>shell   $ git init &lt;em&gt;REPOSITORY-NAME&lt;/em&gt;   &gt; Initialized empty Git repository in /Users/octocat/my-site/.git/   # Creates a new folder on your computer, initialized as a Git repository</code> 4. Change directories to the repository. <code>shell   $ cd &lt;em&gt;REPOSITORY-NAME&lt;/em&gt;   # Changes the working directory</code> {% data reusables.pages.decide-publishing-source %} {% data reusables.pages.navigate-publishing-source %} For example, if you chose to publish your site from the <code>docs</code> folder on the default branch, create and change directories to the <code>docs</code> folder. <code>shell  $ mkdir docs  # Creates a new folder called docs  $ cd docs</code> If you chose to publish your site from the <code>gh-pages</code> branch, create and checkout the <code>gh-pages</code> branch. <code>shell  $ git checkout --orphan gh-pages  # Creates a new branch, with no history or contents, called gh-pages and switches to the gh-pages branch</code> 7. To create a new Jekyll site, use the <code>jekyll new</code> command: <code>shell    $ jekyll new .    # Creates a Jekyll site in the current directory</code> 8. Open the Gemfile that Jekyll created. 1. Add “#” to the beginning of the line that starts with <code>gem "jekyll"</code> to comment out this line. 1. Add the <code>github-pages</code> gem by editing the line starting with <code># gem "github-pages"</code>. Change this line to:</p>
+<pre class="shell"><code>gem &quot;github-pages&quot;, &quot;~&gt; GITHUB-PAGES-VERSION&quot;, group: :jekyll_plugins</code></pre>
+<p>Replace <em>GITHUB-PAGES-VERSION</em> with the latest supported version of the <code>github-pages</code> gem. You can find this version here: “<a href="https://pages.github.com/versions/">Dependency versions</a>.”</p>
+<p>The correct version Jekyll will be installed as a dependency of the <code>github-pages</code> gem. 1. Save and close the Gemfile. 11. From the command line, run <code>bundle update</code>. 11. Optionally, make any necessary edits to the <code>_config.yml</code> file. This is required for relative paths when the repository is hosted in a subdirectory. For more information, see “<a href="/github/getting-started-with-github/using-git/splitting-a-subfolder-out-into-a-new-repository">Splitting a subfolder out into a new repository</a>.” <code>yml    domain: my-site.github.io       # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com    url: https://my-site.github.io  # the base hostname and protocol for your site, e.g. http://example.com    baseurl: /REPOSITORY-NAME/      # place folder name if the site is served in a subfolder</code> 11. Optionally, test your site locally. For more information, see “<a href="/articles/testing-your-github-pages-site-locally-with-jekyll">Testing your {% data variables.product.prodname_pages %} site locally with Jekyll</a>.” 12. Add and commit your work.</p>
+<pre class="shell"><code>git add .
+git commit -m &#39;Initial GitHub pages site with Jekyll&#39;</code></pre>
+<ol start="14" type="1">
+<li>Add your {% data variables.product.product_name %} repository as a remote, replacing {% ifversion ghes or ghae %}<em>HOSTNAME</em> with your enterprise’s hostname,{% endif %} <em>USER</em> with the account that owns the repository{% ifversion ghes or ghae %},{% endif %} and <em>REPOSITORY</em> with the name of the repository.</li>
+</ol>
+<pre class="shell"><code>{% ifversion fpt %}
+$ git remote add origin https://github.com/&lt;em&gt;USER&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git
+{% else %}
+$ git remote add origin https://&lt;em&gt;HOSTNAME&lt;/em&gt;/&lt;em&gt;USER&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git
+{% endif %}</code></pre>
+<ol start="13" type="1">
+<li>Push the repository to {% data variables.product.product_name %}, replacing <em>BRANCH</em> with the name of the branch you’re working on.</li>
+</ol>
+<pre class="shell"><code>$ git push -u origin &lt;em&gt;BRANCH&lt;/em&gt;</code></pre>
+<p>{% data reusables.pages.configure-publishing-source %} {% data reusables.pages.navigate-site-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.pages.sidebar-pages %} {% ifversion fpt %} {% data reusables.pages.choose-visibility %}{% endif %} {% data reusables.pages.visit-site %}</p>
+<p>{% data reusables.pages.admin-must-push %}</p>
+<h2 id="next-steps">Next steps</h2>
+<p>To add a new page or post to your site, see “<a href="/articles/adding-content-to-your-github-pages-site-using-jekyll">Adding content to your {% data variables.product.prodname_pages %} site using Jekyll</a>.”</p>
+<p>{% data reusables.pages.add-jekyll-theme %} For more information, see “<a href="/articles/adding-a-theme-to-your-github-pages-site-using-jekyll">Adding a theme to your {% data variables.product.prodname_pages %} site using Jekyll</a>.”</p>
+</body>
+</html>

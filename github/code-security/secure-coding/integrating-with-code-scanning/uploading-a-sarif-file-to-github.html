@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Uploading a SARIF file to GitHub</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Uploading a SARIF file to GitHub</h1>
+</header>
+<!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
+<p>{% data reusables.code-scanning.beta %} {% data reusables.code-scanning.enterprise-enable-code-scanning %}</p>
+<h2 id="about-sarif-file-uploads-for-data-variables.product.prodname_code_scanning">About SARIF file uploads for {% data variables.product.prodname_code_scanning %}</h2>
+<p>{% data variables.product.prodname_dotcom %} creates {% data variables.product.prodname_code_scanning %} alerts in a repository using information from Static Analysis Results Interchange Format (SARIF) files. SARIF files can be uploaded to a repository using the API or {% data variables.product.prodname_actions %}. For more information, see “<a href="/code-security/secure-coding/managing-code-scanning-alerts-for-your-repository">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</p>
+<p>You can generate SARIF files using many static analysis security testing tools, including {% data variables.product.prodname_codeql %}. The results must use SARIF version 2.1.0. For more information, see “<a href="/code-security/secure-coding/sarif-support-for-code-scanning">SARIF support for {% data variables.product.prodname_code_scanning %}</a>.”</p>
+<p>You can upload the results using {% data variables.product.prodname_actions %}, the {% data variables.product.prodname_code_scanning %} API, {% ifversion fpt or ghes &gt; 3.0 or ghae-next %}the {% data variables.product.prodname_codeql_cli %}, {% endif %}or the {% data variables.product.prodname_codeql_runner %}. The best upload method will depend on how you generate the SARIF file, for example, if you use:</p>
+<ul>
+<li>{% data variables.product.prodname_actions %} to run the {% data variables.product.prodname_codeql %} action, there is no further action required. The {% data variables.product.prodname_codeql %} action uploads the SARIF file automatically when it completes analysis.</li>
+<li>{% data variables.product.prodname_actions %} to run a SARIF-compatible analysis tool, you could update the workflow to include a final step that uploads the results (see below). {% ifversion fpt or ghes &gt; 3.0 or ghae-next %}</li>
+<li>The {% data variables.product.prodname_codeql_cli %} to run {% data variables.product.prodname_code_scanning %} in your CI system, you can use the CLI to upload results to {% data variables.product.prodname_dotcom %} (for more information, see “<a href="/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system">Installing {% data variables.product.prodname_codeql_cli %} in your CI system</a>”).{% endif %}</li>
+<li>The {% data variables.product.prodname_codeql_runner %}, to run {% data variables.product.prodname_code_scanning %} in your CI system, by default the runner automatically uploads results to {% data variables.product.prodname_dotcom %} on completion. If you block the automatic upload, when you are ready to upload results you can use the <code>upload</code> command (for more information, see “<a href="/code-security/secure-coding/running-codeql-runner-in-your-ci-system">Running {% data variables.product.prodname_codeql_runner %} in your CI system</a>”).</li>
+<li>A tool that generates results as an artifact outside of your repository, you can use the {% data variables.product.prodname_code_scanning %} API to upload the file (for more information, see “<a href="/rest/reference/code-scanning#upload-an-analysis-as-sarif-data">Upload an analysis as SARIF data</a>”).</li>
+</ul>
+<p>{% data reusables.code-scanning.not-available %}</p>
+<h2 id="uploading-a-data-variables.product.prodname_code_scanning-analysis-with-data-variables.product.prodname_actions">Uploading a {% data variables.product.prodname_code_scanning %} analysis with {% data variables.product.prodname_actions %}</h2>
+<p>To use {% data variables.product.prodname_actions %} to upload a third-party SARIF file to a repository, you’ll need a workflow. For more information, see “<a href="/actions/learn-github-actions">Learn {% data variables.product.prodname_actions %}</a>.”</p>
+<p>Your workflow will need to use the <code>upload-sarif</code> action, which is part of the <code>github/codeql-action</code> repository. It has input parameters that you can use to configure the upload. The main input parameter you’ll use is <code>sarif-file</code>, which configures the file or directory of SARIF files to be uploaded. The directory or file path is relative to the root of the repository. For more information see the <a href="https://github.com/github/codeql-action/tree/HEAD/upload-sarif"><code>upload-sarif</code> action</a>.</p>
+<p>The <code>upload-sarif</code> action can be configured to run when the <code>push</code> and <code>scheduled</code> event occur. For more information about {% data variables.product.prodname_actions %} events, see “<a href="/actions/reference/events-that-trigger-workflows">Events that trigger workflows</a>.”</p>
+<p>If your SARIF file doesn’t include <code>partialFingerprints</code>, the <code>upload-sarif</code> action will calculate the <code>partialFingerprints</code> field for you and attempt to prevent duplicate alerts. {% data variables.product.prodname_dotcom %} can only create <code>partialFingerprints</code> when the repository contains both the SARIF file and the source code used in the static analysis. For more information about preventing duplicate alerts, see “<a href="/code-security/secure-coding/sarif-support-for-code-scanning#preventing-duplicate-alerts-using-fingerprints">About SARIF support for code scanning</a>.”</p>
+<p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
+<h3 id="example-workflow-for-sarif-files-generated-outside-of-a-repository">Example workflow for SARIF files generated outside of a repository</h3>
+<p>You can create a new workflow that uploads SARIF files after you commit them to your repository. This is useful when the SARIF file is generated as an artifact outside of your repository.</p>
+<p>This example workflow runs anytime commits are pushed to the repository. The action uses the <code>partialFingerprints</code> property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see “<a href="/actions/reference/events-that-trigger-workflows">Events that trigger workflows</a>.”</p>
+<p>This workflow uploads the <code>results.sarif</code> file located in the root of the repository. For more information about creating a workflow file, see “<a href="/actions/learn-github-actions">Learn {% data variables.product.prodname_actions %}</a>.”</p>
+<p>Alternatively, you could modify this workflow to upload a directory of SARIF files. For example, you could place all SARIF files in a directory in the root of your repository called <code>sarif-output</code> and set the action’s input parameter <code>sarif_file</code> to <code>sarif-output</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">name:</span><span class="at"> </span><span class="st">&quot;Upload SARIF&quot;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Run workflow each time code is pushed to your repository and on a schedule.</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># The scheduled workflow runs every Thursday at 15:45 UTC.</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="kw">-</span> <span class="fu">cron:</span><span class="at"> </span><span class="st">&#39;45 15 * * 4&#39;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb1-14" title="14">      <span class="fu">security-events:</span><span class="at"> write{% endif %}</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-16" title="16">      <span class="co"># This step checks out a copy of your repository.</span></a>
+<a class="sourceLine" id="cb1-17" title="17">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Checkout repository</span></a>
+<a class="sourceLine" id="cb1-18" title="18">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb1-19" title="19">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Upload SARIF file</span></a>
+<a class="sourceLine" id="cb1-20" title="20">        <span class="fu">uses:</span><span class="at"> github/codeql-action/upload-sarif@v1</span></a>
+<a class="sourceLine" id="cb1-21" title="21">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb1-22" title="22">          <span class="co"># Path to SARIF file relative to the root of the repository</span></a>
+<a class="sourceLine" id="cb1-23" title="23">          <span class="fu">sarif_file:</span><span class="at"> results.sarif</span></a></code></pre></div>
+<h3 id="example-workflow-that-runs-the-eslint-analysis-tool">Example workflow that runs the ESLint analysis tool</h3>
+<p>If you generate your third-party SARIF file as part of a continuous integration (CI) workflow, you can add the <code>upload-sarif</code> action as a step after running your CI tests. If you don’t already have a CI workflow, you can create one using a {% data variables.product.prodname_actions %} template. For more information, see the “<a href="/actions/quickstart">{% data variables.product.prodname_actions %} quickstart</a>.”</p>
+<p>This example workflow runs anytime commits are pushed to the repository. The action uses the <code>partialFingerprints</code> property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see “<a href="/actions/reference/events-that-trigger-workflows">Events that trigger workflows</a>.”</p>
+<p>The workflow shows an example of running the ESLint static analysis tool as a step in a workflow. The <code>Run ESLint</code> step runs the ESLint tool and outputs the <code>results.sarif</code> file. The workflow then uploads the <code>results.sarif</code> file to {% data variables.product.prodname_dotcom %} using the <code>upload-sarif</code> action. For more information about creating a workflow file, see “<a href="/actions/learn-github-actions/introduction-to-github-actions">Introduction to GitHub Actions</a>.”</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">name:</span><span class="at"> </span><span class="st">&quot;ESLint analysis&quot;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># Run workflow each time code is pushed to your repository and on a schedule.</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># The scheduled workflow runs every Wednesday at 15:45 UTC.</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="kw">-</span> <span class="fu">cron:</span><span class="at"> </span><span class="st">&#39;45 15 * * 3&#39;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="fu">security-events:</span><span class="at"> write{% endif %}</span></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Run npm install</span></a>
+<a class="sourceLine" id="cb2-18" title="18">        <span class="fu">run:</span><span class="at"> npm install</span></a>
+<a class="sourceLine" id="cb2-19" title="19">      <span class="co"># Runs the ESlint code analysis</span></a>
+<a class="sourceLine" id="cb2-20" title="20">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Run ESLint</span></a>
+<a class="sourceLine" id="cb2-21" title="21">        <span class="co"># eslint exits 1 if it finds anything to report</span></a>
+<a class="sourceLine" id="cb2-22" title="22">        <span class="fu">run:</span><span class="at"> node_modules/.bin/eslint build docs lib script spec-main -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o results.sarif || true</span></a>
+<a class="sourceLine" id="cb2-23" title="23">      <span class="co"># Uploads results.sarif to GitHub repository using the upload-sarif action</span></a>
+<a class="sourceLine" id="cb2-24" title="24">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> github/codeql-action/upload-sarif@v1</span></a>
+<a class="sourceLine" id="cb2-25" title="25">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb2-26" title="26">          <span class="co"># Path to SARIF file relative to the root of the repository</span></a>
+<a class="sourceLine" id="cb2-27" title="27">          <span class="fu">sarif_file:</span><span class="at"> results.sarif</span></a></code></pre></div>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/actions/reference/workflow-syntax-for-github-actions">Workflow syntax for {% data variables.product.prodname_actions %}</a>”</li>
+<li>“<a href="/actions/managing-workflow-runs/viewing-workflow-run-history">Viewing your workflow history</a>”{%- ifversion fpt or ghes &gt; 3.0 or ghae-next %}</li>
+<li>“<a href="/code-security/secure-coding/about-codeql-code-scanning-in-your-ci-system">About {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} in your CI system</a>”{% else %}</li>
+<li>“<a href="/code-security/secure-coding/running-codeql-runner-in-your-ci-system">Running {% data variables.product.prodname_codeql_runner %} in your CI system</a>”{% endif %}</li>
+<li>“<a href="/rest/reference/code-scanning#upload-an-analysis-as-sarif-data">Upload an analysis as SARIF data</a>”</li>
+</ul>
+</body>
+</html>

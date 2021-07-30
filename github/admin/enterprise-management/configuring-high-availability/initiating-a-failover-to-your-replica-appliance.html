@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Initiating a failover to your replica appliance</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Initiating a failover to your replica appliance</h1>
+    </header>
+    <p>
+      The time required to failover depends on how long it takes to manually
+      promote the replica and redirect traffic. The average time ranges between
+      2-10 minutes.
+    </p>
+    <p>{% data reusables.enterprise_installation.promoting-a-replica %}</p>
+    <ol type="1">
+      <li>
+        To allow replication to finish before you switch appliances, put the
+        primary appliance into maintenance mode:
+        <ul>
+          <li>
+            To use the management console, see “<a
+              href="/enterprise/admin/guides/installation/enabling-and-scheduling-maintenance-mode/"
+              >Enabling and scheduling maintenance mode</a
+            >”
+          </li>
+          <li>
+            <p>You can also use the <code>ghe-maintenance -s</code> command.</p>
+            <pre class="shell"><code>$ ghe-maintenance -s</code></pre>
+          </li>
+        </ul>
+      </li>
+      <li>
+        When the number of active Git operations reaches zero, wait 30 seconds.
+      </li>
+      <li>
+        To verify all replication channels report <code>OK</code>, use the
+        <code>ghe-repl-status -vv</code> command.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-status -vv</code></pre>
+    <ol start="4" type="1">
+      <li>
+        To stop replication and promote the replica appliance to primary status,
+        use the <code>ghe-repl-promote</code> command. This will also
+        automatically put the primary node in maintenance node if it’s
+        reachable.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-promote</code></pre>
+    <ol start="5" type="1">
+      <li>
+        Update the DNS record to point to the IP address of the replica. Traffic
+        is directed to the replica after the TTL period elapses. If you are
+        using a load balancer, ensure it is configured to send traffic to the
+        replica.
+      </li>
+      <li>Notify users that they can resume normal operations.</li>
+      <li>
+        If desired, set up replication from the new primary to existing
+        appliances and the previous primary. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-high-availability-configuration/#utilities-for-replication-management"
+          >About high availability configuration</a
+        >.”
+      </li>
+      <li>
+        Appliances you do not intend to setup replication to that were part of
+        the high availability configuration prior the failover, need to be
+        removed from the high availability configuration by UUID.
+        <ul>
+          <li>
+            <p>
+              On the former appliances, get their UUID via
+              <code>cat /data/user/common/uuid</code>.
+            </p>
+            <pre class="shell"><code>$ cat /data/user/common/uuid</code></pre>
+          </li>
+          <li>
+            <p>
+              On the new primary, remove the UUIDs using
+              <code>ghe-repl-teardown</code>. Please replace
+              <em><code>UUID</code></em> with a UUID you retrieved in the
+              previous step.
+            </p>
+            <pre
+              class="shell"
+            ><code>$ ghe-repl-teardown -u &lt;em&gt;UUID&lt;/em&gt;</code></pre>
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-high-availability-configuration/#utilities-for-replication-management"
+          >Utilities for replication management</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

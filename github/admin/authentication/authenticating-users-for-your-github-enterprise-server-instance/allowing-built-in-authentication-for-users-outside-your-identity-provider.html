@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>
+      Allowing built-in authentication for users outside your identity provider
+    </title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Allowing built-in authentication for users outside your identity
+        provider
+      </h1>
+    </header>
+    <h2
+      id="about-built-in-authentication-for-users-outside-your-identity-provider"
+    >
+      About built-in authentication for users outside your identity provider
+    </h2>
+    <p>
+      You can use built-in authentication for outside users when you are unable
+      to add specific accounts to your identity provider (IdP), such as accounts
+      for contractors or machine users. You can also use built-in authentication
+      to access a fallback account if the identity provider is unavailable.
+    </p>
+    <p>
+      After built-in authentication is configured and a user successfully
+      authenticates with SAML or CAS, they will no longer have the option to
+      authenticate with a username and password. If a user successfully
+      authenticates with LDAP, the credentials are no longer considered
+      internal.
+    </p>
+    <p>Built-in authentication for a specific IdP is disabled by default.</p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> If you disable built-in authentication, you must
+      individually suspend any users that should no longer have access to the
+      instance. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/suspending-and-unsuspending-users"
+        >Suspending and unsuspending users</a
+      >.”
+    </p>
+    <p>{% endwarning %}</p>
+    <h2
+      id="configuring-built-in-authentication-for-users-outside-your-identity-provider"
+    >
+      Configuring built-in authentication for users outside your identity
+      provider
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.authentication %} 4. Select
+      your identity provider.
+      <img
+        src="/assets/images/enterprise/management-console/identity-provider-select.gif"
+        alt="Select identity provider option"
+      />
+      5. Select
+      <strong>Allow creation of accounts with built-in authentication</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/built-in-auth-identity-provider-select.png"
+        alt="Select built-in authentication option"
+      />
+      6. Read the warning, then click <strong>Ok</strong>.
+    </p>
+    <p>
+      {% data reusables.enterprise_user_management.two_factor_auth_header %} {%
+      data reusables.enterprise_user_management.2fa_is_available %}
+    </p>
+    <h2
+      id="inviting-users-outside-your-identity-provider-to-authenticate-to-your-instance"
+    >
+      Inviting users outside your identity provider to authenticate to your
+      instance
+    </h2>
+    <p>
+      When a user accepts the invitation, they can use their username and
+      password to sign in rather than signing in through the IdP.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.sign-in %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.invite-user-sidebar-tab %} {%
+      data reusables.enterprise_site_admin_settings.invite-user-reset-link %}
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a href="/enterprise/admin/authentication/using-ldap">Using LDAP</a>”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/using-saml"
+          >Using SAML</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/using-cas"
+          >Using CAS</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

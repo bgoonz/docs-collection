@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pushing commits to a remote repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pushing commits to a remote repository</h1>
+</header>
+<h2 id="about-git-push">About <code>git push</code></h2>
+<p>The <code>git push</code> command takes two arguments:</p>
+<ul>
+<li>A remote name, for example, <code>origin</code></li>
+<li>A branch name, for example, <code>main</code></li>
+</ul>
+<p>For example:</p>
+<pre class="shell"><code>git push &lt;em&gt; &amp;lt;REMOTENAME&gt; &amp;lt;BRANCHNAME&gt; &lt;/em&gt;</code></pre>
+<p>As an example, you usually run <code>git push origin main</code> to push your local changes to your online repository.</p>
+<h2 id="renaming-branches">Renaming branches</h2>
+<p>To rename a branch, you’d use the same <code>git push</code> command, but you would add one more argument: the name of the new branch. For example:</p>
+<pre class="shell"><code>git push &lt;em&gt; &amp;lt;REMOTENAME&gt; &amp;lt;LOCALBRANCHNAME&gt;&lt;/em&gt;:&lt;em&gt;&amp;lt;REMOTEBRANCHNAME&gt; &lt;/em&gt;</code></pre>
+<p>This pushes the <code>LOCALBRANCHNAME</code> to your <code>REMOTENAME</code>, but it is renamed to <code>REMOTEBRANCHNAME</code>.</p>
+<h2 id="dealing-with-non-fast-forward-errors">Dealing with “non-fast-forward” errors</h2>
+<p>If your local copy of a repository is out of sync with, or “behind,” the upstream repository you’re pushing to, you’ll get a message saying <code>non-fast-forward updates were rejected</code>. This means that you must retrieve, or “fetch,” the upstream changes, before you are able to push your local changes.</p>
+<p>For more information on this error, see “<a href="/github/getting-started-with-github/dealing-with-non-fast-forward-errors">Dealing with non-fast-forward errors</a>.”</p>
+<h2 id="pushing-tags">Pushing tags</h2>
+<p>By default, and without additional parameters, <code>git push</code> sends all matching branches that have the same names as remote branches.</p>
+<p>To push a single tag, you can issue the same command as pushing a branch:</p>
+<pre class="shell"><code>git push &lt;em&gt; &amp;lt;REMOTENAME&gt; &amp;lt;TAGNAME&gt; &lt;/em&gt;</code></pre>
+<p>To push all your tags, you can type the command:</p>
+<pre class="shell"><code>git push &lt;em&gt; &amp;lt;REMOTENAME&gt;&lt;/em&gt; --tags</code></pre>
+<h2 id="deleting-a-remote-branch-or-tag">Deleting a remote branch or tag</h2>
+<p>The syntax to delete a branch is a bit arcane at first glance:</p>
+<pre class="shell"><code>git push &lt;em&gt; &amp;lt;REMOTENAME&gt;&lt;/em&gt; :&lt;em&gt;&amp;lt;BRANCHNAME&gt; &lt;/em&gt;</code></pre>
+<p>Note that there is a space before the colon. The command resembles the same steps you’d take to rename a branch. However, here, you’re telling Git to push <em>nothing</em> into <code>BRANCHNAME</code> on <code>REMOTENAME</code>. Because of this, <code>git push</code> deletes the branch on the remote repository.</p>
+<h2 id="remotes-and-forks">Remotes and forks</h2>
+<p>You might already know that <a href="https://guides.github.com/overviews/forking/">you can “fork” repositories</a> on GitHub.</p>
+<p>When you clone a repository you own, you provide it with a remote URL that tells Git where to fetch and push updates. If you want to collaborate with the original repository, you’d add a new remote URL, typically called <code>upstream</code>, to your local Git clone:</p>
+<pre class="shell"><code>git remote add upstream &lt;em&gt; &amp;lt;THEIR_REMOTE_URL&gt; &lt;/em&gt;</code></pre>
+<p>Now, you can fetch updates and branches from <em>their</em> fork:</p>
+<pre class="shell"><code>git fetch upstream
+# Grab the upstream remote&#39;s branches
+&gt; remote: Counting objects: 75, done.
+&gt; remote: Compressing objects: 100% (53/53), done.
+&gt; remote: Total 62 (delta 27), reused 44 (delta 9)
+&gt; Unpacking objects: 100% (62/62), done.
+&gt; From https://{% data variables.command_line.codeblock %}/&lt;em&gt;octocat&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;
+&gt;  * [new branch]      main     -&gt; upstream/main</code></pre>
+<p>When you’re done making local changes, you can push your local branch to GitHub and <a href="/articles/about-pull-requests">initiate a pull request</a>.</p>
+<p>For more information on working with forks, see “<a href="/articles/syncing-a-fork">Syncing a fork</a>”.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://git-scm.com/book/ch5-2.html">The “Remotes” chapter from the “Pro Git” book</a></li>
+<li><a href="https://git-scm.com/docs/git-remote.html"><code>git remote</code> man page</a></li>
+<li>“<a href="/articles/git-cheatsheet">Git cheatsheet</a>”</li>
+<li>“<a href="/github/getting-started-with-github/git-workflows">Git workflows</a>”</li>
+<li>“<a href="https://guides.github.com/introduction/git-handbook/">Git Handbook</a>”</li>
+</ul>
+</body>
+</html>

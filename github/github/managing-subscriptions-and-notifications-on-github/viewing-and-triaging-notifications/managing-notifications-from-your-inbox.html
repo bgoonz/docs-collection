@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing notifications from your inbox</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing notifications from your inbox</h1>
+</header>
+<p>{% ifversion ghes %} {% data reusables.mobile.ghes-release-phase %} {% endif %}</p>
+<h2 id="about-your-inbox">About your inbox</h2>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} {% data reusables.notifications-v2.notifications-inbox-required-setting %} For more information, see “<a href="/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#choosing-your-notification-settings">Configuring notifications</a>.” {% endif %}</p>
+<p>To access your notifications inbox, in the upper-right corner of any page, click {% octicon “bell” aria-label=“The notifications bell” %}.</p>
+<figure>
+<img src="/assets/images/help/notifications/notifications_general_existence_indicator.png" alt="Notification indicating any unread message" /><figcaption>Notification indicating any unread message</figcaption>
+</figure>
+<p>Your inbox shows all of the notifications that you haven’t unsubscribed to or marked as <strong>Done.</strong> You can customize your inbox to best suit your workflow using filters, viewing all or just unread notifications, and grouping your notifications to get a quick overview.</p>
+<figure>
+<img src="/assets/images/help/notifications-v2/inbox-view.png" alt="inbox view" /><figcaption>inbox view</figcaption>
+</figure>
+<p>By default, your inbox will show read and unread notifications. To only see unread notifications, click <strong>Unread</strong> or use the <code>is:unread</code> query.</p>
+<figure>
+<img src="/assets/images/help/notifications-v2/unread-inbox-view.png" alt="unread inbox view" /><figcaption>unread inbox view</figcaption>
+</figure>
+<h2 id="triaging-options">Triaging options</h2>
+<p>You have several options for triaging notifications from your inbox.</p>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Triaging option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Save</td>
+<td>Saves your notification for later review. To save a notification, to the right of the notification, click {% octicon “bookmark” aria-label=“The bookmark icon” %}. <br> <br> Saved notifications are kept indefinitely and can be viewed by clicking <strong>Saved</strong> in the sidebar or with the <code>is:saved</code> query. If your saved notification is older than 5 months and becomes unsaved, the notification will disappear from your inbox within a day.</td>
+</tr>
+<tr class="even">
+<td>Done</td>
+<td>Marks a notification as completed and removes the notification from your inbox. You can see all completed notifications by clicking <strong>Done</strong> in the sidebar or with the <code>is:done</code> query. Notifications marked as <strong>Done</strong> are saved for 5 months.</td>
+</tr>
+<tr class="odd">
+<td>Unsubscribe</td>
+<td>Automatically removes the notification from your inbox and unsubscribes you from the conversation until you are <span class="citation" data-cites="mentioned">@mentioned</span>, a team you’re on is <span class="citation" data-cites="mentioned">@mentioned</span>, or you’re requested for review.</td>
+</tr>
+<tr class="even">
+<td>Read</td>
+<td>Marks a notification as read. To only view read notifications in your inbox, use the <code>is:read</code> query. This query doesn’t include notifications marked as <strong>Done</strong>.</td>
+</tr>
+<tr class="odd">
+<td>Unread</td>
+<td>Marks notification as unread. To only view unread notifications in your inbox, use the <code>is:unread</code> query.</td>
+</tr>
+</tbody>
+</table>
+<p>To see the available keyboard shortcuts, see “<a href="/github/getting-started-with-github/keyboard-shortcuts#notifications">Keyboard Shortcuts</a>.”</p>
+<p>Before choosing a triage option, you can preview your notification’s details first and investigate. For more information, see “<a href="/github/managing-subscriptions-and-notifications-on-github/triaging-a-single-notification">Triaging a single notification</a>.”</p>
+<h2 id="triaging-multiple-notifications-at-the-same-time">Triaging multiple notifications at the same time</h2>
+<p>To triage multiple notifications at once, select the relevant notifications and use the {% octicon “kebab-horizontal” aria-label=“The edit icon” %} drop-down to choose a triage option.</p>
+<figure>
+<img src="/assets/images/help/notifications-v2/triage-multiple-notifications-together.png" alt="Drop-down menu with triage options and selected notifications" /><figcaption>Drop-down menu with triage options and selected notifications</figcaption>
+</figure>
+<h2 id="default-notification-filters">Default notification filters</h2>
+<p>By default, your inbox has filters for when you are assigned, participating in a thread, requested to review a pull request, or when your username is <span class="citation" data-cites="mentioned">@mentioned</span> directly or a team you’re a member of is <span class="citation" data-cites="mentioned">@mentioned</span>.</p>
+<figure>
+<img src="/assets/images/help/notifications-v2/default-filters.png" alt="Default custom filters" /><figcaption>Default custom filters</figcaption>
+</figure>
+<h2 id="customizing-your-inbox-with-custom-filters">Customizing your inbox with custom filters</h2>
+<p>You can add up to 15 of your own custom filters.</p>
+<p>{% data reusables.notifications.access_notifications %} 2. To open the filter settings, in the left sidebar, next to “Filters”, click {% octicon “gear” aria-label=“The Gear icon” %}.</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> You can quickly preview a filter’s inbox results by creating a query in your inbox view and clicking <strong>Save</strong>, which opens the custom filter settings.</p>
+<p>{% endtip %}</p>
+<ol start="3" type="1">
+<li>Add a name for your filter and a filter query. For example, to only see notifications for a specific repository, you can create a filter using the query <code>repo:octocat/open-source-project-name reason:participating</code>. You can also add emojis with a native emoji keyboard. For a list of supported search queries, see “<a href="#supported-queries-for-custom-filters">Supported queries for custom filters</a>.”</li>
+</ol>
+<figure>
+<img src="/assets/images/help/notifications-v2/custom-filter-example.png" alt="Custom filter example" /><figcaption>Custom filter example</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>Click <strong>Create</strong>.</li>
+</ol>
+<h2 id="custom-filter-limitations">Custom filter limitations</h2>
+<p>Custom filters do not currently support: - Full text search in your inbox, including searching for pull request or issue titles. - Distinguishing between the <code>is:issue</code>, <code>is:pr</code>, and <code>is:pull-request</code> query filters. These queries will return both issues and pull requests. - Creating more than 15 custom filters. - Changing the default filters or their order. - Search <a href="/github/searching-for-information-on-github/understanding-the-search-syntax#exclude-certain-results">exclusion</a> using <code>NOT</code> or <code>-QUALIFIER</code>.</p>
+<h2 id="supported-queries-for-custom-filters">Supported queries for custom filters</h2>
+<p>These are the types of filters that you can use: - Filter by repository with <code>repo:</code> - Filter by discussion type with <code>is:</code> - Filter by notification reason with <code>reason:</code>{% ifversion fpt %} - Filter by notification author with <code>author:</code> - Filter by organization with <code>org:</code>{% endif %}</p>
+<h3 id="supported-repo-queries">Supported <code>repo:</code> queries</h3>
+<p>To add a <code>repo:</code> filter, you must include the owner of the repository in the query: <code>repo:owner/repository</code>. An owner is the organization or the user who owns the {% data variables.product.prodname_dotcom %} asset that triggers the notification. For example, <code>repo:octo-org/octo-repo</code> will show notifications triggered in the octo-repo repository within the octo-org organization.</p>
+<h3 id="supported-is-queries">Supported <code>is:</code> queries</h3>
+<p>To filter notifications for specific activity on {% data variables.product.product_name %}, you can use the <code>is</code> query. For example, to only see repository invitation updates, use <code>is:repository-invitation</code>{% ifversion not ghae %}, and to only see {% ifversion fpt or ghes &gt; 2.21 %}{% data variables.product.prodname_dependabot %}{% else %} security{% endif %} alerts, use <code>is:repository-vulnerability-alert</code>.{% endif %}</p>
+<ul>
+<li><code>is:check-suite</code></li>
+<li><code>is:commit</code></li>
+<li><code>is:gist</code></li>
+<li><code>is:issue-or-pull-request</code></li>
+<li><code>is:release</code></li>
+<li><code>is:repository-invitation</code>{% ifversion not ghae %}</li>
+<li><code>is:repository-vulnerability-alert</code></li>
+<li><code>is:repository-advisory</code>{% endif %}</li>
+<li><code>is:team-discussion</code>{% ifversion fpt %}</li>
+<li><code>is:discussion</code>{% endif %}</li>
+</ul>
+<p>{% ifversion not ghae %} For information about reducing noise from notifications for {% ifversion fpt or ghes &gt; 2.21 %}{% data variables.product.prodname_dependabot_alerts %}{% else %}security alerts{% endif %}, see “<a href="/github/managing-security-vulnerabilities/configuring-notifications-for-vulnerable-dependencies">Configuring notifications for vulnerable dependencies</a>.” {% endif %}</p>
+<p>You can also use the <code>is:</code> query to describe how the notification was triaged.</p>
+<ul>
+<li><code>is:saved</code></li>
+<li><code>is:done</code></li>
+<li><code>is:unread</code></li>
+<li><code>is:read</code></li>
+</ul>
+<h3 id="supported-reason-queries">Supported <code>reason:</code> queries</h3>
+<p>To filter notifications by why you’ve received an update, you can use the <code>reason:</code> query. For example, to see notifications when you (or a team you’re on) is requested to review a pull request, use <code>reason:review-requested</code>. For more information, see “<a href="/github/managing-subscriptions-and-notifications-on-github/about-notifications#reasons-for-receiving-notifications">About notifications</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>reason:assign</code></td>
+<td>When there’s an update on an issue or pull request you’ve been assigned to.</td>
+</tr>
+<tr class="even">
+<td><code>reason:author</code></td>
+<td>When you opened a pull request or issue and there has been an update or new comment.</td>
+</tr>
+<tr class="odd">
+<td><code>reason:comment</code></td>
+<td>When you commented on an issue, pull request, or team discussion.</td>
+</tr>
+<tr class="even">
+<td><code>reason:participating</code></td>
+<td>When you have commented on an issue, pull request, or team discussion or you have been <span class="citation" data-cites="mentioned">@mentioned</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>reason:invitation</code></td>
+<td>When you’re invited to a team, organization, or repository.</td>
+</tr>
+<tr class="even">
+<td><code>reason:manual</code></td>
+<td>When you click <strong>Subscribe</strong> on an issue or pull request you weren’t already subscribed to.</td>
+</tr>
+<tr class="odd">
+<td><code>reason:mention</code></td>
+<td>You were directly <span class="citation" data-cites="mentioned">@mentioned</span>.</td>
+</tr>
+<tr class="even">
+<td><code>reason:review-requested</code></td>
+<td>You or a team you’re on have been requested to review a pull request.{% ifversion not ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>reason:security-alert</code></td>
+<td>When a security alert is issued for a repository.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>reason:state-change</code></td>
+<td>When the state of a pull request or issue is changed. For example, an issue is closed or a pull request is merged.</td>
+</tr>
+<tr class="odd">
+<td><code>reason:team-mention</code></td>
+<td>When a team you’re a member of is <span class="citation" data-cites="mentioned">@mentioned</span>.</td>
+</tr>
+<tr class="even">
+<td><code>reason:ci-activity</code></td>
+<td>When a repository has a CI update, such as a new workflow run status.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %} ### Supported <code>author:</code> queries</p>
+<p>To filter notifications by user, you can use the <code>author:</code> query. An author is the original author of the thread (issue, pull request, gist, discussions, and so on) for which you are being notified. For example, to see notifications for threads created by the Octocat user, use <code>author:octocat</code>.</p>
+<h3 id="supported-org-queries">Supported <code>org:</code> queries</h3>
+<p>To filter notifications by organization, you can use the <code>org</code> query. The organization you need to specify in the query is the organization of the repository for which you are being notified on {% data variables.product.prodname_dotcom %}. This query is useful if you belong to several organizations, and want to see notifications for a specific organization.</p>
+<p>For example, to see notifications from the octo-org organization, use <code>org:octo-org</code>.</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.21 %} ## {% data variables.product.prodname_dependabot %} custom filters</p>
+<p>{% ifversion fpt %} If you use {% data variables.product.prodname_dependabot %} to keep your dependencies up-to-date, you can use and save these custom filters: - <code>is:repository_vulnerability_alert</code> to show notifications for {% data variables.product.prodname_dependabot_alerts %}. - <code>reason:security_alert</code> to show notifications for {% data variables.product.prodname_dependabot_alerts %} and security update pull requests. - <code>author:app/dependabot</code> to show notifications generated by {% data variables.product.prodname_dependabot %}. This includes {% data variables.product.prodname_dependabot_alerts %}, security update pull requests, and version update pull requests.</p>
+<p>For more information about {% data variables.product.prodname_dependabot %}, see “<a href="/github/managing-security-vulnerabilities/about-managing-vulnerable-dependencies">About managing vulnerable dependencies</a>.” {% endif %}</p>
+<p>{% ifversion ghes &gt; 2.21 %} If you use {% data variables.product.prodname_dependabot %} to keep your dependencies-up-to-date, you can use and save the <code>is:repository_vulnerability_alert</code> custom filter to show notifications for {% data variables.product.prodname_dependabot_alerts %}.</p>
+<p>For more information about {% data variables.product.prodname_dependabot %}, see “<a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.” {% endif %}</p>
+<p>{% endif %}</p>
+</body>
+</html>

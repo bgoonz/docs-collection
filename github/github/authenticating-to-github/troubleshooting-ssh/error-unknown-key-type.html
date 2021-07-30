@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Unknown key type</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Unknown key type</h1>
+</header>
+<h2 id="about-the-unknown-key-type-error">About the <code>unknown key type</code> error</h2>
+<p>When you generate a new SSH key, you may receive an <code>unknown key type</code> error if your SSH client does not support the key type that you specify.{% mac %}To solve this issue on macOS, you can update your SSH client or install a new SSH client.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>You must have Homebrew installed. For more information, see the <a href="https://docs.brew.sh/Installation">installation guide</a> in the Homebrew documentation.</p>
+<h2 id="solving-the-issue">Solving the issue</h2>
+<p>{% warning %}</p>
+<p><strong>Warning:</strong> If you install OpenSSH, your computer will not be able to retrieve passphrases that are stored in the Apple keychain. You will need to enter your passphrase or interact with your hardware security key every time you authenticate with SSH to {% data variables.product.prodname_dotcom %} or another web service.</p>
+<p>If you remove OpenSSH, the passphrases that are stored in your keychain will once again be retrievable. You can remove OpenSSH by entering the command <code>brew uninstall openssh</code> in Terminal.</p>
+<p>{% endwarning %}</p>
+<ol type="1">
+<li>Open Terminal.</li>
+<li>Enter the command <code>brew install openssh</code>.</li>
+<li>Quit and relaunch Terminal.</li>
+<li>Try the procedure for generating a new SSH key again. For more information, see “<a href="/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key-for-a-hardware-security-key">Generating a new SSH key and adding it to the ssh-agent</a>.”</li>
+</ol>
+<p>{% endmac %}{% linux %}To solve this issue on Linux, use the package manager for your Linux distribution to install a new version of OpenSSH, or compile a new version from source. If you install a different version of OpenSSH, the ability of other applications to authenticate via SSH may be affected. For more information, review the documentation for your distribution.{% endlinux %}</p>
+</body>
+</html>

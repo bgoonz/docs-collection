@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>About high availability configuration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">About high availability configuration</h1>
+    </header>
+    <p>
+      When you configure high availability, there is an automated setup of
+      one-way, asynchronous replication of all datastores (Git repositories,
+      MySQL, Redis, and Elasticsearch) from the primary to the replica
+      appliance.
+    </p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} supports an
+      active/passive configuration, where the replica appliance runs as a
+      standby with database services running in replication mode but application
+      services stopped.
+    </p>
+    <p>{% data reusables.enterprise_installation.replica-limit %}</p>
+    <h2 id="targeted-failure-scenarios">Targeted failure scenarios</h2>
+    <p>Use a high availability configuration for protection against:</p>
+    <p>
+      {% data
+      reusables.enterprise_installation.ha-and-clustering-failure-scenarios %}
+    </p>
+    <p>A high availability configuration is not a good solution for:</p>
+    <ul>
+      <li>
+        <strong>Scaling-out</strong>. While you can distribute traffic
+        geographically using geo-replication, the performance of writes is
+        limited to the speed and availability of the primary appliance. For more
+        information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-geo-replication/"
+          >About geo-replication</a
+        >.”
+      </li>
+      <li>
+        <strong>Backing up your primary appliance</strong>. A high availability
+        replica does not replace off-site backups in your disaster recovery
+        plan. Some forms of data corruption or loss may be replicated
+        immediately from the primary to the replica. To ensure safe rollback to
+        a stable past state, you must perform regular backups with historical
+        snapshots.
+      </li>
+      <li>
+        <strong>Zero downtime upgrades</strong>. To prevent data loss and
+        split-brain situations in controlled promotion scenarios, place the
+        primary appliance in maintenance mode and wait for all writes to
+        complete before promoting the replica.
+      </li>
+    </ul>
+    <h2 id="network-traffic-failover-strategies">
+      Network traffic failover strategies
+    </h2>
+    <p>
+      During failover, you must separately configure and manage redirecting
+      network traffic from the primary to the replica.
+    </p>
+    <h3 id="dns-failover">DNS failover</h3>
+    <p>
+      With DNS failover, use short TTL values in the DNS records that point to
+      the primary {% data variables.product.prodname_ghe_server %} appliance. We
+      recommend a TTL between 60 seconds and five minutes.
+    </p>
+    <p>
+      During failover, you must place the primary into maintenance mode and
+      redirect its DNS records to the replica appliance’s IP address. The time
+      needed to redirect traffic from primary to replica will depend on the TTL
+      configuration and time required to update the DNS records.
+    </p>
+    <p>
+      If you are using geo-replication, you must configure Geo DNS to direct
+      traffic to the nearest replica. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/about-geo-replication/"
+        >About geo-replication</a
+      >.”
+    </p>
+    <h3 id="load-balancer">Load balancer</h3>
+    <p>
+      {% data reusables.enterprise_clustering.load_balancer_intro %} {% data
+      reusables.enterprise_clustering.load_balancer_dns %}
+    </p>
+    <p>
+      During failover, you must place the primary appliance into maintenance
+      mode. You can configure the load balancer to automatically detect when the
+      replica has been promoted to primary, or it may require a manual
+      configuration change. You must manually promote the replica to primary
+      before it will respond to user traffic. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/using-github-enterprise-server-with-a-load-balancer/"
+        >Using {% data variables.product.prodname_ghe_server %} with a load
+        balancer</a
+      >.”
+    </p>
+    <p>{% data reusables.enterprise_installation.monitoring-replicas %}</p>
+    <h2 id="utilities-for-replication-management">
+      Utilities for replication management
+    </h2>
+    <p>
+      To manage replication on {% data variables.product.prodname_ghe_server %},
+      use these command line utilities by connecting to the replica appliance
+      using SSH.
+    </p>
+    <h3 id="ghe-repl-setup">ghe-repl-setup</h3>
+    <p>
+      The <code>ghe-repl-setup</code> command puts a {% data
+      variables.product.prodname_ghe_server %} appliance in replica standby
+      mode.
+    </p>
+    <ul>
+      <li>
+        An encrypted WireGuard VPN tunnel is configured for communication
+        between the two appliances.
+      </li>
+      <li>Database services are configured for replication and started.</li>
+      <li>
+        Application services are disabled. Attempts to access the replica
+        appliance over HTTP, Git, or other supported protocols will result in an
+        “appliance in replica mode” maintenance page or error message.
+      </li>
+    </ul>
+    <pre class="shell"><code>admin@169-254-1-2:~$ ghe-repl-setup 169.254.1.1
+Verifying ssh connectivity with 169.254.1.1 ...
+Connection check succeeded.
+Configuring database replication against primary ...
+Success: Replica mode is configured against 169.254.1.1.
+To disable replica mode and undo these changes, run `ghe-repl-teardown&#39;.
+Run `ghe-repl-start&#39; to start replicating against the newly configured primary.</code></pre>
+    <h3 id="ghe-repl-start">ghe-repl-start</h3>
+    <p>
+      The <code>ghe-repl-start</code> command turns on active replication of all
+      datastores.
+    </p>
+    <pre class="shell"><code>admin@169-254-1-2:~$ ghe-repl-start
+Starting MySQL replication ...
+Starting Redis replication ...
+Starting Elasticsearch replication ...
+Starting Pages replication ...
+Starting Git replication ...
+Success: replication is running for all services.
+Use `ghe-repl-status&#39; to monitor replication health and progress.</code></pre>
+    <h3 id="ghe-repl-status">ghe-repl-status</h3>
+    <p>
+      The <code>ghe-repl-status</code> command returns an <code>OK</code>,
+      <code>WARNING</code> or <code>CRITICAL</code> status for each datastore
+      replication stream. When any of the replication channels are in a
+      <code>WARNING</code> state, the command will exit with the code
+      <code>1</code>. Similarly, when any of the channels are in a
+      <code>CRITICAL</code> state, the command will exit with the code
+      <code>2</code>.
+    </p>
+    <pre class="shell"><code>admin@169-254-1-2:~$ ghe-repl-status
+OK: mysql replication in sync
+OK: redis replication is in sync
+OK: elasticsearch cluster is in sync
+OK: git data is in sync (10 repos, 2 wikis, 5 gists)
+OK: pages data is in sync</code></pre>
+    <p>
+      The <code>-v</code> and <code>-vv</code> options give details about each
+      datastore’s replication state:
+    </p>
+    <pre class="shell"><code>$ ghe-repl-status -v
+OK: mysql replication in sync
+  | IO running: Yes, SQL running: Yes, Delay: 0
+
+OK: redis replication is in sync
+  | master_host:169.254.1.1
+  | master_port:6379
+  | master_link_status:up
+  | master_last_io_seconds_ago:3
+  | master_sync_in_progress:0
+
+OK: elasticsearch cluster is in sync
+  | {
+  |   &quot;cluster_name&quot; : &quot;github-enterprise&quot;,
+  |   &quot;status&quot; : &quot;green&quot;,
+  |   &quot;timed_out&quot; : false,
+  |   &quot;number_of_nodes&quot; : 2,
+  |   &quot;number_of_data_nodes&quot; : 2,
+  |   &quot;active_primary_shards&quot; : 12,
+  |   &quot;active_shards&quot; : 24,
+  |   &quot;relocating_shards&quot; : 0,
+  |   &quot;initializing_shards&quot; : 0,
+  |   &quot;unassigned_shards&quot; : 0
+  | }
+
+OK: git data is in sync (366 repos, 31 wikis, 851 gists)
+  |                   TOTAL         OK      FAULT    PENDING      DELAY
+  | repositories        366        366          0          0        0.0
+  |        wikis         31         31          0          0        0.0
+  |        gists        851        851          0          0        0.0
+  |        total       1248       1248          0          0        0.0
+
+OK: pages data is in sync
+  | Pages are in sync</code></pre>
+    <h3 id="ghe-repl-stop">ghe-repl-stop</h3>
+    <p>
+      The <code>ghe-repl-stop</code> command temporarily disables replication
+      for all datastores and stops the replication services. To resume
+      replication, use the <a href="#ghe-repl-start">ghe-repl-start</a> command.
+    </p>
+    <pre class="shell"><code>admin@168-254-1-2:~$ ghe-repl-stop
+Stopping Pages replication ...
+Stopping Git replication ...
+Stopping MySQL replication ...
+Stopping Redis replication ...
+Stopping Elasticsearch replication ...
+Success: replication was stopped for all services.</code></pre>
+    <h3 id="ghe-repl-promote">ghe-repl-promote</h3>
+    <p>
+      The <code>ghe-repl-promote</code> command disables replication and
+      converts the replica appliance to a primary. The appliance is configured
+      with the same settings as the original primary and all services are
+      enabled.
+    </p>
+    <p>{% data reusables.enterprise_installation.promoting-a-replica %}</p>
+    <pre class="shell"><code>admin@168-254-1-2:~$ ghe-repl-promote
+Enabling maintenance mode on the primary to prevent writes ...
+Stopping replication ...
+  | Stopping Pages replication ...
+  | Stopping Git replication ...
+  | Stopping MySQL replication ...
+  | Stopping Redis replication ...
+  | Stopping Elasticsearch replication ...
+  | Success: replication was stopped for all services.
+Switching out of replica mode ...
+  | Success: Replication configuration has been removed.
+  | Run `ghe-repl-setup&#39; to re-enable replica mode.
+Applying configuration and starting services ...
+Success: Replica has been promoted to primary and is now accepting requests.</code></pre>
+    <h3 id="ghe-repl-teardown">ghe-repl-teardown</h3>
+    <p>
+      The <code>ghe-repl-teardown</code> command disables replication mode
+      completely, removing the replica configuration.
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/creating-a-high-availability-replica"
+          >Creating a high availability replica</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

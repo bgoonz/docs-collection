@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Delivering deployments</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Delivering deployments</h1>
+</header>
+<p>The <a href="/rest/reference/repos#deployments">Deployments API</a> provides your projects hosted on {% data variables.product.product_name %} with the capability to launch them on a server that you own. Combined with <a href="/guides/building-a-ci-server">the Status API</a>, you’ll be able to coordinate your deployments the moment your code lands on the default branch.</p>
+<p>This guide will use that API to demonstrate a setup that you can use. In our scenario, we will:</p>
+<ul>
+<li>Merge a pull request</li>
+<li>When the CI is finished, we’ll set the pull request’s status accordingly.</li>
+<li>When the pull request is merged, we’ll run our deployment to our server.</li>
+</ul>
+<p>Our CI system and host server will be figments of our imagination. They could be Heroku, Amazon, or something else entirely. The crux of this guide will be setting up and configuring the server managing the communication.</p>
+<p>If you haven’t already, be sure to <a href="https://ngrok.com/">download ngrok</a>, and learn how to <a href="/webhooks/configuring/#using-ngrok">use it</a>. We find it to be a very useful tool for exposing local connections.</p>
+<p>Note: you can download the complete source code for this project <a href="https://github.com/github/platform-samples/tree/master/api/ruby/delivering-deployments">from the platform-samples repo</a>.</p>
+<h2 id="writing-your-server">Writing your server</h2>
+<p>We’ll write a quick Sinatra app to prove that our local connections are working. Let’s start with this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;sinatra&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">require <span class="st">&#39;json&#39;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4">post <span class="st">&#39;/event_handler&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  payload = <span class="dt">JSON</span>.parse(params[<span class="st">:payload</span>])</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="st">&quot;Well, it worked!&quot;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">end</span></a></code></pre></div>
+<p>(If you’re unfamiliar with how Sinatra works, we recommend <a href="http://www.sinatrarb.com/">reading the Sinatra guide</a>.)</p>
+<p>Start this server up. By default, Sinatra starts on port <code>4567</code>, so you’ll want to configure ngrok to start listening for that, too.</p>
+<p>In order for this server to work, we’ll need to set a repository up with a webhook. The webhook should be configured to fire whenever a pull request is created, or merged. Go ahead and create a repository you’re comfortable playing around in. Might we suggest <span class="citation" data-cites="octocat">[@octocat's Spoon/Knife repository]</span>(https://github.com/octocat/Spoon-Knife)? After that, you’ll create a new webhook in your repository, feeding it the URL that ngrok gave you, and choosing <code>application/x-www-form-urlencoded</code> as the content type:</p>
+<figure>
+<img src="/assets/images/webhook_sample_url.png" alt="A new ngrok URL" /><figcaption>A new ngrok URL</figcaption>
+</figure>
+<p>Click <strong>Update webhook</strong>. You should see a body response of <code>Well, it worked!</code>. Great! Click on <strong>Let me select individual events.</strong>, and select the following:</p>
+<ul>
+<li>Deployment</li>
+<li>Deployment status</li>
+<li>Pull Request</li>
+</ul>
+<p>These are the events {% data variables.product.product_name %} will send to our server whenever the relevant action occurs. We’ll configure our server to <em>just</em> handle when pull requests are merged right now:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1">post <span class="st">&#39;/event_handler&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="ot">@payload</span> = <span class="dt">JSON</span>.parse(params[<span class="st">:payload</span>])</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">case</span> request.env[<span class="st">&#39;HTTP_X_GITHUB_EVENT&#39;</span>]</a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="kw">when</span> <span class="st">&quot;pull_request&quot;</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="kw">if</span> <span class="ot">@payload</span>[<span class="st">&quot;action&quot;</span>] == <span class="st">&quot;closed&quot;</span> &amp;&amp; <span class="ot">@payload</span>[<span class="st">&quot;pull_request&quot;</span>][<span class="st">&quot;merged&quot;</span>]</a>
+<a class="sourceLine" id="cb2-7" title="7">      puts <span class="st">&quot;A pull request was merged! A deployment should start now...&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw">end</span></a></code></pre></div>
+<p>What’s going on? Every event that {% data variables.product.product_name %} sends out attached a <code>X-GitHub-Event</code> HTTP header. We’ll only care about the PR events for now. When a pull request is merged (its state is <code>closed</code>, and <code>merged</code> is <code>true</code>), we’ll kick off a deployment.</p>
+<p>To test out this proof-of-concept, make some changes in a branch in your test repository, open a pull request, and merge it. Your server should respond accordingly!</p>
+<h2 id="working-with-deployments">Working with deployments</h2>
+<p>With our server in place, the code being reviewed, and our pull request merged, we want our project to be deployed.</p>
+<p>We’ll start by modifying our event listener to process pull requests when they’re merged, and start paying attention to deployments:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">when</span> <span class="st">&quot;pull_request&quot;</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">if</span> <span class="ot">@payload</span>[<span class="st">&quot;action&quot;</span>] == <span class="st">&quot;closed&quot;</span> &amp;&amp; <span class="ot">@payload</span>[<span class="st">&quot;pull_request&quot;</span>][<span class="st">&quot;merged&quot;</span>]</a>
+<a class="sourceLine" id="cb3-3" title="3">    start_deployment(<span class="ot">@payload</span>[<span class="st">&quot;pull_request&quot;</span>])</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">when</span> <span class="st">&quot;deployment&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  process_deployment(<span class="ot">@payload</span>)</a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">when</span> <span class="st">&quot;deployment_status&quot;</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  update_deployment_status</a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="kw">end</span></a></code></pre></div>
+<p>Based on the information from the pull request, we’ll start by filling out the <code>start_deployment</code> method:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">def</span> start_deployment(pull_request)</a>
+<a class="sourceLine" id="cb4-2" title="2">  user = pull_request[<span class="st">&#39;user&#39;</span>][<span class="st">&#39;login&#39;</span>]</a>
+<a class="sourceLine" id="cb4-3" title="3">  payload = <span class="dt">JSON</span>.generate(<span class="st">:environment</span> =&gt; <span class="st">&#39;production&#39;</span>, <span class="st">:deploy_user</span> =&gt; user)</a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="ot">@client</span>.create_deployment(pull_request[<span class="st">&#39;head&#39;</span>][<span class="st">&#39;repo&#39;</span>][<span class="st">&#39;full_name&#39;</span>], pull_request[<span class="st">&#39;head&#39;</span>][<span class="st">&#39;sha&#39;</span>], {<span class="st">:payload</span> =&gt; payload, <span class="st">:description</span> =&gt; <span class="st">&quot;Deploying my sweet branch&quot;</span>})</a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">end</span></a></code></pre></div>
+<p>Deployments can have some metadata attached to them, in the form of a <code>payload</code> and a <code>description</code>. Although these values are optional, it’s helpful to use for logging and representing information.</p>
+<p>When a new deployment is created, a completely separate event is triggered. That’s why we have a new <code>switch</code> case in the event handler for <code>deployment</code>. You can use this information to be notified when a deployment has been triggered.</p>
+<p>Deployments can take a rather long time, so we’ll want to listen for various events, such as when the deployment was created, and what state it’s in.</p>
+<p>Let’s simulate a deployment that does some work, and notice the effect it has on the output. First, let’s complete our <code>process_deployment</code> method:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">def</span> process_deployment</a>
+<a class="sourceLine" id="cb5-2" title="2">  payload = <span class="dt">JSON</span>.parse(<span class="ot">@payload</span>[<span class="st">&#39;payload&#39;</span>])</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="co"># you can send this information to your chat room, monitor, pager, etc.</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  puts <span class="st">&quot;Processing &#39;</span><span class="ot">#{@payload</span>[<span class="st">&#39;description&#39;</span>]<span class="ot">}</span><span class="st">&#39; for </span><span class="ot">#{</span>payload[<span class="st">&#39;deploy_user&#39;</span>]<span class="ot">}</span><span class="st"> to </span><span class="ot">#{</span>payload[<span class="st">&#39;environment&#39;</span>]<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  sleep <span class="dv">2</span> <span class="co"># simulate work</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="ot">@client</span>.create_deployment_status(<span class="st">&quot;repos/</span><span class="ot">#{@payload</span>[<span class="st">&#39;repository&#39;</span>][<span class="st">&#39;full_name&#39;</span>]<span class="ot">}</span><span class="st">/deployments/</span><span class="ot">#{@payload</span>[<span class="st">&#39;id&#39;</span>]<span class="ot">}</span><span class="st">&quot;</span>, <span class="st">&#39;pending&#39;</span>)</a>
+<a class="sourceLine" id="cb5-7" title="7">  sleep <span class="dv">2</span> <span class="co"># simulate work</span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="ot">@client</span>.create_deployment_status(<span class="st">&quot;repos/</span><span class="ot">#{@payload</span>[<span class="st">&#39;repository&#39;</span>][<span class="st">&#39;full_name&#39;</span>]<span class="ot">}</span><span class="st">/deployments/</span><span class="ot">#{@payload</span>[<span class="st">&#39;id&#39;</span>]<span class="ot">}</span><span class="st">&quot;</span>, <span class="st">&#39;success&#39;</span>)</a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="kw">end</span></a></code></pre></div>
+<p>Finally, we’ll simulate storing the status information as console output:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">def</span> update_deployment_status</a>
+<a class="sourceLine" id="cb6-2" title="2">  puts <span class="st">&quot;Deployment status for </span><span class="ot">#{@payload</span>[<span class="st">&#39;id&#39;</span>]<span class="ot">}</span><span class="st"> is </span><span class="ot">#{@payload</span>[<span class="st">&#39;state&#39;</span>]<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">end</span></a></code></pre></div>
+<p>Let’s break down what’s going on. A new deployment is created by <code>start_deployment</code>, which triggers the <code>deployment</code> event. From there, we call <code>process_deployment</code> to simulate work that’s going on. During that processing, we also make a call to <code>create_deployment_status</code>, which lets a receiver know what’s going on, as we switch the status to <code>pending</code>.</p>
+<p>After the deployment is finished, we set the status to <code>success</code>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At GitHub, we’ve used a version of <a href="https://github.com/atmos/heaven">Heaven</a> to manage our deployments for years. The basic flow is essentially the exact same as the server we’ve built above. At GitHub, we:</p>
+<ul>
+<li>Wait for a response on the state of the CI</li>
+<li>If the code is green, we merge the pull request</li>
+<li>Heaven takes the merged code, and deploys it to our production and staging servers</li>
+<li>In the meantime, Heaven also notifies everyone about the build, via <a href="https://github.com/github/hubot">Hubot</a> sitting in our chat rooms</li>
+</ul>
+<p>That’s it! You don’t need to build your own deployment setup to use this example. You can always rely on <a href="https://github.com/integrations">GitHub integrations</a>.</p>
+</body>
+</html>

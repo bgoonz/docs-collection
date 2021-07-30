@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Transferring a repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Transferring a repository</h1>
+</header>
+<h2 id="about-repository-transfers">About repository transfers</h2>
+<p>When you transfer a repository to a new owner, they can immediately administer the repository’s contents, issues, pull requests, releases, project boards, and settings.</p>
+<p>Prerequisites for repository transfers: {% ifversion fpt %} - When you transfer a repository that you own to another user account, the new owner will receive a confirmation email. The confirmation email includes instructions for accepting the transfer. If the new owner doesn’t accept the transfer within one day, the invitation will expire.{% endif %} - To transfer a repository that you own to an organization, you must have permission to create a repository in the target organization. - The target account must not have a repository with the same name, or a fork in the same network. - The original owner of the repository is added as a collaborator on the transferred repository. Other collaborators to the transferred repository remain intact. - Private forks can’t be transferred.</p>
+<p>{% ifversion fpt %}If you transfer a private repository to a {% data variables.product.prodname_free_user %} user or organization account, the repository will lose access to features like protected branches and {% data variables.product.prodname_pages %}. {% data reusables.gated-features.more-info %}{% endif %}</p>
+<h3 id="whats-transferred-with-a-repository">What’s transferred with a repository?</h3>
+<p>When you transfer a repository, its issues, pull requests, wiki, stars, and watchers are also transferred. If the transferred repository contains webhooks, services, secrets, or deploy keys, they will remain associated after the transfer is complete. Git information about commits, including contributions, is preserved. In addition:</p>
+<ul>
+<li>If the transferred repository is a fork, then it remains associated with the upstream repository.</li>
+<li>If the transferred repository has any forks, then those forks will remain associated with the repository after the transfer is complete.</li>
+<li>If the transferred repository uses {% data variables.large_files.product_name_long %}, all {% data variables.large_files.product_name_short %} objects are automatically moved. This transfer occurs in the background, so if you have a large number of {% data variables.large_files.product_name_short %} objects or if the {% data variables.large_files.product_name_short %} objects themselves are large, it may take some time for the transfer to occur.{% ifversion fpt %} Before you transfer a repository that uses {% data variables.large_files.product_name_short %}, make sure the receiving account has enough data packs to store the {% data variables.large_files.product_name_short %} objects you’ll be moving over. For more information on adding storage for user accounts, see “<a href="/articles/upgrading-git-large-file-storage">Upgrading {% data variables.large_files.product_name_long %}</a>.”{% endif %}</li>
+<li>When a repository is transferred between two user accounts, issue assignments are left intact. When you transfer a repository from a user account to an organization, issues assigned to members in the organization remain intact, and all other issue assignees are cleared. Only owners in the organization are allowed to create new issue assignments. When you transfer a repository from an organization to a user account, only issues assigned to the repository’s owner are kept, and all other issue assignees are removed.</li>
+<li>If the transferred repository contains a {% data variables.product.prodname_pages %} site, then links to the Git repository on the Web and through Git activity are redirected. However, we don’t redirect {% data variables.product.prodname_pages %} associated with the repository.</li>
+<li><p>All links to the previous repository location are automatically redirected to the new location. When you use <code>git clone</code>, <code>git fetch</code>, or <code>git push</code> on a transferred repository, these commands will redirect to the new repository location or URL. However, to avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using <code>git remote</code> on the command line:</p>
+<pre class="shell"><code>$ git remote set-url origin &lt;em&gt;new_url&lt;/em&gt;</code></pre></li>
+</ul>
+<p>For more information, see “<a href="/github/getting-started-with-github/managing-remote-repositories">Managing remote repositories</a>.”</p>
+<h3 id="repository-transfers-and-organizations">Repository transfers and organizations</h3>
+<p>To transfer repositories to an organization, you must have repository creation permissions in the receiving organization. If organization owners have disabled repository creation by organization members, only organization owners can transfer repositories out of or into the organization.</p>
+<p>Once a repository is transferred to an organization, the organization’s default repository permission settings and default membership privileges will apply to the transferred repository.</p>
+<h2 id="transferring-a-repository-owned-by-your-user-account">Transferring a repository owned by your user account</h2>
+<p>You can transfer your repository to any user account that accepts your repository transfer. When a repository is transferred between two user accounts, the original repository owner and collaborators are automatically added as collaborators to the new repository.</p>
+<p>{% ifversion fpt %}If you published a {% data variables.product.prodname_pages %} site in a private repository and added a custom domain, before transferring the repository, you may want to remove or update your DNS records to avoid the risk of a domain takeover. For more information, see “<a href="/articles/managing-a-custom-domain-for-your-github-pages-site">Managing a custom domain for your {% data variables.product.prodname_pages %} site</a>.”{% endif %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.transfer-repository-steps %}</p>
+<h2 id="transferring-a-repository-owned-by-your-organization">Transferring a repository owned by your organization</h2>
+<p>If you have owner permissions in an organization or admin permissions to one of its repositories, you can transfer a repository owned by your organization to your user account or to another organization.</p>
+<ol type="1">
+<li>Sign into your user account that has admin or owner permissions in the organization that owns the repository. {% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.transfer-repository-steps %}</li>
+</ol>
+</body>
+</html>

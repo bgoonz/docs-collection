@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enabling GitHub Actions with Azure Blob storage</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Enabling GitHub Actions with Azure Blob storage</h1>
+    </header>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      Before enabling {% data variables.product.prodname_actions %}, make sure
+      you have completed the following steps:
+    </p>
+    <ul>
+      <li>
+        Create your Azure storage account for storing workflow artifacts. {%
+        data variables.product.prodname_actions %} stores its data as block
+        blobs, and two storage account types are supported:
+        <ul>
+          <li>
+            <p>
+              A <strong>general-purpose</strong> storage account (also known as
+              <code>general-purpose v1</code> or
+              <code>general-purpose v2</code>) using the
+              <strong>standard</strong> performance tier.
+            </p>
+            <p>{% warning %}</p>
+            <p>
+              <strong>Warning:</strong> Using the
+              <strong>premium</strong> performance tier with a general-purpose
+              storage account is not supported. The
+              <strong>standard</strong> performance tier must be selected when
+              creating the storage account, and it cannot be changed later.
+            </p>
+            {% endwarning %}
+          </li>
+          <li>
+            <p>
+              A <strong>BlockBlobStorage</strong> storage account, which uses
+              the <strong>premium</strong> performance tier.
+            </p>
+          </li>
+        </ul>
+        For more information on Azure storage account types and performance
+        tiers, see the
+        <a
+          href="https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview?toc=/azure/storage/blobs/toc.json#types-of-storage-accounts"
+          >Azure documentation</a
+        >. {% data reusables.actions.enterprise-common-prereqs %}
+      </li>
+    </ul>
+    <h2
+      id="enabling-data-variables.product.prodname_actions-with-azure-blob-storage"
+    >
+      Enabling {% data variables.product.prodname_actions %} with Azure Blob
+      storage
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.actions %} {% data
+      reusables.actions.enterprise-enable-checkbox %} 1. Under “Artifact &amp;
+      Log Storage”, select <strong>Azure Blob Storage</strong>, and enter your
+      Azure storage account’s connection string. For more information on getting
+      the connection string for your storage account, see the
+      <a
+        href="https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal#view-account-access-keys"
+        >Azure documentation</a
+      >.
+      <img
+        src="/assets/images/enterprise/management-console/actions-azure-storage.png"
+        alt="Radio button for selecting Azure Blob Storage and the Connection string field"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <p>{% data reusables.actions.enterprise-postinstall-nextsteps %}</p>
+  </body>
+</html>

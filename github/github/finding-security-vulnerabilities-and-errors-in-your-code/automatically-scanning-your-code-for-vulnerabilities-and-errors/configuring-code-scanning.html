@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring code scanning</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring code scanning</h1>
+</header>
+<!--See /content/code-security/secure-coding for the latest version of this article -->
+<p>{% data reusables.code-scanning.beta %} {% data reusables.code-scanning.enterprise-enable-code-scanning-actions %}</p>
+<h2 id="about-data-variables.product.prodname_code_scanning-configuration">About {% data variables.product.prodname_code_scanning %} configuration</h2>
+<p>You can run {% data variables.product.prodname_code_scanning %} on {% data variables.product.product_name %}, using {% data variables.product.prodname_actions %}, or from your continuous integration (CI) system, using the {% data variables.product.prodname_codeql_runner %}. For more information about {% data variables.product.prodname_actions %}, see “<a href="/actions/getting-started-with-github-actions/about-github-actions">About {% data variables.product.prodname_actions %}</a>.” For more information about the {% data variables.product.prodname_codeql_runner %}, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-your-ci-system">Running {% data variables.product.prodname_code_scanning %} in your CI system</a>.”</p>
+<p>This article is about running {% data variables.product.prodname_code_scanning %} on {% data variables.product.product_name %}.</p>
+<p>Before you can configure {% data variables.product.prodname_code_scanning %} for a repository, you must set up {% data variables.product.prodname_code_scanning %} by adding a {% data variables.product.prodname_actions %} workflow to the repository. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>.”</p>
+<p>{% data reusables.code-scanning.edit-workflow %}</p>
+<p>{% data variables.product.prodname_codeql %} analysis is just one type of {% data variables.product.prodname_code_scanning %} you can do in {% data variables.product.prodname_dotcom %}. {% data variables.product.prodname_marketplace %} on {% data variables.product.prodname_dotcom_the_website %} contains other {% data variables.product.prodname_code_scanning %} workflows you can use. The specific examples given in this article relate to the {% data variables.product.prodname_codeql_workflow %} file.</p>
+<h2 id="editing-a-data-variables.product.prodname_code_scanning-workflow">Editing a {% data variables.product.prodname_code_scanning %} workflow</h2>
+<p>{% data variables.product.prodname_dotcom %} saves workflow files in the <em>.github/workflows</em> directory of your repository. You can find a workflow you have added by searching for its file name. For example, by default, the workflow file for {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} is called <em>codeql-analysis.yml</em>.</p>
+<ol type="1">
+<li>In your repository, browse to the workflow file you want to edit.</li>
+<li>In the upper right corner of the file view, to open the workflow editor, click {% octicon “pencil” aria-label=“The edit icon” %}. <img src="/assets/images/help/repository/code-scanning-edit-workflow-button.png" alt="Edit workflow file button" /></li>
+<li>After you have edited the file, click <strong>Start commit</strong> and complete the “Commit changes” form. You can choose to commit directly to the current branch, or create a new branch and start a pull request. <img src="/assets/images/help/repository/code-scanning-workflow-update.png" alt="Commit update to codeql.yml workflow" /></li>
+</ol>
+<p>For more information about editing workflow files, see “<a href="/actions/learn-github-actions">Learn {% data variables.product.prodname_actions %}</a>.”</p>
+<h2 id="configuring-frequency">Configuring frequency</h2>
+<p>You can configure the {% data variables.product.prodname_codeql_workflow %} to scan code on a schedule or when specific events occur in a repository.</p>
+<p>Scanning code when someone pushes a change, and whenever a pull request is created, prevents developers from introducing new vulnerabilities and errors into the code. Scanning code on a schedule informs you about the latest vulnerabilities and errors that {% data variables.product.company_short %}, security researchers, and the community discover, even when developers aren’t actively maintaining the repository.</p>
+<h3 id="scanning-on-push">Scanning on push</h3>
+<p>By default, the {% data variables.product.prodname_codeql_workflow %} uses the <code>on.push</code> event to trigger a code scan on every push to the default branch of the repository and any protected branches. For {% data variables.product.prodname_code_scanning %} to be triggered on a specified branch, the workflow must exist in that branch. For more information, see “<a href="/actions/reference/workflow-syntax-for-github-actions#on">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<h3 id="scanning-pull-requests">Scanning pull requests</h3>
+<p>The default {% data variables.product.prodname_codeql_workflow %} uses the <code>pull_request</code> event to trigger a code scan on pull requests targeted against the default branch. The <code>pull_request</code> event is not triggered if the pull request was opened from a private fork.</p>
+<p>For more information about the <code>pull_request</code> event, see “<a href="/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestbranchestags">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<h3 id="avoiding-unnecessary-scans-of-pull-requests">Avoiding unnecessary scans of pull requests</h3>
+<p>You might want to avoid a code scan being triggered on specific pull requests targeted against the default branch, irrespective of which files have been changed. You can configure this by specifying <code>on:pull_request:paths-ignore</code> or <code>on:pull_request:paths</code> in the {% data variables.product.prodname_code_scanning %} workflow. For example, if the only changes in a pull request are to files with the file extensions <code>.md</code> or <code>.txt</code> you can use the following <code>paths-ignore</code> array.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">,</span> protected<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="fu">pull_request:</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">paths-ignore:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="kw">-</span> <span class="st">&#39;**/*.md&#39;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      <span class="kw">-</span> <span class="st">&#39;**/*.txt&#39;</span></a></code></pre></div>
+<p>{% note %}</p>
+<p><strong>Notes</strong></p>
+<ul>
+<li><code>on:pull_request:paths-ignore</code> and <code>on:pull_request:paths</code> set conditions that determine whether the actions in the workflow will run on a pull request. They don’t determine what files will be analyzed when the actions <em>are</em> run. When a pull request contains any files that are not matched by <code>on:pull_request:paths-ignore</code> or <code>on:pull_request:paths</code>, the workflow runs the actions and scans all of the files changed in the pull request, including those matched by <code>on:pull_request:paths-ignore</code> or <code>on:pull_request:paths</code>, unless the files have been excluded. For information on how to exclude files from analysis, see “<a href="#specifying-directories-to-scan">Specifying directories to scan</a>.”</li>
+<li>For {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} workflow files, don’t use the <code>paths-ignore</code> or <code>paths</code> keywords with the <code>on:push</code> event as this is likely to cause missing analyses. For accurate results, {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} needs to be able to compare new changes with the analysis of the previous commit.</li>
+</ul>
+<p>{% endnote %}</p>
+<p>For more information about using <code>on:pull_request:paths-ignore</code> and <code>on:pull_request:paths</code> to determine when a workflow will run for a pull request, see “<a href="/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<h3 id="scanning-on-a-schedule">Scanning on a schedule</h3>
+<p>If you use the default {% data variables.product.prodname_codeql_workflow %}, the workflow will scan the code in your repository once a week, in addition to the scans triggered by events. To adjust this schedule, edit the <code>cron</code> value in the workflow. For more information, see “<a href="/actions/reference/workflow-syntax-for-github-actions#onschedule">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<p>{% note %}</p>
+<p><strong>Note</strong>: {% data variables.product.prodname_dotcom %} only runs scheduled jobs that are in workflows on the default branch. Changing the schedule in a workflow on any other branch has no effect until you merge the branch into the default branch.</p>
+<p>{% endnote %}</p>
+<h3 id="example">Example</h3>
+<p>The following example shows a {% data variables.product.prodname_codeql_workflow %} for a particular repository that has a default branch called <code>main</code> and one protected branch called <code>protected</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">,</span> protected<span class="kw">]</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="fu">pull_request:</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">]</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="kw">-</span> <span class="fu">cron:</span><span class="at"> </span><span class="st">&#39;40 7 * * 2&#39;</span></a></code></pre></div>
+<p>This workflow scans: * Every push to the default branch and the protected branch * Every pull request to the default branch * The default branch every Tuesday at 7:40 UTC</p>
+<h2 id="specifying-an-operating-system">Specifying an operating system</h2>
+<p>If your code requires a specific operating system to compile, you can configure the operating system in your {% data variables.product.prodname_codeql_workflow %}. Edit the value of <code>jobs.analyze.runs-on</code> to specify the operating system for the machine that runs your {% data variables.product.prodname_code_scanning %} actions. You specify the operating system by using an appropriate label as the second element in a two-element array, after <code>self-hosted</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">analyze:</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">name:</span><span class="at"> Analyze</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="fu">runs-on:</span><span class="at"> </span><span class="kw">[</span>self-hosted<span class="kw">,</span> ubuntu-latest<span class="kw">]</span></a></code></pre></div>
+<p>{% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} supports the latest versions of Ubuntu, Windows, and macOS. Typical values for this setting are therefore: <code>ubuntu-latest</code>, <code>windows-latest</code>, and <code>macos-latest</code>. For more information, see “<a href="/actions/reference/workflow-syntax-for-github-actions#self-hosted-runners">Workflow syntax for GitHub Actions</a>” and “<a href="/actions/hosting-your-own-runners/using-labels-with-self-hosted-runners">Using labels with self-hosted runners</a>.”</p>
+<p>You must ensure that Git is in the PATH variable on your self-hosted runners.</p>
+<h2 id="changing-the-languages-that-are-analyzed">Changing the languages that are analyzed</h2>
+<p>{% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} automatically detects code written in the supported languages.</p>
+<p>{% data reusables.code-scanning.codeql-languages-bullets %}</p>
+<p>The default {% data variables.product.prodname_codeql_workflow %} file contains a build matrix called <code>language</code> which lists the languages in your repository that are analyzed. {% data variables.product.prodname_codeql %} automatically populates this matrix when you add {% data variables.product.prodname_code_scanning %} to a repository. Using the <code>language</code> matrix optimizes {% data variables.product.prodname_codeql %} to run each analysis in parallel. We recommend that all workflows adopt this configuration due to the performance benefits of parallelizing builds. For more information about build matrices, see “<a href="/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix">Managing complex workflows</a>.”</p>
+<p>{% data reusables.code-scanning.specify-language-to-analyze %}</p>
+<p>If your workflow uses the <code>language</code> matrix then {% data variables.product.prodname_codeql %} is hardcoded to analyze only the languages in the matrix. To change the languages you want to analyze, edit the value of the matrix variable. You can remove a language to prevent it being analyzed or you can add a language that was not present in the repository when {% data variables.product.prodname_code_scanning %} was set up. For example, if the repository initially only contained JavaScript when {% data variables.product.prodname_code_scanning %} was set up, and you later added Python code, you will need to add <code>python</code> to the matrix.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">analyze:</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">name:</span><span class="at"> Analyze</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    ...</a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb4-6" title="6">      <span class="fu">fail-fast:</span><span class="at"> </span><span class="ch">false</span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb4-8" title="8">        <span class="fu">language:</span><span class="at"> </span><span class="kw">[</span><span class="st">&#39;javascript&#39;</span><span class="kw">,</span> <span class="st">&#39;python&#39;</span><span class="kw">]</span></a></code></pre></div>
+<p>If your workflow does not contain a matrix called <code>language</code>, then {% data variables.product.prodname_codeql %} is configured to run analysis sequentially. If you don’t specify languages in the workflow, {% data variables.product.prodname_codeql %} automatically detects, and attempts to analyze, any supported languages in the repository. If you want to choose which languages to analyze, without using a matrix, you can use the <code>languages</code> parameter under the <code>init</code> action.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">-</span> <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">languages:</span><span class="at"> cpp, csharp, python</span></a></code></pre></div>
+<p>{% ifversion fpt %} ## Analyzing Python dependencies</p>
+<p>For GitHub-hosted runners that use Linux only, the {% data variables.product.prodname_codeql_workflow %} will try to auto-install Python dependencies to give more results for the CodeQL analysis. You can control this behavior by specifying the <code>setup-python-dependencies</code> parameter for the action called by the “Initialize CodeQL” step. By default, this parameter is set to <code>true</code>:</p>
+<ul>
+<li><p>If the repository contains code written in Python, the “Initialize CodeQL” step installs the necessary dependencies on the GitHub-hosted runner. If the auto-install succeeds, the action also sets the environment variable <code>CODEQL_PYTHON</code> to the Python executable file that includes the dependencies.</p></li>
+<li><p>If the repository doesn’t have any Python dependencies, or the dependencies are specified in an unexpected way, you’ll get a warning and the action will continue with the remaining jobs. The action can run successfully even when there are problems interpreting dependencies, but the results may be incomplete.</p></li>
+</ul>
+<p>Alternatively, you can install Python dependencies manually on any operating system. You will need to add <code>setup-python-dependencies</code> and set it to <code>false</code>, as well as set <code>CODEQL_PYTHON</code> to the Python executable that includes the dependencies, as shown in this workflow extract:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">CodeQL-Build:</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="fu">security-events:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="fu">actions:</span><span class="at"> read{% endif %}</span></a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Checkout repository</span></a>
+<a class="sourceLine" id="cb6-11" title="11">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb6-12" title="12">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set up Python</span></a>
+<a class="sourceLine" id="cb6-13" title="13">        <span class="fu">uses:</span><span class="at"> actions/setup-python@v2</span></a>
+<a class="sourceLine" id="cb6-14" title="14">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-15" title="15">          <span class="fu">python-version:</span><span class="at"> </span><span class="st">&#39;3.x&#39;</span></a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install dependencies</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb6-18" title="18">          python -m pip install --upgrade pip</a>
+<a class="sourceLine" id="cb6-19" title="19">          if [ -f requirements.txt ];</a>
+<a class="sourceLine" id="cb6-20" title="20">          then pip install -r requirements.txt;</a>
+<a class="sourceLine" id="cb6-21" title="21">          fi</a>
+<a class="sourceLine" id="cb6-22" title="22">          # Set the `CODEQL-PYTHON` environment variable to the Python executable</a>
+<a class="sourceLine" id="cb6-23" title="23">          # that includes the dependencies</a>
+<a class="sourceLine" id="cb6-24" title="24">          echo &quot;CODEQL_PYTHON=$(which python)&quot; &gt;&gt; $GITHUB_ENV</a>
+<a class="sourceLine" id="cb6-25" title="25">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Initialize CodeQL</span></a>
+<a class="sourceLine" id="cb6-26" title="26">        <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb6-27" title="27">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-28" title="28">          <span class="fu">languages:</span><span class="at"> python</span></a>
+<a class="sourceLine" id="cb6-29" title="29">          <span class="co"># Override the default behavior so that the action doesn&#39;t attempt</span></a>
+<a class="sourceLine" id="cb6-30" title="30">          <span class="co"># to auto-install Python dependencies</span></a>
+<a class="sourceLine" id="cb6-31" title="31">          <span class="fu">setup-python-dependencies:</span><span class="at"> </span><span class="ch">false</span></a></code></pre></div>
+<p>{% endif %}</p>
+<h2 id="running-additional-queries">Running additional queries</h2>
+<p>{% data reusables.code-scanning.run-additional-queries %}</p>
+<p>To add one or more queries, add a <code>with: queries:</code> entry within the <code>uses: github/codeql-action/init@v1</code> section of the workflow. If the queries are in a private repository, use the <code>external-repository-token</code> parameter to specify a token that has access to the private repository.</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">-</span> <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="fu">queries:</span><span class="at"> COMMA-SEPARATED LIST OF PATHS</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="co"># Optional. Provide a token to access private repositories.</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="fu">external-repository-token:</span><span class="at"> ${{ secrets.ACCESS_TOKEN }}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>You can also specify query suites in the value of <code>queries</code>. Query suites are collections of queries, usually grouped by purpose or language.</p>
+<p>{% data reusables.code-scanning.codeql-query-suites %}</p>
+<p>If you are also using a configuration file for custom settings, any additional queries specified in your workflow are used instead of any specified in the configuration file. If you want to run the combined set of additional queries specified here and in the configuration file, prefix the value of <code>queries</code> in the workflow with the <code>+</code> symbol. For more information, see “<a href="#using-a-custom-configuration-file">Using a custom configuration file</a>.”</p>
+<p>In the following example, the <code>+</code> symbol ensures that the specified additional queries are used together with any queries specified in the referenced configuration file.</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">-</span> <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="fu">config-file:</span><span class="at"> ./.github/codeql/codeql-config.yml</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="fu">queries:</span><span class="at"> +security-and-quality,octo-org/python-qlpack/show_ifs.ql@main</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="fu">external-repository-token:</span><span class="at"> ${{ secrets.ACCESS_TOKEN }}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<h2 id="using-a-custom-configuration-file">Using a custom configuration file</h2>
+<p>As an alternative to specifying which queries to run in the workflow file, you can do this in a separate configuration file. You can also use a configuration file to disable the default queries and to specify which directories to scan during analysis.</p>
+<p>In the workflow file, use the <code>config-file</code> parameter of the <code>init</code> action to specify the path to the configuration file you want to use. This example loads the configuration file <em>./.github/codeql/codeql-config.yml</em>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">-</span> <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="fu">config-file:</span><span class="at"> ./.github/codeql/codeql-config.yml</span></a></code></pre></div>
+<p>{% data reusables.code-scanning.custom-configuration-file %}</p>
+<p>If the configuration file is located in an external private repository, use the <code>external-repository-token</code> parameter of the <code>init</code> action to specify a token that has access to the private repository.</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">with:</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="fu">external-repository-token:</span><span class="at"> ${{ secrets.ACCESS_TOKEN }}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>The settings in the configuration file are written in YAML format.</p>
+<h3 id="specifying-additional-queries">Specifying additional queries</h3>
+<p>You specify additional queries in a <code>queries</code> array. Each element of the array contains a <code>uses</code> parameter with a value that identifies a single query file, a directory containing query files, or a query suite definition file.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">queries:</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ./my-basic-queries/example-query.ql</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ./my-advanced-queries</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ./codeql-qlpacks/complex-python-qlpack/rootAndBar.qls</span></a></code></pre></div>
+<p>Optionally, you can give each array element a name, as shown in the example configuration files below.</p>
+<p>For more information about additional queries, see “<a href="#running-additional-queries">Running additional queries</a>” above.</p>
+<h3 id="disabling-the-default-queries">Disabling the default queries</h3>
+<p>If you only want to run custom queries, you can disable the default security queries by using <code>disable-default-queries: true</code>.</p>
+<h3 id="specifying-directories-to-scan">Specifying directories to scan</h3>
+<p>For the interpreted languages that {% data variables.product.prodname_codeql %} supports (Python and JavaScript/TypeScript), you can restrict {% data variables.product.prodname_code_scanning %} to files in specific directories by adding a <code>paths</code> array to the configuration file. You can exclude the files in specific directories from analysis by adding a <code>paths-ignore</code> array.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">paths:</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="kw">-</span> src</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="fu">paths-ignore:</span></a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="kw">-</span> src/node_modules</a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="kw">-</span> <span class="st">&#39;**/*.test.js&#39;</span></a></code></pre></div>
+<p>{% note %}</p>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>The <code>paths</code> and <code>paths-ignore</code> keywords, used in the context of the {% data variables.product.prodname_code_scanning %} configuration file, should not be confused with the same keywords when used for <code>on.&lt;push|pull_request&gt;.paths</code> in a workflow. When they are used to modify <code>on.&lt;push|pull_request&gt;</code> in a workflow, they determine whether the actions will be run when someone modifies code in the specified directories. For more information, see “<a href="/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</li>
+<li>The filter pattern characters <code>?</code>, <code>+</code>, <code>[</code>, <code>]</code>, and <code>!</code> are not supported and will be matched literally.</li>
+<li><code>**</code> characters can only be at the start or end of a line, or surrounded by slashes, and you can’t mix <code>**</code> and other characters. For example, <code>foo/**</code>, <code>**/foo</code>, and <code>foo/**/bar</code> are all allowed syntax, but <code>**foo</code> isn’t. However you can use single stars along with other characters, as shown in the example. You’ll need to quote anything that contains a <code>*</code> character.</li>
+</ul>
+<p>{% endnote %}</p>
+<p>For compiled languages, if you want to limit {% data variables.product.prodname_code_scanning %} to specific directories in your project, you must specify appropriate build steps in the workflow. The commands you need to use to exclude a directory from the build will depend on your build system. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language">Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages</a>.”</p>
+<p>You can quickly analyze small portions of a monorepo when you modify code in specific directories. You’ll need to both exclude directories in your build steps and use the <code>paths-ignore</code> and <code>paths</code> keywords for <a href="/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths"><code>on.&lt;push|pull_request&gt;</code></a> in your workflow.</p>
+<h3 id="example-configuration-files">Example configuration files</h3>
+<p>{% data reusables.code-scanning.example-configuration-files %}</p>
+<h2 id="configuring-data-variables.product.prodname_code_scanning-for-compiled-languages">Configuring {% data variables.product.prodname_code_scanning %} for compiled languages</h2>
+<p>{% data reusables.code-scanning.autobuild-compiled-languages %} {% data reusables.code-scanning.analyze-go %}</p>
+<p>{% data reusables.code-scanning.autobuild-add-build-steps %} For more information about how to configure {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} for compiled languages, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages">Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages</a>.”</p>
+<h2 id="uploading-data-variables.product.prodname_code_scanning-data-to-data-variables.product.prodname_dotcom">Uploading {% data variables.product.prodname_code_scanning %} data to {% data variables.product.prodname_dotcom %}</h2>
+<p>{% data variables.product.prodname_dotcom %} can display code analysis data generated externally by a third-party tool. You can upload code analysis data with the <code>upload-sarif</code> action. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github">Uploading a SARIF file to GitHub</a>.”</p>
+</body>
+</html>

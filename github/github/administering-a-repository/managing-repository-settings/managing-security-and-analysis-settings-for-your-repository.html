@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing security and analysis settings for your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing security and analysis settings for your repository</h1>
+</header>
+<p>{% ifversion fpt %} ## Enabling or disabling security and analysis features for public repositories</p>
+<p>You can manage a subset of security and analysis features for public repositories. Other features are permanently enabled, including dependency graph and secret scanning.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under “Configure security and analysis features”, to the right of the feature, click <strong>Disable</strong> or <strong>Enable</strong>. <img src="/assets/images/help/repository/security-and-analysis-disable-or-enable-dotcom-public.png" alt="“Enable” or “Disable” button for “Configure security and analysis” features in a public repository" /> {% endif %}</p>
+<h2 id="enabling-or-disabling-security-and-analysis-features-ifversion-fpt-for-private-repositories-endif">Enabling or disabling security and analysis features{% ifversion fpt %} for private repositories{% endif %}</h2>
+<p>You can manage the security and analysis features for your {% ifversion fpt %}private or internal {% endif %}repository.{% ifversion fpt or ghes &gt; 2.22 %} If your organization belongs to an enterprise with a license for {% data variables.product.prodname_GH_advanced_security %} then extra options are available. {% data reusables.advanced-security.more-info-ghas %}{% endif %}</p>
+<p>{% data reusables.security.security-and-analysis-features-enable-read-only %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} {% ifversion fpt or ghes &gt; 3.0 %} 4. Under “Configure security and analysis features”, to the right of the feature, click <strong>Disable</strong> or <strong>Enable</strong>. The control for “{% data variables.product.prodname_GH_advanced_security %}” is disabled if your enterprise has no available licenses for {% data variables.product.prodname_advanced_security %}.{% ifversion fpt %} <img src="/assets/images/help/repository/security-and-analysis-disable-or-enable-dotcom-private.png" alt="“Enable” or “Disable” button for “Configure security and analysis” features" />{% else %} <img src="/assets/images/enterprise/3.1/help/repository/security-and-analysis-disable-or-enable-ghes.png" alt="“Enable” or “Disable” button for “Configure security and analysis” features" />{% endif %} {% note %}</p>
+<p><strong>Note:</strong> If you disable {% data variables.product.prodname_GH_advanced_security %}, {% ifversion fpt %}dependency review, {% endif %}{% data variables.product.prodname_secret_scanning %} and {% data variables.product.prodname_code_scanning %} are disabled. Any workflows, SARIF uploads, or API calls for {% data variables.product.prodname_code_scanning %} will fail. {% endnote %} {% endif %} {% ifversion ghes = 3.0 %} 4. Under “Configure security and analysis features”, to the right of the feature, click <strong>Disable</strong> or <strong>Enable</strong>. <img src="/assets/images/help/repository/security-and-analysis-disable-or-enable-ghe.png" alt="“Enable” or “Disable” button for “Configure security and analysis” features" /> {% endif %} {% ifversion ghae %} 4. Under “Configure security and analysis features”, to the right of the feature, click <strong>Disable</strong> or <strong>Enable</strong>. Before you can enable “{% data variables.product.prodname_secret_scanning %}” for your repository, you may need to enable {% data variables.product.prodname_GH_advanced_security %}. <img src="/assets/images/enterprise/github-ae/repository/enable-ghas-secret-scanning-ghae.png" alt="Enable or disable {% data variables.product.prodname_GH_advanced_security %} or {% data variables.product.prodname_secret_scanning %} for your repository" /> {% endif %}</p>
+<h2 id="granting-access-to-security-alerts">Granting access to security alerts</h2>
+<p>After you enable {% ifversion not ghae %}{% data variables.product.prodname_dependabot %} or {% endif %}{% data variables.product.prodname_secret_scanning %} alerts for a repository in an organization, organization owners and repository administrators can view the alerts by default. You can give additional teams and people access to the alerts for a repository.</p>
+<p>{% note %}</p>
+<p>Organization owners and repository administrators can only grant access to view security alerts, such as {% data variables.product.prodname_secret_scanning %} alerts, to people or teams who have write access to the repo.</p>
+<p>{% endnote %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under “Access to alerts”, in the search field, start typing the name of the person or team you’d like to find, then click a name in the list of matches. {% ifversion fpt %} <img src="/assets/images/help/repository/security-and-analysis-security-alerts-person-or-team-search.png" alt="Search field for granting people or teams access to security alerts" /> {% endif %} {% ifversion ghes &gt; 2.22 %} <img src="/assets/images/help/repository/security-and-analysis-security-alerts-person-or-team-search-ghe.png" alt="Search field for granting people or teams access to security alerts" /> {% endif %} {% ifversion ghae %} <img src="/assets/images/enterprise/github-ae/repository/security-and-analysis-security-alerts-person-or-team-search-ghae.png" alt="Search field for granting people or teams access to security alerts" /> {% endif %}</p>
+<ol start="5" type="1">
+<li>Click <strong>Save changes</strong>. {% ifversion fpt or ghes &gt; 2.22 %} <img src="/assets/images/help/repository/security-and-analysis-security-alerts-save-changes.png" alt="“Save changes” button for changes to security alert settings" /> {% endif %} {% ifversion ghae %} <img src="/assets/images/enterprise/github-ae/repository/security-and-analysis-security-alerts-save-changes-ghae.png" alt="“Save changes” button for changes to security alert settings" /> {% endif %}</li>
+</ol>
+<h2 id="removing-access-to-security-alerts">Removing access to security alerts</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under “Access to alerts”, to the right of the person or team whose access you’d like to remove, click {% octicon “x” aria-label=“X symbol” %}. {% ifversion fpt %}<br />
+<img src="/assets/images/help/repository/security-and-analysis-security-alerts-username-x.png" alt="“x” button to remove someone’s access to security alerts for your repository" /> {% endif %} {% ifversion ghes &gt; 2.22 %} <img src="/assets/images/help/repository/security-and-analysis-security-alerts-username-x-ghe.png" alt="“x” button to remove someone’s access to security alerts for your repository" /> {% endif %} {% ifversion ghae %} <img src="/assets/images/enterprise/github-ae/repository/security-and-analysis-security-alerts-username-x-ghae.png" alt="“x” button to remove someone’s access to security alerts for your repository" /> {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/code-security/getting-started/securing-your-repository">Securing your repository</a>”</li>
+<li>“<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Reviewing dependency changes in a pull request</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Reviewing dependency changes in a pull request</h1>
+</header>
+<!--Marketing-LINK: From /features/security/software-supply-chain page "Sign up for the dependency review beta" and "Reviewing dependency changes in a pull request".-->
+<p>{% note %}</p>
+<p><strong>Note:</strong> Dependency review is currently in beta and subject to change.</p>
+<p>{% endnote %}</p>
+<h2 id="about-dependency-review">About dependency review</h2>
+<p>{% data reusables.dependency-review.feature-overview %}</p>
+<p>Dependency review allows you to “shift left”. You can use the provided predictive information to catch vulnerable dependencies before they hit production. For more information, see “<a href="/code-security/supply-chain-security/about-dependency-review">About dependency review</a>.”</p>
+<h2 id="reviewing-dependencies-in-a-pull-request">Reviewing dependencies in a pull request</h2>
+<p>{% data reusables.repositories.sidebar-pr %} {% data reusables.repositories.choose-pr-review %} {% data reusables.repositories.changed-files %}</p>
+<ol type="1">
+<li><p>If the pull request contains many files, use the <strong>File filter</strong> drop-down menu to collapse all files that don’t record dependencies. This will make it easier to focus your review on the dependency changes.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/file-filter-menu-json.png" alt="The file filter menu" /><figcaption>The file filter menu</figcaption>
+</figure></li>
+<li><p>On the right of the header for a manifest or lock file, display the dependency review by clicking the <strong>{% octicon “file” aria-label=“The rich diff icon” %}</strong> rich diff button.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/dependency-review-rich-diff.png" alt="The rich diff button" /><figcaption>The rich diff button</figcaption>
+</figure></li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The dependency review provides a clearer view of what has changed in large lock files, where the source diff is not rendered by default.</p>
+<p>{% endnote %}</p>
+<ol type="1">
+<li><p>Check the dependencies listed in the dependency review.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/dependency-review-vulnerability.png" alt="Vulnerability warnings in a dependency review" /><figcaption>Vulnerability warnings in a dependency review</figcaption>
+</figure>
+<p>Any added or changed dependencies that have vulnerabilities are listed first, ordered by severity and then by dependency name. This means that the highest severity dependencies are always at the top of a dependency review. Other dependencies are listed alphabetically by dependency name.</p>
+<p>The icon beside each dependency indicates whether the dependency has been added (<span style="color:#22863a">{% octicon “diff-added” aria-label=“Dependency added icon” %}</span>), updated (<span style="color:#b08800">{% octicon “diff-modified” aria-label=“Dependency modified icon” %}</span>), or removed (<span style="color:#cb2431">{% octicon “diff-removed” aria-label=“Dependency removed icon” %}</span>) in this pull request.</p>
+<p>Other information includes:</p>
+<ul>
+<li>The version, or version range, of the new, updated, or deleted dependency.</li>
+<li>For a specific version of a dependency:
+<ul>
+<li>The age of that release of the dependency.</li>
+<li>The number of projects that are dependent on this software. This information is taken from the dependency graph. Checking the number of dependents can help you avoid accidentally adding the wrong dependency.</li>
+<li>The license used by this dependency, if this information is available. This is useful if you want to avoid code with certain licenses being used in your project.</li>
+</ul></li>
+</ul>
+<p>Where a dependency has a known vulnerability, the warning message includes:</p>
+<ul>
+<li>A brief description of the vulnerability.</li>
+<li>A Common Vulnerabilities and Exposures (CVE) or {% data variables.product.prodname_security_advisories %} (GHSA) identification number. You can click this ID to find out more about the vulnerability.</li>
+<li>The severity of the vulnerability.</li>
+<li>The version of the dependency in which the vulnerability was fixed. If you are reviewing a pull request for someone, you might ask the contributor to update the dependency to the patched version, or a later release.</li>
+</ul></li>
+</ol>
+<p>{% data reusables.repositories.return-to-source-diff %}</p>
+</body>
+</html>

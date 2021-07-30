@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Webhook events and payloads</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Webhook events and payloads</h1>
+</header>
+<p>{% ifversion fpt %}</p>
+<p>{% endif %}</p>
+<p>{% data reusables.webhooks.webhooks_intro %}</p>
+<p>You can create webhooks that subscribe to the events listed on this page. Each webhook event includes a description of the webhook properties and an example payload. For more information, see “<a href="/webhooks/creating/">Creating webhooks</a>.”</p>
+<h2 id="webhook-payload-object-common-properties">Webhook payload object common properties</h2>
+<p>Each webhook event payload also contains properties unique to the event. You can find the unique properties in the individual event type sections.</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>Most webhook payloads contain an <code>action</code> property that contains the specific activity that triggered the event.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.sender_desc %} This property is included in every webhook payload. {% data reusables.webhooks.repo_desc %} Webhook payloads contain the <code>repository</code> property when the event occurs from activity in a repository. {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} For more information, see “<a href="/apps/building-github-apps/">Building {% data variables.product.prodname_github_app %}</a>.”</p>
+<p>The unique properties for a webhook event are the same properties you’ll find in the <code>payload</code> property when using the <a href="/rest/reference/activity#events">Events API</a>. One exception is the <a href="#push"><code>push</code> event</a>. The unique properties of the <code>push</code> event webhook payload and the <code>payload</code> property in the Events API differ. The webhook payload contains more detailed information.</p>
+<p>{% tip %}</p>
+<p><strong>Note:</strong> Payloads are capped at 25 MB. If your event generates a larger payload, a webhook will not be fired. This may happen, for example, on a <code>create</code> event if many branches or tags are pushed at once. We suggest monitoring your payload size to ensure delivery.</p>
+<p>{% endtip %}</p>
+<h3 id="delivery-headers">Delivery headers</h3>
+<p>HTTP POST payloads that are delivered to your webhook’s configured URL endpoint will contain several special headers:</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>X-GitHub-Event</code></td>
+<td>Name of the event that triggered the delivery.</td>
+</tr>
+<tr class="even">
+<td><code>X-GitHub-Delivery</code></td>
+<td>A <a href="http://en.wikipedia.org/wiki/Globally_unique_identifier">GUID</a> to identify the delivery.{% ifversion ghes or ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>X-GitHub-Enterprise-Version</code></td>
+<td>The version of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.</td>
+</tr>
+<tr class="even">
+<td><code>X-GitHub-Enterprise-Host</code></td>
+<td>The hostname of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.{% endif %}{% ifversion not ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>X-Hub-Signature</code></td>
+<td>This header is sent if the webhook is configured with a <a href="/rest/reference/repos#create-hook-config-params"><code>secret</code></a>. This is the HMAC hex digest of the request body, and is generated using the SHA-1 hash function and the <code>secret</code> as the HMAC <code>key</code>.{% ifversion fpt or ghes &gt; 2.22 %} <code>X-Hub-Signature</code> is provided for compatibility with existing integrations, and we recommend that you use the more secure <code>X-Hub-Signature-256</code> instead.{% endif %}{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %}</td>
+</tr>
+<tr class="even">
+<td><code>X-Hub-Signature-256</code></td>
+<td>This header is sent if the webhook is configured with a <a href="/rest/reference/repos#create-hook-config-params"><code>secret</code></a>. This is the HMAC hex digest of the request body, and is generated using the SHA-256 hash function and the <code>secret</code> as the HMAC <code>key</code>.{% endif %}</td>
+</tr>
+</tbody>
+</table>
+<p>Also, the <code>User-Agent</code> for the requests will have the prefix <code>GitHub-Hookshot/</code>.</p>
+<h3 id="example-delivery">Example delivery</h3>
+<pre class="shell"><code>&gt; POST /payload HTTP/2
+
+&gt; Host: localhost:4567
+&gt; X-GitHub-Delivery: 72d3162e-cc78-11e3-81ab-4c9367dc0958{% ifversion ghes or ghae %}
+&gt; X-GitHub-Enterprise-Version: 2.15.0
+&gt; X-GitHub-Enterprise-Host: example.com{% endif %}{% ifversion not ghae %}
+&gt; X-Hub-Signature: sha1=7d38cdd689735b008b3c702edd92eea23791c5f6{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %}
+&gt; X-Hub-Signature-256: sha256=d57c68ca6f92289e6987922ff26938930f6e66a2d161ef06abdf1859230aa23c{% endif %}
+&gt; User-Agent: GitHub-Hookshot/044aadd
+&gt; Content-Type: application/json
+&gt; Content-Length: 6615
+&gt; X-GitHub-Event: issues
+
+&gt; {
+&gt;   &quot;action&quot;: &quot;opened&quot;,
+&gt;   &quot;issue&quot;: {
+&gt;     &quot;url&quot;: &quot;{% data variables.product.api_url_pre %}/repos/octocat/Hello-World/issues/1347&quot;,
+&gt;     &quot;number&quot;: 1347,
+&gt;     ...
+&gt;   },
+&gt;   &quot;repository&quot; : {
+&gt;     &quot;id&quot;: 1296269,
+&gt;     &quot;full_name&quot;: &quot;octocat/Hello-World&quot;,
+&gt;     &quot;owner&quot;: {
+&gt;       &quot;login&quot;: &quot;octocat&quot;,
+&gt;       &quot;id&quot;: 1,
+&gt;       ...
+&gt;     },
+&gt;     ...
+&gt;   },
+&gt;   &quot;sender&quot;: {
+&gt;     &quot;login&quot;: &quot;octocat&quot;,
+&gt;     &quot;id&quot;: 1,
+&gt;     ...
+&gt;   }
+&gt; }</code></pre>
+<h2 id="check_run">check_run</h2>
+<p>{% data reusables.webhooks.check_run_short_desc %}</p>
+<p>{% data reusables.apps.undetected-pushes-to-a-forked-repository-for-check-suites %}</p>
+<h3 id="availability">Availability</h3>
+<ul>
+<li>Repository webhooks only receive payloads for the <code>created</code> and <code>completed</code> event types in a repository</li>
+<li>Organization webhooks only receive payloads for the <code>created</code> and <code>completed</code> event types in repositories</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>checks:read</code> permission receive payloads for the <code>created</code> and <code>completed</code> events that occur in the repository where the app is installed. The app must have the <code>checks:write</code> permission to receive the <code>rerequested</code> and <code>requested_action</code> event types. The <code>rerequested</code> and <code>requested_action</code> event type payloads are only sent to the {% data variables.product.prodname_github_app %} being requested. {% data variables.product.prodname_github_apps %} with the <code>checks:write</code> are automatically subscribed to this webhook event.</li>
+</ul>
+<h3 id="webhook-payload-object">Webhook payload object</h3>
+<p>{% data reusables.webhooks.check_run_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.check_run.created }}</p>
+<h2 id="check_suite">check_suite</h2>
+<p>{% data reusables.webhooks.check_suite_short_desc %}</p>
+<p>{% data reusables.apps.undetected-pushes-to-a-forked-repository-for-check-suites %}</p>
+<h3 id="availability-1">Availability</h3>
+<ul>
+<li>Repository webhooks only receive payloads for the <code>completed</code> event types in a repository</li>
+<li>Organization webhooks only receive payloads for the <code>completed</code> event types in repositories</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>checks:read</code> permission receive payloads for the <code>created</code> and <code>completed</code> events that occur in the repository where the app is installed. The app must have the <code>checks:write</code> permission to receive the <code>requested</code> and <code>rerequested</code> event types. The <code>requested</code> and <code>rerequested</code> event type payloads are only sent to the {% data variables.product.prodname_github_app %} being requested. {% data variables.product.prodname_github_apps %} with the <code>checks:write</code> are automatically subscribed to this webhook event.</li>
+</ul>
+<h3 id="webhook-payload-object-1">Webhook payload object</h3>
+<p>{% data reusables.webhooks.check_suite_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-1">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.check_suite.completed }}</p>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %} ## code_scanning_alert</p>
+<p>{% data reusables.webhooks.code_scanning_alert_event_short_desc %}</p>
+<h3 id="availability-2">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>security_events :read</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-2">Webhook payload object</h3>
+<p>{% data reusables.webhooks.code_scanning_alert_event_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} <code>sender</code> | <code>object</code> | If the <code>action</code> is <code>reopened_by_user</code> or <code>closed_by_user</code>, the <code>sender</code> object will be the user that triggered the event. The <code>sender</code> object is {% ifversion fpt %}<code>github</code> {% elsif ghes &gt; 3.0 %}<code>github-enterprise</code> {% else %}empty {% endif %}for all other actions.</p>
+<h3 id="webhook-payload-example-2">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.code_scanning_alert.reopened }}</p>
+<h2 id="commit_comment">commit_comment</h2>
+<p>{% data reusables.webhooks.commit_comment_short_desc %}</p>
+<h3 id="availability-3">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-3">Webhook payload object</h3>
+<p>{% data reusables.webhooks.commit_comment_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-3">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.commit_comment.created }} {% endif %}</p>
+<h2 id="content_reference">content_reference</h2>
+<p>{% data reusables.webhooks.content_reference_short_desc %}</p>
+<p>Webhook events are triggered based on the specificity of the domain you register. For example, if you register a subdomain (<code>https://subdomain.example.com</code>) then only URLs for the subdomain trigger this event. If you register a domain (<code>https://example.com</code>) then URLs for domain and all subdomains trigger this event. See “<a href="/rest/reference/apps#create-a-content-attachment">Create a content attachment</a>” to create a new content attachment.</p>
+<h3 id="availability-4">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %} with the <code>content_references:write</code> permission</li>
+</ul>
+<h3 id="webhook-payload-example-4">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.content_reference.created }}</p>
+<h2 id="create">create</h2>
+<p>{% data reusables.webhooks.create_short_desc %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You will not receive a webhook for this event when you push more than three tags at once.</p>
+<p>{% endnote %}</p>
+<h3 id="availability-5">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-4">Webhook payload object</h3>
+<p>{% data reusables.webhooks.create_properties %} {% data reusables.webhooks.pusher_type_desc %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-5">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.create }}</p>
+<h2 id="delete">delete</h2>
+<p>{% data reusables.webhooks.delete_short_desc %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You will not receive a webhook for this event when you delete more than three tags at once.</p>
+<p>{% endnote %}</p>
+<h3 id="availability-6">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-5">Webhook payload object</h3>
+<p>{% data reusables.webhooks.delete_properties %} {% data reusables.webhooks.pusher_type_desc %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-6">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.delete }}</p>
+<h2 id="deploy_key">deploy_key</h2>
+<p>{% data reusables.webhooks.deploy_key_short_desc %}</p>
+<h3 id="availability-7">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-6">Webhook payload object</h3>
+<p>{% data reusables.webhooks.deploy_key_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-7">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.deploy_key.created }}</p>
+<h2 id="deployment">deployment</h2>
+<p>{% data reusables.webhooks.deployment_short_desc %}</p>
+<h3 id="availability-8">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>deployments</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-7">Webhook payload object</h3>
+<p>Key | Type | Description —-|——|————-{% ifversion fpt or ghes or ghae %} <code>action</code> |<code>string</code> | The action performed. Can be <code>created</code>.{% endif %} <code>deployment</code> |<code>object</code> | The <a href="/rest/reference/repos#list-deployments">deployment</a>. {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-8">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.deployment }}</p>
+<h2 id="deployment_status">deployment_status</h2>
+<p>{% data reusables.webhooks.deployment_status_short_desc %}</p>
+<h3 id="availability-9">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>deployments</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-8">Webhook payload object</h3>
+<p>Key | Type | Description —-|——|————-{% ifversion fpt or ghes or ghae %} <code>action</code> |<code>string</code> | The action performed. Can be <code>created</code>.{% endif %} <code>deployment_status</code> |<code>object</code> | The <a href="/rest/reference/repos#list-deployment-statuses">deployment status</a>. <code>deployment_status["state"]</code> |<code>string</code> | The new state. Can be <code>pending</code>, <code>success</code>, <code>failure</code>, or <code>error</code>. <code>deployment_status["target_url"]</code> |<code>string</code> | The optional link added to the status. <code>deployment_status["description"]</code>|<code>string</code> | The optional human-readable description added to the status. <code>deployment</code> |<code>object</code> | The <a href="/rest/reference/repos#list-deployments">deployment</a> that this status is associated with. {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-9">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.deployment_status }}</p>
+<p>{% ifversion fpt %} ## discussion</p>
+<p>{% data reusables.webhooks.discussions-webhooks-beta %}</p>
+<p>Activity related to a discussion. For more information, see the “<a href="/graphql/guides/using-the-graphql-api-for-discussions">Using the GraphQL API for discussions</a>.” ### Availability</p>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>discussions</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-9">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>created</code>, <code>edited</code>, <code>deleted</code>, <code>pinned</code>, <code>unpinned</code>, <code>locked</code>, <code>unlocked</code>, <code>transferred</code>, <code>category_changed</code>, <code>answered</code>, or <code>unanswered</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.discussion_desc %} {% data reusables.webhooks.repo_desc_graphql %} {% data reusables.webhooks.org_desc_graphql %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-10">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.discussion.created }}</p>
+<h2 id="discussion_comment">discussion_comment</h2>
+<p>{% data reusables.webhooks.discussions-webhooks-beta %}</p>
+<p>Activity related to a comment in a discussion. For more information, see “<a href="/graphql/guides/using-the-graphql-api-for-discussions">Using the GraphQL API for discussions</a>.”</p>
+<h3 id="availability-10">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>discussions</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-10">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>created</code>, <code>edited</code>, or <code>deleted</code>.</td>
+</tr>
+<tr class="even">
+<td><code>comment</code></td>
+<td><code>object</code></td>
+<td>The <a href="/graphql/guides/using-the-graphql-api-for-discussions#discussioncomment"><code>discussion comment</code></a> resource.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.discussion_desc %} {% data reusables.webhooks.repo_desc_graphql %} {% data reusables.webhooks.org_desc_graphql %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-11">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.discussion_comment.created }} {% endif %}</p>
+<p>{% ifversion ghes or ghae %}</p>
+<h2 id="enterprise">enterprise</h2>
+<p>{% data reusables.webhooks.enterprise_short_desc %}</p>
+<h3 id="availability-11">Availability</h3>
+<ul>
+<li>GitHub Enterprise webhooks. For more information, “<a href="/rest/reference/enterprise-admin#global-webhooks/">Global webhooks</a>.”</li>
+</ul>
+<h3 id="webhook-payload-object-11">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>anonymous_access_enabled</code> or <code>anonymous_access_disabled</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="webhook-payload-example-12">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.enterprise.anonymous_access_enabled }}</p>
+<p>{% endif %}</p>
+<h2 id="fork">fork</h2>
+<p>{% data reusables.webhooks.fork_short_desc %}</p>
+<h3 id="availability-12">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-12">Webhook payload object</h3>
+<p>{% data reusables.webhooks.fork_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-13">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.fork }}</p>
+<h2 id="github_app_authorization">github_app_authorization</h2>
+<p>When someone revokes their authorization of a {% data variables.product.prodname_github_app %}, this event occurs. A {% data variables.product.prodname_github_app %} receives this webhook by default and cannot unsubscribe from this event.</p>
+<p>{% data reusables.webhooks.authorization_event %} For details about user-to-server requests, which require {% data variables.product.prodname_github_app %} authorization, see “<a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">Identifying and authorizing users for {% data variables.product.prodname_github_apps %}</a>.”</p>
+<h3 id="availability-13">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %}</li>
+</ul>
+<h3 id="webhook-payload-object-13">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>revoked</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-14">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.github_app_authorization.revoked }}</p>
+<h2 id="gollum">gollum</h2>
+<p>{% data reusables.webhooks.gollum_short_desc %}</p>
+<h3 id="availability-14">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-14">Webhook payload object</h3>
+<p>{% data reusables.webhooks.gollum_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-15">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.gollum }}</p>
+<h2 id="installation">installation</h2>
+<p>{% data reusables.webhooks.installation_short_desc %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> This event replaces the deprecated <code>integration_installation</code> event.</p>
+<p>{% endnote %}</p>
+<h3 id="availability-15">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %}</li>
+</ul>
+<h3 id="webhook-payload-object-15">Webhook payload object</h3>
+<p>{% data reusables.webhooks.installation_properties %} {% data reusables.webhooks.app_always_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-16">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.installation.deleted }}</p>
+<h2 id="installation_repositories">installation_repositories</h2>
+<p>{% data reusables.webhooks.installation_repositories_short_desc %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> This event replaces the deprecated <code>integration_installation_repositories</code> event.</p>
+<p>{% endnote %}</p>
+<h3 id="availability-16">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %}</li>
+</ul>
+<h3 id="webhook-payload-object-16">Webhook payload object</h3>
+<p>{% data reusables.webhooks.installation_repositories_properties %} {% data reusables.webhooks.app_always_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-17">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.installation_repositories.added }}</p>
+<h2 id="issue_comment">issue_comment</h2>
+<p>{% data reusables.webhooks.issue_comment_short_desc %}</p>
+<h3 id="availability-17">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>issues</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-17">Webhook payload object</h3>
+<p>{% data reusables.webhooks.issue_comment_webhook_properties %} {% data reusables.webhooks.issue_comment_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-18">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.issue_comment.created }}</p>
+<h2 id="issues">issues</h2>
+<p>{% data reusables.webhooks.issues_short_desc %}</p>
+<h3 id="availability-18">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>issues</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-18">Webhook payload object</h3>
+<p>{% data reusables.webhooks.issue_webhook_properties %} {% data reusables.webhooks.issue_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-when-someone-edits-an-issue">Webhook payload example when someone edits an issue</h3>
+<p>{{ webhookPayloadsForCurrentVersion.issues.edited }}</p>
+<h2 id="label">label</h2>
+<p>{% data reusables.webhooks.label_short_desc %}</p>
+<h3 id="availability-19">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>metadata</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-19">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action that was performed. Can be <code>created</code>, <code>edited</code>, or <code>deleted</code>.</td>
+</tr>
+<tr class="even">
+<td><code>label</code></td>
+<td><code>object</code></td>
+<td>The label that was added.</td>
+</tr>
+<tr class="odd">
+<td><code>changes</code></td>
+<td><code>object</code></td>
+<td>The changes to the label if the action was <code>edited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>changes[name][from]</code></td>
+<td><code>string</code></td>
+<td>The previous version of the name if the action was <code>edited</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>changes[color][from]</code></td>
+<td><code>string</code></td>
+<td>The previous version of the color if the action was <code>edited</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-19">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.label.deleted }}</p>
+<p>{% ifversion fpt %} ## marketplace_purchase</p>
+<p>Activity related to a GitHub Marketplace purchase. {% data reusables.webhooks.action_type_desc %} For more information, see the “<a href="/marketplace/">GitHub Marketplace</a>.”</p>
+<h3 id="availability-20">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %}</li>
+</ul>
+<h3 id="webhook-payload-object-20">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<code>action</code> | <code>string</code> | The action performed for a <a href="https://github.com/marketplace">GitHub Marketplace</a> plan. Can be one of:
+<ul>
+<li>
+<code>purchased</code> - Someone purchased a GitHub Marketplace plan. The change should take effect on the account immediately.
+</li>
+<li>
+<code>pending_change</code> - You will receive the <code>pending_change</code> event when someone has downgraded or cancelled a GitHub Marketplace plan to indicate a change will occur on the account. The new plan or cancellation takes effect at the end of the billing cycle. The <code>cancelled</code> or <code>changed</code> event type will be sent when the billing cycle has ended and the cancellation or new plan should take effect.
+</li>
+<li>
+<code>pending_change_cancelled</code> - Someone has cancelled a pending change. Pending changes include plan cancellations and downgrades that will take effect at the end of a billing cycle.
+</li>
+<li>
+<code>changed</code> - Someone has upgraded or downgraded a GitHub Marketplace plan and the change should take effect on the account immediately.
+</li>
+<li>
+<code>cancelled</code> - Someone cancelled a GitHub Marketplace plan and the last billing cycle has ended. The change should take effect on the account immediately.
+</li>
+</ul>
+<p>For a detailed description of this payload and the payload for each type of <code>action</code>, see <a href="/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events/">{% data variables.product.prodname_marketplace %} webhook events</a>.</p>
+<h3 id="webhook-payload-example-when-someone-purchases-the-plan">Webhook payload example when someone purchases the plan</h3>
+<p>{{ webhookPayloadsForCurrentVersion.marketplace_purchase.purchased }}</p>
+<p>{% endif %}</p>
+<h2 id="member">member</h2>
+<p>{% data reusables.webhooks.member_short_desc %}</p>
+<h3 id="availability-21">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>members</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-21">Webhook payload object</h3>
+<p>{% data reusables.webhooks.member_webhook_properties %} {% data reusables.webhooks.member_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-20">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.member.added }}</p>
+<h2 id="membership">membership</h2>
+<p>{% data reusables.webhooks.membership_short_desc %}</p>
+<h3 id="availability-22">Availability</h3>
+<ul>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>members</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-22">Webhook payload object</h3>
+<p>{% data reusables.webhooks.membership_properties %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-21">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.membership.removed }}</p>
+<h2 id="meta">meta</h2>
+<p>The webhook this event is configured on was deleted. This event will only listen for changes to the particular hook the event is installed on. Therefore, it must be selected for each hook that you’d like to receive meta events for.</p>
+<h3 id="availability-23">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-23">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>deleted</code>.</td>
+</tr>
+<tr class="even">
+<td><code>hook_id</code></td>
+<td><code>integer</code></td>
+<td>The id of the modified webhook.</td>
+</tr>
+<tr class="odd">
+<td><code>hook</code></td>
+<td><code>object</code></td>
+<td>The modified webhook. This will contain different keys based on the type of webhook it is: repository, organization, business, app, or GitHub Marketplace.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-22">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.meta.deleted }}</p>
+<h2 id="milestone">milestone</h2>
+<p>{% data reusables.webhooks.milestone_short_desc %}</p>
+<h3 id="availability-24">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>pull_requests</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-24">Webhook payload object</h3>
+<p>{% data reusables.webhooks.milestone_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-23">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.milestone.created }}</p>
+<h2 id="organization">organization</h2>
+<p>{% data reusables.webhooks.organization_short_desc %}</p>
+<h3 id="availability-25">Availability</h3>
+<p>{% ifversion ghes or ghae %} - GitHub Enterprise webhooks only receive <code>created</code> and <code>deleted</code> events. For more information, "<a href="/rest/reference/enterprise-admin#global-webhooks/">Global webhooks</a>.{% endif %} - Organization webhooks only receive the <code>deleted</code>, <code>added</code>, <code>removed</code>, <code>renamed</code>, and <code>invited</code> events - {% data variables.product.prodname_github_apps %} with the <code>members</code> permission</p>
+<h3 id="webhook-payload-object-25">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action that was performed. Can be one of:{% ifversion ghes or ghae %} <code>created</code>,{% endif %} <code>deleted</code>, <code>renamed</code>, <code>member_added</code>, <code>member_removed</code>, or <code>member_invited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>invitation</code></td>
+<td><code>object</code></td>
+<td>The invitation for the user or email if the action is <code>member_invited</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>membership</code></td>
+<td><code>object</code></td>
+<td>The membership between the user and the organization. Not present when the action is <code>member_invited</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-24">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.organization.member_added }}</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="org_block">org_block</h2>
+<p>{% data reusables.webhooks.org_block_short_desc %}</p>
+<h3 id="availability-26">Availability</h3>
+<ul>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>organization_administration</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-26">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 27%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed. Can be <code>blocked</code> or <code>unblocked</code>.</td>
+</tr>
+<tr class="even">
+<td><code>blocked_user</code></td>
+<td><code>object</code></td>
+<td>Information about the user that was blocked or unblocked.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-25">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.org_block.blocked }}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghae %}</p>
+<h2 id="package">package</h2>
+<p>Activity related to {% data variables.product.prodname_registry %}. {% data reusables.webhooks.action_type_desc %} For more information, see “<a href="/github/managing-packages-with-github-packages">Managing packages with {% data variables.product.prodname_registry %}</a>” to learn more about {% data variables.product.prodname_registry %}.</p>
+<h3 id="availability-27">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-27">Webhook payload object</h3>
+<p>{% data reusables.webhooks.package_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-26">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.package.published }} {% endif %}</p>
+<h2 id="page_build">page_build</h2>
+<p>{% data reusables.webhooks.page_build_short_desc %}</p>
+<h3 id="availability-28">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>pages</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-28">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>The unique identifier of the page build.</td>
+</tr>
+<tr class="even">
+<td><code>build</code></td>
+<td><code>object</code></td>
+<td>The <a href="/rest/reference/repos#list-github-pages-builds">List GitHub Pages builds</a> itself.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-27">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.page_build }}</p>
+<h2 id="ping">ping</h2>
+<p>{% data reusables.webhooks.ping_short_desc %}</p>
+<h3 id="availability-29">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} receive a ping event with an <code>app_id</code> used to register the app</li>
+</ul>
+<h3 id="webhook-payload-object-29">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 27%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>zen</code></td>
+<td><code>string</code></td>
+<td>Random string of GitHub zen.</td>
+</tr>
+<tr class="even">
+<td><code>hook_id</code></td>
+<td><code>integer</code></td>
+<td>The ID of the webhook that triggered the ping.</td>
+</tr>
+<tr class="odd">
+<td><code>hook</code></td>
+<td><code>object</code></td>
+<td>The <a href="/rest/reference/repos#get-a-repository-webhook">webhook configuration</a>.</td>
+</tr>
+<tr class="even">
+<td><code>hook[app_id]</code></td>
+<td><code>integer</code></td>
+<td>When you register a new {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} sends a ping event to the <strong>webhook URL</strong> you specified during registration. The event contains the <code>app_id</code>, which is required for <a href="/apps/building-integrations/setting-up-and-registering-github-apps/about-authentication-options-for-github-apps/">authenticating</a> an app.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-28">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.ping }}</p>
+<h2 id="project_card">project_card</h2>
+<p>{% data reusables.webhooks.project_card_short_desc %}</p>
+<h3 id="availability-30">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>repository_projects</code> or <code>organization_projects</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-30">Webhook payload object</h3>
+<p>{% data reusables.webhooks.project_card_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-29">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.project_card.created }}</p>
+<h2 id="project_column">project_column</h2>
+<p>{% data reusables.webhooks.project_column_short_desc %}</p>
+<h3 id="availability-31">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>repository_projects</code> or <code>organization_projects</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-31">Webhook payload object</h3>
+<p>{% data reusables.webhooks.project_column_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-30">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.project_column.created }}</p>
+<h2 id="project">project</h2>
+<p>{% data reusables.webhooks.project_short_desc %}</p>
+<h3 id="availability-32">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>repository_projects</code> or <code>organization_projects</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-32">Webhook payload object</h3>
+<p>{% data reusables.webhooks.project_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-31">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.project.created }}</p>
+<p>{% ifversion fpt or ghes %} ## public</p>
+<p>{% data reusables.webhooks.public_short_desc %} ### Availability</p>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>metadata</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-33">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-32">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.public }} {% endif %} ## pull_request</p>
+<p>{% data reusables.webhooks.pull_request_short_desc %}</p>
+<h3 id="availability-33">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>pull_requests</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-34">Webhook payload object</h3>
+<p>{% data reusables.webhooks.pull_request_webhook_properties %} {% data reusables.webhooks.pull_request_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-33">Webhook payload example</h3>
+<p>Deliveries for <code>review_requested</code> and <code>review_request_removed</code> events will have an additional field called <code>requested_reviewer</code>.</p>
+<p>{{ webhookPayloadsForCurrentVersion.pull_request.opened }}</p>
+<h2 id="pull_request_review">pull_request_review</h2>
+<p>{% data reusables.webhooks.pull_request_review_short_desc %}</p>
+<h3 id="availability-34">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>pull_requests</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-35">Webhook payload object</h3>
+<p>{% data reusables.webhooks.pull_request_review_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-34">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.pull_request_review.submitted }}</p>
+<h2 id="pull_request_review_comment">pull_request_review_comment</h2>
+<p>{% data reusables.webhooks.pull_request_review_comment_short_desc %}</p>
+<h3 id="availability-35">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>pull_requests</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-36">Webhook payload object</h3>
+<p>{% data reusables.webhooks.pull_request_review_comment_webhook_properties %} {% data reusables.webhooks.pull_request_review_comment_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-35">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.pull_request_review_comment.created }}</p>
+<h2 id="push">push</h2>
+<p>{% data reusables.webhooks.push_short_desc %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You will not receive a webhook for this event when you push more than three tags at once.</p>
+<p>{% endnote %}</p>
+<h3 id="availability-36">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-37">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ref</code></td>
+<td><code>string</code></td>
+<td>The full <a href="/rest/reference/git#refs"><code>git ref</code></a> that was pushed. Example: <code>refs/heads/main</code>.</td>
+</tr>
+<tr class="even">
+<td><code>before</code></td>
+<td><code>string</code></td>
+<td>The SHA of the most recent commit on <code>ref</code> before the push.</td>
+</tr>
+<tr class="odd">
+<td><code>after</code></td>
+<td><code>string</code></td>
+<td>The SHA of the most recent commit on <code>ref</code> after the push.</td>
+</tr>
+<tr class="even">
+<td><code>commits</code></td>
+<td><code>array</code></td>
+<td>An array of commit objects describing the pushed commits. (The array includes a maximum of 20 commits. If necessary, you can use the <a href="/rest/reference/repos#commits">Commits API</a> to fetch additional commits. This limit is applied to timeline events only and isn’t applied to webhook deliveries.)</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][id]</code></td>
+<td><code>string</code></td>
+<td>The SHA of the commit.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][timestamp]</code></td>
+<td><code>string</code></td>
+<td>The ISO 8601 timestamp of the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][message]</code></td>
+<td><code>string</code></td>
+<td>The commit message.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][author]</code></td>
+<td><code>object</code></td>
+<td>The git author of the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][author][name]</code></td>
+<td><code>string</code></td>
+<td>The git author’s name.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][author][email]</code></td>
+<td><code>string</code></td>
+<td>The git author’s email address.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][url]</code></td>
+<td><code>url</code></td>
+<td>URL that points to the commit API resource.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][distinct]</code></td>
+<td><code>boolean</code></td>
+<td>Whether this commit is distinct from any that have been pushed before.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][added]</code></td>
+<td><code>array</code></td>
+<td>An array of files added in the commit.</td>
+</tr>
+<tr class="even">
+<td><code>commits[][modified]</code></td>
+<td><code>array</code></td>
+<td>An array of files modified by the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>commits[][removed]</code></td>
+<td><code>array</code></td>
+<td>An array of files removed in the commit.</td>
+</tr>
+<tr class="even">
+<td><code>pusher</code></td>
+<td><code>object</code></td>
+<td>The user who pushed the commits.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-36">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.push }}</p>
+<h2 id="release">release</h2>
+<p>{% data reusables.webhooks.release_short_desc %}</p>
+<h3 id="availability-37">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>contents</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-38">Webhook payload object</h3>
+<p>{% data reusables.webhooks.release_webhook_properties %} {% data reusables.webhooks.release_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-37">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.release.published }}</p>
+<p>{% ifversion fpt or ghes or ghae %} ## repository_dispatch</p>
+<p>This event occurs when a {% data variables.product.prodname_github_app %} sends a <code>POST</code> request to the “<a href="/rest/reference/repos#create-a-repository-dispatch-event">Create a repository dispatch event</a>” endpoint.</p>
+<h3 id="availability-38">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %} must have the <code>contents</code> permission to receive this webhook.</li>
+</ul>
+<h3 id="webhook-payload-example-38">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.repository_dispatch }} {% endif %}</p>
+<h2 id="repository">repository</h2>
+<p>{% data reusables.webhooks.repository_short_desc %}</p>
+<h3 id="availability-39">Availability</h3>
+<ul>
+<li>Repository webhooks receive all event types except <code>deleted</code></li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>metadata</code> permission receive all event types except <code>deleted</code></li>
+</ul>
+<h3 id="webhook-payload-object-39">Webhook payload object</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<code>action</code> |<code>string</code> | The action that was performed. This can be one of:
+<ul>
+<li>
+<code>created</code> - A repository is created.
+</li>
+<li>
+<code>deleted</code> - A repository is deleted.
+</li>
+<li>
+<code>archived</code> - A repository is archived.
+</li>
+<li>
+<code>unarchived</code> - A repository is unarchived.
+</li>
+{% ifversion ghes or ghae %}
+<li>
+<code>anonymous_access_enabled</code> - A repository is <a href="/rest/overview/api-previews#anonymous-git-access-to-repositories">enabled for anonymous Git access</a>, <code>anonymous_access_disabled</code> - A repository is <a href="/rest/overview/api-previews#anonymous-git-access-to-repositories">disabled for anonymous Git access</a>
+</li>
+{% endif %}
+<li>
+<code>edited</code> - A repository’s information is edited.
+</li>
+<li>
+<code>renamed</code> - A repository is renamed.
+</li>
+<li>
+<code>transferred</code> - A repository is transferred.
+</li>
+<li>
+<code>publicized</code> - A repository is made public.
+</li>
+<li>
+<code>privatized</code> - A repository is made private.
+</li>
+</ul>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-39">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.repository.publicized }}</p>
+<p>{% ifversion fpt %} ## repository_import</p>
+<p>{% data reusables.webhooks.repository_import_short_desc %} To receive this event for a personal repository, you must create an empty repository prior to the import. This event can be triggered using either the <a href="/articles/importing-a-repository-with-github-importer/">GitHub Importer</a> or the <a href="/rest/reference/migrations#source-imports">Source imports API</a>.</p>
+<h3 id="availability-40">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-40">Webhook payload object</h3>
+<p>{% data reusables.webhooks.repository_import_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-40">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.repository_import }}</p>
+<h2 id="repository_vulnerability_alert">repository_vulnerability_alert</h2>
+<p>{% data reusables.webhooks.repository_vulnerability_alert_short_desc %}</p>
+<h3 id="availability-41">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-41">Webhook payload object</h3>
+<p>{% data reusables.webhooks.repository_vulnerability_alert_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-41">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.repository_vulnerability_alert.create }}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 3.0 %}</p>
+<h2 id="secret_scanning_alert">secret_scanning_alert</h2>
+<p>{% data reusables.webhooks.secret_scanning_alert_event_short_desc %}</p>
+<h3 id="availability-42">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>secret_scanning_alerts:read</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-42">Webhook payload object</h3>
+<p>{% data reusables.webhooks.secret_scanning_alert_event_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} <code>sender</code> | <code>object</code> | If the <code>action</code> is <code>resolved</code> or <code>reopened</code>, the <code>sender</code> object will be the user that triggered the event. The <code>sender</code> object is empty for all other actions.</p>
+<h3 id="webhook-payload-example-42">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.secret_scanning_alert.reopened }} {% endif %}</p>
+<p>{% ifversion fpt or ghes %} ## security_advisory</p>
+<p>Activity related to a security advisory. A security advisory provides information about security-related vulnerabilities in software on GitHub. The security advisory dataset also powers the GitHub security alerts, see “<a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies/">About alerts for vulnerable dependencies</a>.” {% endif %}</p>
+<h3 id="availability-43">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %} with the <code>security_events</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-43">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action that was performed. The action can be one of <code>published</code>, <code>updated</code>, <code>performed</code>, or <code>withdrawn</code> for all new events.</td>
+</tr>
+<tr class="even">
+<td><code>security_advisory</code></td>
+<td><code>object</code></td>
+<td>The details of the security advisory, including summary, description, and severity.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="webhook-payload-example-43">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.security_advisory.published }}</p>
+<p>{% ifversion fpt %} ## sponsorship</p>
+<p>{% data reusables.webhooks.sponsorship_short_desc %}</p>
+<p>You can only create a sponsorship webhook on {% data variables.product.prodname_dotcom %}. For more information, see “<a href="/sponsors/integrating-with-github-sponsors/configuring-webhooks-for-events-in-your-sponsored-account">Configuring webhooks for events in your sponsored account</a>”.</p>
+<h3 id="availability-44">Availability</h3>
+<ul>
+<li>Sponsored accounts</li>
+</ul>
+<h3 id="webhook-payload-object-44">Webhook payload object</h3>
+<p>{% data reusables.webhooks.sponsorship_webhook_properties %} {% data reusables.webhooks.sponsorship_properties %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-when-someone-creates-a-sponsorship">Webhook payload example when someone creates a sponsorship</h3>
+<p>{{ webhookPayloadsForCurrentVersion.sponsorship.created }}</p>
+<h3 id="webhook-payload-example-when-someone-downgrades-a-sponsorship">Webhook payload example when someone downgrades a sponsorship</h3>
+<p>{{ webhookPayloadsForCurrentVersion.sponsorship.downgraded }}</p>
+<p>{% endif %}</p>
+<h2 id="star">star</h2>
+<p>{% data reusables.webhooks.star_short_desc %}</p>
+<h3 id="availability-45">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+</ul>
+<h3 id="webhook-payload-object-45">Webhook payload object</h3>
+<p>{% data reusables.webhooks.star_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-44">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.star.created }}</p>
+<h2 id="status">status</h2>
+<p>{% data reusables.webhooks.status_short_desc %}</p>
+<h3 id="availability-46">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>statuses</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-46">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>The unique identifier of the status.</td>
+</tr>
+<tr class="even">
+<td><code>sha</code></td>
+<td><code>string</code></td>
+<td>The Commit SHA.</td>
+</tr>
+<tr class="odd">
+<td><code>state</code></td>
+<td><code>string</code></td>
+<td>The new state. Can be <code>pending</code>, <code>success</code>, <code>failure</code>, or <code>error</code>.</td>
+</tr>
+<tr class="even">
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>The optional human-readable description added to the status.</td>
+</tr>
+<tr class="odd">
+<td><code>target_url</code></td>
+<td><code>string</code></td>
+<td>The optional link added to the status.</td>
+</tr>
+<tr class="even">
+<td><code>branches</code></td>
+<td><code>array</code></td>
+<td>An array of branch objects containing the status’ SHA. Each branch contains the given SHA, but the SHA may or may not be the head of the branch. The array includes a maximum of 10 branches.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-45">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.status }}</p>
+<h2 id="team">team</h2>
+<p>{% data reusables.webhooks.team_short_desc %}</p>
+<h3 id="availability-47">Availability</h3>
+<ul>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>members</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-47">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action that was performed. Can be one of <code>created</code>, <code>deleted</code>, <code>edited</code>, <code>added_to_repository</code>, or <code>removed_from_repository</code>.</td>
+</tr>
+<tr class="even">
+<td><code>team</code></td>
+<td><code>object</code></td>
+<td>The team itself.</td>
+</tr>
+<tr class="odd">
+<td><code>changes</code></td>
+<td><code>object</code></td>
+<td>The changes to the team if the action was <code>edited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>changes[description][from]</code></td>
+<td><code>string</code></td>
+<td>The previous version of the description if the action was <code>edited</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>changes[name][from]</code></td>
+<td><code>string</code></td>
+<td>The previous version of the name if the action was <code>edited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>changes[privacy][from]</code></td>
+<td><code>string</code></td>
+<td>The previous version of the team’s privacy if the action was <code>edited</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>changes[repository][permissions][from][admin]</code></td>
+<td><code>boolean</code></td>
+<td>The previous version of the team member’s <code>admin</code> permission on a repository, if the action was <code>edited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>changes[repository][permissions][from][pull]</code></td>
+<td><code>boolean</code></td>
+<td>The previous version of the team member’s <code>pull</code> permission on a repository, if the action was <code>edited</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>changes[repository][permissions][from][push]</code></td>
+<td><code>boolean</code></td>
+<td>The previous version of the team member’s <code>push</code> permission on a repository, if the action was <code>edited</code>.</td>
+</tr>
+<tr class="even">
+<td><code>repository</code></td>
+<td><code>object</code></td>
+<td>The repository that was added or removed from to the team’s purview if the action was <code>added_to_repository</code>, <code>removed_from_repository</code>, or <code>edited</code>. For <code>edited</code> actions, <code>repository</code> also contains the team’s new permission levels for the repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.org_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-46">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.team.added_to_repository }}</p>
+<h2 id="team_add">team_add</h2>
+<p>{% data reusables.webhooks.team_add_short_desc %}</p>
+<h3 id="availability-48">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>members</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-48">Webhook payload object</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>team</code></td>
+<td><code>object</code></td>
+<td>The <a href="/rest/reference/teams">team</a> that was modified. <strong>Note:</strong> Older events may not include this in the payload.</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-47">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.team_add }}</p>
+<p>{% ifversion ghes or ghae %}</p>
+<h2 id="user">user</h2>
+<p>When a user is <code>created</code> or <code>deleted</code>.</p>
+<h3 id="availability-49">Availability</h3>
+<ul>
+<li>GitHub Enterprise webhooks. For more information, “<a href="/rest/reference/enterprise-admin#global-webhooks/">Global webhooks</a>.”</li>
+</ul>
+<h3 id="webhook-payload-example-48">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.user.created }}</p>
+<p>{% endif %}</p>
+<h2 id="watch">watch</h2>
+<p>{% data reusables.webhooks.watch_short_desc %}</p>
+<p>The event’s actor is the <a href="/rest/reference/users">user</a> who starred a repository, and the event’s repository is the <a href="/rest/reference/repos">repository</a> that was starred.</p>
+<h3 id="availability-50">Availability</h3>
+<ul>
+<li>Repository webhooks</li>
+<li>Organization webhooks</li>
+<li>{% data variables.product.prodname_github_apps %} with the <code>metadata</code> permission</li>
+</ul>
+<h3 id="webhook-payload-object-49">Webhook payload object</h3>
+<p>{% data reusables.webhooks.watch_properties %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.app_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-49">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.watch.started }}</p>
+<p>{% ifversion fpt or ghes &gt; 2.21 %} ## workflow_dispatch</p>
+<p>This event occurs when someone triggers a workflow run on GitHub or sends a <code>POST</code> request to the “<a href="/rest/reference/actions/#create-a-workflow-dispatch-event">Create a workflow dispatch event</a>” endpoint. For more information, see “<a href="/actions/reference/events-that-trigger-workflows#workflow_dispatch">Events that trigger workflows</a>.”</p>
+<h3 id="availability-51">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %} must have the <code>contents</code> permission to receive this webhook.</li>
+</ul>
+<h3 id="webhook-payload-example-50">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.workflow_dispatch }} {% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} ## workflow_run</p>
+<p>When a {% data variables.product.prodname_actions %} workflow run is requested or completed. For more information, see “<a href="/actions/reference/events-that-trigger-workflows#workflow_run">Events that trigger workflows</a>.”</p>
+<h3 id="availability-52">Availability</h3>
+<ul>
+<li>{% data variables.product.prodname_github_apps %} with the <code>actions</code> or <code>contents</code> permissions.</li>
+</ul>
+<h3 id="webhook-payload-object-50">Webhook payload object</h3>
+<p>{% data reusables.webhooks.workflow_run_properties %} {% data reusables.webhooks.workflow_desc %} {% data reusables.webhooks.org_desc %} {% data reusables.webhooks.repo_desc %} {% data reusables.webhooks.sender_desc %}</p>
+<h3 id="webhook-payload-example-51">Webhook payload example</h3>
+<p>{{ webhookPayloadsForCurrentVersion.workflow_run }} {% endif %}</p>
+</body>
+</html>

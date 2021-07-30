@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing enterprise accounts</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing enterprise accounts</h1>
+</header>
+<h2 id="about-managing-enterprise-accounts-with-graphql">About managing enterprise accounts with GraphQL</h2>
+<p>To help you monitor and make changes in your organizations and maintain compliance, you can use the Enterprise Accounts API and the Audit Log API, which are only available as GraphQL APIs.</p>
+<p>The enterprise account endpoints work for both GitHub Enterprise Cloud and for GitHub Enterprise Server.</p>
+<p>GraphQL allows you to request and return just the data you specify. For example, you can create a GraphQL query, or request for information, to see all the new organization members added to your organization. Or you can make a mutation, or change, to invite an administrator to your enterprise account.</p>
+<p>With the Audit Log API, you can monitor when someone: - Accesses your organization or repository settings. - Changes permissions. - Adds or removes users in an organization, repository, or team. - Promotes users to admin. - Changes permissions of a GitHub App.</p>
+<p>The Audit Log API enables you to keep copies of your audit log data. For queries made with the Audit Log API, the GraphQL response can include data for up to 90 to 120 days. For a list of the fields available with the Audit Log API, see the “<a href="/graphql/reference/interfaces#auditentry/">AuditEntry interface</a>.”</p>
+<p>With the Enterprise Accounts API, you can: - List and review all of the organizations and repositories that belong to your enterprise account. - Change Enterprise account settings. - Configure policies for settings on your enterprise account and its organizations. - Invite administrators to your enterprise account. - Create new organizations in your enterprise account.</p>
+<p>For a list of the fields available with the Enterprise Accounts API, see “<a href="/graphql/guides/managing-enterprise-accounts#graphql-fields-and-types-for-the-enterprise-accounts-api">GraphQL fields and types for the Enterprise account API</a>.”</p>
+<h2 id="getting-started-using-graphql-for-enterprise-accounts">Getting started using GraphQL for enterprise accounts</h2>
+<p>Follow these steps to get started using GraphQL to manage your enterprise accounts: - Authenticating with a personal access token - Choosing a GraphQL client or using the GraphQL Explorer - Setting up Insomnia to use the GraphQL API</p>
+<p>For some example queries, see “<a href="#an-example-query-using-the-enterprise-accounts-api">An example query using the Enterprise Accounts API</a>.”</p>
+<h3 id="authenticate-with-your-personal-access-token">1. Authenticate with your personal access token</h3>
+<ol type="1">
+<li><p>To authenticate with GraphQL, you need to generate a personal access token (PAT) from developer settings. For more information, see “<a href="/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>.”</p></li>
+<li>Grant admin and full control permissions to your personal access token for areas of GHES you’d like to access. For full permission to private repositories, organizations, teams, user data, and access to enterprise billing and profile data, we recommend you select these scopes for your personal access token:
+<ul>
+<li><code>repo</code></li>
+<li><code>admin:org</code></li>
+<li><code>user</code></li>
+<li><code>admin:enterprise</code></li>
+</ul></li>
+</ol>
+<p>The enterprise account specific scopes are: - <code>admin:enterprise</code>: Gives full control of enterprises (includes <code>manage_billing:enterprise</code> and <code>read:enterprise</code>) - <code>manage_billing:enterprise</code>: Read and write enterprise billing data. - <code>read:enterprise</code>: Read enterprise profile data.</p>
+<ol start="4" type="1">
+<li>Copy your personal access token and keep it in a secure place until you add it to your GraphQL client.</li>
+</ol>
+<h3 id="choose-a-graphql-client">2. Choose a GraphQL client</h3>
+<p>We recommend you use GraphiQL or another standalone GraphQL client that lets you configure the base URL.</p>
+<p>You may also consider using these GraphQL clients: - <a href="https://support.insomnia.rest/article/176-graphql-queries">Insomnia</a> - <a href="https://www.gatsbyjs.org/docs/running-queries-with-graphiql/">GraphiQL</a> - <a href="https://learning.getpostman.com/docs/postman/sending_api_requests/graphql/">Postman</a></p>
+<p>The next steps will use Insomnia.</p>
+<h3 id="setting-up-insomnia-to-use-the-github-graphql-api-with-enterprise-accounts">3. Setting up Insomnia to use the GitHub GraphQL API with enterprise accounts</h3>
+<ol type="1">
+<li>Add the base url and <code>POST</code> method to your GraphQL client. When using GraphQL to request information (queries), change information (mutations), or transfer data using the GitHub API, the default HTTP method is <code>POST</code> and the base url follows this syntax:
+<ul>
+<li>For your enterprise instance: <code>https://&lt;HOST&gt;/api/graphql</code></li>
+<li>For GitHub Enterprise Cloud: <code>https://api.github.com/graphql</code></li>
+</ul></li>
+<li>To authenticate, open the authentication options menu and select <strong>Bearer token</strong>. Next, add your personal access token that you copied earlier.</li>
+</ol>
+<figure>
+<img src="/assets/images/developer/graphql/insomnia-base-url-and-pat.png" alt="Permissions options for personal access token" /><figcaption>Permissions options for personal access token</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/developer/graphql/insomnia-bearer-token-option.png" alt="Permissions options for personal access token" /><figcaption>Permissions options for personal access token</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>Include header information.
+<ul>
+<li>Add <code>Content-Type</code> as the header and <code>application/json</code> as the value. <img src="/assets/images/developer/graphql/json-content-type-header.png" alt="Standard header" /> <img src="/assets/images/developer/graphql/preview-header-for-2.18.png" alt="Header with preview value for the Audit Log API" /></li>
+</ul></li>
+</ol>
+<p>Now you are ready to start making queries.</p>
+<h2 id="an-example-query-using-the-enterprise-accounts-api">An example query using the Enterprise Accounts API</h2>
+<p>This GraphQL query requests the total number of {% ifversion not ghae %}<code>public</code>{% else %}<code>private</code>{% endif %} repositories in each of your appliance’s organizations using the Enterprise Accounts API. To customize this query, replace <code>&lt;enterprise-account-name&gt;</code> with the slug of your Enterprise’s instance slug.</p>
+<p>{% ifversion not ghae %}</p>
+<pre class="graphql"><code>query publicRepositoriesByOrganization($slug: String!) {
+  enterprise(slug: $slug) {
+    ...enterpriseFragment
+  }
+}
+
+fragment enterpriseFragment on Enterprise {
+  ... on Enterprise{
+    name
+    organizations(first: 100){
+      nodes{
+        name
+        ... on Organization{
+          name
+          repositories(privacy: PUBLIC){
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}
+
+# Passing our Enterprise Account as a variable
+variables {
+  &quot;slug&quot;: &quot;&lt;enterprise-account-name&gt;&quot;
+}</code></pre>
+<p>{% else %}</p>
+<pre class="graphql"><code>query privateRepositoriesByOrganization($slug: String!) {
+  enterprise(slug: $slug) {
+    ...enterpriseFragment
+  }
+}
+
+fragment enterpriseFragment on Enterprise {
+  ... on Enterprise{
+    name
+    organizations(first: 100){
+      nodes{
+        name
+        ... on Organization{
+          name
+          repositories(privacy: PRIVATE){
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}
+
+# Passing our Enterprise Account as a variable
+variables {
+  &quot;slug&quot;: &quot;&lt;enterprise-account-name&gt;&quot;
+}</code></pre>
+<p>{% endif %}</p>
+<p>The next GraphQL query example shows how challenging it is to retrieve the number of {% ifversion not ghae %}<code>public</code>{% else %}<code>private</code>{% endif %} repositories in each organization without using the Enterprise Account API. Notice that the GraphQL Enterprise Accounts API has made this task simpler for enterprises since you only need to customize a single variable. To customize this query, replace <code>&lt;name-of-organization-one&gt;</code> and <code>&lt;name-of-organization-two&gt;</code>, etc. with the organization names on your instance.</p>
+<p>{% ifversion not ghae %}</p>
+<pre class="graphql"><code># Each organization is queried separately
+{
+  organizationOneAlias: organization(login: &quot;nameOfOrganizationOne&quot;) {
+    # How to use a fragment
+    ...repositories
+  }
+  organizationTwoAlias: organization(login: &quot;nameOfOrganizationTwo&quot;) {
+    ...repositories
+  }
+  # organizationThreeAlias ... and so on up-to lets say 100
+}
+
+## How to define a fragment
+fragment repositories on Organization {
+  name
+  repositories(privacy: PUBLIC){
+    totalCount
+  }
+}</code></pre>
+<p>{% else %}</p>
+<pre class="graphql"><code># Each organization is queried separately
+{
+  organizationOneAlias: organization(login: &quot;name-of-organization-one&quot;) {
+    # How to use a fragment
+    ...repositories
+  }
+  organizationTwoAlias: organization(login: &quot;name-of-organization-two&quot;) {
+    ...repositories
+  }
+  # organizationThreeAlias ... and so on up-to lets say 100
+}
+
+## How to define a fragment
+fragment repositories on Organization {
+  name
+  repositories(privacy: PRIVATE){
+    totalCount
+  }
+}</code></pre>
+<p>{% endif %}</p>
+<h2 id="query-each-organization-separately">Query each organization separately</h2>
+<p>{% ifversion not ghae %}</p>
+<pre class="graphql"><code>query publicRepositoriesByOrganization {
+  organizationOneAlias: organization(login: &quot;&lt;name-of-organization-one&gt;&quot;) {
+    # How to use a fragment
+    ...repositories
+  }
+  organizationTwoAlias: organization(login: &quot;&lt;name-of-organization-two&gt;&quot;) {
+    ...repositories
+  }
+  # organizationThreeAlias ... and so on up-to lets say 100
+}
+# How to define a fragment
+fragment repositories on Organization {
+  name
+  repositories(privacy: PUBLIC){
+    totalCount
+  }
+}</code></pre>
+<p>{% else %}</p>
+<pre class="graphql"><code>query privateRepositoriesByOrganization {
+  organizationOneAlias: organization(login: &quot;&lt;name-of-organization-one&gt;&quot;) {
+    # How to use a fragment
+    ...repositories
+  }
+  organizationTwoAlias: organization(login: &quot;&lt;name-of-organization-two&gt;&quot;) {
+    ...repositories
+  }
+  # organizationThreeAlias ... and so on up-to lets say 100
+}
+# How to define a fragment
+fragment repositories on Organization {
+  name
+  repositories(privacy: PRIVATE){
+    totalCount
+  }
+}</code></pre>
+<p>{% endif %}</p>
+<p>This GraphQL query requests the last 5 log entries for an enterprise organization. To customize this query, replace <code>&lt;org-name&gt;</code> and <code>&lt;user-name&gt;</code>.</p>
+<pre class="graphql"><code>{
+  organization(login: &quot;&lt;org-name&gt;&quot;) {
+    auditLog(last: 5, query: &quot;actor:&lt;user-name&gt;&quot;) {
+      edges {
+        node {
+          ... on AuditEntry {
+# Get Audit Log Entry by &#39;Action&#39;
+            action
+            actorLogin
+            createdAt
+# User &#39;Action&#39; was performed on
+           user{
+              name
+                email
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>For more information about getting started with GraphQL, see “<a href="/graphql/guides/introduction-to-graphql">Introduction to GraphQL</a>” and “<a href="/graphql/guides/forming-calls-with-graphql">Forming Calls with GraphQL</a>.”</p>
+<h2 id="graphql-fields-and-types-for-the-enterprise-accounts-api">GraphQL fields and types for the Enterprise Accounts API</h2>
+<p>Here’s an overview of the new queries, mutations, and schema defined types available for use with the Enterprise Accounts API.</p>
+<p>For more details about the new queries, mutations, and schema defined types available for use with the Enterprise Accounts API, see the sidebar with detailed GraphQL definitions from any <a href="/graphql">GraphQL reference page</a>.</p>
+<p>You can access the reference docs from within the GraphQL explorer on GitHub. For more information, see “<a href="/graphql/guides/using-the-explorer#accessing-the-sidebar-docs">Using the explorer</a>.” For other information, such as authentication and rate limit details, check out the <a href="/graphql/guides">guides</a>.</p>
+</body>
+</html>

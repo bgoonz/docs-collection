@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Auditing SSH keys</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Auditing SSH keys</h1>
+    </header>
+    <p>
+      Once initiated, the audit disables all existing SSH keys and forces users
+      to approve or reject them before they’re able to clone, pull, or push to
+      any repositories. An audit is useful in situations where an employee or
+      contractor leaves the company and you need to ensure that all keys are
+      verified.
+    </p>
+    <h2 id="initiating-an-audit">Initiating an audit</h2>
+    <p>
+      You can initiate an SSH key audit from the “All users” tab of the site
+      admin dashboard:
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/security/Enterprise-Start-Key-Audit.png"
+        alt="Starting a public key audit"
+      />
+      <figcaption>Starting a public key audit</figcaption>
+    </figure>
+    <p>
+      After you click the “Start public key audit” button, you’ll be taken to a
+      confirmation screen explaining what will happen next:
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/security/Enterprise-Begin-Audit.png"
+        alt="Confirming the audit"
+      />
+      <figcaption>Confirming the audit</figcaption>
+    </figure>
+    <p>
+      After you click the “Begin audit” button, all SSH keys are invalidated and
+      will require approval. You’ll see a notification indicating the audit has
+      begun.
+    </p>
+    <h2 id="what-users-see">What users see</h2>
+    <p>
+      If a user attempts to perform any git operation over SSH, it will fail and
+      provide them with the following message:
+    </p>
+    <pre
+      class="shell"
+    ><code>ERROR: Hi &lt;em&gt;username&lt;/em&gt;. We&#39;re doing an SSH key audit.
+Please visit http(s)://&lt;em&gt;hostname&lt;/em&gt;/settings/ssh/audit/2
+to approve this key so we know it&#39;s safe.
+Fingerprint: ed:21:60:64:c0:dc:2b:16:0f:54:5f:2b:35:2a:94:91
+fatal: The remote end hung up unexpectedly</code></pre>
+    <p>
+      When they follow the link, they’re asked to approve the keys on their
+      account:
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/security/Enterprise-Audit-SSH-Keys.jpg"
+        alt="Auditing keys"
+      />
+      <figcaption>Auditing keys</figcaption>
+    </figure>
+    <p>
+      After they approve or reject their keys, they’ll be able interact with
+      repositories as usual.
+    </p>
+    <h2 id="adding-an-ssh-key">Adding an SSH key</h2>
+    <p>New users will be prompted for their password when adding an SSH key:</p>
+    <figure>
+      <img
+        src="/assets/images/help/settings/sudo_mode_popup.png"
+        alt="Password confirmation"
+      />
+      <figcaption>Password confirmation</figcaption>
+    </figure>
+    <p>
+      When a user adds a key, they’ll receive a notification email that will
+      look something like this:
+    </p>
+    <pre><code>The following SSH key was added to your account:
+
+[title]
+ed:21:60:64:c0:dc:2b:16:0f:54:5f:2b:35:2a:94:91
+
+If you believe this key was added in error, you can remove the key and disable access at the following location:
+
+http(s)://HOSTNAME/settings/ssh</code></pre>
+  </body>
+</html>

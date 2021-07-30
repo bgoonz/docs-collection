@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About merge conflicts</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About merge conflicts</h1>
+</header>
+<p>Git can often resolve differences between branches and merge them automatically. Usually, the changes are on different lines, or even in different files, which makes the merge simple for computers to understand. However, sometimes there are competing changes that Git can’t resolve without your help. Often, merge conflicts happen when people make different changes to the same line of the same file, or when one person edits a file and another person deletes the same file.</p>
+<p>You must resolve all merge conflicts before you can merge a pull request on {% data variables.product.product_name %}. If you have a merge conflict between the compare branch and base branch in your pull request, you can view a list of the files with conflicting changes above the <strong>Merge pull request</strong> button. The <strong>Merge pull request</strong> button is deactivated until you’ve resolved all conflicts between the compare branch and base branch.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/merge_conflict_error_on_github.png" alt="merge conflict error message" /><figcaption>merge conflict error message</figcaption>
+</figure>
+<h2 id="resolving-merge-conflicts">Resolving merge conflicts</h2>
+<p>To resolve a merge conflict, you must manually edit the conflicted file to select the changes that you want to keep in the final merge. There are a couple of different ways to resolve a merge conflict:</p>
+<ul>
+<li>If your merge conflict is caused by competing line changes, such as when people make different changes to the same line of the same file on different branches in your Git repository, you can resolve it on {% data variables.product.product_name %} using the conflict editor. For more information, see “<a href="/articles/resolving-a-merge-conflict-on-github">Resolving a merge conflict on {% data variables.product.prodname_dotcom %}</a>.”</li>
+<li>For all other types of merge conflicts, you must resolve the merge conflict in a local clone of the repository and push the change to your branch on {% data variables.product.product_name %}. You can use the command line or a tool like <a href="https://desktop.github.com/">{% data variables.product.prodname_desktop %}</a> to push the change. For more information, see “<a href="/articles/resolving-a-merge-conflict-using-the-command-line">Resolving a merge conflict on the command line</a>.”</li>
+</ul>
+<p>If you have a merge conflict on the command line, you cannot push your local changes to {% data variables.product.product_name %} until you resolve the merge conflict locally on your computer. If you try merging branches on the command line that have a merge conflict, you’ll get an error message. For more information, see “<a href="/articles/resolving-a-merge-conflict-using-the-command-line/">Resolving a merge conflict using the command line</a>.”</p>
+<pre class="shell"><code>$ git merge &lt;em&gt;BRANCH-NAME&lt;/em&gt;
+&gt; Auto-merging styleguide.md
+&gt; CONFLICT (content): Merge conflict in styleguide.md
+&gt; Automatic merge failed; fix conflicts and then commit the result</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-pull-request-merges/">About pull request merges</a>”</li>
+<li>“<a href="/articles/about-pull-requests/">About pull requests</a>”</li>
+<li>“<a href="/articles/resolving-a-merge-conflict-using-the-command-line">Resolving a merge conflict using the command line</a>”</li>
+<li>“<a href="/articles/resolving-a-merge-conflict-on-github">Resolving a merge conflict on GitHub</a>”</li>
+</ul>
+</body>
+</html>

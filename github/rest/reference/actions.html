@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Actions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Actions</h1>
+</header>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The {% data variables.product.prodname_actions %} API enables you to manage {% data variables.product.prodname_actions %} using the REST API. {% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} require the permissions mentioned in each endpoint. For more information, see “<a href="/actions">{% data variables.product.prodname_actions %} Documentation</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="artifacts">Artifacts</h2>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Artifacts API allows you to download, delete, and retrieve information about workflow artifacts. {% data reusables.actions.about-artifacts %} For more information, see “<a href="/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts">Persisting workflow data using artifacts</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘artifacts’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Permissions</p>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Permissions API allows you to set permissions for what organizations and repositories are allowed to run {% data variables.product.prodname_actions %}, and what actions are allowed to run. For more information, see “<a href="/actions/reference/usage-limits-billing-and-administration#disabling-or-limiting-github-actions-for-your-repository-or-organization">Usage limits, billing, and administration</a>.”</p>
+<p>You can also set permissions for an enterprise. For more information, see the “<a href="/rest/reference/enterprise-admin#github-actions">{% data variables.product.prodname_dotcom %} Enterprise administration</a>” REST API.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘permissions’ %}{% include rest_operation %}{% endif %} {% endfor %} {% endif %}</p>
+<h2 id="secrets">Secrets</h2>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Secrets API lets you create, update, delete, and retrieve information about encrypted secrets. {% data reusables.actions.about-secrets %} For more information, see “<a href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets">Creating and using encrypted secrets</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} must have the <code>secrets</code> permission to use this API. Authenticated users must have collaborator access to a repository to create, update, or read secrets.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘secrets’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="self-hosted-runners">Self-hosted runners</h2>
+<p>{% data reusables.actions.ae-beta %} {% data reusables.actions.ae-self-hosted-runners-notice %}</p>
+<p>The Self-hosted Runners API allows you to register, view, and delete self-hosted runners. {% data reusables.actions.about-self-hosted-runners %} For more information, see “<a href="/actions/hosting-your-own-runners">Hosting your own runners</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} must have the <code>administration</code> permission for repositories or the <code>organization_self_hosted_runners</code> permission for organizations. Authenticated users must have admin access to the repository or organization to use this API.</p>
+<p>You can manage self-hosted runners for an enterprise. For more information, see the “<a href="/rest/reference/enterprise-admin#github-actions">{% data variables.product.prodname_dotcom %} Enterprise administration</a>” REST API.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘self-hosted-runners’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="self-hosted-runner-groups">Self-hosted runner groups</h2>
+<p>{% data reusables.actions.ae-beta %} {% data reusables.actions.ae-self-hosted-runners-notice %}</p>
+<p>The Self-hosted Runners Groups API allows you manage groups of self-hosted runners. For more information, see “<a href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups">Managing access to self-hosted runners using groups</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} must have the <code>administration</code> permission for repositories or the <code>organization_self_hosted_runners</code> permission for organizations. Authenticated users must have admin access to the repository or organization to use this API.</p>
+<p>You can manage self-hosted runner groups for an enterprise. For more information, see the “<a href="/rest/reference/enterprise-admin##github-actions">{% data variables.product.prodname_dotcom %} Enterprise administration</a>” REST API.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘self-hosted-runner-groups’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="workflows">Workflows</h2>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Workflows API allows you to view workflows for a repository. {% data reusables.actions.about-workflows %} For more information, see “<a href="/actions/automating-your-workflow-with-github-actions">Automating your workflow with GitHub Actions</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘workflows’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="workflow-jobs">Workflow jobs</h2>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Workflow Jobs API allows you to view logs and workflow jobs. {% data reusables.actions.about-workflow-jobs %} For more information, see “<a href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a>”.</p>
+<p>{% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘workflow-jobs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="workflow-runs">Workflow runs</h2>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>The Workflow Runs API allows you to view, re-run, cancel, and view logs for workflow runs. {% data reusables.actions.about-workflow-runs %} For more information, see “<a href="/actions/automating-your-workflow-with-github-actions/managing-a-workflow-run">Managing a workflow run</a>.”</p>
+<p>{% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘workflow-runs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

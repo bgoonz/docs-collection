@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Creating a pull request</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Creating a pull request</h1>
+</header>
+<p>Anyone with read permissions to a repository can create a pull request, but you must have write permissions to create a branch. If you want to create a new branch for your pull request and don’t have write permissions to the repository, you can fork the repository first. For more information, see “<a href="/articles/creating-a-pull-request-from-a-fork">Creating a pull request from a fork</a>” and “<a href="/articles/about-forks">About forks</a>.”</p>
+<p>You can specify which branch you’d like to merge your changes into when you create your pull request. Pull requests can only be opened between two branches that are different.</p>
+<p>{% data reusables.pull_requests.perms-to-open-pull-request %}</p>
+<p>{% data reusables.pull_requests.close-issues-using-keywords %}</p>
+<h2 id="changing-the-branch-range-and-destination-repository">Changing the branch range and destination repository</h2>
+<p>By default, pull requests are based on the parent repository’s default branch. For more information, see “<a href="/github/collaborating-with-issues-and-pull-requests/about-branches#about-the-default-branch">About branches</a>.”</p>
+<p>If the default parent repository isn’t correct, you can change both the parent repository and the branch with the drop-down lists. You can also swap your head and base branches with the drop-down lists to establish diffs between reference points. References here must be branch names in your GitHub repository.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/pull-request-review-edit-branch.png" alt="Pull Request editing branches" /><figcaption>Pull Request editing branches</figcaption>
+</figure>
+<p>When thinking about branches, remember that the <em>base branch</em> is <strong>where</strong> changes should be applied, the <em>head branch</em> contains <strong>what</strong> you would like to be applied.</p>
+<p>When you change the base repository, you also change notifications for the pull request. Everyone that can push to the base repository will receive an email notification and see the new pull request in their dashboard the next time they sign in.</p>
+<p>When you change any of the information in the branch range, the Commit and Files changed preview areas will update to show your new range.</p>
+<p>{% tip %}</p>
+<p><strong>Tips</strong>: - Using the compare view, you can set up comparisons across any timeframe. For more information, see “<a href="/github/committing-changes-to-your-project/comparing-commits">Comparing commits</a>.” - Project maintainers can add a pull request template for a repository. Templates include prompts for information in the body of a pull request. For more information, see “<a href="/articles/about-issue-and-pull-request-templates">About issue and pull request templates</a>.”</p>
+<p>{% endtip %}</p>
+<h2 id="creating-the-pull-request">Creating the pull request</h2>
+<p>{% include tool-switcher %}</p>
+<p>{% webui %}</p>
+<p>{% data reusables.repositories.navigate-to-repo %} 2. In the “Branch” menu, choose the branch that contains your commits. <img src="/assets/images/help/pull_requests/branch-dropdown.png" alt="Branch dropdown menu" /> {% data reusables.repositories.new-pull-request %} 4. Use the <em>base</em> branch dropdown menu to select the branch you’d like to merge your changes into, then use the <em>compare</em> branch drop-down menu to choose the topic branch you made your changes in. <img src="/assets/images/help/pull_requests/choose-base-and-compare-branches.png" alt="Drop-down menus for choosing the base and compare branches" /> {% data reusables.repositories.pr-title-description %} {% data reusables.repositories.create-pull-request %}</p>
+<p>{% data reusables.repositories.asking-for-review %}</p>
+<p>After your pull request has been reviewed, it can be <a href="/articles/merging-a-pull-request">merged into the repository</a>.</p>
+<p>{% endwebui %}</p>
+<p>{% cli %}</p>
+<p>{% data reusables.cli.download-cli %}</p>
+<p>To create a pull request, use the <code>gh pr create</code> subcommand.</p>
+<pre class="shell"><code>gh pr create</code></pre>
+<p>To assign a pull request to an individual, use the <code>--assignee</code> or <code>-a</code> flags. You can use <code>@me</code> to self-assign the pull request.</p>
+<pre class="shell"><code>gh pr create --assignee &quot;@octocat&quot;</code></pre>
+<p>To specify the branch into which you want the pull request merged, use the <code>--base</code> or <code>-B</code> flags. To specify the branch that contains commits for your pull request, use the <code>--head</code> or <code>-H</code> flags.</p>
+<pre class="shell"><code>gh pr create --base my-base-branch --head my-changed-branch</code></pre>
+<p>To include a title and body for the new pull request, use the <code>--title</code> and <code>--body</code> flags.</p>
+<pre class="shell"><code>gh pr create --title &quot;The bug is fixed&quot; --body &quot;Everything works again&quot;</code></pre>
+<p>To mark a pull request as a draft, use the <code>--draft</code> flag.</p>
+<pre class="shell"><code>gh pr create --draft</code></pre>
+<p>To add a labels or milestones to the new pull request, use the <code>--label</code> and <code>--milestone</code> flags.</p>
+<pre class="shell"><code>gh pr create --label &quot;bug,help wanted&quot; --milestone octocat-milestone</code></pre>
+<p>To add the new pull request to a specific project, use the <code>--project</code> flag.</p>
+<pre class="shell"><code>gh pr create --project octocat-project</code></pre>
+<p>To assign an individual or team as reviewers, use the <code>--reviewer</code> flag.</p>
+<pre class="shell"><code>gh pr create --reviewer monalisa,hubot  --reviewer myorg/team-name</code></pre>
+<p>To create the pull request in your default web browser, use the <code>--web</code> flag.</p>
+<pre class="shell"><code>gh pr create --web</code></pre>
+<p>{% endcli %}</p>
+<p>{% desktop %}</p>
+<p>{% mac %}</p>
+<ol type="1">
+<li>Switch to the branch that you want to create a pull request for. For more information, see “<a href="/desktop/contributing-and-collaborating-using-github-desktop/managing-branches#switching-between-branches">Switching between branches</a>.”</li>
+<li>Click <strong>Create Pull Request</strong>. {% data variables.product.prodname_desktop %} will open your default browser to take you to {% data variables.product.prodname_dotcom %}. <img src="/assets/images/help/desktop/mac-create-pull-request.png" alt="The Create Pull Request button" /></li>
+<li>On {% data variables.product.prodname_dotcom %}, confirm that the branch in the <strong>base:</strong> drop-down menu is the branch where you want to merge your changes. Confirm that the branch in the <strong>compare:</strong> drop-down menu is the topic branch where you made your changes. <img src="/assets/images/help/desktop/base-and-compare-branches.png" alt="Drop-down menus for choosing the base and compare branches" /> {% data reusables.repositories.pr-title-description %} {% data reusables.repositories.create-pull-request %}</li>
+</ol>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<ol type="1">
+<li>Switch to the branch that you want to create a pull request for. For more information, see “<a href="/desktop/contributing-and-collaborating-using-github-desktop/managing-branches#switching-between-branches">Switching between branches</a>.”</li>
+<li>Click <strong>Create Pull Request</strong>. {% data variables.product.prodname_desktop %} will open your default browser to take you to {% data variables.product.prodname_dotcom %}. <img src="/assets/images/help/desktop/windows-create-pull-request.png" alt="The Create Pull Request button" /></li>
+<li>On {% data variables.product.prodname_dotcom %}, confirm that the branch in the <strong>base:</strong> drop-down menu is the branch where you want to merge your changes. Confirm that the branch in the <strong>compare:</strong> drop-down menu is the topic branch where you made your changes. <img src="/assets/images/help/desktop/base-and-compare-branches.png" alt="Drop-down menus for choosing the base and compare branches" /> {% data reusables.repositories.pr-title-description %} {% data reusables.repositories.create-pull-request %}</li>
+</ol>
+<p>{% endwindows %}</p>
+<p>{% enddesktop %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/creating-a-pull-request-from-a-fork">Creating a pull request from a fork</a>”</li>
+<li>“<a href="/articles/changing-the-base-branch-of-a-pull-request">Changing the base branch of a pull request</a>”</li>
+<li>“<a href="/articles/adding-issues-and-pull-requests-to-a-project-board/#adding-issues-and-pull-requests-to-a-project-board-from-the-sidebar">Adding issues and pull requests to a project board from the sidebar</a>”</li>
+<li>“<a href="/issues/tracking-your-work-with-issues/creating-issues/about-automation-for-issues-and-pull-requests-with-query-parameters">About automation for issues and pull requests with query parameters</a>”</li>
+<li>“<a href="/issues/tracking-your-work-with-issues/managing-issues/assigning-issues-and-pull-requests-to-other-github-users">Assigning issues and pull requests to other GitHub users</a>”</li>
+<li>“<a href="/github/writing-on-github">Writing on GitHub</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring built-in firewall rules</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring built-in firewall rules</h1>
+    </header>
+    <h2 id="about-data-variables.product.product_location-s-firewall">
+      About {% data variables.product.product_location %}’s firewall
+    </h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} uses Ubuntu’s
+      Uncomplicated Firewall (UFW) on the virtual appliance. For more
+      information see “<a href="https://help.ubuntu.com/community/UFW">UFW</a>”
+      in the Ubuntu documentation. {% data variables.product.prodname_ghe_server
+      %} automatically updates the firewall allowlist of allowed services with
+      each release.
+    </p>
+    <p>
+      After you install {% data variables.product.prodname_ghe_server %}, all
+      required network ports are automatically opened to accept connections.
+      Every non-required port is automatically configured as <code>deny</code>,
+      and the default outgoing policy is configured as <code>allow</code>.
+      Stateful tracking is enabled for any new connections; these are typically
+      network packets with the <code>SYN</code> bit set. For more information,
+      see “<a href="/enterprise/admin/guides/installation/network-ports"
+        >Network ports</a
+      >.”
+    </p>
+    <p>
+      The UFW firewall also opens several other ports that are required for {%
+      data variables.product.prodname_ghe_server %} to operate properly. For
+      more information on the UFW rule set, see
+      <a
+        href="https://bazaar.launchpad.net/~jdstrand/ufw/0.30-oneiric/view/head:/README#L213"
+        >the UFW README</a
+      >.
+    </p>
+    <h2 id="viewing-the-default-firewall-rules">
+      Viewing the default firewall rules
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.ssh-into-instance %} 2. To view
+      the default firewall rules, use the <code>sudo ufw status</code> command.
+      You should see output similar to this:
+      <code
+        >shell $ sudo ufw status &gt; Status: active &gt; To Action From &gt; --
+        ------ ---- &gt; ghe-1194 ALLOW Anywhere &gt; ghe-122 ALLOW Anywhere
+        &gt; ghe-161 ALLOW Anywhere &gt; ghe-22 ALLOW Anywhere &gt; ghe-25 ALLOW
+        Anywhere &gt; ghe-443 ALLOW Anywhere &gt; ghe-80 ALLOW Anywhere &gt;
+        ghe-8080 ALLOW Anywhere &gt; ghe-8443 ALLOW Anywhere &gt; ghe-9418 ALLOW
+        Anywhere &gt; ghe-1194 (v6) ALLOW Anywhere (v6) &gt; ghe-122 (v6) ALLOW
+        Anywhere (v6) &gt; ghe-161 (v6) ALLOW Anywhere (v6) &gt; ghe-22 (v6)
+        ALLOW Anywhere (v6) &gt; ghe-25 (v6) ALLOW Anywhere (v6) &gt; ghe-443
+        (v6) ALLOW Anywhere (v6) &gt; ghe-80 (v6) ALLOW Anywhere (v6) &gt;
+        ghe-8080 (v6) ALLOW Anywhere (v6) &gt; ghe-8443 (v6) ALLOW Anywhere (v6)
+        &gt; ghe-9418 (v6) ALLOW Anywhere (v6)</code
+      >
+    </p>
+    <h2 id="adding-custom-firewall-rules">Adding custom firewall rules</h2>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> Before you add custom firewall rules, back up
+      your current rules in case you need to reset to a known working state. If
+      you’re locked out of your server, contact {% data
+      variables.contact.contact_ent_support %} to reconfigure the original
+      firewall rules. Restoring the original firewall rules involves downtime
+      for your server.
+    </p>
+    <p>{% endwarning %}</p>
+    <ol type="1">
+      <li>Configure a custom firewall rule.</li>
+      <li>
+        Check the status of each new rule with the
+        <code>status numbered</code> command.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ sudo ufw status numbered</code></pre>
+    <ol start="3" type="1">
+      <li>
+        To back up your custom firewall rules, use the <code>cp</code>command to
+        move the rules to a new file.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ sudo cp -r /etc/ufw ~/ufw.backup</code></pre>
+    <p>
+      After you upgrade {% data variables.product.product_location %}, you must
+      reapply your custom firewall rules. We recommend that you create a script
+      to reapply your firewall custom rules.
+    </p>
+    <h2 id="restoring-the-default-firewall-rules">
+      Restoring the default firewall rules
+    </h2>
+    <p>
+      If something goes wrong after you change the firewall rules, you can reset
+      the rules from your original backup.
+    </p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> If you didn’t back up the original rules before
+      making changes to the firewall, contact {% data
+      variables.contact.contact_ent_support %} for further assistance.
+    </p>
+    <p>{% endwarning %}</p>
+    <p>
+      {% data reusables.enterprise_installation.ssh-into-instance %} 2. To
+      restore the previous backup rules, copy them back to the firewall with the
+      <code>cp</code> command.
+      <code>shell $ sudo cp -f ~/ufw.backup/*rules /etc/ufw</code> 3. Restart
+      the firewall with the <code>systemctl</code> command.
+      <code>shell $ sudo systemctl restart ufw</code> 4. Confirm that the rules
+      are back to their defaults with the <code>ufw status</code> command.
+      <code
+        >shell $ sudo ufw status &gt; Status: active &gt; To Action From &gt; --
+        ------ ---- &gt; ghe-1194 ALLOW Anywhere &gt; ghe-122 ALLOW Anywhere
+        &gt; ghe-161 ALLOW Anywhere &gt; ghe-22 ALLOW Anywhere &gt; ghe-25 ALLOW
+        Anywhere &gt; ghe-443 ALLOW Anywhere &gt; ghe-80 ALLOW Anywhere &gt;
+        ghe-8080 ALLOW Anywhere &gt; ghe-8443 ALLOW Anywhere &gt; ghe-9418 ALLOW
+        Anywhere &gt; ghe-1194 (v6) ALLOW Anywhere (v6) &gt; ghe-122 (v6) ALLOW
+        Anywhere (v6) &gt; ghe-161 (v6) ALLOW Anywhere (v6) &gt; ghe-22 (v6)
+        ALLOW Anywhere (v6) &gt; ghe-25 (v6) ALLOW Anywhere (v6) &gt; ghe-443
+        (v6) ALLOW Anywhere (v6) &gt; ghe-80 (v6) ALLOW Anywhere (v6) &gt;
+        ghe-8080 (v6) ALLOW Anywhere (v6) &gt; ghe-8443 (v6) ALLOW Anywhere (v6)
+        &gt; ghe-9418 (v6) ALLOW Anywhere (v6)</code
+      >
+    </p>
+  </body>
+</html>

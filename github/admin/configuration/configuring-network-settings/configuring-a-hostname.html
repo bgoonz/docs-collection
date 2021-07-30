@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring a hostname</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring a hostname</h1>
+    </header>
+    <p>
+      If you configure a hostname instead of a hard-coded IP address, you will
+      be able to change the physical hardware that {% data
+      variables.product.product_location %} runs on without affecting users or
+      client software.
+    </p>
+    <p>
+      The hostname setting in the {% data
+      variables.enterprise.management_console %} should be set to an appropriate
+      fully qualified domain name (FQDN) which is resolvable on the internet or
+      within your internal network. For example, your hostname setting could be
+      <code>github.companyname.com.</code> We also recommend enabling subdomain
+      isolation for the chosen hostname to mitigate several cross-site scripting
+      style vulnerabilities. For more information on hostname settings, see
+      <a href="https://tools.ietf.org/html/rfc1123#section-2"
+        >Section 2.1 of the HTTP RFC</a
+      >.
+    </p>
+    <p>
+      {% data reusables.enterprise_installation.changing-hostname-not-supported
+      %}
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.hostname-menu-item %} 4. Type
+      the hostname you’d like to set for {% data
+      variables.product.product_location %}.
+      <img
+        src="/assets/images/enterprise/management-console/hostname-field.png"
+        alt="Field for setting a hostname"
+      />
+      5. To test the DNS and SSL settings for the new hostname, click
+      <strong>Test domain settings</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/test-domain-settings.png"
+        alt="Test domain settings button"
+      />
+      {% data
+      reusables.enterprise_management_console.test-domain-settings-failure %} {%
+      data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <p>
+      After you configure a hostname, we recommend that you enable subdomain
+      isolation for {% data variables.product.product_location %}. For more
+      information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-subdomain-isolation/"
+        >Enabling subdomain isolation</a
+      >.”
+    </p>
+  </body>
+</html>

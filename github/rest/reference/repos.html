@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Repositories</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Repositories</h1>
+</header>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="branches">Branches</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘branches’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="collaborators">Collaborators</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘collaborators’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="comments">Comments</h2>
+<h3 id="custom-media-types-for-commit-comments">Custom media types for commit comments</h3>
+<p>These are the supported media types for commit comments. You can read more about the use of media types in the API <a href="/rest/overview/media-types">here</a>.</p>
+<pre><code>application/vnd.github-commitcomment.raw+json
+application/vnd.github-commitcomment.text+json
+application/vnd.github-commitcomment.html+json
+application/vnd.github-commitcomment.full+json</code></pre>
+<p>For more information, see “<a href="/rest/overview/media-types">Custom media types</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘comments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="commits">Commits</h2>
+<p>The Repo Commits API supports listing, viewing, and comparing commits in a repository.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘commits’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt %} ## Community</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘community’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<h2 id="contents">Contents</h2>
+<p>These API endpoints let you create, modify, and delete Base64 encoded content in a repository. To request the raw format or rendered HTML (when supported), use custom media types for repository contents.</p>
+<h3 id="custom-media-types-for-repository-contents">Custom media types for repository contents</h3>
+<p><a href="/rest/reference/repos#get-a-repository-readme">READMEs</a>, <a href="/rest/reference/repos#get-repository-content">files</a>, and <a href="/rest/reference/repos#get-repository-content">symlinks</a> support the following custom media types:</p>
+<pre><code>application/vnd.github.VERSION.raw
+application/vnd.github.VERSION.html</code></pre>
+<p>Use the <code>.raw</code> media type to retrieve the contents of the file.</p>
+<p>For markup files such as Markdown or AsciiDoc, you can retrieve the rendered HTML using the <code>.html</code> media type. Markup languages are rendered to HTML using our open-source <a href="https://github.com/github/markup">Markup library</a>.</p>
+<p><a href="/rest/reference/repos#get-repository-content">All objects</a> support the following custom media type:</p>
+<pre><code>application/vnd.github.VERSION.object</code></pre>
+<p>Use the <code>object</code> media type parameter to retrieve the contents in a consistent object format regardless of the content type. For example, instead of an array of objects for a directory, the response will be an object with an <code>entries</code> attribute containing the array of objects.</p>
+<p>You can read more about the use of media types in the API <a href="/rest/overview/media-types">here</a>.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘contents’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="deploy-keys">Deploy keys</h2>
+<p>{% data reusables.repositories.deploy-keys %}</p>
+<p>Deploy keys can either be setup using the following API endpoints, or by using GitHub. To learn how to set deploy keys up in GitHub, see “<a href="/developers/overview/managing-deploy-keys">Managing deploy keys</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘keys’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="deployments">Deployments</h2>
+<p>Deployments are requests to deploy a specific ref (branch, SHA, tag). GitHub dispatches a <a href="/developers/webhooks-and-events/webhook-events-and-payloads#deployment"><code>deployment</code> event</a> that external services can listen for and act on when new deployments are created. Deployments enable developers and organizations to build loosely coupled tooling around deployments, without having to worry about the implementation details of delivering different types of applications (e.g., web, native).</p>
+<p>Deployment statuses allow external services to mark deployments with an <code>error</code>, <code>failure</code>, <code>pending</code>, <code>in_progress</code>, <code>queued</code>, or <code>success</code> state that systems listening to <a href="/developers/webhooks-and-events/webhook-events-and-payloads#deployment_status"><code>deployment_status</code> events</a> can consume.</p>
+<p>Deployment statuses can also include an optional <code>description</code> and <code>log_url</code>, which are highly recommended because they make deployment statuses more useful. The <code>log_url</code> is the full URL to the deployment output, and the <code>description</code> is a high-level summary of what happened with the deployment.</p>
+<p>GitHub dispatches <code>deployment</code> and <code>deployment_status</code> events when new deployments and deployment statuses are created. These events allows third-party integrations to receive respond to deployment requests and update the status of a deployment as progress is made.</p>
+<p>Below is a simple sequence diagram for how these interactions would work.</p>
+<pre><code>+---------+             +--------+            +-----------+        +-------------+
+| Tooling |             | GitHub |            | 3rd Party |        | Your Server |
++---------+             +--------+            +-----------+        +-------------+
+     |                      |                       |                     |
+     |  Create Deployment   |                       |                     |
+     |---------------------&gt;|                       |                     |
+     |                      |                       |                     |
+     |  Deployment Created  |                       |                     |
+     |&lt;---------------------|                       |                     |
+     |                      |                       |                     |
+     |                      |   Deployment Event    |                     |
+     |                      |----------------------&gt;|                     |
+     |                      |                       |     SSH+Deploys     |
+     |                      |                       |--------------------&gt;|
+     |                      |                       |                     |
+     |                      |   Deployment Status   |                     |
+     |                      |&lt;----------------------|                     |
+     |                      |                       |                     |
+     |                      |                       |   Deploy Completed  |
+     |                      |                       |&lt;--------------------|
+     |                      |                       |                     |
+     |                      |   Deployment Status   |                     |
+     |                      |&lt;----------------------|                     |
+     |                      |                       |                     |</code></pre>
+<p>Keep in mind that GitHub is never actually accessing your servers. It’s up to your third-party integration to interact with deployment events. Multiple systems can listen for deployment events, and it’s up to each of those systems to decide whether they’re responsible for pushing the code out to your servers, building native code, etc.</p>
+<p>Note that the <code>repo_deployment</code> <a href="/developers/apps/scopes-for-oauth-apps">OAuth scope</a> grants targeted access to deployments and deployment statuses <strong>without</strong> granting access to repository code, while the {% ifversion not ghae %}<code>public_repo</code> and{% endif %}<code>repo</code> scopes grant permission to code as well.</p>
+<h3 id="inactive-deployments">Inactive deployments</h3>
+<p>When you set the state of a deployment to <code>success</code>, then all prior non-transient, non-production environment deployments in the same repository to the same environment name will become <code>inactive</code>. To avoid this, you can set <code>auto_inactive</code> to <code>false</code> when creating the deployment status.</p>
+<p>You can communicate that a transient environment no longer exists by setting its <code>state</code> to <code>inactive</code>. Setting the <code>state</code> to <code>inactive</code> shows the deployment as <code>destroyed</code> in {% data variables.product.prodname_dotcom %} and removes access to it.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘deployments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt or ghes &gt; 3.1 or ghae-next %} ## Environments</p>
+<p>The Environments API allows you to create, configure, and delete environments. For more information about environments, see “<a href="/actions/reference/environments">Environments</a>.” To manage environment secrets, see “<a href="/rest/reference/actions#secrets">Secrets</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘environments’ %}{% include rest_operation %}{% endif %} {% endfor %} {% endif %}</p>
+<h2 id="forks">Forks</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘forks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="invitations">Invitations</h2>
+<p>The Repository Invitations API allows users or external services to invite other users to collaborate on a repo. The invited users (or external services on behalf of invited users) can choose to accept or decline the invitations.</p>
+<p>Note that the <code>repo:invite</code> <a href="/developers/apps/scopes-for-oauth-apps">OAuth scope</a> grants targeted access to invitations <strong>without</strong> also granting access to repository code, while the <code>repo</code> scope grants permission to code as well as invitations.</p>
+<h3 id="invite-a-user-to-a-repository">Invite a user to a repository</h3>
+<p>Use the API endpoint for adding a collaborator. For more information, see “<a href="/rest/reference/repos#add-a-repository-collaborator">Add a repository collaborator</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘invitations’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="merging">Merging</h2>
+<p>The Repo Merging API supports merging branches in a repository. This accomplishes essentially the same thing as merging one branch into another in a local repository and then pushing to {% data variables.product.product_name %}. The benefit is that the merge is done on the server side and a local repository is not needed. This makes it more appropriate for automation and other tools where maintaining local repositories would be cumbersome and inefficient.</p>
+<p>The authenticated user will be the author of any merges done through this endpoint.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘merging’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="pages">Pages</h2>
+<p>The {% data variables.product.prodname_pages %} API retrieves information about your {% data variables.product.prodname_pages %} configuration, and the statuses of your builds. Information about the site and the builds can only be accessed by authenticated owners{% ifversion not ghae %}, even if the websites are public{% endif %}. For more information, see “<a href="/pages/getting-started-with-github-pages/about-github-pages">About {% data variables.product.prodname_pages %}</a>.”</p>
+<p>In {% data variables.product.prodname_pages %} API endpoints with a <code>status</code> key in their response, the value can be one of: * <code>null</code>: The site has yet to be built. * <code>queued</code>: The build has been requested but not yet begun. * <code>building</code>:The build is in progress. * <code>built</code>: The site has been built. * <code>errored</code>: Indicates an error occurred during the build.</p>
+<p>In {% data variables.product.prodname_pages %} API endpoints that return GitHub Pages site information, the JSON responses include these fields: * <code>html_url</code>: The absolute URL (including scheme) of the rendered Pages site. For example, <code>https://username.github.io</code>. * <code>source</code>: An object that contains the source branch and directory for the rendered Pages site. This includes: - <code>branch</code>: The repository branch used to publish your <a href="/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">site’s source files</a>. For example, <em>main</em> or <em>gh-pages</em>. - <code>path</code>: The repository directory from which the site publishes. Will be either <code>/</code> or <code>/docs</code>.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘pages’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="releases">Releases</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The Releases API replaces the Downloads API. You can retrieve the download count and browser download URL from the endpoints in this API that return releases and release assets.</p>
+<p>{% endnote %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘releases’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="statistics">Statistics</h2>
+<p>The Repository Statistics API allows you to fetch the data that {% data variables.product.product_name %} uses for visualizing different types of repository activity.</p>
+<h3 id="a-word-about-caching">A word about caching</h3>
+<p>Computing repository statistics is an expensive operation, so we try to return cached data whenever possible. If the data hasn’t been cached when you query a repository’s statistics, you’ll receive a <code>202</code> response; a background job is also fired to start compiling these statistics. Give the job a few moments to complete, and then submit the request again. If the job has completed, that request will receive a <code>200</code> response with the statistics in the response body.</p>
+<p>Repository statistics are cached by the SHA of the repository’s default branch; pushing to the default branch resets the statistics cache.</p>
+<h3 id="statistics-exclude-some-types-of-commits">Statistics exclude some types of commits</h3>
+<p>The statistics exposed by the API match the statistics shown by <a href="/github/visualizing-repository-data-with-graphs/about-repository-graphs">different repository graphs</a>.</p>
+<p>To summarize: - All statistics exclude merge commits. - Contributor statistics also exclude empty commits.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘statistics’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="statuses">Statuses</h2>
+<p>The status API allows external services to mark commits with an <code>error</code>, <code>failure</code>, <code>pending</code>, or <code>success</code> state, which is then reflected in pull requests involving those commits.</p>
+<p>Statuses can also include an optional <code>description</code> and <code>target_url</code>, and we highly recommend providing them as they make statuses much more useful in the GitHub UI.</p>
+<p>As an example, one common use is for continuous integration services to mark commits as passing or failing builds using status. The <code>target_url</code> would be the full URL to the build output, and the <code>description</code> would be the high level summary of what happened with the build.</p>
+<p>Statuses can include a <code>context</code> to indicate what service is providing that status. For example, you may have your continuous integration service push statuses with a context of <code>ci</code>, and a security audit tool push statuses with a context of <code>security</code>. You can then use the <a href="/rest/reference/repos#get-the-combined-status-for-a-specific-reference">Get the combined status for a specific reference</a> to retrieve the whole status for a commit.</p>
+<p>Note that the <code>repo:status</code> <a href="/developers/apps/scopes-for-oauth-apps">OAuth scope</a> grants targeted access to statuses <strong>without</strong> also granting access to repository code, while the <code>repo</code> scope grants permission to code as well as statuses.</p>
+<p>If you are developing a GitHub App and want to provide more detailed information about an external service, you may want to use the <a href="/rest/reference/checks">Checks API</a>.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘statuses’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt %} ## Traffic</p>
+<p>For repositories that you have push access to, the traffic API provides access to the information provided in your repository graph. For more information, see “<a href="/github/visualizing-repository-data-with-graphs/viewing-traffic-to-a-repository" class="dotcom-only">Viewing traffic to a repository</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘traffic’ %}{% include rest_operation %}{% endif %} {% endfor %} {% endif %}</p>
+<h2 id="webhooks">Webhooks</h2>
+<p>Repository webhooks allow you to receive HTTP <code>POST</code> payloads whenever certain events happen in a repository. {% data reusables.webhooks.webhooks-rest-api-links %}</p>
+<p>If you would like to set up a single webhook to receive events from all of your organization’s repositories, see our API documentation for <a href="/rest/reference/orgs#webhooks">Organization Webhooks</a>.</p>
+<p>In addition to the REST API, {% data variables.product.prodname_dotcom %} can also serve as a <a href="#pubsubhubbub">PubSubHubbub</a> hub for repositories.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘webhooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h3 id="receiving-webhooks">Receiving Webhooks</h3>
+<p>In order for {% data variables.product.product_name %} to send webhook payloads, your server needs to be accessible from the Internet. We also highly suggest using SSL so that we can send encrypted payloads over HTTPS.</p>
+<h4 id="webhook-headers">Webhook headers</h4>
+<p>{% data variables.product.product_name %} will send along several HTTP headers to differentiate between event types and payload identifiers. See <a href="/developers/webhooks-and-events/webhook-events-and-payloads#delivery-headers">webhook headers</a> for details.</p>
+<h3 id="pubsubhubbub">PubSubHubbub</h3>
+<p>GitHub can also serve as a <a href="https://github.com/pubsubhubbub/PubSubHubbub">PubSubHubbub</a> hub for all repositories. PSHB is a simple publish/subscribe protocol that lets servers register to receive updates when a topic is updated. The updates are sent with an HTTP POST request to a callback URL. Topic URLs for a GitHub repository’s pushes are in this format:</p>
+<p><code>https://github.com/{owner}/{repo}/events/{event}</code></p>
+<p>The event can be any available webhook event. For more information, see “<a href="/developers/webhooks-and-events/webhook-events-and-payloads">Webhook events and payloads</a>.”</p>
+<h4 id="response-format">Response format</h4>
+<p>The default format is what <a href="/post-receive-hooks/">existing post-receive hooks should expect</a>: A JSON body sent as the <code>payload</code> parameter in a POST. You can also specify to receive the raw JSON body with either an <code>Accept</code> header, or a <code>.json</code> extension.</p>
+<pre><code>Accept: application/json
+https://github.com/{owner}/{repo}/events/push.json</code></pre>
+<h4 id="callback-urls">Callback URLs</h4>
+<p>Callback URLs can use the <code>http://</code> protocol.</p>
+<pre><code># Send updates to postbin.org
+http://postbin.org/123</code></pre>
+<h4 id="subscribing">Subscribing</h4>
+<p>The GitHub PubSubHubbub endpoint is: <code>{% data variables.product.api_url_code %}/hub</code>. A successful request with curl looks like:</p>
+<pre class="shell"><code>curl -u &quot;user&quot; -i \
+  {% data variables.product.api_url_pre %}/hub \
+  -F &quot;hub.mode=subscribe&quot; \
+  -F &quot;hub.topic=https://github.com/{owner}/{repo}/events/push&quot; \
+  -F &quot;hub.callback=http://postbin.org/123&quot;</code></pre>
+<p>PubSubHubbub requests can be sent multiple times. If the hook already exists, it will be modified according to the request.</p>
+<h5 id="parameters">Parameters</h5>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hub.mode</code></td>
+<td><code>string</code></td>
+<td><strong>Required</strong>. Either <code>subscribe</code> or <code>unsubscribe</code>.</td>
+</tr>
+<tr class="even">
+<td><code>hub.topic</code></td>
+<td><code>string</code></td>
+<td><strong>Required</strong>. The URI of the GitHub repository to subscribe to. The path must be in the format of <code>/{owner}/{repo}/events/{event}</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>hub.callback</code></td>
+<td><code>string</code></td>
+<td>The URI to receive the updates to the topic.</td>
+</tr>
+<tr class="even">
+<td><code>hub.secret</code></td>
+<td><code>string</code></td>
+<td>A shared secret key that generates a hash signature of the outgoing body content. You can verify a push came from GitHub by comparing the raw request body with the contents of the {% ifversion fpt or ghes &gt; 2.22 %}<code>X-Hub-Signature</code> or <code>X-Hub-Signature-256</code> headers{% elsif ghes &lt; 3.0 %}<code>X-Hub-Signature</code> header{% elsif ghae %}<code>X-Hub-Signature-256</code> header{% endif %}. You can see <a href="https://pubsubhubbub.github.io/PubSubHubbub/pubsubhubbub-core-0.4.html#authednotify">the PubSubHubbub documentation</a> for more details.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

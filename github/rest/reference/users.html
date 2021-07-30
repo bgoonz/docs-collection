@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Users</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Users</h1>
+</header>
+<p>Many of the resources on the users API provide a shortcut for getting information about the currently authenticated user. If a request URL does not include a <code>{username}</code> parameter then the response will be for the logged in user (and you must pass <a href="/rest/overview/resources-in-the-rest-api#authentication">authentication information</a> with your request).{% ifversion fpt or ghes %} Additional private information, such as whether a user has two-factor authentication enabled, is included when authenticated through basic auth or OAuth with the <code>user</code> scope.{% endif %}</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<p>{% ifversion fpt %} ## Blocking users</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘blocking’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes %} ## Emails</p>
+<p>Management of email addresses via the API requires that you authenticate through basic auth, or through OAuth with a correct scope for the endpoint.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘emails’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<h2 id="followers">Followers</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘followers’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="git-ssh-keys">Git SSH keys</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘keys’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="gpg-keys">GPG keys</h2>
+<p>The data returned in the <code>public_key</code> response field is not a GPG formatted key. When a user uploads a GPG key, it is parsed and the cryptographic public key is extracted and stored. This cryptographic key is what is returned by the APIs on this page. This key is not suitable to be used directly by programs like GPG.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘gpg-keys’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

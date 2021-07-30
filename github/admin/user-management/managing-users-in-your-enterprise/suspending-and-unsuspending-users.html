@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Suspending and unsuspending users</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Suspending and unsuspending users</h1>
+</header>
+<p>If employees leave the company, you can suspend their {% data variables.product.prodname_ghe_server %} accounts to open up user licenses in your {% data variables.product.prodname_enterprise %} license while preserving the issues, comments, repositories, gists, and other data they created. Suspended users cannot sign into your instance, nor can they push or pull code.</p>
+<p>When you suspend a user, the change takes effect immediately with no notification to the user. If the user attempts to pull or push to a repository, they’ll receive this error:</p>
+<pre class="shell"><code>$ git clone git@[hostname]:john-doe/test-repo.git
+Cloning into &#39;test-repo&#39;...
+ERROR: Your account is suspended. Please check with your installation administrator.
+fatal: The remote end hung up unexpectedly</code></pre>
+<p>Before suspending site administrators, you must demote them to regular users. For more information, see “<a href="/enterprise/admin/user-management/promoting-or-demoting-a-site-administrator">Promoting or demoting a site administrator</a>.”</p>
+<p>{% tip %}</p>
+<p><strong>Note:</strong> If <a href="/enterprise/admin/authentication/using-ldap#enabling-ldap-sync">LDAP Sync is enabled</a> for {% data variables.product.product_location %}, users are automatically suspended when they’re removed from the LDAP directory server. When LDAP Sync is enabled for your instance, normal user suspension methods are disabled.</p>
+<p>{% endtip %}</p>
+<h2 id="suspending-a-user-from-the-user-admin-dashboard">Suspending a user from the user admin dashboard</h2>
+<p>{% data reusables.enterprise_site_admin_settings.access-settings %} {% data reusables.enterprise_site_admin_settings.search-user %} {% data reusables.enterprise_site_admin_settings.click-user %} {% data reusables.enterprise_site_admin_settings.admin-top-tab %} {% data reusables.enterprise_site_admin_settings.admin-tab %} 5. Under “Account suspension,” in the red Danger Zone box, click <strong>Suspend</strong>. <img src="/assets/images/enterprise/site-admin-settings/suspend.png" alt="Suspend button" /> 6. Provide a reason to suspend the user. <img src="/assets/images/enterprise/site-admin-settings/suspend-reason.png" alt="Suspend reason" /></p>
+<h2 id="unsuspending-a-user-from-the-user-admin-dashboard">Unsuspending a user from the user admin dashboard</h2>
+<p>As when suspending a user, unsuspending a user takes effect immediately. The user will not be notified.</p>
+<p>{% data reusables.enterprise_site_admin_settings.access-settings %} 3. In the left sidebar, click <strong>Suspended users</strong>. <img src="/assets/images/enterprise/site-admin-settings/user/suspended-users-tab.png" alt="Suspended users tab" /> 2. Click the name of the user account that you would like to unsuspend. <img src="/assets/images/enterprise/site-admin-settings/user/suspended-user.png" alt="Suspended user" /> {% data reusables.enterprise_site_admin_settings.admin-top-tab %} {% data reusables.enterprise_site_admin_settings.admin-tab %} 4. Under “Account suspension,” in the red Danger Zone box, click <strong>Unsuspend</strong>. <img src="/assets/images/enterprise/site-admin-settings/unsuspend.png" alt="Unsuspend button" /> 5. Provide a reason to unsuspend the user. <img src="/assets/images/enterprise/site-admin-settings/unsuspend-reason.png" alt="Unsuspend reason" /></p>
+<h2 id="suspending-a-user-from-the-command-line">Suspending a user from the command line</h2>
+<p>{% data reusables.enterprise_installation.ssh-into-instance %} 2. Run <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-user-suspend">ghe-user-suspend</a> with the username to suspend. <code>shell   $ ghe-user-suspend &lt;em&gt;username&lt;/em&gt;</code></p>
+<h2 id="creating-a-custom-message-for-suspended-users">Creating a custom message for suspended users</h2>
+<p>You can create a custom message that suspended users will see when attempting to sign in.</p>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.messages-tab %} 5. Click <strong>Add message</strong>. <img src="/assets/images/enterprise/site-admin-settings/add-message.png" alt="Add message" /> 6. Type your message into the <strong>Suspended user message</strong> box. You can type Markdown, or use the Markdown toolbar to style your message. <img src="/assets/images/enterprise/site-admin-settings/suspended-user-message.png" alt="Suspended user message" /> 7. Click the <strong>Preview</strong> button under the <strong>Suspended user message</strong> field to see the rendered message. <img src="/assets/images/enterprise/site-admin-settings/suspended-user-message-preview-button.png" alt="Preview button" /> 8. Review the rendered message. <img src="/assets/images/enterprise/site-admin-settings/suspended-user-message-rendered.png" alt="Suspended user message rendered" /> {% data reusables.enterprise_site_admin_settings.save-changes %}</p>
+<h2 id="unsuspending-a-user-from-the-command-line">Unsuspending a user from the command line</h2>
+<p>{% data reusables.enterprise_installation.ssh-into-instance %} 2. Run <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-user-unsuspend">ghe-user-unsuspend</a> with the username to unsuspend. <code>shell   $ ghe-user-unsuspend &lt;em&gt;username&lt;/em&gt;</code></p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/rest/reference/enterprise-admin#suspend-a-user">Suspend a user</a>”</li>
+</ul>
+</body>
+</html>

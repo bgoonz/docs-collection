@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching for repositories</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching for repositories</h1>
+</header>
+<p>You can search for repositories globally across all of {% data variables.product.product_location %}, or search for repositories within a particular organization. For more information, see “<a href="/articles/about-searching-on-github">About searching on {% data variables.product.prodname_dotcom %}</a>.”</p>
+<p>To include forks in the search results, you will need to add <code>fork:true</code> or <code>fork:only</code> to your query. For more information, see “<a href="/articles/searching-in-forks">Searching in forks</a>.”</p>
+<p>{% data reusables.search.syntax_tips %}</p>
+<h2 id="search-by-repository-name-description-or-contents-of-the-readme-file">Search by repository name, description, or contents of the README file</h2>
+<p>With the <code>in</code> qualifier you can restrict your search to the repository name, repository description, contents of the README file, or any combination of these. When you omit this qualifier, only the repository name and description are searched.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>in:name</code></td>
+<td><a href="https://github.com/search?q=jquery+in%3Aname&amp;type=Repositories"><strong>jquery in:name</strong></a> matches repositories with “jquery” in the repository name.</td>
+</tr>
+<tr class="even">
+<td><code>in:description</code></td>
+<td><a href="https://github.com/search?q=jquery+in%3Aname%2Cdescription&amp;type=Repositories"><strong>jquery in:name,description</strong></a> matches repositories with “jquery” in the repository name or description.</td>
+</tr>
+<tr class="odd">
+<td><code>in:readme</code></td>
+<td><a href="https://github.com/search?q=jquery+in%3Areadme&amp;type=Repositories"><strong>jquery in:readme</strong></a> matches repositories mentioning “jquery” in the repository’s README file.</td>
+</tr>
+<tr class="even">
+<td><code>repo:owner/name</code></td>
+<td><a href="https://github.com/search?q=repo%3Aoctocat%2Fhello-world"><strong>repo:octocat/hello-world</strong></a> matches a specific repository name.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-based-on-the-contents-of-a-repository">Search based on the contents of a repository</h2>
+<p>You can find a repository by searching for content in the repository’s README file using the <code>in:readme</code> qualifier. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-readmes">About READMEs</a>.”</p>
+<p>Besides using <code>in:readme</code>, it’s not possible to find repositories by searching for specific content within the repository. To search for a specific file or content within a repository, you can use the file finder or code-specific search qualifiers. For more information, see “<a href="/articles/finding-files-on-github">Finding files on {% data variables.product.prodname_dotcom %}</a>” and “<a href="/articles/searching-code">Searching code</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>in:readme</code></td>
+<td><a href="https://github.com/search?q=octocat+in%3Areadme&amp;type=Repositories"><strong>octocat in:readme</strong></a> matches repositories mentioning “octocat” in the repository’s README file.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-within-a-users-or-organizations-repositories">Search within a user’s or organization’s repositories</h2>
+<p>To search in all repositories owned by a certain user or organization, you can use the <code>user</code> or <code>org</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=user%3Adefunkt+forks%3A%3E%3D100&amp;type=Repositories"><strong>user:defunkt forks:&gt;100</strong></a> matches repositories from <span class="citation" data-cites="defunkt">@defunkt</span> that have more than 100 forks.</td>
+</tr>
+<tr class="even">
+<td><code>org:<em>ORGNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=org%3Agithub&amp;type=Repositories"><strong>org:github</strong></a> matches repositories from GitHub.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-repository-size">Search by repository size</h2>
+<p>The <code>size</code> qualifier finds repositories that match a certain size (in kilobytes), using greater than, less than, and range qualifiers. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>size:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=size%3A1000&amp;type=Repositories"><strong>size:1000</strong></a> matches repositories that are 1 MB exactly.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=size%3A%3E%3D30000&amp;type=Repositories"><strong>size:&gt;=30000</strong></a> matches repositories that are at least 30 MB.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=size%3A%3C50&amp;type=Repositories"><strong>size:&lt;50</strong></a> matches repositories that are smaller than 50 KB.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=size%3A50..120&amp;type=Repositories"><strong>size:50..120</strong></a> matches repositories that are between 50 KB and 120 KB.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-followers">Search by number of followers</h2>
+<p>You can filter repositories based on the number of users who follow the repositories, using the <code>followers</code> qualifier with greater than, less than, and range qualifiers. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>followers:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=node+followers%3A%3E%3D10000"><strong>node followers:&gt;=10000</strong></a> matches repositories with 10,000 or more followers mentioning the word “node”.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=styleguide+linter+followers%3A1..10&amp;type=Repositories"><strong>styleguide linter followers:1..10</strong></a> matches repositories with between 1 and 10 followers, mentioning the word “styleguide linter.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-forks">Search by number of forks</h2>
+<p>The <code>forks</code> qualifier specifies the number of forks a repository should have, using greater than, less than, and range qualifiers. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>forks:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=forks%3A5&amp;type=Repositories"><strong>forks:5</strong></a> matches repositories with only five forks.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=forks%3A%3E%3D205&amp;type=Repositories"><strong>forks:&gt;=205</strong></a> matches repositories with at least 205 forks.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=forks%3A%3C90&amp;type=Repositories"><strong>forks:&lt;90</strong></a> matches repositories with fewer than 90 forks.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=forks%3A10..20&amp;type=Repositories"><strong>forks:10..20</strong></a> matches repositories with 10 to 20 forks.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-stars">Search by number of stars</h2>
+<p>You can search repositories based on the number of stars the repositories have, using greater than, less than, and range qualifiers. For more information, see “<a href="/github/getting-started-with-github/saving-repositories-with-stars">Saving repositories with stars</a>” and “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stars:<em>n</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=stars%3A500&amp;type=Repositories"><strong>stars:500</strong></a> matches repositories with exactly 500 stars.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=stars%3A10..20+size%3A%3C1000&amp;type=Repositories"><strong>stars:10..20</strong></a> matches repositories 10 to 20 stars, that are smaller than 1000 KB.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=stars%3A%3E%3D500+fork%3Atrue+language%3Aphp&amp;type=Repositories"><strong>stars:&gt;=500 fork:true language:php</strong></a> matches repositories with the at least 500 stars, including forked ones, that are written in PHP.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-a-repository-was-created-or-last-updated">Search by when a repository was created or last updated</h2>
+<p>You can filter repositories based on time of creation or time of last update. For repository creation, you can use the <code>created</code> qualifier; to find out when a repository was last updated, you’ll want to use the <code>pushed</code> qualifier. The <code>pushed</code> qualifier will return a list of repositories, sorted by the most recent commit made on any branch in the repository.</p>
+<p>Both take a date as a parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>created:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=webos+created%3A%3C2011-01-01&amp;type=Repositories"><strong>webos created:&lt;2011-01-01</strong></a> matches repositories with the word “webos” that were created before 2011.</td>
+</tr>
+<tr class="even">
+<td><code>pushed:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=css+pushed%3A%3E2013-02-01&amp;type=Repositories"><strong>css pushed:&gt;2013-02-01</strong></a> matches repositories with the word “css” that were pushed to after January 2013.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=case+pushed%3A%3E%3D2013-03-06+fork%3Aonly&amp;type=Repositories"><strong>case pushed:&gt;=2013-03-06 fork:only</strong></a> matches repositories with the word “case” that were pushed to on or after March 6th, 2013, and that are forks.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-language">Search by language</h2>
+<p>You can search repositories based on the language of the code in the repositories.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>language:<em>LANGUAGE</em></code></td>
+<td><a href="https://github.com/search?q=rails+language%3Ajavascript&amp;type=Repositories"><strong>rails language:javascript</strong></a> matches repositories with the word “rails” that are written in JavaScript.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-topic">Search by topic</h2>
+<p>You can find all of the repositories that are classified with a particular topic. For more information, see “<a href="/github/administering-a-repository/classifying-your-repository-with-topics">Classifying your repository with topics</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>topic:<em>TOPIC</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=topic%3Ajekyll&amp;type=Repositories&amp;ref=searchresults"><strong>topic:jekyll</strong></a> matches repositories that have been classified with the topic “jekyll.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-topics">Search by number of topics</h2>
+<p>You can search repositories by the number of topics that have been applied to the repositories, using the <code>topics</code> qualifier along with greater than, less than, and range qualifiers. For more information, see “<a href="/github/administering-a-repository/classifying-your-repository-with-topics">Classifying your repository with topics</a>” and “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>topics:<em>n</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=topics%3A5&amp;type=Repositories&amp;ref=searchresults"><strong>topics:5</strong></a> matches repositories that have five topics.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=topics%3A%3E3&amp;type=Repositories&amp;ref=searchresults"><strong>topics:&gt;3</strong></a> matches repositories that have more than three topics.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes %}</p>
+<h2 id="search-by-license">Search by license</h2>
+<p>You can search repositories by the type of license in the repositories. You must use a license keyword to filter repositories by a particular license or license family. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/licensing-a-repository">Licensing a repository</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>license:<em>LICENSE_KEYWORD</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=license%3Aapache-2.0&amp;type=Repositories&amp;ref=searchresults"><strong>license:apache-2.0</strong></a> matches repositories that are licensed under Apache License 2.0.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h2 id="search-by-repository-visibility">Search by repository visibility</h2>
+<p>You can filter your search based on the visibility of the repositories. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility">About repository visibility</a>.”</p>
+<div class="line-block">Qualifier | Example<br />
+————- | ————- |{% ifversion fpt or ghes %}<br />
+<code>is:public</code> | <a href="https://github.com/search?q=is%3Apublic+org%3Agithub&amp;type=Repositories"><strong>is:public org:github</strong></a> matches public repositories owned by {% data variables.product.company_short %}.{% endif %}<br />
+<code>is:internal</code> | <a href="https://github.com/search?q=is%3Ainternal+test&amp;type=Repositories"><strong>is:internal test</strong></a> matches internal repositories that you can access and contain the word “test”.<br />
+<code>is:private</code> | <a href="https://github.com/search?q=is%3Aprivate+pages&amp;type=Repositories"><strong>is:private pages</strong></a> matches private repositories that you can access and contain the word “pages.”</div>
+<p>{% ifversion fpt %}</p>
+<h2 id="search-based-on-whether-a-repository-is-a-mirror">Search based on whether a repository is a mirror</h2>
+<p>You can search repositories based on whether the repositories are mirrors and hosted elsewhere. For more information, see “<a href="/github/getting-started-with-github/finding-ways-to-contribute-to-open-source-on-github">Finding ways to contribute to open source on {% data variables.product.prodname_dotcom %}</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mirror:true</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=mirror%3Atrue+GNOME&amp;type="><strong>mirror:true GNOME</strong></a> matches repositories that are mirrors and contain the word “GNOME.”</td>
+</tr>
+<tr class="even">
+<td><code>mirror:false</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=mirror%3Afalse+GNOME&amp;type="><strong>mirror:false GNOME</strong></a> matches repositories that are not mirrors and contain the word “GNOME.”</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h2 id="search-based-on-whether-a-repository-is-archived">Search based on whether a repository is archived</h2>
+<p>You can search repositories based on whether or not the repositories are archived. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-archiving-repositories">About archiving repositories</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>archived:true</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=archived%3Atrue+GNOME&amp;type="><strong>archived:true GNOME</strong></a> matches repositories that are archived and contain the word “GNOME.”</td>
+</tr>
+<tr class="even">
+<td><code>archived:false</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=archived%3Afalse+GNOME&amp;type="><strong>archived:false GNOME</strong></a> matches repositories that are not archived and contain the word “GNOME.”</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %}</p>
+<h2 id="search-based-on-number-of-issues-with-good-first-issue-or-help-wanted-labels">Search based on number of issues with <code>good first issue</code> or <code>help wanted</code> labels</h2>
+<p>You can search for repositories that have a minimum number of issues labeled <code>help-wanted</code> or <code>good-first-issue</code> with the qualifiers <code>help-wanted-issues:&gt;n</code> and <code>good-first-issues:&gt;n</code>. For more information, see “<a href="/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels">Encouraging helpful contributions to your project with labels</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>good-first-issues:&gt;n</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=javascript+good-first-issues%3A%3E2&amp;type="><strong>good-first-issues:&gt;2 javascript</strong></a> matches repositories with more than two issues labeled <code>good-first-issue</code> and that contain the word “javascript.”</td>
+</tr>
+<tr class="even">
+<td><code>help-wanted-issues:&gt;n</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=react+help-wanted-issues%3A%3E4&amp;type="><strong>help-wanted-issues:&gt;4 react</strong></a> matches repositories with more than four issues labeled <code>help-wanted</code> and that contain the word “React.”</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+<li>“<a href="/articles/searching-in-forks">Searching in forks</a>”</li>
+</ul>
+</body>
+</html>

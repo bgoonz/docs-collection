@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Generating a new SSH key and adding it to the ssh-agent</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Generating a new SSH key and adding it to the ssh-agent</h1>
+</header>
+<h2 id="about-ssh-key-generation">About SSH key generation</h2>
+<p>If you don’t already have an SSH key, you must generate a new SSH key to use for authentication. If you’re unsure whether you already have an SSH key, you can check for existing keys. For more information, see “<a href="/github/authenticating-to-github/checking-for-existing-ssh-keys">Checking for existing SSH keys</a>.”</p>
+<p>{% ifversion fpt %}</p>
+<p>If you want to use a hardware security key to authenticate to {% data variables.product.product_name %}, you must generate a new SSH key for your hardware security key. You must connect your hardware security key to your computer when you authenticate with the key pair. For more information, see the <a href="https://www.openssh.com/txt/release-8.2">OpenSSH 8.2 release notes</a>.</p>
+<p>{% endif %} If you don’t want to reenter your passphrase every time you use your SSH key, you can add your key to the SSH agent, which manages your SSH keys and remembers your passphrase.</p>
+<h2 id="generating-a-new-ssh-key">Generating a new SSH key</h2>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Paste the text below, substituting in your {% data variables.product.product_name %} email address. <code>shell   $ ssh-keygen -t ed25519 -C "&lt;em&gt;your_email@example.com&lt;/em&gt;"</code> {% note %}</p>
+<p><strong>Note:</strong> If you are using a legacy system that doesn’t support the Ed25519 algorithm, use: <code>shell    $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"</code></p>
+<p>{% endnote %}<br />
+This creates a new ssh key, using the provided email as a label. <code>shell   &gt; Generating public/private ed25519 key pair.</code> 3. When you’re prompted to “Enter a file in which to save the key,” press Enter. This accepts the default file location.</p>
+<p>{% mac %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519): &lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/c/Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519):&lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/home/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519): &lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endlinux %}</p>
+<ol start="4" type="1">
+<li>At the prompt, type a secure passphrase. For more information, see <a href="/articles/working-with-ssh-key-passphrases">"Working with SSH key passphrases</a>."</li>
+</ol>
+<pre class="shell"><code>&gt; Enter passphrase (empty for no passphrase): &lt;em&gt;[Type a passphrase]&lt;/em&gt;
+&gt; Enter same passphrase again: &lt;em&gt;[Type passphrase again]&lt;/em&gt;</code></pre>
+<h2 id="adding-your-ssh-key-to-the-ssh-agent">Adding your SSH key to the ssh-agent</h2>
+<p>Before adding a new SSH key to the ssh-agent to manage your keys, you should have checked for existing SSH keys and generated a new SSH key. <span class="platform-mac">When adding your SSH key to the agent, use the default macOS <code>ssh-add</code> command, and not an application installed by <a href="https://www.macports.org/">macports</a>, <a href="http://brew.sh/">homebrew</a>, or some other external source.</span></p>
+<p>{% mac %}</p>
+<p>{% data reusables.command_line.start_ssh_agent %}</p>
+<ol start="2" type="1">
+<li><p>If you’re using macOS Sierra 10.12.2 or later, you will need to modify your <code>~/.ssh/config</code> file to automatically load keys into the ssh-agent and store passphrases in your keychain.</p>
+<ul>
+<li><p>First, check to see if your <code>~/.ssh/config</code> file exists in the default location.</p>
+<pre class="shell"><code>$ open ~/.ssh/config
+&gt; The file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/config does not exist.</code></pre></li>
+<li><p>If the file doesn’t exist, create the file.</p>
+<pre class="shell"><code>$ touch ~/.ssh/config</code></pre></li>
+<li><p>Open your <code>~/.ssh/config</code> file, then modify the file to contain the following lines. If your SSH key file has a different name or path than the example code, modify the filename or path to match your current setup.</p>
+<pre><code>Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519</code></pre></li>
+</ul>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you chose not to add a passphrase to your key, you should omit the <code>UseKeychain</code> line.</p>
+<p>{% endnote %}</p>
+<p>{% mac %} {% note %}</p>
+<p><strong>Note:</strong> If you see an error like this</p>
+<pre><code>/Users/USER/.ssh/config: line 16: Bad configuration option: usekeychain</code></pre>
+<p>add an additional config line to your <code>Host *</code> section:</p>
+<pre><code>Host *
+  IgnoreUnknown UseKeychain</code></pre>
+<p>{% endnote %} {% endmac %}</p></li>
+<li><p>Add your SSH private key to the ssh-agent and store your passphrase in the keychain. {% data reusables.ssh.add-ssh-key-to-ssh-agent %}</p>
+<pre class="shell"><code>$ ssh-add -K ~/.ssh/id_ed25519</code></pre>
+<p>{% note %}</p></li>
+</ol>
+<p><strong>Note:</strong> The <code>-K</code> option is Apple’s standard version of <code>ssh-add</code>, which stores the passphrase in your keychain for you when you add an ssh key to the ssh-agent. If you chose not to add a passphrase to your key, run the command without the <code>-K</code> option.</p>
+<p>If you don’t have Apple’s standard version installed, you may receive an error. For more information on resolving this error, see “<a href="/articles/error-ssh-add-illegal-option-k">Error: ssh-add: illegal option – K</a>.”</p>
+<p>{% endnote %}</p>
+<ol start="4" type="1">
+<li>Add the SSH key to your account on {% data variables.product.product_name %}. For more information, see “<a href="/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your {% data variables.product.prodname_dotcom %} account</a>.”</li>
+</ol>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<p>{% data reusables.desktop.windows_git_bash %}</p>
+<ol type="1">
+<li>Ensure the ssh-agent is running. You can use the “Auto-launching the ssh-agent” instructions in “<a href="/articles/working-with-ssh-key-passphrases">Working with SSH key passphrases</a>”, or start it manually:</li>
+</ol>
+<pre class="shell"><code># start the ssh-agent in the background
+$ eval &quot;$(ssh-agent -s)&quot;
+&gt; Agent pid 59566</code></pre>
+<ol start="2" type="1">
+<li><p>Add your SSH private key to the ssh-agent. {% data reusables.ssh.add-ssh-key-to-ssh-agent %} {% data reusables.ssh.add-ssh-key-to-ssh-agent-commandline %}</p></li>
+<li><p>Add the SSH key to your account on {% data variables.product.product_name %}. For more information, see “<a href="/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your {% data variables.product.prodname_dotcom %} account</a>.”</p></li>
+</ol>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<p>{% data reusables.command_line.start_ssh_agent %}</p>
+<ol start="2" type="1">
+<li><p>Add your SSH private key to the ssh-agent. {% data reusables.ssh.add-ssh-key-to-ssh-agent %} {% data reusables.ssh.add-ssh-key-to-ssh-agent-commandline %}</p></li>
+<li><p>Add the SSH key to your account on {% data variables.product.product_name %}. For more information, see “<a href="/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your {% data variables.product.prodname_dotcom %} account</a>.”</p></li>
+</ol>
+<p>{% endlinux %}</p>
+<p>{% ifversion fpt or ghae-next or ghes &gt; 3.1 %} ## Generating a new SSH key for a hardware security key</p>
+<p>If you are using macOS or Linux, you may need to update your SSH client or install a new SSH client prior to generating a new SSH key. For more information, see “<a href="/github/authenticating-to-github/error-unknown-key-type">Error: Unknown key type</a>.”</p>
+<ol type="1">
+<li>Insert your hardware security key into your computer. {% data reusables.command_line.open_the_multi_os_terminal %}</li>
+<li>Paste the text below, substituting in the email address for your account on {% data variables.product.product_name %}.</li>
+</ol>
+<pre class="shell"><code>$ ssh-keygen -t ed25519-sk -C &quot;&lt;em&gt;your_email@example.com&lt;/em&gt;&quot;</code></pre>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If the command fails and you receive the error <code>invalid format</code> or <code>feature not supported,</code> you may be using a hardware security key that does not support the Ed25519 algorithm. Enter the following command instead. <code>shell    $ ssh-keygen -t ecdsa-sk -C "your_email@example.com"</code></p>
+<p>{% endnote %}<br />
+4. When you are prompted, touch the button on your hardware security key. 5. When you are prompted to “Enter a file in which to save the key,” press Enter to accept the default file location.</p>
+<p>{% mac %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519_sk): &lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/c/Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519_sk):&lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<pre class="shell"><code>&gt; Enter a file in which to save the key (/home/&lt;em&gt;you&lt;/em&gt;/.ssh/id_ed25519_sk): &lt;em&gt;[Press enter]&lt;/em&gt;</code></pre>
+<p>{% endlinux %}</p>
+<ol start="6" type="1">
+<li>When you are prompted to type a passphrase, press <strong>Enter</strong>.</li>
+</ol>
+<pre class="shell"><code>&gt; Enter passphrase (empty for no passphrase): &lt;em&gt;[Type a passphrase]&lt;/em&gt;
+&gt; Enter same passphrase again: &lt;em&gt;[Type passphrase again]&lt;/em&gt;</code></pre>
+<ol start="7" type="1">
+<li>Add the SSH key to your account on {% data variables.product.prodname_dotcom %}. For more information, see “<a href="/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your {% data variables.product.prodname_dotcom %} account</a>.”</li>
+</ol>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-ssh">About SSH</a>”</li>
+<li>“<a href="/articles/working-with-ssh-key-passphrases">Working with SSH key passphrases</a>” {%- ifversion fpt %}</li>
+<li>“<a href="/articles/authorizing-an-ssh-key-for-use-with-saml-single-sign-on">Authorizing an SSH key for use with SAML single sign-on</a>” {%- endif %}</li>
+</ul>
+</body>
+</html>

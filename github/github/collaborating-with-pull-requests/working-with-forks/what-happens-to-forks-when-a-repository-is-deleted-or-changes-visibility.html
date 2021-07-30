@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>What happens to forks when a repository is deleted or changes visibility?</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">What happens to forks when a repository is deleted or changes visibility?</h1>
+</header>
+<p>{% data reusables.repositories.deleted_forks_from_private_repositories_warning %}</p>
+<h2 id="deleting-a-private-repository">Deleting a private repository</h2>
+<p>When you delete a private repository, all of its private forks are also deleted.</p>
+<p>{% ifversion fpt or ghes %}</p>
+<h2 id="deleting-a-public-repository">Deleting a public repository</h2>
+<p>When you delete a public repository, one of the existing public forks is chosen to be the new parent repository. All other repositories are forked off of this new parent and subsequent pull requests go to this new parent.</p>
+<p>{% endif %}</p>
+<h2 id="private-forks-and-permissions">Private forks and permissions</h2>
+<p>{% data reusables.repositories.private_forks_inherit_permissions %}</p>
+<p>{% ifversion fpt or ghes %}</p>
+<h2 id="changing-a-public-repository-to-a-private-repository">Changing a public repository to a private repository</h2>
+<p>If a public repository is made private, its public forks are split off into a new network. As with deleting a public repository, one of the existing public forks is chosen to be the new parent repository and all other repositories are forked off of this new parent. Subsequent pull requests go to this new parent.</p>
+<p>In other words, a public repository’s forks will remain public in their own separate repository network even after the parent repository is made private. This allows the fork owners to continue to work and collaborate without interruption. If public forks were not moved into a separate network in this way, the owners of those forks would need to get the appropriate <a href="/articles/access-permissions-on-github">access permissions</a> to pull changes from and submit pull requests to the (now private) parent repository—even though they didn’t need those permissions before.</p>
+<p>{% ifversion ghes or ghae %} If a public repository has anonymous Git read access enabled and the repository is made private, all of the repository’s forks will lose anonymous Git read access and return to the default disabled setting. If a forked repository is made public, repository administrators can re-enable anonymous Git read access. For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">Enabling anonymous Git read access for a repository</a>.” {% endif %}</p>
+<h3 id="deleting-the-private-repository">Deleting the private repository</h3>
+<p>If a public repository is made private and then deleted, its public forks will continue to exist in a separate network.</p>
+<h2 id="changing-a-private-repository-to-a-public-repository">Changing a private repository to a public repository</h2>
+<p>If a private repository is made public, each of its private forks is turned into a standalone private repository and becomes the parent of its own new repository network. Private forks are never automatically made public because they could contain sensitive commits that shouldn’t be exposed publicly.</p>
+<h3 id="deleting-the-public-repository">Deleting the public repository</h3>
+<p>If a private repository is made public and then deleted, its private forks will continue to exist as standalone private repositories in separate networks.</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes %}</p>
+<h2 id="changing-the-visibility-of-an-internal-repository">Changing the visibility of an internal repository</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data reusables.gated-features.internal-repos %}</p>
+<p>{% endnote %}</p>
+<p>If the policy for your enterprise permits forking, any fork of an internal repository will be private. If you change the visibility of an internal repository, any fork owned by an organization or user account will remain private.</p>
+<h3 id="deleting-the-internal-repository">Deleting the internal repository</h3>
+<p>If you change the visibility of an internal repository and then delete the repository, the forks will continue to exist in a separate network.</p>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/setting-repository-visibility">Setting repository visibility</a>”</li>
+<li>“<a href="/articles/about-forks">About forks</a>”</li>
+<li>“<a href="/github/administering-a-repository/managing-the-forking-policy-for-your-repository">Managing the forking policy for your repository</a>”</li>
+<li>“<a href="/organizations/managing-organization-settings/managing-the-forking-policy-for-your-organization">Managing the forking policy for your organization</a>”</li>
+<li>“{% ifversion fpt %}<a href="/github/setting-up-and-managing-your-enterprise/enforcing-repository-management-policies-in-your-enterprise-account#enforcing-a-policy-on-forking-private-or-internal-repositories">Enforcing repository management policies in your enterprise account</a>{% else %}<a href="/admin/policies/enforcing-repository-management-policies-in-your-enterprise#enforcing-a-policy-on-forking-private-or-internal-repositories">Enforcing repository management policies in your enterprise</a>{% endif %}”</li>
+</ul>
+</body>
+</html>

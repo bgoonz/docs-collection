@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Setting up your development environment to create a GitHub App</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Setting up your development environment to create a GitHub App</h1>
+</header>
+<h2 id="introduction">Introduction</h2>
+<p>This guide will walk through the steps needed to configure a GitHub App and run it on a server. GitHub Apps require some setup steps to manage webhook events and connect the app registration on GitHub to your code. The app in this guide serves as a foundation that you can use to extend and build new GitHub Apps.</p>
+<p>By the end of this guide you’ll have registered a GitHub App and set up a web server to receive webhook events. You’ll learn how to use a tool called Smee to capture webhook payloads and forward them to your local development environment. The template app you’ll configure in this section won’t do anything special yet, but it will serve as a framework you can use to start writing app code using the API or complete other <a href="/apps/quickstart-guides/">quickstart guides</a>. {% ifversion fpt %}You can check out successful examples of apps on <a href="https://github.com/marketplace">GitHub Marketplace</a> and <a href="https://github.com/works-with">Works with GitHub</a>.{% endif %}</p>
+<p>After completing this project you will understand how to authenticate as a GitHub App and an installation, and how those authentication methods are different.</p>
+<p>Here are the steps you’ll take to configure the template GitHub App:</p>
+<ol type="1">
+<li><a href="#step-1-start-a-new-smee-channel">Start a new Smee channel</a></li>
+<li><a href="#step-2-register-a-new-github-app">Register a new GitHub App</a></li>
+<li><a href="#step-3-save-your-private-key-and-app-id">Save your private key and App ID</a></li>
+<li><a href="#step-4-prepare-the-runtime-environment">Prepare the runtime environment</a></li>
+<li><a href="#step-5-review-the-github-app-template-code">Review the GitHub App template code</a></li>
+<li><a href="#step-6-start-the-server">Start the server</a></li>
+<li><a href="#step-7-install-the-app-on-your-account">Install the app on your account</a></li>
+</ol>
+<p>{% data reusables.apps.app-ruby-guides %}</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>You may find it helpful to have a basic understanding of the following:</p>
+<ul>
+<li><a href="/apps/about-apps">GitHub Apps</a></li>
+<li><a href="/webhooks">Webhooks</a></li>
+<li><a href="https://www.ruby-lang.org/en/">The Ruby programming language</a></li>
+<li><a href="/rest">REST APIs</a></li>
+<li><a href="http://sinatrarb.com/">Sinatra</a></li>
+</ul>
+<p>But you can follow along at any experience level. We’ll link out to information you need along the way!</p>
+<p>Before you begin, you’ll need to clone the repository with the template code used in this quickstart. Open your Terminal app and find a directory where you’d like to store the code. Run this command to clone the <a href="https://github.com/github-developer/github-app-template">GitHub App template</a> repository:</p>
+<pre class="shell"><code>$ git clone https://github.com/github-developer/github-app-template.git</code></pre>
+<h2 id="step-1.-start-a-new-smee-channel">Step 1. Start a new Smee channel</h2>
+<p>To help GitHub send webhooks to your local machine without exposing it to the internet, you can use a tool called Smee. First, go to https://smee.io and click <strong>Start a new channel</strong>. If you’re already comfortable with other tools that expose your local machine to the internet like <a href="https://dashboard.ngrok.com/get-started">ngrok</a> or <a href="https://localtunnel.github.io/www/">localtunnel</a>, feel free to use those.</p>
+<figure>
+<img src="/assets/images/smee-new-channel.png" alt="The Smee new channel button" /><figcaption>The Smee new channel button</figcaption>
+</figure>
+<p>Starting a new Smee channel creates a unique domain where GitHub can send webhook payloads. You’ll need to know this domain for the next step. Here is an example of a unique domain at <code>https://smee.io/qrfeVRbFbffd6vD</code>:</p>
+<figure>
+<img src="/assets/images/smee-unique-domain.png" alt="A Smee unique channel" /><figcaption>A Smee unique channel</figcaption>
+</figure>
+<p>Next, go back to the Terminal and follow these steps to run the Smee command-line interface (CLI) client:</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The following steps are slightly different than the “Use the CLI” instructions you’ll see in your Smee channel page. You do <strong>not</strong> need to follow the “Use the Node.js client” or “Using Probot’s built-in support” instructions.</p>
+<p>{% endnote %}</p>
+<ol type="1">
+<li><p>Install the client:</p>
+<pre class="shell"><code>$ npm install --global smee-client</code></pre></li>
+<li><p>Run the client (replacing <code>https://smee.io/qrfeVRbFbffd6vD</code> with your own domain):</p>
+<pre class="shell"><code>$ smee --url https://smee.io/qrfeVRbFbffd6vD --path /event_handler --port 3000</code></pre>
+<p>You should see output like the following:</p>
+<pre class="shell"><code>Forwarding https://smee.io/qrfeVRbFbffd6vD to http://127.0.0.1:3000/event_handler
+Connected https://smee.io/qrfeVRbFbffd6vD</code></pre></li>
+</ol>
+<p>The <code>smee --url &lt;unique_channel&gt;</code> command tells Smee to forward all webhook events received by the Smee channel to the Smee client running on your computer. The <code>--path /event_handler</code> option forwards events to the <code>/event_handler</code> route, which we’ll cover in a <a href="#step-5-review-the-github-app-template-code">later section</a>. The <code>--port 3000</code> option specifies port 3000, which is the port your server will be listening to. Using Smee, your machine does not need to be open to the public internet to receive webhooks from GitHub. You can also open that Smee URL in your browser to inspect webhook payloads as they come in.</p>
+<p>We recommend leaving this Terminal window open and keeping Smee connected while you complete the rest of the steps in this guide. Although you <em>can</em> disconnect and reconnect the Smee client without losing your unique domain (unlike ngrok), you may find it easier to leave it connected and do other command-line tasks in a different Terminal window.</p>
+<h2 id="step-2.-register-a-new-github-app">Step 2. Register a new GitHub App</h2>
+<p>If you don’t yet have a GitHub account, now is a <a href="https://github.com/join">great time to join</a>. Don’t forget to verify your email before continuing! To register a new app, visit the <a href="https://github.com/settings/apps">app settings page</a> in your GitHub profile, and click <strong>New GitHub App</strong>.</p>
+<figure>
+<img src="/assets/images/new-app.png" alt="GitHub website, showing the New App" /><figcaption>GitHub website, showing the <strong>New App</strong></figcaption>
+</figure>
+<p>You’ll see a form where you can enter details about your app. See “<a href="/apps/building-github-apps/creating-a-github-app/">Creating a GitHub App</a>” for general information about the fields on this page. For the purposes of this guide, you’ll need to enter specific data in a few fields:</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You can always update these settings later to point to a hosted server.</p>
+<p>{% endnote %}</p>
+<ul>
+<li><p>For the “Homepage URL”, use the domain issued by Smee. For example:</p>
+<figure>
+<img src="/assets/images/homepage-url.png" alt="Form with Smee domain filled in for homepage URL" /><figcaption>Form with Smee domain filled in for homepage URL</figcaption>
+</figure></li>
+<li><p>For the “Webhook URL”, again use the domain issued by Smee. For example:</p>
+<figure>
+<img src="/assets/images/webhook-url.png" alt="Form with Smee domain filled in for webhook URL" /><figcaption>Form with Smee domain filled in for webhook URL</figcaption>
+</figure></li>
+<li><p>For the “Webhook secret”, create a password to secure your webhook endpoints. This should be something that only you (and GitHub, via this form) know. The secret is important because you will be receiving payloads from the public internet, and you’ll use this secret to verify the webhook sender. Note that the GitHub App settings say the webhook secret is optional, which is true in most cases, but for the template app code to work, you must set a webhook secret.</p>
+<figure>
+<img src="/assets/images/webhook-secret.png" alt="Form with webhook secret filled in" /><figcaption>Form with webhook secret filled in</figcaption>
+</figure></li>
+<li><p>On the Permissions &amp; Webhooks page, you can specify a set of permissions for your app, which determines how much data your app has access to. Under the “Repository permissions” section, scroll down to “Metadata” and select <code>Access: Read-only</code>. If you decide to extend this template app, you can update these permissions later.</p></li>
+<li><p>At the bottom of the Permissions &amp; Webhooks page, specify whether this is a private app or a public app. This refers to who can install it: just you, or anyone in the world? For now, leave the app as private by selecting <strong>Only on this account</strong>.</p>
+<figure>
+<img src="/assets/images/create_app.png" alt="GitHub App privacy" /><figcaption>GitHub App privacy</figcaption>
+</figure></li>
+</ul>
+<p>Click <strong>Create GitHub App</strong> to create your app!</p>
+<h2 id="step-3.-save-your-private-key-and-app-id">Step 3. Save your private key and App ID</h2>
+<p>After you create your app, you’ll be taken back to the <a href="https://github.com/settings/apps">app settings page</a>. You have two more things to do here:</p>
+<ul>
+<li><p><strong>Generate a private key for your app.</strong> This is necessary to authenticate your app later on. Scroll down on the page and click <strong>Generate a private key</strong>. Save the resulting PEM file (called something like <em><code>app-name</code></em>-<em><code>date</code></em>-private-key.pem) in a directory where you can find it again.</p>
+<figure>
+<img src="/assets/images/private_key.png" alt="The private key generation dialog" /><figcaption>The private key generation dialog</figcaption>
+</figure></li>
+<li><p><strong>Note the app ID GitHub has assigned your app.</strong> You’ll need this to prepare your runtime environment.</p>
+<p><img src="/assets/images/app_id.png" alt="Your app's ID number" width="200px"/></p></li>
+</ul>
+<h2 id="step-4.-prepare-the-runtime-environment">Step 4. Prepare the runtime environment</h2>
+<p>To keep your information secure, we recommend putting all your app-related secrets in your computer’s memory where your app can find them, rather than putting them directly in your code. A handy development tool called <a href="https://github.com/bkeepers/dotenv">dotenv</a> loads project-specific environment variables from a <code>.env</code> file to <code>ENV</code>. Never check your <code>.env</code> file into GitHub. This is a local file that stores sensitive information that you don’t want on the public internet. The <code>.env</code> file is already included in the repository’s <a href="/github/getting-started-with-github/ignoring-files/"><code>.gitignore</code></a> file to prevent that.</p>
+<p>The template code you downloaded in the <a href="#prerequisites">Prerequisites section</a> already has an example file called <code>.env-example</code>. Rename the example file from <code>.env-example</code> to <code>.env</code> or create a copy of the <code>.env-example</code> file called <code>.env</code>. You haven’t installed dotenv yet, but you will install it later in this quickstart when you run <code>bundle install</code>. <strong>Note:</strong> Quickstarts that reference the steps in this guide may include additional environment variables in the <code>.env-example</code> file. Reference the quickstart guide for the project you’ve cloned on GitHub for guidance setting those additional environment variables.</p>
+<p>You need to add these variables to the <code>.env</code> file:</p>
+<ul>
+<li><em><code>GITHUB_PRIVATE_KEY</code></em>: Add the private key you <a href="#step-3-save-your-private-key-and-app-id">generated and saved previously</a>. Open the <code>.pem</code> file with a text editor or use the command line to display the contents of the file: <code>cat path/to/your/private-key.pem</code>. Copy the entire contents of the file as the value of <code>GITHUB_PRIVATE_KEY</code> in your <code>.env</code> file. <strong>Note:</strong> Because the PEM file is more than one line you’ll need to add quotes around the value like the example below.</li>
+<li><em><code>GITHUB_APP_IDENTIFIER</code></em>: Use the app ID you noted in the previous section.</li>
+<li><em><code>GITHUB_WEBHOOK_SECRET</code></em>: Add your webhook secret.</li>
+</ul>
+<p>Here is an example <code>.env</code> file:</p>
+<pre><code>GITHUB_PRIVATE_KEY=&quot;-----BEGIN RSA PRIVATE KEY-----
+...
+HkVN9...
+...
+-----END DSA PRIVATE KEY-----&quot;
+GITHUB_APP_IDENTIFIER=12345
+GITHUB_WEBHOOK_SECRET=your webhook secret</code></pre>
+<h2 id="step-5.-review-the-github-app-template-code">Step 5. Review the GitHub App template code</h2>
+<p>The template app code already contains some code that every GitHub App will need. This sections walks you through the code that already exists in the GitHub App template. There aren’t any steps that you need to complete in this section. If you’re already familiar with the template code, you can skip ahead to “<a href="#step-6-start-the-server">Step 6. Start the server</a>.”</p>
+<p>Open up the <code>template_server.rb</code> file in your favorite text editor. You’ll see comments throughout this file that provide additional context for the template code. We recommend reading those comments carefully and even adding your own comments to accompany new code you write.</p>
+<p>At the top of the file you’ll see <code>set :port 3000</code>, which sets the port used when starting the web server to match the port you redirected your webhook payloads to in “<a href="#step-1-start-a-new-smee-channel">Step 1. Start a new Smee channel</a>.”</p>
+<p>The next code you’ll see is the <code>class GHApp &lt; Sinatra::Application</code> declaration. You’ll write all of the code for your GitHub App inside this class.</p>
+<p>Out of the box, the class in the template does the following things: * <a href="#read-the-environment-variables">Read the environment variables</a> * <a href="#turn-on-logging">Turn on logging</a> * <a href="#define-a-before-filter">Define a before filter</a> * <a href="#define-a-route-handler">Define the route handler</a> * <a href="#define-the-helper-methods">Define the helper methods</a></p>
+<h3 id="read-the-environment-variables">Read the environment variables</h3>
+<p>The first thing that this class does is read the three environment variables you set in “<a href="#step-4-prepare-the-runtime-environment">Step 4. Prepare the runtime environment</a>” and store them in variables to use later:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Expects that the private key in PEM format. Converts the newlines</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="dt">PRIVATE_KEY</span> = <span class="dt">OpenSSL</span>::<span class="dt">PKey</span>::<span class="dt">RSA</span>.new(<span class="dt">ENV</span>[<span class="st">&#39;GITHUB_PRIVATE_KEY&#39;</span>].gsub(<span class="ch">&#39;\n&#39;</span>, <span class="st">&quot;\n&quot;</span>))</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># Your registered app must have a secret set. The secret is used to verify</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co"># that webhooks are sent by GitHub.</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="dt">WEBHOOK_SECRET</span> = <span class="dt">ENV</span>[<span class="st">&#39;GITHUB_WEBHOOK_SECRET&#39;</span>]</a>
+<a class="sourceLine" id="cb6-7" title="7"></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co"># The GitHub App&#39;s identifier (type integer) set when registering an app.</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="dt">APP_IDENTIFIER</span> = <span class="dt">ENV</span>[<span class="st">&#39;GITHUB_APP_IDENTIFIER&#39;</span>]</a></code></pre></div>
+<h3 id="turn-on-logging">Turn on logging</h3>
+<p>Next is a code block that enables logging during development, which is the default environment in Sinatra. This code turns on logging at the <code>DEBUG</code> level to show useful output in the Terminal while you are developing the app:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Turn on Sinatra&#39;s verbose logging during development</span></a>
+<a class="sourceLine" id="cb7-2" title="2">configure <span class="st">:development</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  set <span class="st">:logging</span>, <span class="dt">Logger</span>::<span class="dt">DEBUG</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">end</span></a></code></pre></div>
+<h3 id="define-a-before-filter">Define a before filter</h3>
+<p>Sinatra uses <a href="https://github.com/sinatra/sinatra#filters">before filters</a> that allow you to execute code before the route handler. The <code>before</code> block in the template calls four <a href="https://github.com/sinatra/sinatra#helpers">helper methods</a>. The template app defines those helper methods in a <a href="#define-the-helper-methods">later section</a>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Before each request to the `/event_handler` route</span></a>
+<a class="sourceLine" id="cb8-2" title="2">before <span class="st">&#39;/event_handler&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  get_payload_request(request)</a>
+<a class="sourceLine" id="cb8-4" title="4">  verify_webhook_signature</a>
+<a class="sourceLine" id="cb8-5" title="5">  authenticate_app</a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="co"># Authenticate the app installation in order to run API operations</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  authenticate_installation(<span class="ot">@payload</span>)</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">end</span></a></code></pre></div>
+<h3 id="define-a-route-handler">Define a route handler</h3>
+<p>An empty route is included in the template code. This code handles all <code>POST</code> requests to the <code>/event_handler</code> route. You won’t write this event handler in this quickstart, but see the other <a href="/apps/quickstart-guides/">quickstart guides</a> for examples of how to extend this template app.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb9-1" title="1">post <span class="st">&#39;/event_handler&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">end</span></a></code></pre></div>
+<h3 id="define-the-helper-methods">Define the helper methods</h3>
+<p>The helper methods in this template do most of the heavy lifting. Four helper methods are defined in this section of the code.</p>
+<h4 id="handling-the-webhook-payload">Handling the webhook payload</h4>
+<p>The first method <code>get_payload_request</code> captures the webhook payload and converts it to JSON format, which makes accessing the payload’s data much easier.</p>
+<h4 id="verifying-the-webhook-signature">Verifying the webhook signature</h4>
+<p>The second method <code>verify_webhook_signature</code> performs verification of the webhook signature to ensure that GitHub generated the event. To learn more about the code in the <code>verify_webhook_signature</code> helper method, see “<a href="/webhooks/securing/">Securing your webhooks</a>.” If the webhooks are secure, this method will log all incoming payloads to your Terminal. The logger code is helpful in verifying your web server is working but you can always remove it later.</p>
+<h4 id="authenticating-as-a-github-app">Authenticating as a GitHub App</h4>
+<p>To make API calls, you’ll be using the <a href="http://octokit.github.io/octokit.rb/">Octokit library</a>. Doing anything interesting with this library will require you, or rather your app, to authenticate. GitHub Apps have two methods of authentication:</p>
+<ul>
+<li>Authenticating as a GitHub App using a <a href="https://jwt.io/introduction">JSON Web Token (JWT)</a>.</li>
+<li>Authenticating as a specific installation of a GitHub App using an installation access token.</li>
+</ul>
+<p>You’ll learn about authenticating as an installation in the <a href="#authenticating-as-an-installation">next section</a>.</p>
+<p><a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app">Authenticating as a GitHub App</a> lets you do a couple of things:</p>
+<ul>
+<li>You can retrieve high-level management information about your GitHub App.</li>
+<li>You can request access tokens for an installation of the app.</li>
+</ul>
+<p>For example, you would authenticate as a GitHub App to retrieve a list of the accounts (organization and personal) that have installed your app. But this authentication method doesn’t allow you to do much with the API. To access a repository’s data and perform operations on behalf of the installation, you need to authenticate as an installation. To do that, you’ll need to authenticate as a GitHub App first to request an installation access token.</p>
+<p>Before you can use the Octokit.rb library to make API calls, you’ll need to initialize an <a href="http://octokit.github.io/octokit.rb/Octokit/Client.html">Octokit client</a> authenticated as a GitHub App. The <code>authenticate_app</code> helper method does just that!</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># Instantiate an Octokit client authenticated as a GitHub App.</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co"># GitHub App authentication requires that you construct a</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co"># JWT (https://jwt.io/introduction/) signed with the app&#39;s private key,</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co"># so GitHub can be sure that it came from the app an not altered by</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co"># a malicious third party.</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="kw">def</span> authenticate_app</a>
+<a class="sourceLine" id="cb10-7" title="7">  payload = {</a>
+<a class="sourceLine" id="cb10-8" title="8">      <span class="co"># The time that this JWT was issued, _i.e._ now.</span></a>
+<a class="sourceLine" id="cb10-9" title="9">      <span class="st">iat: </span><span class="dt">Time</span>.now.to_i,</a>
+<a class="sourceLine" id="cb10-10" title="10"></a>
+<a class="sourceLine" id="cb10-11" title="11">      <span class="co"># JWT expiration time (10 minute maximum)</span></a>
+<a class="sourceLine" id="cb10-12" title="12">      <span class="st">exp: </span><span class="dt">Time</span>.now.to_i + (<span class="dv">10</span> * <span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb10-13" title="13"></a>
+<a class="sourceLine" id="cb10-14" title="14">      <span class="co"># Your GitHub App&#39;s identifier number</span></a>
+<a class="sourceLine" id="cb10-15" title="15">      <span class="st">iss: </span><span class="dt">APP_IDENTIFIER</span></a>
+<a class="sourceLine" id="cb10-16" title="16">  }</a>
+<a class="sourceLine" id="cb10-17" title="17"></a>
+<a class="sourceLine" id="cb10-18" title="18">  <span class="co"># Cryptographically sign the JWT</span></a>
+<a class="sourceLine" id="cb10-19" title="19">  jwt = <span class="dt">JWT</span>.encode(payload, <span class="dt">PRIVATE_KEY</span>, <span class="st">&#39;RS256&#39;</span>)</a>
+<a class="sourceLine" id="cb10-20" title="20"></a>
+<a class="sourceLine" id="cb10-21" title="21">  <span class="co"># Create the Octokit client, using the JWT as the auth token.</span></a>
+<a class="sourceLine" id="cb10-22" title="22">  <span class="ot">@app_client</span> ||= <span class="dt">Octokit</span>::<span class="dt">Client</span>.new(<span class="st">bearer_token: </span>jwt)</a>
+<a class="sourceLine" id="cb10-23" title="23"><span class="kw">end</span></a></code></pre></div>
+<p>The code above generates a <a href="https://jwt.io/introduction">JSON Web Token (JWT)</a> and uses it (along with your app’s private key) to initialize the Octokit client. GitHub checks a request’s authentication by verifying the token with the app’s stored public key. To learn more about how this code works, see “<a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app">Authenticating as a GitHub App</a>.”</p>
+<h4 id="authenticating-as-an-installation">Authenticating as an installation</h4>
+<p>An <em>installation</em> refers to any user or organization account that has installed the app. Even if someone installs the app on more than one repository, it only counts as one installation because it’s within the same account. The last helper method <code>authenticate_installation</code> initializes an <a href="http://octokit.github.io/octokit.rb/Octokit/Client.html">Octokit client</a> authenticated as an installation. This Octokit client is what you’d use to make authenticated API calls.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># Instantiate an Octokit client authenticated as an installation of a</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co"># GitHub App to run API operations.</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">def</span> authenticate_installation(payload)</a>
+<a class="sourceLine" id="cb11-4" title="4">  installation_id = payload[<span class="st">&#39;installation&#39;</span>][<span class="st">&#39;id&#39;</span>]</a>
+<a class="sourceLine" id="cb11-5" title="5">  installation_token = <span class="ot">@app_client</span>.create_app_installation_access_token(installation_id)[<span class="st">:token</span>]</a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="ot">@installation_client</span> = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new(<span class="st">bearer_token: </span>installation_token)</a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="kw">end</span></a></code></pre></div>
+<p>The <a href="http://octokit.github.io/octokit.rb/Octokit/Client/Apps.html#create_app_installation_access_token-instance_method"><code>create_app_installation_access_token</code></a> Octokit method creates an installation token. This method accepts two arguments:</p>
+<ul>
+<li>Installation (integer): The ID of a GitHub App installation</li>
+<li>Options (hash, defaults to <code>{}</code>): A customizable set of options</li>
+</ul>
+<p>Any time a GitHub App receives a webhook, it includes an <code>installation</code> object with an <code>id</code>. Using the client authenticated as a GitHub App, you pass this ID to the <code>create_app_installation_access_token</code> method to generate an access token for each installation. Since you’re not passing any options to the method, the options default to an empty hash. If you look back at <a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation">the docs</a>, you can see the response for <code>create_app_installation_access_token</code> includes two fields: <code>token</code> and <code>expired_at</code>. The template code selects the token in the response and initializes an installation client.</p>
+<p>With this method in place, each time your app receives a new webhook payload, it creates a client for the installation that triggered the event. This authentication process enables your GitHub App to work for all installations on any account.</p>
+<p>Now you’re ready to start making API calls!</p>
+<h2 id="step-6.-start-the-server">Step 6. Start the server</h2>
+<p>Your app doesn’t <em>do</em> anything yet, but at this point, you can get it running on the server.</p>
+<p>Keep Smee running in the current tab in your Terminal. Open a new tab and <code>cd</code> into the directory where you <a href="#prerequisites">cloned the template app code</a>. The Ruby code in this repository will start up a <a href="http://sinatrarb.com/">Sinatra</a> web server. This code has a few dependencies. You can install these by running:</p>
+<pre class="shell"><code>$ gem install bundler</code></pre>
+<p>Followed by:</p>
+<pre class="shell"><code>$ bundle install</code></pre>
+<p>With the dependencies installed, you can start the server:</p>
+<pre class="shell"><code>$ bundle exec ruby template_server.rb</code></pre>
+<p>You should see a response like:</p>
+<pre class="shell"><code>&gt; == Sinatra (v2.0.3) has taken the stage on 3000 for development with backup from Puma
+&gt; Puma starting in single mode...
+&gt; * Version 3.11.2 (ruby 2.4.0-p0), codename: Love Song
+&gt; * Min threads: 0, max threads: 16
+&gt; * Environment: development
+&gt; * Listening on tcp://localhost:3000
+&gt; Use Ctrl-C to stop</code></pre>
+<p>If you see an error, make sure you’ve created the <code>.env</code> file in the directory that contains <code>template_server.rb</code>.</p>
+<p>Once the server is running, you can test it by going to <code>http://localhost:3000</code> in your browser. If the app works as expected, you’ll see a helpful error page:</p>
+<p><img src="/assets/images/sinatra-404.png" alt="Sinatra's 404 error page" width="500px"/></p>
+<p>This is good! Even though it’s an error page, it’s a <em>Sinatra</em> error page, which means your app is connected to the server as expected. You’re seeing this message because you haven’t given the app anything else to show.</p>
+<h2 id="step-7.-install-the-app-on-your-account">Step 7. Install the app on your account</h2>
+<p>You can test that the server is listening to your app by triggering an event for it to receive. A simple event you can test is installing the app on your GitHub account, which should send the <a href="/webhooks/event-payloads/#installation"><code>installation</code></a> event. If the app receives it, you should see some output in the Terminal tab where you started <code>template_server.rb</code>.</p>
+<p>To install the app, visit the <a href="https://github.com/settings/apps">app settings page</a>, choose your app, and click <strong>Install App</strong> in the sidebar. Next to your username, click <strong>Install</strong>.</p>
+<p>You’ll be asked whether to install the app on all repositories or selected repositories. If you don’t want to install the app on <em>all</em> of your repositories, that’s okay! You may want to create a sandbox repository for testing purposes and install your app there.</p>
+<p><img src="/assets/images/install_permissions.png" alt="App installation permissions" width="500px"/></p>
+<p>After you click <strong>Install</strong>, look at the output in your Terminal. You should see something like this:</p>
+<pre class="shell"><code>&gt; D, [2018-06-29T15:45:43.773077 #30488] DEBUG -- : ---- received event integration_installation
+&gt; D, [2018-06-29T15:45:43.773141 #30488] DEBUG -- : ----         action created
+&gt; 192.30.252.44 - - [29/Jun/2018:15:45:43 -0400] &quot;POST / HTTP/2&quot; 200 2 0.0067
+&gt; D, [2018-06-29T15:45:43.833016 #30488] DEBUG -- : ---- received event installation
+&gt; D, [2018-06-29T15:45:43.833062 #30488] DEBUG -- : ----         action created
+&gt; 192.30.252.39 - - [29/Jun/2018:15:45:43 -0400] &quot;POST / HTTP/2&quot; 200 2 0.0019</code></pre>
+<p>This is good news! It means your app received a notification that it was installed on your GitHub account. If you see something like this, your app is running on the server as expected. 🙌</p>
+<p>If you don’t see the output, make sure Smee is running correctly in another Terminal tab. If you need to restart Smee, note that you’ll also need to <em>uninstall</em> and <em>reinstall</em> the app to send the <code>installation</code> event to your app again and see the output in Terminal. If Smee isn’t the problem, see the “<a href="#troubleshooting">Troubleshooting</a>” section for other ideas.</p>
+<p>If you’re wondering where the Terminal output above is coming from, it’s written in the <a href="#prerequisites">app template code</a> in <code>template_server.rb</code>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Here are a few common problems and some suggested solutions. If you run into any other trouble, you can ask for help or advice in the {% data variables.product.prodname_support_forum_with_url %}.</p>
+<ul>
+<li><p><strong>Q:</strong> When I try to install the Smee command-line client, I get the following error:</p>
+<pre class="shell"><code>&gt; npm: command not found</code></pre>
+<p><strong>A:</strong> Looks like you don’t have npm installed. The best way to install it is to download the Node.js package at https://nodejs.org and follow the installation instructions for your system. npm will be installed alongside Node.js.</p></li>
+<li><p><strong>Q:</strong> When I run the server, I get the following error:</p>
+<pre class="shell"><code>&gt; server.rb:38:in `initialize&#39;: Neither PUB key nor PRIV key: header too long (OpenSSL::PKey::RSAError)</code></pre>
+<p><strong>A:</strong> You probably haven’t set up your private key environment variable quite right. Your <code>GITHUB_PRIVATE_KEY</code> variable should look like this:</p>
+<pre><code>GITHUB_PRIVATE_KEY=&quot;-----BEGIN RSA PRIVATE KEY-----
+...
+HkVN9...
+...
+-----END RSA PRIVATE KEY-----&quot;</code></pre>
+<p>Double-check that you’ve copied the correct public key into your <code>.env</code> file.</p></li>
+<li><p><strong>Q:</strong> When I run the server, it crashes with this error:</p>
+<pre class="shell"><code>&gt; Octokit::Unauthorized ... 401 - Bad credentials`</code></pre>
+<p><strong>A:</strong> You may be authenticated as a GitHub App but not as an installation. Make sure you follow all the steps under “<a href="#authenticating-as-an-installation">Authenticate as an installation</a>,” and use the <code>@installation_client</code> instance variable (authenticated with an installation access token) for your API operations, not the <code>@app_client</code> instance variable (authenticated with a JWT). The <code>@app_client</code> can only retrieve high-level information about your app and obtain installation access tokens. It can’t do much else in the API.</p></li>
+<li><p><strong>Q:</strong> My server isn’t listening to events! The Smee client is running in a Terminal window, and I’m installing the app on a repository on GitHub, but I don’t see any output in the Terminal window where I’m running the server.</p>
+<p><strong>A:</strong> You may not be running the Smee client, running the Smee command with the wrong parameters or you may not have the correct Smee domain in your GitHub App settings. First check to make sure the Smee client is running in a Terminal tab. If that’s not the problem, visit your <a href="https://github.com/settings/apps">app settings page</a> and check the fields shown in “<a href="#step-2-register-a-new-github-app">Step 2. Register a new GitHub App</a>.” Make sure the domain in those fields matches the domain you used in your <code>smee -u &lt;unique_channel&gt;</code> command in “<a href="#step-1-start-a-new-smee-channel">Step 1. Start a new Smee channel</a>.” If none of the above work, check that you are running the full Smee command including the <code>--path</code> and <code>--port</code> options, for example: <code>smee --url https://smee.io/qrfeVRbFbffd6vD --path /event_handler --port 3000</code> (replacing <code>https://smee.io/qrfeVRbFbffd6vD</code> with your own Smee domain).</p></li>
+<li><p><strong>Q:</strong> I’m getting an <code>Octokit::NotFound</code> 404 error in my debug output: <code>2018-12-06 15:00:56 - Octokit::NotFound - POST {% data variables.product.api_url_code %}/app/installations/500991/access_tokens: 404 - Not Found // See: /v3/apps/#create-a-new-installation-token:</code></p>
+<p><strong>A:</strong> Ensure the variables in your <code>.env</code> file are correct. Make sure that you have not set identical variables in any other environment variable files like <code>bash_profile</code>. You can check the environment variables your app is using by adding <code>puts</code> statements to your app code and re-running the code. For example, to ensure you have the correct private key set, you could add <code>puts PRIVATE_KEY</code> to your app code:</p>
+<pre><code>PRIVATE_KEY = OpenSSL::PKey::RSA.new(ENV[&#39;GITHUB_PRIVATE_KEY&#39;].gsub(&#39;\n&#39;, &quot;\n&quot;))
+puts PRIVATE_KEY</code></pre></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>After walking through this guide, you’ve learned the basic building blocks for developing GitHub Apps! To review, you:</p>
+<ul>
+<li>Registered a new GitHub App</li>
+<li>Used Smee to receive webhook payloads</li>
+<li>Ran a simple web server via Sinatra</li>
+<li>Authenticated as a GitHub App</li>
+<li>Authenticated as an installation</li>
+</ul>
+<h2 id="next-steps">Next steps</h2>
+<p>You now have a GitHub App running on a server. It doesn’t do anything special yet, but check out some of the ways you can customize your GitHub App template in the other <a href="/apps/quickstart-guides/">quickstart guides</a>.</p>
+</body>
+</html>

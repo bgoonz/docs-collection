@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Creating a codespace</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Creating a codespace</h1>
+</header>
+<p>{% data reusables.codespaces.release-stage %}</p>
+<h2 id="about-codespace-creation">About codespace creation</h2>
+<p>You can create a codespace on either {% data variables.product.prodname_dotcom_the_website %} or in {% data variables.product.prodname_vscode %}. {% data reusables.codespaces.codespaces-are-personal %}</p>
+<p>Codespaces are associated with a specific branch of a repository and the repository cannot be empty. {% data reusables.codespaces.concurrent-codespace-limit %} For more information, see “<a href="/github/developing-online-with-codespaces/deleting-a-codespace">Deleting a codespace</a>.”</p>
+<p>When you create a codespace, a number of steps happen to enable full access to your development environment.</p>
+<ul>
+<li>Resources such as a VM and storage for your container are assigned. A new VM is created every time you create or start a codespace to ensure that you always have the latest versions and security patches.</li>
+<li>{% data variables.product.prodname_codespaces %} receives information about your repository, branch, commits, your public dotfiles repository, and any secrets that you have created.</li>
+<li>{% data variables.product.prodname_codespaces %} executes a shallow clone of the repository.</li>
+<li>If you have one in your repository, {% data variables.product.prodname_codespaces %} runs the <code>devcontainer.json</code> file. For more information, see “<a href="/github/developing-online-with-codespaces/configuring-codespaces-for-your-project">Configuring {% data variables.product.prodname_codespaces %} for your project</a>.”</li>
+<li>Your Docker container, <code>docker-compose</code>, or other initialization is run.</li>
+<li>At this point, the codespace is marked as available and you can connect.</li>
+<li>Once the codespace is made available, depending on the commands in the devcontainer, the codespace will continue with some set up.
+<ul>
+<li>The codespace shares ports added in the <code>devcontainer.json</code> file.</li>
+<li>The codespace runs anything specified in <code>postCreateCommand</code>.</li>
+<li>{% data variables.product.prodname_codespaces %} clones your dotfiles repository to the codespaces environment and looks for an install file. For more information, see “<a href="/github/developing-online-with-codespaces/personalizing-codespaces-for-your-account">Personalizing {% data variables.product.prodname_codespaces %} for your account</a>.”</li>
+<li>Finally, the codespace does a full clone of the repo so you have full access to it.</li>
+</ul></li>
+</ul>
+<p>{% data reusables.codespaces.use-visual-studio-features %}</p>
+<p>{% data reusables.codespaces.you-can-see-all-your-codespaces %}</p>
+<h2 id="creating-a-codespace">Creating a codespace</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} 2. Under the repository name, use the “Branch” drop-down menu, and select the branch you want to create a codespace for.</p>
+<figure>
+<img src="/assets/images/help/codespaces/branch-drop-down.png" alt="Branch drop-down menu" /><figcaption>Branch drop-down menu</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>Under the repository name, use the {% octicon “download” aria-label=“The download icon” %} <strong>Code</strong> drop-down menu, and select <strong>Open with Codespaces</strong>.</li>
+</ol>
+<figure>
+<img src="/assets/images/help/codespaces/open-with-codespaces-button.png" alt="Open with Codespaces button" /><figcaption>Open with Codespaces button</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>To create a codespace using a Standard machine type, click {% octicon “plus” aria-label=“The plus icon” %} <strong>New codespace</strong>.</li>
+</ol>
+<figure>
+<img src="/assets/images/help/codespaces/new-codespace-button.png" alt="New codespace button" /><figcaption>New codespace button</figcaption>
+</figure>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using search to filter issues and pull requests</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using search to filter issues and pull requests</h1>
+</header>
+<p>The issues and pull requests search bar allows you to define your own custom filters and sort by a wide variety of criteria. You can find the search bar on each repository’s <strong>Issues</strong> and <strong>Pull requests</strong> tabs and on your <a href="/articles/viewing-all-of-your-issues-and-pull-requests">Issues and Pull requests dashboards</a>.</p>
+<figure>
+<img src="/assets/images/help/issues/issues_search_bar.png" alt="The issues and pull requests search bar" /><figcaption>The issues and pull requests search bar</figcaption>
+</figure>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> {% data reusables.search.search_issues_and_pull_requests_shortcut %}</p>
+<p>{% endtip %}</p>
+<p>With issue and pull request search terms, you can:</p>
+<ul>
+<li>Filter issues and pull requests by author: <code>state:open type:issue author:octocat</code></li>
+<li>Filter issues and pull requests that involve, but don’t necessarily <a href="/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams"><strong><span class="citation" data-cites="mention">@mention</span></strong></a>, certain people: <code>state:open type:issue involves:octocat</code></li>
+<li>Filter issues and pull requests by assignee: <code>state:open type:issue assignee:octocat</code></li>
+<li>Filter issues and pull requests by label: <code>state:open type:issue label:"bug"</code></li>
+<li>Filter out search terms by using <code>-</code> before the term: <code>state:open type:issue -author:octocat</code></li>
+</ul>
+<p>{% ifversion fpt or ghes &gt; 3.2 or ghae-next %} {% tip %}</p>
+<p><strong>Tip:</strong> You can filter issues and pull requests by label using logical OR or using logical AND. - To filter issues using logical OR, use the comma syntax: <code>label:"bug","wip"</code>. - To filter issues using logical AND, use separate label filters: <code>label:"bug" label:"wip"</code>.</p>
+<p>{% endtip %} {% endif %}</p>
+<p>{% ifversion fpt or ghes or ghae %} For issues, you can also use search to:</p>
+<ul>
+<li>Filter for issues that are linked to a pull request by a closing reference: <code>linked:pr</code> {% endif %}</li>
+</ul>
+<p>For pull requests, you can also use search to: - Filter <a href="/articles/about-pull-requests#draft-pull-requests">draft</a> pull requests: <code>is:draft</code> - Filter pull requests that haven’t been <a href="/articles/about-pull-request-reviews">reviewed</a> yet: <code>state:open type:pr review:none</code> - Filter pull requests that <a href="/github/administering-a-repository/about-protected-branches#require-pull-request-reviews-before-merging">require a review</a> before they can be merged: <code>state:open type:pr review:required</code> - Filter pull requests that a reviewer has approved: <code>state:open type:pr review:approved</code> - Filter pull requests in which a reviewer has asked for changes: <code>state:open type:pr review:changes_requested</code> - Filter pull requests by <a href="/articles/about-pull-request-reviews/">reviewer</a>: <code>state:open type:pr reviewed-by:octocat</code> - Filter pull requests by the specific user <a href="/articles/requesting-a-pull-request-review">requested for review</a>: <code>state:open type:pr review-requested:octocat</code> - Filter pull requests by the team requested for review: <code>state:open type:pr team-review-requested:github/atom</code>{% ifversion fpt or ghes or ghae %} - Filter for pull requests that are linked to an issue that the pull request may close: <code>linked:issue</code>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/searching-issues">Searching issues and pull requests</a>”</li>
+<li>“<a href="/articles/filtering-issues-and-pull-requests">Filtering issues and pull requests</a>”</li>
+<li>“<a href="/articles/sorting-issues-and-pull-requests">Sorting issues and pull requests</a>”</li>
+<li>“<a href="/articles/sharing-filters">Sharing filters</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Installing GitHub Enterprise Server on VMware</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Installing GitHub Enterprise Server on VMware</h1>
+    </header>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <ul>
+      <li>{% data reusables.enterprise_installation.software-license %}</li>
+      <li>
+        You must have a VMware vSphere ESXi Hypervisor, applied to a bare metal
+        machine that will run {% data variables.product.product_location %}s. We
+        support versions 5.5 through 6.7. The ESXi Hypervisor is free and does
+        not include the (optional) vCenter Server. For more information, see
+        <a href="https://www.vmware.com/products/esxi-and-esx.html"
+          >the VMware ESXi documentation</a
+        >.
+      </li>
+      <li>
+        You will need access to a vSphere Client. If you have vCenter Server you
+        can use the vSphere Web Client. For more information, see the VMware
+        guide “<a
+          href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.install.doc/GUID-CE128B59-E236-45FF-9976-D134DADC8178.html"
+          >Log in to vCenter Server by Using the vSphere Web Client</a
+        >.”
+      </li>
+    </ul>
+    <h2 id="hardware-considerations">Hardware considerations</h2>
+    <p>
+      {% data
+      reusables.enterprise_installation.hardware-considerations-all-platforms %}
+    </p>
+    <h2 id="downloading-the-data-variables.product.prodname_ghe_server-image">
+      Downloading the {% data variables.product.prodname_ghe_server %} image
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.enterprise-download-procedural
+      %} {% data reusables.enterprise_installation.download-license %} {% data
+      reusables.enterprise_installation.download-appliance %} 4. Select {% data
+      variables.product.prodname_dotcom %} On-premises, then click
+      <strong>VMware ESXi/vSphere (OVA)</strong>. 5. Click
+      <strong>Download for VMware ESXi/vSphere (OVA)</strong>.
+    </p>
+    <h2 id="creating-the-data-variables.product.prodname_ghe_server-instance">
+      Creating the {% data variables.product.prodname_ghe_server %} instance
+    </h2>
+    <p>{% data reusables.enterprise_installation.create-ghe-instance %}</p>
+    <ol type="1">
+      <li>
+        Using the vSphere Windows Client or the vCenter Web Client, import the
+        {% data variables.product.prodname_ghe_server %} image you downloaded.
+        For instructions, see the VMware guide “<a
+          href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.vm_admin.doc/GUID-17BEDA21-43F6-41F4-8FB2-E01D275FE9B4.html"
+          >Deploy an OVF or OVA Template</a
+        >.”
+        <ul>
+          <li>
+            When selecting a datastore, choose one with sufficient space to host
+            the VM’s disks. For the minimum hardware specifications recommended
+            for your instance size, see “<a href="#hardware-considerations"
+              >Hardware considerations</a
+            >.” We recommend thick provisioning with lazy zeroing.
+          </li>
+          <li>
+            Leave the <strong>Power on after deployment</strong> box unchecked,
+            as you will need to add an attached storage volume for your
+            repository data after provisioning the VM. {% data
+            reusables.enterprise_installation.create-attached-storage-volume %}
+            For instructions, see the VMware guide “<a
+              href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.vm_admin.doc/GUID-F4917C61-3D24-4DB9-B347-B5722A84368C.html"
+              >Add a New Hard Disk to a Virtual Machine</a
+            >.”
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <h2
+      id="configuring-the-data-variables.product.prodname_ghe_server-instance"
+    >
+      Configuring the {% data variables.product.prodname_ghe_server %} instance
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.copy-the-vm-public-dns-name %}
+      {% data reusables.enterprise_installation.upload-a-license-file %} {% data
+      reusables.enterprise_installation.save-settings-in-web-based-mgmt-console
+      %} For more information, see “<a
+        href="/enterprise/admin/guides/installation/configuring-the-github-enterprise-server-appliance"
+        >Configuring the {% data variables.product.prodname_ghe_server %}
+        appliance</a
+      >.” {% data
+      reusables.enterprise_installation.instance-will-restart-automatically %}
+      {% data reusables.enterprise_installation.visit-your-instance %}
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a href="/enterprise/admin/guides/installation/system-overview"
+          >System overview</a
+        >”{% ifversion ghes &gt; 2.22 %}
+      </li>
+      <li>
+        “<a href="/admin/overview/about-upgrades-to-new-releases"
+          >About upgrades to new releases</a
+        >”{% endif %}
+      </li>
+    </ul>
+  </body>
+</html>

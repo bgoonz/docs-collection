@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Displaying a sponsor button in your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Displaying a sponsor button in your repository</h1>
+</header>
+<h2 id="about-funding-files">About FUNDING files</h2>
+<p>You can configure your sponsor button by editing a <em>FUNDING.yml</em> file in your repository’s <code>.github</code> folder, on the default branch. You can configure the button to include sponsored developers in {% data variables.product.prodname_sponsors %}, external funding platforms, or a custom funding URL. For more information about {% data variables.product.prodname_sponsors %}, see “<a href="/sponsors/getting-started-with-github-sponsors/about-github-sponsors">About GitHub Sponsors</a>.”</p>
+<p>You can add one username, package name, or project name per external funding platform and up to four custom URLs. You can add up to four sponsored developers or organizations in {% data variables.product.prodname_sponsors %}. Add each platform on a new line, using the following syntax:</p>
+<table>
+<colgroup>
+<col style="width: 61%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://lfx.linuxfoundation.org/tools/mentorship">LFX Mentorship (formerly CommunityBridge)</a></td>
+<td><code>community_bridge: PROJECT-NAME</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/sponsors">{% data variables.product.prodname_sponsors %}</a></td>
+<td><code>github: USERNAME</code> or <code>github: [USERNAME, USERNAME, USERNAME, USERNAME]</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://issuehunt.io/">IssueHunt</a></td>
+<td><code>issuehunt: USERNAME</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://ko-fi.com/">Ko-fi</a></td>
+<td><code>ko_fi: USERNAME</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://en.liberapay.com/">Liberapay</a></td>
+<td><code>liberapay: USERNAME</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://opencollective.com/">Open Collective</a></td>
+<td><code>open_collective: USERNAME</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://otechie.com/">Otechie</a></td>
+<td><code>otechie: USERNAME</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://www.patreon.com/">Patreon</a></td>
+<td><code>patreon: USERNAME</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://tidelift.com/">Tidelift</a></td>
+<td><code>tidelift: PLATFORM-NAME/PACKAGE-NAME</code></td>
+</tr>
+<tr class="even">
+<td>Custom URL</td>
+<td><code>custom: LINK1</code> or <code>custom: [LINK1, LINK2, LINK3, LINK4]</code></td>
+</tr>
+</tbody>
+</table>
+<p>For Tidelift, use the <code>platform-name/package-name</code> syntax with the following platform names:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Platform name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JavaScript</td>
+<td><code>npm</code></td>
+</tr>
+<tr class="even">
+<td>Python</td>
+<td><code>pypi</code></td>
+</tr>
+<tr class="odd">
+<td>Ruby</td>
+<td><code>rubygems</code></td>
+</tr>
+<tr class="even">
+<td>Java</td>
+<td><code>maven</code></td>
+</tr>
+<tr class="odd">
+<td>PHP</td>
+<td><code>packagist</code></td>
+</tr>
+<tr class="even">
+<td>C#</td>
+<td><code>nuget</code></td>
+</tr>
+</tbody>
+</table>
+<p>Here’s an example <em>FUNDING.yml</em> file:</p>
+<pre><code>github: [octocat, surftocat]
+patreon: octocat
+tidelift: npm/octo-package
+custom: [&quot;https://www.paypal.me/octocat&quot;, octocat.com]</code></pre>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If a custom URL in an array includes <code>:</code>, you must wrap the URL in quotes. For example, <code>"https://www.paypal.me/octocat"</code>.</p>
+<p>{% endnote %}</p>
+<p>You can create a default sponsor button for your organization or user account. For more information, see “<a href="/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file">Creating a default community health file</a>.”</p>
+<p>{% note %}</p>
+<p>Funding links provide a way for open source projects to receive direct financial support from their community. We don’t support the use of funding links for other purposes, such as for advertising, or supporting political, community, or charity groups. If you have questions about whether your intended use is supported, please contact {% data variables.contact.contact_support %}.</p>
+<p>{% endnote %}</p>
+<h2 id="displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</h2>
+<p>Anyone with admin permissions can enable a sponsor button in a repository.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} 3. Under Features, select <strong>Sponsorships</strong>. <img src="/assets/images/help/sponsors/sponsorships-checkbox.png" alt="Checkbox to enable Sponsorships" /> 4. Under “Sponsorships”, click <strong>Set up sponsor button</strong> or <strong>Override funding links</strong>. <img src="/assets/images/help/sponsors/sponsor-set-up-button.png" alt="Button to set up sponsor button" /> 5. In the file editor, follow the instructions in the <em>FUNDING.yml</em> file to add links to your funding locations. <img src="/assets/images/help/sponsors/funding-yml-file.png" alt="Edit the FUNDING file to add links to funding locations" /> {% data reusables.files.write_commit_message %} {% data reusables.files.choose_commit_branch %} {% data reusables.files.propose_new_file %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/sponsors/receiving-sponsorships-through-github-sponsors/about-github-sponsors-for-open-source-contributors">About {% data variables.product.prodname_sponsors %} for open source contributors</a>”</li>
+<li>“<a href="https://github.blog/2019-06-12-faq-with-the-github-sponsors-team/">FAQ with the {% data variables.product.prodname_sponsors %} team</a>” on {% data variables.product.prodname_blog %}</li>
+</ul>
+</body>
+</html>

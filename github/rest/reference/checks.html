@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Checks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Checks</h1>
+</header>
+<p>The Checks API enables you to build GitHub Apps that run powerful checks against code changes in a repository. You can create apps that perform continuous integration, code linting, or code scanning services and provide detailed feedback on commits. For more information, see “<a href="/rest/guides/getting-started-with-the-checks-api">Getting started with the checks API</a>” and “<a href="/apps/quickstart-guides/creating-ci-tests-with-the-checks-api/">Creating CI tests with the Checks API</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="check-runs">Check Runs</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘runs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="check-suites">Check Suites</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> A GitHub App only receives one <a href="/webhooks/event-payloads/#check_suite"><code>check_suite</code></a> event per commit SHA, even if you push the commit SHA to more than one branch. To find out when a commit SHA is pushed to a branch, you can subscribe to branch <a href="/webhooks/event-payloads/#create"><code>create</code></a> events.</p>
+<p>{% endnote %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘suites’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

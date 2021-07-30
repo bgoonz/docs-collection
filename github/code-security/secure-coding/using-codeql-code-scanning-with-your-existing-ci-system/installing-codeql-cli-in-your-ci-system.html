@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Installing CodeQL CLI in your CI system</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Installing CodeQL CLI in your CI system</h1>
+</header>
+<p>{% data reusables.code-scanning.enterprise-enable-code-scanning %}</p>
+<h2 id="about-using-the-data-variables.product.prodname_codeql_cli-for-data-variables.product.prodname_code_scanning">About using the {% data variables.product.prodname_codeql_cli %} for {% data variables.product.prodname_code_scanning %}</h2>
+<p>You can use the {% data variables.product.prodname_codeql_cli %} to run {% data variables.product.prodname_code_scanning %} on code that you’re processing in a third-party continuous integration (CI) system. {% data reusables.code-scanning.about-code-scanning %} For information, see “<a href="/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql">About {% data variables.product.prodname_code_scanning %} with {% data variables.product.prodname_codeql %}</a>.”</p>
+<p>{% data reusables.code-scanning.what-is-codeql-cli %}</p>
+<p>Alternatively, you can use {% data variables.product.prodname_actions %} to run {% data variables.product.prodname_code_scanning %} within {% data variables.product.product_name %}. For information about {% data variables.product.prodname_code_scanning %} using actions, see “<a href="/code-security/secure-coding/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>.” For an overview of the options for CI systems, see “<a href="/code-security/secure-coding/about-codeql-code-scanning-in-your-ci-system">About CodeQL {% data variables.product.prodname_code_scanning %} in your CI system</a>”.</p>
+<p>{% data reusables.code-scanning.licensing-note %}</p>
+<h2 id="downloading-the-data-variables.product.prodname_codeql_cli">Downloading the {% data variables.product.prodname_codeql_cli %}</h2>
+<p>You should download the {% data variables.product.prodname_codeql %} bundle from https://github.com/github/codeql-action/releases. The bundle contains:</p>
+<ul>
+<li>{% data variables.product.prodname_codeql_cli %} product</li>
+<li>A compatible version of the queries and libraries from https://github.com/github/codeql</li>
+<li>Precompiled versions of all the queries included in the bundle</li>
+</ul>
+<p>You should always use the {% data variables.product.prodname_codeql %} bundle as this ensures compatibility and also gives much better performance than a separate download of the {% data variables.product.prodname_codeql_cli %} and checkout of the {% data variables.product.prodname_codeql %} queries. If you will only be running the CLI on one specific platform, download the appropriate <code>codeql-bundle-PLATFORM.tar.gz</code> file. Alternatively, you can download <code>codeql-bundle.tar.gz</code>, which contains the CLI for all supported platforms.</p>
+<p>{% data reusables.code-scanning.beta-codeql-packs-cli %}</p>
+<h2 id="setting-up-the-data-variables.product.prodname_codeql_cli-in-your-ci-system">Setting up the {% data variables.product.prodname_codeql_cli %} in your CI system</h2>
+<p>You need to make the full contents of the {% data variables.product.prodname_codeql_cli %} bundle available to every CI server that you want to run CodeQL {% data variables.product.prodname_code_scanning %} analysis on. For example, you might configure each server to copy the bundle from a central, internal location and extract it. Alternatively, you could use the REST API to get the bundle directly from {% data variables.product.prodname_dotcom %}, ensuring that you benefit from the latest improvements to queries. Updates to the {% data variables.product.prodname_codeql_cli %} are released every 2-3 weeks. For example:</p>
+<pre class="shell"><code>$ wget https://{% ifversion fpt %}github.com{% else %}&lt;em&gt;HOSTNAME&lt;/em&gt;{% endif %}/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz
+$ tar -xvzf ../codeql-bundle-linux64.tar.gz</code></pre>
+<p>After you extract the {% data variables.product.prodname_codeql_cli %} bundle, you can run the <code>codeql</code> executable on the server:</p>
+<ul>
+<li>By executing <code>/&lt;extraction-root&gt;/codeql/codeql</code>, where <code>&lt;extraction-root&gt;</code> is the folder where you extracted the {% data variables.product.prodname_codeql_cli %} bundle.</li>
+<li>By adding <code>/&lt;extraction-root&gt;/codeql</code> to your <code>PATH</code>, so that you can run the executable as just <code>codeql</code>.</li>
+</ul>
+<h2 id="testing-the-data-variables.product.prodname_codeql_cli-set-up">Testing the {% data variables.product.prodname_codeql_cli %} set up</h2>
+<p>After you extract the {% data variables.product.prodname_codeql_cli %} bundle, you can run the following command to verify that the CLI is correctly set up to create and analyze databases.</p>
+<ul>
+<li><code>codeql resolve qlpacks</code> if <code>/&lt;extraction-root&gt;/codeql</code> is on the <code>PATH</code>.</li>
+<li><code>/&lt;extraction-root&gt;/codeql/codeql resolve qlpacks</code> otherwise.</li>
+</ul>
+<p><strong>Extract from successful output:</strong></p>
+<pre><code>codeql-cpp (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-cpp)
+codeql-cpp-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-cpp-examples)
+codeql-cpp-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-cpp-upgrades)
+codeql-csharp (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-csharp)
+codeql-csharp-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-csharp-examples)
+codeql-csharp-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-csharp-upgrades)
+codeql-go (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-go)
+codeql-go-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-go-examples)
+codeql-go-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-go-upgrades)
+codeql-java (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-java)
+codeql-java-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-java-examples)
+codeql-java-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-java-upgrades)
+codeql-javascript (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-javascript)
+codeql-javascript-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-javascript-examples)
+codeql-javascript-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-javascript-upgrades)
+codeql-python (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-python)
+codeql-python-examples (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-python-examples)
+codeql-python-upgrades (/&lt;extraction-root&gt;/codeql/qlpacks/codeql-python-upgrades)
+...</code></pre>
+<p>You should check that the output contains the expected languages and also that the directory location for the qlpack files is correct. The location should be within the extracted {% data variables.product.prodname_codeql_cli %} bundle, shown above as <code>&lt;extraction root&gt;</code>, unless you are using a checkout of <code>github/codeql</code>. If the {% data variables.product.prodname_codeql_cli %} is unable to locate the qlpacks for the expected languages, check that you downloaded the {% data variables.product.prodname_codeql %} bundle and not a standalone copy of the {% data variables.product.prodname_codeql_cli %}.</p>
+<h2 id="generating-a-token-for-authentication-with-data-variables.product.product_name">Generating a token for authentication with {% data variables.product.product_name %}</h2>
+<p>Each CI server needs a {% data variables.product.prodname_github_app %} or personal access token for the {% data variables.product.prodname_codeql_cli %} to use to upload results to {% data variables.product.product_name %}. You must use an access token or a {% data variables.product.prodname_github_app %} with the <code>security_events</code> write permission. If CI servers already use a token with this scope to checkout repositories from {% data variables.product.product_name %}, you could potentially allow the {% data variables.product.prodname_codeql_cli %} to use the same token. Otherwise, you should create a new token with the <code>security_events</code> write permission and add this to the CI system’s secret store. For information, see “<a href="/developers/apps/building-github-apps">Building {% data variables.product.prodname_github_apps %}</a>” and “<a href="/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>.”</p>
+<h2 id="next-steps">Next steps</h2>
+<p>You’re now ready to configure the CI system to run {% data variables.product.prodname_codeql %} analysis, generate results, and upload them to {% data variables.product.product_name %} where the results will be matched to a branch or pull request and displayed as {% data variables.product.prodname_code_scanning %} alerts. For detailed information, see “<a href="/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system">Configuring {% data variables.product.prodname_codeql_cli %} in your CI system</a>.”</p>
+</body>
+</html>

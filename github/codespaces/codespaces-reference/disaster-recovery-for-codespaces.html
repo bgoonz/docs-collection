@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Disaster recovery for Codespaces</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Disaster recovery for Codespaces</h1>
+</header>
+<p>We work hard to make sure that {% data variables.product.prodname_codespaces %} is always available to you. However, forces beyond our control sometimes impact the service in ways that can cause unplanned service disruptions.</p>
+<p>Although disaster recovery scenarios are rare occurrences, we recommend that you prepare for the possibility that there is an outage of an entire region. If an entire region experiences a service disruption, the locally redundant copies of your data would be temporarily unavailable.</p>
+<p>The following guidance provides options on how to handle service disruption to the entire region where your codespace is deployed.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You can reduce the potential impact of service-wide outages by pushing to remote repositories frequently.</p>
+<p>{% endnote %}</p>
+<h2 id="option-1-wait-for-recovery">Option 1: Wait for recovery</h2>
+<p>In this case, no action on your part is required. Know that we are working diligently to restore service availability.</p>
+<p>Check our <a href="https://github.com/github/feedback/discussions/categories/codespaces-feedback">{% data variables.product.prodname_discussions %} page</a> for any updates on service interruptions. Soon, you’ll be able to see the current service status on the <a href="https://www.githubstatus.com/">Status Dashboard</a>.</p>
+<h2 id="option-2-clone-the-repository-locally-or-edit-in-the-browser">Option 2: Clone the repository locally or edit in the browser</h2>
+<p>While {% data variables.product.prodname_codespaces %} provides the benefit of a pre-configured developer environmnent, your source code should always be accessible through the repository hosted on {% data variables.product.prodname_dotcom_the_website %}. In the event of a {% data variables.product.prodname_codespaces %} outage, you can still clone the repository locally or edit files in the {% data variables.product.company_short %} browser editor. For more information, see <a href="/github/managing-files-in-a-repository/managing-files-on-github/editing-files-in-your-repository">Editing files in your repository</a>.</p>
+<p>While this option does not configure a development environment for you, it will allow you to make changes to your source code as needed while you wait for the service disruption to resolve.</p>
+<h2 id="option-3-use-remote-containers-and-docker-for-a-local-containerized-environment">Option 3: Use Remote-Containers and Docker for a local containerized environment</h2>
+<p>If your repository has a <code>devcontainer.json</code>, consider using the <a href="https://code.visualstudio.com/docs/remote/containers#_quick-start-open-a-git-repository-or-github-pr-in-an-isolated-container-volume">Remote-Containers extension</a> in Visual Studio Code to build and attach to a local development container for your repository. The setup time for this option will vary depending on your local specifications and the complexity of your dev container setup.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Be sure your local setup meets the <a href="https://code.visualstudio.com/docs/remote/containers#_system-requirements">minimum requirements</a> before attempting this option.</p>
+<p>{% endnote %}</p>
+<h2 id="coming-soon-create-a-new-codespace-in-another-region">Coming soon: Create a new codespace in another region</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> This option is not yet available in {% data variables.product.prodname_codespaces %}</p>
+<p>{% endnote %}</p>
+<p>You’ll soon be able to specify the region when you create a codespace. When this option becomes available, we suggest you recreate your codespace in an unaffected region to continue working in the case of a regional outage. This new codespace will have all of the changes as of your last push to {% data variables.product.prodname_dotcom %}.</p>
+<p>You can optimize recovery time in by configuring a <code>devcontainer.json</code> in the project’s repository, which allows you to define the tools, runtimes, frameworks, editor settings, extensions, and other configuration necessary to restore the development environment automatically. See <a href="/codespaces/setting-up-your-codespace/configuring-codespaces-for-your-project">Configuring Codespace for your project</a>.</p>
+</body>
+</html>

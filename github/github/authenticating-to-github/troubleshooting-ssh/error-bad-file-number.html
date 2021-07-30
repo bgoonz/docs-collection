@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Bad file number</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Bad file number</h1>
+</header>
+<p>When running remote Git commands or SSH, your connection might time out:</p>
+<pre class="shell"><code>$ ssh -vT git@{% data variables.command_line.codeblock %}
+&gt; OpenSSH_8.1p1, LibreSSL 2.7.3
+&gt; debug1: Connecting to {% data variables.command_line.codeblock %} [207.97.227.239] port 22.
+&gt; debug1: connect to address 207.97.227.239 port 22: Connection timed out
+&gt; ssh: connect to host {% data variables.command_line.codeblock %} port 22: Connection timed out
+&gt; ssh: connect to host {% data variables.command_line.codeblock %} port 22: Bad file number</code></pre>
+<h2 id="solving-the-issue">Solving the issue</h2>
+<h3 id="use-https">Use HTTPS</h3>
+<p>Often, the simplest solution is to simply avoid SSH entirely. Most firewalls and proxies allow HTTPS traffic without issue. To take advantage of this, change <a href="/github/getting-started-with-github/about-remote-repositories">the remote URL</a> you’re using:</p>
+<pre class="shell"><code>$ git clone https://{% data variables.command_line.codeblock %}/&lt;em&gt;username&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt;.git
+&gt; Cloning into &#39;reponame&#39;...
+&gt; remote: Counting objects: 84, done.
+&gt; remote: Compressing objects: 100% (45/45), done.
+&gt; remote: Total 84 (delta 43), reused 78 (delta 37)
+&gt; Unpacking objects: 100% (84/84), done.</code></pre>
+<h3 id="test-from-a-different-network">Test from a different network</h3>
+<p>If you can connect the computer to another network that doesn’t have a firewall, you can try testing your SSH connection to {% data variables.product.product_name %}. If everything works as it should, contact your network administrator for help on changing the firewall settings to allow your SSH connection to {% data variables.product.product_name %} to succeed.</p>
+<p>{% ifversion fpt %}</p>
+<h3 id="using-ssh-over-the-https-port">Using SSH over the HTTPS port</h3>
+<p>If using HTTPS is not an option, and your firewall admin refuses to allow SSH connections, you can try using <a href="/articles/using-ssh-over-the-https-port">SSH over the HTTPS port</a> instead.</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/troubleshooting-connectivity-problems">Troubleshooting connectivity problems</a>”</li>
+</ul>
+<p>{% endif %}</p>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating a pre-receive hook environment</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating a pre-receive hook environment</h1>
+    </header>
+    <p>
+      A pre-receive environment for {% data
+      variables.product.prodname_ghe_server %} is a Linux
+      <a href="https://en.wikipedia.org/wiki/Chroot"><code>chroot</code></a>
+      environment. Because pre-receive hooks execute on every push event, they
+      should be fast and lightweight. The environment needed for such checks
+      will typically be minimal.
+    </p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} provides a default
+      environment which includes these packages: <code>awk</code>,
+      <code>bash</code>, <code>coreutils</code>, <code>curl</code>,
+      <code>find</code>, <code>gnupg</code>, <code>grep</code>, <code>jq</code>,
+      <code>sed</code>.
+    </p>
+    <p>
+      If you have a specific requirement that isn’t met by this environment,
+      such as support for a particular language, you can create and upload your
+      own 64-bit Linux <code>chroot</code> environment.
+    </p>
+    <h2 id="creating-a-pre-receive-hook-environment-using-docker">
+      Creating a pre-receive hook environment using Docker
+    </h2>
+    <p>
+      You can use a Linux container management tool to build a pre-receive hook
+      environment. This example uses
+      <a href="http://www.alpinelinux.org/">Alpine Linux</a> and
+      <a href="https://www.docker.com/">Docker</a>.
+    </p>
+    <p>
+      {% data reusables.linux.ensure-docker %} 2. Create the file
+      <code>Dockerfile.alpine-3.3</code> that contains this information:
+    </p>
+    <pre><code>FROM gliderlabs/alpine:3.3
+RUN apk add --no-cache git bash</code></pre>
+    <ol start="3" type="1">
+      <li>
+        <p>
+          From the working directory that contains
+          <code>Dockerfile.alpine-3.3</code>, build an image:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker build -f Dockerfile.alpine-3.3 -t pre-receive.alpine-3.3 .
+&gt; Sending build context to Docker daemon 12.29 kB
+&gt; Step 1 : FROM gliderlabs/alpine:3.3
+&gt;  ---&gt; 8944964f99f4
+&gt; Step 2 : RUN apk add --no-cache git bash
+&gt;  ---&gt; Using cache
+&gt;  ---&gt; 0250ab3be9c5
+&gt; Successfully built 0250ab3be9c5</code></pre>
+      </li>
+      <li>
+        <p>Create a container:</p>
+        <pre
+          class="shell"
+        ><code>$ docker create --name pre-receive.alpine-3.3 pre-receive.alpine-3.3 /bin/true</code></pre>
+      </li>
+      <li>
+        <p>
+          Export the Docker container to a <code>gzip</code> compressed
+          <code>tar</code> file:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker export pre-receive.alpine-3.3 | gzip &gt; alpine-3.3.tar.gz</code></pre>
+        <p>
+          This file <code>alpine-3.3.tar.gz</code> is ready to be uploaded to
+          the {% data variables.product.prodname_ghe_server %} appliance.
+        </p>
+      </li>
+    </ol>
+    <h2 id="creating-a-pre-receive-hook-environment-using-chroot">
+      Creating a pre-receive hook environment using chroot
+    </h2>
+    <ol type="1">
+      <li>Create a Linux <code>chroot</code> environment.</li>
+      <li>
+        <p>
+          Create a <code>gzip</code> compressed <code>tar</code> file of the
+          <code>chroot</code> directory.
+        </p>
+        <pre class="shell"><code>$ cd /path/to/chroot
+$ tar -czf /path/to/pre-receive-environment.tar.gz .</code></pre>
+        <p>{% note %}</p>
+        <strong>Notes:</strong>
+        <ul>
+          <li>
+            Do not include leading directory paths of files within the tar
+            archive, such as <code>/path/to/chroot</code>.
+          </li>
+          <li>
+            <code>/bin/sh</code> must exist and be executable, as the entry
+            point into the chroot environment.
+          </li>
+          <li>
+            Unlike traditional chroots, the <code>dev</code> directory is not
+            required by the chroot environment for pre-receive hooks.
+          </li>
+        </ul>
+        <p>{% endnote %}</p>
+      </li>
+    </ol>
+    <p>
+      For more information about creating a chroot environment see “<a
+        href="https://wiki.debian.org/chroot"
+        >Chroot</a
+      >” from the <em>Debian Wiki</em>, “<a
+        href="https://help.ubuntu.com/community/BasicChroot"
+        >BasicChroot</a
+      >” from the <em>Ubuntu Community Help Wiki</em>, or “<a
+        href="http://wiki.alpinelinux.org/wiki/Installing_Alpine_Linux_in_a_chroot"
+        >Installing Alpine Linux in a chroot</a
+      >” from the <em>Alpine Linux Wiki</em>.
+    </p>
+    <h2
+      id="uploading-a-pre-receive-hook-environment-on-data-variables.product.prodname_ghe_server"
+    >
+      Uploading a pre-receive hook environment on {% data
+      variables.product.prodname_ghe_server %}
+    </h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.hooks-tab %} 5. Click
+      <strong>Manage environments</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/manage-pre-receive-environments.png"
+        alt="Manage Environments"
+      />
+      6. Click <strong>Add environment</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/add-pre-receive-environment.png"
+        alt="Add Environment"
+      />
+      7. Enter the desired name in the <strong>Environment name</strong> field.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/pre-receive-environment-name.png"
+        alt="Environment name"
+      />
+      8. Enter the URL of the <code>*.tar.gz</code> file that contains your
+      environment.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/upload-environment-from-url.png"
+        alt="Upload environment from a URL"
+      />
+      9. Click <strong>Add environment</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/add-environment-button.png"
+        alt="Add environment button"
+      />
+    </p>
+    <h2
+      id="uploading-a-pre-receive-hook-environment-via-the-administrative-shell"
+    >
+      Uploading a pre-receive hook environment via the administrative shell
+    </h2>
+    <ol type="1">
+      <li>
+        Upload a readable <code>*.tar.gz</code> file that contains your
+        environment to a web host and copy the URL or transfer the file to the
+        {% data variables.product.prodname_ghe_server %} appliance via
+        <code>scp</code>. When using <code>scp</code>, you may need to adjust
+        the <code>*.tar.gz</code> file permissions so that the file is world
+        readable.
+      </li>
+      <li>Connect to the administrative shell.</li>
+      <li>
+        Use the <code>ghe-hook-env-create</code> command and type the name you
+        want for the environment as the first argument and the full local path
+        or URL of a <code>*.tar.gz</code> file that contains your environment as
+        the second argument.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>admin@ghe-host:~$ ghe-hook-env-create AlpineTestEnv /home/admin/alpine-3.3.tar.gz
+&gt; Pre-receive hook environment &#39;AlpineTestEnv&#39; (2) has been created.</code></pre>
+  </body>
+</html>

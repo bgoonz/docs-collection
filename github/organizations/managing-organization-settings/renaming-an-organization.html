@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Renaming an organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Renaming an organization</h1>
+</header>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> Only organization owners can rename an organization. {% data reusables.organizations.new-org-permissions-more-info %}</p>
+<p>{% endtip %}</p>
+<h2 id="what-happens-when-i-change-my-organizations-name">What happens when I change my organization’s name?</h2>
+<p>After changing your organization’s name, your old organization name becomes available for someone else to claim. When you change your organization’s name, most references to your repositories under the old organization name automatically change to the new name. However, some links to your profile won’t automatically redirect.</p>
+<h3 id="changes-that-occur-automatically">Changes that occur automatically</h3>
+<ul>
+<li>{% data variables.product.prodname_dotcom %} automatically redirects references to your repositories. Web links to your organization’s existing <strong>repositories</strong> will continue to work. This can take a few minutes to complete after you initiate the change.</li>
+<li>You can continue pushing your local repositories to the old remote tracking URL without updating it. However, we recommend you update all existing remote repository URLs after changing your organization name. Because your old organization name is available for use by anyone else after you change it, the new organization owner can create repositories that override the redirect entries to your repository. For more information, see “<a href="/github/getting-started-with-github/managing-remote-repositories">Managing remote repositories</a>.”</li>
+<li>Previous Git commits will also be correctly attributed to users within your organization.</li>
+</ul>
+<h3 id="changes-that-arent-automatic">Changes that aren’t automatic</h3>
+<p>After changing your organization’s name: - Links to your previous organization profile page, such as <code>https://{% data variables.command_line.backticks %}/previousorgname</code>, will return a 404 error. We recommend you update links to your organization from other sites{% ifversion fpt %}, such as your LinkedIn or Twitter profiles{% endif %}. - API requests that use the old organization’s name will return a 404 error. We recommend you update the old organization name in your API requests. - There are no automatic <span class="citation" data-cites="mention">[@mention]</span>(/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams) redirects for teams that use the old organization’s name.{% ifversion fpt %} - If SAML single sign-on (SSO) is enabled for the organization, you must update the organization name in the application for {% data variables.product.prodname_ghe_cloud %} on your identity provider (IdP). If you don’t update the organization name on your IdP, members of the organization will no longer be able to authenticate with your IdP to access the organization’s resources. For more information, see “<a href="/github/setting-up-and-managing-organizations-and-teams/connecting-your-identity-provider-to-your-organization">Connecting your identity provider to your organization</a>.”{% endif %}</p>
+<h2 id="changing-your-organizations-name">Changing your organization’s name</h2>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} 4. Near the bottom of the settings page, under “Rename organization”, click <strong>Rename Organization</strong>. <img src="/assets/images/help/settings/settings-rename-organization.png" alt="Rename organization button" /></p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/why-are-my-commits-linked-to-the-wrong-user">Why are my commits linked to the wrong user?</a>”</li>
+</ul>
+</body>
+</html>

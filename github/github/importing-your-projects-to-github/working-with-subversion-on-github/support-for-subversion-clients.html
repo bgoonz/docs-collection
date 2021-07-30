@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Support for Subversion clients</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Support for Subversion clients</h1>
+</header>
+<p>GitHub supports Subversion clients via the HTTPS protocol. We use a Subversion bridge to communicate svn commands to GitHub.</p>
+<h2 id="supported-subversion-features-on-github">Supported Subversion features on GitHub</h2>
+<h3 id="checkout">Checkout</h3>
+<p>The first thing you’ll want to do is a Subversion checkout. Since Git clones keep the working directory (where you edit files) separate from the repository data, there is only one branch in the working directory at a time.</p>
+<p>Subversion checkouts are different: they mix the repository data in the working directories, so there is a working directory for each branch and tag you’ve checked out. For repositories with many branches and tags, checking out everything can be a bandwidth burden, so you should start with a partial checkout.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.copy-clone-url %}</p>
+<ol start="3" type="1">
+<li>Make an empty checkout of the repository:</li>
+</ol>
+<pre class="shell"><code>$ svn co --depth empty https://github.com/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;
+&gt; Checked out revision 1.
+$ cd &lt;em&gt;repo&lt;/em&gt;</code></pre>
+<ol start="4" type="1">
+<li>Get the <code>trunk</code> branch. The Subversion bridge maps trunk to the Git HEAD branch.</li>
+</ol>
+<pre class="shell"><code>$ svn up trunk
+&gt; A    trunk
+&gt; A    trunk/README.md
+&gt; A    trunk/gizmo.rb
+&gt; Updated to revision 1.</code></pre>
+<ol start="5" type="1">
+<li>Get an empty checkout of the <code>branches</code> directory. This is where all of the non-<code>HEAD</code> branches live, and where you’ll be making feature branches.</li>
+</ol>
+<pre class="shell"><code>$ svn up --depth empty branches
+Updated to revision 1.</code></pre>
+<h3 id="creating-branches">Creating branches</h3>
+<p>You can also create branches using the Subversion bridge to GitHub.</p>
+<p>From your svn client, make sure the default branch is current by updating <code>trunk</code>:</p>
+<pre class="shell"><code>$ svn up trunk
+&gt; At revision 1.</code></pre>
+<p>Next, you can use <code>svn copy</code> to create a new branch:</p>
+<pre class="shell"><code>$ svn copy trunk branches/more_awesome
+&gt; A    branches/more_awesome
+$ svn commit -m &#39;Added more_awesome topic branch&#39;
+&gt; Adding    branches/more_awesome
+
+&gt; Committed revision 2.</code></pre>
+<p>You can confirm that the new branch exists in the repository’s branch dropdown:</p>
+<figure>
+<img src="/assets/images/help/branch/svnflow-branch-snapshot.png" alt="branch-snapshot" /><figcaption>branch-snapshot</figcaption>
+</figure>
+<p>You can also confirm the new branch via the command line:</p>
+<pre class="shell"><code>$ git fetch
+&gt; From https://github.com/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;/
+&gt; * [new branch]    more_awesome -&gt; origin/more_awesome</code></pre>
+<h3 id="making-commits-to-subversion">Making commits to Subversion</h3>
+<p>After you’ve added some features and fixed some bugs, you’ll want to commit those changes to GitHub. This works just like the Subversion you’re used to. Edit your files, and use <code>svn commit</code> to record your changes:</p>
+<pre class="shell"><code>$ svn status
+&gt; M    gizmo.rb
+$ svn commit -m &#39;Guard against known problems&#39;
+&gt; Sending    more_awesome/gizmo.rb
+&gt; Transmitting file data .
+&gt; Committed revision 3.
+$ svn status
+&gt; ?    test
+$ svn add test
+&gt; A    test
+&gt; A    test/gizmo_test.rb
+$ svn commit -m &#39;Test coverage for problems&#39;
+&gt; Adding    more_awesome/test
+&gt; Adding    more_awesome/test/gizmo_test.rb
+&gt; Transmitting file data .
+&gt; Committed revision 4.</code></pre>
+<h3 id="switching-between-branches">Switching between branches</h3>
+<p>To switch between branches, you’ll probably want to start with a checkout of <code>trunk</code>:</p>
+<pre class="shell"><code>$ svn co --depth empty https://github.com/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;/trunk</code></pre>
+<p>Then, you can switch to another branch:</p>
+<pre class="shell"><code>$ svn switch https://github.com/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;/branches/more_awesome</code></pre>
+<h2 id="finding-the-git-commit-sha-for-a-subversion-commit">Finding the Git commit SHA for a Subversion commit</h2>
+<p>GitHub’s Subversion server exposes the Git commit sha for each Subversion commit.</p>
+<p>To see the commit SHA, you should ask for the <code>git-commit</code> unversioned remote property.</p>
+<pre class="shell"><code>$ svn propget git-commit --revprop -r HEAD https://github.com/&lt;em&gt;user&lt;/em&gt;/&lt;em&gt;repo&lt;/em&gt;
+05fcc584ed53d7b0c92e116cb7e64d198b13c4e3</code></pre>
+<p>With this commit SHA, you can, for example, look up the corresponding Git commit on GitHub.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/subversion-properties-supported-by-github">Subversion properties supported by GitHub</a>”</li>
+</ul>
+</body>
+</html>

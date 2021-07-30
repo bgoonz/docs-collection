@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Syncing a fork</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Syncing a fork</h1>
+</header>
+<p>{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}</p>
+<h2 id="syncing-a-fork-from-the-web-ui">Syncing a fork from the web UI</h2>
+<ol type="1">
+<li>On {% data variables.product.product_name %}, navigate to the main page of the forked repository that you want to sync with the upstream repository.</li>
+<li>Select the <strong>Fetch upstream</strong> drop-down. <img src="/assets/images/help/repository/fetch-upstream-drop-down.png" alt="“Fetch upstream” drop-down" /></li>
+<li>Review the details about the commits from the upstream repository, then click <strong>Fetch and merge</strong>. <img src="/assets/images/help/repository/fetch-and-merge-button.png" alt="“Fetch and merge” button" /></li>
+</ol>
+<p>If the changes from the upstream repository cause conflicts, {% data variables.product.company_short %} will prompt you to create a pull request to resolve the conflicts.</p>
+<h2 id="syncing-a-fork-from-the-command-line">Syncing a fork from the command line</h2>
+<p>{% endif %} Before you can sync your fork with an upstream repository, you must <a href="/articles/configuring-a-remote-for-a-fork">configure a remote that points to the upstream repository</a> in Git.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Change the current working directory to your local project. 3. Fetch the branches and their respective commits from the upstream repository. Commits to <code>BRANCHNAME</code> will be stored in the local branch <code>upstream/BRANCHNAME</code>. <code>shell   $ git fetch upstream   &gt; remote: Counting objects: 75, done.   &gt; remote: Compressing objects: 100% (53/53), done.   &gt; remote: Total 62 (delta 27), reused 44 (delta 9)   &gt; Unpacking objects: 100% (62/62), done.   &gt; From https://{% data variables.command_line.codeblock %}/&lt;em&gt;ORIGINAL_OWNER&lt;/em&gt;/&lt;em&gt;ORIGINAL_REPOSITORY&lt;/em&gt;   &gt;  * [new branch]      main     -&gt; upstream/main</code> 4. Check out your fork’s local default branch - in this case, we use <code>main</code>. <code>shell   $ git checkout main   &gt; Switched to branch 'main'</code> 5. Merge the changes from the upstream default branch - in this case, <code>upstream/main</code> - into your local default branch. This brings your fork’s default branch into sync with the upstream repository, without losing your local changes. <code>shell   $ git merge upstream/main   &gt; Updating a422352..5fdff0f   &gt; Fast-forward   &gt;  README                    |    9 -------   &gt;  README.md                 |    7 ++++++   &gt;  2 files changed, 7 insertions(+), 9 deletions(-)   &gt;  delete mode 100644 README   &gt;  create mode 100644 README.md</code> If your local branch didn’t have any unique commits, Git will instead perform a “fast-forward”: <code>shell   $ git merge upstream/main   &gt; Updating 34e91da..16c56ad   &gt; Fast-forward   &gt;  README.md                 |    5 +++--   &gt;  1 file changed, 3 insertions(+), 2 deletions(-)</code></p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: Syncing your fork only updates your local copy of the repository. To update your fork on {% data variables.product.product_location %}, you must <a href="/github/getting-started-with-github/pushing-commits-to-a-remote-repository/">push your changes</a>.</p>
+<p>{% endtip %}</p>
+</body>
+</html>

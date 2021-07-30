@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Customizing dependency updates</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Customizing dependency updates</h1>
+</header>
+<h2 id="about-customizing-dependency-updates">About customizing dependency updates</h2>
+<p>After you’ve enabled version updates, you can customize how {% data variables.product.prodname_dependabot %} maintains your dependencies by adding further options to the <em>dependabot.yml</em> file. For example, you could:</p>
+<ul>
+<li>Specify which day of the week to open pull requests for version updates: <code>schedule.day</code></li>
+<li>Set reviewers, assignees, and labels for each package manager: <code>reviewers</code>, <code>assignees</code>, and <code>labels</code></li>
+<li>Define a versioning strategy for changes to each manifest file: <code>versioning-strategy</code></li>
+<li>Change the maximum number of open pull requests for version updates from the default of 5: <code>open-pull-requests-limit</code></li>
+<li>Open pull requests for version updates to target a specific branch, instead of the default branch: <code>target-branch</code></li>
+</ul>
+<p>For more information about the configuration options, see “<a href="/github/administering-a-repository/configuration-options-for-dependency-updates">Configuration options for dependency updates</a>.”</p>
+<p>When you update the <em>dependabot.yml</em> file in your repository, {% data variables.product.prodname_dependabot %} runs an immediate check with the new configuration. Within minutes you will see an updated list of dependencies on the <strong>{% data variables.product.prodname_dependabot %}</strong> tab, this may take longer if the repository has many dependencies. You may also see new pull requests for version updates. For more information, see “<a href="/github/administering-a-repository/listing-dependencies-configured-for-version-updates">Listing dependencies configured for version updates</a>.”</p>
+<h2 id="impact-of-configuration-changes-on-security-updates">Impact of configuration changes on security updates</h2>
+<p>If you customize the <em>dependabot.yml</em> file, you may notice some changes to the pull requests raised for security updates. These pull requests are always triggered by a security advisory for a dependency, rather than by the {% data variables.product.prodname_dependabot %} schedule. However, they inherit relevant configuration settings from the <em>dependabot.yml</em> file unless you specify a different target branch for version updates.</p>
+<p>For an example, see “<a href="#setting-custom-labels">Setting custom labels</a>” below.</p>
+<h2 id="modifying-scheduling">Modifying scheduling</h2>
+<p>When you set a <code>daily</code> update schedule, by default, {% data variables.product.prodname_dependabot %} checks for new versions at 05:00 UTC. You can use <code>schedule.time</code> to specify an alternative time of day to check for updates (format: <code>hh:mm</code>).</p>
+<p>The example <em>dependabot.yml</em> file below expands the npm configuration to specify when {% data variables.product.prodname_dependabot %} should check for version updates to dependencies.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># dependabot.yml file with</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># customized schedule for version updates</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="fu">version:</span><span class="at"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">updates:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co"># Keep npm dependencies up to date</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="kw">-</span> <span class="fu">package-ecosystem:</span><span class="at"> </span><span class="st">&quot;npm&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="fu">directory:</span><span class="at"> </span><span class="st">&quot;/&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="co"># Check the npm registry for updates at 2am UTC</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="fu">interval:</span><span class="at"> </span><span class="st">&quot;daily&quot;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="fu">time:</span><span class="at"> </span><span class="st">&quot;02:00&quot;</span></a></code></pre></div>
+<h2 id="setting-reviewers-and-assignees">Setting reviewers and assignees</h2>
+<p>By default, {% data variables.product.prodname_dependabot %} raises pull requests without any reviewers or assignees.</p>
+<p>You can use <code>reviewers</code> and <code>assignees</code> to specify reviewers and assignees for all pull requests raised for a package manager. When you specify a team, you must use the full team name, as if you were <span class="citation" data-cites="mentioning">@mentioning</span> the team (including the organization).</p>
+<p>The example <em>dependabot.yml</em> file below changes the npm configuration so that all pull requests opened with version and security updates for npm will have two reviewers and one assignee.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># dependabot.yml file with</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># reviews and an assignee for all npm pull requests</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="fu">version:</span><span class="at"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="fu">updates:</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="co"># Keep npm dependencies up to date</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="kw">-</span> <span class="fu">package-ecosystem:</span><span class="at"> </span><span class="st">&quot;npm&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="fu">directory:</span><span class="at"> </span><span class="st">&quot;/&quot;</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="fu">interval:</span><span class="at"> </span><span class="st">&quot;daily&quot;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="co"># Raise all npm pull requests with reviewers</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="fu">reviewers:</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="kw">-</span> <span class="st">&quot;my-org/team-name&quot;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="kw">-</span> <span class="st">&quot;octocat&quot;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="co"># Raise all npm pull requests with an assignee</span></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="fu">assignees:</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="kw">-</span> <span class="st">&quot;user-name&quot;</span></a></code></pre></div>
+<h2 id="setting-custom-labels">Setting custom labels</h2>
+<p>{% data reusables.dependabot.default-labels %}</p>
+<p>You can use <code>labels</code> to override the default labels and specify alternative labels for all pull requests raised for a package manager. You can’t create new labels in the <em>dependabot.yml</em> file, so the alternative labels must already exist in the repository.</p>
+<p>The example <em>dependabot.yml</em> file below changes the npm configuration so that all pull requests opened with version and security updates for npm will have custom labels. It also changes the Docker configuration to check for version updates against a custom branch and to raise pull requests with custom labels against that custom branch. The changes to Docker will not affect security update pull requests because security updates are always made against the default branch.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The new <code>target-branch</code> must contain a Dockerfile to update, otherwise this change will have the effect of disabling version updates for Docker.</p>
+<p>{% endnote %}</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># dependabot.yml file with</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># customized npm configuration</span></a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="fu">version:</span><span class="at"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="fu">updates:</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="co"># Keep npm dependencies up to date</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">-</span> <span class="fu">package-ecosystem:</span><span class="at"> </span><span class="st">&quot;npm&quot;</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="fu">directory:</span><span class="at"> </span><span class="st">&quot;/&quot;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb3-10" title="10">      <span class="fu">interval:</span><span class="at"> </span><span class="st">&quot;daily&quot;</span></a>
+<a class="sourceLine" id="cb3-11" title="11">    <span class="co"># Raise all npm pull requests with custom labels</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="fu">labels:</span></a>
+<a class="sourceLine" id="cb3-13" title="13">      <span class="kw">-</span> <span class="st">&quot;npm dependencies&quot;</span></a>
+<a class="sourceLine" id="cb3-14" title="14">      <span class="kw">-</span> <span class="st">&quot;triage-board&quot;</span></a>
+<a class="sourceLine" id="cb3-15" title="15"></a>
+<a class="sourceLine" id="cb3-16" title="16">    <span class="co"># Keep Docker dependencies up to date</span></a>
+<a class="sourceLine" id="cb3-17" title="17">  <span class="kw">-</span> <span class="fu">package-ecosystem:</span><span class="at"> </span><span class="st">&quot;docker&quot;</span></a>
+<a class="sourceLine" id="cb3-18" title="18">    <span class="fu">directory:</span><span class="at"> </span><span class="st">&quot;/&quot;</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb3-20" title="20">      <span class="fu">interval:</span><span class="at"> </span><span class="st">&quot;daily&quot;</span></a>
+<a class="sourceLine" id="cb3-21" title="21">    <span class="co"># Raise pull requests for Docker version updates</span></a>
+<a class="sourceLine" id="cb3-22" title="22">    <span class="co"># against the &quot;develop&quot; branch. The Docker configuration</span></a>
+<a class="sourceLine" id="cb3-23" title="23">    <span class="co"># no longer affects security update pull requests.</span></a>
+<a class="sourceLine" id="cb3-24" title="24">    <span class="fu">target-branch:</span><span class="at"> </span><span class="st">&quot;develop&quot;</span></a>
+<a class="sourceLine" id="cb3-25" title="25">    <span class="co"># Use custom labels on pull requests for Docker version updates</span></a>
+<a class="sourceLine" id="cb3-26" title="26">    <span class="fu">labels:</span></a>
+<a class="sourceLine" id="cb3-27" title="27">      <span class="kw">-</span> <span class="st">&quot;Docker dependencies&quot;</span></a>
+<a class="sourceLine" id="cb3-28" title="28">      <span class="kw">-</span> <span class="st">&quot;triage-board&quot;</span></a></code></pre></div>
+<h2 id="more-examples">More examples</h2>
+<p>For more examples, see “<a href="/github/administering-a-repository/configuration-options-for-dependency-updates">Configuration options for dependency updates</a>.”</p>
+</body>
+</html>

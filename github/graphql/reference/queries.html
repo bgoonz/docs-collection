@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries</h1>
+</header>
+<h2 id="about-queries">About queries</h2>
+<p>Every GraphQL schema has a root type for both queries and mutations. The <a href="https://graphql.github.io/graphql-spec/June2018/#sec-Type-System">query type</a> defines GraphQL operations that retrieve data from the server.</p>
+<p>For more information, see “<a href="/graphql/guides/forming-calls-with-graphql#about-queries">About queries</a>.”</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> For <a href="/developers/apps/identifying-and-authorizing-users-for-github-apps#user-to-server-requests">user-to-server</a> {% data variables.product.prodname_github_app %} requests, you should use separate queries for issues and pull requests. For example, use the <code>is:issue</code> or <code>is:pull-request</code> filters and their equivalents. Using the <code>search</code> connection to return a combination of issues and pull requests in a single query will result in an empty set of nodes.</p>
+<p>{% endnote %}</p>
+<h2 id="connections">Connections</h2>
+<p>{% for item in graphql.schemaForCurrentVersion.queries.connections %} {% include graphql-query %} {% endfor %}</p>
+<h2 id="fields">Fields</h2>
+<p>{% for item in graphql.schemaForCurrentVersion.queries.fields %} {% include graphql-query %} {% endfor %}</p>
+</body>
+</html>

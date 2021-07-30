@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Creating a GitHub App using URL parameters</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Creating a GitHub App using URL parameters</h1>
+</header>
+<h2 id="about-data-variables.product.prodname_github_app-url-parameters">About {% data variables.product.prodname_github_app %} URL parameters</h2>
+<p>You can add query parameters to these URLs to preselect the configuration of a {% data variables.product.prodname_github_app %} on a personal or organization account:</p>
+<ul>
+<li><strong>User account:</strong> <code>{% data variables.product.oauth_host_code %}/settings/apps/new</code></li>
+<li><strong>Organization account:</strong> <code>{% data variables.product.oauth_host_code %}/organizations/:org/settings/apps/new</code></li>
+</ul>
+<p>The person creating the app can edit the preselected values from the {% data variables.product.prodname_github_app %} registration page, before submitting the app. If you do not include required parameters in the URL query string, like <code>name</code>, the person creating the app will need to input a value before submitting the app.</p>
+<p>{% ifversion ghes &gt; 3.1 or fpt or ghae-next %} For apps that require a secret to secure their webhook, the secret’s value must be set in the form by the person creating the app, not by using query parameters. For more information, see “<a href="/developers/webhooks-and-events/webhooks/securing-your-webhooks">Securing your webhooks</a>.” {% endif %}</p>
+<p>The following URL creates a new public app called <code>octocat-github-app</code> with a preconfigured description and callback URL. This URL also selects read and write permissions for <code>checks</code>, subscribes to the <code>check_run</code> and <code>check_suite</code> webhook events, and selects the option to request user authorization (OAuth) during installation:</p>
+<p>{% ifversion fpt or ghae-next or ghes &gt; 3.0 %}</p>
+<pre class="text"><code>{% data variables.product.oauth_host_code %}/settings/apps/new?name=octocat-github-app&amp;description=An%20Octocat%20App&amp;callback_urls[]=https://example.com&amp;request_oauth_on_install=true&amp;public=true&amp;checks=write&amp;events[]=check_run&amp;events[]=check_suite</code></pre>
+<p>{% else %}</p>
+<pre class="text"><code>{% data variables.product.oauth_host_code %}/settings/apps/new?name=octocat-github-app&amp;description=An%20Octocat%20App&amp;callback_url=https://example.com&amp;request_oauth_on_install=true&amp;public=true&amp;checks=write&amp;events[]=check_run&amp;events[]=check_suite</code></pre>
+<p>{% endif %}</p>
+<p>The complete list of available query parameters, permissions, and events is listed in the sections below.</p>
+<h2 id="data-variables.product.prodname_github_app-configuration-parameters">{% data variables.product.prodname_github_app %} configuration parameters</h2>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 25%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the {% data variables.product.prodname_github_app %}. Give your app a clear and succinct name. Your app cannot have the same name as an existing GitHub user, unless it is your own user or organization name. A slugged version of your app’s name will be shown in the user interface when your integration takes an action.</td>
+</tr>
+<tr class="even">
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>A description of the {% data variables.product.prodname_github_app %}.</td>
+</tr>
+<tr class="odd">
+<td><code>url</code></td>
+<td><code>string</code></td>
+<td>The full URL of your {% data variables.product.prodname_github_app %}’s website homepage.{% ifversion fpt or ghae-next or ghes &gt; 3.0 %}</td>
+</tr>
+<tr class="even">
+<td><code>callback_urls</code></td>
+<td><code>array of strings</code></td>
+<td>A full URL to redirect to after someone authorizes an installation. You can provide up to 10 callback URLs. These URLs are used if your app needs to identify and authorize user-to-server requests. For example, <code>callback_urls[]=https://example.com&amp;callback_urls[]=https://example-2.com</code>.{% else %}</td>
+</tr>
+<tr class="odd">
+<td><code>callback_url</code></td>
+<td><code>string</code></td>
+<td>The full URL to redirect to after someone authorizes an installation. This URL is used if your app needs to identify and authorize user-to-server requests.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>request_oauth_on_install</code></td>
+<td><code>boolean</code></td>
+<td>If your app authorizes users using the OAuth flow, you can set this option to <code>true</code> to allow people to authorize the app when they install it, saving a step. If you select this option, the <code>setup_url</code> becomes unavailable and users will be redirected to your <code>callback_url</code> after installing the app.</td>
+</tr>
+<tr class="odd">
+<td><code>setup_url</code></td>
+<td><code>string</code></td>
+<td>The full URL to redirect to after someone installs the {% data variables.product.prodname_github_app %} if the app requires additional setup after installation.</td>
+</tr>
+<tr class="even">
+<td><code>setup_on_update</code></td>
+<td><code>boolean</code></td>
+<td>Set to <code>true</code> to redirect people to the setup URL when installations have been updated, for example, after repositories are added or removed.</td>
+</tr>
+<tr class="odd">
+<td><code>public</code></td>
+<td><code>boolean</code></td>
+<td>Set to <code>true</code> when your {% data variables.product.prodname_github_app %} is available to the public or <code>false</code> when it is only accessible to the owner of the app.</td>
+</tr>
+<tr class="even">
+<td><code>webhook_url</code></td>
+<td><code>string</code></td>
+<td>The full URL that you would like to send webhook event payloads to.</td>
+</tr>
+<tr class="odd">
+<td>{% ifversion ghes &lt; 3.2 or ghae %}<code>webhook_secret</code></td>
+<td><code>string</code></td>
+<td>You can specify a secret to secure your webhooks. See “<a href="/webhooks/securing/">Securing your webhooks</a>” for more details.</td>
+</tr>
+<tr class="even">
+<td>{% endif %}<code>events</code></td>
+<td><code>array of strings</code></td>
+<td>Webhook events. Some webhook events require <code>read</code> or <code>write</code> permissions for a resource before you can select the event when registering a new {% data variables.product.prodname_github_app %}. See the “<a href="#github-app-webhook-events">{% data variables.product.prodname_github_app %} webhook events</a>” section for available events and their required permissions. You can select multiple events in a query string. For example, <code>events[]=public&amp;events[]=label</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>domain</code></td>
+<td><code>string</code></td>
+<td>The URL of a content reference.</td>
+</tr>
+<tr class="even">
+<td><code>single_file_name</code></td>
+<td><code>string</code></td>
+<td>This is a narrowly-scoped permission that allows the app to access a single file in any repository. When you set the <code>single_file</code> permission to <code>read</code> or <code>write</code>, this field provides the path to the single file your {% data variables.product.prodname_github_app %} will manage. {% ifversion fpt or ghes &gt; 2.22 %} If you need to manage multiple files, see <code>single_file_paths</code> below. {% endif %}{% ifversion fpt or ghes &gt; 2.22 %}</td>
+</tr>
+<tr class="odd">
+<td><code>single_file_paths</code></td>
+<td><code>array of strings</code></td>
+<td>This allows the app to access up ten specified files in a repository. When you set the <code>single_file</code> permission to <code>read</code> or <code>write</code>, this array can store the paths for up to ten files that your {% data variables.product.prodname_github_app %} will manage. These files all receive the same permission set by <code>single_file</code>, and do not have separate individual permissions. When two or more files are configured, the API returns <code>multiple_single_files=true</code>, otherwise it returns <code>multiple_single_files=false</code>.{% endif %}</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-variables.product.prodname_github_app-permissions">{% data variables.product.prodname_github_app %} permissions</h2>
+<p>You can select permissions in a query string using the permission name in the following table as the query parameter name and the permission type as the query value. For example, to select <code>Read &amp; write</code> permissions in the user interface for <code>contents</code>, your query string would include <code>&amp;contents=write</code>. To select <code>Read-only</code> permissions in the user interface for <code>blocking</code>, your query string would include <code>&amp;blocking=read</code>. To select <code>no-access</code> in the user interface for <code>checks</code>, your query string would not include the <code>checks</code> permission.</p>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-administration"><code>administration</code></a></td>
+<td>Grants access to various endpoints for organization and repository administration. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-blocking"><code>blocking</code></a></td>
+<td>Grants access to the <a href="/rest/reference/users#blocking">Blocking Users API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-checks"><code>checks</code></a></td>
+<td>Grants access to the <a href="/rest/reference/checks">Checks API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><code>content_references</code></td>
+<td>Grants access to the “<a href="/rest/reference/apps#create-a-content-attachment">Create a content attachment</a>” endpoint. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-contents"><code>contents</code></a></td>
+<td>Grants access to various endpoints that allow you to modify repository contents. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-deployments"><code>deployments</code></a></td>
+<td>Grants access to the <a href="/rest/reference/repos#deployments">Deployments API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% ifversion fpt or ghes %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-emails"><code>emails</code></a></td>
+<td>Grants access to the <a href="/rest/reference/users#emails">Emails API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-followers"><code>followers</code></a></td>
+<td>Grants access to the <a href="/rest/reference/users#followers">Followers API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-gpg-keys"><code>gpg_keys</code></a></td>
+<td>Grants access to the <a href="/rest/reference/users#gpg-keys">GPG Keys API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-issues"><code>issues</code></a></td>
+<td>Grants access to the <a href="/rest/reference/issues">Issues API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-keys"><code>keys</code></a></td>
+<td>Grants access to the <a href="/rest/reference/users#keys">Public Keys API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-members"><code>members</code></a></td>
+<td>Grants access to manage an organization’s members. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% ifversion fpt %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#metadata-permissions"><code>metadata</code></a></td>
+<td>Grants access to read-only endpoints that do not leak sensitive data. Can be <code>read</code> or <code>none</code>. Defaults to <code>read</code> when you set any permission, or defaults to <code>none</code> when you don’t specify any permissions for the {% data variables.product.prodname_github_app %}.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-organization-administration"><code>organization_administration</code></a></td>
+<td>Grants access to “<a href="/rest/reference/orgs#update-an-organization">Update an organization</a>” endpoint and the <a href="/rest/reference/interactions#set-interaction-restrictions-for-an-organization">Organization Interaction Restrictions API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-organization-hooks"><code>organization_hooks</code></a></td>
+<td>Grants access to the <a href="/rest/reference/orgs#webhooks/">Organization Webhooks API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><code>organization_plan</code></td>
+<td>Grants access to get information about an organization’s plan using the “<a href="/rest/reference/orgs#get-an-organization">Get an organization</a>” endpoint. Can be one of: <code>none</code> or <code>read</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-organization-projects"><code>organization_projects</code></a></td>
+<td>Grants access to the <a href="/rest/reference/projects">Projects API</a>. Can be one of: <code>none</code>, <code>read</code>, <code>write</code>, or <code>admin</code>.{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-organization-projects"><code>organization_user_blocking</code></a></td>
+<td>Grants access to the <a href="/rest/reference/orgs#blocking">Blocking Organization Users API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-pages"><code>pages</code></a></td>
+<td>Grants access to the <a href="/rest/reference/repos#pages">Pages API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><code>plan</code></td>
+<td>Grants access to get information about a user’s GitHub plan using the “<a href="/rest/reference/users#get-a-user">Get a user</a>” endpoint. Can be one of: <code>none</code> or <code>read</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-pull-requests"><code>pull_requests</code></a></td>
+<td>Grants access to various pull request endpoints. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-repository-hooks"><code>repository_hooks</code></a></td>
+<td>Grants access to the <a href="/rest/reference/repos#hooks">Repository Webhooks API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-repository-projects"><code>repository_projects</code></a></td>
+<td>Grants access to the <a href="/rest/reference/projects">Projects API</a>. Can be one of: <code>none</code>, <code>read</code>, <code>write</code>, or <code>admin</code>.{% ifversion fpt or ghes &gt; 3.0 %}</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-secret-scanning-alerts"><code>secret_scanning_alerts</code></a></td>
+<td>Grants access to the <a href="/rest/reference/secret-scanning">Secret scanning API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}{% ifversion fpt or ghes &gt; 2.21 %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-security-events"><code>security_events</code></a></td>
+<td>Grants access to the <a href="/rest/reference/code-scanning/">Code scanning API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-single-file"><code>single_file</code></a></td>
+<td>Grants access to the <a href="/rest/reference/repos#contents">Contents API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-starring"><code>starring</code></a></td>
+<td>Grants access to the <a href="/rest/reference/activity#starring">Starring API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-statuses"><code>statuses</code></a></td>
+<td>Grants access to the <a href="/rest/reference/repos#statuses">Statuses API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="/rest/reference/permissions-required-for-github-apps/#permission-on-team-discussions"><code>team_discussions</code></a></td>
+<td>Grants access to the <a href="/rest/reference/teams#discussions">Team Discussions API</a> and the <a href="/rest/reference/teams#discussion-comments">Team Discussion Comments API</a>. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.{% ifversion fpt or ghes %}</td>
+</tr>
+<tr class="even">
+<td><code>vulnerability_alerts</code></td>
+<td>Grants access to receive security alerts for vulnerable dependencies in a repository. See “<a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies/">About alerts for vulnerable dependencies</a>” to learn more. Can be one of: <code>none</code> or <code>read</code>.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>watching</code></td>
+<td>Grants access to list and change repositories a user is subscribed to. Can be one of: <code>none</code>, <code>read</code>, or <code>write</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-variables.product.prodname_github_app-webhook-events">{% data variables.product.prodname_github_app %} webhook events</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 39%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Webhook event name</th>
+<th>Required permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#check_run"><code>check_run</code></a></td>
+<td><code>checks</code></td>
+<td>{% data reusables.webhooks.check_run_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#check_suite"><code>check_suite</code></a></td>
+<td><code>checks</code></td>
+<td>{% data reusables.webhooks.check_suite_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#commit_comment"><code>commit_comment</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.commit_comment_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#content_reference"><code>content_reference</code></a></td>
+<td><code>content_references</code></td>
+<td>{% data reusables.webhooks.content_reference_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#create"><code>create</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.create_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#delete"><code>delete</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.delete_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#deployment"><code>deployment</code></a></td>
+<td><code>deployments</code></td>
+<td>{% data reusables.webhooks.deployment_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#deployment_status"><code>deployment_status</code></a></td>
+<td><code>deployments</code></td>
+<td>{% data reusables.webhooks.deployment_status_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#fork"><code>fork</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.fork_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#gollum"><code>gollum</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.gollum_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#issues"><code>issues</code></a></td>
+<td><code>issues</code></td>
+<td>{% data reusables.webhooks.issues_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#issue_comment"><code>issue_comment</code></a></td>
+<td><code>issues</code></td>
+<td>{% data reusables.webhooks.issue_comment_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#label"><code>label</code></a></td>
+<td><code>metadata</code></td>
+<td>{% data reusables.webhooks.label_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#member"><code>member</code></a></td>
+<td><code>members</code></td>
+<td>{% data reusables.webhooks.member_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#membership"><code>membership</code></a></td>
+<td><code>members</code></td>
+<td>{% data reusables.webhooks.membership_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#milestone"><code>milestone</code></a></td>
+<td><code>pull_request</code></td>
+<td>{% data reusables.webhooks.milestone_short_desc %}{% ifversion fpt %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#org_block"><code>org_block</code></a></td>
+<td><code>organization_administration</code></td>
+<td>{% data reusables.webhooks.org_block_short_desc %}{% endif %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#organization"><code>organization</code></a></td>
+<td><code>members</code></td>
+<td>{% data reusables.webhooks.organization_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#page_build"><code>page_build</code></a></td>
+<td><code>pages</code></td>
+<td>{% data reusables.webhooks.page_build_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#project"><code>project</code></a></td>
+<td><code>repository_projects</code> or <code>organization_projects</code></td>
+<td>{% data reusables.webhooks.project_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#project_card"><code>project_card</code></a></td>
+<td><code>repository_projects</code> or <code>organization_projects</code></td>
+<td>{% data reusables.webhooks.project_card_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#project_column"><code>project_column</code></a></td>
+<td><code>repository_projects</code> or <code>organization_projects</code></td>
+<td>{% data reusables.webhooks.project_column_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#public"><code>public</code></a></td>
+<td><code>metadata</code></td>
+<td>{% data reusables.webhooks.public_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#pull_request"><code>pull_request</code></a></td>
+<td><code>pull_requests</code></td>
+<td>{% data reusables.webhooks.pull_request_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#pull_request_review"><code>pull_request_review</code></a></td>
+<td><code>pull_request</code></td>
+<td>{% data reusables.webhooks.pull_request_review_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#pull_request_review_comment"><code>pull_request_review_comment</code></a></td>
+<td><code>pull_request</code></td>
+<td>{% data reusables.webhooks.pull_request_review_comment_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#push"><code>push</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.push_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#release"><code>release</code></a></td>
+<td><code>contents</code></td>
+<td>{% data reusables.webhooks.release_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#repository"><code>repository</code></a></td>
+<td><code>metadata</code></td>
+<td>{% data reusables.webhooks.repository_short_desc %}{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#repository_dispatch"><code>repository_dispatch</code></a></td>
+<td><code>contents</code></td>
+<td>Allows integrators using GitHub Actions to trigger custom events.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#status"><code>status</code></a></td>
+<td><code>statuses</code></td>
+<td>{% data reusables.webhooks.status_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#team"><code>team</code></a></td>
+<td><code>members</code></td>
+<td>{% data reusables.webhooks.team_short_desc %}</td>
+</tr>
+<tr class="odd">
+<td><a href="/webhooks/event-payloads/#team_add"><code>team_add</code></a></td>
+<td><code>members</code></td>
+<td>{% data reusables.webhooks.team_add_short_desc %}</td>
+</tr>
+<tr class="even">
+<td><a href="/webhooks/event-payloads/#watch"><code>watch</code></a></td>
+<td><code>metadata</code></td>
+<td>{% data reusables.webhooks.watch_short_desc %}</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

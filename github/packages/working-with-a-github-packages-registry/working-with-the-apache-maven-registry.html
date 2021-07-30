@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with the Apache Maven registry</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with the Apache Maven registry</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}</p>
+<p>{% data reusables.package_registry.admins-can-configure-package-types %}</p>
+<h2 id="authenticating-to-data-variables.product.prodname_registry">Authenticating to {% data variables.product.prodname_registry %}</h2>
+<p>{% data reusables.package_registry.authenticate-packages %}</p>
+<p>{% data reusables.package_registry.authenticate-packages-github-token %}</p>
+<h3 id="authenticating-with-a-personal-access-token">Authenticating with a personal access token</h3>
+<p>{% data reusables.package_registry.required-scopes %}</p>
+<p>You can authenticate to {% data variables.product.prodname_registry %} with Apache Maven by editing your <em>~/.m2/settings.xml</em> file to include your personal access token. Create a new <em>~/.m2/settings.xml</em> file if one doesn’t exist.</p>
+<p>In the <code>servers</code> tag, add a child <code>server</code> tag with an <code>id</code>, replacing <em>USERNAME</em> with your {% data variables.product.prodname_dotcom %} username, and <em>TOKEN</em> with your personal access token.</p>
+<p>In the <code>repositories</code> tag, configure a repository by mapping the <code>id</code> of the repository to the <code>id</code> you added in the <code>server</code> tag containing your credentials. Replace {% ifversion ghes or ghae %}<em>HOSTNAME</em> with the host name of {% data variables.product.product_location %}, and{% endif %} <em>OWNER</em> with the name of the user or organization account that owns the repository. Because uppercase letters aren’t supported, you must use lowercase letters for the repository owner even if the {% data variables.product.prodname_dotcom %} user or organization name contains uppercase letters.</p>
+<p>If you want to interact with multiple repositories, you can add each repository to separate <code>repository</code> children in the <code>repositories</code> tag, mapping the <code>id</code> of each to the credentials in the <code>servers</code> tag.</p>
+<p>{% data reusables.package_registry.apache-maven-snapshot-versions-supported %}</p>
+<p>{% ifversion ghes %} If your instance has subdomain isolation enabled: {% endif %}</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">&lt;settings</span><span class="ot"> xmlns=</span><span class="st">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ot">  xmlns:xsi=</span><span class="st">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ot">  xsi:schemaLocation=</span><span class="st">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="st">                      http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">&lt;activeProfiles&gt;</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="kw">&lt;activeProfile&gt;</span>github<span class="kw">&lt;/activeProfile&gt;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">&lt;/activeProfiles&gt;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="kw">&lt;profiles&gt;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="kw">&lt;profile&gt;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb1-13" title="13">      <span class="kw">&lt;repositories&gt;</span></a>
+<a class="sourceLine" id="cb1-14" title="14">        <span class="kw">&lt;repository&gt;</span></a>
+<a class="sourceLine" id="cb1-15" title="15">          <span class="kw">&lt;id&gt;</span>central<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb1-16" title="16">          <span class="kw">&lt;url&gt;</span>https://repo1.maven.org/maven2<span class="kw">&lt;/url&gt;</span></a>
+<a class="sourceLine" id="cb1-17" title="17">        <span class="kw">&lt;/repository&gt;</span></a>
+<a class="sourceLine" id="cb1-18" title="18">        <span class="kw">&lt;repository&gt;</span></a>
+<a class="sourceLine" id="cb1-19" title="19">          <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb1-20" title="20">          <span class="kw">&lt;url&gt;</span>https://{% ifversion fpt %}maven.pkg.github.com{% else %}maven.HOSTNAME{% endif %}/OWNER/*<span class="kw">&lt;/url&gt;</span></a>
+<a class="sourceLine" id="cb1-21" title="21">          <span class="kw">&lt;snapshots&gt;</span></a>
+<a class="sourceLine" id="cb1-22" title="22">            <span class="kw">&lt;enabled&gt;</span>true<span class="kw">&lt;/enabled&gt;</span></a>
+<a class="sourceLine" id="cb1-23" title="23">          <span class="kw">&lt;/snapshots&gt;</span></a>
+<a class="sourceLine" id="cb1-24" title="24">        <span class="kw">&lt;/repository&gt;</span></a>
+<a class="sourceLine" id="cb1-25" title="25">      <span class="kw">&lt;/repositories&gt;</span></a>
+<a class="sourceLine" id="cb1-26" title="26">    <span class="kw">&lt;/profile&gt;</span></a>
+<a class="sourceLine" id="cb1-27" title="27">  <span class="kw">&lt;/profiles&gt;</span></a>
+<a class="sourceLine" id="cb1-28" title="28"></a>
+<a class="sourceLine" id="cb1-29" title="29">  <span class="kw">&lt;servers&gt;</span></a>
+<a class="sourceLine" id="cb1-30" title="30">    <span class="kw">&lt;server&gt;</span></a>
+<a class="sourceLine" id="cb1-31" title="31">      <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb1-32" title="32">      <span class="kw">&lt;username&gt;</span>USERNAME<span class="kw">&lt;/username&gt;</span></a>
+<a class="sourceLine" id="cb1-33" title="33">      <span class="kw">&lt;password&gt;</span>TOKEN<span class="kw">&lt;/password&gt;</span></a>
+<a class="sourceLine" id="cb1-34" title="34">    <span class="kw">&lt;/server&gt;</span></a>
+<a class="sourceLine" id="cb1-35" title="35">  <span class="kw">&lt;/servers&gt;</span></a>
+<a class="sourceLine" id="cb1-36" title="36"><span class="kw">&lt;/settings&gt;</span></a></code></pre></div>
+<p>{% ifversion ghes %} If your instance has subdomain isolation disabled:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">&lt;settings</span><span class="ot"> xmlns=</span><span class="st">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="ot">  xmlns:xsi=</span><span class="st">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="ot">  xsi:schemaLocation=</span><span class="st">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="st">                      http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">&lt;activeProfiles&gt;</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="kw">&lt;activeProfile&gt;</span>github<span class="kw">&lt;/activeProfile&gt;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="kw">&lt;/activeProfiles&gt;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="kw">&lt;profiles&gt;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="kw">&lt;profile&gt;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="kw">&lt;repositories&gt;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="kw">&lt;repository&gt;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">          <span class="kw">&lt;id&gt;</span>central<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb2-16" title="16">          <span class="kw">&lt;url&gt;</span>https://repo1.maven.org/maven2<span class="kw">&lt;/url&gt;</span></a>
+<a class="sourceLine" id="cb2-17" title="17">        <span class="kw">&lt;/repository&gt;</span></a>
+<a class="sourceLine" id="cb2-18" title="18">        <span class="kw">&lt;repository&gt;</span></a>
+<a class="sourceLine" id="cb2-19" title="19">          <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb2-20" title="20">          <span class="kw">&lt;url&gt;</span>https://maven.pkg.github.com/OWNER/*<span class="kw">&lt;/url&gt;</span></a>
+<a class="sourceLine" id="cb2-21" title="21">          <span class="kw">&lt;snapshots&gt;</span></a>
+<a class="sourceLine" id="cb2-22" title="22">            <span class="kw">&lt;enabled&gt;</span>true<span class="kw">&lt;/enabled&gt;</span></a>
+<a class="sourceLine" id="cb2-23" title="23">          <span class="kw">&lt;/snapshots&gt;</span></a>
+<a class="sourceLine" id="cb2-24" title="24">        <span class="kw">&lt;/repository&gt;</span></a>
+<a class="sourceLine" id="cb2-25" title="25">      <span class="kw">&lt;/repositories&gt;</span></a>
+<a class="sourceLine" id="cb2-26" title="26">    <span class="kw">&lt;/profile&gt;</span></a>
+<a class="sourceLine" id="cb2-27" title="27">  <span class="kw">&lt;/profiles&gt;</span></a>
+<a class="sourceLine" id="cb2-28" title="28"></a>
+<a class="sourceLine" id="cb2-29" title="29">  <span class="kw">&lt;servers&gt;</span></a>
+<a class="sourceLine" id="cb2-30" title="30">    <span class="kw">&lt;server&gt;</span></a>
+<a class="sourceLine" id="cb2-31" title="31">      <span class="kw">&lt;id&gt;</span>github<span class="kw">&lt;/id&gt;</span></a>
+<a class="sourceLine" id="cb2-32" title="32">      <span class="kw">&lt;username&gt;</span>USERNAME<span class="kw">&lt;/username&gt;</span></a>
+<a class="sourceLine" id="cb2-33" title="33">      <span class="kw">&lt;password&gt;</span>TOKEN<span class="kw">&lt;/password&gt;</span></a>
+<a class="sourceLine" id="cb2-34" title="34">    <span class="kw">&lt;/server&gt;</span></a>
+<a class="sourceLine" id="cb2-35" title="35">  <span class="kw">&lt;/servers&gt;</span></a>
+<a class="sourceLine" id="cb2-36" title="36"><span class="kw">&lt;/settings&gt;</span></a></code></pre></div>
+<p>{% endif %}</p>
+<h2 id="publishing-a-package">Publishing a package</h2>
+<p>{% data reusables.package_registry.default-name %} For example, {% data variables.product.prodname_dotcom %} will publish a package named <code>com.example:test</code> in a repository called <code>OWNER/test</code>.</p>
+<p>If you would like to publish multiple packages to the same repository, you can include the URL of the repository in the <code>&lt;distributionManagement&gt;</code> element of the <em>pom.xml</em> file. {% data variables.product.prodname_dotcom %} will match the repository based on that field. Since the repository name is also part of the <code>distributionManagement</code> element, there are no additional steps to publish multiple packages to the same repository.</p>
+<p>For more information on creating a package, see the <a href="https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html">maven.apache.org documentation</a>.</p>
+<ol type="1">
+<li>Edit the <code>distributionManagement</code> element of the <em>pom.xml</em> file located in your package directory, replacing {% ifversion ghes or ghae %}<em>HOSTNAME</em> with the host name of {% data variables.product.product_location %}, {% endif %}<code>OWNER</code> with the name of the user or organization account that owns the repository and <code>REPOSITORY</code> with the name of the repository containing your project.{% ifversion ghes %}</li>
+</ol>
+<p>If your instance has subdomain isolation enabled:{% endif %} <code>xml   &lt;distributionManagement&gt;      &lt;repository&gt;        &lt;id&gt;github&lt;/id&gt;        &lt;name&gt;GitHub OWNER Apache Maven Packages&lt;/name&gt;        &lt;url&gt;https://{% ifversion fpt %}maven.pkg.github.com{% else %}maven.HOSTNAME{% endif %}/OWNER/REPOSITORY&lt;/url&gt;      &lt;/repository&gt;   &lt;/distributionManagement&gt;</code>{% ifversion ghes %} If your instance has subdomain isolation disabled: <code>xml   &lt;distributionManagement&gt;      &lt;repository&gt;        &lt;id&gt;github&lt;/id&gt;        &lt;name&gt;GitHub OWNER Apache Maven Packages&lt;/name&gt;        &lt;url&gt;https://HOSTNAME/_registry/maven/OWNER/REPOSITORY&lt;/url&gt;      &lt;/repository&gt;   &lt;/distributionManagement&gt;</code>{% endif %} {% data reusables.package_registry.checksum-maven-plugin %} 1. Publish the package. <code>shell    $ mvn deploy</code></p>
+<p>{% data reusables.package_registry.viewing-packages %}</p>
+<h2 id="installing-a-package">Installing a package</h2>
+<p>To install an Apache Maven package from {% data variables.product.prodname_registry %}, edit the <em>pom.xml</em> file to include the package as a dependency. If you want to install packages from more than one repository, add a <code>repository</code> tag for each. For more information on using a <em>pom.xml</em> file in your project, see “<a href="https://maven.apache.org/guides/introduction/introduction-to-the-pom.html">Introduction to the POM</a>” in the Apache Maven documentation.</p>
+<p>{% data reusables.package_registry.authenticate-step %} 2. Add the package dependencies to the <code>dependencies</code> element of your project <em>pom.xml</em> file, replacing <code>com.example:test</code> with your package.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">&lt;dependencies&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">&lt;dependency&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="kw">&lt;groupId&gt;</span>com.example<span class="kw">&lt;/groupId&gt;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="kw">&lt;artifactId&gt;</span>test<span class="kw">&lt;/artifactId&gt;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="kw">&lt;version&gt;</span>1.0.0-SNAPSHOT<span class="kw">&lt;/version&gt;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="kw">&lt;/dependency&gt;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">&lt;/dependencies&gt;</span></a></code></pre></div>
+<p>{% data reusables.package_registry.checksum-maven-plugin %} 3. Install the package.</p>
+<pre class="shell"><code>$ mvn install</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry">Working with the Gradle registry</a>”</li>
+<li>“{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Deleting a package</a>{% endif %}”</li>
+</ul>
+</body>
+</html>

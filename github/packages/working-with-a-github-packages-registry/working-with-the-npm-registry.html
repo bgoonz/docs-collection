@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with the npm registry</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with the npm registry</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}</p>
+<p>{% data reusables.package_registry.admins-can-configure-package-types %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Limits for published npm versions</p>
+<p>If you publish over 1,000 npm package versions to {% data variables.product.prodname_registry %}, you may see performance issues and timeouts occur during usage.</p>
+<p>In the future, to improve performance of the service, you won’t be able to publish more than 1,000 versions of a package on {% data variables.product.prodname_dotcom %}. Any versions published before hitting this limit will still be readable.</p>
+<p>If you reach this limit, consider deleting package versions or contact Support for help. When this limit is enforced, our documentation will be updated with a way to work around this limit. For more information, see “{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Deleting a package</a>{% endif %}” or “<a href="/packages/learn-github-packages/about-github-packages#contacting-support">Contacting Support</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="authenticating-to-data-variables.product.prodname_registry">Authenticating to {% data variables.product.prodname_registry %}</h2>
+<p>{% data reusables.package_registry.authenticate-packages %}</p>
+<p>{% data reusables.package_registry.authenticate-packages-github-token %}</p>
+<h3 id="authenticating-with-a-personal-access-token">Authenticating with a personal access token</h3>
+<p>{% data reusables.package_registry.required-scopes %}</p>
+<p>You can authenticate to {% data variables.product.prodname_registry %} with npm by either editing your per-user <em>~/.npmrc</em> file to include your personal access token or by logging in to npm on the command line using your username and personal access token.</p>
+<p>To authenticate by adding your personal access token to your <em>~/.npmrc</em> file, edit the <em>~/.npmrc</em> file for your project to include the following line, replacing {% ifversion ghes or ghae %}<em>HOSTNAME</em> with the host name of {% data variables.product.product_location %} and {% endif %}<em>TOKEN</em> with your personal access token. Create a new <em>~/.npmrc</em> file if one doesn’t exist.</p>
+<p>{% ifversion ghes %} If your instance has subdomain isolation enabled: {% endif %}</p>
+<pre class="shell"><code>//{% ifversion fpt %}npm.pkg.github.com{% else %}npm.&lt;em&gt;HOSTNAME&lt;/em&gt;/{% endif %}/:_authToken=&lt;em&gt;TOKEN&lt;/em&gt;</code></pre>
+<p>{% ifversion ghes %} If your instance has subdomain isolation disabled:</p>
+<pre class="shell"><code>//&lt;em&gt;HOSTNAME&lt;/em&gt;/_registry/npm/:_authToken=&lt;em&gt;TOKEN&lt;/em&gt;</code></pre>
+<p>{% endif %}</p>
+<p>To authenticate by logging in to npm, use the <code>npm login</code> command, replacing <em>USERNAME</em> with your {% data variables.product.prodname_dotcom %} username, <em>TOKEN</em> with your personal access token, and <em>PUBLIC-EMAIL-ADDRESS</em> with your email address.</p>
+<p>If {% data variables.product.prodname_registry %} is not your default package registry for using npm and you want to use the <code>npm audit</code> command, we recommend you use the <code>--scope</code> flag with the owner of the package when you authenticate to {% data variables.product.prodname_registry %}.</p>
+<p>{% ifversion ghes %} If your instance has subdomain isolation enabled: {% endif %}</p>
+<pre class="shell"><code>$ npm login --scope=@&lt;em&gt;OWNER&lt;/em&gt; --registry=https://{% ifversion fpt %}npm.pkg.github.com{% else %}npm.&lt;em&gt;HOSTNAME&lt;/em&gt;/{% endif %}
+
+&gt; Username: &lt;em&gt;USERNAME&lt;/em&gt;
+&gt; Password: &lt;em&gt;TOKEN&lt;/em&gt;
+&gt; Email: &lt;em&gt;PUBLIC-EMAIL-ADDRESS&lt;/em&gt;</code></pre>
+<p>{% ifversion ghes %} If your instance has subdomain isolation disabled:</p>
+<pre class="shell"><code>$ npm login --scope=@&lt;em&gt;OWNER&lt;/em&gt; --registry=https://&lt;em&gt;HOSTNAME&lt;/em&gt;/_registry/npm/
+&gt; Username: &lt;em&gt;USERNAME&lt;/em&gt;
+&gt; Password: &lt;em&gt;TOKEN&lt;/em&gt;
+&gt; Email: &lt;em&gt;PUBLIC-EMAIL-ADDRESS&lt;/em&gt;</code></pre>
+<p>{% endif %}</p>
+<h2 id="publishing-a-package">Publishing a package</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Package names and scopes must only use lowercase letters.</p>
+<p>{% endnote %}</p>
+<p>By default, {% data variables.product.prodname_registry %} publishes a package in the {% data variables.product.prodname_dotcom %} repository you specify in the name field of the <em>package.json</em> file. For example, you would publish a package named <code>@my-org/test</code> to the <code>my-org/test</code> {% data variables.product.prodname_dotcom %} repository. You can add a summary for the package listing page by including a <em>README.md</em> file in your package directory. For more information, see “<a href="https://docs.npmjs.com/getting-started/using-a-package.json">Working with package.json</a>” and “<a href="https://docs.npmjs.com/getting-started/creating-node-modules">How to create Node.js Modules</a>” in the npm documentation.</p>
+<p>You can publish multiple packages to the same {% data variables.product.prodname_dotcom %} repository by including a <code>URL</code> field in the <em>package.json</em> file. For more information, see “<a href="#publishing-multiple-packages-to-the-same-repository">Publishing multiple packages to the same repository</a>.”</p>
+<p>You can set up the scope mapping for your project using either a local <em>.npmrc</em> file in the project or using the <code>publishConfig</code> option in the <em>package.json</em>. {% data variables.product.prodname_registry %} only supports scoped npm packages. Scoped packages have names with the format of <code>@owner/name</code>. Scoped packages always begin with an <code>@</code> symbol. You may need to update the name in your <em>package.json</em> to use the scoped name. For example, <code>"name": "@codertocat/hello-world-npm"</code>.</p>
+<p>{% data reusables.package_registry.viewing-packages %}</p>
+<h3 id="publishing-a-package-using-a-local-.npmrc-file">Publishing a package using a local <em>.npmrc</em> file</h3>
+<p>You can use an <em>.npmrc</em> file to configure the scope mapping for your project. In the <em>.npmrc</em> file, use the {% data variables.product.prodname_registry %} URL and account owner so {% data variables.product.prodname_registry %} knows where to route package requests. Using an <em>.npmrc</em> file prevents other developers from accidentally publishing the package to npmjs.org instead of {% data variables.product.prodname_registry %}.</p>
+<p>{% data reusables.package_registry.authenticate-step %} {% data reusables.package_registry.create-npmrc-owner-step %} {% data reusables.package_registry.add-npmrc-to-repo-step %} 1. Verify the name of your package in your project’s <em>package.json</em>. The <code>name</code> field must contain the scope and the name of the package. For example, if your package is called “test”, and you are publishing to the “My-org” {% data variables.product.prodname_dotcom %} organization, the <code>name</code> field in your <em>package.json</em> should be <code>@my-org/test</code>. {% data reusables.package_registry.verify_repository_field %} {% data reusables.package_registry.publish_package %}</p>
+<h3 id="publishing-a-package-using-publishconfig-in-the-package.json-file">Publishing a package using <code>publishConfig</code> in the <em>package.json</em> file</h3>
+<p>You can use <code>publishConfig</code> element in the <em>package.json</em> file to specify the registry where you want the package published. For more information, see “<a href="https://docs.npmjs.com/files/package.json#publishconfig">publishConfig</a>” in the npm documentation.</p>
+<ol type="1">
+<li>Edit the <em>package.json</em> file for your package and include a <code>publishConfig</code> entry. {% ifversion ghes %} If your instance has subdomain isolation enabled: {% endif %}</li>
+</ol>
+<pre class="shell"><code>&quot;publishConfig&quot;: {
+  &quot;registry&quot;:&quot;https://{% ifversion fpt %}npm.pkg.github.com{% else %}npm.&lt;em&gt;HOSTNAME&lt;/em&gt;/{% endif %}&quot;
+},</code></pre>
+<p>{% ifversion ghes %} If your instance has subdomain isolation disabled: <code>shell    "publishConfig": {      "registry":"https://&lt;em&gt;HOSTNAME&lt;/em&gt;/_registry/npm/"    },</code> {% endif %} {% data reusables.package_registry.verify_repository_field %} {% data reusables.package_registry.publish_package %}</p>
+<h2 id="publishing-multiple-packages-to-the-same-repository">Publishing multiple packages to the same repository</h2>
+<p>To publish multiple packages to the same repository, you can include the URL of the {% data variables.product.prodname_dotcom %} repository in the <code>repository</code> field of the <em>package.json</em> file for each package.</p>
+<p>To ensure the repository’s URL is correct, replace REPOSITORY with the name of the repository containing the package you want to publish, and OWNER with the name of the user or organization account on {% data variables.product.prodname_dotcom %} that owns the repository.</p>
+<p>{% data variables.product.prodname_registry %} will match the repository based on the URL, instead of based on the package name.</p>
+<pre class="shell"><code>&quot;repository&quot;:&quot;https://{% ifversion fpt %}github.com{% else %}&lt;em&gt;HOSTNAME&lt;/em&gt;{% endif %}/&lt;em&gt;OWNER&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;&quot;,</code></pre>
+<h2 id="installing-a-package">Installing a package</h2>
+<p>You can install packages from {% data variables.product.prodname_registry %} by adding the packages as dependencies in the <em>package.json</em> file for your project. For more information on using a <em>package.json</em> in your project, see “<a href="https://docs.npmjs.com/getting-started/using-a-package.json">Working with package.json</a>” in the npm documentation.</p>
+<p>By default, you can add packages from one organization. For more information, see “<a href="#installing-packages-from-other-organizations">Installing packages from other organizations</a>.”</p>
+<p>You also need to add the <em>.npmrc</em> file to your project so all requests to install packages will go through {% data variables.product.prodname_registry %}. When you route all package requests through {% data variables.product.prodname_registry %}, you can use both scoped and unscoped packages from <em>npmjs.com</em>. For more information, see “<a href="https://docs.npmjs.com/misc/scope">npm-scope</a>” in the npm documentation.</p>
+<p>{% data reusables.package_registry.authenticate-step %} {% data reusables.package_registry.create-npmrc-owner-step %} {% data reusables.package_registry.add-npmrc-to-repo-step %} 4. Configure <em>package.json</em> in your project to use the package you are installing. To add your package dependencies to the <em>package.json</em> file for {% data variables.product.prodname_registry %}, specify the full-scoped package name, such as <code>@my-org/server</code>. For packages from <em>npmjs.com</em>, specify the full name, such as <code>@babel/core</code> or <code>@lodash</code>. For example, this following <em>package.json</em> uses the <code>@octo-org/octo-app</code> package as a dependency.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;@my-org/server&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;1.0.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Server app that uses the @octo-org/octo-app package&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  <span class="dt">&quot;author&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="dt">&quot;license&quot;</span><span class="fu">:</span> <span class="st">&quot;MIT&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="dt">&quot;@octo-org/octo-app&quot;</span><span class="fu">:</span> <span class="st">&quot;1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="fu">}</span></a></code></pre></div>
+<ol start="5" type="1">
+<li>Install the package.</li>
+</ol>
+<pre class="shell"><code>$ npm install</code></pre>
+<h3 id="installing-packages-from-other-organizations">Installing packages from other organizations</h3>
+<p>By default, you can only use {% data variables.product.prodname_registry %} packages from one organization. If you’d like to route package requests to multiple organizations and users, you can add additional lines to your <em>.npmrc</em> file, replacing {% ifversion ghes or ghae %}<em>HOSTNAME</em> with the host name of {% data variables.product.product_location %} and {% endif %}<em>OWNER</em> with the name of the user or organization account that owns the repository containing your project.</p>
+<p>{% ifversion ghes %} If your instance has subdomain isolation enabled: {% endif %}</p>
+<pre class="shell"><code>@&lt;em&gt;OWNER&lt;/em&gt;:registry=https://{% ifversion fpt %}npm.pkg.github.com{% else %}npm.&lt;em&gt;HOSTNAME&lt;/em&gt;{% endif %}
+@&lt;em&gt;OWNER&lt;/em&gt;:registry=https://{% ifversion fpt %}npm.pkg.github.com{% else %}npm.&lt;em&gt;HOSTNAME&lt;/em&gt;{% endif %}</code></pre>
+<p>{% ifversion ghes %} If your instance has subdomain isolation disabled:</p>
+<pre class="shell"><code>@&lt;em&gt;OWNER&lt;/em&gt;:registry=https://&lt;em&gt;HOSTNAME&lt;/em&gt;/_registry/npm
+@&lt;em&gt;OWNER&lt;/em&gt;:registry=https://&lt;em&gt;HOSTNAME&lt;/em&gt;/_registry/npm</code></pre>
+<p>{% endif %}</p>
+<p>{% ifversion ghes &gt; 2.22 %} ## Using the official NPM registry</p>
+<p>{% data variables.product.prodname_registry %} allows you to access the official NPM registry at <code>registry.npmjs.com</code>, if your {% data variables.product.prodname_ghe_server %} administrator has enabled this feature. For more information, see <a href="/admin/packages/configuring-packages-support-for-your-enterprise#connecting-to-the-official-npm-registry">Connecting to the official NPM registry</a>. {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Deleting a package</a>{% endif %}”</li>
+</ul>
+</body>
+</html>

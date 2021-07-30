@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authenticating with GitHub Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authenticating with GitHub Apps</h1>
+</header>
+<p>{% ifversion ghes &lt; 2.22 %} {% data reusables.pre-release-program.machine-man-preview %} {% data reusables.pre-release-program.api-preview-warning %} {% endif %}</p>
+<h2 id="generating-a-private-key">Generating a private key</h2>
+<p>After you create a GitHub App, you’ll need to generate one or more private keys. You’ll use the private key to sign access token requests.</p>
+<p>You can create multiple private keys and rotate them to prevent downtime if a key is compromised or lost. To verify that a private key matches a public key, see <a href="#verifying-private-keys">Verifying private keys</a>.</p>
+<p>To generate a private key:</p>
+<p>{% data reusables.user-settings.access_settings %} {% data reusables.user-settings.developer_settings %} {% data reusables.user-settings.github_apps %} {% data reusables.user-settings.modify_github_app %} 5. In “Private keys”, click <strong>Generate a private key</strong>. <img src="/assets/images/github-apps/github_apps_generate_private_keys.png" alt="Generate private key" /> 6. You will see a private key in PEM format downloaded to your computer. Make sure to store this file because GitHub only stores the public portion of the key.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you’re using a library that requires a specific file format, the PEM file you download will be in <code>PKCS#1 RSAPrivateKey</code> format.</p>
+<p>{% endnote %}</p>
+<h2 id="verifying-private-keys">Verifying private keys</h2>
+<p>{% data variables.product.product_name %} generates a fingerprint for each private and public key pair using the {% ifversion ghes &lt; 3.0 %}SHA-1{% else %}SHA-256{% endif %} hash function. You can verify that your private key matches the public key stored on {% data variables.product.product_name %} by generating the fingerprint of your private key and comparing it to the fingerprint shown on {% data variables.product.product_name %}.</p>
+<p>To verify a private key:</p>
+<ol type="1">
+<li>Find the fingerprint for the private and public key pair you want to verify in the “Private keys” section of your {% data variables.product.prodname_github_app %}’s developer settings page. For more information, see <a href="#generating-a-private-key">Generating a private key</a>. <img src="/assets/images/github-apps/github_apps_private_key_fingerprint.png" alt="Private key fingerprint" /></li>
+<li>Generate the fingerprint of your private key (PEM) locally by using the following command: <code>shell  $ openssl rsa -in &lt;em&gt;PATH_TO_PEM_FILE&lt;/em&gt; -pubout -outform DER | openssl {% ifversion ghes &lt; 3.0 %}sha1 -c{% else %}sha256 -binary | openssl base64{% endif %}</code></li>
+<li>Compare the results of the locally generated fingerprint to the fingerprint you see in {% data variables.product.product_name %}.</li>
+</ol>
+<h2 id="deleting-private-keys">Deleting private keys</h2>
+<p>You can remove a lost or compromised private key by deleting it, but you must have at least one private key. When you only have one key, you will need to generate a new one before deleting the old one. <img src="/assets/images/github-apps/github_apps_delete_key.png" alt="Deleting last private key" /></p>
+<h2 id="authenticating-as-a-data-variables.product.prodname_github_app">Authenticating as a {% data variables.product.prodname_github_app %}</h2>
+<p>Authenticating as a {% data variables.product.prodname_github_app %} lets you do a couple of things:</p>
+<ul>
+<li>You can retrieve high-level management information about your {% data variables.product.prodname_github_app %}.</li>
+<li>You can request access tokens for an installation of the app.</li>
+</ul>
+<p>To authenticate as a {% data variables.product.prodname_github_app %}, <a href="#generating-a-private-key">generate a private key</a> in PEM format and download it to your local machine. You’ll use this key to sign a <a href="https://jwt.io/introduction">JSON Web Token (JWT)</a> and encode it using the <code>RS256</code> algorithm. {% data variables.product.product_name %} checks that the request is authenticated by verifying the token with the app’s stored public key.</p>
+<p>Here’s a quick Ruby script you can use to generate a JWT. Note you’ll have to run <code>gem install jwt</code> before using it.</p>
+<p><a name="jwt-payload"></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;openssl&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">require <span class="st">&#39;jwt&#39;</span>  <span class="co"># https://rubygems.org/gems/jwt</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># Private key contents</span></a>
+<a class="sourceLine" id="cb1-5" title="5">private_pem = <span class="dt">File</span>.read(<span class="dt">YOUR_PATH_TO_PEM</span>)</a>
+<a class="sourceLine" id="cb1-6" title="6">private_key = <span class="dt">OpenSSL</span>::<span class="dt">PKey</span>::<span class="dt">RSA</span>.new(private_pem)</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co"># Generate the JWT</span></a>
+<a class="sourceLine" id="cb1-9" title="9">payload = {</a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="co"># issued at time, 60 seconds in the past to allow for clock drift</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="st">iat: </span><span class="dt">Time</span>.now.to_i - <span class="dv">60</span>,</a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="co"># JWT expiration time (10 minute maximum)</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="st">exp: </span><span class="dt">Time</span>.now.to_i + (<span class="dv">10</span> * <span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="co"># {% data variables.product.prodname_github_app %}&#39;s identifier</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="st">iss: </span><span class="dt">YOUR_APP_ID</span></a>
+<a class="sourceLine" id="cb1-16" title="16">}</a>
+<a class="sourceLine" id="cb1-17" title="17"></a>
+<a class="sourceLine" id="cb1-18" title="18">jwt = <span class="dt">JWT</span>.encode(payload, private_key, <span class="st">&quot;RS256&quot;</span>)</a>
+<a class="sourceLine" id="cb1-19" title="19">puts jwt</a></code></pre></div>
+<p><code>YOUR_PATH_TO_PEM</code> and <code>YOUR_APP_ID</code> are the values you must replace.</p>
+<p>Use your {% data variables.product.prodname_github_app %}’s identifier (<code>YOUR_APP_ID</code>) as the value for the JWT <a href="https://tools.ietf.org/html/rfc7519#section-4.1.1">iss</a> (issuer) claim. You can obtain the {% data variables.product.prodname_github_app %} identifier via the initial webhook ping after <a href="/apps/building-github-apps/creating-a-github-app/">creating the app</a>, or at any time from the app settings page in the GitHub.com UI.</p>
+<p>After creating the JWT, set it in the <code>Header</code> of the API request:</p>
+<p>{% ifversion ghes &lt; 2.22 %}</p>
+<pre class="shell"><code>$ curl -i -H &quot;Authorization: Bearer YOUR_JWT&quot; -H &quot;Accept: application/vnd.github.machine-man-preview+json&quot; {% data variables.product.api_url_pre %}/app</code></pre>
+<p>{% else %}</p>
+<pre class="shell"><code>$ curl -i -H &quot;Authorization: Bearer YOUR_JWT&quot; -H &quot;Accept: application/vnd.github.v3+json&quot; {% data variables.product.api_url_pre %}/app</code></pre>
+<p>{% endif %}</p>
+<p><code>YOUR_JWT</code> is the value you must replace.</p>
+<p>The example above uses the maximum expiration time of 10 minutes, after which the API will start returning a <code>401</code> error:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;&#39;Expiration&#39; claim (&#39;exp&#39;) must be a numeric value representing the future time at which the assertion expires.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">&quot;documentation_url&quot;</span><span class="fu">:</span> <span class="st">&quot;{% data variables.product.doc_url_pre %}&quot;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="fu">}</span></a></code></pre></div>
+<p>You’ll need to create a new JWT after the time expires.</p>
+<h2 id="accessing-api-endpoints-as-a-data-variables.product.prodname_github_app">Accessing API endpoints as a {% data variables.product.prodname_github_app %}</h2>
+<p>For a list of REST API endpoints you can use to get high-level information about a {% data variables.product.prodname_github_app %}, see “<a href="/rest/reference/apps">GitHub Apps</a>.”</p>
+<h2 id="authenticating-as-an-installation">Authenticating as an installation</h2>
+<p>Authenticating as an installation lets you perform actions in the API for that installation. Before authenticating as an installation, you must create an installation access token. Ensure that you have already installed your GitHub App to at least one repository; it is impossible to create an installation token without a single installation. These installation access tokens are used by {% data variables.product.prodname_github_apps %} to authenticate. For more information, see “<a href="/developers/apps/managing-github-apps/installing-github-apps">Installing GitHub Apps</a>.”</p>
+<p>By default, installation access tokens are scoped to all the repositories that an installation can access. You can limit the scope of the installation access token to specific repositories by using the <code>repository_ids</code> parameter. See the <a href="/rest/reference/apps#create-an-installation-access-token-for-an-app">Create an installation access token for an app</a> endpoint for more details. Installation access tokens have the permissions configured by the {% data variables.product.prodname_github_app %} and expire after one hour.</p>
+<p>To list the installations for an authenticated app, include the JWT <a href="#jwt-payload">generated above</a> in the Authorization header in the API request:</p>
+<p>{% ifversion ghes &lt; 2.22 %}</p>
+<pre class="shell"><code>$ curl -i -X GET \
+-H &quot;Authorization: Bearer YOUR_JWT&quot; \
+-H &quot;Accept: application/vnd.github.machine-man-preview+json&quot; \
+{% data variables.product.api_url_pre %}/app/installations</code></pre>
+<p>{% else %}</p>
+<pre class="shell"><code>$ curl -i -X GET \
+-H &quot;Authorization: Bearer YOUR_JWT&quot; \
+-H &quot;Accept: application/vnd.github.v3+json&quot; \
+{% data variables.product.api_url_pre %}/app/installations</code></pre>
+<p>{% endif %}</p>
+<p>The response will include a list of installations where each installation’s <code>id</code> can be used for creating an installation access token. For more information about the response format, see “<a href="/rest/reference/apps#list-installations-for-the-authenticated-app">List installations for the authenticated app</a>.”</p>
+<p>To create an installation access token, include the JWT <a href="#jwt-payload">generated above</a> in the Authorization header in the API request and replace <code>:installation_id</code> with the installation’s <code>id</code>:</p>
+<p>{% ifversion ghes &lt; 2.22 %}</p>
+<pre class="shell"><code>$ curl -i -X POST \
+-H &quot;Authorization: Bearer YOUR_JWT&quot; \
+-H &quot;Accept: application/vnd.github.machine-man-preview+json&quot; \
+{% data variables.product.api_url_pre %}/app/installations/:installation_id/access_tokens</code></pre>
+<p>{% else %}</p>
+<pre class="shell"><code>$ curl -i -X POST \
+-H &quot;Authorization: Bearer YOUR_JWT&quot; \
+-H &quot;Accept: application/vnd.github.v3+json&quot; \
+{% data variables.product.api_url_pre %}/app/installations/:installation_id/access_tokens</code></pre>
+<p>{% endif %}</p>
+<p>The response will include your installation access token, the expiration date, the token’s permissions, and the repositories that the token can access. For more information about the response format, see the <a href="/rest/reference/apps#create-an-installation-access-token-for-an-app">Create an installation access token for an app</a> endpoint.</p>
+<p>To authenticate with an installation access token, include it in the Authorization header in the API request:</p>
+<p>{% ifversion ghes &lt; 2.22 %}</p>
+<pre class="shell"><code>$ curl -i \
+-H &quot;Authorization: token YOUR_INSTALLATION_ACCESS_TOKEN&quot; \
+-H &quot;Accept: application/vnd.github.machine-man-preview+json&quot; \
+{% data variables.product.api_url_pre %}/installation/repositories</code></pre>
+<p>{% else %}</p>
+<pre class="shell"><code>$ curl -i \
+-H &quot;Authorization: token YOUR_INSTALLATION_ACCESS_TOKEN&quot; \
+-H &quot;Accept: application/vnd.github.v3+json&quot; \
+{% data variables.product.api_url_pre %}/installation/repositories</code></pre>
+<p>{% endif %}</p>
+<p><code>YOUR_INSTALLATION_ACCESS_TOKEN</code> is the value you must replace.</p>
+<h2 id="accessing-api-endpoints-as-an-installation">Accessing API endpoints as an installation</h2>
+<p>For a list of REST API endpoints that are available for use by {% data variables.product.prodname_github_apps %} using an installation access token, see “<a href="/rest/overview/endpoints-available-for-github-apps">Available Endpoints</a>.”</p>
+<p>For a list of endpoints related to installations, see “<a href="/rest/reference/apps#installations">Installations</a>.”</p>
+<h2 id="http-based-git-access-by-an-installation">HTTP-based Git access by an installation</h2>
+<p>Installations with <a href="/apps/building-github-apps/setting-permissions-for-github-apps/">permissions</a> on <code>contents</code> of a repository, can use their installation access tokens to authenticate for Git access. Use the installation access token as the HTTP password:</p>
+<pre class="shell"><code>git clone https://x-access-token:&amp;lt;token&amp;gt;@github.com/owner/repo.git</code></pre>
+</body>
+</html>

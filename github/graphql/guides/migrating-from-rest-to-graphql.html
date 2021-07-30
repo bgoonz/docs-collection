@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Migrating from REST to GraphQL</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Migrating from REST to GraphQL</h1>
+</header>
+<h2 id="differences-in-api-logic">Differences in API logic</h2>
+<p>Migrating from REST to GraphQL represents a significant shift in API logic. The differences between REST as a style and GraphQL as a specification make it difficult—and often undesirable—to replace REST API calls with GraphQL API queries on a one-to-one basis. We’ve included specific examples of migration below.</p>
+<p>To migrate your code from the <a href="/rest">REST API</a> to the GraphQL API:</p>
+<ul>
+<li>Review the <a href="https://graphql.github.io/graphql-spec/June2018/">GraphQL spec</a></li>
+<li>Review GitHub’s <a href="/graphql/reference">GraphQL schema</a></li>
+<li>Consider how any existing code you have currently interacts with the GitHub REST API</li>
+<li>Use <a href="/graphql/guides/using-global-node-ids">Global Node IDs</a> to reference objects between API versions</li>
+</ul>
+<p>Significant advantages of GraphQL include:</p>
+<ul>
+<li><a href="#example-getting-the-data-you-need-and-nothing-more">Getting the data you need and nothing more</a></li>
+<li><a href="#example-nesting">Nested fields</a></li>
+<li><a href="#example-strong-typing">Strong typing</a></li>
+</ul>
+<p>Here are examples of each.</p>
+<h2 id="example-getting-the-data-you-need-and-nothing-more">Example: Getting the data you need and nothing more</h2>
+<p>A single REST API call retrieves a list of your organization’s members:</p>
+<pre class="shell"><code>curl -v {% data variables.product.api_url_pre %}/orgs/:org/members</code></pre>
+<p>The REST payload contains excessive data if your goal is to retrieve only member names and links to avatars. However, a GraphQL query returns only what you specify:</p>
+<pre class="graphql"><code>query {
+    organization(login:&quot;github&quot;) {
+    membersWithRole(first: 100) {
+      edges {
+        node {
+          name
+          avatarUrl
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>Consider another example: retrieving a list of pull requests and checking if each one is mergeable. A call to the REST API retrieves a list of pull requests and their <a href="/rest#summary-representations">summary representations</a>:</p>
+<pre class="shell"><code>curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls</code></pre>
+<p>Determining if a pull request is mergeable requires retrieving each pull request individually for its <a href="/rest#detailed-representations">detailed representation</a> (a large payload) and checking whether its <code>mergeable</code> attribute is true or false:</p>
+<pre class="shell"><code>curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number</code></pre>
+<p>With GraphQL, you could retrieve only the <code>number</code> and <code>mergeable</code> attributes for each pull request:</p>
+<pre class="graphql"><code>query {
+    repository(owner:&quot;octocat&quot;, name:&quot;Hello-World&quot;) {
+    pullRequests(last: 10) {
+      edges {
+        node {
+          number
+          mergeable
+        }
+      }
+    }
+  }
+}</code></pre>
+<h2 id="example-nesting">Example: Nesting</h2>
+<p>Querying with nested fields lets you replace multiple REST calls with fewer GraphQL queries. For example, retrieving a pull request along with its commits, non-review comments, and reviews using the <strong>REST API</strong> requires four separate calls:</p>
+<pre class="shell"><code>curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number
+curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number/commits
+curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/issues/:number/comments
+curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number/reviews</code></pre>
+<p>Using the <strong>GraphQL API</strong>, you can retrieve the data with a single query using nested fields:</p>
+<pre class="graphql"><code>{
+  repository(owner: &quot;octocat&quot;, name: &quot;Hello-World&quot;) {
+    pullRequest(number: 1) {
+      commits(first: 10) {
+        edges {
+          node {
+            commit {
+              oid
+              message
+            }
+          }
+        }
+      }
+      comments(first: 10) {
+        edges {
+          node {
+            body
+            author {
+              login
+            }
+          }
+        }
+      }
+      reviews(first: 10) {
+        edges {
+          node {
+            state
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>You can also extend the power of this query by <a href="/graphql/guides/forming-calls-with-graphql#working-with-variables">substituting a variable</a> for the pull request number.</p>
+<h2 id="example-strong-typing">Example: Strong typing</h2>
+<p>GraphQL schemas are strongly typed, making data handling safer.</p>
+<p>Consider an example of adding a comment to an issue or pull request using a GraphQL <a href="/graphql/reference/mutations">mutation</a>, and mistakenly specifying an integer rather than a string for the value of <a href="/graphql/reference/mutations#addcomment"><code>clientMutationId</code></a>:</p>
+<pre class="graphql"><code>mutation {
+  addComment(input:{clientMutationId: 1234, subjectId: &quot;MDA6SXNzdWUyMjcyMDA2MTT=&quot;, body: &quot;Looks good to me!&quot;}) {
+    clientMutationId
+    commentEdge {
+      node {
+        body
+        repository {
+          id
+          name
+          nameWithOwner
+        }
+        issue {
+          number
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>Executing this query returns errors specifying the expected types for the operation:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">      <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;Argument &#39;input&#39; on Field &#39;addComment&#39; has an invalid value. Expected type &#39;AddCommentInput!&#39;.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">      <span class="dt">&quot;locations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb9-7" title="7">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-8" title="8">          <span class="dt">&quot;line&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-9" title="9">          <span class="dt">&quot;column&quot;</span><span class="fu">:</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb9-10" title="10">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-11" title="11">      <span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb9-13" title="13">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-14" title="14">      <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;Argument &#39;clientMutationId&#39; on InputObject &#39;AddCommentInput&#39; has an invalid value. Expected type &#39;String&#39;.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-15" title="15">      <span class="dt">&quot;locations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb9-16" title="16">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-17" title="17">          <span class="dt">&quot;line&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-18" title="18">          <span class="dt">&quot;column&quot;</span><span class="fu">:</span> <span class="dv">20</span></a>
+<a class="sourceLine" id="cb9-19" title="19">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-20" title="20">      <span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-21" title="21">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-22" title="22">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="fu">}</span></a></code></pre></div>
+<p>Wrapping <code>1234</code> in quotes transforms the value from an integer into a string, the expected type:</p>
+<pre class="graphql"><code>mutation {
+  addComment(input:{clientMutationId: &quot;1234&quot;, subjectId: &quot;MDA6SXNzdWUyMjcyMDA2MTT=&quot;, body: &quot;Looks good to me!&quot;}) {
+    clientMutationId
+    commentEdge {
+      node {
+        body
+        repository {
+          id
+          name
+          nameWithOwner
+        }
+        issue {
+          number
+        }
+      }
+    }
+  }
+}</code></pre>
+</body>
+</html>

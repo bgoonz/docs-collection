@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using groups to manage access to AE hosted runners</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using groups to manage access to AE hosted runners</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <h2 id="about-data-variables.actions.hosted_runner-groups">
+      About {% data variables.actions.hosted_runner %} groups
+    </h2>
+    <p>
+      {% data variables.actions.hosted_runner %} groups are used to control
+      access to {% data variables.actions.hosted_runner %}s at the organization
+      and enterprise level. Enterprise admins can configure access policies that
+      control which organizations in an enterprise have access to the runner
+      group. Organization admins can configure access policies that control
+      which repositories in an organization have access to the runner group.
+    </p>
+    <p>
+      When an enterprise admin grants an organization access to a runner group,
+      organization admins can see the runner group listed in the organization’s
+      {% data variables.actions.hosted_runner %} settings. The organizations
+      admins can then assign additional granular repository access policies to
+      the enterprise runner group.
+    </p>
+    <p>
+      When new runners are created, they are automatically assigned to the
+      default group. Runners can only be in one group at a time. You can move
+      runners from the default group to another group. For more information, see
+      “<a href="#moving-an-ae-hosted-runner-to-a-group"
+        >Moving an {% data variables.actions.hosted_runner %} to a group</a
+      >.”
+    </p>
+    <h2
+      id="creating-an-data-variables.actions.hosted_runner-group-for-an-organization"
+    >
+      Creating an {% data variables.actions.hosted_runner %} group for an
+      organization
+    </h2>
+    <p>
+      All organizations have a single default {% data
+      variables.actions.hosted_runner %} group. Organizations within an
+      enterprise account can create additional runner groups. Organization
+      admins can allow individual repositories access to a runner group.
+    </p>
+    <p>
+      {% data variables.actions.hosted_runner %}s are automatically assigned to
+      the default group when created, and can only be members of one group at a
+      time. You can move a runner from the default group to any group you
+      create.
+    </p>
+    <p>
+      When creating a group, you must choose a policy that defines which
+      repositories have access to the runner group.
+    </p>
+    <p>
+      {% data reusables.organizations.navigate-to-org %} {% data
+      reusables.organizations.org_settings %} {% data
+      reusables.organizations.settings-sidebar-actions %} 1. In the
+      <strong>Self-hosted runners</strong> section, click
+      <strong>Add new</strong>, and then <strong>New group</strong>.
+    </p>
+    <pre><code>![Add runner group](/assets/images/help/settings/actions-hosted-runner-add-new-group.png)</code></pre>
+    <ol type="1">
+      <li>
+        <p>
+          Enter a name for your runner group, and assign a policy for repository
+          access.
+        </p>
+        <p>
+          You can configure a runner group to be accessible to a specific list
+          of repositories, or to all repositories in the organization. By
+          default, only private repositories can access runners in a runner
+          group, but you can override this.
+          <img
+            src="/assets/images/help/settings/actions-org-add-runner-group-options.png"
+            alt="Add runner group options"
+          />
+        </p>
+      </li>
+      <li>
+        <p>
+          Click <strong>Save group</strong> to create the group and apply the
+          policy.
+        </p>
+      </li>
+    </ol>
+    <h2
+      id="creating-an-data-variables.actions.hosted_runner-group-for-an-enterprise"
+    >
+      Creating an {% data variables.actions.hosted_runner %} group for an
+      enterprise
+    </h2>
+    <p>
+      Enterprises can add their {% data variables.actions.hosted_runner %}s to
+      groups for access management. Enterprises can create groups of {% data
+      variables.actions.hosted_runner %}s that are accessible to specific
+      organizations in the enterprise account. Organization admins can then
+      assign additional granular repository access policies to the enterprise
+      runner groups.
+    </p>
+    <p>
+      {% data variables.actions.hosted_runner %}s are automatically assigned to
+      the default group when created, and can only be members of one group at a
+      time. You can assign the runner to a specific group during the
+      registration process, or you can later move the runner from the default
+      group to a custom group.
+    </p>
+    <p>
+      When creating a group, you must choose a policy that defines which
+      organizations have access to the runner group.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.actions-tab %} 1. Click the
+      <strong>Self-hosted runners</strong> tab. 1. Click
+      <strong>Add new</strong>, and then <strong>New group</strong>.
+    </p>
+    <pre><code>![Add runner group](/assets/images/help/settings/actions-hosted-runner-add-new-group.png)</code></pre>
+    <ol type="1">
+      <li>
+        <p>
+          Enter a name for your runner group, and assign a policy for
+          organization access.
+        </p>
+        <p>
+          You can configure a runner group to be accessible to a specific list
+          of organizations, or all organizations in the enterprise. By default,
+          only private repositories can access runners in a runner group, but
+          you can override this.
+          <img
+            src="/assets/images/help/settings/actions-enterprise-account-add-runner-group-options.png"
+            alt="Add runner group options"
+          />
+        </p>
+      </li>
+      <li>
+        <p>
+          Click <strong>Save group</strong> to create the group and apply the
+          policy.
+        </p>
+      </li>
+    </ol>
+    <h2
+      id="changing-the-access-policy-of-an-data-variables.actions.hosted_runner-group"
+    >
+      Changing the access policy of an {% data variables.actions.hosted_runner
+      %} group
+    </h2>
+    <p>
+      You can update the access policy of a runner group, or rename a runner
+      group.
+    </p>
+    <p>
+      {% data
+      reusables.github-actions.hosted-runner-configure-runner-group-access %}
+    </p>
+    <h2 id="moving-an-data-variables.actions.hosted_runner-to-a-group">
+      Moving an {% data variables.actions.hosted_runner %} to a group
+    </h2>
+    <p>
+      New {% data variables.actions.hosted_runner %}s are automatically assigned
+      to the default group, and can then be moved to another group.
+    </p>
+    <ol type="1">
+      <li>
+        In the <strong>Self-hosted runners</strong> section of the settings
+        page, locate the current group of the runner you want to move and expand
+        the list of group members.
+        <img
+          src="/assets/images/help/settings/actions-hosted-runner-group-members.png"
+          alt="View runner group members"
+        />
+      </li>
+      <li>
+        Select the checkbox next to the runner, and then click
+        <strong>Move to group</strong> to see the available destinations.
+        <img
+          src="/assets/images/help/settings/actions-hosted-runner-group-member-move.png"
+          alt="Runner group member move"
+        />
+      </li>
+      <li>
+        To move the runner, click on the destination group.
+        <img
+          src="/assets/images/help/settings/actions-hosted-runner-group-member-move-destination.png"
+          alt="Runner group member move"
+        />
+      </li>
+    </ol>
+    <h2 id="removing-an-data-variables.actions.hosted_runner-group">
+      Removing an {% data variables.actions.hosted_runner %} group
+    </h2>
+    <p>
+      {% data variables.actions.hosted_runner %}s are automatically returned to
+      the default group when their group is removed.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          In the <strong>Self-hosted runners</strong> section of the settings
+          page, locate the group you want to delete, and click the {% octicon
+          “kebab-horizontal” aria-label=“The horizontal kebab icon” %} button.
+          <img
+            src="/assets/images/help/settings/actions-hosted-runner-group-kebab.png"
+            alt="View runner group settings"
+          />
+        </p>
+      </li>
+      <li>
+        <p>To remove the group, click <strong>Remove group</strong>.</p>
+        <figure>
+          <img
+            src="/assets/images/help/settings/actions-hosted-runner-group-remove.png"
+            alt="View runner group settings"
+          />
+          <figcaption>View runner group settings</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>
+          Review the confirmation prompts, and click
+          <strong>Remove this runner group</strong>.
+        </p>
+      </li>
+    </ol>
+  </body>
+</html>

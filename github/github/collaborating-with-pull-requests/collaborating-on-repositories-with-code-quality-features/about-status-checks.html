@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About status checks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About status checks</h1>
+</header>
+<p>Status checks are based on external processes, such as continuous integration builds, which run for each push you make to a repository. You can see the <em>pending</em>, <em>passing</em>, or <em>failing</em> state of status checks next to individual commits in your pull request.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/commit-list-statuses.png" alt="List of commits and statuses" /><figcaption>List of commits and statuses</figcaption>
+</figure>
+<p>Anyone with write permissions to a repository can set the state for any status check in the repository.</p>
+<p>You can see the overall state of the last commit to a branch on your repository’s branches page or in your repository’s list of pull requests.</p>
+<p>{% data reusables.pull_requests.required-checks-must-pass-to-merge %}</p>
+<h2 id="types-of-status-checks-on-data-variables.product.product_name">Types of status checks on {% data variables.product.product_name %}</h2>
+<p>There are two types of status checks on {% data variables.product.product_name %}:</p>
+<ul>
+<li>Checks</li>
+<li>Statuses</li>
+</ul>
+<p><em>Checks</em> are different from <em>statuses</em> in that they provide line annotations, more detailed messaging, and are only available for use with {% data variables.product.prodname_github_apps %}.</p>
+<p>Organization owners and users with push access to a repository can create checks and statuses with {% data variables.product.product_name %}’s API. For more information, see “<a href="/rest/reference/checks">Checks</a>” and “<a href="/rest/reference/repos#statuses">Statuses</a>.”</p>
+<h2 id="checks">Checks</h2>
+<p>When <em>checks</em> are set up in a repository, pull requests have a <strong>Checks</strong> tab where you can view detailed build output from status checks and rerun failed checks.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/checks.png" alt="Status checks within a pull request" /><figcaption>Status checks within a pull request</figcaption>
+</figure>
+<p>When a specific line in a commit causes a check to fail, you will see details about the failure, warning, or notice next to the relevant code in the <strong>Files</strong> tab of the pull request.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/checks-detailed.png" alt="Details of a status check" /><figcaption>Details of a status check</figcaption>
+</figure>
+<p>You can navigate between the checks summaries for various commits in a pull request, using the commit drop-down menu under the <strong>Conversation</strong> tab.</p>
+<figure>
+<img src="/assets/images/help/pull_requests/checks-summary-for-various-commits.png" alt="Check summaries for different commits in a drop-down menu" /><figcaption>Check summaries for different commits in a drop-down menu</figcaption>
+</figure>
+<h3 id="skipping-and-requesting-checks-for-individual-commits">Skipping and requesting checks for individual commits</h3>
+<p>When a repository is set to automatically request checks for pushes, you can choose to skip checks for an individual commit you push. When a repository is <em>not</em> set to automatically request checks for pushes, you can request checks for an individual commit you push. For more information on these settings, see “<a href="/rest/reference/checks#update-repository-preferences-for-check-suites">Check Suites</a>.”</p>
+<p>To skip or request checks for your commit, add one of the following trailer lines to the end of your commit message:</p>
+<ul>
+<li><p>To <em>skip checks</em> for a commit, type your commit message and a short, meaningful description of your changes. After your commit description, before the closing quotation, add two empty lines followed by <code>skip-checks: true</code>:</p>
+<pre class="shell"><code>$ git commit -m &quot;Update README
+&gt;
+&gt;
+skip-checks: true&quot;</code></pre></li>
+<li><p>To <em>request</em> checks for a commit, type your commit message and a short, meaningful description of your changes. After your commit description, before the closing quotation, add two empty lines followed by <code>request-checks: true</code>:</p>
+<pre class="shell"><code>$ git commit -m &quot;Refactor usability tests
+&gt;
+&gt;
+request-checks: true&quot;</code></pre></li>
+</ul>
+</body>
+</html>

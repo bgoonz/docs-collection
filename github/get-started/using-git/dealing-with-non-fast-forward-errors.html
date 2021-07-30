@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Dealing with non-fast-forward errors</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Dealing with non-fast-forward errors</h1>
+</header>
+<p>If another person has pushed to the same branch as you, Git won’t be able to push your changes:</p>
+<pre class="shell"><code>$ git push origin main
+&gt; To https://{% data variables.command_line.codeblock %}/&lt;em&gt;USERNAME&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git
+&gt;  ! [rejected]        main -&gt; main (non-fast-forward)
+&gt; error: failed to push some refs to &#39;https://{% data variables.command_line.codeblock %}/&lt;em&gt;USERNAME&lt;/em&gt;/&lt;em&gt;REPOSITORY&lt;/em&gt;.git&#39;
+&gt; To prevent you from losing history, non-fast-forward updates were rejected
+&gt; Merge the remote changes (e.g. &#39;git pull&#39;) before pushing again.  See the
+&gt; &#39;Note about fast-forwards&#39; section of &#39;git push --help&#39; for details.</code></pre>
+<p>You can fix this by <a href="/github/getting-started-with-github/getting-changes-from-a-remote-repository">fetching and merging</a> the changes made on the remote branch with the changes that you have made locally:</p>
+<pre class="shell"><code>$ git fetch origin
+# Fetches updates made to an online repository
+$ git merge origin &lt;em&gt;YOUR_BRANCH_NAME&lt;/em&gt;
+# Merges updates made online with your local work</code></pre>
+<p>Or, you can simply use <code>git pull</code> to perform both commands at once:</p>
+<pre class="shell"><code>$ git pull origin &lt;em&gt;YOUR_BRANCH_NAME&lt;/em&gt;
+# Grabs online updates and merges them with your local work</code></pre>
+</body>
+</html>

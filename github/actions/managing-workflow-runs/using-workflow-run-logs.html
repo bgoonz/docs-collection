@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using workflow run logs</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using workflow run logs</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      You can see whether a workflow run is in progress or complete from the
+      workflow run page. You must be logged in to a {% data
+      variables.product.prodname_dotcom %} account to view workflow run
+      information, including for public repositories. For more information, see
+      “<a href="/articles/access-permissions-on-github"
+        >Access permissions on GitHub</a
+      >.”
+    </p>
+    <p>
+      If the run is complete, you can see whether the result was a success,
+      failure, canceled, or neutral. If the run failed, you can view and search
+      the build logs to diagnose the failure and re-run the workflow. You can
+      also view billable job execution minutes, or download logs and build
+      artifacts.
+    </p>
+    <p>
+      {% data variables.product.prodname_actions %} use the Checks API to output
+      statuses, results, and logs for a workflow. {% data
+      variables.product.prodname_dotcom %} creates a new check suite for each
+      workflow run. The check suite contains a check run for each job in the
+      workflow, and each job includes steps. {% data
+      variables.product.prodname_actions %} are run as a step in a workflow. For
+      more information about the Checks API, see “<a
+        href="/rest/reference/checks"
+        >Checks</a
+      >.”
+    </p>
+    <p>{% data reusables.github-actions.invalid-workflow-files %}</p>
+    <h2 id="viewing-logs-to-diagnose-failures">
+      Viewing logs to diagnose failures
+    </h2>
+    <p>
+      If your workflow run fails, you can see which step caused the failure and
+      review the failed step’s build logs to troubleshoot. You can see the time
+      it took for each step to run. You can also copy a permalink to a specific
+      line in the log file to share with your team. {% data
+      reusables.repositories.permissions-statement-read %}
+    </p>
+    <p>
+      In addition to the steps configured in the workflow file, {% data
+      variables.product.prodname_dotcom %} adds two additional steps to each job
+      to set up and complete the job’s execution. These steps are logged in the
+      workflow run with the names “Set up job” and “Complete job”.
+    </p>
+    <p>
+      For jobs run on {% data variables.product.prodname_dotcom %}-hosted
+      runners, “Set up job” records details of the runner’s virtual environment,
+      and includes a link to the list of preinstalled tools that were present on
+      the runner machine.
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow-superlinter %} {% data
+      reusables.repositories.view-run-superlinter %} {% data
+      reusables.repositories.navigate-to-job-superlinter %} {% data
+      reusables.repositories.view-failed-job-results-superlinter %} {% data
+      reusables.repositories.view-specific-line-superlinter %}
+    </p>
+    <h2 id="searching-logs">Searching logs</h2>
+    <p>
+      You can search the build logs for a particular step. When you search logs,
+      only expanded steps are included in the results. {% data
+      reusables.repositories.permissions-statement-read %}
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow-superlinter %} {% data
+      reusables.repositories.view-run-superlinter %} {% data
+      reusables.repositories.navigate-to-job-superlinter %} {% ifversion fpt or
+      ghes &gt; 2.22 or ghae %} 1. In the upper-right corner of the log output,
+      in the <strong>Search logs</strong> search box, type a search query. {%
+      ifversion fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/search-log-box-updated-2.png"
+        alt="Search box to search logs"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/search-log-box-updated.png"
+        alt="Search box to search logs"
+      />
+      {% endif %} {% else %} 1. To expand each step you want to include in your
+      search, click the step.
+      <img
+        src="/assets/images/help/repository/failed-check-step.png"
+        alt="Step name"
+      />
+      1. In the upper-right corner of the log output, in the
+      <strong>Search logs</strong> search box, type a search query.
+      <img
+        src="/assets/images/help/repository/search-log-box.png"
+        alt="Search box to search logs"
+      />
+      {% endif %}
+    </p>
+    <h2 id="downloading-logs">Downloading logs</h2>
+    <p>
+      You can download the log files from your workflow run. You can also
+      download a workflow’s artifacts. For more information, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts"
+        >Persisting workflow data using artifacts</a
+      >.” {% data reusables.repositories.permissions-statement-read %}
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow-superlinter %} {% data
+      reusables.repositories.view-run-superlinter %} {% data
+      reusables.repositories.navigate-to-job-superlinter %} {% ifversion fpt or
+      ghes &gt; 2.22 or ghae %} 1. In the upper right corner, click {% ifversion
+      fpt or ghes &gt; 3.0 or ghae %}{% octicon “gear” aria-label=“The gear
+      icon” %}{% else %}{% octicon “kebab-horizontal” aria-label=“The horizontal
+      kebab icon” %}{% endif %} and select
+      <strong>Download log archive</strong>. {% ifversion fpt or ghes &gt; 3.0
+      or ghae %}
+      <img
+        src="/assets/images/help/repository/download-logs-drop-down-updated-2.png"
+        alt="Download logs drop-down menu"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/download-logs-drop-down-updated.png"
+        alt="Download logs drop-down menu"
+      />
+      {% endif %} {% else %} 1. In the upper right corner, click {% octicon
+      “kebab-horizontal” aria-label=“The horizontal kebab icon” %} and select
+      <strong>Download log archive</strong>.
+      <img
+        src="/assets/images/help/repository/download-logs-drop-down.png"
+        alt="Download logs drop-down menu"
+      />
+      {% endif %}
+    </p>
+    <h2 id="deleting-logs">Deleting logs</h2>
+    <p>
+      You can delete the log files from your workflow run. {% data
+      reusables.repositories.permissions-statement-write %}
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow-superlinter %} {% data
+      reusables.repositories.view-run-superlinter %} {% ifversion fpt or ghes
+      &gt; 2.22 or ghae %} 1. In the upper right corner, click {% octicon
+      “kebab-horizontal” aria-label=“The horizontal kebab icon” %}. {% ifversion
+      fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/workflow-run-kebab-horizontal-icon-updated-2.png"
+        alt="Kebab-horizontal icon"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/workflow-run-kebab-horizontal-icon-updated.png"
+        alt="Kebab-horizontal icon"
+      />
+      {% endif %} 2. To delete the log files, click the
+      <strong>Delete all logs</strong> button and review the confirmation
+      prompt. {% ifversion fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/delete-all-logs-updated-2.png"
+        alt="Delete all logs"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/delete-all-logs-updated.png"
+        alt="Delete all logs"
+      />
+      {% endif %} After deleting logs, the
+      <strong>Delete all logs</strong> button is removed to indicate that no log
+      files remain in the workflow run. {% else %} 1. In the upper right corner,
+      click {% octicon “kebab-horizontal” aria-label=“The horizontal kebab icon”
+      %}.
+      <img
+        src="/assets/images/help/repository/workflow-run-kebab-horizontal-icon.png"
+        alt="Kebab-horizontal icon"
+      />
+      2. To delete the log files, click the
+      <strong>Delete all logs</strong> button and review the confirmation
+      prompt.
+      <img
+        src="/assets/images/help/repository/delete-all-logs.png"
+        alt="Delete all logs"
+      />
+      After the logs have been deleted, the
+      <strong>Delete all logs</strong> button is removed to indicate that no log
+      files remain in the workflow run. {% endif %}
+    </p>
+    <h2 id="viewing-logs-with-data-variables.product.prodname_cli">
+      Viewing logs with {% data variables.product.prodname_cli %}
+    </h2>
+    <p>{% data reusables.actions.actions-cli %}</p>
+    <p>
+      To view the log for a specific job, use the
+      <code>run view</code> subcommand. Replace <code>run-id</code> with the ID
+      of run that you want to view logs for. {% data
+      variables.product.prodname_cli %} returns an interactive menu for you to
+      choose a job from the run. If you don’t specify <code>run-id</code>, {%
+      data variables.product.prodname_cli %} returns an interactive menu for you
+      to choose a recent run, and then returns another interactive menu for you
+      to choose a job from the run.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh run view &lt;em&gt;run-id&lt;/em&gt; --log</code></pre>
+    <p>
+      You can also use the <code>--job</code> flag to specify a job ID. Replace
+      <code>job-id</code> with the ID of the job that you want to view logs for.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh run view --job &lt;em&gt;job-id&lt;/em&gt; --log</code></pre>
+    <p>
+      You can use <code>grep</code> to search the log. For example, this command
+      will return all log entries that contain the word <code>error</code>.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh run view --job &lt;em&gt;job-id&lt;/em&gt; --log | grep error</code></pre>
+    <p>
+      To filter the logs for any failed steps, use
+      <code>--log-failed</code> instead of <code>--log</code>.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh run view --job &lt;em&gt;job-id&lt;/em&gt; --log-failed</code></pre>
+  </body>
+</html>

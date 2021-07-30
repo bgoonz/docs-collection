@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Forwarding ports in your codespace</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Forwarding ports in your codespace</h1>
+</header>
+<p>{% data reusables.codespaces.release-stage %}</p>
+<h2 id="about-forwarded-ports">About forwarded ports</h2>
+<p>Port forwarding gives you access to TCP ports running within your codespace. For example, if you’re running a web application on port 4000, you can access the application from your browser to test and debug the application.</p>
+<p>When an application running inside a codespace outputs a port to the console, {% data variables.product.prodname_codespaces %} detects the localhost URL pattern and automatically forwards the port. You can click on the URL in the terminal to open the port in a browser. For example, if an application outputs <code>http://127.0.0.1:4000</code> or <code>http://localhost:4000</code> to the console, the log would automatically convert the output to a clickable URL for port 4000.</p>
+<figure>
+<img src="/assets/images/help/codespaces/automatic-port-forwarding.png" alt="Automatic port forwarding" /><figcaption>Automatic port forwarding</figcaption>
+</figure>
+<p>You can also forward a port manually, label forwarded ports, share forwarded ports publicly, and add forwarded ports to the codespace configuration.</p>
+<h2 id="forwarding-a-port">Forwarding a port</h2>
+<p>You can manually forward a port that wasn’t forwarded automatically.</p>
+<p>{% data reusables.codespaces.navigate-to-ports-tab %} 1. Under the list of ports, click <strong>Add port</strong>. <img src="/assets/images/help/codespaces/add-port-button.png" alt="Add port button" /> 1. Type the port number or address, then press enter. <img src="/assets/images/help/codespaces/port-number-text-box.png" alt="Text box to type port button" /></p>
+<h2 id="labeling-a-port">Labeling a port</h2>
+<p>You can label a port to make the port more easily identifiable in a list.</p>
+<p>{% data reusables.codespaces.navigate-to-ports-tab %} 1. Hover over the port you want to label, then click the label icon. <img src="/assets/images/help/codespaces/label-icon.png" alt="Label icon for port" /> {% data reusables.codespaces.type-port-label %}</p>
+<h2 id="sharing-a-port">Sharing a port</h2>
+<p>If you want to share a forwarded port with others, you can make the port public. After you make a port public, anyone with the port’s URL can view the running application without needing to authenticate.</p>
+<p>{% data reusables.codespaces.navigate-to-ports-tab %} 1. Right click the port you want to share, then click <strong>Make Public</strong>. <img src="/assets/images/help/codespaces/make-public-option.png" alt="Option to make port public in right-click menu" /> 1. To the right of the local address for the port, click the copy icon. <img src="/assets/images/help/codespaces/copy-icon-port-url.png" alt="Copy icon for port URL" /> 1. Send the copied URL to the person you want to share the port with.</p>
+<h2 id="adding-a-port-to-the-codespace-configuration">Adding a port to the codespace configuration</h2>
+<p>You can add a forwarded port to the {% data variables.product.prodname_codespaces %} configuration for the repository, so the port will automatically be forwarded for all codespaces created from the repository. After you update the configuration, any previously created codespaces must be rebuilt for the change to apply. For more information, see “<a href="/codespaces/setting-up-your-codespace/configuring-codespaces-for-your-project#applying-changes-to-your-configuration">Configuring {% data variables.product.prodname_codespaces %} for your project</a>.”</p>
+<p>You can manually configure forwarded ports in a <code>.devcontainer.json</code> file using the <code>forwardPorts</code> property, or you can use the “Ports” panel in your codespace.</p>
+<p>{% data reusables.codespaces.navigate-to-ports-tab %} 1. Right click the port you want to add to the codespace configuration, then click <strong>Set Label and Update devcontainer.json</strong>. <img src="/assets/images/help/codespaces/update-devcontainer-to-add-port-option.png" alt="Option to set label and add port to devcontainer.json in the right-click menu" /> {% data reusables.codespaces.type-port-label %}</p>
+</body>
+</html>

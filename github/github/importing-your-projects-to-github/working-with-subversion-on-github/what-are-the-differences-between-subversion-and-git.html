@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>What are the differences between Subversion and Git?</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">What are the differences between Subversion and Git?</h1>
+</header>
+<h2 id="directory-structure">Directory structure</h2>
+<p>Each <em>reference</em>, or labeled snapshot of a commit, in a project is organized within specific subdirectories, such as <code>trunk</code>, <code>branches</code>, and <code>tags</code>. For example, an SVN project with two features under development might look like this:</p>
+<pre><code>  sample_project/trunk/README.md
+  sample_project/trunk/lib/widget.rb
+  sample_project/branches/new_feature/README.md
+  sample_project/branches/new_feature/lib/widget.rb
+  sample_project/branches/another_new_feature/README.md
+  sample_project/branches/another_new_feature/lib/widget.rb</code></pre>
+<p>An SVN workflow looks like this:</p>
+<ul>
+<li>The <code>trunk</code> directory represents the latest stable release of a project.</li>
+<li>Active feature work is developed within subdirectories under <code>branches</code>.</li>
+<li>When a feature is finished, the feature directory is merged into <code>trunk</code> and removed.</li>
+</ul>
+<p>Git projects are also stored within a single directory. However, Git obscures the details of its references by storing them in a special <em>.git</em> directory. For example, a Git project with two features under development might look like this:</p>
+<pre><code>  sample_project/.git
+  sample_project/README.md
+  sample_project/lib/widget.rb</code></pre>
+<p>A Git workflow looks like this:</p>
+<ul>
+<li>A Git repository stores the full history of all of its branches and tags within the <em>.git</em> directory.</li>
+<li>The latest stable release is contained within the default branch.</li>
+<li>Active feature work is developed in separate branches.</li>
+<li>When a feature is finished, the feature branch is merged into the default branch and deleted.</li>
+</ul>
+<p>Unlike SVN, with Git the directory structure remains the same, but the contents of the files change based on your branch.</p>
+<h2 id="including-subprojects">Including subprojects</h2>
+<p>A <em>subproject</em> is a project that’s developed and managed somewhere outside of your main project. You typically import a subproject to add some functionality to your project without needing to maintain the code yourself. Whenever the subproject is updated, you can synchronize it with your project to ensure that everything is up-to-date.</p>
+<p>In SVN, a subproject is called an <em>SVN external</em>. In Git, it’s called a <em>Git submodule</em>. Although conceptually similar, Git submodules are not kept up-to-date automatically; you must explicitly ask for a new version to be brought into your project.</p>
+<p>For more information, see “<a href="https://git-scm.com/book/en/Git-Tools-Submodules">Git Tools Submodules</a>” in the Git documentation.</p>
+<h2 id="preserving-history">Preserving history</h2>
+<p>SVN is configured to assume that the history of a project never changes. Git allows you to modify previous commits and changes using tools like <a href="/github/getting-started-with-github/about-git-rebase"><code>git rebase</code></a>.</p>
+<p>{% tip %}</p>
+<p><a href="/articles/support-for-subversion-clients">GitHub supports Subversion clients</a>, which may produce some unexpected results if you’re using both Git and SVN on the same project. If you’ve manipulated Git’s commit history, those same commits will always remain within SVN’s history. If you accidentally committed some sensitive data, we have <a href="/articles/removing-sensitive-data-from-a-repository">an article that will help you remove it from Git’s history</a>.</p>
+<p>{% endtip %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/subversion-properties-supported-by-github">Subversion properties supported by GitHub</a>”</li>
+<li><a href="https://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">“Branching and Merging” from the <em>Git SCM</em> book</a></li>
+<li>“<a href="/articles/importing-source-code-to-github">Importing source code to GitHub</a>”</li>
+<li>“<a href="/articles/source-code-migration-tools">Source code migration tools</a>”</li>
+</ul>
+</body>
+</html>

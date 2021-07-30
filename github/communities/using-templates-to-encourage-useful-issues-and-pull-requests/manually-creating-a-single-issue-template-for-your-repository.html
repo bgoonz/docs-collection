@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Manually creating a single issue template for your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Manually creating a single issue template for your repository</h1>
+</header>
+<p>{% data reusables.repositories.legacy-issue-template-tip %}</p>
+<p>You can create an <em>ISSUE_TEMPLATE/</em> subdirectory in any of the supported folders to contain multiple issue templates, and use the <code>template</code> query parameter to specify the template that will fill the issue body. For more information, see “<a href="/articles/about-automation-for-issues-and-pull-requests-with-query-parameters">About automation for issues and pull requests with query parameters</a>.”</p>
+<p>You can add YAML frontmatter to each issue template to pre-fill the issue title, automatically add labels and assignees, and give the template a name and description that will be shown in the template chooser that people see when creating a new issue in your repository.</p>
+<p>Here is example YAML front matter.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">name:</span><span class="at"> Tracking issue</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">about:</span><span class="at"> Use this template for tracking new features.</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="fu">title:</span><span class="at"> </span><span class="st">&quot;[DATE]: [FEATURE NAME]&quot;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">labels:</span><span class="at"> tracking issue, needs triage</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="fu">assignees:</span><span class="at"> octocat</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="ot">---</span></a></code></pre></div>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If a front matter value includes a YAML-reserved character such as <code>:</code> , you must put the whole value in quotes. For example, <code>":bug: Bug"</code> or <code>":new: triage needed, :bug: bug"</code>.</p>
+<p>{% endnote %}</p>
+<p>{% ifversion fpt %}</p>
+<p>{% data reusables.repositories.valid-community-issues %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes %}</p>
+<p>{% data reusables.repositories.default-issue-templates %}</p>
+<p>{% endif %}</p>
+<h2 id="adding-an-issue-template">Adding an issue template</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.files.add-file %} 3. In the file name field: - To make your issue template visible in the repository’s root directory, type the name of your <em>issue_template</em>. For example, <code>issue_template.md</code>. <img src="/assets/images/help/repository/issue-template-file-name.png" alt="New issue template name in root directory" /> - To make your issue template visible in the repository’s <code>docs</code> directory, type <em>docs/</em> followed by the name of your <em>issue_template</em>. For example, <code>docs/issue_template.md</code>, <img src="/assets/images/help/repository/issue-template-file-name-docs.png" alt="New issue template in docs directory" /> - To store your file in a hidden directory, type <em>.github/</em> followed by the name of your <em>issue_template</em>. For example, <code>.github/issue_template.md</code>. <img src="/assets/images/help/repository/issue-template-hidden-directory.png" alt="New issue template in hidden directory" /> - To create multiple issue templates and use the <code>template</code> query parameter to specify a template to fill the issue body, type <em>.github/ISSUE_TEMPLATE/</em>, then the name of your issue template. For example, <code>.github/ISSUE_TEMPLATE/issue_template.md</code>. You can also store multiple issue templates in an <code>ISSUE_TEMPLATE</code> subdirectory within the root or <code>docs/</code> directories. For more information, see “<a href="/articles/about-automation-for-issues-and-pull-requests-with-query-parameters">About automation for issues and pull requests with query parameters</a>.” <img src="/assets/images/help/repository/issue-template-multiple-hidden-directory.png" alt="New multiple issue template in hidden directory" /> 4. In the body of the new file, add your issue template. This could include: - YAML frontmatter - Expected behavior and actual behavior - Steps to reproduce the problem - Specifications like the version of the project, operating system, or hardware {% data reusables.files.write_commit_message %} {% data reusables.files.choose_commit_branch %} Templates are available to collaborators when they are merged into the repository’s default branch. {% data reusables.files.propose_new_file %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-issue-and-pull-request-templates">About issue and pull request templates</a>”</li>
+<li>“<a href="/articles/configuring-issue-templates-for-your-repository">Configuring issue templates for your repository</a>”</li>
+<li>“<a href="/articles/about-automation-for-issues-and-pull-requests-with-query-parameters">About automation for issues and pull requests with query parameters</a>”</li>
+<li>“<a href="/articles/creating-an-issue">Creating an issue</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Installing GitHub Enterprise Server on Google Cloud Platform</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Installing GitHub Enterprise Server on Google Cloud Platform
+      </h1>
+    </header>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <ul>
+      <li>{% data reusables.enterprise_installation.software-license %}</li>
+      <li>
+        You must have a Google Cloud Platform account capable of launching
+        Google Compute Engine (GCE) virtual machine (VM) instances. For more
+        information, see the
+        <a href="https://cloud.google.com/">Google Cloud Platform website</a>
+        and the
+        <a href="https://cloud.google.com/docs/"
+          >Google Cloud Platform Documentation</a
+        >.
+      </li>
+      <li>
+        Most actions needed to launch your instance may also be performed using
+        the
+        <a href="https://cloud.google.com/compute/docs/console"
+          >Google Cloud Platform Console</a
+        >. However, we recommend installing the gcloud compute command-line tool
+        for initial setup. Examples using the gcloud compute command-line tool
+        are included below. For more information, see the “<a
+          href="https://cloud.google.com/compute/docs/gcloud-compute/"
+          >gcloud compute</a
+        >” installation and setup guide in the Google documentation.
+      </li>
+    </ul>
+    <h2 id="hardware-considerations">Hardware considerations</h2>
+    <p>
+      {% data
+      reusables.enterprise_installation.hardware-considerations-all-platforms %}
+    </p>
+    <h2 id="determining-the-machine-type">Determining the machine type</h2>
+    <p>
+      Before launching {% data variables.product.product_location %} on Google
+      Cloud Platform, you’ll need to determine the machine type that best fits
+      the needs of your organization. To review the minimum requirements for {%
+      data variables.product.product_name %}, see “<a
+        href="#minimum-requirements"
+        >Minimum requirements</a
+      >.”
+    </p>
+    <p>{% data reusables.enterprise_installation.warning-on-scaling %}</p>
+    <p>
+      {% data variables.product.company_short %} recommends a general-purpose,
+      high-memory machine for {% data variables.product.prodname_ghe_server %}.
+      For more information, see “<a
+        href="https://cloud.google.com/compute/docs/machine-types#n2_high-memory_machine_types"
+        >Machine types</a
+      >” in the Google Compute Engine documentation.
+    </p>
+    <h2 id="selecting-the-data-variables.product.prodname_ghe_server-image">
+      Selecting the {% data variables.product.prodname_ghe_server %} image
+    </h2>
+    <ol type="1">
+      <li>
+        <p>
+          Using the
+          <a href="https://cloud.google.com/compute/docs/gcloud-compute/"
+            >gcloud compute</a
+          >
+          command-line tool, list the public {% data
+          variables.product.prodname_ghe_server %} images:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ gcloud compute images list --project github-enterprise-public --no-standard-images</code></pre>
+      </li>
+      <li>
+        <p>
+          Take note of the image name for the latest GCE image of {% data
+          variables.product.prodname_ghe_server %}.
+        </p>
+      </li>
+    </ol>
+    <h2 id="configuring-the-firewall">Configuring the firewall</h2>
+    <p>
+      GCE virtual machines are created as a member of a network, which has a
+      firewall. For the network associated with the {% data
+      variables.product.prodname_ghe_server %} VM, you’ll need to configure the
+      firewall to allow the required ports listed in the table below. For more
+      information about firewall rules on Google Cloud Platform, see the Google
+      guide “<a href="https://cloud.google.com/vpc/docs/firewalls"
+        >Firewall Rules Overview</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Using the gcloud compute command-line tool, create the network. For
+          more information, see “<a
+            href="https://cloud.google.com/sdk/gcloud/reference/compute/networks/create"
+            >gcloud compute networks create</a
+          >” in the Google documentation.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ gcloud compute networks create &lt;em&gt;NETWORK-NAME&lt;/em&gt; --subnet-mode auto</code></pre>
+      </li>
+      <li>
+        <p>
+          Create a firewall rule for each of the ports in the table below. For
+          more information, see “<a
+            href="https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/"
+            >gcloud compute firewall-rules</a
+          >” in the Google documentation.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ gcloud compute firewall-rules create &lt;em&gt;RULE-NAME&lt;/em&gt; \
+--network &lt;em&gt;NETWORK-NAME&lt;/em&gt; \
+--allow tcp:22,tcp:25,tcp:80,tcp:122,udp:161,tcp:443,udp:1194,tcp:8080,tcp:8443,tcp:9418,icmp</code></pre>
+        <p>
+          This table identifies the required ports and what each port is used
+          for.
+        </p>
+        <p>{% data reusables.enterprise_installation.necessary_ports %}</p>
+      </li>
+    </ol>
+    <h2 id="allocating-a-static-ip-and-assigning-it-to-the-vm">
+      Allocating a static IP and assigning it to the VM
+    </h2>
+    <p>
+      If this is a production appliance, we strongly recommend reserving a
+      static external IP address and assigning it to the {% data
+      variables.product.prodname_ghe_server %} VM. Otherwise, the public IP
+      address of the VM will not be retained after restarts. For more
+      information, see the Google guide “<a
+        href="https://cloud.google.com/compute/docs/configure-instance-ip-addresses"
+        >Reserving a Static External IP Address</a
+      >.”
+    </p>
+    <p>
+      In production High Availability configurations, both primary and replica
+      appliances should be assigned separate static IP addresses.
+    </p>
+    <h2 id="creating-the-data-variables.product.prodname_ghe_server-instance">
+      Creating the {% data variables.product.prodname_ghe_server %} instance
+    </h2>
+    <p>
+      To create the {% data variables.product.prodname_ghe_server %} instance,
+      you’ll need to create a GCE instance with your {% data
+      variables.product.prodname_ghe_server %} image and attach an additional
+      storage volume for your instance data. For more information, see “<a
+        href="#hardware-considerations"
+        >Hardware considerations</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Using the gcloud compute command-line tool, create a data disk to use
+          as an attached storage volume for your instance data, and configure
+          the size based on your user license count. For more information, see
+          “<a
+            href="https://cloud.google.com/sdk/gcloud/reference/compute/disks/create"
+            >gcloud compute disks create</a
+          >” in the Google documentation.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ gcloud compute disks create &lt;em&gt;DATA-DISK-NAME&lt;/em&gt; --size &lt;em&gt;DATA-DISK-SIZE&lt;/em&gt; --type &lt;em&gt;DATA-DISK-TYPE&lt;/em&gt; --zone &lt;em&gt;ZONE&lt;/em&gt;</code></pre>
+      </li>
+      <li>
+        <p>
+          Then create an instance using the name of the {% data
+          variables.product.prodname_ghe_server %} image you selected, and
+          attach the data disk. For more information, see “<a
+            href="https://cloud.google.com/sdk/gcloud/reference/compute/instances/create"
+            >gcloud compute instances create</a
+          >” in the Google documentation.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ gcloud compute instances create &lt;em&gt;INSTANCE-NAME&lt;/em&gt; \
+--machine-type n1-standard-8 \
+--image &lt;em&gt;GITHUB-ENTERPRISE-IMAGE-NAME&lt;/em&gt; \
+--disk name=&lt;em&gt;DATA-DISK-NAME&lt;/em&gt; \
+--metadata serial-port-enable=1 \
+--zone &lt;em&gt;ZONE&lt;/em&gt; \
+--network &lt;em&gt;NETWORK-NAME&lt;/em&gt; \
+--image-project github-enterprise-public</code></pre>
+      </li>
+    </ol>
+    <h2 id="configuring-the-instance">Configuring the instance</h2>
+    <p>
+      {% data reusables.enterprise_installation.copy-the-vm-public-dns-name %}
+      {% data reusables.enterprise_installation.upload-a-license-file %} {% data
+      reusables.enterprise_installation.save-settings-in-web-based-mgmt-console
+      %} For more information, see “<a
+        href="/enterprise/admin/guides/installation/configuring-the-github-enterprise-server-appliance"
+        >Configuring the {% data variables.product.prodname_ghe_server %}
+        appliance</a
+      >.” {% data
+      reusables.enterprise_installation.instance-will-restart-automatically %}
+      {% data reusables.enterprise_installation.visit-your-instance %}
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a href="/enterprise/admin/guides/installation/system-overview"
+          >System overview</a
+        >”{% ifversion ghes &gt; 2.22 %}
+      </li>
+      <li>
+        “<a href="/admin/overview/about-upgrades-to-new-releases"
+          >About upgrades to new releases</a
+        >”{% endif %}
+      </li>
+    </ul>
+  </body>
+</html>

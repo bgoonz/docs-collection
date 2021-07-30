@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating a JavaScript action</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating a JavaScript action</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      In this guide, you’ll learn about the basic components needed to create
+      and use a packaged JavaScript action. To focus this guide on the
+      components needed to package the action, the functionality of the action’s
+      code is minimal. The action prints “Hello World” in the logs or “Hello
+      [who-to-greet]” if you provide a custom name.
+    </p>
+    <p>
+      This guide uses the {% data variables.product.prodname_actions %} Toolkit
+      Node.js module to speed up development. For more information, see the
+      <a href="https://github.com/actions/toolkit">actions/toolkit</a>
+      repository.
+    </p>
+    <p>
+      Once you complete this project, you should understand how to build your
+      own JavaScript action and test it in a workflow.
+    </p>
+    <p>{% data reusables.github-actions.pure-javascript %}</p>
+    <p>{% data reusables.github-actions.context-injection-warning %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      Before you begin, you’ll need to download Node.js and create a public {%
+      data variables.product.prodname_dotcom %} repository.
+    </p>
+    <ol type="1">
+      <li>Download and install Node.js 12.x, which includes npm.</li>
+    </ol>
+    <p>https://nodejs.org/en/download/current/</p>
+    <ol type="1">
+      <li>
+        <p>
+          Create a new public repository on {% data
+          variables.product.product_location %} and call it
+          “hello-world-javascript-action”. For more information, see “<a
+            href="/articles/creating-a-new-repository"
+            >Create a new repository</a
+          >.”
+        </p>
+      </li>
+      <li>
+        <p>
+          Clone your repository to your computer. For more information, see “<a
+            href="/articles/cloning-a-repository"
+            >Cloning a repository</a
+          >.”
+        </p>
+      </li>
+      <li>
+        <p>From your terminal, change directories into your new repository.</p>
+      </li>
+    </ol>
+    <pre class="shell"><code>cd hello-world-javascript-action</code></pre>
+    <ol type="1">
+      <li>
+        From your terminal, initialize the directory with npm to generate a
+        <code>package.json</code> file.
+      </li>
+    </ol>
+    <pre class="shell"><code>npm init -y</code></pre>
+    <h2 id="creating-an-action-metadata-file">
+      Creating an action metadata file
+    </h2>
+    <p>
+      Create a new file named <code>action.yml</code> in the
+      <code>hello-world-javascript-action</code> directory with the following
+      example code. For more information, see “<a
+        href="/actions/creating-actions/metadata-syntax-for-github-actions"
+        >Metadata syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">name:</span><span class="at"> </span><span class="st">&#39;Hello World&#39;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="fu">description:</span><span class="at"> </span><span class="st">&#39;Greet someone and record the time&#39;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="fu">who-to-greet:</span><span class="at">  </span><span class="co"># id of input</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">description:</span><span class="at"> </span><span class="st">&#39;Who to greet&#39;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">required:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="fu">default:</span><span class="at"> </span><span class="st">&#39;World&#39;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="fu">outputs:</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="fu">time:</span><span class="at"> </span><span class="co"># id of output</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="fu">description:</span><span class="at"> </span><span class="st">&#39;The time we greeted you&#39;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="fu">runs:</span></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="fu">using:</span><span class="at"> </span><span class="st">&#39;node12&#39;</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  <span class="fu">main:</span><span class="at"> </span><span class="st">&#39;index.js&#39;</span></a></code></pre>
+    </div>
+    <p>
+      This file defines the <code>who-to-greet</code> input and
+      <code>time</code> output. It also tells the action runner how to start
+      running this JavaScript action.
+    </p>
+    <h2 id="adding-actions-toolkit-packages">
+      Adding actions toolkit packages
+    </h2>
+    <p>
+      The actions toolkit is a collection of Node.js packages that allow you to
+      quickly build JavaScript actions with more consistency.
+    </p>
+    <p>
+      The toolkit
+      <a href="https://github.com/actions/toolkit/tree/main/packages/core"
+        ><code>@actions/core</code></a
+      >
+      package provides an interface to the workflow commands, input and output
+      variables, exit statuses, and debug messages.
+    </p>
+    <p>
+      The toolkit also offers a
+      <a href="https://github.com/actions/toolkit/tree/main/packages/github"
+        ><code>@actions/github</code></a
+      >
+      package that returns an authenticated Octokit REST client and access to
+      GitHub Actions contexts.
+    </p>
+    <p>
+      The toolkit offers more than the <code>core</code> and
+      <code>github</code> packages. For more information, see the
+      <a href="https://github.com/actions/toolkit">actions/toolkit</a>
+      repository.
+    </p>
+    <p>
+      At your terminal, install the actions toolkit <code>core</code> and
+      <code>github</code> packages.
+    </p>
+    <pre class="shell"><code>npm install @actions/core
+npm install @actions/github</code></pre>
+    <p>
+      Now you should see a <code>node_modules</code> directory with the modules
+      you just installed and a <code>package-lock.json</code> file with the
+      installed module dependencies and the versions of each installed module.
+    </p>
+    <h2 id="writing-the-action-code">Writing the action code</h2>
+    <p>
+      This action uses the toolkit to get the <code>who-to-greet</code> input
+      variable required in the action’s metadata file and prints “Hello
+      [who-to-greet]” in a debug message in the log. Next, the script gets the
+      current time and sets it as an output variable that actions running later
+      in a job can use.
+    </p>
+    <p>
+      GitHub Actions provide context information about the webhook event, Git
+      refs, workflow, action, and the person who triggered the workflow. To
+      access the context information, you can use the
+      <code>github</code> package. The action you’ll write will print the
+      webhook event payload to the log.
+    </p>
+    <p>Add a new file called <code>index.js</code>, with the following code.</p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">const</span> core <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;@actions/core&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">const</span> github <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;@actions/github&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="co">// `who-to-greet` input defined in action metadata file</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="kw">const</span> nameToGreet <span class="op">=</span> <span class="va">core</span>.<span class="at">getInput</span>(<span class="st">&#39;who-to-greet&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`Hello </span><span class="sc">${</span>nameToGreet<span class="sc">}</span><span class="vs">!`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="kw">const</span> time <span class="op">=</span> (<span class="kw">new</span> <span class="at">Date</span>()).<span class="at">toTimeString</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="va">core</span>.<span class="at">setOutput</span>(<span class="st">&quot;time&quot;</span><span class="op">,</span> time)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="co">// Get the JSON webhook payload for the event that triggered the workflow</span></a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="kw">const</span> payload <span class="op">=</span> <span class="va">JSON</span>.<span class="at">stringify</span>(<span class="va">github</span>.<span class="va">context</span>.<span class="at">payload</span><span class="op">,</span> <span class="kw">undefined</span><span class="op">,</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="va">console</span>.<span class="at">log</span>(<span class="vs">`The event payload: </span><span class="sc">${</span>payload<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="op">}</span> <span class="cf">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-14" title="14">  <span class="va">core</span>.<span class="at">setFailed</span>(<span class="va">error</span>.<span class="at">message</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      If an error is thrown in the above <code>index.js</code> example,
+      <code>core.setFailed(error.message);</code> uses the actions toolkit
+      <a href="https://github.com/actions/toolkit/tree/main/packages/core"
+        ><code>@actions/core</code></a
+      >
+      package to log a message and set a failing exit code. For more
+      information, see “<a
+        href="/actions/creating-actions/setting-exit-codes-for-actions"
+        >Setting exit codes for actions</a
+      >.”
+    </p>
+    <h2 id="creating-a-readme">Creating a README</h2>
+    <p>
+      To let people know how to use your action, you can create a README file. A
+      README is most helpful when you plan to share your action publicly, but is
+      also a great way to remind you or your team how to use the action.
+    </p>
+    <p>
+      In your <code>hello-world-javascript-action</code> directory, create a
+      <code>README.md</code> file that specifies the following information:
+    </p>
+    <ul>
+      <li>A detailed description of what the action does.</li>
+      <li>Required input and output arguments.</li>
+      <li>Optional input and output arguments.</li>
+      <li>Secrets the action uses.</li>
+      <li>Environment variables the action uses.</li>
+      <li>An example of how to use your action in a workflow.</li>
+    </ul>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode markdown"
+      ><code class="sourceCode markdown"><a class="sourceLine" id="cb6-1" title="1"><span class="fu"># Hello world javascript action</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3">This action prints &quot;Hello World&quot; or &quot;Hello&quot; + the name of a person to greet to the log.</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="fu">## Inputs</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="fu">## `who-to-greet`</span></a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9">**Required** The name of the person to greet. Default <span class="bn">`&quot;World&quot;`</span>.</a>
+<a class="sourceLine" id="cb6-10" title="10"></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="fu">## Outputs</span></a>
+<a class="sourceLine" id="cb6-12" title="12"></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="fu">## `time`</span></a>
+<a class="sourceLine" id="cb6-14" title="14"></a>
+<a class="sourceLine" id="cb6-15" title="15">The time we greeted you.</a>
+<a class="sourceLine" id="cb6-16" title="16"></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="fu">## Example usage</span></a>
+<a class="sourceLine" id="cb6-18" title="18"></a>
+<a class="sourceLine" id="cb6-19" title="19">uses: actions/hello-world-javascript-action@v1.1</a>
+<a class="sourceLine" id="cb6-20" title="20">with:</a>
+<a class="sourceLine" id="cb6-21" title="21">  who-to-greet: &#39;Mona the Octocat&#39;</a></code></pre>
+    </div>
+    <h2 id="commit-tag-and-push-your-action-to-github">
+      Commit, tag, and push your action to GitHub
+    </h2>
+    <p>
+      {% data variables.product.product_name %} downloads each action run in a
+      workflow during runtime and executes it as a complete package of code
+      before you can use workflow commands like <code>run</code> to interact
+      with the runner machine. This means you must include any package
+      dependencies required to run the JavaScript code. You’ll need to check in
+      the toolkit <code>core</code> and <code>github</code> packages to your
+      action’s repository.
+    </p>
+    <p>
+      From your terminal, commit your <code>action.yml</code>,
+      <code>index.js</code>, <code>node_modules</code>,
+      <code>package.json</code>, <code>package-lock.json</code>, and
+      <code>README.md</code> files. If you added a <code>.gitignore</code> file
+      that lists <code>node_modules</code>, you’ll need to remove that line to
+      commit the <code>node_modules</code> directory.
+    </p>
+    <p>
+      It’s best practice to also add a version tag for releases of your action.
+      For more information on versioning your action, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/about-actions#using-release-management-for-actions"
+        >About actions</a
+      >.”
+    </p>
+    <pre
+      class="shell"
+    ><code>git add action.yml index.js node_modules/* package.json package-lock.json README.md
+git commit -m &quot;My first action is ready&quot;
+git tag -a -m &quot;My first action release&quot; v1.1
+git push --follow-tags</code></pre>
+    <p>
+      Checking in your <code>node_modules</code> directory can cause problems.
+      As an alternative, you can use a tool called
+      <a href="https://github.com/vercel/ncc"><code>@vercel/ncc</code></a> to
+      compile your code and modules into one file used for distribution.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Install <code>vercel/ncc</code> by running this command in your
+          terminal. <code>npm i -g @vercel/ncc</code>
+        </p>
+      </li>
+      <li>
+        <p>
+          Compile your <code>index.js</code> file.
+          <code>ncc build index.js --license licenses.txt</code>
+        </p>
+      </li>
+    </ol>
+    <p>
+      You’ll see a new <code>dist/index.js</code> file with your code and the
+      compiled modules. You will also see an accompanying
+      <code>dist/licenses.txt</code> file containing all the licenses of the
+      <code>node_modules</code> you are using.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Change the <code>main</code> keyword in your
+          <code>action.yml</code> file to use the new
+          <code>dist/index.js</code> file. <code>main: 'dist/index.js'</code>
+        </p>
+      </li>
+      <li>
+        <p>
+          If you already checked in your <code>node_modules</code> directory,
+          remove it. <code>rm -rf node_modules/*</code>
+        </p>
+      </li>
+      <li>
+        From your terminal, commit the updates to your <code>action.yml</code>,
+        <code>dist/index.js</code>, and <code>node_modules</code> files.
+      </li>
+    </ol>
+    <pre class="shell"><code>git add action.yml dist/index.js node_modules/*
+git commit -m &quot;Use vercel/ncc&quot;
+git tag -a -m &quot;My first action release&quot; v1.1
+git push --follow-tags</code></pre>
+    <h2 id="testing-out-your-action-in-a-workflow">
+      Testing out your action in a workflow
+    </h2>
+    <p>
+      Now you’re ready to test your action out in a workflow. When an action is
+      in a private repository, the action can only be used in workflows in the
+      same repository. Public actions can be used by workflows in any
+      repository.
+    </p>
+    <p>{% data reusables.actions.enterprise-marketplace-actions %}</p>
+    <h3 id="example-using-a-public-action">Example using a public action</h3>
+    <p>
+      This example demonstrates how your new public action can be run from
+      within an external repository.
+    </p>
+    <p>
+      Copy the following YAML into a new file at
+      <code>.github/workflows/main.yml</code>, and update the
+      <code>uses: octocat/hello-world-javascript-action@v1.1</code> line with
+      your username and the name of the public repository you created above. You
+      can also replace the <code>who-to-greet</code> input with your name.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="fu">hello_world_job:</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="fu">name:</span><span class="at"> A job to say hello</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb9-8" title="8">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Hello world action step</span></a>
+<a class="sourceLine" id="cb9-9" title="9">        <span class="fu">id:</span><span class="at"> hello</span></a>
+<a class="sourceLine" id="cb9-10" title="10">        <span class="fu">uses:</span><span class="at"> octocat/hello-world-javascript-action@v1.1</span></a>
+<a class="sourceLine" id="cb9-11" title="11">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb9-12" title="12">          <span class="fu">who-to-greet:</span><span class="at"> </span><span class="st">&#39;Mona the Octocat&#39;</span></a>
+<a class="sourceLine" id="cb9-13" title="13">      <span class="co"># Use the output from the `hello` step</span></a>
+<a class="sourceLine" id="cb9-14" title="14">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Get the output time</span></a>
+<a class="sourceLine" id="cb9-15" title="15">        <span class="fu">run:</span><span class="at"> echo &quot;The time was ${{ steps.hello.outputs.time }}&quot;</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      When this workflow is triggered, the runner will download the
+      <code>hello-world-javascript-action</code> action from your public
+      repository and then execute it.
+    </p>
+    <h3 id="example-using-a-private-action">Example using a private action</h3>
+    <p>
+      Copy the workflow code into a <code>.github/workflows/main.yml</code> file
+      in your action’s repository. You can also replace the
+      <code>who-to-greet</code> input with your name.
+    </p>
+    <p>{% raw %} <strong>.github/workflows/main.yml</strong></p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">on:</span><span class="at"> </span><span class="kw">[</span>push<span class="kw">]</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="fu">hello_world_job:</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="fu">name:</span><span class="at"> A job to say hello</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb10-8" title="8">      <span class="co"># To use this repository&#39;s private action,</span></a>
+<a class="sourceLine" id="cb10-9" title="9">      <span class="co"># you must check out the repository</span></a>
+<a class="sourceLine" id="cb10-10" title="10">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Checkout</span></a>
+<a class="sourceLine" id="cb10-11" title="11">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb10-12" title="12">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Hello world action step</span></a>
+<a class="sourceLine" id="cb10-13" title="13">        <span class="fu">uses:</span><span class="at"> ./ </span><span class="co"># Uses an action in the root directory</span></a>
+<a class="sourceLine" id="cb10-14" title="14">        <span class="fu">id:</span><span class="at"> hello</span></a>
+<a class="sourceLine" id="cb10-15" title="15">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb10-16" title="16">          <span class="fu">who-to-greet:</span><span class="at"> </span><span class="st">&#39;Mona the Octocat&#39;</span></a>
+<a class="sourceLine" id="cb10-17" title="17">      <span class="co"># Use the output from the `hello` step</span></a>
+<a class="sourceLine" id="cb10-18" title="18">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Get the output time</span></a>
+<a class="sourceLine" id="cb10-19" title="19">        <span class="fu">run:</span><span class="at"> echo &quot;The time was ${{ steps.hello.outputs.time }}&quot;</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      From your repository, click the <strong>Actions</strong> tab, and select
+      the latest workflow run. {% ifversion fpt or ghes &gt; 3.0 or ghae %}Under
+      <strong>Jobs</strong> or in the visualization graph, click
+      <strong>A job to say hello</strong>. {% endif %}You should see “Hello Mona
+      the Octocat” or the name you used for the <code>who-to-greet</code> input
+      and the timestamp printed in the log.
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/javascript-action-workflow-run-updated-2.png"
+        alt="A screenshot of using your action in a workflow"
+      />
+      {% elsif ghes &gt; 2.22 %}
+      <img
+        src="/assets/images/help/repository/javascript-action-workflow-run-updated.png"
+        alt="A screenshot of using your action in a workflow"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/javascript-action-workflow-run.png"
+        alt="A screenshot of using your action in a workflow"
+      />
+      {% endif %}
+    </p>
+  </body>
+</html>

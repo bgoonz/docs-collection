@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About code owners</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About code owners</h1>
+</header>
+<p>People with admin or owner permissions can set up a CODEOWNERS file in a repository.</p>
+<p>The people you choose as code owners must have write permissions for the repository. When the code owner is a team, that team must have write permissions, even if all the individual members of the team already have write permissions directly, through organization membership, or through another team membership.</p>
+<h2 id="about-code-owners">About code owners</h2>
+<p>Code owners are automatically requested for review when someone opens a pull request that modifies code that they own. Code owners are not automatically requested to review draft pull requests. For more information about draft pull requests, see “<a href="/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests">About pull requests</a>.” When you mark a draft pull request as ready for review, code owners are automatically notified. If you convert a pull request to a draft, people who are already subscribed to notifications are not automatically unsubscribed. For more information, see “<a href="/github/collaborating-with-issues-and-pull-requests/changing-the-stage-of-a-pull-request">Changing the stage of a pull request</a>.”</p>
+<p>When someone with admin or owner permissions has enabled required reviews, they also can optionally require approval from a code owner before the author can merge a pull request in the repository. For more information, see “<a href="/github/administering-a-repository/about-protected-branches#require-pull-request-reviews-before-merging">About protected branches</a>.”</p>
+<p>{% ifversion fpt or ghae or ghes %}If a team has enabled code review assignments, the individual approvals won’t satisfy the requirement for code owner approval in a protected branch. For more information, see “<a href="/organizations/organizing-members-into-teams/managing-code-review-assignment-for-your-team">Managing code review assignment for your team</a>.”{% endif %}</p>
+<p>{% ifversion fpt or ghae or ghes &gt; 2.22 %} If a file has a code owner, you can see who the code owner is before you open a pull request. In the repository, you can browse to the file and hover over {% octicon “shield-lock” aria-label=“The edit icon” %}.</p>
+<p><img src="/assets/images/help/repository/code-owner-for-a-file.png" alt="Code owner for a file in a repository" /> {% endif %}</p>
+<h2 id="codeowners-file-location">CODEOWNERS file location</h2>
+<p>To use a CODEOWNERS file, create a new file called <code>CODEOWNERS</code> in the root, <code>docs/</code>, or <code>.github/</code> directory of the repository, in the branch where you’d like to add the code owners.</p>
+<p>Each CODEOWNERS file assigns the code owners for a single branch in the repository. Thus, you can assign different code owners for different branches, such as <code>@octo-org/codeowners-team</code> for a code base on the default branch and <code>@octocat</code> for a {% data variables.product.prodname_pages %} site on the <code>gh-pages</code> branch.</p>
+<p>For code owners to receive review requests, the CODEOWNERS file must be on the base branch of the pull request. For example, if you assign <code>@octocat</code> as the code owner for <em>.js</em> files on the <code>gh-pages</code> branch of your repository, <code>@octocat</code> will receive review requests when a pull request with changes to <em>.js</em> files is opened between the head branch and <code>gh-pages</code>.</p>
+<h2 id="codeowners-syntax">CODEOWNERS syntax</h2>
+<p>A CODEOWNERS file uses a pattern that follows most of the same rules used in <a href="https://git-scm.com/docs/gitignore#_pattern_format">gitignore</a> files, with <a href="#syntax-exceptions">some exceptions</a>. The pattern is followed by one or more {% data variables.product.prodname_dotcom %} usernames or team names using the standard <code>@username</code> or <code>@org/team-name</code> format. You can also refer to a user by an email address that has been added to their {% data variables.product.product_name %} account, for example <code>user@example.com</code>.</p>
+<p>If any line in your CODEOWNERS file contains invalid syntax, the file will not be detected and will not be used to request reviews. ### Example of a CODEOWNERS file</p>
+<pre><code># This is a comment.
+# Each line is a file pattern followed by one or more owners.
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @global-owner1 and @global-owner2 will be requested for
+# review when someone opens a pull request.
+*       @global-owner1 @global-owner2
+
+# Order is important; the last matching pattern takes the most
+# precedence. When someone opens a pull request that only
+# modifies JS files, only @js-owner and not the global
+# owner(s) will be requested for a review.
+*.js    @js-owner
+
+# You can also use email addresses if you prefer. They&#39;ll be
+# used to look up users just like we do for commit author
+# emails.
+*.go docs@example.com
+
+# In this example, @doctocat owns any files in the build/logs
+# directory at the root of the repository and any of its
+# subdirectories.
+/build/logs/ @doctocat
+
+# The `docs/*` pattern will match files like
+# `docs/getting-started.md` but not further nested files like
+# `docs/build-app/troubleshooting.md`.
+docs/*  docs@example.com
+
+# In this example, @octocat owns any file in an apps directory
+# anywhere in your repository.
+apps/ @octocat
+
+# In this example, @doctocat owns any file in the `/docs`
+# directory in the root of your repository and any of its
+# subdirectories.
+/docs/ @doctocat
+
+# In this example, @octocat owns any file in the `/apps` 
+# directory in the root of your repository except for the `/apps/github` 
+# subdirectory, as its owners are left empty.
+/apps/ @octocat
+/apps/github </code></pre>
+<h3 id="syntax-exceptions">Syntax exceptions</h3>
+<p>There are some syntax rules for gitignore files that do not work in CODEOWNERS files: - Escaping a pattern starting with <code>#</code> using <code>\</code> so it is treated as a pattern and not a comment - Using <code>!</code> to negate a pattern - Using <code>[ ]</code> to define a character range</p>
+<h2 id="codeowners-and-branch-protection">CODEOWNERS and branch protection</h2>
+<p>Repository owners can add branch protection rules to ensure that changed code is reviewed by the owners of the changed files. For more information, see “<a href="/github/administering-a-repository/defining-the-mergeability-of-pull-requests/about-protected-branches">About protected branches</a>.”</p>
+<h3 id="example-of-a-codeowners-file">Example of a CODEOWNERS file</h3>
+<pre><code># In this example, any change inside the `/apps` directory
+# will require approval from @doctocat.
+/apps/ @doctocat
+
+# In this example, any change inside the `/apps` directory
+# will require approval from @doctocat or @octocat.
+/apps/ @doctocat @octocat
+
+# In this example, any change inside the `/apps` directory
+# will require approval from a member of the @example-org/content team.
+# If a member of @example-org/content opens a pull request 
+# with a change inside the `/apps` directory, their approval is implicit.
+# The team is still added as a reviewer but not a required reviewer.
+# Anyone can approve the changes.
+/apps/ @example-org/content-team</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/creating-new-files">Creating new files</a>”</li>
+<li>“<a href="/articles/inviting-collaborators-to-a-personal-repository">Inviting collaborators to a personal repository</a>”</li>
+<li>“<a href="/articles/managing-an-individual-s-access-to-an-organization-repository">Managing an individual’s access to an organization repository</a>”</li>
+<li>“<a href="/articles/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a>”</li>
+<li>“<a href="/articles/viewing-a-pull-request-review">Viewing a pull request review</a>”</li>
+</ul>
+</body>
+</html>

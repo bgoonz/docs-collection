@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Generating a new GPG key</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Generating a new GPG key</h1>
+</header>
+<p>{% data reusables.gpg.supported-gpg-key-algorithms %}</p>
+<h2 id="generating-a-gpg-key">Generating a GPG key</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Before generating a new GPG key, make sure you’ve verified your email address. If you haven’t verified your email address, you won’t be able to sign commits and tags with GPG.{% ifversion fpt %} For more information, see “<a href="/articles/verifying-your-email-address">Verifying your email address</a>.”{% endif %}</p>
+<p>{% endnote %}</p>
+<ol type="1">
+<li>Download and install <a href="https://www.gnupg.org/download/">the GPG command line tools</a> for your operating system. We generally recommend installing the latest version for your operating system. {% data reusables.command_line.open_the_multi_os_terminal %}</li>
+<li>Generate a GPG key pair. Since there are multiple versions of GPG, you may need to consult the relevant <a href="https://en.wikipedia.org/wiki/Man_page"><em>man page</em></a> to find the appropriate key generation command. Your key must use RSA.
+<ul>
+<li><p>If you are on version 2.1.17 or greater, paste the text below to generate a GPG key pair.</p>
+<pre class="shell"><code>$ gpg --full-generate-key</code></pre></li>
+<li><p>If you are not on version 2.1.17 or greater, the <code>gpg --full-generate-key</code> command doesn’t work. Paste the text below and skip to step 6.</p>
+<pre class="shell"><code>$ gpg --default-new-key-algo rsa4096 --gen-key</code></pre></li>
+</ul></li>
+<li>At the prompt, specify the kind of key you want, or press <code>Enter</code> to accept the default.</li>
+<li>At the prompt, specify the key size you want, or press <code>Enter</code> to accept the default. Your key must be at least <code>4096</code> bits.</li>
+<li>Enter the length of time the key should be valid. Press <code>Enter</code> to specify the default selection, indicating that the key doesn’t expire.</li>
+<li>Verify that your selections are correct.</li>
+<li>Enter your user ID information.</li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note:</strong> When asked to enter your email address, ensure that you enter the verified email address for your GitHub account. {% data reusables.gpg.private-email %} {% ifversion fpt %} For more information, see “<a href="/articles/verifying-your-email-address">Verifying your email address</a>” and “<a href="/articles/setting-your-commit-email-address">Setting your commit email address</a>.”{% endif %}</p>
+<p>{% endnote %}</p>
+<ol start="9" type="1">
+<li>Type a secure passphrase. {% data reusables.gpg.list-keys-with-note %} {% data reusables.gpg.copy-gpg-key-id %}</li>
+<li>Paste the text below, substituting in the GPG key ID you’d like to use. In this example, the GPG key ID is <code>3AA5C34371567BD2</code>:</li>
+</ol>
+<pre class="shell"><code>$ gpg --armor --export &lt;em&gt;3AA5C34371567BD2&lt;/em&gt;
+# Prints the GPG key ID, in ASCII armor format</code></pre>
+<ol start="11" type="1">
+<li>Copy your GPG key, beginning with <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code> and ending with <code>-----END PGP PUBLIC KEY BLOCK-----</code>.</li>
+<li><a href="/articles/adding-a-new-gpg-key-to-your-github-account">Add the GPG key to your GitHub account</a>.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/checking-for-existing-gpg-keys">Checking for existing GPG keys</a>”</li>
+<li>“<a href="/articles/adding-a-new-gpg-key-to-your-github-account">Adding a new GPG key to your GitHub account</a>”</li>
+<li>“<a href="/articles/telling-git-about-your-signing-key">Telling Git about your signing key</a>”</li>
+<li>“<a href="/articles/associating-an-email-with-your-gpg-key">Associating an email with your GPG key</a>”</li>
+<li>“<a href="/articles/signing-commits">Signing commits</a>”</li>
+<li>“<a href="/articles/signing-tags">Signing tags</a>”</li>
+</ul>
+</body>
+</html>

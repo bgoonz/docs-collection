@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring DNS nameservers</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring DNS nameservers</h1>
+    </header>
+    <p>
+      The nameservers you specify must resolve {% data
+      variables.product.product_location %}’s hostname.
+    </p>
+    <p>
+      {% data reusables.enterprise_installation.changing-hostname-not-supported
+      %}
+    </p>
+    <h2 id="configuring-nameservers-using-the-virtual-machine-console">
+      Configuring nameservers using the virtual machine console
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.open-vm-console-start %} 2.
+      Configure nameservers for your instance. {% data
+      reusables.enterprise_installation.vm-console-done %}
+    </p>
+    <h2 id="configuring-nameservers-using-the-administrative-shell">
+      Configuring nameservers using the administrative shell
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.ssh-into-instance %} 2. To edit
+      your nameservers, enter:
+      <code>shell $ sudo vim /etc/resolvconf/resolv.conf.d/head</code> 3. Append
+      any <code>nameserver</code> entries, then save the file. 4. After
+      verifying your changes, save the file. 5. To add your new nameserver
+      entries to {% data variables.product.product_location %}, run the
+      following:
+      <code
+        >shell $ sudo service resolvconf restart $ sudo service dnsmasq
+        restart</code
+      >
+    </p>
+  </body>
+</html>

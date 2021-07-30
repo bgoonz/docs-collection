@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enabling and scheduling maintenance mode</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Enabling and scheduling maintenance mode</h1>
+    </header>
+    <h2 id="about-maintenance-mode">About maintenance mode</h2>
+    <p>
+      Some types of operations require that you take {% data
+      variables.product.product_location %} offline and put it into maintenance
+      mode: - Upgrading to a new version of {% data
+      variables.product.prodname_ghe_server %} - Increasing CPU, memory, or
+      storage resources allocated to the virtual machine - Migrating data from
+      one virtual machine to another - Restoring data from a {% data
+      variables.product.prodname_enterprise_backup_utilities %} snapshot -
+      Troubleshooting certain types of critical application issues
+    </p>
+    <p>
+      We recommend that you schedule a maintenance window for at least 30
+      minutes in the future to give users time to prepare. When a maintenance
+      window is scheduled, all users will see a banner when accessing the site.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/maintenance/maintenance-scheduled.png"
+        alt="End user banner about scheduled maintenance"
+      />
+      <figcaption>End user banner about scheduled maintenance</figcaption>
+    </figure>
+    <p>
+      When the instance is in maintenance mode, all normal HTTP and Git access
+      is refused. Git fetch, clone, and push operations are also rejected with
+      an error message indicating that the site is temporarily unavailable.
+      GitHub Actions jobs will not be executed. Visiting the site in a browser
+      results in a maintenance page.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/maintenance/maintenance-mode-maintenance-page.png"
+        alt="The maintenance mode splash screen"
+      />
+      <figcaption>The maintenance mode splash screen</figcaption>
+    </figure>
+    <h2
+      id="enabling-maintenance-mode-immediately-or-scheduling-a-maintenance-window-for-a-later-time"
+    >
+      Enabling maintenance mode immediately or scheduling a maintenance window
+      for a later time
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 2. At
+      the top of the {% data variables.enterprise.management_console %}, click
+      <strong>Maintenance</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/maintenance-tab.png"
+        alt="Maintenance tab"
+      />
+      3. Under “Enable and schedule”, decide whether to enable maintenance mode
+      immediately or to schedule a maintenance window for a future time. - To
+      enable maintenance mode immediately, use the drop-down menu and click
+      <strong>now</strong>.
+      <img
+        src="/assets/images/enterprise/maintenance/enable-maintenance-mode-now.png"
+        alt="Drop-down menu with the option to enable maintenance mode now selected"
+      />
+      - To schedule a maintenance window for a future time, use the drop-down
+      menu and click a start time.
+      <img
+        src="/assets/images/enterprise/maintenance/schedule-maintenance-mode-two-hours.png"
+        alt="Drop-down menu with the option to schedule a maintenance window in two hours selected"
+      />
+      4. Select <strong>Enable maintenance mode</strong>.
+      <img
+        src="/assets/images/enterprise/maintenance/enable-maintenance-mode-checkbox.png"
+        alt="Checkbox for enabling or scheduling maintenance mode"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2
+      id="scheduling-maintenance-mode-with-data-variables.product.prodname_enterprise_api"
+    >
+      Scheduling maintenance mode with {% data
+      variables.product.prodname_enterprise_api %}
+    </h2>
+    <p>
+      You can schedule maintenance for different times or dates with {% data
+      variables.product.prodname_enterprise_api %}. For more information, see
+      “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/rest/reference/enterprise-admin#enable-or-disable-maintenance-mode"
+        >Management Console</a
+      >.”
+    </p>
+    <h2 id="enabling-or-disabling-maintenance-mode-for-all-nodes-in-a-cluster">
+      Enabling or disabling maintenance mode for all nodes in a cluster
+    </h2>
+    <p>
+      With the <code>ghe-cluster-maintenance</code> utility, you can set or
+      unset maintenance mode for every node in a cluster.
+    </p>
+    <pre class="shell"><code>$ ghe-cluster-maintenance -h
+# Shows options
+$ ghe-cluster-maintenance -q
+# Queries the current mode
+$ ghe-cluster-maintenance -s
+# Sets maintenance mode
+$ ghe-cluster-maintenance -u
+# Unsets maintenance mode</code></pre>
+  </body>
+</html>

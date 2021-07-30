@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About GitHub Pages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About GitHub Pages</h1>
+</header>
+<h2 id="about-data-variables.product.prodname_pages">About {% data variables.product.prodname_pages %}</h2>
+<p>{% data variables.product.prodname_pages %} is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on {% data variables.product.product_name %}, optionally runs the files through a build process, and publishes a website. You can see examples of {% data variables.product.prodname_pages %} sites in the <a href="https://github.com/collections/github-pages-examples">{% data variables.product.prodname_pages %} examples collection</a>.</p>
+<p>{% ifversion fpt %} You can host your site on {% data variables.product.prodname_dotcom %}’s <code>github.io</code> domain or your own custom domain. For more information, see “<a href="/articles/using-a-custom-domain-with-github-pages">Using a custom domain with {% data variables.product.prodname_pages %}</a>.” {% endif %}</p>
+<p>{% ifversion fpt %} {% data reusables.pages.about-private-publishing %} For more information, see “<a href="/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site">Changing the visibility of your {% data variables.product.prodname_pages %} site</a>.” {% endif %}</p>
+<p>To get started, see “<a href="/articles/creating-a-github-pages-site">Creating a {% data variables.product.prodname_pages %} site</a>.”</p>
+<p>{% ifversion fpt or ghes &gt; 3.0 %} Organization owners can disable the publication of {% data variables.product.prodname_pages %} sites from the organization’s repositories. For more information, see “<a href="/organizations/managing-organization-settings/managing-the-publication-of-github-pages-sites-for-your-organization">Managing the publication of {% data variables.product.prodname_pages %} sites for your organization</a>.” {% endif %}</p>
+<h2 id="types-of-data-variables.product.prodname_pages-sites">Types of {% data variables.product.prodname_pages %} sites</h2>
+<p>There are three types of {% data variables.product.prodname_pages %} sites: project, user, and organization. Project sites are connected to a specific project hosted on {% data variables.product.product_name %}, such as a JavaScript library or a recipe collection. User and organization sites are connected to a specific {% data variables.product.product_name %} account.</p>
+<p>To publish a user site, you must create a repository owned by your user account that’s named {% ifversion fpt %}<code>&lt;username&gt;.github.io</code>{% else %}<code>&lt;username&gt;.&lt;hostname&gt;</code>{% endif %}. To publish an organization site, you must create a repository owned by an organization that’s named {% ifversion fpt %}<code>&lt;organization&gt;.github.io</code>{% else %}<code>&lt;organization&gt;.&lt;hostname&gt;</code>{% endif %}. {% ifversion fpt %}Unless you’re using a custom domain, user and organization sites are available at <code>http(s)://&lt;username&gt;.github.io</code> or <code>http(s)://&lt;organization&gt;.github.io</code>.{% elsif ghae %}User and organization sites are available at <code>http(s)://pages.&lt;hostname&gt;/&lt;username&gt;</code> or <code>http(s)://pages.&lt;hostname&gt;/&lt;organization&gt;</code>.{% endif %}</p>
+<p>The source files for a project site are stored in the same repository as their project. {% ifversion fpt %}Unless you’re using a custom domain, project sites are available at <code>http(s)://&lt;username&gt;.github.io/&lt;repository&gt;</code> or <code>http(s)://&lt;organization&gt;.github.io/&lt;repository&gt;</code>.{% elsif ghae %}Project sites are available at <code>http(s)://pages.&lt;hostname&gt;/&lt;username&gt;/&lt;repository&gt;/</code> or <code>http(s)://pages.&lt;hostname&gt;/&lt;organization&gt;/&lt;repository&gt;/</code>.{% endif %}</p>
+<p>{% ifversion fpt %} If you publish your site privately, the URL for your site will be different. For more information, see “<a href="/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site">Changing the visibility of your {% data variables.product.prodname_pages %} site</a>.” {% endif %}</p>
+<p>{% ifversion fpt %} For more information about how custom domains affect the URL for your site, see “<a href="/articles/about-custom-domains-and-github-pages">About custom domains and {% data variables.product.prodname_pages %}</a>.” {% endif %}</p>
+<p>You can only create one user or organization site for each account on {% data variables.product.product_name %}. Project sites, whether owned by an organization or a user account, are unlimited.</p>
+<p>{% ifversion ghes %} The URL where your site is available depends on whether subdomain isolation is enabled for {% data variables.product.product_location %}.</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 40%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type of site</th>
+<th>Subdomain isolation enabled</th>
+<th>Subdomain isolation disabled</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>User</td>
+<td><code>http(s)://pages.&lt;hostname&gt;/&lt;username&gt;</code></td>
+<td><code>http(s)://&lt;hostname&gt;/pages/&lt;username&gt;</code></td>
+</tr>
+<tr class="even">
+<td>Organization</td>
+<td><code>http(s)://pages.&lt;hostname&gt;/&lt;organization&gt;</code></td>
+<td><code>http(s)://&lt;hostname&gt;/pages/&lt;organization&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>Project site owned by user account</td>
+<td><code>http(s)://pages.&lt;hostname&gt;/&lt;username&gt;/&lt;repository&gt;/</code></td>
+<td><code>http(s)://&lt;hostname&gt;/pages/&lt;username&gt;/&lt;repository&gt;/</code></td>
+</tr>
+<tr class="even">
+<td>Project site owned by organization account</td>
+<td><code>http(s)://pages.&lt;hostname&gt;/&lt;orgname&gt;/&lt;repository&gt;/</code></td>
+<td><code>http(s)://&lt;hostname&gt;/pages/&lt;orgname&gt;/&lt;repository&gt;/</code></td>
+</tr>
+</tbody>
+</table>
+<p>For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/enabling-subdomain-isolation">Enabling subdomain isolation</a>” or contact your site administrator. {% endif %}</p>
+<h2 id="publishing-sources-for-data-variables.product.prodname_pages-sites">Publishing sources for {% data variables.product.prodname_pages %} sites</h2>
+<p>The publishing source for your {% data variables.product.prodname_pages %} site is the branch and folder where the source files for your site are stored.</p>
+<p>{% data reusables.pages.private_pages_are_public_warning %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %}</p>
+<p>If the default publishing source exists in your repository, {% data variables.product.prodname_pages %} will automatically publish a site from that source. The default publishing source for user and organization sites is the root of the default branch for the repository. The default publishing source for project sites is the root of the <code>gh-pages</code> branch.</p>
+<p>If you want to keep the source files for your site in a different location, you can change the publishing source for your site. You can publish your site from any branch in the repository, either from the root of the repository on that branch, <code>/</code>, or from the <code>/docs</code> folder on that branch. For more information, see “<a href="/articles/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source">Configuring a publishing source for your {% data variables.product.prodname_pages %} site</a>.”</p>
+<p>If you choose the <code>/docs</code> folder of any branch as your publishing source, {% data variables.product.prodname_pages %} will read everything to publish your site{% ifversion fpt %}, including the <em>CNAME</em> file,{% endif %} from the <code>/docs</code> folder.{% ifversion fpt %} For example, when you edit your custom domain through the {% data variables.product.prodname_pages %} settings, the custom domain will write to <code>/docs/CNAME</code>. For more information about <em>CNAME</em> files, see “<a href="/articles/managing-a-custom-domain-for-your-github-pages-site">Managing a custom domain for your {% data variables.product.prodname_pages %} site</a>.”{% endif %}</p>
+<p>{% else %}</p>
+<p>The default publishing source for user and organization sites is the <code>master</code> branch. If the repository for your user or organization site has a <code>master</code> branch, your site will publish automatically from that branch. You cannot choose a different publishing source for user or organization sites.</p>
+<p>The default publishing source for a project site is the <code>gh-pages</code> branch. If the repository for your project site has a <code>gh-pages</code> branch, your site will publish automatically from that branch.</p>
+<p>Project sites can also be published from the <code>master</code> branch or a <code>/docs</code> folder on the <code>master</code> branch. To publish your site from one of these sources, you must configure a different publishing source. For more information, see “<a href="/articles/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source">Configuring a publishing source for your {% data variables.product.prodname_pages %} site</a>.”</p>
+<p>If you choose the <code>/docs</code> folder of the <code>master</code> branch as your publishing source, {% data variables.product.prodname_pages %} will read everything to publish your site{% ifversion fpt %}, including the <em>CNAME</em> file,{% endif %} from the <code>/docs</code> folder.{% ifversion fpt %} For example, when you edit your custom domain through the {% data variables.product.prodname_pages %} settings, the custom domain will write to <code>/docs/CNAME</code>. For more information about <em>CNAME</em> files, see “<a href="/articles/managing-a-custom-domain-for-your-github-pages-site">Managing a custom domain for your {% data variables.product.prodname_pages %} site</a>.”{% endif %}</p>
+<p>You cannot publish your project site from any other branch, even if the default branch is not <code>master</code> or <code>gh-pages</code>.</p>
+<p>{% endif %}</p>
+<h2 id="static-site-generators">Static site generators</h2>
+<p>{% data variables.product.prodname_pages %} publishes any static files that you push to your repository. You can create your own static files or use a static site generator to build your site for you. You can also customize your own build process locally or on another server. We recommend Jekyll, a static site generator with built-in support for {% data variables.product.prodname_pages %} and a simplified build process. For more information, see “<a href="/articles/about-github-pages-and-jekyll">About {% data variables.product.prodname_pages %} and Jekyll</a>.”</p>
+<p>{% data variables.product.prodname_pages %} will use Jekyll to build your site by default. If you want to use a static site generator other than Jekyll, disable the Jekyll build process by creating an empty file called <code>.nojekyll</code> in the root of your publishing source, then follow your static site generator’s instructions to build your site locally.</p>
+<p>{% data variables.product.prodname_pages %} does not support server-side languages such as PHP, Ruby, or Python.</p>
+<h2 id="guidelines-for-using-data-variables.product.prodname_pages">Guidelines for using {% data variables.product.prodname_pages %}</h2>
+<p>{% ifversion fpt %} - {% data variables.product.prodname_pages %} sites created after June 15, 2016 and using <code>github.io</code> domains are served over HTTPS. If you created your site before June 15, 2016, you can enable HTTPS support for traffic to your site. For more information, see “<a href="/articles/securing-your-github-pages-site-with-https">Securing your {% data variables.product.prodname_pages %} with HTTPS</a>.” - {% data reusables.pages.no_sensitive_data_pages %} - Your use of {% data variables.product.prodname_pages %} is subject to the <a href="/articles/github-terms-of-service/">GitHub Terms of Service</a>, including the prohibition on reselling.</p>
+<h3 id="usage-limits">Usage limits</h3>
+<p>{% endif %} {% data variables.product.prodname_pages %} sites are subject to the following usage limits:</p>
+<ul>
+<li>{% data variables.product.prodname_pages %} source repositories have a recommended limit of 1GB.{% ifversion fpt %} For more information, see "<a href="/articles/what-is-my-disk-quota/#file-and-repository-size-limitations">What is my disk quota?"</a>{% endif %}</li>
+<li>Published {% data variables.product.prodname_pages %} sites may be no larger than 1 GB. {% ifversion fpt %}</li>
+<li>{% data variables.product.prodname_pages %} sites have a <em>soft</em> bandwidth limit of 100GB per month.</li>
+<li>{% data variables.product.prodname_pages %} sites have a <em>soft</em> limit of 10 builds per hour.</li>
+</ul>
+<p>If your site exceeds these usage quotas, we may not be able to serve your site, or you may receive a polite email from {% data variables.contact.contact_support %} suggesting strategies for reducing your site’s impact on our servers, including putting a third-party content distribution network (CDN) in front of your site, making use of other {% data variables.product.prodname_dotcom %} features such as releases, or moving to a different hosting service that might better fit your needs.</p>
+<h3 id="prohibited-uses">Prohibited uses</h3>
+<p>{% data variables.product.prodname_pages %} is not intended for or allowed to be used as a free web hosting service to run your online business, e-commerce site, or any other website that is primarily directed at either facilitating commercial transactions or providing commercial software as a service (SaaS).</p>
+<p>In addition, {% data variables.product.prodname_dotcom %} does not allow {% data variables.product.prodname_pages %} to be used for certain purposes or activities. For a list of prohibited uses, see “<a href="/github/site-policy/github-additional-product-terms#4-pages">{% data variables.product.prodname_dotcom %}’s Additional Product Terms for {% data variables.product.prodname_pages %}</a>.” {% endif %}</p>
+<h2 id="mime-types-on-data-variables.product.prodname_pages">MIME types on {% data variables.product.prodname_pages %}</h2>
+<p>A MIME type is a header that a server sends to a browser, providing information about the nature and format of the files the browser requested. {% data variables.product.prodname_pages %} supports more than 750 MIME types across thousands of file extensions. The list of supported MIME types is generated from the <a href="https://github.com/jshttp/mime-db">mime-db project</a>.</p>
+<p>While you can’t specify custom MIME types on a per-file or per-repository basis, you can add or modify MIME types for use on {% data variables.product.prodname_pages %}. For more information, see <a href="https://github.com/jshttp/mime-db#adding-custom-media-types">the mime-db contributing guidelines</a>.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://lab.github.com/githubtraining/github-pages">{% data variables.product.prodname_pages %}</a> on {% data variables.product.prodname_learning %}</li>
+<li>“<a href="/rest/reference/repos#pages">{% data variables.product.prodname_pages %}</a>”</li>
+</ul>
+</body>
+</html>

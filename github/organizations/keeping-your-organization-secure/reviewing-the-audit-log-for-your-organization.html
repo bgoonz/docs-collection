@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Reviewing the audit log for your organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Reviewing the audit log for your organization</h1>
+</header>
+<h2 id="accessing-the-audit-log">Accessing the audit log</h2>
+<p>The audit log lists events triggered by activities that affect your organization within the last 90 days. Only owners can access an organization’s audit log.</p>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.audit_log.audit_log_sidebar_for_org_admins %}</p>
+<h2 id="searching-the-audit-log">Searching the audit log</h2>
+<p>{% data reusables.audit_log.audit-log-search %}</p>
+<h3 id="search-based-on-the-action-performed">Search based on the action performed</h3>
+<p>To search for specific events, use the <code>action</code> qualifier in your query. Actions listed in the audit log are grouped within the following categories:</p>
+<div class="line-block">Category name | Description</div>
+<p>|——————|——————-{% ifversion fpt %} | <a href="#account-category-actions"><code>account</code></a> | Contains all activities related to your organization account. | <a href="#advisory_credit-category-actions"><code>advisory_credit</code></a> | Contains all activities related to crediting a contributor for a security advisory in the {% data variables.product.prodname_advisory_database %}. For more information, see “<a href="/github/managing-security-vulnerabilities/about-github-security-advisories">About {% data variables.product.prodname_dotcom %} Security Advisories</a>.” | <a href="#billing-category-actions"><code>billing</code></a> | Contains all activities related to your organization’s billing.{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <a href="#business-category-actions"><code>business</code></a> | Contains activities related to business settings for an enterprise. |{% endif %} | <a href="#codespaces-category-actions"><code>codespaces</code></a> | Contains all activities related to your organization’s codespaces. | <a href="#dependabot_alerts-category-actions"><code>dependabot_alerts</code></a> | Contains organization-level configuration activities for {% data variables.product.prodname_dependabot %} alerts in existing repositories. For more information, see “<a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.” | <a href="#dependabot_alerts_new_repos-category-actions"><code>dependabot_alerts_new_repos</code></a> | Contains organization-level configuration activities for {% data variables.product.prodname_dependabot %} alerts in new repositories created in the organization. | <a href="#dependabot_security_updates-category-actions"><code>dependabot_security_updates</code></a> | Contains organization-level configuration activities for {% data variables.product.prodname_dependabot_security_updates %} in existing repositories. For more information, see “<a href="/github/managing-security-vulnerabilities/configuring-dependabot-security-updates">Configuring {% data variables.product.prodname_dependabot_security_updates %}</a>.” | <a href="#dependabot_security_updates_new_repos-category-actions"><code>dependabot_security_updates_new_repos</code></a> | Contains organization-level configuration activities for {% data variables.product.prodname_dependabot_security_updates %} for new repositories created in the organization. | <a href="#dependency_graph-category-actions"><code>dependency_graph</code></a> | Contains organization-level configuration activities for dependency graphs for repositories. For more information, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>.” | <a href="#dependency_graph_new_repos-category-actions"><code>dependency_graph_new_repos</code></a> | Contains organization-level configuration activities for new repositories created in the organization.{% endif %} | <a href="#discussion_post-category-actions"><code>discussion_post</code></a> | Contains all activities related to discussions posted to a team page. | <a href="#discussion_post_reply-category-actions"><code>discussion_post_reply</code></a> | Contains all activities related to replies to discussions posted to a team page.{% ifversion fpt or ghes &gt; 2.21 %} | <a href="#enterprise-category-actions"><code>enterprise</code></a> | Contains activities related to enterprise settings. | {% endif %} | <a href="#hook-category-actions"><code>hook</code></a> | Contains all activities related to webhooks. | <a href="#integration_installation_request-category-actions"><code>integration_installation_request</code></a> | Contains all activities related to organization member requests for owners to approve integrations for use in the organization. | | <a href="#issue-category-actions"><code>issue</code></a> | Contains activities related to deleting an issue. {% ifversion fpt %} | <a href="#marketplace_agreement_signature-category-actions"><code>marketplace_agreement_signature</code></a> | Contains all activities related to signing the {% data variables.product.prodname_marketplace %} Developer Agreement. | <a href="#marketplace_listing-category-actions"><code>marketplace_listing</code></a> | Contains all activities related to listing apps in {% data variables.product.prodname_marketplace %}.{% endif %}{% ifversion fpt or ghes &gt; 3.0 %} | <a href="#members_can_create_pages-category-actions"><code>members_can_create_pages</code></a> | Contains all activities related to managing the publication of {% data variables.product.prodname_pages %} sites for repositories in the organization. For more information, see “<a href="/organizations/managing-organization-settings/managing-the-publication-of-github-pages-sites-for-your-organization">Managing the publication of {% data variables.product.prodname_pages %} sites for your organization</a>.” | {% endif %} | <a href="#org-category-actions"><code>org</code></a> | Contains activities related to organization membership.{% ifversion fpt %} | <a href="#org_credential_authorization-category-actions"><code>org_credential_authorization</code></a> | Contains all activities related to authorizing credentials for use with SAML single sign-on.{% endif %}{% ifversion fpt or ghes or ghae %} | <a href="#organization_label-category-actions"><code>organization_label</code></a> | Contains all activities related to default labels for repositories in your organization.{% endif %} | <a href="#oauth_application-category-actions"><code>oauth_application</code></a> | Contains all activities related to OAuth Apps.{% ifversion fpt or ghes &gt; 3.0 %} | <a href="#packages-category-actions"><code>packages</code></a> | Contains all activities related to {% data variables.product.prodname_registry %}.{% endif %}{% ifversion fpt %} | <a href="#payment_method-category-actions"><code>payment_method</code></a> | Contains all activities related to how your organization pays for GitHub.{% endif %} | <a href="#profile_picture-category-actions"><code>profile_picture</code></a> | Contains all activities related to your organization’s profile picture. | <a href="#project-category-actions"><code>project</code></a> | Contains all activities related to project boards. | <a href="#protected_branch-category-actions"><code>protected_branch</code></a> | Contains all activities related to protected branches. | <a href="#repo-category-actions"><code>repo</code></a> | Contains activities related to the repositories owned by your organization.{% ifversion fpt %} | <a href="#repository_advisory-category-actions"><code>repository_advisory</code></a> | Contains repository-level activities related to security advisories in the {% data variables.product.prodname_advisory_database %}. For more information, see “<a href="/github/managing-security-vulnerabilities/about-github-security-advisories">About {% data variables.product.prodname_dotcom %} Security Advisories</a>.” | <a href="#repository_content_analysis-category-actions"><code>repository_content_analysis</code></a> | Contains all activities related to <a href="/articles/about-github-s-use-of-your-data">enabling or disabling data use for a private repository</a>.{% endif %}{% ifversion not ghae %} | <a href="#repository_dependency_graph-category-actions"><code>repository_dependency_graph</code></a> | Contains repository-level activities related to enabling or disabling the dependency graph for a {% ifversion fpt %}private {% endif %}repository. For more information, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <a href="#repository_secret_scanning-category-actions"><code>repository_secret_scanning</code></a> | Contains repository-level activities related to secret scanning. For more information, see “<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>.” {% endif %}{% ifversion not ghae %} | <a href="#repository_vulnerability_alert-category-actions"><code>repository_vulnerability_alert</code></a> | Contains all activities related to <a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies">{% data variables.product.prodname_dependabot_alerts %} for vulnerable dependencies</a>.{% endif %}{% ifversion fpt %} | <a href="#repository_vulnerability_alerts-category-actions"><code>repository_vulnerability_alerts</code></a> | Contains repository-level configuration activities for {% data variables.product.prodname_dependabot %} alerts. {% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <a href="#secret_scanning-category-actions"><code>secret_scanning</code></a> | Contains organization-level configuration activities for secret scanning in existing repositories. For more information, see “<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>.” | <a href="#secret_scanning_new_repos-category-actions"><code>secret_scanning_new_repos</code></a> | Contains organization-level configuration activities for secret scanning for new repositories created in the organization. {% endif %}{% ifversion fpt %} | <a href="#sponsors-category-actions"><code>sponsors</code></a> | Contains all events related to sponsor buttons (see “<a href="/articles/displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</a>”){% endif %} | <a href="#team-category-actions"><code>team</code></a> | Contains all activities related to teams in your organization. | <a href="#team_discussions-category-actions"><code>team_discussions</code></a> | Contains activities related to managing team discussions for an organization.</p>
+<p>You can search for specific sets of actions using these terms. For example:</p>
+<ul>
+<li><code>action:team</code> finds all events grouped within the team category.</li>
+<li><code>-action:hook</code> excludes all events in the webhook category.</li>
+</ul>
+<p>Each category has a set of associated actions that you can filter on. For example:</p>
+<ul>
+<li><code>action:team.create</code> finds all events where a team was created.</li>
+<li><code>-action:hook.events_changed</code> excludes all events where the events on a webhook have been altered.</li>
+</ul>
+<h3 id="search-based-on-time-of-action">Search based on time of action</h3>
+<p>Use the <code>created</code> qualifier to filter events in the audit log based on when they occurred. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<p>For example:</p>
+<ul>
+<li><code>created:2014-07-08</code> finds all events that occurred on July 8th, 2014.</li>
+<li><code>created:&gt;=2014-07-08</code> finds all events that occurred on or after July 8th, 2014.</li>
+<li><code>created:&lt;=2014-07-08</code> finds all events that occurred on or before July 8th, 2014.</li>
+<li><code>created:2014-07-01..2014-07-31</code> finds all events that occurred in the month of July 2014.</li>
+</ul>
+<p>The audit log contains data for the past 90 days, but you can use the <code>created</code> qualifier to search for events earlier than that.</p>
+<h3 id="search-based-on-location">Search based on location</h3>
+<p>Using the qualifier <code>country</code>, you can filter events in the audit log based on the originating country. You can use a country’s two-letter short code or its full name. Keep in mind that countries with spaces in their name will need to be wrapped in quotation marks. For example:</p>
+<ul>
+<li><code>country:de</code> finds all events that occurred in Germany.</li>
+<li><code>country:Mexico</code> finds all events that occurred in Mexico.</li>
+<li><code>country:"United States"</code> all finds events that occurred in the United States.</li>
+</ul>
+<p>{% ifversion fpt %} ## Exporting the audit log</p>
+<p>{% data reusables.audit_log.export-log %} {% data reusables.audit_log.exported-log-keys-and-values %} {% endif %}</p>
+<h2 id="using-the-audit-log-api">Using the audit log API</h2>
+<p>You can interact with the audit log using the GraphQL API{% ifversion fpt %} or the REST API{% endif %}.</p>
+<p>{% ifversion fpt %}</p>
+<h3 id="using-the-graphql-api">Using the GraphQL API</h3>
+<p>{% endif %}</p>
+<p>{% note %}</p>
+<p><strong>Note</strong>: The audit log GraphQL API is available for organizations using {% data variables.product.prodname_enterprise %}. {% data reusables.gated-features.more-info-org-products %}</p>
+<p>{% endnote %}</p>
+<p>To ensure your intellectual property is secure, and you maintain compliance for your organization, you can use the audit log GraphQL API to keep copies of your audit log data and monitor: {% data reusables.audit_log.audit-log-api-info %}</p>
+<p>{% ifversion fpt %} Note that you can’t retrieve Git events using the GraphQL API. To retrieve Git events, use the REST API instead. For more information, see “<a href="#git-category-actions"><code>git</code> category actions</a>.” {% endif %}</p>
+<p>The GraphQL response can include data for up to 90 to 120 days.</p>
+<p>For example, you can make a GraphQL request to see all the new organization members added to your organization. For more information, see the “<a href="/graphql/reference/interfaces#auditentry/">GraphQL API Audit Log</a>.”</p>
+<p>{% ifversion fpt %}</p>
+<h3 id="using-the-rest-api">Using the REST API</h3>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The audit log REST API is available for users of {% data variables.product.prodname_ghe_cloud %} only.</p>
+<p>{% endnote %}</p>
+<p>To ensure your intellectual property is secure, and you maintain compliance for your organization, you can use the audit log REST API to keep copies of your audit log data and monitor: {% data reusables.audit_log.audited-data-list %}</p>
+<p>{% data reusables.audit_log.audit-log-git-events-retention %}</p>
+<p>For more information about the audit log REST API, see “<a href="/rest/reference/orgs#get-the-audit-log-for-an-organization">Organizations</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="audit-log-actions">Audit log actions</h2>
+<p>An overview of some of the most common actions that are recorded as events in the audit log.</p>
+<p>{% ifversion fpt %} ### <code>account</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>billing_plan_change</code></td>
+<td>Triggered when an organization’s <a href="/articles/changing-the-duration-of-your-billing-cycle">billing cycle</a> changes.</td>
+</tr>
+<tr class="even">
+<td><code>plan_change</code></td>
+<td>Triggered when an organization’s <a href="/articles/about-billing-for-github-accounts">subscription</a> changes.</td>
+</tr>
+<tr class="odd">
+<td><code>pending_plan_change</code></td>
+<td>Triggered when an organization owner or billing manager <a href="/articles/how-does-upgrading-or-downgrading-affect-the-billing-process/">cancels or downgrades a paid subscription</a>.</td>
+</tr>
+<tr class="even">
+<td><code>pending_subscription_change</code></td>
+<td>Triggered when a <a href="/articles/about-billing-for-github-marketplace/">{% data variables.product.prodname_marketplace %} free trial starts or expires</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>advisory_credit</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>accept</code></td>
+<td>Triggered when someone accepts credit for a security advisory. For more information, see “<a href="/github/managing-security-vulnerabilities/editing-a-security-advisory">Editing a security advisory</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when the administrator of a security advisory adds someone to the credit section.</td>
+</tr>
+<tr class="odd">
+<td><code>decline</code></td>
+<td>Triggered when someone declines credit for a security advisory.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when the administrator of a security advisory removes someone from the credit section.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>billing</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>change_billing_type</code></td>
+<td>Triggered when your organization <a href="/articles/adding-or-editing-a-payment-method">changes how it pays for {% data variables.product.prodname_dotcom %}</a>.</td>
+</tr>
+<tr class="even">
+<td><code>change_email</code></td>
+<td>Triggered when your organization’s <a href="/articles/setting-your-billing-email">billing email address</a> changes.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ### <code>business</code> category actions</p>
+<div class="line-block">Action | Description</div>
+<p>|——————|——————-{% endif %}{% ifversion fpt %} | <code>set_actions_fork_pr_approvals_policy</code> | Triggered when the setting for requiring approvals for workflows from public forks is changed for an enterprise. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/setting-policies-for-organizations-in-your-enterprise-account/enforcing-github-actions-policies-in-your-enterprise-account#requiring-approval-for-workflows-from-public-forks">Requiring approval for workflows from public forks</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <code>set_actions_retention_limit</code> | Triggered when the retention period for {% data variables.product.prodname_actions %} artifacts and logs is changed for an enterprise. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/setting-policies-for-organizations-in-your-enterprise-account/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-enterprise-account">Configuring the retention period for {% data variables.product.prodname_actions %} artifacts and logs in your enterprise account</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 %} | <code>set_fork_pr_workflows_policy</code> | Triggered when the policy for workflows on private repository forks is changed. For more information, see “{% ifversion fpt %}<a href="/github/setting-up-and-managing-your-enterprise/setting-policies-for-organizations-in-your-enterprise-account/enforcing-github-actions-policies-in-your-enterprise-account#enabling-workflows-for-private-repository-forks">Enabling workflows for private repository forks</a>{% else ifversion ghes &gt; 2.22 %}<a href="/admin/github-actions/enabling-github-actions-for-github-enterprise-server/enforcing-github-actions-policies-for-your-enterprise#enabling-workflows-for-private-repository-forks">Enabling workflows for private repository forks</a>{% endif %}.”{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>codespaces</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a user <a href="/github/developing-online-with-codespaces/creating-a-codespace">creates a codespace</a>.</td>
+</tr>
+<tr class="even">
+<td><code>resume</code></td>
+<td>Triggered when a user resumes a suspended codespace.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when a user <a href="/github/developing-online-with-codespaces/deleting-a-codespace">deletes a codespace</a>.</td>
+</tr>
+<tr class="even">
+<td><code>create_an_org_secret</code></td>
+<td>Triggered when a user creates an organization-level <a href="/github/developing-online-with-codespaces/managing-encrypted-secrets-for-codespaces#about-encrypted-secrets-for-codespaces">secret for {% data variables.product.prodname_codespaces %}</a></td>
+</tr>
+<tr class="odd">
+<td><code>update_an_org_secret</code></td>
+<td>Triggered when a user updates an organization-level <a href="/github/developing-online-with-codespaces/managing-encrypted-secrets-for-codespaces#about-encrypted-secrets-for-codespaces">secret for {% data variables.product.prodname_codespaces %}</a>.</td>
+</tr>
+<tr class="even">
+<td><code>remove_an_org_secret</code></td>
+<td>Triggered when a user removes an organization-level <a href="/github/developing-online-with-codespaces/managing-encrypted-secrets-for-codespaces#about-encrypted-secrets-for-codespaces">secret for {% data variables.product.prodname_codespaces %}</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>manage_access_and_security</code></td>
+<td>Triggered when a user updates <a href="/github/developing-online-with-codespaces/managing-access-and-security-for-codespaces">which repositories a codespace can access</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>dependabot_alerts</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables {% data variables.product.prodname_dependabot_alerts %} for all existing {% ifversion fpt %}private {% endif %}repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables {% data variables.product.prodname_dependabot_alerts %} for all existing {% ifversion fpt %}private {% endif %}repositories.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>dependabot_alerts_new_repos</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables {% data variables.product.prodname_dependabot_alerts %} for all new {% ifversion fpt %}private {% endif %}repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables {% data variables.product.prodname_dependabot_alerts %} for all new {% ifversion fpt %}private {% endif %}repositories.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dependabot_security_updates-category-actions"><code>dependabot_security_updates</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables {% data variables.product.prodname_dependabot_security_updates %} for all existing repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables {% data variables.product.prodname_dependabot_security_updates %} for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dependabot_security_updates_new_repos-category-actions"><code>dependabot_security_updates_new_repos</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables {% data variables.product.prodname_dependabot_security_updates %} for all new repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables {% data variables.product.prodname_dependabot_security_updates %} for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>dependency_graph</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables the dependency graph for all existing repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables the dependency graph for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dependency_graph_new_repos-category-actions"><code>dependency_graph_new_repos</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables the dependency graph for all new repositories. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables the dependency graph for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="discussion_post-category-actions"><code>discussion_post</code> category actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when <a href="/articles/managing-disruptive-comments/#editing-a-comment">a team discussion post is edited</a>.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when <a href="/articles/managing-disruptive-comments/#deleting-a-comment">a team discussion post is deleted</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="discussion_post_reply-category-actions"><code>discussion_post_reply</code> category actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when <a href="/articles/managing-disruptive-comments/#editing-a-comment">a reply to a team discussion post is edited</a>.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when <a href="/articles/managing-disruptive-comments/#deleting-a-comment">a reply to a team discussion post is deleted</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes &gt; 2.21 %} ### <code>enterprise</code> category actions</p>
+<p>{% data reusables.actions.actions-audit-events-for-enterprise %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>environment</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create_actions_secret</code></td>
+<td>Triggered when a secret is created in an environment. For more information, see <a href="/actions/reference/environments#environment-secrets">"Environment secrets</a>."</td>
+</tr>
+<tr class="even">
+<td><code>delete</code></td>
+<td>Triggered when an environment is deleted. For more information, see <a href="/actions/reference/environments#deleting-an-environment">"Deleting an environment</a>."</td>
+</tr>
+<tr class="odd">
+<td><code>remove_actions_secret</code></td>
+<td>Triggered when a secret is removed from an environment. For more information, see <a href="/actions/reference/environments#environment-secrets">"Environment secrets</a>."</td>
+</tr>
+<tr class="even">
+<td><code>update_actions_secret</code></td>
+<td>Triggered when a secret in an environment is updated. For more information, see <a href="/actions/reference/environments#environment-secrets">"Environment secrets</a>."</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>git</code> category actions</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> To access Git events in the audit log, you must use the audit log REST API. The audit log REST API is available for users of {% data variables.product.prodname_ghe_cloud %} only. For more information, see “<a href="/rest/reference/orgs#get-the-audit-log-for-an-organization">Organizations</a>.”</p>
+<p>{% endnote %}</p>
+<p>{% data reusables.audit_log.audit-log-git-events-retention %}</p>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clone</code></td>
+<td>Triggered when a repository is cloned.</td>
+</tr>
+<tr class="even">
+<td><code>fetch</code></td>
+<td>Triggered when changes are fetched from a repository.</td>
+</tr>
+<tr class="odd">
+<td><code>push</code></td>
+<td>Triggered when changes are pushed to a repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="hook-category-actions"><code>hook</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when <a href="/articles/creating-webhooks">a new hook was added</a> to a repository owned by your organization.</td>
+</tr>
+<tr class="even">
+<td><code>config_changed</code></td>
+<td>Triggered when an existing hook has its configuration altered.</td>
+</tr>
+<tr class="odd">
+<td><code>destroy</code></td>
+<td>Triggered when an existing hook was removed from a repository.</td>
+</tr>
+<tr class="even">
+<td><code>events_changed</code></td>
+<td>Triggered when the events on a hook have been altered.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="integration_installation_request-category-actions"><code>integration_installation_request</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when an organization member requests that an organization owner install an integration for use in the organization.</td>
+</tr>
+<tr class="even">
+<td><code>close</code></td>
+<td>Triggered when a request to install an integration for use in an organization is either approved or denied by an organization owner, or canceled by the organization member who opened the request.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="issue-category-actions"><code>issue</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>destroy</code></td>
+<td>Triggered when an organization owner or someone with admin permissions in a repository deletes an issue from an organization-owned repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %}</p>
+<h3 id="marketplace_agreement_signature-category-actions"><code>marketplace_agreement_signature</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when you sign the {% data variables.product.prodname_marketplace %} Developer Agreement.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="marketplace_listing-category-actions"><code>marketplace_listing</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>approve</code></td>
+<td>Triggered when your listing is approved for inclusion in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when you create a listing for your app in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="odd">
+<td><code>delist</code></td>
+<td>Triggered when your listing is removed from {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+<tr class="even">
+<td><code>redraft</code></td>
+<td>Triggered when your listing is sent back to draft state.</td>
+</tr>
+<tr class="odd">
+<td><code>reject</code></td>
+<td>Triggered when your listing is not accepted for inclusion in {% data variables.product.prodname_marketplace %}.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 3.0 %}</p>
+<h3 id="members_can_create_pages-category-actions"><code>members_can_create_pages</code> category actions</h3>
+<p>For more information, see “<a href="/organizations/managing-organization-settings/managing-the-publication-of-github-pages-sites-for-your-organization">Managing the publication of {% data variables.product.prodname_pages %} sites for your organization</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Action</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>enable</code></td>
+<td style="text-align: left;">Triggered when an organization owner enables publication of {% data variables.product.prodname_pages %} sites for repositories in the organization.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>disable</code></td>
+<td style="text-align: left;">Triggered when an organization owner disables publication of {% data variables.product.prodname_pages %} sites for repositories in the organization.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="org-category-actions"><code>org</code> category actions</h3>
+<div class="line-block">Action | Description</div>
+<p>|——————|——————-{% ifversion fpt or ghes &gt; 3.0 or ghae-next %} | <code>advanced_security_policy_selected_member_disabled</code> | Triggered when an enterprise owner prevents {% data variables.product.prodname_GH_advanced_security %} features from being enabled for repositories owned by the organization. {% data reusables.advanced-security.more-information-about-enforcement-policy %} | <code>advanced_security_policy_selected_member_enabled</code> | Triggered when an enterprise owner allows {% data variables.product.prodname_GH_advanced_security %} features to be enabled for repositories owned by the organization. {% data reusables.advanced-security.more-information-about-enforcement-policy %}{% endif %}{% ifversion fpt %} | <code>audit_log_export</code> | Triggered when an organization admin <a href="#exporting-the-audit-log">creates an export of the organization audit log</a>. If the export included a query, the log will list the query used and the number of audit log entries matching that query. | <code>block_user</code> | Triggered when an organization owner <a href="/communities/maintaining-your-safety-on-github/blocking-a-user-from-your-organization">blocks a user from accessing the organization’s repositories</a>. | <code>cancel_invitation</code> | Triggered when an organization invitation has been revoked. {% endif %}{% ifversion fpt or ghes &gt; 2.21 %} | <code>create_actions_secret</code> | Triggered when a {% data variables.product.prodname_actions %} secret is created for an organization. For more information, see “<a href="/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-an-organization">Creating encrypted secrets for an organization</a>.”{% endif %} {% ifversion fpt %} | <code>disable_oauth_app_restrictions</code> | Triggered when an owner <a href="/articles/disabling-oauth-app-access-restrictions-for-your-organization">disables {% data variables.product.prodname_oauth_app %} access restrictions</a> for your organization. | <code>disable_saml</code> | Triggered when an organization admin disables SAML single sign-on for an organization.{% endif %} | <code>disable_member_team_creation_permission</code> | Triggered when an organization owner limits team creation to owners. For more information, see “<a href="/articles/setting-team-creation-permissions-in-your-organization">Setting team creation permissions in your organization</a>.” |{% ifversion not ghae %} | <code>disable_two_factor_requirement</code> | Triggered when an owner disables a two-factor authentication requirement for all members{% ifversion fpt %}, billing managers,{% endif %} and outside collaborators in an organization.{% endif %}{% ifversion fpt %} | <code>enable_oauth_app_restrictions</code> | Triggered when an owner <a href="/articles/enabling-oauth-app-access-restrictions-for-your-organization">enables {% data variables.product.prodname_oauth_app %} access restrictions</a> for your organization. | <code>enable_saml</code> | Triggered when an organization admin <a href="/articles/enabling-and-testing-saml-single-sign-on-for-your-organization">enables SAML single sign-on</a> for an organization.{% endif %} | <code>enable_member_team_creation_permission</code> | Triggered when an organization owner allows members to create teams. For more information, see “<a href="/articles/setting-team-creation-permissions-in-your-organization">Setting team creation permissions in your organization</a>.” |{% ifversion not ghae %} | <code>enable_two_factor_requirement</code> | Triggered when an owner requires two-factor authentication for all members{% ifversion fpt %}, billing managers,{% endif %} and outside collaborators in an organization.{% endif %} | <code>invite_member</code> | Triggered when <a href="/articles/adding-organization-members-to-a-team">a new user was invited to join your organization</a>.{% ifversion fpt %} | <code>oauth_app_access_approved</code> | Triggered when an owner <a href="/articles/approving-oauth-apps-for-your-organization/">grants organization access to an {% data variables.product.prodname_oauth_app %}</a>. | <code>oauth_app_access_denied</code> | Triggered when an owner <a href="/articles/denying-access-to-a-previously-approved-oauth-app-for-your-organization">disables a previously approved {% data variables.product.prodname_oauth_app %}’s access</a> to your organization. | <code>oauth_app_access_requested</code> | Triggered when an organization member requests that an owner grant an {% data variables.product.prodname_oauth_app %} access to your organization.{% endif %}{% ifversion fpt or ghes &gt; 2.21 or ghae %} | <code>register_self_hosted_runner</code> | Triggered when a new self-hosted runner is registered. For more information, see “<a href="/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-an-organization">Adding a self-hosted runner to an organization</a>.” | <code>remove_actions_secret</code> | Triggered when a {% data variables.product.prodname_actions %} secret is removed.{% endif %}{% ifversion fpt %} | <code>remove_billing_manager</code> | Triggered when an <a href="/articles/removing-a-billing-manager-from-your-organization/">owner removes a billing manager from an organization</a> or when <a href="/articles/requiring-two-factor-authentication-in-your-organization">two-factor authentication is required in an organization</a> and a billing manager doesn’t use 2FA or disables 2FA. |{% endif %} | <code>remove_member</code> | Triggered when an <a href="/articles/removing-a-member-from-your-organization/">owner removes a member from an organization</a>{% ifversion not ghae %} or when <a href="/articles/requiring-two-factor-authentication-in-your-organization">two-factor authentication is required in an organization</a> and an organization member doesn’t use 2FA or disables 2FA{% endif %}. Also triggered when an <a href="/articles/removing-yourself-from-an-organization/">organization member removes themselves</a> from an organization.| | <code>remove_outside_collaborator</code> | Triggered when an owner removes an outside collaborator from an organization{% ifversion not ghae %} or when <a href="/articles/requiring-two-factor-authentication-in-your-organization">two-factor authentication is required in an organization</a> and an outside collaborator does not use 2FA or disables 2FA{% endif %}. |{% ifversion fpt or ghes &gt; 2.21 or ghae %} | <code>remove_self_hosted_runner</code> | Triggered when a self-hosted runner is removed. For more information, see “<a href="/actions/hosting-your-own-runners/removing-self-hosted-runners#removing-a-runner-from-an-organization">Removing a runner from an organization</a>.” {% endif %}{% ifversion fpt %} | <code>revoke_external_identity</code> | Triggered when an organization owner revokes a member’s linked identity. For more information, see “<a href="/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization#viewing-and-revoking-a-linked-identity">Viewing and managing a member’s SAML access to your organization</a>.” | <code>revoke_sso_session</code> | Triggered when an organization owner revokes a member’s SAML session. For more information, see “<a href="/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization#viewing-and-revoking-a-linked-identity">Viewing and managing a member’s SAML access to your organization</a>.” {% endif %}{% ifversion fpt or ghes &gt; 2.21 or ghae %} | <code>runner_group_created</code> | Triggered when a self-hosted runner group is created. For more information, see “<a href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#creating-a-self-hosted-runner-group-for-an-organization">Creating a self-hosted runner group for an organization</a>.” | <code>runner_group_removed</code> | Triggered when a self-hosted runner group is removed. For more information, see “<a href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#removing-a-self-hosted-runner-group">Removing a self-hosted runner group</a>.”{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <code>runner_group_updated</code> | Triggered when the configuration of a self-hosted runner group is changed. For more information, see “<a href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#changing-the-access-policy-of-a-self-hosted-runner-group">Changing the access policy of a self-hosted runner group</a>.”{% endif %} | <code>runner_group_runners_added</code> | Triggered when a self-hosted runner is added to a group. For more information, see <a href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#moving-a-self-hosted-runner-to-a-group">Moving a self-hosted runner to a group</a>. | <code>runner_group_runner_removed</code> | Triggered when the REST API is used to remove a self-hosted runner from a group. For more information, see “<a href="/rest/reference/actions#remove-a-self-hosted-runner-from-a-group-for-an-organization">Remove a self-hosted runner from a group for an organization</a>.” | <code>runner_group_runners_updated</code>| Triggered when a runner group’s list of members is updated. For more information, see “<a href="/rest/reference/actions#set-self-hosted-runners-in-a-group-for-an-organization">Set self-hosted runners in a group for an organization</a>.”{% endif %}{% ifversion ghes = 2.22 %} | <code>runner_group_renamed</code> | Triggered when the self-hosted runner group is renamed. | <code>runner_group_visiblity_updated</code> | Triggered when the visibility settings of the self-hosted runner group are changed.{% endif %}{% ifversion fpt or ghes &gt; 2.21 %} | <code>self_hosted_runner_updated</code> | Triggered when the runner application is updated. Can be viewed using the REST API and the UI; not visible in the JSON/CSV export. For more information, see “<a href="/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners">About self-hosted runners</a>.”{% endif %}{% ifversion fpt %} | <code>set_actions_fork_pr_approvals_policy</code> | Triggered when the setting for requiring approvals for workflows from public forks is changed for an organization. For more information, see “<a href="/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#requiring-approval-for-workflows-from-public-forks">Requiring approval for workflows from public forks</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <code>set_actions_retention_limit</code> | Triggered when the retention period for {% data variables.product.prodname_actions %} artifacts and logs is changed. For more information, see “<a href="/organizations/managing-organization-settings/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-organization">Configuring the retention period for {% data variables.product.prodname_actions %} artifacts and logs in your organization</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 %} | <code>set_fork_pr_workflows_policy</code> | Triggered when the policy for workflows on private repository forks is changed. For more information, see “<a href="/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#enabling-workflows-for-private-repository-forks">Enabling workflows for private repository forks</a>.”{% endif %}{% ifversion fpt %} | <code>unblock_user</code> | Triggered when an organization owner <a href="/communities/maintaining-your-safety-on-github/unblocking-a-user-from-your-organization">unblocks a user from an organization</a>.{% endif %}{% ifversion fpt or ghes &gt; 2.21 %} | <code>update_actions_secret</code> |Triggered when a {% data variables.product.prodname_actions %} secret is updated.{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | <code>update_new_repository_default_branch_setting</code> | Triggered when an owner changes the name of the default branch for new repositories in the organization. For more information, see “<a href="/organizations/managing-organization-settings/managing-the-default-branch-name-for-repositories-in-your-organization">Managing the default branch name for repositories in your organization</a>.”{% endif %} | <code>update_default_repository_permission</code> | Triggered when an owner changes the default repository permission level for organization members. | <code>update_member</code> | Triggered when an owner changes a person’s role from owner to member or member to owner. | <code>update_member_repository_creation_permission</code> | Triggered when an owner changes the create repository permission for organization members.{% ifversion fpt %} | <code>update_saml_provider_settings</code> | Triggered when an organization’s SAML provider settings are updated. | <code>update_terms_of_service</code> | Triggered when an organization changes between the Standard Terms of Service and the Corporate Terms of Service. For more information, see “<a href="/articles/upgrading-to-the-corporate-terms-of-service">Upgrading to the Corporate Terms of Service</a>.”{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>org_credential_authorization</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>grant</code></td>
+<td>Triggered when a member <a href="/github/authenticating-to-github/authenticating-with-saml-single-sign-on">authorizes credentials for use with SAML single sign-on</a>.</td>
+</tr>
+<tr class="even">
+<td><code>deauthorized</code></td>
+<td>Triggered when a member <a href="/github/authenticating-to-github/authenticating-with-saml-single-sign-on">deauthorizes credentials for use with SAML single sign-on</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>revoke</code></td>
+<td>Triggered when an owner <a href="/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization">revokes authorized credentials</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes or ghae %} ### <code>organization_label</code> category actions</p>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a default label is created.</td>
+</tr>
+<tr class="even">
+<td><code>update</code></td>
+<td>Triggered when a default label is edited.</td>
+</tr>
+<tr class="odd">
+<td><code>destroy</code></td>
+<td>Triggered when a default label is deleted.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="oauth_application-category-actions"><code>oauth_application</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a new {% data variables.product.prodname_oauth_app %} is created.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when an existing {% data variables.product.prodname_oauth_app %} is deleted.</td>
+</tr>
+<tr class="odd">
+<td><code>reset_secret</code></td>
+<td>Triggered when an {% data variables.product.prodname_oauth_app %}’s client secret is reset.</td>
+</tr>
+<tr class="even">
+<td><code>revoke_tokens</code></td>
+<td>Triggered when an {% data variables.product.prodname_oauth_app %}’s user tokens are revoked.</td>
+</tr>
+<tr class="odd">
+<td><code>transfer</code></td>
+<td>Triggered when an existing {% data variables.product.prodname_oauth_app %} is transferred to a new organization.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes &gt; 3.0 %} ### <code>packages</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>package_version_published</code></td>
+<td>Triggered when a package version is published.</td>
+</tr>
+<tr class="even">
+<td><code>package_version_deleted</code></td>
+<td>Triggered when a specific package version is deleted. For more information, see “<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>.”</td>
+</tr>
+<tr class="odd">
+<td><code>package_deleted</code></td>
+<td>Triggered when an entire package is deleted. For more information, see “<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>package_version_restored</code></td>
+<td>Triggered when a specific package version is deleted. For more information, see “<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>.”</td>
+</tr>
+<tr class="odd">
+<td><code>package_restored</code></td>
+<td>Triggered when an entire package is restored. For more information, see “<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>.”</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %}</p>
+<h3 id="payment_method-category-actions"><code>payment_method</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clear</code></td>
+<td>Triggered when a payment method on file is <a href="/articles/removing-a-payment-method">removed</a>.</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when a new payment method is added, such as a new credit card or PayPal account.</td>
+</tr>
+<tr class="odd">
+<td><code>update</code></td>
+<td>Triggered when an existing payment method is updated.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="profile_picture-category-actions"><code>profile_picture</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>update</td>
+<td>Triggered when you set or update your organization’s profile picture.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="project-category-actions"><code>project</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a project board is created.</td>
+</tr>
+<tr class="even">
+<td><code>link</code></td>
+<td>Triggered when a repository is linked to a project board.</td>
+</tr>
+<tr class="odd">
+<td><code>rename</code></td>
+<td>Triggered when a project board is renamed.</td>
+</tr>
+<tr class="even">
+<td><code>update</code></td>
+<td>Triggered when a project board is updated.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when a project board is deleted.</td>
+</tr>
+<tr class="even">
+<td><code>unlink</code></td>
+<td>Triggered when a repository is unlinked from a project board.</td>
+</tr>
+<tr class="odd">
+<td><code>update_org_permission</code></td>
+<td>Triggered when the base-level permission for all organization members is changed or removed.</td>
+</tr>
+<tr class="even">
+<td><code>update_team_permission</code></td>
+<td>Triggered when a team’s project board permission level is changed or when a team is added or removed from a project board.</td>
+</tr>
+<tr class="odd">
+<td><code>update_user_permission</code></td>
+<td>Triggered when an organization member or outside collaborator is added to or removed from a project board or has their permission level changed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="protected_branch-category-actions"><code>protected_branch</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when branch protection is enabled on a branch.</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when branch protection is disabled on a branch.</td>
+</tr>
+<tr class="odd">
+<td><code>update_admin_enforced</code></td>
+<td>Triggered when branch protection is enforced for repository administrators.</td>
+</tr>
+<tr class="even">
+<td><code>update_require_code_owner_review</code></td>
+<td>Triggered when enforcement of required Code Owner review is updated on a branch.</td>
+</tr>
+<tr class="odd">
+<td><code>dismiss_stale_reviews</code></td>
+<td>Triggered when enforcement of dismissing stale pull requests is updated on a branch.</td>
+</tr>
+<tr class="even">
+<td><code>update_signature_requirement_enforcement_level</code></td>
+<td>Triggered when enforcement of required commit signing is updated on a branch.</td>
+</tr>
+<tr class="odd">
+<td><code>update_pull_request_reviews_enforcement_level</code></td>
+<td>Triggered when enforcement of required pull request reviews is updated on a branch.</td>
+</tr>
+<tr class="even">
+<td><code>update_required_status_checks_enforcement_level</code></td>
+<td>Triggered when enforcement of required status checks is updated on a branch.</td>
+</tr>
+<tr class="odd">
+<td><code>update_strict_required_status_checks_policy</code></td>
+<td>Triggered when the requirement for a branch to be up to date before merging is changed.</td>
+</tr>
+<tr class="even">
+<td><code>rejected_ref_update</code></td>
+<td>Triggered when a branch update attempt is rejected.</td>
+</tr>
+<tr class="odd">
+<td><code>policy_override</code></td>
+<td>Triggered when a branch protection requirement is overridden by a repository administrator.{% ifversion fpt or ghes or ghae %}</td>
+</tr>
+<tr class="even">
+<td><code>update_allow_force_pushes_enforcement_level</code></td>
+<td>Triggered when force pushes are enabled or disabled for a protected branch.</td>
+</tr>
+<tr class="odd">
+<td><code>update_allow_deletions_enforcement_level</code></td>
+<td>Triggered when branch deletion is enabled or disabled for a protected branch.</td>
+</tr>
+<tr class="even">
+<td><code>update_linear_history_requirement_enforcement_level</code></td>
+<td>Triggered when required linear commit history is enabled or disabled for a protected branch.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>pull_request</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a pull request is created.</td>
+</tr>
+<tr class="even">
+<td><code>close</code></td>
+<td>Triggered when a pull request is closed without being merged.</td>
+</tr>
+<tr class="odd">
+<td><code>reopen</code></td>
+<td>Triggered when a pull request is reopened after previously being closed.</td>
+</tr>
+<tr class="even">
+<td><code>merge</code></td>
+<td>Triggered when a pull request is merged.</td>
+</tr>
+<tr class="odd">
+<td><code>indirect_merge</code></td>
+<td>Triggered when a pull request is considered merged because its commits were merged into the target branch.</td>
+</tr>
+<tr class="even">
+<td><code>ready_for_review</code></td>
+<td>Triggered when a pull request is marked as ready for review.</td>
+</tr>
+<tr class="odd">
+<td><code>converted_to_draft</code></td>
+<td>Triggered when a pull request is converted to a draft.</td>
+</tr>
+<tr class="even">
+<td><code>create_review_request</code></td>
+<td>Triggered when a review is requested.</td>
+</tr>
+<tr class="odd">
+<td><code>remove_review_request</code></td>
+<td>Triggered when a review request is removed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pull_request_review-category-actions"><code>pull_request_review</code> category actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>submit</code></td>
+<td>Triggered when a review is submitted.</td>
+</tr>
+<tr class="even">
+<td><code>dismiss</code></td>
+<td>Triggered when a review is dismissed.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when a review is deleted.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pull_request_review_comment-category-actions"><code>pull_request_review_comment</code> category actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a review comment is added.</td>
+</tr>
+<tr class="even">
+<td><code>update</code></td>
+<td>Triggered when a review comment is changed.</td>
+</tr>
+<tr class="odd">
+<td><code>delete</code></td>
+<td>Triggered when a review comment is deleted.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="repo-category-actions"><code>repo</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>access</code></td>
+<td>Triggered when a user <a href="/github/administering-a-repository/setting-repository-visibility">changes the visibility</a> of a repository in the organization.</td>
+</tr>
+<tr class="even">
+<td><code>actions_enabled</code></td>
+<td>Triggered when {% data variables.product.prodname_actions %} is enabled for a repository. Can be viewed using the UI. This event is not included when you access the audit log using the REST API. For more information, see “<a href="#using-the-rest-api">Using the REST API</a>.”</td>
+</tr>
+<tr class="odd">
+<td><code>add_member</code></td>
+<td>Triggered when a user accepts an <a href="/articles/inviting-collaborators-to-a-personal-repository">invitation to have collaboration access to a repository</a>.</td>
+</tr>
+<tr class="even">
+<td><code>add_topic</code></td>
+<td>Triggered when a repository admin <a href="/articles/classifying-your-repository-with-topics">adds a topic</a> to a repository.{% ifversion fpt or ghes &gt; 3.0 or ghae-next %}</td>
+</tr>
+<tr class="odd">
+<td><code>advanced_security_disabled</code></td>
+<td>Triggered when a repository administrator disables {% data variables.product.prodname_GH_advanced_security %} features for the repository. For more information, see “<a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository">Managing security and analysis settings for your repository</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>advanced_security_enabled</code></td>
+<td>Triggered when a repository administrator enables {% data variables.product.prodname_GH_advanced_security %} features for the repository. For more information, see “<a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository">Managing security and analysis settings for your repository</a>.”.{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>archived</code></td>
+<td>Triggered when a repository admin <a href="/articles/about-archiving-repositories">archives a repository</a>.{% ifversion ghes %}</td>
+</tr>
+<tr class="even">
+<td><code>config.disable_anonymous_git_access</code></td>
+<td>Triggered when <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">anonymous Git read access is disabled</a> in a public repository.</td>
+</tr>
+<tr class="odd">
+<td><code>config.enable_anonymous_git_access</code></td>
+<td>Triggered when <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/enabling-anonymous-git-read-access-for-a-repository">anonymous Git read access is enabled</a> in a public repository.</td>
+</tr>
+<tr class="even">
+<td><code>config.lock_anonymous_git_access</code></td>
+<td>Triggered when a repository’s <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/preventing-users-from-changing-anonymous-git-read-access">anonymous Git read access setting is locked</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>config.unlock_anonymous_git_access</code></td>
+<td>Triggered when a repository’s <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/preventing-users-from-changing-anonymous-git-read-access">anonymous Git read access setting is unlocked</a>.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>create</code></td>
+<td>Triggered when <a href="/articles/creating-a-new-repository">a new repository is created</a>.{% ifversion fpt or ghes &gt; 2.21 %}</td>
+</tr>
+<tr class="odd">
+<td><code>create_actions_secret</code></td>
+<td>Triggered when a {% data variables.product.prodname_actions %} secret is created for a repository. For more information, see “<a href="/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Creating encrypted secrets for a repository</a>.”{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>destroy</code></td>
+<td>Triggered when <a href="/articles/deleting-a-repository">a repository is deleted</a>.{% ifversion fpt %}</td>
+</tr>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when a repository is disabled (e.g., for <a href="/articles/unlocking-a-locked-account">insufficient funds</a>).{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when a repository is re-enabled.{% ifversion fpt or ghes &gt; 2.21 %}</td>
+</tr>
+<tr class="odd">
+<td><code>remove_actions_secret</code></td>
+<td>Triggered when a {% data variables.product.prodname_actions %} secret is removed.{% endif %}</td>
+</tr>
+<tr class="even">
+<td><code>remove_member</code></td>
+<td>Triggered when a user is <a href="/articles/removing-a-collaborator-from-a-personal-repository">removed from a repository as a collaborator</a>.{% ifversion fpt or ghes &gt; 2.21 or ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>register_self_hosted_runner</code></td>
+<td>Triggered when a new self-hosted runner is registered. For more information, see “<a href="/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository">Adding a self-hosted runner to a repository</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>remove_self_hosted_runner</code></td>
+<td>Triggered when a self-hosted runner is removed. For more information, see “<a href="/actions/hosting-your-own-runners/removing-self-hosted-runners#removing-a-runner-from-a-repository">Removing a runner from a repository</a>.” {% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>remove_topic</code></td>
+<td>Triggered when a repository admin removes a topic from a repository.</td>
+</tr>
+<tr class="even">
+<td><code>rename</code></td>
+<td>Triggered when <a href="/articles/renaming-a-repository">a repository is renamed</a>.{% ifversion fpt or ghes &gt; 2.21 %}</td>
+</tr>
+<tr class="odd">
+<td><code>self_hosted_runner_updated</code></td>
+<td>Triggered when the runner application is updated. Can be viewed using the REST API and the UI; not visible in the JSON/CSV export. For more information, see “<a href="/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners">About self-hosted runners</a>.”{% endif %}{% ifversion fpt %}</td>
+</tr>
+<tr class="even">
+<td><code>set_actions_fork_pr_approvals_policy</code></td>
+<td>Triggered when the setting for requiring approvals for workflows from public forks is changed. For more information, see “<a href="/github/administering-a-repository/managing-repository-settings/disabling-or-limiting-github-actions-for-a-repository#requiring-approval-for-workflows-from-public-forks">Requiring approval for workflows from public forks</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %}</td>
+</tr>
+<tr class="odd">
+<td><code>set_actions_retention_limit</code></td>
+<td>Triggered when the retention period for {% data variables.product.prodname_actions %} artifacts and logs is changed. For more information, see “<a href="/github/administering-a-repository/managing-repository-settings/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-repository">Configuring the retention period for {% data variables.product.prodname_actions %} artifacts and logs in your repository</a>.”{% endif %}{% ifversion fpt or ghes &gt; 2.22 %}</td>
+</tr>
+<tr class="even">
+<td><code>set_fork_pr_workflows_policy</code></td>
+<td>Triggered when the policy for workflows on private repository forks is changed. For more information, see “<a href="/github/administering-a-repository/managing-repository-settings/disabling-or-limiting-github-actions-for-a-repository#enabling-workflows-for-private-repository-forks">Enabling workflows for private repository forks</a>.”{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>transfer</code></td>
+<td>Triggered when <a href="/articles/how-to-transfer-a-repository">a repository is transferred</a>.</td>
+</tr>
+<tr class="even">
+<td><code>transfer_start</code></td>
+<td>Triggered when a repository transfer is about to occur.</td>
+</tr>
+<tr class="odd">
+<td><code>unarchived</code></td>
+<td>Triggered when a repository admin unarchives a repository.{% ifversion fpt or ghes &gt; 2.21 %}</td>
+</tr>
+<tr class="even">
+<td><code>update_actions_secret</code></td>
+<td>Triggered when a {% data variables.product.prodname_actions %} secret is updated.{% endif %}</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt %}</p>
+<h3 id="repository_advisory-category-actions"><code>repository_advisory</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>close</code></td>
+<td>Triggered when someone closes a security advisory. For more information, see “<a href="/github/managing-security-vulnerabilities/about-github-security-advisories">About {% data variables.product.prodname_dotcom %} Security Advisories</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>cve_request</code></td>
+<td>Triggered when someone requests a CVE (Common Vulnerabilities and Exposures) number from {% data variables.product.prodname_dotcom %} for a draft security advisory.</td>
+</tr>
+<tr class="odd">
+<td><code>github_broadcast</code></td>
+<td>Triggered when {% data variables.product.prodname_dotcom %} makes a security advisory public in the {% data variables.product.prodname_advisory_database %}.</td>
+</tr>
+<tr class="even">
+<td><code>github_withdraw</code></td>
+<td>Triggered when {% data variables.product.prodname_dotcom %} withdraws a security advisory that was published in error.</td>
+</tr>
+<tr class="odd">
+<td><code>open</code></td>
+<td>Triggered when someone opens a draft security advisory.</td>
+</tr>
+<tr class="even">
+<td><code>publish</code></td>
+<td>Triggered when someone publishes a security advisory.</td>
+</tr>
+<tr class="odd">
+<td><code>reopen</code></td>
+<td>Triggered when someone reopens as draft security advisory.</td>
+</tr>
+<tr class="even">
+<td><code>update</code></td>
+<td>Triggered when someone edits a draft or published security advisory.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="repository_content_analysis-category-actions"><code>repository_content_analysis</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner or person with admin access to the repository <a href="/github/understanding-how-github-uses-and-protects-your-data/managing-data-use-settings-for-your-private-repository">enables data use settings for a private repository</a>.</td>
+</tr>
+<tr class="even">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner or person with admin access to the repository <a href="/github/understanding-how-github-uses-and-protects-your-data/managing-data-use-settings-for-your-private-repository">disables data use settings for a private repository</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}{% ifversion not ghae %}</p>
+<h3 id="repository_dependency_graph-category-actions"><code>repository_dependency_graph</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository disables the dependency graph for a {% ifversion fpt %}private {% endif %}repository. For more information, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository enables the dependency graph for a {% ifversion fpt %}private {% endif %}repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} ### <code>repository_secret_scanning</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository disables secret scanning for a {% ifversion fpt %}private {% endif %}repository. For more information, see “<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository enables secret scanning for a {% ifversion fpt %}private {% endif %}repository.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}{% ifversion not ghae %} ### <code>repository_vulnerability_alert</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when {% data variables.product.product_name %} creates a {% ifversion fpt or ghes &gt; 2.21 %}{% data variables.product.prodname_dependabot %}{% else %}security{% endif %} alert for a repository that uses a vulnerable dependency. For more information, see “<a href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>dismiss</code></td>
+<td>Triggered when an organization owner or person with admin access to the repository dismisses a {% ifversion fpt or ghes &gt; 2.21 %}{% data variables.product.prodname_dependabot %}{% else %}security{% endif %} alert about a vulnerable dependency.</td>
+</tr>
+<tr class="odd">
+<td><code>resolve</code></td>
+<td>Triggered when someone with write access to a repository pushes changes to update and resolve a vulnerability in a project dependency.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}{% ifversion fpt %} ### <code>repository_vulnerability_alerts</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>authorized_users_teams</code></td>
+<td>Triggered when an organization owner or a person with admin permissions to the repository updates the list of people or teams authorized to receive {% data variables.product.prodname_dependabot_alerts %} for vulnerable dependencies in the repository. For more information, see “<a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository#granting-access-to-security-alerts">Managing security and analysis settings for your repository</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>disable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository disables {% data variables.product.prodname_dependabot_alerts %}.</td>
+</tr>
+<tr class="odd">
+<td><code>enable</code></td>
+<td>Triggered when a repository owner or person with admin access to the repository enables {% data variables.product.prodname_dependabot_alerts %}.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} ### <code>secret_scanning</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables secret scanning for all existing{% ifversion fpt %}, private{% endif %} repositories. For more information, see “<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables secret scanning for all existing{% ifversion fpt %}, private{% endif %} repositories.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="secret_scanning_new_repos-category-actions"><code>secret_scanning_new_repos</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables secret scanning for all new {% ifversion fpt %}private {% endif %}repositories. For more information, see “<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables secret scanning for all new {% ifversion fpt %}private {% endif %}repositories.</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### <code>sponsors</code> category actions</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>custom_amount_settings_change</code></td>
+<td>Triggered when you enable or disable custom amounts, or when you change the suggested custom amount (see “<a href="/github/supporting-the-open-source-community-with-github-sponsors/managing-your-sponsorship-tiers">Managing your sponsorship tiers</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>repo_funding_links_file_action</code></td>
+<td>Triggered when you change the FUNDING file in your repository (see “<a href="/articles/displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_cancel</code></td>
+<td>Triggered when you cancel a sponsorship (see “<a href="/articles/downgrading-a-sponsorship">Downgrading a sponsorship</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsor_sponsorship_create</code></td>
+<td>Triggered when you sponsor an account (see “<a href="/sponsors/sponsoring-open-source-contributors/sponsoring-an-open-source-contributor">Sponsoring an open source contributor</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_payment_complete</code></td>
+<td>Triggered after you sponsor an account and your payment has been processed (see “<a href="/sponsors/sponsoring-open-source-contributors/sponsoring-an-open-source-contributor">Sponsoring an open source contributor</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsor_sponsorship_preference_change</code></td>
+<td>Triggered when you change whether you receive email updates from a sponsored account (see “<a href="/sponsors/sponsoring-open-source-contributors/managing-your-sponsorship">Managing your sponsorship</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsor_sponsorship_tier_change</code></td>
+<td>Triggered when you upgrade or downgrade your sponsorship (see “<a href="/articles/upgrading-a-sponsorship">Upgrading a sponsorship</a>” and “<a href="/articles/downgrading-a-sponsorship">Downgrading a sponsorship</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_approve</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is approved (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization">Setting up {% data variables.product.prodname_sponsors %} for your organization</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_create</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is created (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization">Setting up {% data variables.product.prodname_sponsors %} for your organization</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_disable</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is disabled</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_redraft</code></td>
+<td>Triggered when your {% data variables.product.prodname_sponsors %} account is returned to draft state from approved state</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_profile_update</code></td>
+<td>Triggered when you edit your sponsored organization profile (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/editing-your-profile-details-for-github-sponsors">Editing your profile details for {% data variables.product.prodname_sponsors %}</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_request_approval</code></td>
+<td>Triggered when you submit your application for {% data variables.product.prodname_sponsors %} for approval (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization">Setting up {% data variables.product.prodname_sponsors %} for your organization</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>sponsored_developer_tier_description_update</code></td>
+<td>Triggered when you change the description for a sponsorship tier (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/managing-your-sponsorship-tiers">Managing your sponsorship tiers</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>sponsored_developer_update_newsletter_send</code></td>
+<td>Triggered when you send an email update to your sponsors (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/contacting-your-sponsors">Contacting your sponsors</a>”)</td>
+</tr>
+<tr class="even">
+<td><code>waitlist_invite_sponsored_developer</code></td>
+<td>Triggered when you are invited to join {% data variables.product.prodname_sponsors %} from the waitlist (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization">Setting up {% data variables.product.prodname_sponsors %} for your organization</a>”)</td>
+</tr>
+<tr class="odd">
+<td><code>waitlist_join</code></td>
+<td>Triggered when you join the waitlist to become a sponsored organization (see “<a href="/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization">Setting up {% data variables.product.prodname_sponsors %} for your organization</a>”)</td>
+</tr>
+</tbody>
+</table>
+<p>{% endif %}</p>
+<h3 id="team-category-actions"><code>team</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>add_member</code></td>
+<td>Triggered when a member of an organization is <a href="/articles/adding-organization-members-to-a-team">added to a team</a>.</td>
+</tr>
+<tr class="even">
+<td><code>add_repository</code></td>
+<td>Triggered when a team is given control of a repository.</td>
+</tr>
+<tr class="odd">
+<td><code>change_parent_team</code></td>
+<td>Triggered when a child team is created or <a href="/articles/moving-a-team-in-your-organization-s-hierarchy">a child team’s parent is changed</a>.</td>
+</tr>
+<tr class="even">
+<td><code>change_privacy</code></td>
+<td>Triggered when a team’s privacy level is changed.</td>
+</tr>
+<tr class="odd">
+<td><code>create</code></td>
+<td>Triggered when a new team is created.{% ifversion fpt or ghes &gt; 2.22 or ghae %}</td>
+</tr>
+<tr class="even">
+<td><code>demote_maintainer</code></td>
+<td>Triggered when a user was demoted from a team maintainer to a team member. For more information, see “<a href="/organizations/managing-peoples-access-to-your-organization-with-roles/giving-team-maintainer-permissions-to-an-organization-member">Giving "team maintainer" permissions to an organization member</a>.”{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>destroy</code></td>
+<td>Triggered when a team is deleted from the organization.{% ifversion fpt or ghes &gt; 2.22 or ghae %}</td>
+</tr>
+<tr class="even">
+<td><code>team.promote_maintainer</code></td>
+<td>Triggered when a user was promoted from a team member to a team maintainer. For more information, see “<a href="/organizations/managing-peoples-access-to-your-organization-with-roles/giving-team-maintainer-permissions-to-an-organization-member">Giving "team maintainer" permissions to an organization member</a>.”{% endif %}</td>
+</tr>
+<tr class="odd">
+<td><code>remove_member</code></td>
+<td>Triggered when a member of an organization is <a href="/articles/removing-organization-members-from-a-team">removed from a team</a>.</td>
+</tr>
+<tr class="even">
+<td><code>remove_repository</code></td>
+<td>Triggered when a repository is no longer under a team’s control.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="team_discussions-category-actions"><code>team_discussions</code> category actions</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>disable</code></td>
+<td>Triggered when an organization owner disables team discussions for an organization. For more information, see “<a href="/articles/disabling-team-discussions-for-your-organization">Disabling team discussions for your organization</a>.”</td>
+</tr>
+<tr class="even">
+<td><code>enable</code></td>
+<td>Triggered when an organization owner enables team discussions for an organization.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %} ### <code>workflows</code> category actions</p>
+<p>{% data reusables.actions.actions-audit-events-workflow %}</p>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/keeping-your-organization-secure">Keeping your organization secure</a>”</li>
+</ul>
+</body>
+</html>

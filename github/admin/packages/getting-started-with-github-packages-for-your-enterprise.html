@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Getting started with GitHub Packages for your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Getting started with GitHub Packages for your enterprise
+      </h1>
+    </header>
+    <p>{% ifversion ghes = 2.22 %}</p>
+    <p>{% data reusables.package_registry.packages-ghes-release-stage %}</p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> After you’ve been invited to join the beta, follow
+      the instructions from your account representative to enable {% data
+      variables.product.prodname_registry %} for {% data
+      variables.product.product_location %}.
+    </p>
+    <p>{% endnote %}</p>
+    <p>{% endif %}</p>
+    <p>{% data reusables.package_registry.packages-cluster-support %}</p>
+    <h2
+      id="step-1-enable-data-variables.product.prodname_registry-and-configure-external-storage"
+    >
+      Step 1: Enable {% data variables.product.prodname_registry %} and
+      configure external storage
+    </h2>
+    <p>
+      {% data variables.product.prodname_registry %} on {% data
+      variables.product.prodname_ghe_server %} uses external blob storage to
+      store your packages.
+    </p>
+    <p>
+      After enabling {% data variables.product.prodname_registry %} for {% data
+      variables.product.product_location %}, you’ll need to prepare your
+      third-party storage bucket. The amount of storage required depends on your
+      usage of {% data variables.product.prodname_registry %}, and the setup
+      guidelines can vary by storage provider.
+    </p>
+    <p>
+      Supported external storage providers - Amazon Web Services (AWS) S3 {%
+      ifversion ghes &gt; 2.22 %} - Azure Blob Storage {% endif %} - MinIO
+    </p>
+    <p>
+      To enable {% data variables.product.prodname_registry %} and configure
+      third-party storage, see: - “<a
+        href="/admin/packages/enabling-github-packages-with-aws"
+        >Enabling GitHub Packages with AWS</a
+      >”{% ifversion ghes &gt; 2.22 %} - “<a
+        href="/admin/packages/enabling-github-packages-with-azure-blob-storage"
+        >Enabling GitHub Packages with Azure Blob Storage</a
+      >”{% endif %} - “<a
+        href="/admin/packages/enabling-github-packages-with-minio"
+        >Enabling GitHub Packages with MinIO</a
+      >”
+    </p>
+    <h2 id="step-2-specify-the-package-ecosystems-to-support-on-your-instance">
+      Step 2: Specify the package ecosystems to support on your instance
+    </h2>
+    <p>
+      Choose which package ecosystems you’d like to enable, disable, or set to
+      read-only on {% data variables.product.product_location %}. Available
+      options are Docker, RubyGems, npm, Apache Maven, Gradle, or NuGet. For
+      more information, see “<a
+        href="/enterprise/admin/packages/configuring-package-ecosystem-support-for-your-enterprise"
+        >Configuring package ecosystem support for your enterprise</a
+      >.”
+    </p>
+    <h2
+      id="step-3-ensure-you-have-a-tls-certificate-for-your-package-host-url-if-needed"
+    >
+      Step 3: Ensure you have a TLS certificate for your package host URL, if
+      needed
+    </h2>
+    <p>
+      If subdomain isolation is enabled for {% data
+      variables.product.product_location %}{% ifversion ghes = 2.22 %}, which is
+      required to use {% data variables.product.prodname_registry %} with
+      Docker{% endif %}, you will need to create and upload a TLS certificate
+      that allows the package host URL for each ecosystem you want to use, such
+      as <code>npm.HOSTNAME</code>. Make sure each package host URL includes
+      <code>https://</code>.
+    </p>
+    <p>
+      You can create the certificate manually, or you can use
+      <em>Let’s Encrypt</em>. If you already use <em>Let’s Encrypt</em>, you
+      must request a new TLS certificate after enabling {% data
+      variables.product.prodname_registry %}. For more information about package
+      host URLs, see “<a
+        href="/enterprise/admin/configuration/enabling-subdomain-isolation"
+        >Enabling subdomain isolation</a
+      >.” For more information about uploading TLS certificates to {% data
+      variables.product.product_name %}, see “<a
+        href="/enterprise/admin/configuration/configuring-tls"
+        >Configuring TLS</a
+      >.”
+    </p>
+  </body>
+</html>

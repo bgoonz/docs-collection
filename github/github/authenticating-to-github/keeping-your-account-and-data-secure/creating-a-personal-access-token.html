@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Creating a personal access token</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Creating a personal access token</h1>
+</header>
+<p>Personal access tokens (PATs) are an alternative to using passwords for authentication to {% data variables.product.product_name %} when using the <a href="/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens">GitHub API</a> or the <a href="#using-a-token-on-the-command-line">command line</a>.</p>
+<p>{% ifversion fpt %}If you want to use a PAT to access resources owned by an organization that uses SAML SSO, you must authorize the PAT. For more information, see “<a href="/github/authenticating-to-github/about-authentication-with-saml-single-sign-on">About authentication with SAML single sign-on</a>” and “<a href="/github/authenticating-to-github/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on">Authorizing a personal access token for use with SAML single sign-on</a>.”{% endif %}</p>
+<p>{% ifversion fpt %}{% data reusables.user_settings.removes-personal-access-tokens %}{% endif %}</p>
+<h2 id="creating-a-token">Creating a token</h2>
+<p>{% ifversion fpt %}1. <a href="/github/getting-started-with-github/verifying-your-email-address">Verify your email address</a>, if it hasn’t been verified yet.{% endif %} {% data reusables.user_settings.access_settings %} {% data reusables.user_settings.developer_settings %} {% data reusables.user_settings.personal_access_tokens %} 4. Click <strong>Generate new token</strong>. <img src="/assets/images/help/settings/generate_new_token.png" alt="Generate new token button" /> 5. Give your token a descriptive name. <img src="/assets/images/help/settings/token_description.png" alt="Token description field" />{% ifversion fpt or ghes &gt; 3.1 or ghae-issue-4374 %} 6. To give your token an expiration, select the <strong>Expiration</strong> drop-down menu, then click a default or use the calendar picker. <img src="/assets/images/help/settings/token_expiration.png" alt="Token expiration field" />{% endif %} 7. Select the scopes, or permissions, you’d like to grant this token. To use your token to access repositories from the command line, select <strong>repo</strong>. {% ifversion fpt or ghes %} <img src="/assets/images/help/settings/token_scopes.gif" alt="Selecting token scopes" /> {% elsif ghae %} <img src="/assets/images/enterprise/github-ae/settings/access-token-scopes-for-ghae.png" alt="Selecting token scopes" /> {% endif %} 8. Click <strong>Generate token</strong>. <img src="/assets/images/help/settings/generate_token.png" alt="Generate token button" /> {% ifversion fpt %} <img src="/assets/images/help/settings/personal_access_tokens.png" alt="Newly created token" /> {% elsif ghes &gt; 3.1 or ghae-next %} <img src="/assets/images/help/settings/personal_access_tokens_ghe.png" alt="Newly created token" /> {% else %} <img src="/assets/images/help/settings/personal_access_tokens_ghe_legacy.png" alt="Newly created token" /> {% endif %} {% warning %}</p>
+<p><strong>Warning:</strong> Treat your tokens like passwords and keep them secret. When working with the API, use tokens as environment variables instead of hardcoding them into your programs.</p>
+<p>{% endwarning %}</p>
+<p>{% ifversion fpt %}9. To use your token to authenticate to an organization that uses SAML SSO, <a href="/github/authenticating-to-github/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on">authorize the token for use with a SAML single-sign-on organization</a>.{% endif %}</p>
+<h2 id="using-a-token-on-the-command-line">Using a token on the command line</h2>
+<p>{% data reusables.command_line.providing-token-as-password %}</p>
+<p>Personal access tokens can only be used for HTTPS Git operations. If your repository uses an SSH remote URL, you will need to <a href="/github/getting-started-with-github/managing-remote-repositories/#switching-remote-urls-from-ssh-to-https">switch the remote from SSH to HTTPS</a>.</p>
+<p>If you are not prompted for your username and password, your credentials may be cached on your computer. You can <a href="/github/getting-started-with-github/updating-credentials-from-the-macos-keychain">update your credentials in the Keychain</a> to replace your old password with the token.</p>
+<p>Instead of manually entering your PAT for every HTTPS Git operation, you can cache your PAT with a Git client. Git will temporarily store your credentials in memory until an expiry interval has passed. You can also store the token in a plain text file that Git can read before every request. For more information, see “<a href="/github/getting-started-with-github/caching-your-github-credentials-in-git">Caching your {% data variables.product.prodname_dotcom %} credentials in Git</a>.”</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/authenticating-to-github/about-authentication-to-github">About authentication to GitHub</a>”</li>
+</ul>
+</body>
+</html>

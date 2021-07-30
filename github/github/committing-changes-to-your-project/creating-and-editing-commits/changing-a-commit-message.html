@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Changing a commit message</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Changing a commit message</h1>
+</header>
+<h2 id="rewriting-the-most-recent-commit-message">Rewriting the most recent commit message</h2>
+<p>You can change the most recent commit message using the <code>git commit --amend</code> command.</p>
+<p>In Git, the text of the commit message is part of the commit. Changing the commit message will change the commit ID–i.e., the SHA1 checksum that names the commit. Effectively, you are creating a new commit that replaces the old one.</p>
+<h2 id="commit-has-not-been-pushed-online">Commit has not been pushed online</h2>
+<p>If the commit only exists in your local repository and has not been pushed to {% data variables.product.product_location %}, you can amend the commit message with the <code>git commit --amend</code> command.</p>
+<ol type="1">
+<li>On the command line, navigate to the repository that contains the commit you want to amend.</li>
+<li>Type <code>git commit --amend</code> and press <strong>Enter</strong>.</li>
+<li>In your text editor, edit the commit message, and save the commit.
+<ul>
+<li>You can add a co-author by adding a trailer to the commit. For more information, see “<a href="/articles/creating-a-commit-with-multiple-authors">Creating a commit with multiple authors</a>.” {% ifversion fpt %}</li>
+<li>You can create commits on behalf of your organization by adding a trailer to the commit. For more information, see “<a href="/articles/creating-a-commit-on-behalf-of-an-organization">Creating a commit on behalf of an organization</a>” {% endif %}</li>
+</ul></li>
+</ol>
+<p>The new commit and message will appear on {% data variables.product.product_location %} the next time you push.</p>
+<p>{% tip %}</p>
+<p>You can change the default text editor for Git by changing the <code>core.editor</code> setting. For more information, see “<a href="https://git-scm.com/book/en/Customizing-Git-Git-Configuration#_basic_client_configuration">Basic Client Configuration</a>” in the Git manual.</p>
+<p>{% endtip %}</p>
+<h2 id="amending-older-or-multiple-commit-messages">Amending older or multiple commit messages</h2>
+<p>If you have already pushed the commit to {% data variables.product.product_location %}, you will have to force push a commit with an amended message.</p>
+<p>{% warning %}</p>
+<p>We strongly discourage force pushing, since this changes the history of your repository. If you force push, people who have already cloned your repository will have to manually fix their local history. For more information, see “<a href="https://git-scm.com/docs/git-rebase#_recovering_from_upstream_rebase">Recovering from upstream rebase</a>” in the Git manual.</p>
+<p>{% endwarning %}</p>
+<p><strong>Changing the message of the most recently pushed commit</strong></p>
+<ol type="1">
+<li>Follow the <a href="/articles/changing-a-commit-message#commit-has-not-been-pushed-online">steps above</a> to amend the commit message.</li>
+<li>Use the <code>push --force-with-lease</code> command to force push over the old commit.</li>
+</ol>
+<pre class="shell"><code>$ git push --force-with-lease &lt;em&gt;example-branch&lt;/em&gt;</code></pre>
+<p><strong>Changing the message of older or multiple commit messages</strong></p>
+<p>If you need to amend the message for multiple commits or an older commit, you can use interactive rebase, then force push to change the commit history.</p>
+<ol type="1">
+<li>On the command line, navigate to the repository that contains the commit you want to amend.</li>
+<li><p>Use the <code>git rebase -i HEAD~n</code> command to display a list of the last <code>n</code> commits in your default text editor.</p>
+<pre class="shell"><code># Displays a list of the last 3 commits on the current branch
+$ git rebase -i HEAD~3</code></pre>
+<p>The list will look similar to the following:</p>
+<pre class="shell"><code>pick e499d89 Delete CNAME
+pick 0c39034 Better README
+pick f7fde4a Change the commit message but push the same commit.
+
+# Rebase 9fdb3bd..f7fde4a onto 9fdb3bd
+#
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit the commit message
+# e, edit = use commit, but stop for amending
+# s, squash = use commit, but meld into previous commit
+# f, fixup = like &quot;squash&quot;, but discard this commit&#39;s log message
+# x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out</code></pre></li>
+<li>Replace <code>pick</code> with <code>reword</code> before each commit message you want to change.</li>
+</ol>
+<pre class="shell"><code>pick e499d89 Delete CNAME
+reword 0c39034 Better README
+reword f7fde4a Change the commit message but push the same commit.</code></pre>
+<ol start="4" type="1">
+<li>Save and close the commit list file.</li>
+<li>In each resulting commit file, type the new commit message, save the file, and close it.</li>
+<li>When you’re ready to push your changes to GitHub, use the push –force command to force push over the old commit.</li>
+</ol>
+<pre class="shell"><code>$ git push --force &lt;em&gt;example-branch&lt;/em&gt;</code></pre>
+<p>For more information on interactive rebase, see “<a href="https://git-scm.com/docs/git-rebase#_interactive_mode">Interactive mode</a>” in the Git manual.</p>
+<p>{% tip %}</p>
+<p>As before, amending the commit message will result in a new commit with a new ID. However, in this case, every commit that follows the amended commit will also get a new ID because each commit also contains the id of its parent.</p>
+<p>{% endtip %}</p>
+<p>{% warning %}</p>
+<p>If you have included sensitive information in a commit message, force pushing a commit with an amended commit may not remove the original commit from {% data variables.product.product_name %}. The old commit will not be a part of a subsequent clone; however, it may still be cached on {% data variables.product.product_name %} and accessible via the commit ID. You must contact {% data variables.contact.contact_support %} with the old commit ID to have it purged from the remote repository.</p>
+<p>{% endwarning %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/signing-commits">Signing commits</a>”</li>
+</ul>
+</body>
+</html>

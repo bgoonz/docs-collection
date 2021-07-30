@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Browsing security vulnerabilities in the GitHub Advisory Database</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Browsing security vulnerabilities in the GitHub Advisory Database</h1>
+</header>
+<!--Marketing-LINK: From /features/security/software-supply-chain page "Browsing security vulnerabilities in the GitHub Advisory Database".-->
+<h2 id="about-security-vulnerabilities">About security vulnerabilities</h2>
+<p>{% data reusables.repositories.a-vulnerability-is %}</p>
+<p>{% data variables.product.product_name %} will send you {% data variables.product.prodname_dependabot_alerts %} if we detect that any of the vulnerabilities from the {% data variables.product.prodname_advisory_database %} affect the packages that your repository depends on. For more information, see “<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>.”</p>
+<h2 id="about-the-data-variables.product.prodname_advisory_database">About the {% data variables.product.prodname_advisory_database %}</h2>
+<p>The {% data variables.product.prodname_advisory_database %} contains a curated list of security vulnerabilities that have been mapped to packages tracked by the {% data variables.product.company_short %} dependency graph. {% data reusables.repositories.tracks-vulnerabilities %}</p>
+<p>Each security advisory contains information about the vulnerability, including the description, severity, affected package, package ecosystem, affected versions and patched versions, impact, and optional information such as references, workarounds, and credits. In addition, advisories from the National Vulnerability Database list contain a link to the CVE record, where you can read more details about the vulnerability, its CVSS scores, and its qualitative severity level. For more information, see the “<a href="https://nvd.nist.gov/">National Vulnerability Database</a>” from the National Institute of Standards and Technology.</p>
+<p>The severity level is one of four possible levels defined in the “<a href="https://www.first.org/cvss/specification-document">Common Vulnerability Scoring System (CVSS), Section 5</a>.” - Low - Medium/Moderate - High - Critical</p>
+<p>The {% data variables.product.prodname_advisory_database %} uses the CVSS levels described above. If {% data variables.product.company_short %} obtains a CVE, the {% data variables.product.prodname_advisory_database %} uses CVSS version 3.1. If the CVE is imported, the {% data variables.product.prodname_advisory_database %} supports both CVSS versions 3.0 and 3.1.</p>
+<p>{% data reusables.repositories.github-security-lab %}</p>
+<h2 id="accessing-an-advisory-in-the-data-variables.product.prodname_advisory_database">Accessing an advisory in the {% data variables.product.prodname_advisory_database %}</h2>
+<ol type="1">
+<li>Navigate to https://github.com/advisories.</li>
+<li>Optionally, to filter the list, use any of the drop-down menus. <img src="/assets/images/help/security/advisory-database-dropdown-filters.png" alt="Dropdown filters" /></li>
+<li>Click on any advisory to view details.</li>
+</ol>
+<p>{% note %}</p>
+<p>The database is also accessible using the GraphQL API. For more information, see the “<a href="/webhooks/event-payloads/#security_advisory"><code>security_advisory</code> webhook event</a>.”</p>
+<p>{% endnote %}</p>
+<h2 id="searching-the-data-variables.product.prodname_advisory_database">Searching the {% data variables.product.prodname_advisory_database %}</h2>
+<p>You can search the database, and use qualifiers to narrow your search. For example, you can search for advisories created on a certain date, in a specific ecosystem, or in a particular library.</p>
+<p>{% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>GHSA-ID</code></td>
+<td><a href="https://github.com/advisories?query=GHSA-49wp-qq6x-g2rf"><strong>GHSA-49wp-qq6x-g2rf</strong></a> will show the advisory with this {% data variables.product.prodname_advisory_database %} ID.</td>
+</tr>
+<tr class="even">
+<td><code>CVE-ID</code></td>
+<td><a href="https://github.com/advisories?query=CVE-2020-28482"><strong>CVE-2020-28482</strong></a> will show the advisory with this CVE ID number.</td>
+</tr>
+<tr class="odd">
+<td><code>ecosystem:ECOSYSTEM</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=ecosystem%3Anpm"><strong>ecosystem:npm</strong></a> will show only advisories affecting NPM packages.</td>
+</tr>
+<tr class="even">
+<td><code>severity:LEVEL</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=severity%3Ahigh"><strong>severity:high</strong></a> will show only advisories with a high severity level.</td>
+</tr>
+<tr class="odd">
+<td><code>affects:LIBRARY</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=affects%3Alodash"><strong>affects:lodash</strong></a> will show only advisories affecting the lodash library.</td>
+</tr>
+<tr class="even">
+<td><code>cwe:ID</code></td>
+<td><a href="https://github.com/advisories?query=cwe%3A352"><strong>cwe:352</strong></a> will show only advisories with this CWE number.</td>
+</tr>
+<tr class="odd">
+<td><code>credit:USERNAME</code></td>
+<td><a href="https://github.com/advisories?query=credit%3Aoctocat"><strong>credit:octocat</strong></a> will show only advisories credited to the “octocat” user account.</td>
+</tr>
+<tr class="even">
+<td><code>sort:created-asc</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Acreated-asc"><strong>sort:created-asc</strong></a> will sort by the oldest advisories first.</td>
+</tr>
+<tr class="odd">
+<td><code>sort:created-desc</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Acreated-desc"><strong>sort:created-desc</strong></a> will sort by the newest advisories first.</td>
+</tr>
+<tr class="even">
+<td><code>sort:updated-asc</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Aupdated-asc"><strong>sort:updated-asc</strong></a> will sort by the least recently updated first.</td>
+</tr>
+<tr class="odd">
+<td><code>sort:updated-desc</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Aupdated-desc"><strong>sort:updated-desc</strong></a> will sort by the most recently updated first.</td>
+</tr>
+<tr class="even">
+<td><code>is:withdrawn</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=is%3Awithdrawn"><strong>is:withdrawn</strong></a> will show only advisories that have been withdrawn.</td>
+</tr>
+<tr class="odd">
+<td><code>created:YYYY-MM-DD</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=created%3A2021-01-13"><strong>created:2021-01-13</strong></a> will show only advisories created on this date.</td>
+</tr>
+<tr class="even">
+<td><code>updated:YYYY-MM-DD</code></td>
+<td><a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=updated%3A2021-01-13"><strong>updated:2021-01-13</strong></a> will show only advisories updated on this date.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="viewing-your-vulnerable-repositories">Viewing your vulnerable repositories</h2>
+<p>For any vulnerability in the {% data variables.product.prodname_advisory_database %}, you can see which of your repositories have a {% data variables.product.prodname_dependabot %} alert for that vulnerability. To see a vulnerable repository, you must have access to {% data variables.product.prodname_dependabot_alerts %} for that repository. For more information, see “<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies#access-to-dependabot-alerts">About alerts for vulnerable dependencies</a>.”</p>
+<ol type="1">
+<li>Navigate to https://github.com/advisories.</li>
+<li>Click an advisory.</li>
+<li>At the top of the advisory page, click <strong>Dependabot alerts</strong>. <img src="/assets/images/help/security/advisory-database-dependabot-alerts.png" alt="Dependabot alerts" /></li>
+<li>Optionally, to filter the list, use the search bar or the drop-down menus. The “Organization” drop-down menu allows you to filter the {% data variables.product.prodname_dependabot_alerts %} per owner (organization or user). <img src="/assets/images/help/security/advisory-database-dependabot-alerts-filters.png" alt="Search bar and drop-down menus to filter alerts" /></li>
+<li>For more details about the vulnerability, and for advice on how to fix the vulnerable repository, click the repository name.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>MITRE’s <a href="https://cve.mitre.org/about/terminology.html#vulnerability">definition of “vulnerability”</a></li>
+</ul>
+</body>
+</html>

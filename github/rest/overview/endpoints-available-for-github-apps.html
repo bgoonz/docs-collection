@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Endpoints available for GitHub Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Endpoints available for GitHub Apps</h1>
+</header>
+<p>You must use an installation access token to access endpoints using your {% data variables.product.prodname_github_app %}. For more information, see “<a href="/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation">Authenticating with {% data variables.product.prodname_github_apps %}</a>.”</p>
+{% for thing in rest.operationsEnabledForGitHubApps[currentVersion] %} {% assign category = thing[0] %} {% assign operations = thing[1] %} {% if operations.size &gt; 0 %}
+<h3 id="{{category}}">
+<a href="#{{category}}">{{ category }}</a>
+</h3>
+<ul>
+{% for operation in operations %}
+<li>
+<a href="/{{currentLanguage}}/rest/reference/{{operation.category}}#{{operation.slug}}"><code><span style="text-transform: uppercase">{{operation.verb}}</span> {{operation.requestPath}}</code></a>
+</li>
+{% endfor %}
+</ul>
+<p>{% endif %} {% endfor %}</p>
+</body>
+</html>

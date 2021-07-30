@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Increasing storage capacity</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Increasing storage capacity</h1>
+    </header>
+    <p>
+      {% data
+      reusables.enterprise_installation.warning-on-upgrading-physical-resources
+      %}
+    </p>
+    <p>
+      As more users join {% data variables.product.product_location %}, you may
+      need to resize your storage volume. Refer to the documentation for your
+      virtualization platform for information on resizing storage.
+    </p>
+    <h2 id="requirements-and-recommendations">
+      Requirements and recommendations
+    </h2>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> Before resizing any storage volume, put your
+      instance in maintenance mode. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-and-scheduling-maintenance-mode"
+        >Enabling and scheduling maintenance mode</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <h3 id="minimum-requirements">Minimum requirements</h3>
+    <p>{% data reusables.enterprise_installation.hardware-rec-table %}</p>
+    <h2 id="increasing-the-data-partition-size">
+      Increasing the data partition size
+    </h2>
+    <ol type="1">
+      <li>
+        Resize the existing user volume disk using your virtualization
+        platform’s tools. {% data
+        reusables.enterprise_installation.ssh-into-instance %}
+      </li>
+      <li>
+        Put the appliance in maintenance mode. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-and-scheduling-maintenance-mode"
+          >Enabling and scheduling maintenance mode</a
+        >.”
+      </li>
+      <li>Reboot the appliance to detect the new storage allocation:</li>
+    </ol>
+    <pre class="shell"><code>$ sudo reboot</code></pre>
+    <ol start="5" type="1">
+      <li>
+        Run the <code>ghe-storage-extend</code> command to expand the
+        <code>/data/user</code> filesystem:
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-storage-extend</code></pre>
+    <h2 id="increasing-the-root-partition-size-using-a-new-appliance">
+      Increasing the root partition size using a new appliance
+    </h2>
+    <ol type="1">
+      <li>
+        Set up a new {% data variables.product.prodname_ghe_server %} instance
+        with a larger root disk using the same version as your current
+        appliance. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/setting-up-a-github-enterprise-server-instance"
+          >Setting up a {% data variables.product.prodname_ghe_server %}
+          instance</a
+        >.”
+      </li>
+      <li>Shut down the current appliance:</li>
+    </ol>
+    <pre class="shell"><code>$ sudo poweroff</code></pre>
+    <ol start="3" type="1">
+      <li>
+        Detach the data disk from the current appliance using your
+        virtualization platform’s tools.
+      </li>
+      <li>
+        Attach the data disk to the new appliance with the larger root disk.
+      </li>
+    </ol>
+    <h2 id="increasing-the-root-partition-size-using-an-existing-appliance">
+      Increasing the root partition size using an existing appliance
+    </h2>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> Before increasing the root partition size, you
+      must put your instance in maintenance mode. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-and-scheduling-maintenance-mode"
+        >Enabling and scheduling maintenance mode</a
+      >.”
+    </p>
+    <p>{% endwarning %}</p>
+    <ol type="1">
+      <li>
+        Attach a new disk to your {% data variables.product.prodname_ghe_server
+        %} appliance.
+      </li>
+      <li>Run the <code>parted</code> command to format the disk:</li>
+    </ol>
+    <pre class="shell"><code>$ sudo parted /dev/xvdg mklabel msdos
+$ sudo parted /dev/xvdg mkpart primary ext4 0% 50%
+$ sudo parted /dev/xvdg mkpart primary ext4 50% 100%</code></pre>
+    <ol start="3" type="1">
+      <li>
+        Run the <code>ghe-upgrade</code> command to install a full, platform
+        specific package to the newly partitioned disk. A universal hotpatch
+        upgrade package, such as <code>github-enterprise-2.11.9.hpkg</code>,
+        will not work as expected. After the <code>ghe-upgrade</code> command
+        completes, application services will automatically terminate.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade PACKAGE-NAME.pkg -s -t /dev/xvdg1</code></pre>
+    <ol start="4" type="1">
+      <li>Shut down the appliance:</li>
+    </ol>
+    <pre class="shell"><code>$ sudo poweroff</code></pre>
+    <ol start="5" type="1">
+      <li>
+        In the hypervisor, remove the old root disk and attach the new root disk
+        at the same location as the old root disk.
+      </li>
+      <li>Start the appliance.</li>
+      <li>
+        Ensure system services are functioning correctly, then release
+        maintenance mode. For more information, see “<a
+          href="/admin/guides/installation/enabling-and-scheduling-maintenance-mode"
+          >Enabling and scheduling maintenance mode</a
+        >.”
+      </li>
+    </ol>
+  </body>
+</html>

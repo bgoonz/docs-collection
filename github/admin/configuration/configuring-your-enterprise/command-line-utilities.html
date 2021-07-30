@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Command-line utilities</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Command-line utilities</h1>
+    </header>
+    <p>
+      You can execute these commands from anywhere on the VM after signing in as
+      an SSH admin user. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-administrative-shell-ssh/"
+        >Accessing the administrative shell (SSH)</a
+      >.”
+    </p>
+    <h2 id="general">General</h2>
+    <h3 id="ghe-announce">ghe-announce</h3>
+    <p>
+      This utility sets a banner at the top of every {% data
+      variables.product.prodname_enterprise %} page. You can use it to broadcast
+      a message to your users.
+    </p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %} You can also set an announcement banner
+      using the enterprise settings on {% data variables.product.product_name
+      %}. For more information, see “<a
+        href="/enterprise/admin/user-management/customizing-user-messages-on-your-instance#creating-a-global-announcement-banner"
+        >Customizing user messages on your instance</a
+      >.” {% endif %}
+    </p>
+    <pre class="shell"><code># Sets a message that&#39;s visible to everyone
+$ ghe-announce -s MESSAGE
+&gt; Announcement message set.
+# Removes a previously set message
+$ ghe-announce -u
+&gt; Removed the announcement message</code></pre>
+    <h3 id="ghe-check-disk-usage">ghe-check-disk-usage</h3>
+    <p>
+      This utility checks the disk for large files or files that have been
+      deleted but still have open file handles. This should be run when you’re
+      trying to free up space on the root partition.
+    </p>
+    <pre class="shell"><code>ghe-check-disk-usage</code></pre>
+    <h3 id="ghe-cleanup-caches">ghe-cleanup-caches</h3>
+    <p>
+      This utility cleans up a variety of caches that might potentially take up
+      extra disk space on the root volume. If you find your root volume disk
+      space usage increasing notably over time it would be a good idea to run
+      this utility to see if it helps reduce overall usage.
+    </p>
+    <pre class="shell"><code>ghe-cleanup-caches</code></pre>
+    <h3 id="ghe-cleanup-settings">ghe-cleanup-settings</h3>
+    <p>
+      This utility wipes all existing {% data
+      variables.enterprise.management_console %} settings.
+    </p>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Tip</strong>: {% data
+      reusables.enterprise_enterprise_support.support_will_ask_you_to_run_command
+      %}
+    </p>
+    <p>{% endtip %}</p>
+    <pre class="shell"><code>ghe-cleanup-settings</code></pre>
+    <h3 id="ghe-config">ghe-config</h3>
+    <p>
+      With this utility, you can both retrieve and modify the configuration
+      settings of {% data variables.product.product_location %}.
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ghe-config &lt;em&gt;core.github-hostname&lt;/em&gt;
+# Gets the configuration value of `core.github-hostname`
+$ ghe-config &lt;em&gt;core.github-hostname&lt;/em&gt; &lt;em&gt;&#39;example.com&#39;&lt;/em&gt;
+# Sets the configuration value of `core.github-hostname` to `example.com`
+$ ghe-config -l
+# Lists all the configuration values</code></pre>
+    <p>
+      Allows you to find the universally unique identifier (UUID) of your node
+      in <code>cluster.conf</code>.
+    </p>
+    <pre
+      class="shell"
+    ><code>  $ ghe-config &lt;em&gt;HOSTNAME&lt;/em&gt;.uuid</code></pre>
+    <p>
+      {% ifversion ghes &gt; 2.21 %} Allows you to exempt a list of users from
+      API rate limits. For more information, see “<a
+        href="/rest/overview/resources-in-the-rest-api#rate-limiting"
+        >Resources in the REST API</a
+      >.”
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ghe-config app.github.rate-limiting-exempt-users &quot;&lt;em&gt;hubot&lt;/em&gt; &lt;em&gt;github-actions&lt;/em&gt;&quot;
+# Exempts the users hubot and github-actions from rate limits</code></pre>
+    <p>{% endif %}</p>
+    <h3 id="ghe-config-apply">ghe-config-apply</h3>
+    <p>
+      This utility applies {% data variables.enterprise.management_console %}
+      settings, reloads system services, prepares a storage device, reloads
+      application services, and runs any pending database migrations. It is
+      equivalent to clicking <strong>Save settings</strong> in the {% data
+      variables.enterprise.management_console %}’s web UI or to sending a POST
+      request to
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/rest/reference/enterprise-admin#management-console"
+        >the <code>/setup/api/configure</code> endpoint</a
+      >.
+    </p>
+    <p>
+      You will probably never need to run this manually, but it’s available if
+      you want to automate the process of saving your settings via SSH.
+    </p>
+    <pre class="shell"><code>ghe-config-apply</code></pre>
+    <h3 id="ghe-console">ghe-console</h3>
+    <p>
+      This utility opens the GitHub Rails console on your {% data
+      variables.product.prodname_enterprise %} appliance. {% data
+      reusables.command_line.use_with_support_only %}
+    </p>
+    <pre class="shell"><code>ghe-console</code></pre>
+    <h3 id="ghe-dbconsole">ghe-dbconsole</h3>
+    <p>
+      This utility opens a MySQL database session on your {% data
+      variables.product.prodname_enterprise %} appliance. {% data
+      reusables.command_line.use_with_support_only %}
+    </p>
+    <pre class="shell"><code>ghe-dbconsole</code></pre>
+    <h3 id="ghe-es-index-status">ghe-es-index-status</h3>
+    <p>
+      This utility returns a summary of Elasticsearch indexes in CSV format.
+    </p>
+    <p>Print an index summary with a header row to <code>STDOUT</code>:</p>
+    <pre class="shell"><code>$ ghe-es-index-status -do
+&gt; warning: parser/current is loading parser/ruby23, which recognizes
+&gt; warning: 2.3.3-compliant syntax, but you are running 2.3.4.
+&gt; warning: please see https://github.com/whitequark/parser#compatibility-with-ruby-mri.
+&gt; Name,Primary,Searchable,Writable,UpToDate,RepairProgress,Version
+&gt; code-search-1,true,true,true,true,100.0,72e27df7c631b45e026b42bfef059328fa040e17
+&gt; commits-5,true,true,true,true,100.0,7ed28813100c47813ef654c0ee2bb9abf21ab744
+&gt; gists-4,true,true,true,true,100.0,cf8e7d04fcf2564c902e2873c424a279cc41079d
+&gt; issues-4,false,false,false,true,100.0,d0bb08f71eebf6e7b070572aa399b185dbdc8a76
+&gt; issues-5,true,true,true,true,100.0,d0bb08f71eebf6e7b070572aa399b185dbdc8a76
+&gt; projects-2,true,true,true,true,100.0,c5cac1c4b3c66d42e609d088d174dbc3dd44469a
+&gt; pull-requests-6,true,true,true,true,100.0,6a466ad6b896a3499509990979bf9a18d7d41de3
+&gt; repos-6,true,true,true,true,100.0,6c8b5fbba0fc1e409558db411d05e092c1387082
+&gt; users-5,true,true,true,true,100.0,38984875552bb826c9ec42999f409cb2e95556eb
+&gt; wikis-4,true,true,true,true,100.0,2613dec44bd14e14577803ac1f9e4b7e07a7c234</code></pre>
+    <p>
+      Print an index summary and pipe results to <code>column</code> for
+      readability:
+    </p>
+    <pre class="shell"><code>$ ghe-es-index-status -do | column -ts,
+&gt; warning: parser/current is loading parser/ruby23, which recognizes
+&gt; warning: 2.3.3-compliant syntax, but you are running 2.3.4.
+&gt; warning: please see https://github.com/whitequark/parser#compatibility-with-ruby-mri.
+&gt; Name             Primary  Searchable  Writable  UpToDate  RepairProgress  Version
+&gt; code-search-1    true     true        true      true      100.0           72e27df7c631b45e026b42bfef059328fa040e17
+&gt; commits-5        true     true        true      true      100.0           7ed28813100c47813ef654c0ee2bb9abf21ab744
+&gt; gists-4          true     true        true      true      100.0           cf8e7d04fcf2564c902e2873c424a279cc41079d
+&gt; issues-4         false    false       false     true      100.0           d0bb08f71eebf6e7b070572aa399b185dbdc8a76
+&gt; issues-5         true     true        true      true      100.0           d0bb08f71eebf6e7b070572aa399b185dbdc8a76
+&gt; projects-2       true     true        true      true      100.0           c5cac1c4b3c66d42e609d088d174dbc3dd44469a
+&gt; pull-requests-6  true     true        true      true      100.0           6a466ad6b896a3499509990979bf9a18d7d41de3
+&gt; repos-6          true     true        true      true      100.0           6c8b5fbba0fc1e409558db411d05e092c1387082
+&gt; users-5          true     true        true      true      100.0           38984875552bb826c9ec42999f409cb2e95556eb
+&gt; wikis-4          true     true        true      true      100.0           2613dec44bd14e14577803ac1f9e4b7e07a7c234</code></pre>
+    <h3 id="ghe-legacy-github-services-report">
+      ghe-legacy-github-services-report
+    </h3>
+    <p>
+      This utility lists repositories on your appliance that use {% data
+      variables.product.prodname_dotcom %} Services, an integration method that
+      will be discontinued on October 1, 2018. Users on your appliance may have
+      set up {% data variables.product.prodname_dotcom %} Services to create
+      notifications for pushes to certain repositories. For more information,
+      see “<a
+        href="https://developer.github.com/changes/2018-04-25-github-services-deprecation/"
+        >Announcing the deprecation of {% data variables.product.prodname_dotcom
+        %} Services</a
+      >” on {% data variables.product.prodname_blog %} or “<a
+        href="/developers/overview/replacing-github-services"
+        >Replacing {% data variables.product.prodname_dotcom %} Services</a
+      >.” For more information about this command or for additional options, use
+      the <code>-h</code> flag.
+    </p>
+    <pre class="shell"><code>ghe-legacy-github-services-report
+</code></pre>
+    <h3 id="ghe-logs-tail">ghe-logs-tail</h3>
+    <p>
+      This utility lets you tail log all relevant log files from your
+      installation. You can pass options in to limit the logs to specific sets.
+      Use the -h flag for additional options.
+    </p>
+    <pre class="shell"><code>ghe-logs-tail</code></pre>
+    <h3 id="ghe-maintenance">ghe-maintenance</h3>
+    <p>
+      This utility allows you to control the state of the installation’s
+      maintenance mode. It’s designed to be used primarily by the {% data
+      variables.enterprise.management_console %} behind-the-scenes, but it can
+      be used directly.
+    </p>
+    <pre class="shell"><code>ghe-maintenance -h</code></pre>
+    <h3 id="ghe-motd">ghe-motd</h3>
+    <p>
+      This utility re-displays the message of the day (MOTD) that administrators
+      see when accessing the instance via the administrative shell. The output
+      contains an overview of the instance’s state.
+    </p>
+    <pre class="shell"><code>ghe-motd</code></pre>
+    <h3 id="ghe-nwo">ghe-nwo</h3>
+    <p>
+      This utility returns a repository’s name and owner based on the repository
+      ID.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-nwo &lt;em&gt;REPOSITORY_ID&lt;/em&gt;</code></pre>
+    <h3 id="ghe-org-admin-promote">ghe-org-admin-promote</h3>
+    <p>
+      Use this command to give organization owner privileges to users with site
+      admin privileges on the appliance, or to give organization owner
+      privileges to any single user in a single organization. You must specify a
+      user and/or an organization. The
+      <code>ghe-org-admin-promote</code> command will always ask for
+      confirmation before running unless you use the <code>-y</code> flag to
+      bypass the confirmation.
+    </p>
+    <p>You can use these options with the utility:</p>
+    <ul>
+      <li>
+        The <code>-u</code> flag specifies a username. Use this flag to give
+        organization owner privileges to a specific user. Omit the
+        <code>-u</code> flag to promote all site admins to the specified
+        organization.
+      </li>
+      <li>
+        The <code>-o</code> flag specifies an organization. Use this flag to
+        give owner privileges in a specific organization. Omit the
+        <code>-o</code> flag to give owner permissions in all organizations to
+        the specified site admin.
+      </li>
+      <li>
+        The <code>-a</code> flag gives owner privileges in all organizations to
+        all site admins.
+      </li>
+      <li>The <code>-y</code> flag bypasses the manual confirmation.</li>
+    </ul>
+    <p>
+      This utility cannot promote a non-site admin to be an owner of all
+      organizations. You can promote an ordinary user account to a site admin
+      with <a href="#ghe-user-promote">ghe-user-promote</a>.
+    </p>
+    <p>
+      Give organization owner privileges in a specific organization to a
+      specific site admin
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-org-admin-promote -u &lt;em&gt;USERNAME&lt;/em&gt; -o &lt;em&gt;ORGANIZATION&lt;/em&gt;</code></pre>
+    <p>
+      Give organization owner privileges in all organizations to a specific site
+      admin
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-org-admin-promote -u &lt;em&gt;USERNAME&lt;/em&gt;</code></pre>
+    <p>
+      Give organization owner privileges in a specific organization to all site
+      admins
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-org-admin-promote -o &lt;em&gt;ORGANIZATION&lt;/em&gt;</code></pre>
+    <p>
+      Give organization owner privileges in all organizations to all site admins
+    </p>
+    <pre class="shell"><code>ghe-org-admin-promote -a</code></pre>
+    <h3 id="ghe-reactivate-admin-login">ghe-reactivate-admin-login</h3>
+    <p>
+      Use this command to immediately unlock the {% data
+      variables.enterprise.management_console %} after 10 failed login attempts
+      in the span of 10 minutes.
+    </p>
+    <pre class="shell"><code>$ ghe-reactivate-admin-login</code></pre>
+    <h3 id="ghe-resque-info">ghe-resque-info</h3>
+    <p>
+      This utility displays information on background jobs, both active and in
+      the queue. It provides the same job count numbers as the admin stats bar
+      at the top of every page.
+    </p>
+    <p>
+      This utility can help identify whether the Resque server is having
+      problems processing background jobs. Any of the following scenarios might
+      be indicative of a problem with Resque:
+    </p>
+    <ul>
+      <li>
+        The number of background jobs is increasing, while the active jobs
+        remain the same.
+      </li>
+      <li>The event feeds are not updating.</li>
+      <li>Webhooks are not being triggered.</li>
+      <li>The web interface is not updating after a Git push.</li>
+    </ul>
+    <p>
+      If you suspect Resque is failing, contact {% data
+      variables.contact.contact_ent_support %} for help.
+    </p>
+    <p>With this command, you can also pause or resume jobs in the queue.</p>
+    <pre class="shell"><code>$ ghe-resque-info
+# lists queues and the number of currently queued jobs
+$ ghe-resque-info -p &lt;em&gt;QUEUE&lt;/em&gt;
+# pauses the specified queue
+$ ghe-resque-info -r &lt;em&gt;QUEUE&lt;/em&gt;
+# resumes the specified queue</code></pre>
+    <h3 id="ghe-saml-mapping-csv">ghe-saml-mapping-csv</h3>
+    <p>This utility can help map SAML records.</p>
+    <p>
+      To create a CSV file containing all the SAML mapping for your {% data
+      variables.product.product_name %} users:
+    </p>
+    <pre class="shell"><code>$ ghe-saml-mapping-csv -d</code></pre>
+    <p>To perform a dry run of updating SAML mappings with new values:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-saml-mapping-csv -u -n -f /path/to/file</code></pre>
+    <p>To update SAML mappings with new values:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-saml-mapping-csv -u -f /path/to/file</code></pre>
+    <h3 id="ghe-service-list">ghe-service-list</h3>
+    <p>
+      This utility lists all of the services that have been started or stopped
+      (are running or waiting) on your appliance.
+    </p>
+    <pre class="shell"><code>$ ghe-service-list
+start/running
+  - github-resqued, process 12711
+  - github-unicorn, process 12726
+  - github-gitauth, process 12743
+  - git-daemon, process 12755
+  - babeld, process 12771
+  - github-svn-proxy, process 12802
+  - gist-unicorn, process 12832
+  - gist-resqued, process 12881
+  - render-unicorn, process 12939
+  - hookshot-unicorn, process 13076
+  - nodeload2, process 13192
+  - slumlord-unicorn, process 13304
+  - ghe-storage, process 2012
+  - enterprise-manage-unicorn, process 2024
+  - enterprise-manage-resque, process 2053
+
+stop/waiting
+  - ghe-replica-mode</code></pre>
+    <p>{% tip %}</p>
+    <p>
+      The service names returned from this command can be used with
+      <a href="https://www.freedesktop.org/software/systemd/man/systemctl.html"
+        ><code>systemctl</code></a
+      >
+      commands to stop, start, or restart these services manually, if needed.
+      For example:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ sudo systemctl restart github-resqued</code></pre>
+    <p>
+      Stopping services will cause downtime on your installation, so we
+      recommend you contact {% data variables.contact.contact_ent_support %}
+      before stopping or restarting any service.
+    </p>
+    <p>{% endtip %}</p>
+    <h3 id="ghe-set-password">ghe-set-password</h3>
+    <p>
+      With <code>ghe-set-password</code>, you can set a new password to
+      authenticate into the
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-management-console"
+        >{% data variables.enterprise.management_console %}</a
+      >.
+    </p>
+    <pre class="shell"><code>ghe-set-password &lt;new_password&gt;</code></pre>
+    <h3 id="ghe-ssh-check-host-keys">ghe-ssh-check-host-keys</h3>
+    <p>
+      This utility checks the existing SSH host keys against the list of known
+      leaked SSH host keys.
+    </p>
+    <pre class="shell"><code>$ ghe-ssh-check-host-keys</code></pre>
+    <p>
+      If a leaked host key is found the utility exits with status
+      <code>1</code> and a message:
+    </p>
+    <pre
+      class="shell"
+    ><code>&gt; One or more of your SSH host keys were found in the blacklist.
+&gt; Please reset your host keys using ghe-ssh-roll-host-keys.</code></pre>
+    <p>
+      If a leaked host key was not found, the utility exits with status
+      <code>0</code> and a message:
+    </p>
+    <pre
+      class="shell"
+    ><code>&gt; The SSH host keys were not found in the SSH host key blacklist.
+&gt; No additional steps are needed/recommended at this time.</code></pre>
+    <h3 id="ghe-ssh-roll-host-keys">ghe-ssh-roll-host-keys</h3>
+    <p>
+      This utility rolls the SSH host keys and replaces them with newly
+      generated keys.
+    </p>
+    <pre class="shell"><code>$ sudo ghe-ssh-roll-host-keys
+Proceed with rolling SSH host keys? This will delete the
+existing keys in /etc/ssh/ssh_host_* and generate new ones. [y/N]
+
+# Press &#39;Y&#39; to confirm deleting, or use the -y switch to bypass this prompt
+
+&gt; SSH host keys have successfully been rolled.</code></pre>
+    <h3 id="ghe-ssh-weak-fingerprints">ghe-ssh-weak-fingerprints</h3>
+    <p>
+      This utility returns a report of known weak SSH keys stored on the {% data
+      variables.product.prodname_enterprise %} appliance. You can optionally
+      revoke user keys as a bulk action. The utility will report weak system
+      keys, which you must manually revoke in the
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-management-console"
+        >{% data variables.enterprise.management_console %}</a
+      >.
+    </p>
+    <pre class="shell"><code># Print a report of weak user and system SSH keys
+$ ghe-ssh-weak-fingerprints
+
+# Revoke all weak user keys
+$ ghe-ssh-weak-fingerprints --revoke</code></pre>
+    <h3 id="ghe-ssl-acme">ghe-ssl-acme</h3>
+    <p>
+      This utility allows you to install a Let’s Encrypt certificate on your {%
+      data variables.product.prodname_enterprise %} appliance. For more
+      information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-tls"
+        >Configuring TLS</a
+      >.”
+    </p>
+    <p>
+      You can use the <code>-x</code> flag to remove the ACME configuration.
+    </p>
+    <pre class="shell"><code>ghe-ssl-acme -e</code></pre>
+    <h3 id="ghe-ssl-ca-certificate-install">ghe-ssl-ca-certificate-install</h3>
+    <p>
+      This utility allows you to install a custom root CA certificate on your {%
+      data variables.product.prodname_enterprise %} server. The certificate must
+      be in PEM format. Furthermore, if your certificate provider includes
+      multiple CA certificates in a single file, you must separate them into
+      individual files that you then pass to
+      <code>ghe-ssl-ca-certificate-install</code> one at a time.
+    </p>
+    <p>
+      Run this utility to add a certificate chain for S/MIME commit signature
+      verification. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/about-commit-signature-verification/"
+        >About commit signature verification</a
+      >.”
+    </p>
+    <p>
+      Run this utility when {% data variables.product.product_location %} is
+      unable to connect to another server because the latter is using a
+      self-signed SSL certificate or an SSL certificate for which it doesn’t
+      provide the necessary CA bundle. One way to confirm this is to run
+      <code
+        >openssl s_client -connect host:port -verify 0 -CApath
+        /etc/ssl/certs</code
+      >
+      from {% data variables.product.product_location %}. If the remote server’s
+      SSL certificate can be verified, your <code>SSL-Session</code> should have
+      a return code of 0, as shown below.
+    </p>
+    <pre><code>SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : AES128-SHA
+    Session-ID: C794EBCC3CBC10F747C9AFC029C03C1048FC99CFC34D13D7444E0F267C58DF4C
+    Session-ID-ctx:
+    Master-Key: 02A7C47CFD6EEC87D3C710E9DD87390E04EF82DDD7514AE03127D5DC1945FC0CAEFB5395791AEA598667EFA61B9EA8C5
+    Key-Arg   : None
+    Start Time: 1394581597
+    Timeout   : 300 (sec)
+    Verify return code: 0 (ok)</code></pre>
+    <p>
+      If, on the other hand, the remote server’s SSL certificate can
+      <em>not</em> be verified, your <code>SSL-Session</code> should have a
+      nonzero return code:
+    </p>
+    <pre><code>SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : AES128-SHA
+    Session-ID: 82CB288051A6DB66094C50A69CF1292AEE7E54C6B01B659B98AB336F8C33863E
+    Session-ID-ctx:
+    Master-Key: 01B025B2F764043A27919A8D1355AAECD8844FF0831B1D664042334790574A6F4025BAB085D4ED71D71AAB3091B849E5
+    Key-Arg   : None
+    Start Time: 1394581782
+    Timeout   : 300 (sec)
+    Verify return code: 27 (certificate not trusted)</code></pre>
+    <p>
+      You can use these additional options with the utility: - The
+      <code>-r</code> flag allows you to uninstall a CA certificate. - The
+      <code>-h</code> flag displays more usage information.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-ssl-ca-certificate-install -c &lt;em&gt;/path/to/certificate&lt;/em&gt;</code></pre>
+    <h3 id="ghe-ssl-generate-csr">ghe-ssl-generate-csr</h3>
+    <p>
+      This utility allows you to generate a private key and certificate signing
+      request (CSR), which you can share with a commercial or private
+      certificate authority to get a valid certificate to use with your
+      instance. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-tls"
+        >Configuring TLS</a
+      >.”
+    </p>
+    <p>
+      For more information about this command or for additional options, use the
+      <code>-h</code> flag.
+    </p>
+    <pre class="shell"><code>ghe-ssl-generate-csr</code></pre>
+    <h3 id="ghe-storage-extend">ghe-storage-extend</h3>
+    <p>
+      Some platforms require this script to expand the user volume. For more
+      information, see “<a
+        href="/enterprise/admin/guides/installation/increasing-storage-capacity/"
+        >Increasing Storage Capacity</a
+      >”.
+    </p>
+    <pre class="shell"><code>$ ghe-storage-extend</code></pre>
+    <h3 id="ghe-version">ghe-version</h3>
+    <p>
+      This utility prints the version, platform, and build of {% data
+      variables.product.product_location %}.
+    </p>
+    <pre class="shell"><code>$ ghe-version</code></pre>
+    <h3 id="ghe-webhook-logs">ghe-webhook-logs</h3>
+    <p>
+      This utility returns webhook delivery logs for administrators to review
+      and identify any issues.
+    </p>
+    <pre class="shell"><code>ghe-webhook-logs</code></pre>
+    <p>
+      To show all failed hook deliveries in the past day: {% ifversion ghes &gt;
+      2.22 %}
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-webhook-logs -f -a &lt;em&gt;YYYY-MM-DD&lt;/em&gt;</code></pre>
+    <p>
+      The date format should be <code>YYYY-MM-DD</code>,
+      <code>YYYY-MM-DD HH:MM:SS</code>, or
+      <code>YYYY-MM-DD HH:MM:SS (+/-) HH:M</code>. {% else %}
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-webhook-logs -f -a &lt;em&gt;YYYYMMDD&lt;/em&gt;</code></pre>
+    <p>{% endif %}</p>
+    <p>
+      To show the full hook payload, result, and any exceptions for the
+      delivery: {% ifversion ghes &gt; 2.22 %}
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-webhook-logs -g &lt;em&gt;delivery-guid&lt;/em&gt;</code></pre>
+    <p>{% else %}</p>
+    <pre
+      class="shell"
+    ><code>ghe-webhook-logs -g &lt;em&gt;delivery-guid&lt;/em&gt; -v</code></pre>
+    <p>{% endif %}</p>
+    <h2 id="clustering">Clustering</h2>
+    <h3 id="ghe-cluster-status">ghe-cluster-status</h3>
+    <p>
+      Check the health of your nodes and services in a cluster deployment of {%
+      data variables.product.prodname_ghe_server %}.
+    </p>
+    <pre class="shell"><code>$ ghe-cluster-status</code></pre>
+    <h3 id="ghe-cluster-support-bundle">ghe-cluster-support-bundle</h3>
+    <p>
+      This utility creates a support bundle tarball containing important logs
+      from each of the nodes in either a Geo-replication or Clustering
+      configuration.
+    </p>
+    <p>
+      By default, the command creates the tarball in <em>/tmp</em>, but you can
+      also have it <code>cat</code> the tarball to <code>STDOUT</code> for easy
+      streaming over SSH. This is helpful in the case where the web UI is
+      unresponsive or downloading a support bundle from
+      <em>/setup/support</em> doesn’t work. You must use this command if you
+      want to generate an <em>extended</em> bundle, containing older logs. You
+      can also use this command to upload the cluster support bundle directly to
+      {% data variables.product.prodname_enterprise %} support.
+    </p>
+    <p>To create a standard bundle:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-cluster-support-bundle -o&#39; &gt; cluster-support-bundle.tgz</code></pre>
+    <p>To create an extended bundle:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-cluster-support-bundle -x -o&#39; &gt; cluster-support-bundle.tgz</code></pre>
+    <p>To send a bundle to {% data variables.contact.github_support %}:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-cluster-support-bundle -u&#39;</code></pre>
+    <p>
+      To send a bundle to {% data variables.contact.github_support %} and
+      associate the bundle with a ticket:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-cluster-support-bundle -t &lt;em&gt;ticket-id&lt;/em&gt;&#39;</code></pre>
+    <p>{% ifversion ghes &gt; 2.21 %} ### ghe-cluster-failover</p>
+    <p>
+      Fail over from active cluster nodes to passive cluster nodes. For more
+      information, see “<a
+        href="/enterprise/admin/enterprise-management/initiating-a-failover-to-your-replica-cluster"
+        >Initiating a failover to your replica cluster</a
+      >.”
+    </p>
+    <pre class="shell"><code>ghe-cluster-failover</code></pre>
+    <p>{% endif %}</p>
+    <h3 id="ghe-dpages">ghe-dpages</h3>
+    <p>
+      This utility allows you to manage the distributed {% data
+      variables.product.prodname_pages %} server.
+    </p>
+    <pre class="shell"><code>ghe-dpages</code></pre>
+    <p>To show a summary of repository location and health:</p>
+    <pre class="shell"><code>ghe-dpages status</code></pre>
+    <p>
+      To evacuate a {% data variables.product.prodname_pages %} storage service
+      before evacuating a cluster node:
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-dpages evacuate pages-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+    <h3 id="ghe-spokes">ghe-spokes</h3>
+    <p>
+      This utility allows you to manage the three copies of each repository on
+      the distributed git servers.
+    </p>
+    <pre class="shell"><code>ghe-spokes</code></pre>
+    <p>To show a summary of repository location and health:</p>
+    <pre class="shell"><code>ghe-spokes status</code></pre>
+    <p>To show the servers in which the repository is stored:</p>
+    <pre class="shell"><code>ghe-spokes route</code></pre>
+    <p>To evacuate storage services on a cluster node:</p>
+    <pre
+      class="shell"
+    ><code>ghe-spokes server evacuate git-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+    <h3 id="ghe-storage">ghe-storage</h3>
+    <p>
+      This utility allows you to evacuate all storage services before evacuating
+      a cluster node.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-storage evacuate storage-server-&lt;em&gt;UUID&lt;/em&gt;</code></pre>
+    <h2 id="git">Git</h2>
+    <h3 id="ghe-btop">ghe-btop</h3>
+    <p>A <code>top</code>-like interface for current Git operations.</p>
+    <pre
+      class="shell"
+    ><code>ghe-btop [ &lt;port number&gt; | --help | --usage ]</code></pre>
+    <h3 id="ghe-repo">ghe-repo</h3>
+    <p>
+      This utility allows you to change to a repository’s directory and open an
+      interactive shell as the <code>git</code> user. You can perform manual
+      inspection or maintenance of a repository via commands like
+      <code>git-*</code> or <code>git-nw-*</code>.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-repo &lt;em&gt;username&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt;</code></pre>
+    <h3 id="ghe-repo-gc">ghe-repo-gc</h3>
+    <p>
+      This utility manually repackages a repository network to optimize pack
+      storage. If you have a large repository, running this command may help
+      reduce its overall size. {% data variables.product.prodname_enterprise %}
+      automatically runs this command throughout your interaction with a
+      repository network.
+    </p>
+    <p>
+      You can add the optional <code>--prune</code> argument to remove
+      unreachable Git objects that aren’t referenced from a branch, tag, or any
+      other ref. This is particularly useful for immediately removing
+      <a href="/enterprise/user/articles/remove-sensitive-data/"
+        >previously expunged sensitive information</a
+      >.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-repo-gc &lt;em&gt;username&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt;</code></pre>
+    <h2 id="import-and-export">Import and export</h2>
+    <h3 id="ghe-migrator">ghe-migrator</h3>
+    <p>
+      <code>ghe-migrator</code> is a hi-fidelity tool to help you migrate from
+      one GitHub instance to another. You can consolidate your instances or move
+      your organization, users, teams, and repositories from GitHub.com to {%
+      data variables.product.prodname_enterprise %}.
+    </p>
+    <p>
+      For more information, please see our guide on
+      <a href="/enterprise/admin/guides/migrations/"
+        >migrating user, organization, and repository data</a
+      >.
+    </p>
+    <h3 id="git-import-detect">git-import-detect</h3>
+    <p>
+      Given a URL, detect which type of source control management system is at
+      the other end. During a manual import this is likely already known, but
+      this can be very useful in automated scripts.
+    </p>
+    <pre class="shell"><code>git-import-detect</code></pre>
+    <h3 id="git-import-hg-raw">git-import-hg-raw</h3>
+    <p>
+      This utility imports a Mercurial repository to this Git repository. For
+      more information, see “<a
+        href="/enterprise/admin/guides/migrations/importing-data-from-third-party-version-control-systems/"
+        >Importing data from third party version control systems</a
+      >.”
+    </p>
+    <pre class="shell"><code>git-import-hg-raw</code></pre>
+    <h3 id="git-import-svn-raw">git-import-svn-raw</h3>
+    <p>
+      This utility imports Subversion history and file data into a Git branch.
+      This is a straight copy of the tree, ignoring any trunk or branch
+      distinction. For more information, see “<a
+        href="/enterprise/admin/guides/migrations/importing-data-from-third-party-version-control-systems/"
+        >Importing data from third party version control systems</a
+      >.”
+    </p>
+    <pre class="shell"><code>git-import-svn-raw</code></pre>
+    <h3 id="git-import-tfs-raw">git-import-tfs-raw</h3>
+    <p>
+      This utility imports from Team Foundation Version Control (TFVC). For more
+      information, see “<a
+        href="/enterprise/admin/guides/migrations/importing-data-from-third-party-version-control-systems/"
+        >Importing data from third party version control systems</a
+      >.”
+    </p>
+    <pre class="shell"><code>git-import-tfs-raw</code></pre>
+    <h3 id="git-import-rewrite">git-import-rewrite</h3>
+    <p>
+      This utility rewrites the imported repository. This gives you a chance to
+      rename authors and, for Subversion and TFVC, produces Git branches based
+      on folders. For more information, see “<a
+        href="/enterprise/admin/guides/migrations/importing-data-from-third-party-version-control-systems/"
+        >Importing data from third party version control systems</a
+      >.”
+    </p>
+    <pre class="shell"><code>git-import-rewrite</code></pre>
+    <h2 id="support">Support</h2>
+    <h3 id="ghe-diagnostics">ghe-diagnostics</h3>
+    <p>
+      This utility performs a variety of checks and gathers information about
+      your installation that you can send to support to help diagnose problems
+      you’re having.
+    </p>
+    <p>
+      Currently, this utility’s output is similar to downloading the diagnostics
+      info in the {% data variables.enterprise.management_console %}, but may
+      have additional improvements added to it over time that aren’t available
+      in the web UI. For more information, see “<a
+        href="/enterprise/admin/guides/enterprise-support/providing-data-to-github-support#creating-and-sharing-diagnostic-files"
+        >Creating and sharing diagnostic files</a
+      >.”
+    </p>
+    <pre class="shell"><code>ghe-diagnostics</code></pre>
+    <h3 id="ghe-support-bundle">ghe-support-bundle</h3>
+    <p>
+      {% data
+      reusables.enterprise_enterprise_support.use_ghe_cluster_support_bundle %}
+      This utility creates a support bundle tarball containing important logs
+      from your instance.
+    </p>
+    <p>
+      By default, the command creates the tarball in <em>/tmp</em>, but you can
+      also have it <code>cat</code> the tarball to <code>STDOUT</code> for easy
+      streaming over SSH. This is helpful in the case where the web UI is
+      unresponsive or downloading a support bundle from
+      <em>/setup/support</em> doesn’t work. You must use this command if you
+      want to generate an <em>extended</em> bundle, containing older logs. You
+      can also use this command to upload the support bundle directly to {% data
+      variables.product.prodname_enterprise %} support.
+    </p>
+    <p>To create a standard bundle:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -o&#39; &gt; support-bundle.tgz</code></pre>
+    <p>To create an extended bundle:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -x -o&#39; &gt; support-bundle.tgz</code></pre>
+    <p>To send a bundle to {% data variables.contact.github_support %}:</p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -u&#39;</code></pre>
+    <p>
+      To send a bundle to {% data variables.contact.github_support %} and
+      associate the bundle with a ticket:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -t &lt;em&gt;ticket-id&lt;/em&gt;&#39;</code></pre>
+    <h3 id="ghe-support-upload">ghe-support-upload</h3>
+    <p>
+      This utility sends information from your appliance to {% data
+      variables.product.prodname_enterprise %} support. You can either specify a
+      local file, or provide a stream of up to 100MB of data via
+      <code>STDIN</code>. The uploaded data can optionally be associated with a
+      support ticket.
+    </p>
+    <p>
+      To send a file to {% data variables.contact.github_support %} and
+      associate the file with a ticket:
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-support-upload -f &lt;em&gt;path/to/your/file&lt;/em&gt; -t &lt;em&gt;ticket-id&lt;/em&gt;</code></pre>
+    <p>
+      To upload data via <code>STDIN</code> and associating the data with a
+      ticket:
+    </p>
+    <pre
+      class="shell"
+    ><code>&lt;em&gt;ghe-repl-status -vv&lt;/em&gt; | ghe-support-upload -t &lt;em&gt;ticket-id&lt;/em&gt; -d &quot;&lt;em&gt;Verbose Replication Status&lt;/em&gt;&quot;</code></pre>
+    <p>
+      In this example, <code>ghe-repl-status -vv</code> sends verbose status
+      information from a replica appliance. You should replace
+      <code>ghe-repl-status -vv</code> with the specific data you’d like to
+      stream to <code>STDIN</code>, and
+      <code>Verbose Replication Status</code> with a brief description of the
+      data. {% data
+      reusables.enterprise_enterprise_support.support_will_ask_you_to_run_command
+      %}
+    </p>
+    <h2 id="upgrading-data-variables.product.prodname_ghe_server">
+      Upgrading {% data variables.product.prodname_ghe_server %}
+    </h2>
+    <h3 id="ghe-upgrade">ghe-upgrade</h3>
+    <p>
+      This utility installs or verifies an upgrade package. You can also use
+      this utility to roll back a patch release if an upgrade fails or is
+      interrupted. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/upgrading-github-enterprise-server/"
+        >Upgrading {% data variables.product.prodname_ghe_server %}</a
+      >.”
+    </p>
+    <p>To verify an upgrade package:</p>
+    <pre
+      class="shell"
+    ><code>ghe-upgrade --verify &lt;em&gt;UPGRADE-PACKAGE-FILENAME&lt;/em&gt;</code></pre>
+    <p>To install an upgrade package:</p>
+    <pre
+      class="shell"
+    ><code>ghe-upgrade &lt;em&gt;UPGRADE-PACKAGE-FILENAME&lt;/em&gt;</code></pre>
+    <p>
+      {% data
+      reusables.enterprise_installation.command-line-utilities-ghe-upgrade-rollback
+      %}
+    </p>
+    <h3 id="ghe-upgrade-scheduler">ghe-upgrade-scheduler</h3>
+    <p>
+      This utility manages scheduled installation of upgrade packages. You can
+      show, create new, or remove scheduled installations. You must create
+      schedules using cron expressions. For more information, see the
+      <a href="https://en.wikipedia.org/wiki/Cron#Overview"
+        >Cron Wikipedia entry</a
+      >.
+    </p>
+    <p>To schedule a new installation for a package:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade-scheduler -c &quot;0 2 15 12 *&quot; &lt;em&gt;UPGRADE-PACKAGE-FILENAME&lt;/em&gt;</code></pre>
+    <p>To show scheduled installations for a package:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade-scheduler -s &lt;em&gt;UPGRADE PACKAGE FILENAME&lt;/em&gt;
+&gt; 0 2 15 12 * /usr/local/bin/ghe-upgrade -y -s &lt;em&gt;UPGRADE-PACKAGE-FILENAME&lt;/em&gt; &gt; /data/user/common/&lt;em&gt;UPGRADE-PACKAGE-FILENAME&lt;/em&gt;.log 2&gt;&amp;1</code></pre>
+    <p>To remove scheduled installations for a package:</p>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade-scheduler -r &lt;em&gt;UPGRADE PACKAGE FILENAME&lt;/em&gt;</code></pre>
+    <h3 id="ghe-update-check">ghe-update-check</h3>
+    <p>
+      This utility will check to see if a new patch release of {% data
+      variables.product.prodname_enterprise %} is available. If it is, and if
+      space is available on your instance, it will download the package. By
+      default, it’s saved to <em>/var/lib/ghe-updates</em>. An administrator can
+      then
+      <a
+        href="/enterprise/admin/guides/installation/updating-the-virtual-machine-and-physical-resources/"
+        >perform the upgrade</a
+      >.
+    </p>
+    <p>
+      A file containing the status of the download is available at
+      <em>/var/lib/ghe-updates/ghe-update-check.status</em>.
+    </p>
+    <p>
+      To check for the latest {% data variables.product.prodname_enterprise %}
+      release, use the <code>-i</code> switch.
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-update-check&#39;</code></pre>
+    <h2 id="user-management">User management</h2>
+    <h3 id="ghe-license-usage">ghe-license-usage</h3>
+    <p>
+      This utility exports a list of the installation’s users in JSON format. If
+      your instance is connected to {% data variables.product.prodname_ghe_cloud
+      %}, {% data variables.product.prodname_ghe_server %} uses this information
+      for reporting licensing information to {% data
+      variables.product.prodname_ghe_cloud %}. For more information, see “<a
+        href="/enterprise/admin/installation/connecting-github-enterprise-server-to-github-enterprise-cloud"
+        >Connecting {% data variables.product.prodname_ghe_server %} to {% data
+        variables.product.prodname_ghe_cloud %}</a
+      >.”
+    </p>
+    <p>
+      By default, the list of users in the resulting JSON file is encrypted. Use
+      the <code>-h</code> flag for more options.
+    </p>
+    <pre class="shell"><code>ghe-license-usage</code></pre>
+    <h3 id="ghe-org-membership-update">ghe-org-membership-update</h3>
+    <p>
+      This utility will enforce the default organization membership visibility
+      setting on all members in your instance. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/configuring-visibility-for-organization-membership"
+        >Configuring visibility for organization membership</a
+      >.” Setting options are <code>public</code> or <code>private</code>.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-org-membership-update --visibility=&lt;em&gt;SETTING&lt;/em&gt;</code></pre>
+    <h3 id="ghe-user-csv">ghe-user-csv</h3>
+    <p>
+      This utility exports a list of all the users in the installation into CSV
+      format. The CSV file includes the email address, which type of user they
+      are (e.g., admin, user), how many repositories they have, how many SSH
+      keys, how many organization memberships, last logged IP address, etc. Use
+      the <code>-h</code> flag for more options.
+    </p>
+    <pre class="shell"><code>ghe-user-csv -o &gt; users.csv</code></pre>
+    <h3 id="ghe-user-demote">ghe-user-demote</h3>
+    <p>
+      This utility demotes the specified user from admin status to that of a
+      regular user. We recommend using the web UI to perform this action, but
+      provide this utility in case the <code>ghe-user-promote</code> utility is
+      run in error and you need to demote a user again from the CLI.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-user-demote &lt;em&gt;some-user-name&lt;/em&gt;</code></pre>
+    <h3 id="ghe-user-promote">ghe-user-promote</h3>
+    <p>
+      This utility promotes the specified user account to a site administrator.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-user-promote &lt;em&gt;some-user-name&lt;/em&gt;</code></pre>
+    <h3 id="ghe-user-suspend">ghe-user-suspend</h3>
+    <p>
+      This utility suspends the specified user, preventing them from logging in,
+      pushing, or pulling from your repositories.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-user-suspend &lt;em&gt;some-user-name&lt;/em&gt;</code></pre>
+    <h3 id="ghe-user-unsuspend">ghe-user-unsuspend</h3>
+    <p>
+      This utility unsuspends the specified user, granting them access to login,
+      push, and pull from your repositories.
+    </p>
+    <pre
+      class="shell"
+    ><code>ghe-user-unsuspend &lt;em&gt;some-user-name&lt;/em&gt;</code></pre>
+  </body>
+</html>

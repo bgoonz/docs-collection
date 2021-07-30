@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Promoting or demoting a site administrator</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Promoting or demoting a site administrator</h1>
+</header>
+<p>{% tip %}</p>
+<p><strong>Note:</strong> If <a href="/enterprise/admin/authentication/using-ldap#enabling-ldap-sync">LDAP Sync is enabled</a> and the <code>Administrators group</code> attribute is set when <a href="/enterprise/admin/authentication/using-ldap#configuring-ldap-with-your-github-enterprise-server-instance">configuring LDAP access for users</a>, those users will automatically have site administrator access to your instance. In this case, you can’t manually promote users with the steps below; you must add them to the LDAP administrators group.</p>
+<p>{% endtip %}</p>
+<p>For information about promoting a user to an organization owner, see the <code>ghe-org-admin-promote</code> section of “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-org-admin-promote">Command-line utilities</a>.”</p>
+<h2 id="promoting-a-user-from-the-enterprise-settings">Promoting a user from the enterprise settings</h2>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.people-tab %} {% data reusables.enterprise-accounts.administrators-tab %} 5. In the upper-right corner of the page, click <strong>Add owner</strong>. <img src="/assets/images/help/business-accounts/business-account-add-admin-button.png" alt="Button to add an admin" /> 6. In the search field, type the name of the user and click <strong>Add</strong>. <img src="/assets/images/help/business-accounts/business-account-search-to-add-admin.png" alt="Search field to add an admin" /></p>
+<h2 id="demoting-a-site-administrator-from-the-enterprise-settings">Demoting a site administrator from the enterprise settings</h2>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.people-tab %} {% data reusables.enterprise-accounts.administrators-tab %} 1. In the upper-left corner of the page, in the “Find an administrator” search field, type the username of the person you want to demote. <img src="/assets/images/help/business-accounts/business-account-search-for-admin.png" alt="Search field to find an administrator" /></p>
+<ol type="1">
+<li>In the search results, find the username of the person you want to demote, then use the {% octicon “gear” %} drop-down menu, and select <strong>Remove owner</strong>. <img src="/assets/images/help/business-accounts/demote-admin-button.png" alt="Remove from enterprise option" /></li>
+</ol>
+<h2 id="promoting-a-user-from-the-command-line">Promoting a user from the command line</h2>
+<ol type="1">
+<li><a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-administrative-shell-ssh/">SSH</a> into your appliance.</li>
+<li>Run <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-user-promote">ghe-user-promote</a> with the username to promote.</li>
+</ol>
+<pre class="shell"><code>$ ghe-user-promote &lt;em&gt;username&lt;/em&gt;</code></pre>
+<h2 id="demoting-a-site-administrator-from-the-command-line">Demoting a site administrator from the command line</h2>
+<ol type="1">
+<li><a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-administrative-shell-ssh/">SSH</a> into your appliance.</li>
+<li>Run <a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-user-demote">ghe-user-demote</a> with the username to demote.</li>
+</ol>
+<pre class="shell"><code>$ ghe-user-demote &lt;em&gt;username&lt;/em&gt;</code></pre>
+</body>
+</html>

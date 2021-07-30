@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Publishing actions in GitHub Marketplace</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Publishing actions in GitHub Marketplace</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <p>
+      You must accept the terms of service to publish actions in {% data
+      variables.product.prodname_marketplace %}.
+    </p>
+    <h2 id="about-publishing-actions">About publishing actions</h2>
+    <p>
+      Before you can publish an action, you’ll need to create an action in your
+      repository. For more information, see “<a href="/actions/creating-actions"
+        >Creating actions</a
+      >.”
+    </p>
+    <p>
+      When you plan to publish your action to {% data
+      variables.product.prodname_marketplace %}, you’ll need ensure that the
+      repository only includes the metadata file, code, and files necessary for
+      the action. Creating a single repository for the action allows you to tag,
+      release, and package the code in a single unit. {% data
+      variables.product.prodname_dotcom %} also uses the action’s metadata on
+      your {% data variables.product.prodname_marketplace %} page.
+    </p>
+    <p>
+      Actions are published to {% data variables.product.prodname_marketplace %}
+      immediately and aren’t reviewed by {% data
+      variables.product.prodname_dotcom %} as long as they meet these
+      requirements:
+    </p>
+    <ul>
+      <li>The action must be in a public repository.</li>
+      <li>Each repository must contain a single action.</li>
+      <li>
+        The action’s metadata file (<code>action.yml</code> or
+        <code>action.yaml</code>) must be in the root directory of the
+        repository.
+      </li>
+      <li>
+        The <code>name</code> in the action’s metadata file must be unique.
+        <ul>
+          <li>
+            The <code>name</code> cannot match an existing action name published
+            on {% data variables.product.prodname_marketplace %}.
+          </li>
+          <li>
+            The <code>name</code> cannot match a user or organization on {% data
+            variables.product.prodname_dotcom %}, unless the user or
+            organization owner is publishing the action. For example, only the
+            {% data variables.product.prodname_dotcom %} organization can
+            publish an action named <code>github</code>.
+          </li>
+          <li>
+            The <code>name</code> cannot match an existing {% data
+            variables.product.prodname_marketplace %} category.
+          </li>
+          <li>
+            {% data variables.product.prodname_dotcom %} reserves the names of
+            {% data variables.product.prodname_dotcom %} features.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h2 id="publishing-an-action">Publishing an action</h2>
+    <p>
+      You can add the action you’ve created to {% data
+      variables.product.prodname_marketplace %} by tagging it as a new release
+      and publishing it.
+    </p>
+    <p>
+      To draft a new release and publish the action to {% data
+      variables.product.prodname_marketplace %}, follow these instructions:
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} 1. When a repository
+      contains an action metadata file (<code>action.yml</code> or
+      <code>action.yaml</code>), you’ll see a banner to publish the action to {%
+      data variables.product.prodname_marketplace %}. Click
+      <strong>Draft a release</strong>.
+      <img
+        src="/assets/images/help/repository/publish-github-action-to-markeplace-button.png"
+        alt="Publish this action to markeplace button"
+      />
+      1. Select
+      <strong
+        >Publish this action to the {% data
+        variables.product.prodname_marketplace %}</strong
+      >. If you can’t select the
+      <strong
+        >Publish this action to the {% data
+        variables.product.prodname_marketplace %}</strong
+      >
+      checkbox, you’ll need to read and accept the {% data
+      variables.product.prodname_marketplace %} agreement first.
+      <img
+        src="/assets/images/help/repository/marketplace_actions_publish.png"
+        alt="Select publish to Marketplace"
+      />
+      1. If the labels in your metadata file contain any problems, you will see
+      an error message.
+      <img
+        src="/assets/images/help/repository/marketplace_actions_fixerrors.png"
+        alt="See notification"
+      />
+      1. If you see any on-screen suggestions, address them by updating your
+      metadata file. Once complete, you will see an “Everything looks good!”
+      message.
+      <img
+        src="/assets/images/help/repository/marketplace_actions_looksgood.png"
+        alt="Fix errors"
+      />
+      1. Choose a “Primary Category” and, optionally, “Another Category” which
+      will help people find your action in {% data
+      variables.product.prodname_marketplace %}.
+      <img
+        src="/assets/images/help/repository/marketplace_actions_categories.png"
+        alt="Choose category"
+      />
+      1. Tag your Action with a version, and add a release title. This helps
+      people know what changes or features the release includes. People will see
+      the version in the action’s dedicated {% data
+      variables.product.prodname_marketplace %} page.
+      <img
+        src="/assets/images/help/repository/marketplace_actions_version.png"
+        alt="Tag a version"
+      />
+      1. Complete all other fields and click <strong>Publish release</strong>.
+      Publishing requires you to use two-factor authentication. For more
+      information, see “<a
+        href="/articles/configuring-two-factor-authentication/"
+        >Configuring two-factor authentication</a
+      >.”
+      <img
+        src="/assets/images/help/repository/marketplace_actions_publishrelease.png"
+        alt="Publish the release"
+      />
+    </p>
+    <h2
+      id="removing-an-action-from-data-variables.product.prodname_marketplace"
+    >
+      Removing an action from {% data variables.product.prodname_marketplace %}
+    </h2>
+    <p>
+      To remove a published action from {% data
+      variables.product.prodname_marketplace %}, you’ll need to update each
+      published release. Perform the following steps for each release of the
+      action you’ve published to {% data variables.product.prodname_marketplace
+      %}.
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.releases %} 3. On the Releases page, to the right
+      of the release you want to edit, click <strong>Edit</strong>.
+      <img
+        src="/assets/images/help/releases/release-edit-btn.png"
+        alt="Release edit button"
+      />
+      4. Select
+      <strong
+        >Publish this action to the {% data
+        variables.product.prodname_marketplace %}</strong
+      >
+      to remove the check from the box.
+      <img
+        src="/assets/images/help/repository/actions-marketplace-unpublish.png"
+        alt="Publish this action button"
+      />
+      5. Click <strong>Update release</strong> at the bottom of the page.
+      <img
+        src="/assets/images/help/repository/actions-marketplace-update-release.png"
+        alt="Update release button"
+      />
+    </p>
+  </body>
+</html>

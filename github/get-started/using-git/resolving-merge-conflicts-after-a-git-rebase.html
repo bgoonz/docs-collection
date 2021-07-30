@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Resolving merge conflicts after a Git rebase</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Resolving merge conflicts after a Git rebase</h1>
+</header>
+<p>After you reorder and manipulate commits using <code>git rebase</code>, should a merge conflict occur, Git will tell you so with the following message printed to the terminal:</p>
+<pre class="shell"><code>error: could not apply fa39187... something to add to patch A
+
+When you have resolved this problem, run &quot;git rebase --continue&quot;.
+If you prefer to skip this patch, run &quot;git rebase --skip&quot; instead.
+To check out the original branch and stop rebasing, run &quot;git rebase --abort&quot;.
+Could not apply fa39187f3c3dfd2ab5faa38ac01cf3de7ce2e841... Change fake file</code></pre>
+<p>Here, Git is telling you which commit is causing the conflict (<code>fa39187</code>). You’re given three choices:</p>
+<ul>
+<li>You can run <code>git rebase --abort</code> to completely undo the rebase. Git will return you to your branch’s state as it was before <code>git rebase</code> was called.</li>
+<li>You can run <code>git rebase --skip</code> to completely skip the commit. That means that none of the changes introduced by the problematic commit will be included. It is very rare that you would choose this option.</li>
+<li>You can fix the conflict.</li>
+</ul>
+<p>To fix the conflict, you can follow <a href="/articles/resolving-a-merge-conflict-using-the-command-line">the standard procedures for resolving merge conflicts from the command line</a>. When you’re finished, you’ll need to call <code>git rebase --continue</code> in order for Git to continue processing the rest of the rebase.</p>
+</body>
+</html>

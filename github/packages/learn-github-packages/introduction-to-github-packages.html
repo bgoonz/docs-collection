@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Introduction to GitHub Packages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction to GitHub Packages</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}</p>
+<h2 id="about-data-variables.product.prodname_registry">About {% data variables.product.prodname_registry %}</h2>
+<p>{% data variables.product.prodname_registry %} is a platform for hosting and managing packages, including containers and other dependencies. {% data variables.product.prodname_registry %} combines your source code and packages in one place to provide integrated permissions management{% ifversion not ghae %} and billing{% endif %}, so you can centralize your software development on {% data variables.product.product_name %}.</p>
+<p>You can integrate {% data variables.product.prodname_registry %} with {% data variables.product.product_name %} APIs, {% data variables.product.prodname_actions %}, and webhooks to create an end-to-end DevOps workflow that includes your code, CI, and deployment solutions.</p>
+<p>{% data variables.product.prodname_registry %} offers different package registries for commonly used package managers, such as npm, RubyGems, Apache Maven, Gradle, Docker, and NuGet. {% ifversion fpt %}{% data variables.product.prodname_dotcom %}’s {% data variables.product.prodname_container_registry %} is optimized for containers and supports Docker and OCI images.{% endif %} For more information on the different package registries that {% data variables.product.prodname_registry %} supports, see “<a href="/packages/working-with-a-github-packages-registry">Working with a {% data variables.product.prodname_registry %} registry</a>.”</p>
+<p>{% ifversion fpt %}</p>
+<figure>
+<img src="/assets/images/help/package-registry/packages-diagram-with-container-registry.png" alt="Diagram showing packages support for the Container registry, RubyGems, npm, Apache Maven, NuGet, and Gradle" /><figcaption>Diagram showing packages support for the Container registry, RubyGems, npm, Apache Maven, NuGet, and Gradle</figcaption>
+</figure>
+<p>{% else %}</p>
+<figure>
+<img src="/assets/images/help/package-registry/packages-diagram-without-container-registry.png" alt="Diagram showing packages support for the Docker registry, RubyGems, npm, Apache Maven, Gradle, NuGet, and Docker" /><figcaption>Diagram showing packages support for the Docker registry, RubyGems, npm, Apache Maven, Gradle, NuGet, and Docker</figcaption>
+</figure>
+<p>{% endif %}</p>
+<p>You can view a package’s README, as well as metadata such as licensing, download statistics, version history, and more on {% data variables.product.product_name %}. For more information, see “<a href="/packages/manage-packages/viewing-packages">Viewing packages</a>.”</p>
+<h3 id="overview-of-package-permissions-and-visibility">Overview of package permissions and visibility</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Permissions</td>
+<td>{% ifversion fpt %}The permissions for a package are either inherited from the repository where the package is hosted or, for packages in the {% data variables.product.prodname_container_registry %}, they can be defined for specific user or organization accounts. For more information, see “<a href="/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility">Configuring a package’s access control and visibility</a>.” {% else %}Each package inherits the permissions of the repository where the package is hosted. <br> <br> For example, anyone with read permissions for a repository can install a package as a dependency in a project, and anyone with write permissions can publish a new package version.{% endif %}</td>
+</tr>
+<tr class="even">
+<td>Visibility</td>
+<td>{% data reusables.package_registry.public-or-private-packages %}</td>
+</tr>
+</tbody>
+</table>
+<p>For more information, see “<a href="/packages/learn-github-packages/about-permissions-for-github-packages">About permissions for {% data variables.product.prodname_registry %}</a>.”</p>
+<p>{% ifversion fpt %} ## About billing for {% data variables.product.prodname_registry %}</p>
+<p>{% data reusables.package_registry.packages-billing %} {% data reusables.package_registry.packages-spending-limit-brief %} For more information, see “<a href="/billing/managing-billing-for-github-packages/about-billing-for-github-packages">About billing for {% data variables.product.prodname_registry %}</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="supported-clients-and-formats">Supported clients and formats</h2>
+<!-- If you make changes to this feature, update /getting-started-with-github/github-language-support to reflect any changes to supported clients or formats. -->
+<p>{% data variables.product.prodname_registry %} uses the native package tooling commands you’re already familiar with to publish and install package versions. ### Support for package registries</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Description</th>
+<th>Package format</th>
+<th>Package client</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JavaScript</td>
+<td>Node package manager</td>
+<td><code>package.json</code></td>
+<td><code>npm</code></td>
+</tr>
+<tr class="even">
+<td>Ruby</td>
+<td>RubyGems package manager</td>
+<td><code>Gemfile</code></td>
+<td><code>gem</code></td>
+</tr>
+<tr class="odd">
+<td>Java</td>
+<td>Apache Maven project management and comprehension tool</td>
+<td><code>pom.xml</code></td>
+<td><code>mvn</code></td>
+</tr>
+<tr class="even">
+<td>Java</td>
+<td>Gradle build automation tool for Java</td>
+<td><code>build.gradle</code> or <code>build.gradle.kts</code></td>
+<td><code>gradle</code></td>
+</tr>
+<tr class="odd">
+<td>.NET</td>
+<td>NuGet package management for .NET</td>
+<td><code>nupkg</code></td>
+<td><code>dotnet</code> CLI</td>
+</tr>
+<tr class="even">
+<td>N/A</td>
+<td>Docker container management</td>
+<td><code>Dockerfile</code></td>
+<td><code>Docker</code></td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion ghes &gt; 2.22 %} {% note %}</p>
+<p><strong>Note:</strong> Docker is not supported when subdomain isolation is disabled.</p>
+<p>{% endnote %}</p>
+<p>For more information about subdomain isolation, see “<a href="/enterprise/admin/configuration/enabling-subdomain-isolation">Enabling subdomain isolation</a>.”</p>
+<p>{% endif %}</p>
+<p>For more information about configuring your package client for use with {% data variables.product.prodname_registry %}, see “<a href="/packages/working-with-a-github-packages-registry">Working with a {% data variables.product.prodname_registry %} registry</a>.”</p>
+<p>{% ifversion fpt %} For more information about Docker and the {% data variables.product.prodname_container_registry %}, see “<a href="/packages/working-with-a-github-packages-registry/working-with-the-container-registry">Working with the Container registry</a>.” {% endif %} ## Authenticating to {% data variables.product.prodname_registry %}</p>
+<p>{% data reusables.package_registry.authenticate-packages %}</p>
+<p>{% data reusables.package_registry.authenticate-packages-github-token %}</p>
+<h2 id="managing-packages">Managing packages</h2>
+<p>{% ifversion fpt %} You can delete a package in the {% data variables.product.product_name %} user interface or using the REST API. For more information, see the “<a href="/rest/reference/packages">{% data variables.product.prodname_registry %} API</a>.” {% endif %}</p>
+<p>{% ifversion ghes &gt; 3.0 %} You can delete a private or public package in the {% data variables.product.product_name %} user interface. Or for repo-scoped packages, you can delete a version of a private package using GraphQL. {% endif %}</p>
+<p>{% ifversion ghes &lt; 3.1 %} You can delete a version of a private package in the {% data variables.product.product_name %} user interface or using the GraphQL API. {% endif %}</p>
+<p>{% ifversion ghae %} You can delete a version of a package in the {% data variables.product.product_name %} user interface or using the GraphQL API. {% endif %}</p>
+<p>When you use the GraphQL API to query and delete private packages, you must use the same token you use to authenticate to {% data variables.product.prodname_registry %}. For more information, see “{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Deleting a package</a>{% endif %}” and “<a href="/graphql/guides/forming-calls-with-graphql">Forming calls with GraphQL</a>.”</p>
+<p>You can configure webhooks to subscribe to package-related events, such as when a package is published or updated. For more information, see the “<a href="/webhooks/event-payloads/#package"><code>package</code> webhook event</a>.”</p>
+<h2 id="contacting-support">Contacting support</h2>
+<p>{% ifversion fpt %} If you have feedback or feature requests for {% data variables.product.prodname_registry %}, use the <a href="https://support.github.com/contact/feedback?contact%5Bcategory%5D=github-packages">feedback form for {% data variables.product.prodname_registry %}</a>.</p>
+<p>Contact {% data variables.contact.github_support %} about {% data variables.product.prodname_registry %} using <a href="https://support.github.com/contact?form%5Bsubject%5D=Re:%20GitHub%20Packages">our contact form</a> if:</p>
+<ul>
+<li>You experience anything that contradicts the documentation</li>
+<li>You encounter vague or unclear errors</li>
+<li>Your published package contains sensitive data, such as GDPR violations, API Keys, or personally identifying information</li>
+</ul>
+<p>{% else %} If you need support for {% data variables.product.prodname_registry %}, please contact your site administrators.</p>
+<p>{% endif %}</p>
+</body>
+</html>

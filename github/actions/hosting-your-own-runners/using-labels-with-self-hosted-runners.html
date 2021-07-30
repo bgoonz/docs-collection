@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using labels with self-hosted runners</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using labels with self-hosted runners</h1>
+    </header>
+    <p>
+      {% data reusables.actions.ae-self-hosted-runners-notice %} {% data
+      reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      For information on how to use labels to route jobs to specific types of
+      self-hosted runners, see “<a
+        href="/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow"
+        >Using self-hosted runners in a workflow</a
+      >.”
+    </p>
+    <p>
+      {% data
+      reusables.github-actions.self-hosted-runner-management-permissions-required
+      %}
+    </p>
+    <h2 id="creating-a-custom-label">Creating a custom label</h2>
+    <p>
+      {% data
+      reusables.github-actions.self-hosted-runner-navigate-to-repo-org-enterprise
+      %} {% data reusables.github-actions.self-hosted-runner-list %} {% data
+      reusables.github-actions.self-hosted-runner-list-group %} {% data
+      reusables.github-actions.self-hosted-runner-labels-view-assigned-labels %}
+      1. In the “Filter labels” field, type the name of your new label, and
+      click <strong>Create new label</strong>.
+      <img
+        src="/assets/images/help/settings/actions-add-runner-label.png"
+        alt="Add runner label"
+      />
+    </p>
+    <p>
+      The custom label is created and assigned to the self-hosted runner. Custom
+      labels can be removed from self-hosted runners, but they currently can’t
+      be manually deleted. {% data
+      reusables.github-actions.actions-unused-labels %}
+    </p>
+    <h2 id="assigning-a-label-to-a-self-hosted-runner">
+      Assigning a label to a self-hosted runner
+    </h2>
+    <p>
+      {% data
+      reusables.github-actions.self-hosted-runner-navigate-to-repo-org-enterprise
+      %} {% data reusables.github-actions.self-hosted-runner-list %} {% data
+      reusables.github-actions.self-hosted-runner-list-group %} {% data
+      reusables.github-actions.self-hosted-runner-labels-view-assigned-labels %}
+      1. Click on a label to assign it to your self-hosted runner.
+    </p>
+    <h2 id="removing-a-custom-label-from-a-self-hosted-runner">
+      Removing a custom label from a self-hosted runner
+    </h2>
+    <p>
+      {% data
+      reusables.github-actions.self-hosted-runner-navigate-to-repo-org-enterprise
+      %} {% data reusables.github-actions.self-hosted-runner-list %} {% data
+      reusables.github-actions.self-hosted-runner-list-group %} {% data
+      reusables.github-actions.self-hosted-runner-labels-view-assigned-labels %}
+      1. Click on the assigned label to remove it from your self-hosted runner.
+      {% data reusables.github-actions.actions-unused-labels %}
+    </p>
+    <h2 id="using-the-configuration-script-to-create-and-assign-labels">
+      Using the configuration script to create and assign labels
+    </h2>
+    <p>
+      You can use the configuration script on the self-hosted runner to create
+      and assign custom labels. For example, this command assigns a label named
+      <code>gpu</code> to the self-hosted runner.
+    </p>
+    <pre class="shell"><code>./config.sh --labels gpu</code></pre>
+    <p>
+      The label is created if it does not already exist. You can also use this
+      approach to assign the default labels to runners, such as
+      <code>x64</code> or <code>linux</code>. When default labels are assigned
+      using the configuration script, {% data variables.product.prodname_actions
+      %} accepts them as given and does not validate that the runner is actually
+      using that operating system or architecture.
+    </p>
+    <p>You can use comma separation to assign multiple labels. For example:</p>
+    <pre class="shell"><code>./config.sh --labels gpu,x64,linux</code></pre>
+    <p>{% note %}</p>
+    <p>
+      ** Note:** If you replace an existing runner, then you must reassign any
+      custom labels.
+    </p>
+    <p>{% endnote %}</p>
+  </body>
+</html>

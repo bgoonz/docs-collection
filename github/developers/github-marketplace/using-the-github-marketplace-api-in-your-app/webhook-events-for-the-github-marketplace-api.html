@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Webhook events for the GitHub Marketplace API</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Webhook events for the GitHub Marketplace API</h1>
+</header>
+<h2 id="data-variables.product.prodname_marketplace-purchase-webhook-payload">{% data variables.product.prodname_marketplace %} purchase webhook payload</h2>
+<p>Webhooks <code>POST</code> requests have special headers. See “<a href="/webhooks/event-payloads/#delivery-headers">Webhook delivery headers</a>” for more details. GitHub doesn’t resend failed delivery attempts. Ensure your app can receive all webhook payloads sent by GitHub.</p>
+<p>Cancellations and downgrades take effect on the first day of the next billing cycle. Events for downgrades and cancellations are sent when the new plan takes effect at the beginning of the next billing cycle. Events for new purchases and upgrades begin immediately. Use the <code>effective_date</code> in the webhook payload to determine when a change will begin.</p>
+<p>{% data reusables.marketplace.marketplace-malicious-behavior %}</p>
+<p>Each <code>marketplace_purchase</code> webhook payload will have the following information:</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>action</code></td>
+<td><code>string</code></td>
+<td>The action performed to generate the webhook. Can be <code>purchased</code>, <code>cancelled</code>, <code>pending_change</code>, <code>pending_change_cancelled</code>, or <code>changed</code>. For more information, see the example webhook payloads below. <strong>Note:</strong> The <code>pending_change</code> and <code>pending_change_cancelled</code> payloads contain the same keys as shown in the <a href="#example-webhook-payload-for-a-changed-event"><code>changed</code> payload example</a>.</td>
+</tr>
+<tr class="even">
+<td><code>effective_date</code></td>
+<td><code>string</code></td>
+<td>The date the <code>action</code> becomes effective.</td>
+</tr>
+<tr class="odd">
+<td><code>sender</code></td>
+<td><code>object</code></td>
+<td>The person who took the <code>action</code> that triggered the webhook.</td>
+</tr>
+<tr class="even">
+<td><code>marketplace_purchase</code></td>
+<td><code>object</code></td>
+<td>The {% data variables.product.prodname_marketplace %} purchase information.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>marketplace_purchase</code> object has the following keys:</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>account</code></td>
+<td><code>object</code></td>
+<td>The <code>organization</code> or <code>user</code> account associated with the subscription. Organization accounts will include <code>organization_billing_email</code>, which is the organization’s administrative email address. To find email addresses for personal accounts, you can use the <a href="/rest/reference/users#get-the-authenticated-user">Get the authenticated user</a> endpoint.</td>
+</tr>
+<tr class="even">
+<td><code>billing_cycle</code></td>
+<td><code>string</code></td>
+<td>Can be <code>yearly</code> or <code>monthly</code>. When the <code>account</code> owner has a free GitHub plan and has purchased a free {% data variables.product.prodname_marketplace %} plan, <code>billing_cycle</code> will be <code>nil</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>unit_count</code></td>
+<td><code>integer</code></td>
+<td>Number of units purchased.</td>
+</tr>
+<tr class="even">
+<td><code>on_free_trial</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> when the <code>account</code> is on a free trial.</td>
+</tr>
+<tr class="odd">
+<td><code>free_trial_ends_on</code></td>
+<td><code>string</code></td>
+<td>The date the free trial will expire.</td>
+</tr>
+<tr class="even">
+<td><code>next_billing_date</code></td>
+<td><code>string</code></td>
+<td>The date that the next billing cycle will start. When the <code>account</code> owner has a free GitHub.com plan and has purchased a free {% data variables.product.prodname_marketplace %} plan, <code>next_billing_date</code> will be <code>nil</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>plan</code></td>
+<td><code>object</code></td>
+<td>The plan purchased by the <code>user</code> or <code>organization</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>plan</code> object has the following keys:</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>The unique identifier for this plan.</td>
+</tr>
+<tr class="even">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The plan’s name.</td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>This plan’s description.</td>
+</tr>
+<tr class="even">
+<td><code>monthly_price_in_cents</code></td>
+<td><code>integer</code></td>
+<td>The monthly price of this plan in cents (US currency). For example, a listing that costs 10 US dollars per month will be 1000 cents.</td>
+</tr>
+<tr class="odd">
+<td><code>yearly_price_in_cents</code></td>
+<td><code>integer</code></td>
+<td>The yearly price of this plan in cents (US currency). For example, a listing that costs 100 US dollars per month will be 10000 cents.</td>
+</tr>
+<tr class="even">
+<td><code>price_model</code></td>
+<td><code>string</code></td>
+<td>The pricing model for this listing. Can be one of <code>flat-rate</code>, <code>per-unit</code>, or <code>free</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>has_free_trial</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> when this listing offers a free trial.</td>
+</tr>
+<tr class="even">
+<td><code>unit_name</code></td>
+<td><code>string</code></td>
+<td>The name of the unit. If the pricing model is not <code>per-unit</code> this will be <code>nil</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>bullet</code></td>
+<td><code>array of strings</code></td>
+<td>The names of the bullets set in the pricing plan.</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<h3 id="example-webhook-payload-for-a-purchased-event">Example webhook payload for a <code>purchased</code> event</h3>
+<p>This example provides the <code>purchased</code> event payload.</p>
+<p>{{ webhookPayloadsForCurrentVersion.marketplace_purchase.purchased }}</p>
+<h3 id="example-webhook-payload-for-a-changed-event">Example webhook payload for a <code>changed</code> event</h3>
+<p>Changes in a plan include upgrades and downgrades. This example represents the <code>changed</code>,<code>pending_change</code>, and <code>pending_change_cancelled</code> event payloads. The action identifies which of these three events has occurred.</p>
+<p>{{ webhookPayloadsForCurrentVersion.marketplace_purchase.changed }}</p>
+<h3 id="example-webhook-payload-for-a-cancelled-event">Example webhook payload for a <code>cancelled</code> event</h3>
+<p>{{ webhookPayloadsForCurrentVersion.marketplace_purchase.cancelled }}</p>
+</body>
+</html>

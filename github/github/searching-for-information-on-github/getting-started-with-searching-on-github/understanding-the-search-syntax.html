@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Understanding the search syntax</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Understanding the search syntax</h1>
+</header>
+<h2 id="query-for-values-greater-or-less-than-another-value">Query for values greater or less than another value</h2>
+<p>You can use <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, and <code>&lt;=</code> to search for values that are greater than, greater than or equal to, less than, and less than or equal to another value.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&gt;<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+stars%3A%3E1000&amp;type=Repositories">cats stars:&gt;1000</a></strong> matches repositories with the word “cats” that have more than 1000 stars.</td>
+</tr>
+<tr class="even">
+<td><code>&gt;=<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+topics%3A%3E%3D5&amp;type=Repositories">cats topics:&gt;=5</a></strong> matches repositories with the word “cats” that have 5 or more topics.</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+size%3A%3C10000&amp;type=Code">cats size:&lt;10000</a></strong> matches code with the word “cats” in files that are smaller than 10 KB.</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+stars%3A%3C%3D50&amp;type=Repositories">cats stars:&lt;=50</a></strong> matches repositories with the word “cats” that have 50 or fewer stars.</td>
+</tr>
+</tbody>
+</table>
+<p>You can also use <a href="#query-for-values-between-a-range">range queries</a> to search for values that are greater than or equal to, or less than or equal to, another value.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code><em>n</em>..*</code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+stars%3A10..*&amp;type=Repositories">cats stars:10..*</a></strong> is equivalent to <code>stars:&gt;=10</code> and matches repositories with the word “cats” that have 10 or more stars.</td>
+</tr>
+<tr class="even">
+<td><code>*..<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+stars%3A%22*..10%22&amp;type=Repositories">cats stars:*..10</a></strong> is equivalent to <code>stars:&lt;=10</code> and matches repositories with the word “cats” that have 10 or fewer stars.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="query-for-values-between-a-range">Query for values between a range</h2>
+<p>You can use the range syntax <code><em>n</em>..<em>n</em></code> to search for values within a range, where the first number <em>n</em> is the lowest value and the second is the highest value.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code><em>n</em>..<em>n</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+stars%3A10..50&amp;type=Repositories">cats stars:10..50</a></strong> matches repositories with the word “cats” that have between 10 and 50 stars.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="query-for-dates">Query for dates</h2>
+<p>You can search for dates that are earlier or later than another date, or that fall within a range of dates, by using <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, and <a href="#query-for-values-between-a-range">range queries</a>. {% data reusables.time_date.date_format %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&gt;<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A%3E2016-04-29&amp;type=Issues">cats created:&gt;2016-04-29</a></strong> matches issues with the word “cats” that were created after April 29, 2016.</td>
+</tr>
+<tr class="even">
+<td><code>&gt;=<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A%3E%3D2017-04-01&amp;type=Issues">cats created:&gt;=2017-04-01</a></strong> matches issues with the word “cats” that were created on or after April 1, 2017.</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?q=cats+pushed%3A%3C2012-07-05&amp;type=Code&amp;utf8=%E2%9C%93">cats pushed:&lt;2012-07-05</a></strong> matches code with the word “cats” in repositories that were pushed to before July 5, 2012.</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A%3C%3D2012-07-04&amp;type=Issues">cats created:&lt;=2012-07-04</a></strong> matches issues with the word “cats” that were created on or before July 4, 2012.</td>
+</tr>
+<tr class="odd">
+<td><code><em>YYYY</em>-<em>MM</em>-<em>DD</em>..<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+pushed%3A2016-04-30..2016-07-04&amp;type=Repositories">cats pushed:2016-04-30..2016-07-04</a></strong> matches repositories with the word “cats” that were pushed to between the end of April and July of 2016.</td>
+</tr>
+<tr class="even">
+<td><code><em>YYYY</em>-<em>MM</em>-<em>DD</em>..*</code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A2012-04-30..*&amp;type=Issues">cats created:2012-04-30..*</a></strong> matches issues created after April 30th, 2012 containing the word “cats.”</td>
+</tr>
+<tr class="odd">
+<td><code>*..<em>YYYY</em>-<em>MM</em>-<em>DD</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A*..2012-07-04&amp;type=Issues">cats created:*..2012-07-04</a></strong> matches issues created before July 4th, 2012 containing the word “cats.”</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.time_date.time_format %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code><em>YYYY</em>-<em>MM</em>-<em>DD</em>T<em>HH</em>:<em>MM</em>:<em>SS</em>+<em>00</em>:<em>00</em></code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A2017-01-01T01%3A00%3A00%2B07%3A00..2017-03-01T15%3A30%3A15%2B07%3A00&amp;type=Issues">cats created:2017-01-01T01:00:00+07:00..2017-03-01T15:30:15+07:00</a></strong> matches issues created between January 1, 2017 at 1 a.m. with a UTC offset of <code>07:00</code> and March 1, 2017 at 3 p.m. with a UTC offset of <code>07:00</code>.</td>
+</tr>
+<tr class="even">
+<td><code><em>YYYY</em>-<em>MM</em>-<em>DD</em>T<em>HH</em>:<em>MM</em>:<em>SS</em>Z</code></td>
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=cats+created%3A2016-03-21T14%3A11%3A00Z..2016-04-07T20%3A45%3A00Z&amp;type=Issues">cats created:2016-03-21T14:11:00Z..2016-04-07T20:45:00Z</a></strong> matches issues created between March 21, 2016 at 2:11pm and April 7, 2106 at 8:45pm.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exclude-certain-results">Exclude certain results</h2>
+<p>You can exclude results containing a certain word, using the <code>NOT</code> syntax. The <code>NOT</code> operator can only be used for string keywords. It does not work for numerals or dates.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>NOT</code></td>
+<td><strong><a href="https://github.com/search?q=hello+NOT+world&amp;type=Repositories">hello NOT world</a></strong> matches repositories that have the word “hello” but not the word “world.”</td>
+</tr>
+</tbody>
+</table>
+<p>Another way you can narrow down search results is to exclude certain subsets. You can prefix any search qualifier with a <code>-</code> to exclude all results that are matched by that qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-<em>QUALIFIER</em></code></td>
+<td><strong><a href="https://github.com/search?q=cats+stars%3A%3E10+-language%3Ajavascript&amp;type=Repositories">cats stars:&gt;10 -language:javascript</a></strong> matches repositories with the word “cats” that have more than 10 stars but are not written in JavaScript.</td>
+</tr>
+<tr class="even">
+<td><strong><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=mentions%3Adefunkt+-org%3Agithub&amp;type=Issues">mentions:defunkt -org:github</a></strong> matches issues mentioning <span class="citation" data-cites="defunkt">@defunkt</span> that are not in repositories in the GitHub organization</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="use-quotation-marks-for-queries-with-whitespace">Use quotation marks for queries with whitespace</h2>
+<p>If your search query contains whitespace, you will need to surround it with quotation marks. For example:</p>
+<ul>
+<li><a href="https://github.com/search?utf8=✓&amp;q=cats+NOT+%22hello+world%22&amp;type=Repositories">cats NOT “hello world”</a> matches repositories with the word “cats” but not the words “hello world.”</li>
+<li><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=build+label%3A%22bug+fix%22&amp;type=Issues">build label:“bug fix”</a> matches issues with the word “build” that have the label “bug fix.”</li>
+</ul>
+<p>Some non-alphanumeric symbols, such as spaces, are dropped from code search queries within quotation marks, so results can be unexpected.</p>
+<p>{% ifversion fpt or ghes or ghae %} ## Queries with usernames</p>
+<p>If your search query contains a qualifier that requires a username, such as <code>user</code>, <code>actor</code>, or <code>assignee</code>, you can use any {% data variables.product.product_name %} username, to specify a specific person, or <code>@me</code>, to specify the current user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>QUALIFIER:USERNAME</code></td>
+<td><a href="https://github.com/search?q=author%3Anat&amp;type=Commits"><code>author:nat</code></a> matches commits authored by <span class="citation" data-cites="nat">@nat</span></td>
+</tr>
+<tr class="even">
+<td><code>QUALIFIER:@me</code></td>
+<td><a href="https://github.com/search?q=is%3Aissue+assignee%3A%40me&amp;type=Issues"><code>is:issue assignee:@me</code></a> matches issues assigned to the person viewing the results</td>
+</tr>
+</tbody>
+</table>
+<p>You can only use <code>@me</code> with a qualifier and not as search term, such as <code>@me main.workflow</code>. {% endif %}</p>
+</body>
+</html>

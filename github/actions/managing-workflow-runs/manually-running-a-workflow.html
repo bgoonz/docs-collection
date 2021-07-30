@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Manually running a workflow</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Manually running a workflow</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="configuring-a-workflow-to-run-manually">
+      Configuring a workflow to run manually
+    </h2>
+    <p>
+      To run a workflow manually, the workflow must be configured to run on the
+      <code>workflow_dispatch</code> event. To trigger the
+      <code>workflow_dispatch</code> event, your workflow must be in the default
+      branch. For more information about configuring the
+      <code>workflow_dispatch</code> event, see “<a
+        href="/actions/reference/events-that-trigger-workflows#workflow_dispatch"
+        >Events that trigger workflows</a
+      >”.
+    </p>
+    <p>{% data reusables.repositories.permissions-statement-write %}</p>
+    <h3 id="running-a-workflow">Running a workflow</h3>
+    <p>{% include tool-switcher %}</p>
+    <p>{% webui %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} 1. In the left sidebar, click the
+      workflow you want to run.
+      <img
+        src="/assets/images/actions-select-workflow.png"
+        alt="actions select workflow"
+      />
+      1. Above the list of workflow runs, select <strong>Run workflow</strong>.
+      <img
+        src="/assets/images/actions-workflow-dispatch.png"
+        alt="actions workflow dispatch"
+      />
+      1. Use the <strong>Branch</strong> dropdown to select the workflow’s
+      branch, and type the input parameters. Click
+      <strong>Run workflow</strong>.
+      <img
+        src="/assets/images/actions-manually-run-workflow.png"
+        alt="actions manually run workflow"
+      />
+    </p>
+    <p>{% endwebui %}</p>
+    <p>{% cli %}</p>
+    <p>{% data reusables.cli.download-cli %}</p>
+    <p>{% data reusables.actions.actions-cli %}</p>
+    <p>
+      To run a workflow, use the <code>workflow run</code> subcommand. Replace
+      the <code>workflow</code> parameter with either the name, ID, or file name
+      of the workflow you want to run. For example, <code>"Link Checker"</code>,
+      <code>1234567</code>, or <code>"link-check-test.yml"</code>. If you don’t
+      specify a workflow, {% data variables.product.prodname_cli %} returns an
+      interactive menu for you to choose a workflow.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh workflow run &lt;em&gt;workflow&lt;/em&gt;</code></pre>
+    <p>
+      If your workflow accepts inputs, {% data variables.product.prodname_cli %}
+      will prompt you to enter them. Alternatively, you can use
+      <code>-f</code> or <code>-F</code> to add an input in
+      <code>key=value</code> format. Use <code>-F</code> to read from a file.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh workflow run greet.yml -f name=mona -f greeting=hello -F data=@myfile.txt</code></pre>
+    <p>You can also pass inputs as JSON by using standard input.</p>
+    <pre
+      class="shell"
+    ><code>echo &#39;{&quot;name&quot;:&quot;mona&quot;, &quot;greeting&quot;:&quot;hello&quot;}&#39; | gh workflow run greet.yml --json</code></pre>
+    <p>
+      To run a workflow on a branch other than the repository’s default branch,
+      use the <code>--ref</code> flag.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh workflow run &lt;em&gt;workflow&lt;/em&gt; --ref &lt;em&gt;branch-name&lt;/em&gt;</code></pre>
+    <p>
+      To view the progress of the workflow run, use the
+      <code>run watch</code> subcommand and select the run from the interactive
+      list.
+    </p>
+    <pre class="shell"><code>gh run watch</code></pre>
+    <p>{% endcli %}</p>
+    <h3 id="running-a-workflow-using-the-rest-api">
+      Running a workflow using the REST API
+    </h3>
+    <p>
+      When using the REST API, you configure the <code>inputs</code> and
+      <code>ref</code> as request body parameters. If the inputs are omitted,
+      the default values defined in the workflow file are used.
+    </p>
+    <p>
+      For more information about using the REST API, see the “<a
+        href="/rest/reference/actions/#create-a-workflow-dispatch-event"
+        >Create a workflow dispatch event</a
+      >.”
+    </p>
+  </body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Environment variables</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Environment variables</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="about-environment-variables">About environment variables</h2>
+    <p>
+      {% data variables.product.prodname_dotcom %} sets default environment
+      variables that are available to every step in a workflow run. Environment
+      variables are case-sensitive. Commands run in actions or steps can create,
+      read, and modify environment variables.
+    </p>
+    <p>
+      To set custom environment variables, you need to specify the variables in
+      the workflow file. You can define environment variables for a step, job,
+      or entire workflow using the
+      <a
+        href="/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsenv"
+        ><code>jobs.&lt;job_id&gt;.steps[*].env</code></a
+      >,
+      <a
+        href="/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idenv"
+        ><code>jobs.&lt;job_id&gt;.env</code></a
+      >, and
+      <a
+        href="/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#env"
+        ><code>env</code></a
+      >
+      keywords. For more information, see “<a
+        href="/articles/workflow-syntax-for-github-actions/#jobsjob_idstepsenv"
+        >Workflow syntax for {% data variables.product.prodname_dotcom %}</a
+      >.”
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">weekday_job:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="fu">DAY_OF_WEEK:</span><span class="at"> Mon</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> </span><span class="st">&quot;Hello world when it&#39;s Monday&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">        <span class="fu">if:</span><span class="at"> ${{ env.DAY_OF_WEEK == &#39;Mon&#39; }}</span></a>
+<a class="sourceLine" id="cb1-9" title="9">        <span class="fu">run:</span><span class="at"> echo &quot;Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!&quot;</span></a>
+<a class="sourceLine" id="cb1-10" title="10">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">          <span class="fu">FIRST_NAME:</span><span class="at"> Mona</span></a>
+<a class="sourceLine" id="cb1-12" title="12">          <span class="fu">middle_name:</span><span class="at"> The</span></a>
+<a class="sourceLine" id="cb1-13" title="13">          <span class="fu">Last_Name:</span><span class="at"> Octocat</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      To use the value of an environment variable in a workflow file, you should
+      use the
+      <a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions#env-context"
+        ><code>env</code> context</a
+      >. If you want to use the value of an environment variable inside a
+      runner, you can use the runner operating system’s normal method for
+      reading environment variables.
+    </p>
+    <p>
+      If you use the workflow file’s <code>run</code> key to read environment
+      variables from within the runner operating system (as shown in the example
+      above), the variable is substituted in the runner operating system after
+      the job is sent to the runner. For other parts of a workflow file, you
+      must use the <code>env</code> context to read environment variables; this
+      is because workflow keys (such as <code>if</code>) require the variable to
+      be substituted during workflow processing before it is sent to the runner.
+    </p>
+    <p>
+      You can also use the {% ifversion fpt or ghes &gt; 2.22 or ghae %}<code
+        >GITHUB_ENV</code
+      >
+      environment file{% else %} <code>set-env</code> workflow command{% endif
+      %} to set an environment variable that the following steps in a job can
+      use. The {% ifversion fpt or ghes &gt; 2.22 or ghae %}environment file{%
+      else %} <code>set-env</code> command{% endif %} can be used directly by an
+      action or as a shell command in a workflow file using the
+      <code>run</code> keyword. For more information, see “<a
+        href="/actions/reference/workflow-commands-for-github-actions/#setting-an-environment-variable"
+        >Workflow commands for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="default-environment-variables">Default environment variables</h2>
+    <p>
+      We strongly recommend that actions use environment variables to access the
+      filesystem rather than using hardcoded file paths. {% data
+      variables.product.prodname_dotcom %} sets environment variables for
+      actions to use in all runner environments.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 63%" />
+        <col style="width: 36%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Environment variable</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>CI</code></td>
+          <td>Always set to <code>true</code>.</td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_WORKFLOW</code></td>
+          <td>The name of the workflow.</td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_RUN_ID</code></td>
+          <td>{% data reusables.github-actions.run_id_description %}</td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_RUN_NUMBER</code></td>
+          <td>{% data reusables.github-actions.run_number_description %}</td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_JOB</code></td>
+          <td>
+            The
+            <a
+              href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_id"
+              >job_id</a
+            >
+            of the current job.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_ACTION</code></td>
+          <td>The unique identifier (<code>id</code>) of the action.</td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_ACTION_PATH</code></td>
+          <td>
+            The path where your action is located. You can use this path to
+            access files located in the same repository as your action. This
+            variable is only supported in composite run steps actions.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_ACTIONS</code></td>
+          <td>
+            Always set to <code>true</code> when {% data
+            variables.product.prodname_actions %} is running the workflow. You
+            can use this variable to differentiate when tests are being run
+            locally or by {% data variables.product.prodname_actions %}.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_ACTOR</code></td>
+          <td>
+            The name of the person or app that initiated the workflow. For
+            example, <code>octocat</code>.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_REPOSITORY</code></td>
+          <td>
+            The owner and repository name. For example,
+            <code>octocat/Hello-World</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_EVENT_NAME</code></td>
+          <td>The name of the webhook event that triggered the workflow.</td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_EVENT_PATH</code></td>
+          <td>
+            The path of the file with the complete webhook event payload. For
+            example, <code>/github/workflow/event.json</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_WORKSPACE</code></td>
+          <td>
+            The {% data variables.product.prodname_dotcom %} workspace directory
+            path, initially empty. For example,
+            <code>/home/runner/work/my-repo-name/my-repo-name</code>. The
+            <a href="https://github.com/actions/checkout">actions/checkout</a>
+            action will check out files, by default a copy of your repository,
+            within this directory.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_SHA</code></td>
+          <td>
+            The commit SHA that triggered the workflow. For example,
+            <code>ffac537e6cbbf934b08745a378932722df287a53</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_REF</code></td>
+          <td>
+            The branch or tag ref that triggered the workflow. For example,
+            <code>refs/heads/feature-branch-1</code>. If neither a branch or tag
+            is available for the event type, the variable will not exist.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_HEAD_REF</code></td>
+          <td>
+            Only set for pull request events. The name of the head branch.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_BASE_REF</code></td>
+          <td>
+            Only set for pull request events. The name of the base branch.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_SERVER_URL</code></td>
+          <td>
+            Returns the URL of the {% data variables.product.product_name %}
+            server. For example:
+            <code>https://{% data variables.product.product_url %}</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>GITHUB_API_URL</code></td>
+          <td>
+            Returns the API URL. For example:
+            <code>{% data variables.product.api_url_code %}</code>.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>GITHUB_GRAPHQL_URL</code></td>
+          <td>
+            Returns the GraphQL API URL. For example:
+            <code>{% data variables.product.graphql_url_code %}</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>RUNNER_OS</code></td>
+          <td>{% data reusables.actions.runner-os-description %}</td>
+        </tr>
+        <tr class="even">
+          <td><code>RUNNER_TEMP</code></td>
+          <td>
+            {% data reusables.actions.runner-temp-directory-description %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>{% ifversion not ghae %}</td>
+          <td><code>RUNNER_TOOL_CACHE</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Note:</strong> If you need to use a workflow run’s URL from within
+      a job, you can combine these environment variables:
+      <code
+        >$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID</code
+      >
+    </p>
+    <p>{% endtip %}</p>
+    <h3 id="determining-when-to-use-default-environment-variables-or-contexts">
+      Determining when to use default environment variables or contexts
+    </h3>
+    <p>
+      {% data reusables.github-actions.using-context-or-environment-variables %}
+    </p>
+    <h2 id="naming-conventions-for-environment-variables">
+      Naming conventions for environment variables
+    </h2>
+    <p>
+      When you set a custom environment variable, you cannot use any of the
+      default environment variable names listed above with the prefix
+      <code>GITHUB_</code>. If you attempt to override the value of one of these
+      default environment variables, the assignment is ignored.
+    </p>
+    <p>
+      Any new environment variables you set that point to a location on the
+      filesystem should have a <code>_PATH</code> suffix. The
+      <code>HOME</code> and <code>GITHUB_WORKSPACE</code> default variables are
+      exceptions to this convention because the words “home” and “workspace”
+      already imply a location.
+    </p>
+  </body>
+</html>

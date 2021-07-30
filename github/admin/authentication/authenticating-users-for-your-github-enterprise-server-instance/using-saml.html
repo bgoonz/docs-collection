@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using SAML</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using SAML</h1>
+    </header>
+    <p>
+      {% data reusables.enterprise_user_management.built-in-authentication %}
+    </p>
+    <h2 id="supported-saml-services">Supported SAML services</h2>
+    <p>{% data reusables.saml.saml-supported-idps %}</p>
+    <p>{% data reusables.saml.saml-single-logout-not-supported %}</p>
+    <h2 id="username-considerations-with-saml">
+      Username considerations with SAML
+    </h2>
+    <p>
+      Each {% data variables.product.prodname_ghe_server %} username is
+      determined by one of the following assertions in the SAML response,
+      ordered by priority:
+    </p>
+    <ul>
+      <li>The custom username attribute, if defined and present</li>
+      <li>
+        An
+        <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name</code>
+        assertion, if present
+      </li>
+      <li>
+        An
+        <code
+          >http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code
+        >
+        assertion, if present
+      </li>
+      <li>The <code>NameID</code> element</li>
+    </ul>
+    <p>
+      The <code>NameID</code> element is required even if other attributes are
+      present.
+    </p>
+    <p>
+      A mapping is created between the <code>NameID</code> and the {% data
+      variables.product.prodname_ghe_server %} username, so the
+      <code>NameID</code> should be persistent, unique, and not subject to
+      change for the lifecycle of the user.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note</strong>: If the <code>NameID</code> for a user does change
+      on the IdP, the user will see an error message when they try to sign in to
+      your {% data variables.product.prodname_ghe_server %} instance. {%
+      ifversion ghes &gt; 2.21 %}To restore the user’s access, you’ll need to
+      update the user account’s <code>NameID</code> mapping. For more
+      information, see “<a href="#updating-a-users-saml-nameid"
+        >Updating a user’s SAML <code>NameID</code></a
+      >.”{% else %} For more information, see “<a
+        href="#error-another-user-already-owns-the-account"
+        >Error: ‘Another user already owns the account’</a
+      >.”{% endif %}
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      {% data reusables.enterprise_management_console.username_normalization %}
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_management_console.username_normalization_sample %}
+    </p>
+    <p>
+      {% data reusables.enterprise_user_management.two_factor_auth_header %} {%
+      data reusables.enterprise_user_management.external_auth_disables_2fa %}
+    </p>
+    <h2 id="saml-metadata">SAML metadata</h2>
+    <p>
+      Your {% data variables.product.prodname_ghe_server %} instance’s service
+      provider metadata is available at
+      <code>http(s)://[hostname]/saml/metadata</code>.
+    </p>
+    <p>
+      To configure your identity provider manually, the Assertion Consumer
+      Service (ACS) URL is <code>http(s)://[hostname]/saml/consume</code>. It
+      uses the
+      <code>urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST</code> binding.
+    </p>
+    <h2 id="saml-attributes">SAML attributes</h2>
+    <p>
+      These attributes are available. You can change the attribute names in the
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/accessing-the-management-console/"
+        >management console</a
+      >, with the exception of the <code>administrator</code> attribute.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 42%" />
+        <col style="width: 25%" />
+        <col style="width: 32%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Default attribute name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>NameID</code></td>
+          <td>Required</td>
+          <td>
+            A persistent user identifier. Any persistent name identifier format
+            may be used. The <code>NameID</code> element will be used for a {%
+            data variables.product.prodname_ghe_server %} username unless one of
+            the alternative assertions is provided.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>administrator</code></td>
+          <td>Optional</td>
+          <td>
+            When the value is ‘true’, the user will automatically be promoted as
+            an administrator. Any other value or a non-existent value will
+            demote the user to a normal user account.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>username</code></td>
+          <td>Optional</td>
+          <td>
+            The {% data variables.product.prodname_ghe_server %} username.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>full_name</code></td>
+          <td>Optional</td>
+          <td>
+            The name of the user displayed on their profile page. Users may
+            change their names after provisioning.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>emails</code></td>
+          <td>Optional</td>
+          <td>
+            The email addresses for the user. More than one can be specified.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>public_keys</code></td>
+          <td>Optional</td>
+          <td>
+            The public SSH keys for the user. More than one can be specified.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>gpg_keys</code></td>
+          <td>Optional</td>
+          <td>The GPG keys for the user. More than one can be specified.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="configuring-saml-settings">Configuring SAML settings</h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.authentication %} 3. Select
+      <strong>SAML</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/auth-select-saml.png"
+        alt="SAML authentication"
+      />
+      4. {% data
+      reusables.enterprise_user_management.built-in-authentication-option %}
+      <img
+        src="/assets/images/enterprise/management-console/saml-built-in-authentication.png"
+        alt="Select SAML built-in authentication checkbox"
+      />
+      5. Optionally, to enable unsolicited response SSO, select
+      <strong>IdP initiated SSO</strong>. By default, {% data
+      variables.product.prodname_ghe_server %} will reply to an unsolicited
+      Identity Provider (IdP) initiated request with an
+      <code>AuthnRequest</code> back to the IdP.
+      <img
+        src="/assets/images/enterprise/management-console/saml-idp-sso.png"
+        alt="SAML idP SSO"
+      />
+    </p>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Note</strong>: We recommend keeping this value
+      <strong>unselected</strong>. You should enable this feature
+      <strong>only</strong> in the rare instance that your SAML implementation
+      does not support service provider initiated SSO, and when advised by {%
+      data variables.contact.enterprise_support %}.
+    </p>
+    <p>{% endtip %}</p>
+    <ol start="5" type="1">
+      <li>
+        Select <strong>Disable administrator demotion/promotion</strong> if you
+        <strong>do not</strong> want your SAML provider to determine
+        administrator rights for users on {% data
+        variables.product.product_location %}.
+        <img
+          src="/assets/images/enterprise/management-console/disable-admin-demotion-promotion.png"
+          alt="SAML disable admin configuration"
+        />
+      </li>
+      <li>
+        In the <strong>Single sign-on URL</strong> field, type the HTTP or HTTPS
+        endpoint on your IdP for single sign-on requests. This value is provided
+        by your IdP configuration. If the host is only available from your
+        internal network, you may need to
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-dns-nameservers/"
+          >configure {% data variables.product.product_location %} to use
+          internal nameservers</a
+        >.
+        <img
+          src="/assets/images/enterprise/management-console/saml-single-sign-url.png"
+          alt="SAML authentication"
+        />
+      </li>
+      <li>
+        Optionally, in the <strong>Issuer</strong> field, type your SAML
+        issuer’s name. This verifies the authenticity of messages sent to {%
+        data variables.product.product_location %}.
+        <img
+          src="/assets/images/enterprise/management-console/saml-issuer.png"
+          alt="SAML issuer"
+        />
+      </li>
+      <li>
+        In the <strong>Signature Method</strong> and
+        <strong>Digest Method</strong> drop-down menus, choose the hashing
+        algorithm used by your SAML issuer to verify the integrity of the
+        requests from {% data variables.product.product_location %}. Specify the
+        format with the <strong>Name Identifier Format</strong> drop-down menu.
+        <img
+          src="/assets/images/enterprise/management-console/saml-method.png"
+          alt="SAML method"
+        />
+      </li>
+      <li>
+        Under <strong>Verification certificate</strong>, click
+        <strong>Choose File</strong> and choose a certificate to validate SAML
+        responses from the IdP.
+        <img
+          src="/assets/images/enterprise/management-console/saml-verification-cert.png"
+          alt="SAML authentication"
+        />
+      </li>
+      <li>
+        Modify the SAML attribute names to match your IdP if needed, or accept
+        the default names.
+        <img
+          src="/assets/images/enterprise/management-console/saml-attributes.png"
+          alt="SAML attribute names"
+        />
+      </li>
+    </ol>
+    <p>{% ifversion ghes &gt; 2.21 %}</p>
+    <h2 id="updating-a-users-saml-nameid">
+      Updating a user’s SAML <code>NameID</code>
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} 2. In
+      the left sidebar, click <strong>All users</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/all-users.png"
+        alt="“All users” sidebar item in site administrator settings"
+      />
+      3. In the list of users, click the username you’d like to update the
+      <code>NameID</code> mapping for.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/all-users-click-username.png"
+        alt="Username in list of instance user accounts"
+      />
+      {% data reusables.enterprise_site_admin_settings.security-tab %} 5. To the
+      right of “Update SAML NameID”, click <strong>Edit</strong> .
+      <img
+        src="/assets/images/enterprise/site-admin-settings/update-saml-nameid-edit.png"
+        alt="“Edit” button under “SAML authentication” and to the right of “Update SAML NameID”"
+      />
+      6. In the “NameID” field, type the new <code>NameID</code> for the user.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/update-saml-nameid-field-in-modal.png"
+        alt="“NameID” field in modal dialog with NameID typed"
+      />
+      7. Click <strong>Update NameID</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/update-saml-nameid-update.png"
+        alt="“Update NameID” button under updated NameID value within modal"
+      />
+    </p>
+    <p>{% endif %}</p>
+    <h2 id="revoking-access-to-data-variables.product.product_location">
+      Revoking access to {% data variables.product.product_location %}
+    </h2>
+    <p>
+      If you remove a user from your identity provider, you must also manually
+      suspend them. Otherwise, they’ll continue to be able to authenticate using
+      access tokens or SSH keys. For more information, see “<a
+        href="/enterprise/admin/guides/user-management/suspending-and-unsuspending-users"
+        >Suspending and unsuspending users</a
+      >”.
+    </p>
+    <h2 id="response-message-requirements">Response message requirements</h2>
+    <p>The response message must fulfill the following requirements:</p>
+    <ul>
+      <li>
+        The <code>&lt;Destination&gt;</code> element must be provided on the
+        root response document and match the ACS URL only when the root response
+        document is signed. If the assertion is signed, it will be ignored.
+      </li>
+      <li>
+        The <code>&lt;Audience&gt;</code> element must always be provided as
+        part of the <code>&lt;AudienceRestriction&gt;</code> element. It must
+        match the <code>EntityId</code> for {% data
+        variables.product.prodname_ghe_server %}. This is the URL to the {% data
+        variables.product.prodname_ghe_server %} instance, such as
+        <code>https://ghe.corp.example.com</code>.
+      </li>
+      <li>
+        Each assertion in the response <strong>must</strong> be protected by a
+        digital signature. This can be accomplished by signing each individual
+        <code>&lt;Assertion&gt;</code> element or by signing the
+        <code>&lt;Response&gt;</code> element.
+      </li>
+      <li>
+        A <code>&lt;NameID&gt;</code> element must be provided as part of the
+        <code>&lt;Subject&gt;</code> element. Any persistent name identifier
+        format may be used.
+      </li>
+      <li>
+        The <code>Recipient</code> attribute must be present and set to the ACS
+        URL. For example:
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode xml"
+      ><code class="sourceCode xml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">&lt;samlp:Response</span> <span class="er">...</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">&lt;saml:Assertion</span> <span class="er">...</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="kw">&lt;saml:Subject&gt;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="kw">&lt;saml:NameID</span> <span class="er">...</span><span class="kw">&gt;</span>...<span class="kw">&lt;/saml:NameID&gt;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="kw">&lt;saml:SubjectConfirmation</span> <span class="er">...</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="kw">&lt;saml:SubjectConfirmationData</span><span class="ot"> Recipient=</span><span class="st">&quot;https://ghe.corp.example.com/saml/consume&quot;</span> <span class="er">...</span><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="kw">&lt;/saml:SubjectConfirmation&gt;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="kw">&lt;/saml:Subject&gt;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="kw">&lt;saml:AttributeStatement&gt;</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      <span class="kw">&lt;saml:Attribute</span><span class="ot"> FriendlyName=</span><span class="st">&quot;USERNAME-ATTRIBUTE&quot;</span> <span class="er">...</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">        <span class="kw">&lt;saml:AttributeValue&gt;</span>monalisa<span class="kw">&lt;/saml:AttributeValue&gt;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="kw">&lt;/saml:Attribute&gt;</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="kw">&lt;/saml:AttributeStatement&gt;</span></a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="kw">&lt;/saml:Assertion&gt;</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="kw">&lt;/samlp:Response&gt;</span></a></code></pre>
+    </div>
+    <h2 id="troubleshooting-saml-authentication">
+      Troubleshooting SAML authentication
+    </h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} logs error messages for
+      failed SAML authentication in the authentication log at
+      <em>/var/log/github/auth.log</em>. For more information about SAML
+      response requirements, see “<a href="#response-message-requirements"
+        >Response message requirements</a
+      >.”
+    </p>
+    <h3 id="error-another-user-already-owns-the-account">
+      Error: “Another user already owns the account”
+    </h3>
+    <p>
+      When a user signs in to {% data variables.product.prodname_ghe_server %}
+      for the first time with SAML authentication, {% data
+      variables.product.prodname_ghe_server %} creates a user account on the
+      instance and maps the SAML <code>NameID</code> to the account.
+    </p>
+    <p>
+      When the user signs in again, {% data
+      variables.product.prodname_ghe_server %} compares the account’s
+      <code>NameID</code> mapping to the IdP’s response. If the
+      <code>NameID</code> in the IdP’s response no longer matches the
+      <code>NameID</code> that {% data variables.product.prodname_ghe_server %}
+      expects for the user, the sign-in will fail. The user will see the
+      following message.
+    </p>
+    <blockquote>
+      <p>
+        Another user already owns the account. Please have your administrator
+        check the authentication log.
+      </p>
+    </blockquote>
+    <p>
+      The message typically indicates that the person’s username or email
+      address has changed on the IdP. {% ifversion ghes &gt; 2.21 %}Ensure that
+      the <code>NameID</code> mapping for the user account on {% data
+      variables.product.prodname_ghe_server %} matches the user’s
+      <code>NameID</code> on your IdP. For more information, see “<a
+        href="#updating-a-users-saml-nameid"
+        >Updating a user’s SAML <code>NameID</code></a
+      >.”{% else %}For help updating the <code>NameID</code> mapping, contact {%
+      data variables.contact.contact_ent_support %}.{% endif %}
+    </p>
+    <h3 id="error-recipient-in-saml-response-was-blank-or-not-valid">
+      Error: Recipient in SAML response was blank or not valid
+    </h3>
+    <p>
+      If the <code>Recipient</code> does not match the ACS URL for your {% data
+      variables.product.prodname_ghe_server %} instance, one of the following
+      two error messages will appear in the authentication log when a user
+      attempts to authenticate.
+    </p>
+    <pre><code>Recipient in the SAML response must not be blank.</code></pre>
+    <pre><code>Recipient in the SAML response was not valid.</code></pre>
+    <p>
+      Ensure that you set the value for <code>Recipient</code> on your IdP to
+      the full ACS URL for your {% data variables.product.prodname_ghe_server %}
+      instance. For example,
+      <code>https://ghe.corp.example.com/saml/consume</code>.
+    </p>
+    <h3 id="error-saml-response-is-not-signed-or-has-been-modified">
+      Error: “SAML Response is not signed or has been modified”
+    </h3>
+    <p>
+      If your IdP does not sign the SAML response, or the signature does not
+      match the contents, the following error message will appear in the
+      authentication log.
+    </p>
+    <pre><code>SAML Response is not signed or has been modified.</code></pre>
+    <p>
+      Ensure that you configure signed assertions for the {% data
+      variables.product.prodname_ghe_server %} application on your IdP.
+    </p>
+    <h3 id="error-audience-is-invalid-or-no-assertion-found">
+      Error: “Audience is invalid” or “No assertion found”
+    </h3>
+    <p>
+      If the IdP’s response has a missing or incorrect value for
+      <code>Audience</code>, the following error message will appear in the
+      authentication log.
+    </p>
+    <pre
+      class="shell"
+    ><code>Audience is invalid. Audience attribute does not match https://&lt;em&gt;YOUR-INSTANCE-URL&lt;/em&gt;</code></pre>
+    <p>
+      Ensure that you set the value for <code>Audience</code> on your IdP to the
+      <code>EntityId</code> for your {% data
+      variables.product.prodname_ghe_server %} instance, which is the full URL
+      to your {% data variables.product.prodname_ghe_server %} instance. For
+      example, <code>https://ghe.corp.example.com</code>.
+    </p>
+  </body>
+</html>

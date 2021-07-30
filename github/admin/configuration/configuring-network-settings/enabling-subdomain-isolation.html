@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enabling subdomain isolation</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Enabling subdomain isolation</h1>
+    </header>
+    <h2 id="about-subdomain-isolation">About subdomain isolation</h2>
+    <p>
+      Subdomain isolation mitigates cross-site scripting and other related
+      vulnerabilities. For more information, see “<a
+        href="http://en.wikipedia.org/wiki/Cross-site_scripting"
+        >Cross-site scripting</a
+      >” on Wikipedia. We highly recommend that you enable subdomain isolation
+      on {% data variables.product.product_location %}.
+    </p>
+    <p>
+      When subdomain isolation is enabled, {% data
+      variables.product.prodname_ghe_server %} replaces several paths with
+      subdomains. After enabling subdomain isolation, attempts to access the
+      previous paths for some user-supplied content, such as
+      <code>http(s)://HOSTNAME/raw/</code>, may return <code>404</code> errors.
+    </p>
+    <p>
+      {% ifversion ghes = 2.22 %} To use Docker with {% data
+      variables.product.prodname_registry %}, you must also enable subdomain
+      isolation. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/packages/working-with-a-github-packages-registry/working-with-the-docker-registry"
+        >Working with the Docker registry</a
+      >.”
+    </p>
+    <p>{% data reusables.package_registry.packages-ghes-release-stage %}</p>
+    <p>{% endif %}</p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Path without subdomain isolation</th>
+          <th>Path with subdomain isolation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>http(s)://HOSTNAME/assets/</code></td>
+          <td><code>http(s)://assets.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>http(s)://HOSTNAME/avatars/</code></td>
+          <td><code>http(s)://avatars.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>http(s)://HOSTNAME/codeload/</code></td>
+          <td><code>http(s)://codeload.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>http(s)://HOSTNAME/gist/</code></td>
+          <td><code>http(s)://gist.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>http(s)://HOSTNAME/media/</code></td>
+          <td><code>http(s)://media.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>http(s)://HOSTNAME/pages/</code></td>
+          <td><code>http(s)://pages.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>http(s)://HOSTNAME/raw/</code></td>
+          <td><code>http(s)://raw.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>http(s)://HOSTNAME/render/</code></td>
+          <td><code>http(s)://render.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>http(s)://HOSTNAME/reply/</code></td>
+          <td><code>http(s)://reply.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>http(s)://HOSTNAME/uploads/</code></td>
+          <td><code>http(s)://uploads.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td>
+            N/A, Docker with {% data variables.product.prodname_registry %} will
+            not work with subdomain isolation disabled for the {% data
+            variables.product.prodname_registry %} 2.22 beta.
+          </td>
+          <td><code>http(s)://docker.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>https://HOSTNAME/_registry/docker/</code></td>
+          <td>
+            <code>http(s)://docker.HOSTNAME/</code>{% endif %}{% ifversion ghes
+            &gt; 2.22 %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>https://HOSTNAME/_registry/npm/</code></td>
+          <td><code>https://npm.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>https://HOSTNAME/_registry/rubygems/</code></td>
+          <td><code>https://rubygems.HOSTNAME/</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>https://HOSTNAME/_registry/maven/</code></td>
+          <td><code>https://maven.HOSTNAME/</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>https://HOSTNAME/_registry/nuget/</code></td>
+          <td><code>https://nuget.HOSTNAME/</code>{% endif %}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      {% data reusables.enterprise_installation.disable-github-pages-warning %}
+    </p>
+    <p>
+      Before you enable subdomain isolation, you must configure your network
+      settings for your new domain.
+    </p>
+    <ul>
+      <li>
+        Specify a valid domain name as your hostname, instead of an IP address.
+        For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-a-hostname"
+          >Configuring a hostname</a
+        >.”
+      </li>
+    </ul>
+    <p>
+      {% data reusables.enterprise_installation.changing-hostname-not-supported
+      %}
+    </p>
+    <ul>
+      <li>
+        Set up a wildcard Domain Name System (DNS) record or individual DNS
+        records for the subdomains listed above. We recommend creating an A
+        record for <code>*.HOSTNAME</code> that points to your server’s IP
+        address so you don’t have to create multiple records for each subdomain.
+      </li>
+      <li>
+        Get a wildcard Transport Layer Security (TLS) certificate for
+        <code>*.HOSTNAME</code> with a Subject Alternative Name (SAN) for both
+        <code>HOSTNAME</code> and the wildcard domain <code>*.HOSTNAME</code>.
+        For example, if your hostname is <code>github.octoinc.com</code>, get a
+        certificate with the Common Name value set to
+        <code>*.github.octoinc.com</code> and a SAN value set to both
+        <code>github.octoinc.com</code> and <code>*.github.octoinc.com</code>.
+      </li>
+      <li>
+        Enable TLS on your appliance. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-tls/"
+          >Configuring TLS</a
+        >.”
+      </li>
+    </ul>
+    <h2 id="enabling-subdomain-isolation">Enabling subdomain isolation</h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.hostname-menu-item %} 4.
+      Select <strong>Subdomain isolation (recommended)</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/subdomain-isolation.png"
+        alt="Checkbox to enable subdomain isolation"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+  </body>
+</html>

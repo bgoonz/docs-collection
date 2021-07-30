@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Teams</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Teams</h1>
+</header>
+<p>This API is only available to authenticated members of the team’s <a href="/rest/reference/orgs">organization</a>. OAuth access tokens require the <code>read:org</code> <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">scope</a>. {% data variables.product.prodname_dotcom %} generates the team’s <code>slug</code> from the team <code>name</code>.</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="discussions">Discussions</h2>
+<p>The team discussions API allows you to get, create, edit, and delete discussion posts on a team’s page. You can use team discussions to have conversations that are not specific to a repository or project. Any member of the team’s <a href="/rest/reference/orgs">organization</a> can create and read public discussion posts. For more details, see “<a href="//organizations/collaborating-with-your-team/about-team-discussions/">About team discussions</a>.” To learn more about commenting on a discussion post, see the <a href="/rest/reference/teams#discussion-comments">team discussion comments API</a>. This API is only available to authenticated members of the team’s organization.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘discussions’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="discussion-comments">Discussion comments</h2>
+<p>The team discussion comments API allows you to get, create, edit, and delete discussion comments on a <a href="/rest/reference/teams#discussions">team discussion</a> post. Any member of the team’s <a href="/rest/reference/orgs">organization</a> can create and read comments on a public discussion. For more details, see “<a href="/organizations/collaborating-with-your-team/about-team-discussions/">About team discussions</a>.” This API is only available to authenticated members of the team’s organization.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘discussion-comments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="members">Members</h2>
+<p>This API is only available to authenticated members of the team’s organization. OAuth access tokens require the <code>read:org</code> <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">scope</a>.</p>
+<p>{% ifversion fpt or ghes %} {% note %}</p>
+<p><strong>Note:</strong> When you have team synchronization set up for a team with your organization’s identity provider (IdP), you will see an error if you attempt to use the API for making changes to the team’s membership. If you have access to manage group membership in your IdP, you can manage GitHub team membership through your identity provider, which automatically adds and removes team members in an organization. For more information, see “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/managing-team-synchronization-for-your-organization" class="dotcom-only">Synchronizing teams between your identity provider and GitHub</a>.”</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘members’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% ifversion fpt or ghes %} ## Team synchronization</p>
+<p>The Team Synchronization API allows you to manage connections between {% data variables.product.product_name %} teams and external identity provider (IdP) groups. To use this API, the authenticated user must be a team maintainer or an owner of the organization associated with the team. The token you use to authenticate will also need to be authorized for use with your IdP (SSO) provider. For more information, see “<a href="/github/authenticating-to-github/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on" class="dotcom-only">Authorizing a personal access token for use with a SAML single sign-on organization</a>.”</p>
+<p>You can manage GitHub team members through your IdP with team synchronization. Team synchronization must be enabled to use the Team Synchronization API. For more information, see “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/managing-team-synchronization-for-your-organization" class="dotcom-only">Synchronizing teams between your identity provider and GitHub</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘team-sync’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+</body>
+</html>

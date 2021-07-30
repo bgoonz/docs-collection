@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Troubleshooting commits on your timeline</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Troubleshooting commits on your timeline</h1>
+</header>
+<h2 id="expected-behavior-to-view-commit-details">Expected behavior to view commit details</h2>
+<p>On your profile page’s timeline, you can click the number of commits next to a specific repository to see more details about your commits from that time period, including a diff of specific changes made in a repository.</p>
+<figure>
+<img src="/assets/images/help/profile/commit-link-on-profile-timeline.png" alt="Commit link on profile timeline" /><figcaption>Commit link on profile timeline</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/help/commits/commit-details.png" alt="Commit details" /><figcaption>Commit details</figcaption>
+</figure>
+<h2 id="missing-commit-details-from-commits-in-your-timeline">Missing commit details from commits in your timeline</h2>
+<p>If you click a commit link from your profile page and don’t see all of the expected commits on the repository’s commits page, then it’s possible the commit history in Git was rewritten and the commit author date and the commit date are different.</p>
+<figure>
+<img src="/assets/images/help/repository/no-commits-found.png" alt="Repository page with message that says “no commits found for octocat”" /><figcaption>Repository page with message that says “no commits found for octocat”</figcaption>
+</figure>
+<h2 id="how-github-uses-the-git-author-date-and-commit-date">How GitHub uses the Git author date and commit date</h2>
+<p>In Git, the author date is when someone first creates a commit with <code>git commit</code>. The commit date is identical to the author date unless someone changes the commit date by using <code>git commit --amend</code>, a force push, a rebase, or other Git commands.</p>
+<p>On your profile page, the author date is used to calculate when a commit was made. Whereas, in a repository, the commit date is used to calculate when a commit was made in the repository.</p>
+<p>Most often, the author date and commit date are the same but you may notice that your commit sequence is out of order if the commit history is changed. For more information, see “<a href="/articles/why-are-my-contributions-not-showing-up-on-my-profile">Why are my contributions not showing up on my profile?</a>”</p>
+<h2 id="viewing-missing-commit-details-from-commits-in-your-timeline">Viewing missing commit details from commits in your timeline</h2>
+<p>You can use the <code>git show</code> command with the <code>--pretty=fuller</code> flag to check if the commit author date and commit date are different.</p>
+<pre class="shell"><code>$ git show &lt;em&gt;Your commit SHA number&lt;/em&gt; --pretty=fuller
+commit &lt;em&gt;Your commit SHA number&lt;/em&gt;
+Author:     octocat &lt;em&gt;user email&lt;/em&gt;
+AuthorDate: Tue Apr 03 02:02:30 2018 +0900
+Commit:     Sally Johnson &lt;em&gt;user email&lt;/em&gt;
+CommitDate: Tue Apr 10 06:25:08 2018 +0900</code></pre>
+<p>If the author and commit date are different, you can manually change the commit date in the URL to see the commit details.</p>
+<p>For example: - This URL uses the author date of <code>2018-04-03</code>:</p>
+<p><code>https://github.com/your-organization-or-personal-account/your-repository/commits?author=octocat&amp;since=2018-04-03T00:00:00Z&amp;until=2018-04-03T23:59:59Z</code> - This URL uses the commit date of <code>2018-04-10</code>:</p>
+<p><code>https://github.com/your-organization-or-personal-account/your-repository/commits?author=octocat&amp;since=2018-04-10T00:00:00Z&amp;until=2018-04-10T23:59:59Z</code></p>
+<p>When you open the URL with the modified commit date, you can see the commit details.</p>
+<figure>
+<img src="/assets/images/help/commits/commit-details.png" alt="Commit details" /><figcaption>Commit details</figcaption>
+</figure>
+<h2 id="expected-commits-missing-in-your-timeline">Expected commits missing in your timeline</h2>
+<p>If you’re not seeing expected commits on your timeline, it’s possible the commit history in Git was rewritten and the commit author date and the commit date are different. For other possibilities, see “<a href="/articles/why-are-my-contributions-not-showing-up-on-my-profile">Why are my contributions not showing up on my profile?</a>”</p>
+</body>
+</html>

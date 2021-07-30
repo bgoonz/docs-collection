@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using CAS</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using CAS</h1>
+    </header>
+    <p>
+      {% data reusables.enterprise_user_management.built-in-authentication %}
+    </p>
+    <h2 id="username-considerations-with-cas">
+      Username considerations with CAS
+    </h2>
+    <p>
+      {% data reusables.enterprise_management_console.username_normalization %}
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_management_console.username_normalization_sample %}
+    </p>
+    <p>
+      {% data reusables.enterprise_user_management.two_factor_auth_header %} {%
+      data reusables.enterprise_user_management.external_auth_disables_2fa %}
+    </p>
+    <h2 id="cas-attributes">CAS attributes</h2>
+    <p>The following attributes are available.</p>
+    <table>
+      <colgroup>
+        <col style="width: 53%" />
+        <col style="width: 20%" />
+        <col style="width: 26%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Attribute name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>username</code></td>
+          <td>Required</td>
+          <td>
+            The {% data variables.product.prodname_ghe_server %} username.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="configuring-cas">Configuring CAS</h2>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> Before configuring CAS on {% data
+      variables.product.product_location %}, note that users will not be able to
+      use their CAS usernames and passwords to authenticate API requests or Git
+      operations over HTTP/HTTPS. Instead, they will need to
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/creating-an-access-token-for-command-line-use"
+        >create an access token</a
+      >.
+    </p>
+    <p>{% endwarning %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.authentication %} 3. Select
+      <strong>CAS</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/cas-select.png"
+        alt="CAS select"
+      />
+      4. {% data
+      reusables.enterprise_user_management.built-in-authentication-option %}
+      <img
+        src="/assets/images/enterprise/management-console/cas-built-in-authentication.png"
+        alt="Select CAS built-in authentication checkbox"
+      />
+      5. In the <strong>Server URL</strong> field, type the full URL of your CAS
+      server. If your CAS server uses a certificate that can’t be validated by
+      {% data variables.product.prodname_ghe_server %}, you can use the
+      <code>ghe-ssl-ca-certificate-install</code> command to install it as a
+      trusted certificate.
+    </p>
+  </body>
+</html>

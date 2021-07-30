@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Publishing and installing a package with GitHub Actions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Publishing and installing a package with GitHub Actions</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %} {% data reusables.actions.ae-beta %} {% data reusables.actions.ae-self-hosted-runners-notice %}</p>
+<h2 id="about-data-variables.product.prodname_registry-with-data-variables.product.prodname_actions">About {% data variables.product.prodname_registry %} with {% data variables.product.prodname_actions %}</h2>
+<p>{% data reusables.repositories.about-github-actions %} {% data reusables.repositories.actions-ci-cd %} For more information, see “<a href="/github/automating-your-workflow-with-github-actions/about-github-actions">About {% data variables.product.prodname_actions %}</a>.”</p>
+<p>You can extend the CI and CD capabilities of your repository by publishing or installing packages as part of your workflow.</p>
+<p>{% ifversion fpt %} ### Authenticating to the {% data variables.product.prodname_container_registry %}</p>
+<p>{% data reusables.package_registry.authenticate_with_pat_for_container_registry %}</p>
+<p>{% endif %}</p>
+<h3 id="authenticating-to-package-registries-on-data-variables.product.prodname_dotcom">Authenticating to package registries on {% data variables.product.prodname_dotcom %}</h3>
+<p>{% ifversion fpt %}If you want your workflow to authenticate to {% data variables.product.prodname_registry %} to access a package registry other than the {% data variables.product.prodname_container_registry %} on {% data variables.product.product_name %}, then{% else %}To authenticate to package registries on {% data variables.product.product_name %},{% endif %} we recommend using the <code>GITHUB_TOKEN</code> that {% data variables.product.product_name %} automatically creates for your repository when you enable {% data variables.product.prodname_actions %} instead of a personal access token for authentication. {% ifversion fpt or ghes &gt; 3.1 or ghae-next %}You should set the permissions for this access token in the workflow file to grant read access for the <code>contents</code> scope and write access for the <code>packages</code> scope. {% else %}It has read and write permissions for packages in the repository where the workflow runs. {% endif %}For forks, the <code>GITHUB_TOKEN</code> is granted read access for the parent repository. For more information, see “<a href="/actions/configuring-and-managing-workflows/authenticating-with-the-github_token">Authenticating with the GITHUB_TOKEN</a>.”</p>
+<p>You can reference the <code>GITHUB_TOKEN</code> in your workflow file using the {% raw %}<code>{{secrets.GITHUB_TOKEN}}</code>{% endraw %} context. For more information, see “<a href="/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token">Authenticating with the GITHUB_TOKEN</a>.”</p>
+<h2 id="about-permissions-and-package-access-for-repository-owned-packages">About permissions and package access for repository-owned packages</h2>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Repository-owned packages include RubyGems, npm, Apache Maven, NuGet, {% ifversion fpt %}and Gradle. {% else %}Gradle, and Docker packages that use the package namespace <code>docker.pkg.github.com</code>.{% endif %}</p>
+<p>{% endnote %}</p>
+<p>When you enable GitHub Actions, GitHub installs a GitHub App on your repository. The <code>GITHUB_TOKEN</code> secret is a GitHub App installation access token. You can use the installation access token to authenticate on behalf of the GitHub App installed on your repository. The token’s permissions are limited to the repository that contains your workflow. For more information, see “<a href="/actions/reference/authentication-in-a-workflow#about-the-github_token-secret">Permissions for the GITHUB_TOKEN</a>.”</p>
+<p>{% data variables.product.prodname_registry %} allows you to push and pull packages through the <code>GITHUB_TOKEN</code> available to a {% data variables.product.prodname_actions %} workflow.</p>
+<p>{% ifversion fpt %} ## About permissions and package access for {% data variables.product.prodname_container_registry %}</p>
+<p>The {% data variables.product.prodname_container_registry %} (<code>ghcr.io</code>) allows users to create and administer containers as free-standing resources at the organization level. Containers can be owned by an organization or personal user account and you can customize access to each of your containers separately from repository permissions.</p>
+<p>All workflows accessing the {% data variables.product.prodname_container_registry %} should use the <code>GITHUB_TOKEN</code> instead of a personal access token. For more information about security best practices, see “<a href="/actions/learn-github-actions/security-hardening-for-github-actions#using-secrets">Security hardening for GitHub Actions</a>.”</p>
+<h2 id="default-permissions-and-access-settings-for-containers-modified-through-workflows">Default permissions and access settings for containers modified through workflows</h2>
+<p>When you create, install, modify, or delete a container through a workflow, there are some default permission and access settings used to ensure admins have access to the workflow. You can adjust these access settings as well.</p>
+<p>For example, by default if a workflow creates a container using the <code>GITHUB_TOKEN</code>, then: - The container inherits the visibility and permissions model of the repository where the workflow is run. - Repository admins where the workflow is run become the admins of the container once the container is created.</p>
+<p>These are more examples of how default permissions work for workflows that manage packages.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>{% data variables.product.prodname_actions %} workflow task</th>
+<th>Default permissions and access</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Download an existing container</td>
+<td>- If the container is public, any workflow running in any repository can download the container. <br> - If the container is internal, then all workflows running in any repository owned by the Enterprise account can download the container. For enterprise-owned organizations, you can read any repository in the enterprise <br> - If the container is private, only workflows running in repositories that are given read permission on that container can download the container. <br></td>
+</tr>
+<tr class="even">
+<td>Upload a new version to an existing container</td>
+<td>- If the container is private, internal, or public, only workflows running in repositories that are given write permission on that container can upload new versions to the container.</td>
+</tr>
+<tr class="odd">
+<td>Delete a container or versions of a container</td>
+<td>- If the container is private, internal, or public, only workflows running in repositories that are given delete permission can delete existing versions of the container.</td>
+</tr>
+</tbody>
+</table>
+<p>You can also adjust access to containers in a more granular way or adjust some of the default permissions behavior. For more information, see “<a href="/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility">Configuring a package’s access control and visibility</a>.”</p>
+<p>{% endif %}</p>
+<h2 id="publishing-a-package-using-an-action">Publishing a package using an action</h2>
+<p>You can use {% data variables.product.prodname_actions %} to automatically publish packages as part of your continuous integration (CI) flow. This approach to continuous deployment (CD) allows you to automate the creation of new package versions, if the code meets your quality standards. For example, you could create a workflow that runs CI tests every time a developer pushes code to a particular branch. If the tests pass, the workflow can publish a new package version to {% data variables.product.prodname_registry %}.</p>
+<p>{% data reusables.package_registry.actions-configuration %}</p>
+<p>The following example demonstrates how you can use {% data variables.product.prodname_actions %} to build {% ifversion not fpt %}and test{% endif %} your app, and then automatically create a Docker image and publish it to {% data variables.product.prodname_registry %}.</p>
+<p>Create a new workflow file in your repository (such as <code>.github/workflows/deploy-image.yml</code>), and add the following YAML:</p>
+<p>{% ifversion fpt %} {% data reusables.package_registry.publish-docker-image %}</p>
+<p>{% else %}</p>
+<pre class="yaml{:copy}"><code>name: Create and publish a Docker image
+
+{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+on:
+  push:
+    branches: [&#39;release&#39;]
+
+jobs:
+  run-npm-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install and build webpack
+        run: |
+          npm install
+          npm run build
+      - uses: actions/upload-artifact@main
+        with:
+          name: webpack artifacts
+          path: public/
+
+  run-npm-test:
+    runs-on: ubuntu-latest
+    needs: run-npm-build
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [12.x, 14.x]
+    steps: {% raw %}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}{% endraw %}
+      - uses: actions/download-artifact@main
+        with:
+          name: webpack artifacts
+          path: public
+      - name: npm install, and test
+        run: |
+          npm install
+          npm test
+        env:
+          CI: true
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs: run-npm-test {% ifversion ghes &gt; 3.1 or ghae-next %}
+    permissions: 
+      contents: read
+      packages: write {% endif %}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}
+          username: {% raw %}${{ github.actor }}{% endraw %}
+          password: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          push: true
+          tags: |
+            {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}/{% raw %}${{ github.repository }}/octo-image:${{ github.sha }}{% endraw %}</code></pre>
+<p>{% endif %}</p>
+<p>The relevant settings are explained in the following table. For full details about each element in a workflow, see “<a href="/actions/reference/workflow-syntax-for-github-actions">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<table>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span><span class="st">&#39;release&#39;</span><span class="kw">]</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Configures the <code>Create and publish a Docker image</code> workflow to run every time a change is pushed to the branch called <code>release</code>.
+</td>
+</tr>
+<p>{% ifversion fpt %}</p>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">env:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">REGISTRY:</span><span class="at"> ghcr.io</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="fu">IMAGE_NAME:</span><span class="at"> ${{ github.repository }}</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Defines two custom environment variables for the workflow. These are used for the {% data variables.product.prodname_container_registry %} domain, and a name for the Docker image that this workflow builds.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">build-and-push-image:</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+There is a single job in this workflow. It’s configured to run on the latest available version of Ubuntu.
+</td>
+</tr>
+<p>{% else %}</p>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">run-npm-build:</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> npm install and build webpack</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="fu">      run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        npm install</a>
+<a class="sourceLine" id="cb5-8" title="8">        npm run build</a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/upload-artifact@main</span></a>
+<a class="sourceLine" id="cb5-10" title="10">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb5-11" title="11">        <span class="fu">name:</span><span class="at"> webpack artifacts</span></a>
+<a class="sourceLine" id="cb5-12" title="12">        <span class="fu">path:</span><span class="at"> public/</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+This job installs NPM and uses it to build the app.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">run-npm-test:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="fu">needs:</span><span class="at"> run-npm-build</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="fu">os:</span><span class="at"> </span><span class="kw">[</span>ubuntu-latest<span class="kw">]</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="fu">node-version:</span><span class="at"> </span><span class="kw">[</span>12.x<span class="kw">,</span> 14.x<span class="kw">]</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Use Node.js ${{ matrix.node-version }}</span></a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="fu">uses:</span><span class="at"> actions/setup-node@v2</span></a>
+<a class="sourceLine" id="cb6-12" title="12">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-13" title="13">        <span class="fu">node-version:</span><span class="at"> ${{ matrix.node-version }}</span></a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/download-artifact@main</span></a>
+<a class="sourceLine" id="cb6-15" title="15">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-16" title="16">        <span class="fu">name:</span><span class="at"> webpack artifacts</span></a>
+<a class="sourceLine" id="cb6-17" title="17">        <span class="fu">path:</span><span class="at"> public</span></a>
+<a class="sourceLine" id="cb6-18" title="18">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> npm install, and test</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="fu">      run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb6-20" title="20">        npm install</a>
+<a class="sourceLine" id="cb6-21" title="21">        npm test</a>
+<a class="sourceLine" id="cb6-22" title="22">      <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb6-23" title="23">        <span class="fu">CI:</span><span class="at"> </span><span class="ch">true</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+This job uses <code>npm test</code> to test the code. The <code>needs: run-npm-build</code> command makes this job dependent on the <code>run-npm-build</code> job.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">build-and-push-image:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="fu">needs:</span><span class="at"> run-npm-test</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+This job publishes the package. The <code>needs: run-npm-test</code> command makes this job dependent on the <code>run-npm-test</code> job.
+</td>
+</tr>
+<p>{% endif %}</p>
+{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">permissions:</span><span class="at"> </span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="fu">contents:</span><span class="at"> read</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="fu">packages:</span><span class="at"> write </span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Sets the permissions granted to the <code>GITHUB_TOKEN</code> for the actions in this job.
+</td>
+</tr>
+<p>{% endif %}</p>
+{% ifversion fpt %}
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Log in to the Container registry</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="fu">uses:</span><span class="at"> docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="fu">registry:</span><span class="at"> ${{ env.REGISTRY }}</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="fu">username:</span><span class="at"> ${{ github.actor }}</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="fu">password:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Creates a step called <code>Log in to the {% data variables.product.prodname_container_registry %}</code>, which logs in to the registry using the account and password that will publish the packages. Once published, the packages are owned by the account defined here.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Extract metadata (tags, labels) for Docker</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="fu">id:</span><span class="at"> meta</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="fu">uses:</span><span class="at"> docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="fu">images:</span><span class="at"> ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+This step uses <code><a href="https://github.com/docker/metadata-action#about">docker/metadata-action</a></code> to extract tags and labels that will be applied to the specified image. The <code>id</code> “meta” allows the output of this step to be referenced in a subsequent step. The <code>images</code> value provides the base name for the tags and labels.
+</td>
+</tr>
+{% else %}
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Log in to GitHub Docker Registry</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">uses:</span><span class="at"> docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="fu">registry:</span><span class="at"> </span><span class="kw">{</span>% endraw %<span class="kw">}{</span>% ifversion ghae %<span class="kw">}</span><span class="at">docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}{% raw %}</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="fu">username:</span><span class="at"> ${{ github.actor }}</span></a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="fu">password:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Creates a new step called <code>Log in to GitHub Docker Registry</code>, which logs in to the registry using the account and password that will publish the packages. Once published, the packages are owned by the account defined here.
+</td>
+</tr>
+<p>{% endif %}</p>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Build and push Docker image</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Creates a new step called <code>Build and push Docker image</code>. This step runs as part of the <code>build-and-push-image</code> job.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">uses:</span><span class="at"> docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Uses the Docker <code>build-push-action</code> action to build the image, based on your repository’s <code>Dockerfile</code>. If the build succeeds, it pushes the image to {% data variables.product.prodname_registry %}.
+</td>
+</tr>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">with:</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Sends the required parameters to the <code>build-push-action</code> action. These are defined in the subsequent lines.
+</td>
+</tr>
+{% ifversion fpt %}
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">context:</span><span class="at"> .</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Defines the build’s context as the set of files located in the specified path. For more information, see “<a href="https://github.com/docker/build-push-action#usage">Usage</a>.”
+</td>
+</tr>
+<p>{% endif %}</p>
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">push:</span><span class="at"> </span><span class="ch">true</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Pushes this image to the registry if it is built successfully.
+</td>
+</tr>
+{% ifversion fpt %}
+<tr>
+<td>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">tags:</span><span class="at"> ${{ steps.meta.outputs.tags }}</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="fu">labels:</span><span class="at"> ${{ steps.meta.outputs.labels }}</span></a></code></pre></div>
+{% endraw %}
+</td>
+<td>
+Adds the tags and labels extracted in the “meta” step.
+</td>
+</tr>
+{% else %}
+<tr>
+<td>
+<p>{% ifversion ghae %} {% raw %}</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">tags:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb18-2" title="2">docker.YOUR-HOSTNAME.com/$<span class="kw">{</span>{ github.repository <span class="kw">}</span>}/octo-image:$<span class="kw">{</span>{ github.sha <span class="kw">}</span>}</a></code></pre></div>
+<p>{% endraw %} {% else %} {% raw %}</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb19-1" title="1"><span class="fu">tags:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb19-2" title="2">docker.pkg.github.com/$<span class="kw">{</span>{ github.repository <span class="kw">}</span>}/octo-image:$<span class="kw">{</span>{ github.sha <span class="kw">}</span>}</a></code></pre></div>
+{% endraw %} {% endif %}
+</td>
+<td>
+Tags the image with the SHA of the commit that triggered the workflow.
+</td>
+</tr>
+<p>{% endif %}</p>
+</table>
+<p>This new workflow will run automatically every time you push a change to a branch named <code>release</code> in the repository. You can view the progress in the <strong>Actions</strong> tab.</p>
+<p>A few minutes after the workflow has completed, the new package will visible in your repository. To find your available packages, see “<a href="/packages/publishing-and-managing-packages/viewing-packages#viewing-a-repositorys-packages">Viewing a repository’s packages</a>.”</p>
+<h2 id="installing-a-package-using-an-action">Installing a package using an action</h2>
+<p>You can install packages as part of your CI flow using {% data variables.product.prodname_actions %}. For example, you could configure a workflow so that anytime a developer pushes code to a pull request, the workflow resolves dependencies by downloading and installing packages hosted by {% data variables.product.prodname_registry %}. Then, the workflow can run CI tests that require the dependencies.</p>
+<p>Installing packages hosted by {% data variables.product.prodname_registry %} through {% data variables.product.prodname_actions %} requires minimal configuration or additional authentication when you use the <code>GITHUB_TOKEN</code>.{% ifversion fpt %} Data transfer is also free when an action installs a package. For more information, see “<a href="/billing/managing-billing-for-github-packages/about-billing-for-github-packages">About billing for {% data variables.product.prodname_registry %}</a>.”{% endif %}</p>
+<p>{% data reusables.package_registry.actions-configuration %}</p>
+<p>{% ifversion fpt %} ## Upgrading a workflow that accesses <code>ghcr.io</code></p>
+<p>The {% data variables.product.prodname_container_registry %} supports the <code>GITHUB_TOKEN</code> for easy and secure authentication in your workflows. If your workflow is using a personal access token (PAT) to authenticate to <code>ghcr.io</code>, then we highly recommend you update your workflow to use the <code>GITHUB_TOKEN</code>.</p>
+<p>For more information about the <code>GITHUB_TOKEN</code>, see “<a href="/actions/reference/authentication-in-a-workflow#using-the-github_token-in-a-workflow">Authentication in a workflow</a>.”</p>
+<p>Using the <code>GITHUB_TOKEN</code> instead of a PAT, which includes the <code>repo</code> scope, increases the security of your repository as you don’t need to use a long-lived PAT that offers unnecessary access to the repository where your workflow is run. For more information about security best practices, see “<a href="/actions/learn-github-actions/security-hardening-for-github-actions#using-secrets">Security hardening for GitHub Actions</a>.”</p>
+<ol type="1">
+<li>Navigate to your package landing page.</li>
+<li>In the left sidebar, click <strong>Actions access</strong>. <img src="/assets/images/help/package-registry/organization-repo-access-for-a-package.png" alt="“Actions access” option in left menu" /></li>
+<li>To ensure your container package has access to your workflow, you must add the repository where the workflow is stored to your container. Click <strong>Add repository</strong> and search for the repository you want to add. <img src="/assets/images/help/package-registry/add-repository-button.png" alt="“Add repository” button" /> {% note %}</li>
+</ol>
+<p><strong>Note:</strong> Adding a repository to your container through the <strong>Actions access</strong> menu option is different than connecting your container to a repository. For more information, see “<a href="/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package">Ensuring workflow access to your package</a>” and “<a href="/packages/learn-github-packages/connecting-a-repository-to-a-package">Connecting a repository to a package</a>.”</p>
+<p>{% endnote %} 1. Optionally, using the “role” drop-down menu, select the default access level that you’d like the repository to have to your container image. <img src="/assets/images/help/package-registry/repository-permission-options-for-package-access-through-actions.png" alt="Permission access levels to give to repositories" /> 1. Open your workflow file. On the line where you log in to <code>ghcr.io</code>, replace your PAT with {% raw %}<code>${{ secrets.GITHUB_TOKEN }}</code>{% endraw %}.</p>
+<p>For example, this workflow publishes a Docker image using {% raw %}<code>${{ secrets.GITHUB_TOKEN }}</code>{% endraw %} to authenticate.</p>
+<pre class="yaml{:copy}"><code>name: Demo Push
+
+on:   
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+      - seed
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  IMAGE_NAME: ghtoken_product_demo
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+    permissions:
+      packages: write
+      contents: read{% endif %}
+
+    {% raw %}steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label &quot;runnumber=${GITHUB_RUN_ID}&quot;
+
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo &quot;${{ secrets.GITHUB_TOKEN }}&quot; | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr &#39;[A-Z]&#39; &#39;[a-z]&#39;)
+          # Strip git ref prefix from version
+          VERSION=$(echo &quot;${{ github.ref }}&quot; | sed -e &#39;s,.*/\(.*\),\1,&#39;)
+          # Strip &quot;v&quot; prefix from tag name
+          [[ &quot;${{ github.ref }}&quot; == &quot;refs/tags/&quot;* ]] &amp;&amp; VERSION=$(echo $VERSION | sed -e &#39;s/^v//&#39;)
+          # Use Docker `latest` tag convention
+          [ &quot;$VERSION&quot; == &quot;master&quot; ] &amp;&amp; VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION{% endraw %}</code></pre>
+<p>{% endif %}</p>
+</body>
+</html>

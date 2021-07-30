@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>About clustering</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">About clustering</h1>
+    </header>
+    <h2 id="clustering-architecture">Clustering architecture</h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} is comprised of a set of
+      services. In a cluster, these services run across multiple nodes and
+      requests are load balanced between them. Changes are automatically stored
+      with redundant copies on separate nodes. Most of the services are equal
+      peers with other instances of the same service. The exceptions to this are
+      the <code>mysql-server</code> and <code>redis-server</code> services.
+      These operate with a single <em>primary</em> node with one or more
+      <em>replica</em> nodes.
+    </p>
+    <p>
+      Learn more about
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/enterprise-management/about-cluster-nodes#services-required-for-clustering"
+        >services required for clustering</a
+      >.
+    </p>
+    <h2 id="is-clustering-right-for-my-organization">
+      Is clustering right for my organization?
+    </h2>
+    <p>
+      {% data reusables.enterprise_clustering.clustering-scalability %} However,
+      setting up a redundant and scalable cluster can be complex and requires
+      careful planning. This additional complexity will need to be planned for
+      during installation, disaster recovery scenarios, and upgrades.
+    </p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} requires low latency
+      between nodes and is not intended for redundancy across geographic
+      locations.
+    </p>
+    <p>
+      Clustering provides redundancy, but it is not intended to replace a High
+      Availability configuration. For more information, see
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-github-enterprise-server-for-high-availability"
+        >High Availability configuration</a
+      >. A primary/secondary failover configuration is far simpler than
+      clustering and will serve the needs of many organizations. For more
+      information, see
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/clustering/differences-between-clustering-and-high-availability-ha/"
+        >Differences between Clustering and High Availability</a
+      >.
+    </p>
+    <p>{% data reusables.package_registry.packages-cluster-support %}</p>
+    <h2 id="how-do-i-get-access-to-clustering">
+      How do I get access to clustering?
+    </h2>
+    <p>
+      Clustering is designed for specific scaling situations and is not intended
+      for every organization. If clustering is something you’d like to consider,
+      please contact your dedicated representative or {% data
+      variables.contact.contact_enterprise_sales %}.
+    </p>
+  </body>
+</html>

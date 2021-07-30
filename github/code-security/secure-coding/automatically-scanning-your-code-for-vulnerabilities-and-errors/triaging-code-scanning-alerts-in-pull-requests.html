@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Triaging code scanning alerts in pull requests</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Triaging code scanning alerts in pull requests</h1>
+</header>
+<!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
+<p>{% data reusables.code-scanning.beta %}</p>
+<h2 id="about-data-variables.product.prodname_code_scanning-results-on-pull-requests">About {% data variables.product.prodname_code_scanning %} results on pull requests</h2>
+<p>In repositories where {% data variables.product.prodname_code_scanning %} is configured as a pull request check, {% data variables.product.prodname_code_scanning %} checks the code in the pull request. By default, this is limited to pull requests that target the default branch, but you can change this configuration within {% data variables.product.prodname_actions %} or in a third-party CI/CD system. If merging the changes would introduce new {% data variables.product.prodname_code_scanning %} alerts to the target branch, these are reported as check results in the pull request. The alerts are also shown as annotations in the <strong>Files changed</strong> tab of the pull request. If you have write permission for the repository, you can see any existing {% data variables.product.prodname_code_scanning %} alerts on the <strong>Security</strong> tab. For information about repository alerts, see “<a href="/code-security/secure-coding/managing-code-scanning-alerts-for-your-repository">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</p>
+<p>If {% data variables.product.prodname_code_scanning %} has any results with a severity of <code>error</code>, the check fails and the error is reported in the check results. If all the results found by {% data variables.product.prodname_code_scanning %} have lower severities, the alerts are treated as warnings or notices and the check succeeds.</p>
+<p>{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}You can override the default behavior in your repository settings, by specifying the level of severities {% ifversion fpt or ghes &gt; 3.1 or ghae-issue-4697 %}and security severities {% endif %}that will cause a pull request check failure. For more information, see “<a href="/code-security/secure-coding/configuring-code-scanning#defining-the-severities-causing-pull-request-check-failure">Defining the severities causing pull request check failure</a>”.</p>
+<p>{% endif %}If your pull request targets a protected branch that uses {% data variables.product.prodname_code_scanning %}, and the repository owner has configured required status checks, then you must either fix or dismiss all error alerts before the pull request can be merged. For more information, see “<a href="/github/administering-a-repository/about-protected-branches#require-status-checks-before-merging">About protected branches</a>.”</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-check-failure.png" alt="Failed {% data variables.product.prodname_code_scanning %} check on a pull request" /><figcaption>Failed {% data variables.product.prodname_code_scanning %} check on a pull request</figcaption>
+</figure>
+<h2 id="about-data-variables.product.prodname_code_scanning-as-a-pull-request-check">About {% data variables.product.prodname_code_scanning %} as a pull request check</h2>
+<p>There are many options for configuring {% data variables.product.prodname_code_scanning %} as a pull request check, so the exact setup of each repository will vary and some will have more than one check. The check that contains the results of {% data variables.product.prodname_code_scanning %} is: <strong>Code scanning results</strong>.</p>
+<p>If the repository uses the {% data variables.product.prodname_codeql_workflow %} a <strong>{% data variables.product.prodname_codeql %} / Analyze (LANGUAGE)</strong> check is run for each language before the results check runs. The analysis check may fail if there are configuration problems, or if the pull request breaks the build for a language that the analysis needs to compile (for example, C/C++, C#, or Java). As with other pull request checks, you can see full details of the check failure on the <strong>Checks</strong> tab. For more information about configuring and troubleshooting, see “<a href="/code-security/secure-coding/configuring-code-scanning">Configuring {% data variables.product.prodname_code_scanning %}</a>” or “<a href="/code-security/secure-coding/troubleshooting-the-codeql-workflow">Troubleshooting the {% data variables.product.prodname_codeql %} workflow</a>.”</p>
+<h2 id="triaging-an-alert-on-your-pull-request">Triaging an alert on your pull request</h2>
+<p>When you look at the <strong>Files changed</strong> tab for a pull request, you see annotations for any lines of code that triggered the alert. The severity of the alert is displayed in the annotation.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-pr-annotation.png" alt="Alert annotation within a pull request diff" /><figcaption>Alert annotation within a pull request diff</figcaption>
+</figure>
+<p>If you have write permission for the repository, some annotations contain links with extra context for the alert. In the example above, from {% data variables.product.prodname_codeql %} analysis, you can click <strong>user-provided value</strong> to see where the untrusted data enters the data flow (this is referred to as the source). In this case you can also view the full path from the source to the code that uses the data (the sink) by clicking <strong>Show paths</strong>. This makes it easy to check whether the data is untrusted or if the analysis failed to recognize a data sanitization step between the source and the sink. For information about analyzing data flow using {% data variables.product.prodname_codeql %}, see “<a href="https://codeql.github.com/docs/writing-codeql-queries/about-data-flow-analysis/">About data flow analysis</a>.”</p>
+<p>To see more information about an alert, users with write permission can click the <strong>Show more details</strong> link shown in the annotation. This allows you to see all of the context and metadata provided by the tool in an alert view. In the example below, you can see tags showing the severity, type, and relevant common weakness enumerations (CWEs) for the problem. The view also shows which commit introduced the problem.</p>
+<p>In the detailed view for an alert, some {% data variables.product.prodname_code_scanning %} tools, like {% data variables.product.prodname_codeql %} analysis, also include a description of the problem and a <strong>Show more</strong> link for guidance on how to fix your code.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-pr-alert.png" alt="Alert description and link to show more information" /><figcaption>Alert description and link to show more information</figcaption>
+</figure>
+<h2 id="fixing-an-alert-on-your-pull-request">Fixing an alert on your pull request</h2>
+<p>Anyone with push access to a pull request can fix a {% data variables.product.prodname_code_scanning %} alert that’s identified on that pull request. If you commit changes to the pull request this triggers a new run of the pull request checks. If your changes fix the problem, the alert is closed and the annotation removed.</p>
+<h2 id="dismissing-an-alert-on-your-pull-request">Dismissing an alert on your pull request</h2>
+<p>An alternative way of closing an alert is to dismiss it. You can dismiss an alert if you don’t think it needs to be fixed. {% data reusables.code-scanning.close-alert-examples %} If you have write permission for the repository, the <strong>Dismiss</strong> button is available in code annotations and in the alerts summary. When you click <strong>Dismiss</strong> you will be prompted to choose a reason for closing the alert.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-alert-close-drop-down.png" alt="Choosing a reason for dismissing an alert" /><figcaption>Choosing a reason for dismissing an alert</figcaption>
+</figure>
+<p>{% data reusables.code-scanning.choose-alert-dismissal-reason %}</p>
+<p>{% data reusables.code-scanning.false-positive-fix-codeql %}</p>
+<p>For more information about dismissing alerts, see “<a href="/code-security/secure-coding/managing-code-scanning-alerts-for-your-repository#dismissing-or-deleting-alerts">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</p>
+</body>
+</html>

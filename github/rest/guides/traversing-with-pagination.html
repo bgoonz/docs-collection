@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Traversing with pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Traversing with pagination</h1>
+</header>
+<p>The {% data variables.product.product_name %} API provides a vast wealth of information for developers to consume. Most of the time, you might even find that you’re asking for <em>too much</em> information, and in order to keep our servers happy, the API will automatically <a href="/rest#pagination">paginate the requested items</a>.</p>
+<p>In this guide, we’ll make some calls to the Search API, and iterate over the results using pagination. You can find the complete source code for this project in the <a href="https://github.com/github/platform-samples/tree/master/api/ruby/traversing-with-pagination">platform-samples</a> repository.</p>
+<p>{% data reusables.rest-api.dotcom-only-guide-note %}</p>
+<h2 id="basics-of-pagination">Basics of Pagination</h2>
+<p>To start with, it’s important to know a few facts about receiving paginated items:</p>
+<ol type="1">
+<li>Different API calls respond with different defaults. For example, a call to <a href="/rest/reference/repos#list-public-repositories">List public repositories</a> provides paginated items in sets of 30, whereas a call to the GitHub Search API provides items in sets of 100</li>
+<li>You can specify how many items to receive (up to a maximum of 100); but,</li>
+<li>For technical reasons, not every endpoint behaves the same. For example, <a href="/rest/reference/activity#events">events</a> won’t let you set a maximum for items to receive. Be sure to read the documentation on how to handle paginated results for specific endpoints.</li>
+</ol>
+<p>Information about pagination is provided in <a href="http://tools.ietf.org/html/rfc5988">the Link header</a> of an API call. For example, let’s make a curl request to the search API, to find out how many times Mozilla projects use the phrase <code>addClass</code>:</p>
+<pre class="shell"><code>$ curl -I &quot;https://api.github.com/search/code?q=addClass+user:mozilla&quot;</code></pre>
+<p>The <code>-I</code> parameter indicates that we only care about the headers, not the actual content. In examining the result, you’ll notice some information in the Link header that looks like this:</p>
+<pre><code>Link: &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=2&gt;; rel=&quot;next&quot;,
+  &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=34&gt;; rel=&quot;last&quot;</code></pre>
+<p>Let’s break that down. <code>rel="next"</code> says that the next page is <code>page=2</code>. This makes sense, since by default, all paginated queries start at page <code>1.</code> <code>rel="last"</code> provides some more information, stating that the last page of results is on page <code>34</code>. Thus, we have 33 more pages of information about <code>addClass</code> that we can consume. Nice!</p>
+<p><strong>Always</strong> rely on these link relations provided to you. Don’t try to guess or construct your own URL.</p>
+<h3 id="navigating-through-the-pages">Navigating through the pages</h3>
+<p>Now that you know how many pages there are to receive, you can start navigating through the pages to consume the results. You do this by passing in a <code>page</code> parameter. By default, <code>page</code> always starts at <code>1</code>. Let’s jump ahead to page 14 and see what happens:</p>
+<pre class="shell"><code>$ curl -I &quot;https://api.github.com/search/code?q=addClass+user:mozilla&amp;page=14&quot;</code></pre>
+<p>Here’s the link header once more:</p>
+<pre><code>Link: &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=15&gt;; rel=&quot;next&quot;,
+  &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=34&gt;; rel=&quot;last&quot;,
+  &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=1&gt;; rel=&quot;first&quot;,
+  &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;page=13&gt;; rel=&quot;prev&quot;</code></pre>
+<p>As expected, <code>rel="next"</code> is at 15, and <code>rel="last"</code> is still 34. But now we’ve got some more information: <code>rel="first"</code> indicates the URL for the <em>first</em> page, and more importantly, <code>rel="prev"</code> lets you know the page number of the previous page. Using this information, you could construct some UI that lets users jump between the first, previous, next, or last list of results in an API call.</p>
+<h3 id="changing-the-number-of-items-received">Changing the number of items received</h3>
+<p>By passing the <code>per_page</code> parameter, you can specify how many items you want each page to return, up to 100 items. Let’s try asking for 50 items about <code>addClass</code>:</p>
+<pre class="shell"><code>$ curl -I &quot;https://api.github.com/search/code?q=addClass+user:mozilla&amp;per_page=50&quot;</code></pre>
+<p>Notice what it does to the header response:</p>
+<pre><code>Link: &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;per_page=50&amp;page=2&gt;; rel=&quot;next&quot;,
+  &lt;https://api.github.com/search/code?q=addClass+user%3Amozilla&amp;per_page=50&amp;page=20&gt;; rel=&quot;last&quot;</code></pre>
+<p>As you might have guessed, the <code>rel="last"</code> information says that the last page is now 20. This is because we are asking for more information per page about our results.</p>
+<h2 id="consuming-the-information">Consuming the information</h2>
+<p>You don’t want to be making low-level curl calls just to be able to work with pagination, so let’s write a little Ruby script that does everything we’ve just described above.</p>
+<p>As always, first we’ll require <a href="https://github.com/octokit/octokit.rb">GitHub’s Octokit.rb</a> Ruby library, and pass in our <a href="/articles/creating-an-access-token-for-command-line-use">personal access token</a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb7-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb7-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a></code></pre></div>
+<p>Next, we’ll execute the search, using Octokit’s <code>search_code</code> method. Unlike using <code>curl</code>, we can also immediately retrieve the number of results, so let’s do that:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb8-1" title="1">results = client.search_code(<span class="st">&#39;addClass user:mozilla&#39;</span>)</a>
+<a class="sourceLine" id="cb8-2" title="2">total_count = results.total_count</a></code></pre></div>
+<p>Now, let’s grab the number of the last page, similar to <code>page=34&gt;; rel="last"</code> information in the link header. Octokit.rb support pagination information through an implementation called “<a href="https://github.com/octokit/octokit.rb#pagination">Hypermedia link relations</a>.” We won’t go into detail about what that is, but, suffice to say, each element in the <code>results</code> variable has a hash called <code>rels</code>, which can contain information about <code>:next</code>, <code>:last</code>, <code>:first</code>, and <code>:prev</code>, depending on which result you’re on. These relations also contain information about the resulting URL, by calling <code>rels[:last].href</code>.</p>
+<p>Knowing this, let’s grab the page number of the last result, and present all this information to the user:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb9-1" title="1">last_response = client.last_response</a>
+<a class="sourceLine" id="cb9-2" title="2">number_of_pages = last_response.rels[<span class="st">:last</span>].href.match(<span class="ot">/page=(\d+).*$/</span>)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb9-3" title="3"></a>
+<a class="sourceLine" id="cb9-4" title="4">puts <span class="st">&quot;There are </span><span class="ot">#{</span>total_count<span class="ot">}</span><span class="st"> results, on </span><span class="ot">#{</span>number_of_pages<span class="ot">}</span><span class="st"> pages!&quot;</span></a></code></pre></div>
+<p>Finally, let’s iterate through the results. You could do this with a loop <code>for i in 1..number_of_pages.to_i</code>, but instead, let’s follow the <code>rels[:next]</code> headers to retrieve information from each page. For the sake of simplicity, let’s just grab the file path of the first result from each page. To do this, we’ll need a loop; and at the end of every loop, we’ll retrieve the data set for the next page by following the <code>rels[:next]</code> information. The loop will finish when there is no <code>rels[:next]</code> information to consume (in other words, we are at <code>rels[:last]</code>). It might look something like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb10-1" title="1">puts last_response.data.items.first.path</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">until</span> last_response.rels[<span class="st">:next</span>].nil?</a>
+<a class="sourceLine" id="cb10-3" title="3">  last_response = last_response.rels[<span class="st">:next</span>].get</a>
+<a class="sourceLine" id="cb10-4" title="4">  puts last_response.data.items.first.path</a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="kw">end</span></a></code></pre></div>
+<p>Changing the number of items per page is extremely simple with Octokit.rb. Simply pass a <code>per_page</code> options hash to the initial client construction. After that, your code should remain intact:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb11-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb11-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7">results = client.search_code(<span class="st">&#39;addClass user:mozilla&#39;</span>, <span class="st">:per_page</span> =&gt; <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb11-8" title="8">total_count = results.total_count</a>
+<a class="sourceLine" id="cb11-9" title="9"></a>
+<a class="sourceLine" id="cb11-10" title="10">last_response = client.last_response</a>
+<a class="sourceLine" id="cb11-11" title="11">number_of_pages = last_response.rels[<span class="st">:last</span>].href.match(<span class="ot">/page=(\d+).*$/</span>)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb11-12" title="12"></a>
+<a class="sourceLine" id="cb11-13" title="13">puts last_response.rels[<span class="st">:last</span>].href</a>
+<a class="sourceLine" id="cb11-14" title="14">puts <span class="st">&quot;There are </span><span class="ot">#{</span>total_count<span class="ot">}</span><span class="st"> results, on </span><span class="ot">#{</span>number_of_pages<span class="ot">}</span><span class="st"> pages!&quot;</span></a>
+<a class="sourceLine" id="cb11-15" title="15"></a>
+<a class="sourceLine" id="cb11-16" title="16">puts <span class="st">&quot;And here&#39;s the first path for every set&quot;</span></a>
+<a class="sourceLine" id="cb11-17" title="17"></a>
+<a class="sourceLine" id="cb11-18" title="18">puts last_response.data.items.first.path</a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="kw">until</span> last_response.rels[<span class="st">:next</span>].nil?</a>
+<a class="sourceLine" id="cb11-20" title="20">  last_response = last_response.rels[<span class="st">:next</span>].get</a>
+<a class="sourceLine" id="cb11-21" title="21">  puts last_response.data.items.first.path</a>
+<a class="sourceLine" id="cb11-22" title="22"><span class="kw">end</span></a></code></pre></div>
+<h2 id="constructing-pagination-links">Constructing Pagination Links</h2>
+<p>Normally, with pagination, your goal isn’t to concatenate all of the possible results, but rather, to produce a set of navigation, like this:</p>
+<figure>
+<img src="/assets/images/pagination_sample.png" alt="Sample of pagination links" /><figcaption>Sample of pagination links</figcaption>
+</figure>
+<p>Let’s sketch out a micro-version of what that might entail.</p>
+<p>From the code above, we already know we can get the <code>number_of_pages</code> in the paginated results from the first call:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb12-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb12-5" title="5">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&#39;MY_PERSONAL_TOKEN&#39;</span>]</a>
+<a class="sourceLine" id="cb12-6" title="6"></a>
+<a class="sourceLine" id="cb12-7" title="7">results = client.search_code(<span class="st">&#39;addClass user:mozilla&#39;</span>)</a>
+<a class="sourceLine" id="cb12-8" title="8">total_count = results.total_count</a>
+<a class="sourceLine" id="cb12-9" title="9"></a>
+<a class="sourceLine" id="cb12-10" title="10">last_response = client.last_response</a>
+<a class="sourceLine" id="cb12-11" title="11">number_of_pages = last_response.rels[<span class="st">:last</span>].href.match(<span class="ot">/page=(\d+).*$/</span>)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb12-12" title="12"></a>
+<a class="sourceLine" id="cb12-13" title="13">puts last_response.rels[<span class="st">:last</span>].href</a>
+<a class="sourceLine" id="cb12-14" title="14">puts <span class="st">&quot;There are </span><span class="ot">#{</span>total_count<span class="ot">}</span><span class="st"> results, on </span><span class="ot">#{</span>number_of_pages<span class="ot">}</span><span class="st"> pages!&quot;</span></a></code></pre></div>
+<p>From there, we can construct a beautiful ASCII representation of the number boxes:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb13-1" title="1">numbers = <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">for</span> i <span class="kw">in</span> <span class="dv">1</span>..number_of_pages.to_i</a>
+<a class="sourceLine" id="cb13-3" title="3">  numbers &lt;&lt; <span class="st">&quot;[</span><span class="ot">#{</span>i<span class="ot">}</span><span class="st">] &quot;</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb13-5" title="5">puts numbers</a></code></pre></div>
+<p>Let’s simulate a user clicking on one of these boxes, by constructing a random number:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb14-1" title="1">random_page = <span class="dt">Random</span>.new</a>
+<a class="sourceLine" id="cb14-2" title="2">random_page = random_page.rand(<span class="dv">1</span>..number_of_pages.to_i)</a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4">puts <span class="st">&quot;A User appeared, and clicked number </span><span class="ot">#{</span>random_page<span class="ot">}</span><span class="st">!&quot;</span></a></code></pre></div>
+<p>Now that we have a page number, we can use Octokit to explicitly retrieve that individual page, by passing the <code>:page</code> option:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb15-1" title="1">clicked_results = client.search_code(<span class="st">&#39;addClass user:mozilla&#39;</span>, <span class="st">:page</span> =&gt; random_page)</a></code></pre></div>
+<p>If we wanted to get fancy, we could also grab the previous and next pages, in order to generate links for back (<code>&lt;&lt;</code>) and forward (<code>&gt;&gt;</code>) elements:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb16-1" title="1">prev_page_href = client.last_response.rels[<span class="st">:prev</span>] ? client.last_response.rels[<span class="st">:prev</span>].href : <span class="st">&quot;(none)&quot;</span></a>
+<a class="sourceLine" id="cb16-2" title="2">next_page_href = client.last_response.rels[<span class="st">:next</span>] ? client.last_response.rels[<span class="st">:next</span>].href : <span class="st">&quot;(none)&quot;</span></a>
+<a class="sourceLine" id="cb16-3" title="3"></a>
+<a class="sourceLine" id="cb16-4" title="4">puts <span class="st">&quot;The prev page link is </span><span class="ot">#{</span>prev_page_href<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb16-5" title="5">puts <span class="st">&quot;The next page link is </span><span class="ot">#{</span>next_page_href<span class="ot">}</span><span class="st">&quot;</span></a></code></pre></div>
+</body>
+</html>

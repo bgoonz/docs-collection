@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Migrating from Azure Pipelines to GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Migrating from Azure Pipelines to GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      Azure Pipelines and {% data variables.product.prodname_actions %} both
+      allow you to create workflows that automatically build, test, publish,
+      release, and deploy code. Azure Pipelines and {% data
+      variables.product.prodname_actions %} share some similarities in workflow
+      configuration:
+    </p>
+    <ul>
+      <li>
+        Workflow configuration files are written in YAML and are stored in the
+        code’s repository.
+      </li>
+      <li>Workflows include one or more jobs.</li>
+      <li>Jobs include one or more steps or individual commands.</li>
+      <li>Steps or tasks can be reused and shared with the community.</li>
+    </ul>
+    <p>
+      For more information, see “<a
+        href="/actions/getting-started-with-github-actions/core-concepts-for-github-actions"
+        >Core concepts for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="key-differences">Key differences</h2>
+    <p>
+      When migrating from Azure Pipelines, consider the following differences:
+    </p>
+    <ul>
+      <li>
+        Azure Pipelines supports a legacy <em>classic editor</em>, which lets
+        you define your CI configuration in a GUI editor instead of creating the
+        pipeline definition in a YAML file. {% data
+        variables.product.prodname_actions %} uses YAML files to define
+        workflows and does not support a graphical editor.
+      </li>
+      <li>
+        Azure Pipelines allows you to omit some structure in job definitions.
+        For example, if you only have a single job, you don’t need to define the
+        job and only need to define its steps. {% data
+        variables.product.prodname_actions %} requires explicit configuration,
+        and YAML structure cannot be omitted.
+      </li>
+      <li>
+        Azure Pipelines supports <em>stages</em> defined in the YAML file, which
+        can be used to create deployment workflows. {% data
+        variables.product.prodname_actions %} requires you to separate stages
+        into separate YAML workflow files.
+      </li>
+      <li>
+        On-premises Azure Pipelines build agents can be selected with
+        capabilities. {% data variables.product.prodname_actions %} self-hosted
+        runners can be selected with labels.
+      </li>
+    </ul>
+    <h2 id="migrating-jobs-and-steps">Migrating jobs and steps</h2>
+    <p>
+      Jobs and steps in Azure Pipelines are very similar to jobs and steps in {%
+      data variables.product.prodname_actions %}. In both systems, jobs have the
+      following characteristics:
+    </p>
+    <ul>
+      <li>Jobs contain a series of steps that run sequentially.</li>
+      <li>Jobs run on separate virtual machines or in separate containers.</li>
+      <li>
+        Jobs run in parallel by default, but can be configured to run
+        sequentially.
+      </li>
+    </ul>
+    <h2 id="migrating-script-steps">Migrating script steps</h2>
+    <p>
+      You can run a script or a shell command as a step in a workflow. In Azure
+      Pipelines, script steps can be specified using the
+      <code>script</code> key, or with the <code>bash</code>,
+      <code>powershell</code>, or <code>pwsh</code> keys. Scripts can also be
+      specified as an input to the
+      <a
+        href="https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/bash?view=azure-devops"
+        >Bash task</a
+      >
+      or the
+      <a
+        href="https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/powershell?view=azure-devops"
+        >PowerShell task</a
+      >.
+    </p>
+    <p>
+      In {% data variables.product.prodname_actions %}, all scripts are
+      specified using the <code>run</code> key. To select a particular shell,
+      you can specify the <code>shell</code> key when providing the script. For
+      more information, see “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>Below is an example of the syntax for each system:</p>
+    <table class="d-block">
+      <tr>
+        <th>Azure Pipelines</th>
+        <th>{% data variables.product.prodname_actions %}</th>
+      </tr>
+      <tr>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb1">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> scripts</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;windows-latest&#39;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This step runs in the default shell&quot;</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="kw">-</span> <span class="fu">bash:</span><span class="at"> echo &quot;This step runs in bash&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      <span class="kw">-</span> <span class="fu">pwsh:</span><span class="at"> Write-Host &quot;This step runs in PowerShell Core&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">      <span class="kw">-</span> <span class="fu">task:</span><span class="at"> PowerShell@2</span></a>
+<a class="sourceLine" id="cb1-10" title="10">        <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">          <span class="fu">script:</span><span class="at"> Write-Host &quot;This step runs in PowerShell&quot;</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb2">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">scripts:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">runs-on:</span><span class="at"> windows-latest</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This step runs in the default shell&quot;</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This step runs in bash&quot;</span></a>
+<a class="sourceLine" id="cb2-7" title="7">        <span class="fu">shell:</span><span class="at"> bash</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> Write-Host &quot;This step runs in PowerShell Core&quot;</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="fu">shell:</span><span class="at"> pwsh</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> Write-Host &quot;This step runs in PowerShell&quot;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">        <span class="fu">shell:</span><span class="at"> powershell</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+      </tr>
+    </table>
+    <h2 id="differences-in-script-error-handling">
+      Differences in script error handling
+    </h2>
+    <p>
+      In Azure Pipelines, scripts can be configured to error if any output is
+      sent to <code>stderr</code>. {% data variables.product.prodname_actions %}
+      does not support this configuration.
+    </p>
+    <p>
+      {% data variables.product.prodname_actions %} configures shells to “fail
+      fast” whenever possible, which stops the script immediately if one of the
+      commands in a script exits with an error code. In contrast, Azure
+      Pipelines requires explicit configuration to exit immediately on an error.
+      For more information, see “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#exit-codes-and-error-action-preference"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="differences-in-the-default-shell-on-windows">
+      Differences in the default shell on Windows
+    </h2>
+    <p>
+      In Azure Pipelines, the default shell for scripts on Windows platforms is
+      the Command shell (<em>cmd.exe</em>). In {% data
+      variables.product.prodname_actions %}, the default shell for scripts on
+      Windows platforms is PowerShell. PowerShell has several differences in
+      built-in commands, variable expansion, and flow control.
+    </p>
+    <p>
+      If you’re running a simple command, you might be able to run a Command
+      shell script in PowerShell without any changes. But in most cases, you
+      will either need to update your script with PowerShell syntax or instruct
+      {% data variables.product.prodname_actions %} to run the script with the
+      Command shell instead of PowerShell. You can do this by specifying
+      <code>shell</code> as <code>cmd</code>.
+    </p>
+    <p>Below is an example of the syntax for each system:</p>
+    <table class="d-block">
+      <tr>
+        <th>Azure Pipelines</th>
+        <th>{% data variables.product.prodname_actions %}</th>
+      </tr>
+      <tr>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb3">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> run_command</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;windows-latest&#39;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This step runs in CMD on Windows by default&quot;</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb4">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">run_command:</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">runs-on:</span><span class="at"> windows-latest</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb4-5" title="5">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This step runs in PowerShell on Windows by default&quot;</span></a>
+<a class="sourceLine" id="cb4-6" title="6">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This step runs in CMD on Windows explicitly&quot;</span></a>
+<a class="sourceLine" id="cb4-7" title="7">        <span class="fu">shell:</span><span class="at"> cmd</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+      </tr>
+    </table>
+    <p>
+      For more information, see “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#using-a-specific-shell"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="migrating-conditionals-and-expression-syntax">
+      Migrating conditionals and expression syntax
+    </h2>
+    <p>
+      Azure Pipelines and {% data variables.product.prodname_actions %} can both
+      run steps conditionally. In Azure Pipelines, conditional expressions are
+      specified using the <code>condition</code> key. In {% data
+      variables.product.prodname_actions %}, conditional expressions are
+      specified using the <code>if</code> key.
+    </p>
+    <p>
+      Azure Pipelines uses functions within expressions to execute steps
+      conditionally. In contrast, {% data variables.product.prodname_actions %}
+      uses an infix notation. For example, you must replace the
+      <code>eq</code> function in Azure Pipelines with the
+      <code>==</code> operator in {% data variables.product.prodname_actions %}.
+    </p>
+    <p>Below is an example of the syntax for each system:</p>
+    <table class="d-block">
+      <tr>
+        <th>Azure Pipelines</th>
+        <th>{% data variables.product.prodname_actions %}</th>
+      </tr>
+      <tr>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb5">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> conditional</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb5-4" title="4">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-6" title="6">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This step runs with str equals &#39;ABC&#39; and num equals 123&quot;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="fu">condition:</span><span class="at"> and(eq(variables.str, &#39;ABC&#39;), eq(variables.num, 123))</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb6">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">conditional:</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-5" title="5">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This step runs with str equals &#39;ABC&#39; and num equals 123&quot;</span></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="fu">if:</span><span class="at"> ${{ env.str == &#39;ABC&#39; &amp;&amp; env.num == 123 }}</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+      </tr>
+    </table>
+    <p>
+      For more information, see “<a
+        href="/actions/reference/context-and-expression-syntax-for-github-actions"
+        >Context and expression syntax for {% data
+        variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="dependencies-between-jobs">Dependencies between jobs</h2>
+    <p>
+      Both Azure Pipelines and {% data variables.product.prodname_actions %}
+      allow you to set dependencies for a job. In both systems, jobs run in
+      parallel by default, but job dependencies can be specified explicitly. In
+      Azure Pipelines, this is done with the <code>dependsOn</code> key. In {%
+      data variables.product.prodname_actions %}, this is done with the
+      <code>needs</code> key.
+    </p>
+    <p>
+      Below is an example of the syntax for each system. The workflows start a
+      first job named <code>initial</code>, and when that job completes, two
+      jobs named <code>fanout1</code> and <code>fanout2</code> will run.
+      Finally, when those jobs complete, the job <code>fanin</code> will run.
+    </p>
+    <table class="d-block">
+      <tr>
+        <th>Azure Pipelines</th>
+        <th>{% data variables.product.prodname_actions %}</th>
+      </tr>
+      <tr>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb7">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> initial</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb7-4" title="4">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-6" title="6">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This job will be run first.&quot;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> fanout1</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb7-9" title="9">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="fu">dependsOn:</span><span class="at"> initial</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-12" title="12">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This job will run after the initial job, in parallel with fanout2.&quot;</span></a>
+<a class="sourceLine" id="cb7-13" title="13">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> fanout2</span></a>
+<a class="sourceLine" id="cb7-14" title="14">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb7-15" title="15">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb7-16" title="16">    <span class="fu">dependsOn:</span><span class="at"> initial</span></a>
+<a class="sourceLine" id="cb7-17" title="17">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-18" title="18">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This job will run after the initial job, in parallel with fanout1.&quot;</span></a>
+<a class="sourceLine" id="cb7-19" title="19">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> fanin:</span></a>
+<a class="sourceLine" id="cb7-20" title="20">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb7-21" title="21">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb7-22" title="22">    <span class="fu">dependsOn:</span><span class="at"> </span><span class="kw">[</span>fanout1<span class="kw">,</span> fanout2<span class="kw">]</span></a>
+<a class="sourceLine" id="cb7-23" title="23">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-24" title="24">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> echo &quot;This job will run after fanout1 and fanout2 have finished.&quot;</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb8">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="fu">initial:</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-5" title="5">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This job will be run first.&quot;</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="fu">fanout1:</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="fu">needs:</span><span class="at"> initial</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-10" title="10">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This job will run after the initial job, in parallel with fanout2.&quot;</span></a>
+<a class="sourceLine" id="cb8-11" title="11">  <span class="fu">fanout2:</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="fu">needs:</span><span class="at"> initial</span></a>
+<a class="sourceLine" id="cb8-14" title="14">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-15" title="15">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This job will run after the initial job, in parallel with fanout1.&quot;</span></a>
+<a class="sourceLine" id="cb8-16" title="16">  <span class="fu">fanin:</span></a>
+<a class="sourceLine" id="cb8-17" title="17">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb8-18" title="18">    <span class="fu">needs:</span><span class="at"> </span><span class="kw">[</span>fanout1<span class="kw">,</span> fanout2<span class="kw">]</span></a>
+<a class="sourceLine" id="cb8-19" title="19">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-20" title="20">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;This job will run after fanout1 and fanout2 have finished.&quot;</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+      </tr>
+    </table>
+    <p>
+      For more information, see “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="migrating-tasks-to-actions">Migrating tasks to actions</h2>
+    <p>
+      Azure Pipelines uses <em>tasks</em>, which are application components that
+      can be re-used in multiple workflows. {% data
+      variables.product.prodname_actions %} uses <em>actions</em>, which can be
+      used to perform tasks and customize your workflow. In both systems, you
+      can specify the name of the task or action to run, along with any required
+      inputs as key/value pairs.
+    </p>
+    <p>Below is an example of the syntax for each system:</p>
+    <table>
+      <tr>
+        <th>Azure Pipelines</th>
+        <th>{% data variables.product.prodname_actions %}</th>
+      </tr>
+      <tr>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb9">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="kw">-</span> <span class="fu">job:</span><span class="at"> run_python</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      <span class="fu">vmImage:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb9-6" title="6">      <span class="kw">-</span> <span class="fu">task:</span><span class="at"> UsePythonVersion@0</span></a>
+<a class="sourceLine" id="cb9-7" title="7">        <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb9-8" title="8">          <span class="fu">versionSpec:</span><span class="at"> </span><span class="st">&#39;3.7&#39;</span></a>
+<a class="sourceLine" id="cb9-9" title="9">          <span class="fu">architecture:</span><span class="at"> </span><span class="st">&#39;x64&#39;</span></a>
+<a class="sourceLine" id="cb9-10" title="10">      <span class="kw">-</span> <span class="fu">script:</span><span class="at"> python script.py</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+        <td class="d-table-cell v-align-top">
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb10">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="fu">run_python:</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb10-5" title="5">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/setup-python@v2</span></a>
+<a class="sourceLine" id="cb10-6" title="6">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb10-7" title="7">          <span class="fu">python-version:</span><span class="at"> </span><span class="st">&#39;3.7&#39;</span></a>
+<a class="sourceLine" id="cb10-8" title="8">          <span class="fu">architecture:</span><span class="at"> </span><span class="st">&#39;x64&#39;</span></a>
+<a class="sourceLine" id="cb10-9" title="9">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> python script.py</span></a></code></pre>
+          </div>
+          {% endraw %}
+        </td>
+      </tr>
+    </table>
+    <p>
+      You can find actions that you can use in your workflow in
+      <a href="https://github.com/marketplace?type=actions"
+        >{% data variables.product.prodname_marketplace %}</a
+      >, or you can create your own actions. For more information, see “<a
+        href="/actions/creating-actions"
+        >Creating actions</a
+      >.”
+    </p>
+  </body>
+</html>

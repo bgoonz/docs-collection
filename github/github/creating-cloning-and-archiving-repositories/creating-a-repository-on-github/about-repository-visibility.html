@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About repository visibility</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About repository visibility</h1>
+</header>
+<h2 id="about-repository-visibility">About repository visibility</h2>
+<p>{% ifversion ghae %}When you create a repository owned by your user account, the repository is always private. When you create a repository owned by an organization, you can choose to make the repository private or internal.{% else %}When you create a repository, you can choose to make the repository public or private.{% ifversion fpt or ghes %} If you’re creating the repository in an organization{% ifversion fpt %} that is owned by an enterprise account{% endif %}, you can also choose to make the repository internal.{% endif %}{% endif %}</p>
+<p>{% ifversion ghes %} If {% data variables.product.product_location %} is not in private mode or behind a firewall, public repositories are accessible to everyone on the internet. Otherwise, public repositories are available to everyone using {% data variables.product.product_location %}, including outside collaborators. Private repositories are only accessible to you, people you explicitly share access with, and, for organization repositories, certain organization members. {% ifversion ghes %} Internal repositories are accessible to enterprise members. For more information, see “<a href="#about-internal-repositories">About internal repositories</a>.”{% endif %} {% elsif ghae %} Private repositories are only accessible to you, people you explicitly share access with, and, for organization repositories, certain organization members. Internal repositories are accessible to all enterprise members. For more information, see “<a href="#about-internal-repositories">About internal repositories</a>.” {% else %} Public repositories are accessible to everyone on the internet. Private repositories are only accessible to you, people you explicitly share access with, and, for organization repositories, certain organization members. Internal repositories are accessible to enterprise members. For more information, see “<a href="#about-internal-repositories">About internal repositories</a>.” {% endif %}</p>
+<p>Organization owners always have access to every repository created in an organization. For more information, see “<a href="/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization">Repository permission levels for an organization</a>.”</p>
+<p>People with admin permissions for a repository can change an existing repository’s visibility. For more information, see “<a href="/github/administering-a-repository/setting-repository-visibility">Setting repository visibility</a>.”</p>
+<p>{% ifversion fpt or ghae or ghes %} ## About internal repositories</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data reusables.gated-features.internal-repos %}</p>
+<p>{% endnote %}</p>
+<p>{% data reusables.repositories.about-internal-repos %} For more information on innersource, see {% data variables.product.prodname_dotcom %}’s whitepaper “<a href="https://resources.github.com/whitepapers/introduction-to-innersource/">An introduction to innersource</a>.”</p>
+<p>All enterprise members have read permissions to the internal repository, but internal repositories are not visible to people {% ifversion fpt %}outside of the enterprise{% else %}who are not members of an organization{% endif %}, including outside collaborators on organization repositories. For more information, see {% ifversion fpt or ghae %}“<a href="/github/setting-up-and-managing-your-enterprise/roles-in-an-enterprise#enterprise-members">Roles in an enterprise</a>” and {% endif %}“<a href="/articles/repository-permission-levels-for-an-organization">Repository permission levels for an organization</a>.”</p>
+<p>{% data reusables.repositories.internal-repo-default %}</p>
+<p>If a user is removed from all organizations owned by the enterprise, that user’s forks of internal repositories are removed automatically. {% endif %}</p>
+</body>
+</html>

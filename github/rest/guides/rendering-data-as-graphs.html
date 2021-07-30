@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Rendering data as graphs</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Rendering data as graphs</h1>
+</header>
+<p>In this guide, we’re going to use the API to fetch information about repositories that we own, and the programming languages that make them up. Then, we’ll visualize that information in a couple of different ways using the <a href="http://d3js.org/">D3.js</a> library. To interact with the {% data variables.product.product_name %} API, we’ll be using the excellent Ruby library, <a href="https://github.com/octokit/octokit.rb">Octokit</a>.</p>
+<p>If you haven’t already, you should read the <a href="/rest/guides/basics-of-authentication">“Basics of Authentication”</a> guide before starting this example. You can find the complete source code for this project in the <a href="https://github.com/github/platform-samples/tree/master/api/ruby/rendering-data-as-graphs">platform-samples</a> repository.</p>
+<p>Let’s jump right in!</p>
+<h2 id="setting-up-an-oauth-application">Setting up an OAuth application</h2>
+<p>First, <a href="https://github.com/settings/applications/new">register a new application</a> on {% data variables.product.product_name %}. Set the main and callback URLs to <code>http://localhost:4567/</code>. As <a href="/rest/guides/basics-of-authentication">before</a>, we’re going to handle authentication for the API by implementing a Rack middleware using <a href="https://github.com/atmos/sinatra_auth_github">sinatra-auth-github</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;sinatra/auth/github&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">module</span> <span class="dt">Example</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">class</span> <span class="dt">MyGraphApp</span> &lt; <span class="dt">Sinatra</span>::<span class="dt">Base</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="co"># Instead, set and test environment variables, like below</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="co"># if ENV[&#39;GITHUB_CLIENT_ID&#39;] &amp;&amp; ENV[&#39;GITHUB_CLIENT_SECRET&#39;]</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="co">#  CLIENT_ID        = ENV[&#39;GITHUB_CLIENT_ID&#39;]</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="co">#  CLIENT_SECRET    = ENV[&#39;GITHUB_CLIENT_SECRET&#39;]</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="co"># end</span></a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="dt">CLIENT_ID</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_GRAPH_CLIENT_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="dt">CLIENT_SECRET</span> = <span class="dt">ENV</span>[<span class="st">&#39;GH_GRAPH_SECRET_ID&#39;</span>]</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15">    enable <span class="st">:sessions</span></a>
+<a class="sourceLine" id="cb1-16" title="16"></a>
+<a class="sourceLine" id="cb1-17" title="17">    set <span class="st">:github_options</span>, {</a>
+<a class="sourceLine" id="cb1-18" title="18">      <span class="st">:scopes</span>    =&gt; <span class="st">&quot;repo&quot;</span>,</a>
+<a class="sourceLine" id="cb1-19" title="19">      <span class="st">:secret</span>    =&gt; <span class="dt">CLIENT_SECRET</span>,</a>
+<a class="sourceLine" id="cb1-20" title="20">      <span class="st">:client_id</span> =&gt; <span class="dt">CLIENT_ID</span>,</a>
+<a class="sourceLine" id="cb1-21" title="21">      <span class="st">:callback_url</span> =&gt; <span class="st">&quot;/&quot;</span></a>
+<a class="sourceLine" id="cb1-22" title="22">    }</a>
+<a class="sourceLine" id="cb1-23" title="23"></a>
+<a class="sourceLine" id="cb1-24" title="24">    register <span class="dt">Sinatra</span>::<span class="dt">Auth</span>::<span class="dt">Github</span></a>
+<a class="sourceLine" id="cb1-25" title="25"></a>
+<a class="sourceLine" id="cb1-26" title="26">    get <span class="ch">&#39;/&#39;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb1-27" title="27">      <span class="kw">if</span> !authenticated?</a>
+<a class="sourceLine" id="cb1-28" title="28">        authenticate!</a>
+<a class="sourceLine" id="cb1-29" title="29">      <span class="kw">else</span></a>
+<a class="sourceLine" id="cb1-30" title="30">        access_token = github_user[<span class="st">&quot;token&quot;</span>]</a>
+<a class="sourceLine" id="cb1-31" title="31">      <span class="kw">end</span></a>
+<a class="sourceLine" id="cb1-32" title="32">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb1-33" title="33">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb1-34" title="34"><span class="kw">end</span></a></code></pre></div>
+<p>Set up a similar <em>config.ru</em> file as in the previous example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1"><span class="dt">ENV</span>[<span class="st">&#39;RACK_ENV&#39;</span>] ||= <span class="st">&#39;development&#39;</span></a>
+<a class="sourceLine" id="cb2-2" title="2">require <span class="st">&quot;rubygems&quot;</span></a>
+<a class="sourceLine" id="cb2-3" title="3">require <span class="st">&quot;bundler/setup&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5">require <span class="dt">File</span>.expand_path(<span class="dt">File</span>.join(<span class="dt">File</span>.dirname(<span class="dv">__FILE__</span>), <span class="st">&#39;server&#39;</span>))</a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">run <span class="dt">Example</span>::<span class="dt">MyGraphApp</span></a></code></pre></div>
+<h2 id="fetching-repository-information">Fetching repository information</h2>
+<p>This time, in order to talk to the {% data variables.product.product_name %} API, we’re going to use the <a href="https://github.com/octokit/octokit.rb">Octokit Ruby library</a>. This is much easier than directly making a bunch of REST calls. Plus, Octokit was developed by a GitHubber, and is actively maintained, so you know it’ll work.</p>
+<p>Authentication with the API via Octokit is easy. Just pass your login and token to the <code>Octokit::Client</code> constructor:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">if</span> !authenticated?</a>
+<a class="sourceLine" id="cb3-2" title="2">  authenticate!</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">else</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  octokit_client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new(<span class="st">:login</span> =&gt; github_user.login, <span class="st">:oauth_token</span> =&gt; github_user.token)</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">end</span></a></code></pre></div>
+<p>Let’s do something interesting with the data about our repositories. We’re going to see the different programming languages they use, and count which ones are used most often. To do that, we’ll first need a list of our repositories from the API. With Octokit, that looks like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb4-1" title="1">repos = client.repositories</a></code></pre></div>
+<p>Next, we’ll iterate over each repository, and count the language that {% data variables.product.product_name %} associates with it:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb5-1" title="1">language_obj = {}</a>
+<a class="sourceLine" id="cb5-2" title="2">repos.each <span class="kw">do</span> |repo|</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="co"># sometimes language can be nil</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="kw">if</span> repo.language</a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">if</span> !language_obj[repo.language]</a>
+<a class="sourceLine" id="cb5-6" title="6">      language_obj[repo.language] = <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="kw">else</span></a>
+<a class="sourceLine" id="cb5-8" title="8">      language_obj[repo.language] += <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb5-12" title="12"></a>
+<a class="sourceLine" id="cb5-13" title="13">languages.to_s</a></code></pre></div>
+<p>When you restart your server, your web page should display something that looks like this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb6-1" title="1">{<span class="st">&quot;JavaScript&quot;</span>=&gt;<span class="dv">13</span>, <span class="st">&quot;PHP&quot;</span>=&gt;<span class="dv">1</span>, <span class="st">&quot;Perl&quot;</span>=&gt;<span class="dv">1</span>, <span class="st">&quot;CoffeeScript&quot;</span>=&gt;<span class="dv">2</span>, <span class="st">&quot;Python&quot;</span>=&gt;<span class="dv">1</span>, <span class="st">&quot;Java&quot;</span>=&gt;<span class="dv">3</span>, <span class="st">&quot;Ruby&quot;</span>=&gt;<span class="dv">3</span>, <span class="st">&quot;Go&quot;</span>=&gt;<span class="dv">1</span>, <span class="st">&quot;C++&quot;</span>=&gt;<span class="dv">1</span>}</a></code></pre></div>
+<p>So far, so good, but not very human-friendly. A visualization would be great in helping us understand how these language counts are distributed. Let’s feed our counts into D3 to get a neat bar graph representing the popularity of the languages we use.</p>
+<h2 id="visualizing-language-counts">Visualizing language counts</h2>
+<p>D3.js, or just D3, is a comprehensive library for creating many kinds of charts, graphs, and interactive visualizations. Using D3 in detail is beyond the scope of this guide, but for a good introductory article, check out <a href="http://www.recursion.org/d3-for-mere-mortals/">“D3 for Mortals”</a>.</p>
+<p>D3 is a JavaScript library, and likes working with data as arrays. So, let’s convert our Ruby hash into a JSON array for use by JavaScript in the browser.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb7-1" title="1">languages = []</a>
+<a class="sourceLine" id="cb7-2" title="2">language_obj.each <span class="kw">do</span> |lang, count|</a>
+<a class="sourceLine" id="cb7-3" title="3">  languages.push <span class="st">:language</span> =&gt; lang, <span class="st">:count</span> =&gt; count</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6">erb <span class="st">:lang_freq</span>, <span class="st">:locals</span> =&gt; { <span class="st">:languages</span> =&gt; languages.to_json}</a></code></pre></div>
+<p>We’re simply iterating over each key-value pair in our object and pushing them into a new array. The reason we didn’t do this earlier is because we didn’t want to iterate over our <code>language_obj</code> object while we were creating it.</p>
+<p>Now, <em>lang_freq.erb</em> is going to need some JavaScript to support rendering a bar graph. For now, you can just use the code provided here, and refer to the resources linked above if you want to learn more about how D3 works:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb8-1" title="1"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">&lt;html&gt;</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="kw">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="kw">&lt;style&gt;</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    svg {</a>
+<a class="sourceLine" id="cb8-8" title="8">      <span class="kw">padding</span>: <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    }</a>
+<a class="sourceLine" id="cb8-10" title="10">    rect {</a>
+<a class="sourceLine" id="cb8-11" title="11">      <span class="kw">fill</span>: <span class="cn">#2d578b</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    }</a>
+<a class="sourceLine" id="cb8-13" title="13">    text {</a>
+<a class="sourceLine" id="cb8-14" title="14">      <span class="kw">fill</span>: <span class="cn">white</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-15" title="15">    }</a>
+<a class="sourceLine" id="cb8-16" title="16">    text<span class="fu">.yAxis</span> {</a>
+<a class="sourceLine" id="cb8-17" title="17">      <span class="kw">font-size</span>: <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-18" title="18">      <span class="kw">font-family</span>: Helvetica<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-19" title="19">      <span class="kw">fill</span>: <span class="cn">black</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-20" title="20">    }</a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="kw">&lt;/style&gt;</span></a>
+<a class="sourceLine" id="cb8-22" title="22">  <span class="kw">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb8-23" title="23">  <span class="kw">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb8-24" title="24">    <span class="kw">&lt;p&gt;</span>Check this sweet data out:<span class="kw">&lt;/p&gt;</span></a>
+<a class="sourceLine" id="cb8-25" title="25">    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;lang_freq&quot;</span><span class="kw">&gt;&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb8-26" title="26"></a>
+<a class="sourceLine" id="cb8-27" title="27">  <span class="kw">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb8-28" title="28">  <span class="kw">&lt;script&gt;</span></a>
+<a class="sourceLine" id="cb8-29" title="29">    <span class="kw">var</span> data <span class="op">=</span> <span class="op">&lt;%=</span> languages <span class="op">%&gt;;</span></a>
+<a class="sourceLine" id="cb8-30" title="30"></a>
+<a class="sourceLine" id="cb8-31" title="31">    <span class="kw">var</span> barWidth <span class="op">=</span> <span class="dv">40</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-32" title="32">    <span class="kw">var</span> width <span class="op">=</span> (barWidth <span class="op">+</span> <span class="dv">10</span>) <span class="op">*</span> <span class="va">data</span>.<span class="at">length</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-33" title="33">    <span class="kw">var</span> height <span class="op">=</span> <span class="dv">300</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-34" title="34"></a>
+<a class="sourceLine" id="cb8-35" title="35">    <span class="kw">var</span> x <span class="op">=</span> <span class="va">d3</span>.<span class="va">scale</span>.<span class="at">linear</span>().<span class="at">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="va">data</span>.<span class="at">length</span>]).<span class="at">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-36" title="36">    <span class="kw">var</span> y <span class="op">=</span> <span class="va">d3</span>.<span class="va">scale</span>.<span class="at">linear</span>().<span class="at">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="va">d3</span>.<span class="at">max</span>(data<span class="op">,</span> <span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> <span class="va">datum</span>.<span class="at">count</span><span class="op">;</span> <span class="op">}</span>)]).</a>
+<a class="sourceLine" id="cb8-37" title="37">      <span class="at">rangeRound</span>([<span class="dv">0</span><span class="op">,</span> height])<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-38" title="38"></a>
+<a class="sourceLine" id="cb8-39" title="39">    <span class="co">// add the canvas to the DOM</span></a>
+<a class="sourceLine" id="cb8-40" title="40">    <span class="kw">var</span> languageBars <span class="op">=</span> <span class="va">d3</span>.<span class="at">select</span>(<span class="st">&quot;#lang_freq&quot;</span>).</a>
+<a class="sourceLine" id="cb8-41" title="41">      <span class="at">append</span>(<span class="st">&quot;svg:svg&quot;</span>).</a>
+<a class="sourceLine" id="cb8-42" title="42">      <span class="at">attr</span>(<span class="st">&quot;width&quot;</span><span class="op">,</span> width).</a>
+<a class="sourceLine" id="cb8-43" title="43">      <span class="at">attr</span>(<span class="st">&quot;height&quot;</span><span class="op">,</span> height)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-44" title="44"></a>
+<a class="sourceLine" id="cb8-45" title="45">    <span class="va">languageBars</span>.<span class="at">selectAll</span>(<span class="st">&quot;rect&quot;</span>).</a>
+<a class="sourceLine" id="cb8-46" title="46">      <span class="at">data</span>(data).</a>
+<a class="sourceLine" id="cb8-47" title="47">      <span class="at">enter</span>().</a>
+<a class="sourceLine" id="cb8-48" title="48">      <span class="at">append</span>(<span class="st">&quot;svg:rect&quot;</span>).</a>
+<a class="sourceLine" id="cb8-49" title="49">      <span class="at">attr</span>(<span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum<span class="op">,</span> index) <span class="op">{</span> <span class="cf">return</span> <span class="at">x</span>(index)<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-50" title="50">      <span class="at">attr</span>(<span class="st">&quot;y&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> height <span class="op">-</span> <span class="at">y</span>(<span class="va">datum</span>.<span class="at">count</span>)<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-51" title="51">      <span class="at">attr</span>(<span class="st">&quot;height&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> <span class="at">y</span>(<span class="va">datum</span>.<span class="at">count</span>)<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-52" title="52">      <span class="at">attr</span>(<span class="st">&quot;width&quot;</span><span class="op">,</span> barWidth)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-53" title="53"></a>
+<a class="sourceLine" id="cb8-54" title="54">    <span class="va">languageBars</span>.<span class="at">selectAll</span>(<span class="st">&quot;text&quot;</span>).</a>
+<a class="sourceLine" id="cb8-55" title="55">      <span class="at">data</span>(data).</a>
+<a class="sourceLine" id="cb8-56" title="56">      <span class="at">enter</span>().</a>
+<a class="sourceLine" id="cb8-57" title="57">      <span class="at">append</span>(<span class="st">&quot;svg:text&quot;</span>).</a>
+<a class="sourceLine" id="cb8-58" title="58">      <span class="at">attr</span>(<span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum<span class="op">,</span> index) <span class="op">{</span> <span class="cf">return</span> <span class="at">x</span>(index) <span class="op">+</span> barWidth<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-59" title="59">      <span class="at">attr</span>(<span class="st">&quot;y&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> height <span class="op">-</span> <span class="at">y</span>(<span class="va">datum</span>.<span class="at">count</span>)<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-60" title="60">      <span class="at">attr</span>(<span class="st">&quot;dx&quot;</span><span class="op">,</span> <span class="op">-</span>barWidth/<span class="dv">2</span>).</a>
+<a class="sourceLine" id="cb8-61" title="61">      <span class="at">attr</span>(<span class="st">&quot;dy&quot;</span><span class="op">,</span> <span class="st">&quot;1.2em&quot;</span>).</a>
+<a class="sourceLine" id="cb8-62" title="62">      <span class="at">attr</span>(<span class="st">&quot;text-anchor&quot;</span><span class="op">,</span> <span class="st">&quot;middle&quot;</span>).</a>
+<a class="sourceLine" id="cb8-63" title="63">      <span class="at">text</span>(<span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> <span class="va">datum</span>.<span class="at">count</span><span class="op">;}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-64" title="64"></a>
+<a class="sourceLine" id="cb8-65" title="65">    <span class="va">languageBars</span>.<span class="at">selectAll</span>(<span class="st">&quot;text.yAxis&quot;</span>).</a>
+<a class="sourceLine" id="cb8-66" title="66">      <span class="at">data</span>(data).</a>
+<a class="sourceLine" id="cb8-67" title="67">      <span class="at">enter</span>().<span class="at">append</span>(<span class="st">&quot;svg:text&quot;</span>).</a>
+<a class="sourceLine" id="cb8-68" title="68">      <span class="at">attr</span>(<span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="kw">function</span>(datum<span class="op">,</span> index) <span class="op">{</span> <span class="cf">return</span> <span class="at">x</span>(index) <span class="op">+</span> barWidth<span class="op">;</span> <span class="op">}</span>).</a>
+<a class="sourceLine" id="cb8-69" title="69">      <span class="at">attr</span>(<span class="st">&quot;y&quot;</span><span class="op">,</span> height).</a>
+<a class="sourceLine" id="cb8-70" title="70">      <span class="at">attr</span>(<span class="st">&quot;dx&quot;</span><span class="op">,</span> <span class="op">-</span>barWidth/<span class="dv">2</span>).</a>
+<a class="sourceLine" id="cb8-71" title="71">      <span class="at">attr</span>(<span class="st">&quot;text-anchor&quot;</span><span class="op">,</span> <span class="st">&quot;middle&quot;</span>).</a>
+<a class="sourceLine" id="cb8-72" title="72">      <span class="at">text</span>(<span class="kw">function</span>(datum) <span class="op">{</span> <span class="cf">return</span> <span class="va">datum</span>.<span class="at">language</span><span class="op">;}</span>).</a>
+<a class="sourceLine" id="cb8-73" title="73">      <span class="at">attr</span>(<span class="st">&quot;transform&quot;</span><span class="op">,</span> <span class="st">&quot;translate(0, 18)&quot;</span>).</a>
+<a class="sourceLine" id="cb8-74" title="74">      <span class="at">attr</span>(<span class="st">&quot;class&quot;</span><span class="op">,</span> <span class="st">&quot;yAxis&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-75" title="75">  <span class="kw">&lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb8-76" title="76"><span class="kw">&lt;/html&gt;</span></a></code></pre></div>
+<p>Phew! Again, don’t worry about what most of this code is doing. The relevant part here is a line way at the top–<code>var data = &lt;%= languages %&gt;;</code>–which indicates that we’re passing our previously created <code>languages</code> array into ERB for manipulation.</p>
+<p>As the “D3 for Mortals” guide suggests, this isn’t necessarily the best use of D3. But it does serve to illustrate how you can use the library, along with Octokit, to make some really amazing things.</p>
+<h2 id="combining-different-api-calls">Combining different API calls</h2>
+<p>Now it’s time for a confession: the <code>language</code> attribute within repositories only identifies the “primary” language defined. That means that if you have a repository that combines several languages, the one with the most bytes of code is considered to be the primary language.</p>
+<p>Let’s combine a few API calls to get a <em>true</em> representation of which language has the greatest number of bytes written across all our code. A <a href="https://www.d3-graph-gallery.com/treemap.html">treemap</a> should be a great way to visualize the sizes of our coding languages used, rather than simply the count. We’ll need to construct an array of objects that looks something like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;language1&quot;</span><span class="fu">,</span> <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">100</span><span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;language2&quot;</span><span class="fu">,</span> <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">23</span><span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="er">...</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ot">]</span></a></code></pre></div>
+<p>Since we already have a list of repositories above, let’s inspect each one, and call <a href="/rest/reference/repos#list-repository-languages">the language listing API method</a>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb10-1" title="1">repos.each <span class="kw">do</span> |repo|</a>
+<a class="sourceLine" id="cb10-2" title="2">  repo_name = repo.name</a>
+<a class="sourceLine" id="cb10-3" title="3">  repo_langs = octokit_client.languages(<span class="st">&quot;</span><span class="ot">#{</span>github_user.login<span class="ot">}</span><span class="st">/</span><span class="ot">#{</span>repo_name<span class="ot">}</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw">end</span></a></code></pre></div>
+<p>From there, we’ll cumulatively add each language found to a list of languages:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb11-1" title="1">repo_langs.each <span class="kw">do</span> |lang, count|</a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="kw">if</span> !language_obj[lang]</a>
+<a class="sourceLine" id="cb11-3" title="3">    language_obj[lang] = count</a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="kw">else</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    language_obj[lang] += count</a>
+<a class="sourceLine" id="cb11-6" title="6">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="kw">end</span></a></code></pre></div>
+<p>After that, we’ll format the contents into a structure that D3 understands:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb12-1" title="1">language_obj.each <span class="kw">do</span> |lang, count|</a>
+<a class="sourceLine" id="cb12-2" title="2">  language_byte_count.push <span class="st">:name</span> =&gt; <span class="st">&quot;</span><span class="ot">#{</span>lang<span class="ot">}</span><span class="st"> (</span><span class="ot">#{</span>count<span class="ot">}</span><span class="st">)&quot;</span>, <span class="st">:count</span> =&gt; count</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co"># some mandatory formatting for D3</span></a>
+<a class="sourceLine" id="cb12-6" title="6">language_bytes = [ <span class="st">:name</span> =&gt; <span class="st">&quot;language_bytes&quot;</span>, <span class="st">:elements</span> =&gt; language_byte_count]</a></code></pre></div>
+<p>(For more information on D3 tree map magic, check out <a href="/rest/reference/repos#list-repository-languages">this simple tutorial</a>.)</p>
+<p>To wrap up, we pass this JSON information over to the same ERB template:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb13-1" title="1">erb <span class="st">:lang_freq</span>, <span class="st">:locals</span> =&gt; { <span class="st">:languages</span> =&gt; languages.to_json, <span class="st">:language_byte_count</span> =&gt; language_bytes.to_json}</a></code></pre></div>
+<p>Like before, here’s a bunch of JavaScript that you can drop directly into your template:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;byte_freq&quot;</span><span class="kw">&gt;&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">&lt;script&gt;</span></a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="kw">var</span> language_bytes <span class="op">=</span> <span class="op">&lt;%=</span> language_byte_count <span class="op">%&gt;</span></a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="kw">var</span> childrenFunction <span class="op">=</span> <span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">elements</span><span class="op">};</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="kw">var</span> sizeFunction <span class="op">=</span> <span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">count</span><span class="op">;};</span></a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="kw">var</span> colorFunction <span class="op">=</span> <span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">Math</span>.<span class="at">floor</span>(<span class="va">Math</span>.<span class="at">random</span>()<span class="op">*</span><span class="dv">20</span>)<span class="op">};</span></a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="kw">var</span> nameFunction <span class="op">=</span> <span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">name</span><span class="op">;};</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="kw">var</span> color <span class="op">=</span> <span class="va">d3</span>.<span class="va">scale</span>.<span class="at">linear</span>()</a>
+<a class="sourceLine" id="cb14-10" title="10">              .<span class="at">domain</span>([<span class="dv">0</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">15</span><span class="op">,</span><span class="dv">20</span>])</a>
+<a class="sourceLine" id="cb14-11" title="11">              .<span class="at">range</span>([<span class="st">&quot;grey&quot;</span><span class="op">,</span><span class="st">&quot;green&quot;</span><span class="op">,</span><span class="st">&quot;yellow&quot;</span><span class="op">,</span><span class="st">&quot;red&quot;</span>])<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13">  <span class="at">drawTreemap</span>(<span class="dv">5000</span><span class="op">,</span> <span class="dv">2000</span><span class="op">,</span> <span class="st">&#39;#byte_freq&#39;</span><span class="op">,</span> language_bytes<span class="op">,</span> childrenFunction<span class="op">,</span> nameFunction<span class="op">,</span> sizeFunction<span class="op">,</span> colorFunction<span class="op">,</span> color)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-14" title="14"></a>
+<a class="sourceLine" id="cb14-15" title="15">  <span class="kw">function</span> <span class="at">drawTreemap</span>(height<span class="op">,</span>width<span class="op">,</span>elementSelector<span class="op">,</span>language_bytes<span class="op">,</span>childrenFunction<span class="op">,</span>nameFunction<span class="op">,</span>sizeFunction<span class="op">,</span>colorFunction<span class="op">,</span>colorScale)<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-16" title="16"></a>
+<a class="sourceLine" id="cb14-17" title="17">      <span class="kw">var</span> treemap <span class="op">=</span> <span class="va">d3</span>.<span class="va">layout</span>.<span class="at">treemap</span>()</a>
+<a class="sourceLine" id="cb14-18" title="18">          .<span class="at">children</span>(childrenFunction)</a>
+<a class="sourceLine" id="cb14-19" title="19">          .<span class="at">size</span>([width<span class="op">,</span>height])</a>
+<a class="sourceLine" id="cb14-20" title="20">          .<span class="at">value</span>(sizeFunction)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-21" title="21"></a>
+<a class="sourceLine" id="cb14-22" title="22">      <span class="kw">var</span> div <span class="op">=</span> <span class="va">d3</span>.<span class="at">select</span>(elementSelector)</a>
+<a class="sourceLine" id="cb14-23" title="23">          .<span class="at">append</span>(<span class="st">&quot;div&quot;</span>)</a>
+<a class="sourceLine" id="cb14-24" title="24">          .<span class="at">style</span>(<span class="st">&quot;position&quot;</span><span class="op">,</span><span class="st">&quot;relative&quot;</span>)</a>
+<a class="sourceLine" id="cb14-25" title="25">          .<span class="at">style</span>(<span class="st">&quot;width&quot;</span><span class="op">,</span>width <span class="op">+</span> <span class="st">&quot;px&quot;</span>)</a>
+<a class="sourceLine" id="cb14-26" title="26">          .<span class="at">style</span>(<span class="st">&quot;height&quot;</span><span class="op">,</span>height <span class="op">+</span> <span class="st">&quot;px&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-27" title="27"></a>
+<a class="sourceLine" id="cb14-28" title="28">      <span class="va">div</span>.<span class="at">data</span>(language_bytes).<span class="at">selectAll</span>(<span class="st">&quot;div&quot;</span>)</a>
+<a class="sourceLine" id="cb14-29" title="29">          .<span class="at">data</span>(<span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">treemap</span>.<span class="at">nodes</span>(d)<span class="op">;}</span>)</a>
+<a class="sourceLine" id="cb14-30" title="30">          .<span class="at">enter</span>()</a>
+<a class="sourceLine" id="cb14-31" title="31">          .<span class="at">append</span>(<span class="st">&quot;div&quot;</span>)</a>
+<a class="sourceLine" id="cb14-32" title="32">          .<span class="at">attr</span>(<span class="st">&quot;class&quot;</span><span class="op">,</span><span class="st">&quot;cell&quot;</span>)</a>
+<a class="sourceLine" id="cb14-33" title="33">          .<span class="at">style</span>(<span class="st">&quot;background&quot;</span><span class="op">,</span><span class="kw">function</span>(d)<span class="op">{</span> <span class="cf">return</span> <span class="at">colorScale</span>(<span class="at">colorFunction</span>(d))<span class="op">;}</span>)</a>
+<a class="sourceLine" id="cb14-34" title="34">          .<span class="at">call</span>(cell)</a>
+<a class="sourceLine" id="cb14-35" title="35">          .<span class="at">text</span>(nameFunction)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-36" title="36">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-37" title="37"></a>
+<a class="sourceLine" id="cb14-38" title="38">  <span class="kw">function</span> <span class="at">cell</span>()<span class="op">{</span></a>
+<a class="sourceLine" id="cb14-39" title="39">      <span class="kw">this</span></a>
+<a class="sourceLine" id="cb14-40" title="40">          .<span class="at">style</span>(<span class="st">&quot;left&quot;</span><span class="op">,</span><span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">x</span> <span class="op">+</span> <span class="st">&quot;px&quot;</span><span class="op">;}</span>)</a>
+<a class="sourceLine" id="cb14-41" title="41">          .<span class="at">style</span>(<span class="st">&quot;top&quot;</span><span class="op">,</span><span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">y</span> <span class="op">+</span> <span class="st">&quot;px&quot;</span><span class="op">;}</span>)</a>
+<a class="sourceLine" id="cb14-42" title="42">          .<span class="at">style</span>(<span class="st">&quot;width&quot;</span><span class="op">,</span><span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">dx</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> <span class="st">&quot;px&quot;</span><span class="op">;}</span>)</a>
+<a class="sourceLine" id="cb14-43" title="43">          .<span class="at">style</span>(<span class="st">&quot;height&quot;</span><span class="op">,</span><span class="kw">function</span>(d)<span class="op">{</span><span class="cf">return</span> <span class="va">d</span>.<span class="at">dy</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> <span class="st">&quot;px&quot;</span><span class="op">;}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-44" title="44">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-45" title="45"><span class="kw">&lt;/script&gt;</span></a></code></pre></div>
+<p>Et voila! Beautiful rectangles containing your repo languages, with relative proportions that are easy to see at a glance. You might need to tweak the height and width of your treemap, passed as the first two arguments to <code>drawTreemap</code> above, to get all the information to show up properly.</p>
+</body>
+</html>

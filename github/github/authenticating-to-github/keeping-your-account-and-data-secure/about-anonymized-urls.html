@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About anonymized URLs</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About anonymized URLs</h1>
+</header>
+<p>To host your images, {% data variables.product.product_name %} uses the <a href="https://github.com/atmos/camo">open-source project Camo</a>. Camo generates an anonymous URL proxy for each file which hides your browser details and related information from other users. The URL starts <code>https://&lt;subdomain&gt;.githubusercontent.com/</code>, with different subdomains depending on how you uploaded the image.</p>
+<p>Videos also get anonymized URLs with the same format as image URLs, but are not processed through Camo. This is because {% data variables.product.prodname_dotcom %} does not support externally hosted videos, so the anonymized URL is a link to the uploaded video hosted by {% data variables.product.prodname_dotcom %}.</p>
+<p>Anyone who receives your anonymized URL, directly or indirectly, may view your image or video. To keep sensitive media files private, restrict them to a private network or a server that requires authentication instead of using Camo.</p>
+<h2 id="troubleshooting-issues-with-camo">Troubleshooting issues with Camo</h2>
+<p>In rare circumstances, images that are processed through Camo might not appear on {% data variables.product.prodname_dotcom %}. Here are some steps you can take to determine where the problem lies.</p>
+<p>{% windows %}</p>
+<p>{% tip %}</p>
+<p>Windows users will either need to use the Git Powershell (which is installed alongside <a href="https://desktop.github.com/">{% data variables.product.prodname_desktop %}</a>) or download <a href="http://curl.haxx.se/download.html">curl for Windows</a>.</p>
+<p>{% endtip %}</p>
+<p>{% endwindows %}</p>
+<h3 id="an-image-is-not-showing-up">An image is not showing up</h3>
+<p>If an image is showing up in your browser but not on {% data variables.product.prodname_dotcom %}, you can try requesting it locally.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 1. Request the image headers using <code>curl</code>. <code>shell   $ curl -I https://www.my-server.com/images/some-image.png   &gt; HTTP/2 200   &gt; Date: Fri, 06 Jun 2014 07:27:43 GMT   &gt; Expires: Sun, 06 Jul 2014 07:27:43 GMT   &gt; Content-Type: image/x-png   &gt; Server: Google Frontend   &gt; Content-Length: 6507</code> 3. Check the value of <code>Content-Type</code>. In this case, it’s <code>image/x-png</code>. 4. Check that content type against <a href="https://github.com/atmos/camo/blob/master/mime-types.json">the list of types supported by Camo</a>.</p>
+<p>If your content type is not supported by Camo, you can try several actions: * If you own the server that’s hosting the image, modify it so that it returns a correct content type for images. * If you’re using an external service for hosting images, contact support for that service. * Make a pull request to Camo to add your content type to the list.</p>
+<h3 id="an-image-that-changed-recently-is-not-updating">An image that changed recently is not updating</h3>
+<p>If you changed an image recently and it’s showing up in your browser but not {% data variables.product.prodname_dotcom %}, you can try resetting the cache of the image.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 1. Request the image headers using <code>curl</code>. <code>shell   $ curl -I https://www.my-server.com/images/some-image.png   &gt; HTTP/2 200   &gt; Expires: Fri, 01 Jan 1984 00:00:00 GMT   &gt; Content-Type: image/png   &gt; Content-Length: 2339   &gt; Server: Jetty(8.y.z-SNAPSHOT)</code></p>
+<p>Check the value of <code>Cache-Control</code>. In this example, there’s no <code>Cache-Control</code>. In that case: * If you own the server that’s hosting the image, modify it so that it returns a <code>Cache-Control</code> of <code>no-cache</code> for images. * If you’re using an external service for hosting images, contact support for that service.</p>
+<p>If <code>Cache-Control</code> <em>is</em> set to <code>no-cache</code>, contact {% data variables.contact.contact_support %} or search the {% data variables.contact.community_support_forum %}.</p>
+<h3 id="removing-an-image-from-camos-cache">Removing an image from Camo’s cache</h3>
+<p>Purging the cache forces every {% data variables.product.prodname_dotcom %} user to re-request the image, so you should use it very sparingly and only in the event that the above steps did not work.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 1. Purge the image using <code>curl -X PURGE</code> on the Camo URL. <code>shell   $ curl -X PURGE https://camo.githubusercontent.com/4d04abe0044d94fefcf9af2133223....   &gt; {"status": "ok", "id": "216-8675309-1008701"}</code></p>
+<h3 id="viewing-images-on-private-networks">Viewing images on private networks</h3>
+<p>If an image is being served from a private network or from a server that requires authentication, it can’t be viewed by {% data variables.product.prodname_dotcom %}. In fact, it can’t be viewed by any user without asking them to log into the server.</p>
+<p>To fix this, please move the image to a service that is publicly available.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="https://github.com/blog/1766-proxying-user-images">Proxying user images</a>” on {% data variables.product.prodname_blog %}</li>
+</ul>
+</body>
+</html>

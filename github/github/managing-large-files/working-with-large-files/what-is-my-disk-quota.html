@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>What is my disk quota?</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">What is my disk quota?</h1>
+</header>
+<p>{% data reusables.large_files.use_lfs_tip %}</p>
+<h2 id="file-and-repository-size-limitations">File and repository size limitations</h2>
+<p>To ensure performance and reliability for our users, we actively monitor signals of overall repository health. Repository health is a function of various interacting factors, including size, commit frequency, contents, and structure.</p>
+<p>We recommend repositories remain small, ideally less than 1 GB, and less than 5 GB is strongly recommended. Smaller repositories are faster to clone and easier to work with and maintain. Individual files in a repository are strictly limited to a {% data variables.large_files.max_github_size %} maximum size limit. For more information, see “<a href="/github/managing-large-files/working-with-large-files">Working with large files</a>.”</p>
+<p>If your repository excessively impacts our infrastructure, you might receive an email from {% data variables.contact.github_support %} asking you to take corrective action. We try to be flexible, especially with large projects that have many collaborators, and will work with you to find a resolution whenever possible. You can prevent your repository from impacting our infrastructure by effectively managing your repository’s size and overall health. You can find advice and a tool for repository analysis in the <a href="https://github.com/github/git-sizer"><code>github/git-sizer</code></a> repository.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you add a file to a repository via a browser, the file can be no larger than {% data variables.large_files.max_github_browser_size %}. For more information, see “<a href="/github/managing-files-in-a-repository/adding-a-file-to-a-repository">Adding a file to a repository</a>.”</p>
+<p>{% endnote %}</p>
+<h2 id="backups">Backups</h2>
+<p>Git is not designed to serve as a backup tool. However, there are many solutions specifically designed for performing backups, such as <a href="https://www.arqbackup.com/">Arq</a>, <a href="http://www.carbonite.com/">Carbonite</a>, and <a href="https://www.crashplan.com/en-us/">CrashPlan</a>.</p>
+<h2 id="database-dumps">Database dumps</h2>
+<p>Version control systems, such as Git, are not designed to handle large SQL files. To share large databases with other developers, we recommend using <a href="https://www.dropbox.com/">Dropbox</a>.</p>
+<p>Git shouldn’t be used to backup your production servers. For more information, see “<a href="/github/managing-large-files/what-is-my-disk-quota#backups">Backups</a>.”</p>
+<h2 id="external-dependencies">External dependencies</h2>
+<p>External dependencies can cause Git repositories to become very large. To avoid filling a repository with external dependencies, we recommend you use a package manager. Popular package managers for common languages include <a href="http://bundler.io/">Bundler</a>, <a href="http://npmjs.org/">Node’s Package Manager</a>, and <a href="http://maven.apache.org/">Maven</a>. These package managers support using Git repositories directly, so you don’t need pre-packaged sources.</p>
+<h2 id="packaged-release-versions">Packaged release versions</h2>
+<p>We don’t recommend distributing compiled code and pre-packaged releases within your repository. For more information, see “<a href="/github/managing-large-files/distributing-large-binaries">Distributing large binaries</a>.”</p>
+<h2 id="changing-history-of-an-existing-repository">Changing history of an existing repository</h2>
+<p>If you already have a repository that’s quite large, you can reduce the size of a repository by removing large files from the repository’s history. For more information, see “<a href="/github/managing-large-files/removing-files-from-a-repositorys-history">Removing files from a repository’s history</a>.”</p>
+</body>
+</html>

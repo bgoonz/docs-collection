@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Syntax for issue forms</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Syntax for issue forms</h1>
+</header>
+<p>{% data reusables.community.issue-forms-beta %}</p>
+<h2 id="about-yaml-syntax-for-issue-forms">About YAML syntax for issue forms</h2>
+<p>You can create custom issue forms by adding a YAML form definition file to the <code>/.github/ISSUE_TEMPLATE</code> folder in your repository. {% data reusables.actions.learn-more-about-yaml %} You can define different input types, validations, default assignees, and default labels for your issue forms.</p>
+<p>When a contributor fills out an issue form, their responses for each input are converted to markdown and added to the body of an issue. Contributors can edit their issues that were created with issue forms and other people can interact with the issues like an issue created through other methods.</p>
+<p>This example YAML configuration file defines an issue form using several inputs to report a bug.</p>
+<p>{% data reusables.community.issue-forms-sample %}</p>
+<h2 id="top-level-syntax">Top-level syntax</h2>
+<p>All issue form configuration files must begin with <code>name</code>, <code>description</code>, and <code>body</code> key-value pairs.</p>
+<pre class="yaml{:copy}"><code>name:
+description:
+body:</code></pre>
+<p>You can set the following top-level keys for each issue form.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Required</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>name</code></td>
+<td style="text-align: left;">A name for the issue form template. Must be unique from all other templates, including Markdown templates.</td>
+<td style="text-align: left;">Required</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>description</code></td>
+<td style="text-align: left;">A description for the issue form template, which appears in the template chooser interface.</td>
+<td style="text-align: left;">Required</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>body</code></td>
+<td style="text-align: left;">Definition of the input types in the form.</td>
+<td style="text-align: left;">Required</td>
+<td style="text-align: left;">Array</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>assignees</code></td>
+<td style="text-align: left;">People who will be automatically assigned to issues created with this template.</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Array or comma-delimited string</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>labels</code></td>
+<td style="text-align: left;">Labels that will automatically be added to issues created with this template.</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>title</code></td>
+<td style="text-align: left;">A default title that will be pre-populated in the issue submission form.</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>For the available <code>body</code> input types and their syntaxes, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema">Syntax for {% data variables.product.prodname_dotcom %}’s form schema</a>.”</p>
+<h2 id="converting-a-markdown-issue-template-to-a-yaml-issue-form-template">Converting a Markdown issue template to a YAML issue form template</h2>
+<p>You can use both Markdown and YAML issue templates in your repository. If you want to convert a Markdown issue template to a YAML issue form template, you must create a new YAML file to define the issue form. You can manually transpose an existing Markdown issue template to a YAML issue form. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms">Configuring issue templates for your repository</a>.”</p>
+<p>If you want to use the same file name for your YAML issue form, you must delete the Markdown issue template when you commit the new file to your repository.</p>
+<p>An example of a Markdown issue template and a corresponding YAML issue form template are below.</p>
+<h3 id="markdown-issue-template">Markdown issue template</h3>
+<pre class="markdown{:copy}"><code>---
+name: 🐞 Bug
+about: File a bug/issue
+title: &#39;[BUG] &lt;title&gt;&#39;
+labels: Bug, Needs Triage
+assignees: &#39;&#39;
+
+---
+
+{% raw %}&lt;{% endraw %}!--
+Note: Please search to see if an issue already exists for the bug you encountered.
+--{% raw %}&gt;{% endraw %}
+
+### Current Behavior:
+{% raw %}&lt;{% endraw %}!-- A concise description of what you&#39;re experiencing. --{% raw %}&gt;{% endraw %}
+
+### Expected Behavior:
+{% raw %}&lt;{% endraw %}!-- A concise description of what you expected to happen. --{% raw %}&gt;{% endraw %}
+
+### Steps To Reproduce:
+{% raw %}&lt;{% endraw %}!--
+Example: steps to reproduce the behavior:
+1. In this environment...
+2. With this config...
+3. Run &#39;...&#39;
+4. See error...
+--{% raw %}&gt;{% endraw %}
+
+### Environment:
+{% raw %}&lt;{% endraw %}!--
+Example:
+- OS: Ubuntu 20.04
+- Node: 13.14.0
+- npm: 7.6.3
+--{% raw %}&gt;{% endraw %}
+
+### Anything else:
+{% raw %}&lt;{% endraw %}!--
+Links? References? Anything that will give us more context about the issue that you are encountering!
+--{% raw %}&gt;{% endraw %}</code></pre>
+<h3 id="yaml-issue-form-template">YAML issue form template</h3>
+<pre class="yaml{:copy}"><code>name: 🐞 Bug
+description: File a bug/issue
+title: &quot;[BUG] &lt;title&gt;&quot;
+labels: [Bug, Needs Triage]
+body:
+- type: checkboxes
+  attributes:
+    label: Is there an existing issue for this?
+    description: Please search to see if an issue already exists for the bug you encountered.
+    options:
+    - label: I have searched the existing issues
+      required: true
+- type: textarea
+  attributes:
+    label: Current Behavior
+    description: A concise description of what you&#39;re experiencing.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A concise description of what you expected to happen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Steps To Reproduce
+    description: Steps to reproduce the behavior.
+    placeholder: |
+      1. In this environment...
+      2. With this config...
+      3. Run &#39;...&#39;
+      4. See error...
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Environment
+    description: |
+      examples:
+        - **OS**: Ubuntu 20.04
+        - **Node**: 13.14.0
+        - **npm**: 7.6.3
+    value: |
+        - OS: 
+        - Node: 
+        - npm: 
+    render: markdown
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Anything else?
+    description: |
+      Links? References? Anything that will give us more context about the issue you are encountering!
+      
+      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+  validations:
+    required: false</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://yaml.org/">YAML</a></li>
+</ul>
+</body>
+</html>

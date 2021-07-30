@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About SSH certificate authorities</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About SSH certificate authorities</h1>
+</header>
+<p>An SSH certificate is a mechanism for one SSH key to sign another SSH key. If you use an SSH certificate authority (CA) to provide your organization members with signed SSH certificates, you can add the CA to your enterprise account or organization to allow organization members to use their certificates to access organization resources. For more information, see “<a href="/articles/managing-your-organizations-ssh-certificate-authorities">Managing your organization’s SSH certificate authorities</a>.”</p>
+<p>After you add an SSH CA to your organization or enterprise account, you can use the CA to sign client SSH certificates for organization members. Organization members can use the signed certificates to access your organization’s repositories (and only your organization’s repositories) with Git. You can require that members use SSH certificates to access organization resources.{% ifversion fpt %} For more information, see “<a href="/articles/enforcing-security-settings-in-your-enterprise-account#managing-your-enterprise-accounts-ssh-certificate-authorities">Enforcing security settings in your enterprise account</a>.”{% endif %}</p>
+<p>For example, you can build an internal system that issues a new certificate to your developers every morning. Each developer can use their daily certificate to work on your organization’s repositories on {% data variables.product.product_name %}. At the end of the day, the certificate can automatically expire, protecting your repositories if the certificate is later compromised.</p>
+<p>When you issue each certificate, you must include an extension that specifies which {% data variables.product.product_name %} user the certificate is for. For example, you can use OpenSSH’s <code>ssh-keygen</code> command, replacing <em>KEY-IDENTITY</em> with your key identity and <em>USERNAME</em> with a {% data variables.product.product_name %} username.</p>
+<pre class="shell"><code>$ ssh-keygen -s ./ca-key -I &lt;em&gt;KEY-IDENTITY&lt;/em&gt; -O extension:login@{% data variables.product.product_url %}=&lt;em&gt;USERNAME&lt;/em&gt; ./user-key.pub</code></pre>
+<p>To issue a certificate for someone who uses SSH to access multiple {% data variables.product.company_short %} products, you can include two login extensions to specify the username for each product. For example, the following command would issue a certificate for <em>USERNAME-1</em> for the user’s account for {% data variables.product.prodname_ghe_cloud %}, and <em>USERNAME-2</em> for the user’s account on {% data variables.product.prodname_ghe_managed %} or {% data variables.product.prodname_ghe_server %} at <em>HOSTNAME</em>.</p>
+<pre class="shell"><code>$ ssh-keygen -s ./ca-key -I &lt;em&gt;KEY-IDENTITY&lt;/em&gt; -O extension:login@github.com=&lt;em&gt;USERNAME-1&lt;/em&gt; extension:login@&lt;em&gt;HOSTNAME&lt;/em&gt;=&lt;em&gt;USERNAME-2&lt;/em&gt; ./user-key.pub</code></pre>
+<p>You can restrict the IP addresses from which an organization member can access your organization’s resources by using a <code>source-address</code> extension. The extension accepts a specific IP address or a range of IP addresses using CIDR notation. You can specify multiple addresses or ranges by separating the values with commas. For more information, see “<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation">Classless Inter-Domain Routing</a>” on Wikipedia.</p>
+<pre class="shell"><code>$ ssh-keygen -s ./ca-key -I &lt;em&gt;KEY-IDENTITY&lt;/em&gt; -O extension:login@{% data variables.product.product_url %}=&lt;em&gt;USERNAME&lt;/em&gt; -O source-address=&lt;em&gt;COMMA-SEPARATED-LIST-OF-IP-ADDRESSES-OR-RANGES&lt;/em&gt; ./user-key.pub</code></pre>
+<p>{% ifversion fpt %}</p>
+<p>Organization members can use their signed certificates for authentication even if you’ve enforced SAML single sign-on. Unless you make SSH certificates a requirement, organization members can continue to use other means of authentication to access your organization’s resources with Git, including their username and password, personal access tokens, and their own SSH keys.</p>
+<p>{% endif %}</p>
+<p>To prevent authentication errors, organization members should use a special URL that includes the organization ID to clone repositories using signed certificates. Anyone with read access to the repository can find this URL on the repository page. For more information, see “<a href="/articles/cloning-a-repository">Cloning a repository</a>.”</p>
+</body>
+</html>

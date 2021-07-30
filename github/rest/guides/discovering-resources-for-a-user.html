@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Discovering resources for a user</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Discovering resources for a user</h1>
+</header>
+<p>When making authenticated requests to the {% data variables.product.product_name %} API, applications often need to fetch the current user’s repositories and organizations. In this guide, we’ll explain how to reliably discover those resources.</p>
+<p>To interact with the {% data variables.product.product_name %} API, we’ll be using <a href="https://github.com/octokit/octokit.rb">Octokit.rb</a>. You can find the complete source code for this project in the <a href="https://github.com/github/platform-samples/tree/master/api/ruby/discovering-resources-for-a-user">platform-samples</a> repository.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>If you haven’t already, you should read the <a href="/rest/guides/basics-of-authentication">“Basics of Authentication”</a> guide before working through the examples below. The examples below assume that you have <a href="/rest/guides/basics-of-authentication#registering-your-app">registered an OAuth application</a> and that your <a href="/rest/guides/basics-of-authentication#making-authenticated-requests">application has an OAuth token for a user</a>.</p>
+<h2 id="discover-the-repositories-that-your-app-can-access-for-a-user">Discover the repositories that your app can access for a user</h2>
+<p>In addition to having their own personal repositories, a user may be a collaborator on repositories owned by other users and organizations. Collectively, these are the repositories where the user has privileged access: either it’s a private repository where the user has read or write access, or it’s a {% ifversion not ghae %}public{% else %}internal{% endif %} repository where the user has write access.</p>
+<p><a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">OAuth scopes</a> and <a href="https://developer.github.com/changes/2015-01-19-an-integrators-guide-to-organization-application-policies/">organization application policies</a> determine which of those repositories your app can access for a user. Use the workflow below to discover those repositories.</p>
+<p>As always, first we’ll require <a href="https://github.com/octokit/octokit.rb">GitHub’s Octokit.rb</a> Ruby library. Then we’ll configure Octokit.rb to automatically handle <a href="/rest#pagination">pagination</a> for us.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="dt">Octokit</span>.auto_paginate = <span class="dv">true</span></a></code></pre></div>
+<p>Next, we’ll pass in our application’s <a href="/rest/guides/basics-of-authentication#making-authenticated-requests">OAuth token for a given user</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># Instead, set and test environment variables, like below.</span></a>
+<a class="sourceLine" id="cb2-3" title="3">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&quot;OAUTH_ACCESS_TOKEN&quot;</span>]</a></code></pre></div>
+<p>Then, we’re ready to fetch the <a href="/rest/reference/repos#list-repositories-for-the-authenticated-user">repositories that our application can access for the user</a>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1">client.repositories.each <span class="kw">do</span> |repository|</a>
+<a class="sourceLine" id="cb3-2" title="2">  full_name = repository[<span class="st">:full_name</span>]</a>
+<a class="sourceLine" id="cb3-3" title="3">  has_push_access = repository[<span class="st">:permissions</span>][<span class="st">:push</span>]</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5">  access_type <span class="kw">= if</span> has_push_access</a>
+<a class="sourceLine" id="cb3-6" title="6">                  <span class="st">&quot;write&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">                <span class="kw">else</span></a>
+<a class="sourceLine" id="cb3-8" title="8">                  <span class="st">&quot;read-only&quot;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">                <span class="kw">end</span></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">  puts <span class="st">&quot;User has </span><span class="ot">#{</span>access_type<span class="ot">}</span><span class="st"> access to </span><span class="ot">#{</span>full_name<span class="ot">}</span><span class="st">.&quot;</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw">end</span></a></code></pre></div>
+<h2 id="discover-the-organizations-that-your-app-can-access-for-a-user">Discover the organizations that your app can access for a user</h2>
+<p>Applications can perform all sorts of organization-related tasks for a user. To perform these tasks, the app needs an <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">OAuth authorization</a> with sufficient permission. For example, the <code>read:org</code> scope allows you to <a href="/rest/reference/teams#list-teams">list teams</a>, and the <code>user</code> scope lets you <a href="/rest/reference/orgs#set-public-organization-membership-for-the-authenticated-user">publicize the user’s organization membership</a>. Once a user has granted one or more of these scopes to your app, you’re ready to fetch the user’s organizations.</p>
+<p>Just as we did when discovering repositories above, we’ll start by requiring <a href="https://github.com/octokit/octokit.rb">GitHub’s Octokit.rb</a> Ruby library and configuring it to take care of <a href="/rest#pagination">pagination</a> for us:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb4-1" title="1">require <span class="st">&#39;octokit&#39;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="dt">Octokit</span>.auto_paginate = <span class="dv">true</span></a></code></pre></div>
+<p>Next, we’ll pass in our application’s <a href="/rest/guides/basics-of-authentication#making-authenticated-requests">OAuth token for a given user</a> to initialize our API client:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co"># Instead, set and test environment variables, like below.</span></a>
+<a class="sourceLine" id="cb5-3" title="3">client = <span class="dt">Octokit</span>::<span class="dt">Client</span>.new <span class="st">:access_token</span> =&gt; <span class="dt">ENV</span>[<span class="st">&quot;OAUTH_ACCESS_TOKEN&quot;</span>]</a></code></pre></div>
+<p>Then, we can <a href="/rest/reference/orgs#list-organizations-for-the-authenticated-user">list the organizations that our application can access for the user</a>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb6-1" title="1">client.organizations.each <span class="kw">do</span> |organization|</a>
+<a class="sourceLine" id="cb6-2" title="2">  puts <span class="st">&quot;User belongs to the </span><span class="ot">#{</span>organization[<span class="st">:login</span>]<span class="ot">}</span><span class="st"> organization.&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">end</span></a></code></pre></div>
+<h3 id="return-all-of-the-users-organization-memberships">Return all of the user’s organization memberships</h3>
+<p>If you’ve read the docs from cover to cover, you may have noticed an <a href="/rest/reference/orgs#list-organizations-for-a-user">API method for listing a user’s public organization memberships</a>. Most applications should avoid this API method. This method only returns the user’s public organization memberships, not their private organization memberships.</p>
+<p>As an application, you typically want all of the user’s organizations that your app is authorized to access. The workflow above will give you exactly that.</p>
+</body>
+</html>

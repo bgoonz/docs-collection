@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with the RubyGems registry</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with the RubyGems registry</h1>
+</header>
+<p>{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}</p>
+<p>{% data reusables.package_registry.admins-can-configure-package-types %}</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><p>You must have rubygems 2.4.1 or higher. To find your rubygems version:</p>
+<pre class="shell"><code>$ gem --version</code></pre></li>
+<li><p>You must have bundler 1.6.4 or higher. To find your Bundler version:</p>
+<pre class="shell"><code>$ bundle --version
+Bundler version 1.13.7</code></pre></li>
+<li><p>Install keycutter to manage multiple credentials. To install keycutter:</p>
+<pre class="shell"><code>$ gem install keycutter</code></pre></li>
+</ul>
+<h2 id="authenticating-to-data-variables.product.prodname_registry">Authenticating to {% data variables.product.prodname_registry %}</h2>
+<p>{% data reusables.package_registry.authenticate-packages %}</p>
+<p>{% data reusables.package_registry.authenticate-packages-github-token %}</p>
+<h3 id="authenticating-with-a-personal-access-token">Authenticating with a personal access token</h3>
+<p>{% data reusables.package_registry.required-scopes %}</p>
+<p>You can authenticate to {% data variables.product.prodname_registry %} with RubyGems by editing the <em>~/.gem/credentials</em> file for publishing gems, editing the <em>~/.gemrc</em> file for installing a single gem, or using Bundler for tracking and installing one or more gems.</p>
+<p>To publish new gems, you need to authenticate to {% data variables.product.prodname_registry %} with RubyGems by editing your <em>~/.gem/credentials</em> file to include your personal access token. Create a new <em>~/.gem/credentials</em> file if this file doesn’t exist.</p>
+<p>For example, you would create or edit a <em>~/.gem/credentials</em> to include the following, replacing <em>TOKEN</em> with your personal access token.</p>
+<pre class="shell"><code>---
+:github: Bearer &lt;em&gt;TOKEN&lt;/em&gt;</code></pre>
+<p>To install gems, you need to authenticate to {% data variables.product.prodname_registry %} by editing the <em>~/.gemrc</em> file for your project to include <code>https://USERNAME:TOKEN@{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/OWNER/</code>. You must replace: - <code>USERNAME</code> with your {% data variables.product.prodname_dotcom %} username. - <code>TOKEN</code> with your personal access token. - <code>OWNER</code> with the name of the user or organization account that owns the repository containing your project.{% ifversion ghes %} - <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry. If your instance has subdomain isolation enabled, use <code>rubygems.HOSTNAME</code>. If your instance has subdomain isolation disabled, use <code>HOSTNAME/_registry/rubygems</code>. In either case, replace <em>HOSTNAME</em> with the hostname of your {% data variables.product.prodname_ghe_server %} instance. {% elsif ghae %} - <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry, <code>rubygems.HOSTNAME</code>. Replace <em>HOSTNAME</em> with the hostname of {% data variables.product.product_location %}. {% endif %}</p>
+<p>If you don’t have a <em>~/.gemrc</em> file, create a new <em>~/.gemrc</em> file using this example.</p>
+<pre class="shell"><code>---
+:backtrace: false
+:bulk_threshold: 1000
+:sources:
+- https://rubygems.org/
+- https://USERNAME:TOKEN@{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/OWNER/
+:update_sources: true
+:verbose: true  
+</code></pre>
+<p>To authenticate with Bundler, configure Bundler to use your personal access token, replacing <em>USERNAME</em> with your {% data variables.product.prodname_dotcom %} username, <em>TOKEN</em> with your personal access token, and <em>OWNER</em> with the name of the user or organization account that owns the repository containing your project.{% ifversion ghes %} Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry. If your instance has subdomain isolation enabled, use <code>rubygems.HOSTNAME</code>. If your instance has subdomain isolation disabled, use <code>HOSTNAME/_registry/rubygems</code>. In either case, replace <em>HOSTNAME</em> with the hostname of your {% data variables.product.prodname_ghe_server %} instance.{% elsif ghae %}Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry, <code>rubygems.HOSTNAME</code>. Replace <em>HOSTNAME</em> with the hostname of {% data variables.product.product_location %}.{% endif %}</p>
+<pre class="shell"><code>$ bundle config https://{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/&lt;em&gt;OWNER USERNAME:TOKEN&lt;/em&gt;</code></pre>
+<h2 id="publishing-a-package">Publishing a package</h2>
+<p>{% data reusables.package_registry.default-name %} For example, when you publish <code>octo-gem</code> to the <code>octo-org</code> organization, {% data variables.product.prodname_registry %} publishes the gem to the <code>octo-org/octo-gem</code> repository. For more information on creating your gem, see “<a href="http://guides.rubygems.org/make-your-own-gem/">Make your own gem</a>” in the RubyGems documentation.</p>
+<p>{% data reusables.package_registry.viewing-packages %}</p>
+<p>{% data reusables.package_registry.authenticate-step %} 2. Build the package from the <em>gemspec</em> to create the <em>.gem</em> package. <code>shell   gem build OCTO-GEM.gemspec</code> 3. Publish a package to {% data variables.product.prodname_registry %}, replacing <code>OWNER</code> with the name of the user or organization account that owns the repository containing your project and <code>OCTO-GEM</code> with the name of your gem package.{% ifversion ghes %} Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry. If your instance has subdomain isolation enabled, use <code>rubygems.HOSTNAME</code>. If your instance has subdomain isolation disabled, use <code>HOSTNAME/_registry/rubygems</code>. In either case, replace <em>HOSTNAME</em> with the host name of your {% data variables.product.prodname_ghe_server %} instance.{% elsif ghae %} Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry, <code>rubygems.HOSTNAME</code>. Replace <em>HOSTNAME</em> with the hostname of {% data variables.product.product_location %}.{% endif %}</p>
+<pre class="shell"><code>$ gem push --key github \
+--host https://{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/&lt;em&gt;OWNER&lt;/em&gt; \
+&lt;em&gt;OCTO-GEM-0.0.1&lt;/em&gt;.gem</code></pre>
+<h2 id="publishing-multiple-packages-to-the-same-repository">Publishing multiple packages to the same repository</h2>
+<p>To publish multiple gems to the same repository, you can include the URL to the {% data variables.product.prodname_dotcom %} repository in the <code>github_repo</code> field in <code>gem.metadata</code>. If you include this field, {% data variables.product.prodname_dotcom %} matches the repository based on this value, instead of using the gem name.{% ifversion ghes or ghae %} Replace <em>HOSTNAME</em> with the host name of {% data variables.product.product_location %}.{% endif %}</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb8-1" title="1">gem.metadata = { <span class="st">&quot;github_repo&quot;</span> =&gt; <span class="st">&quot;ssh://{% ifversion fpt %}github.com{% else %}HOSTNAME{% endif %}/OWNER/REPOSITORY&quot;</span> }</a></code></pre></div>
+<h2 id="installing-a-package">Installing a package</h2>
+<p>You can use gems from {% data variables.product.prodname_registry %} much like you use gems from <em>rubygems.org</em>. You need to authenticate to {% data variables.product.prodname_registry %} by adding your {% data variables.product.prodname_dotcom %} user or organization as a source in the <em>~/.gemrc</em> file or by using Bundler and editing your <em>Gemfile</em>.</p>
+<p>{% data reusables.package_registry.authenticate-step %} 1. For Bundler, add your {% data variables.product.prodname_dotcom %} user or organization as a source in your <em>Gemfile</em> to fetch gems from this new source. For example, you can add a new <code>source</code> block to your <em>Gemfile</em> that uses {% data variables.product.prodname_registry %} only for the packages you specify, replacing <em>GEM NAME</em> with the package you want to install from {% data variables.product.prodname_registry %} and <em>OWNER</em> with the user or organization that owns the repository containing the gem you want to install.{% ifversion ghes %} Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry. If your instance has subdomain isolation enabled, use <code>rubygems.HOSTNAME</code>. If your instance has subdomain isolation disabled, use <code>HOSTNAME/_registry/rubygems</code>. In either case, replace <em>HOSTNAME</em> with the host name of your {% data variables.product.prodname_ghe_server %} instance.{% elsif ghae %} Replace <code>REGISTRY-URL</code> with the URL for your instance’s Rubygems registry, <code>rubygems.HOSTNAME</code>. Replace <em>HOSTNAME</em> with the hostname of {% data variables.product.product_location %}.{% endif %}</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb9-1" title="1">source <span class="st">&quot;https://rubygems.org&quot;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3">gem <span class="st">&quot;rails&quot;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"></a>
+<a class="sourceLine" id="cb9-5" title="5">source <span class="st">&quot;https://{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/OWNER&quot;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  gem <span class="st">&quot;GEM NAME&quot;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="kw">end</span></a></code></pre></div>
+<ol start="3" type="1">
+<li>For Bundler versions earlier than 1.7.0, you need to add a new global <code>source</code>. For more information on using Bundler, see the <a href="http://bundler.io/v1.5/gemfile.html">bundler.io documentation</a>.</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb10-1" title="1">source <span class="st">&quot;https://{% ifversion fpt %}rubygems.pkg.github.com{% else %}REGISTRY-URL{% endif %}/OWNER&quot;</span></a>
+<a class="sourceLine" id="cb10-2" title="2">source <span class="st">&quot;https://rubygems.org&quot;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4">gem <span class="st">&quot;rails&quot;</span></a>
+<a class="sourceLine" id="cb10-5" title="5">gem <span class="st">&quot;GEM NAME&quot;</span></a></code></pre></div>
+<ol start="4" type="1">
+<li>Install the package:</li>
+</ol>
+<pre class="shell"><code>$ gem install octo-gem --version &quot;0.1.1&quot;</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Deleting and restoring a package</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Deleting a package</a>{% endif %}”</li>
+</ul>
+</body>
+</html>

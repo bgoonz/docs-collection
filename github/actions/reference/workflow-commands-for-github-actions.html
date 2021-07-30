@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Workflow commands for GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Workflow commands for GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="about-workflow-commands">About workflow commands</h2>
+    <p>
+      Actions can communicate with the runner machine to set environment
+      variables, output values used by other actions, add debug messages to the
+      output logs, and other tasks.
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 2.22 or ghae %} Most workflow commands use
+      the <code>echo</code> command in a specific format, while others are
+      invoked by writing to a file. For more information, see
+      <a href="#environment-files">“Environment files”.</a> {% else %} Workflow
+      commands use the <code>echo</code> command in a specific format. {% endif
+      %}
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::workflow-command parameter1={data},parameter2={data}::{command value}&quot;</span></a></code></pre>
+    </div>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> Workflow command and parameter names are not
+      case-sensitive.
+    </p>
+    <p>{% endnote %}</p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> If you are using Command Prompt, omit double
+      quote characters (<code>"</code>) when using workflow commands.
+    </p>
+    <p>{% endwarning %}</p>
+    <h2 id="using-workflow-commands-to-access-toolkit-functions">
+      Using workflow commands to access toolkit functions
+    </h2>
+    <p>
+      The
+      <a href="https://github.com/actions/toolkit">actions/toolkit</a> includes
+      a number of functions that can be executed as workflow commands. Use the
+      <code>::</code> syntax to run the workflow commands within your YAML file;
+      these commands are then sent to the runner over <code>stdout</code>. For
+      example, instead of using code to set an output, as below:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">core</span>.<span class="at">setOutput</span>(<span class="st">&#39;SELECTED_COLOR&#39;</span><span class="op">,</span> <span class="st">&#39;green&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      You can use the <code>set-output</code> command in your workflow to set
+      the same value:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set selected color</span></a>
+<a class="sourceLine" id="cb3-2" title="2">        <span class="fu">run:</span><span class="at"> echo &#39;::set-output name=SELECTED_COLOR::green&#39;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">        <span class="fu">id:</span><span class="at"> random-color-generator</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Get color</span></a>
+<a class="sourceLine" id="cb3-5" title="5">        <span class="fu">run:</span><span class="at"> echo &quot;The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}&quot;</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      The following table shows which toolkit functions are available within a
+      workflow:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 56%" />
+        <col style="width: 43%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Toolkit function</th>
+          <th>Equivalent workflow command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>core.addPath</code></td>
+          <td>
+            {% ifversion fpt or ghes &gt; 2.22 or ghae %}Accessible using
+            environment file <code>GITHUB_PATH</code>{% else %}
+            <code>add-path</code> {% endif %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>core.debug</code></td>
+          <td><code>debug</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.error</code></td>
+          <td><code>error</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>core.endGroup</code></td>
+          <td><code>endgroup</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.exportVariable</code></td>
+          <td>
+            {% ifversion fpt or ghes &gt; 2.22 or ghae %}Accessible using
+            environment file <code>GITHUB_ENV</code>{% else %}
+            <code>set-env</code> {% endif %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>core.getInput</code></td>
+          <td>
+            Accessible using environment variable <code>INPUT_{NAME}</code>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.getState</code></td>
+          <td>
+            Accessible using environment variable <code>STATE_{NAME}</code>
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>core.isDebug</code></td>
+          <td>
+            Accessible using environment variable <code>RUNNER_DEBUG</code>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.saveState</code></td>
+          <td><code>save-state</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>core.setFailed</code></td>
+          <td>
+            Used as a shortcut for <code>::error</code> and <code>exit 1</code>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.setOutput</code></td>
+          <td><code>set-output</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>core.setSecret</code></td>
+          <td><code>add-mask</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>core.startGroup</code></td>
+          <td><code>group</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>core.warning</code></td>
+          <td><code>warning file</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{% ifversion ghes &lt; 3.0 %} ## Setting an environment variable</p>
+    <p><code>::set-env name={name}::{value}</code></p>
+    <p>
+      Creates or updates an environment variable for any steps running next in a
+      job. The step that creates or updates the environment variable does not
+      have access to the new value, but all subsequent steps in a job will have
+      access. Environment variables are case-sensitive and you can include
+      punctuation.
+    </p>
+    <h3 id="example">Example</h3>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::set-env name=action_state::yellow&quot;</span></a></code></pre>
+    </div>
+    <p>{% endif %}</p>
+    <h2 id="setting-an-output-parameter">Setting an output parameter</h2>
+    <p><code>::set-output name={name}::{value}</code></p>
+    <p>Sets an action’s output parameter.</p>
+    <p>
+      Optionally, you can also declare output parameters in an action’s metadata
+      file. For more information, see “<a
+        href="/articles/metadata-syntax-for-github-actions#outputs"
+        >Metadata syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h3 id="example-1">Example</h3>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::set-output name=action_fruit::strawberry&quot;</span></a></code></pre>
+    </div>
+    <p>{% ifversion ghes &lt; 3.0 %} ## Adding a system path</p>
+    <p><code>::add-path::{path}</code></p>
+    <p>
+      Prepends a directory to the system <code>PATH</code> variable for all
+      subsequent actions in the current job. The currently running action cannot
+      access the new path variable.
+    </p>
+    <h3 id="example-2">Example</h3>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::add-path::/path/to/dir&quot;</span></a></code></pre>
+    </div>
+    <p>{% endif %}</p>
+    <h2 id="setting-a-debug-message">Setting a debug message</h2>
+    <p><code>::debug::{message}</code></p>
+    <p>
+      Prints a debug message to the log. You must create a secret named
+      <code>ACTIONS_STEP_DEBUG</code> with the value <code>true</code> to see
+      the debug messages set by this command in the log. For more information,
+      see “<a href="/actions/managing-workflow-runs/enabling-debug-logging"
+        >Enabling debug logging</a
+      >.”
+    </p>
+    <h3 id="example-3">Example</h3>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::debug::Set the Octocat variable&quot;</span></a></code></pre>
+    </div>
+    <h2 id="setting-a-warning-message">Setting a warning message</h2>
+    <p><code>::warning file={name},line={line},col={col}::{message}</code></p>
+    <p>
+      Creates a warning message and prints the message to the log. You can
+      optionally provide a filename (<code>file</code>), line number
+      (<code>line</code>), and column (<code>col</code>) number where the
+      warning occurred.
+    </p>
+    <h3 id="example-4">Example</h3>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::warning file=app.js,line=1,col=5::Missing semicolon&quot;</span></a></code></pre>
+    </div>
+    <h2 id="setting-an-error-message">Setting an error message</h2>
+    <p><code>::error file={name},line={line},col={col}::{message}</code></p>
+    <p>
+      Creates an error message and prints the message to the log. You can
+      optionally provide a filename (<code>file</code>), line number
+      (<code>line</code>), and column (<code>col</code>) number where the error
+      occurred.
+    </p>
+    <h3 id="example-5">Example</h3>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::error file=app.js,line=10,col=15::Something went wrong&quot;</span></a></code></pre>
+    </div>
+    <h2 id="grouping-log-lines">Grouping log lines</h2>
+    <pre><code>::group::{title}
+::endgroup::</code></pre>
+    <p>
+      Creates an expandable group in the log. To create a group, use the
+      <code>group</code> command and specify a <code>title</code>. Anything you
+      print to the log between the <code>group</code> and
+      <code>endgroup</code> commands is nested inside an expandable entry in the
+      log.
+    </p>
+    <h3 id="example-6">Example</h3>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::group::My title&quot;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="bu">echo</span> <span class="st">&quot;Inside group&quot;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="bu">echo</span> <span class="st">&quot;::endgroup::&quot;</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="/assets/images/actions-log-group.png"
+        alt="Foldable group in workflow run log"
+      />
+      <figcaption>Foldable group in workflow run log</figcaption>
+    </figure>
+    <h2 id="masking-a-value-in-log">Masking a value in log</h2>
+    <p><code>::add-mask::{value}</code></p>
+    <p>
+      Masking a value prevents a string or variable from being printed in the
+      log. Each masked word separated by whitespace is replaced with the
+      <code>*</code> character. You can use an environment variable or string
+      for the mask’s <code>value</code>.
+    </p>
+    <h3 id="example-masking-a-string">Example masking a string</h3>
+    <p>
+      When you print <code>"Mona The Octocat"</code> in the log, you’ll see
+      <code>"***"</code>.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::add-mask::Mona The Octocat&quot;</span></a></code></pre>
+    </div>
+    <h3 id="example-masking-an-environment-variable">
+      Example masking an environment variable
+    </h3>
+    <p>
+      When you print the variable <code>MY_NAME</code> or the value
+      <code>"Mona The Octocat"</code> in the log, you’ll see
+      <code>"***"</code> instead of <code>"Mona The Octocat"</code>.
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="va">MY_NAME=</span><span class="st">&quot;Mona The Octocat&quot;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="bu">echo</span> <span class="st">&quot;::add-mask::</span><span class="va">$MY_NAME</span><span class="st">&quot;</span></a></code></pre>
+    </div>
+    <h2 id="stopping-and-starting-workflow-commands">
+      Stopping and starting workflow commands
+    </h2>
+    <p><code>::stop-commands::{endtoken}</code></p>
+    <p>
+      Stops processing any workflow commands. This special command allows you to
+      log anything without accidentally running a workflow command. For example,
+      you could stop logging to output an entire script that has comments.
+    </p>
+    <h3 id="example-stopping-workflow-commands">
+      Example stopping workflow commands
+    </h3>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::stop-commands::pause-logging&quot;</span></a></code></pre>
+    </div>
+    <p>
+      To start workflow commands, pass the token that you used to stop workflow
+      commands.
+    </p>
+    <p><code>::{endtoken}::</code></p>
+    <h3 id="example-starting-workflow-commands">
+      Example starting workflow commands
+    </h3>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">echo</span> <span class="st">&quot;::pause-logging::&quot;</span></a></code></pre>
+    </div>
+    <h2 id="sending-values-to-the-pre-and-post-actions">
+      Sending values to the pre and post actions
+    </h2>
+    <p>
+      You can use the <code>save-state</code> command to create environment
+      variables for sharing with your workflow’s <code>pre:</code> or
+      <code>post:</code> actions. For example, you can create a file with the
+      <code>pre:</code> action, pass the file location to the
+      <code>main:</code> action, and then use the <code>post:</code> action to
+      delete the file. Alternatively, you could create a file with the
+      <code>main:</code> action, pass the file location to the
+      <code>post:</code> action, and also use the <code>post:</code> action to
+      delete the file.
+    </p>
+    <p>
+      If you have multiple <code>pre:</code> or <code>post:</code> actions, you
+      can only access the saved value in the action where
+      <code>save-state</code> was used. For more information on the
+      <code>post:</code> action, see “<a
+        href="/actions/creating-actions/metadata-syntax-for-github-actions#post"
+        >Metadata syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      The <code>save-state</code> command can only be run within an action, and
+      is not available to YAML files. The saved value is stored as an
+      environment value with the <code>STATE_</code> prefix.
+    </p>
+    <p>
+      This example uses JavaScript to run the <code>save-state</code> command.
+      The resulting environment variable is named
+      <code>STATE_processID</code> with the value of <code>12345</code>:
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb16-1" title="1"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;::save-state name=processID::12345&#39;</span>)</a></code></pre>
+    </div>
+    <p>
+      The <code>STATE_processID</code> variable is then exclusively available to
+      the cleanup script running under the <code>main</code> action. This
+      example runs in <code>main</code> and uses JavaScript to display the value
+      assigned to the <code>STATE_processID</code> environment variable:
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;The running PID from the main action is: &quot;</span> <span class="op">+</span>  <span class="va">process</span>.<span class="va">env</span>.<span class="at">STATE_processID</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Environment Files</p>
+    <p>
+      During the execution of a workflow, the runner generates temporary files
+      that can be used to perform certain actions. The path to these files are
+      exposed via environment variables. You will need to use UTF-8 encoding
+      when writing to these files to ensure proper processing of the commands.
+      Multiple commands can be written to the same file, separated by newlines.
+    </p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> Powershell does not use UTF-8 by default. Make
+      sure you write files using the correct encoding. For example, you need to
+      set UTF-8 encoding when you set the path:
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="kw">-</span> <span class="fu">run:</span><span class="at"> echo &quot;mypath&quot; | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append</span></a></code></pre>
+    </div>
+    <p>{% endwarning %}</p>
+    <h2 id="setting-an-environment-variable">
+      Setting an environment variable
+    </h2>
+    <p><code>echo "{name}={value}" &gt;&gt; $GITHUB_ENV</code></p>
+    <p>
+      Creates or updates an environment variable for any steps running next in a
+      job. The step that creates or updates the environment variable does not
+      have access to the new value, but all subsequent steps in a job will have
+      access. Environment variables are case-sensitive and you can include
+      punctuation.
+    </p>
+    <h3 id="example-7">Example</h3>
+    <p>{% raw %}</p>
+    <pre><code>steps:
+  - name: Set the value
+    id: step_one
+    run: |
+      echo &quot;action_state=yellow&quot; &gt;&gt; $GITHUB_ENV
+  - name: Use the value
+    id: step_two
+    run: |
+      echo &quot;${{ env.action_state }}&quot; # This will output &#39;yellow&#39;</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="multiline-strings">Multiline strings</h3>
+    <p>
+      For multiline strings, you may use a delimiter with the following syntax.
+    </p>
+    <pre><code>{name}&lt;&lt;{delimiter}
+{value}
+{delimiter}</code></pre>
+    <h4 id="example-8">Example</h4>
+    <p>
+      In this example, we use <code>EOF</code> as a delimiter and set the
+      <code>JSON_RESPONSE</code> environment variable to the value of the curl
+      response.
+    </p>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Set the value</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="fu">id:</span><span class="at"> step_one</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="fu">    run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb21-5" title="5">      echo &#39;JSON_RESPONSE&lt;&lt;EOF&#39; &gt;&gt; $GITHUB_ENV</a>
+<a class="sourceLine" id="cb21-6" title="6">      curl https://httpbin.org/json &gt;&gt; $GITHUB_ENV</a>
+<a class="sourceLine" id="cb21-7" title="7">      echo &#39;EOF&#39; &gt;&gt; $GITHUB_ENV</a></code></pre>
+    </div>
+    <h2 id="adding-a-system-path">Adding a system path</h2>
+    <p><code>echo "{path}" &gt;&gt; $GITHUB_PATH</code></p>
+    <p>
+      Prepends a directory to the system <code>PATH</code> variable and makes it
+      available to all subsequent actions in the current job; the currently
+      running action cannot access the updated path variable. To see the
+      currently defined paths for your job, you can use
+      <code>echo "$PATH"</code> in a step or an action.
+    </p>
+    <h3 id="example-9">Example</h3>
+    <p>
+      This example demonstrates how to add the user
+      <code>$HOME/.local/bin</code> directory to <code>PATH</code>:
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.local/bin&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$GITHUB_PATH</span></a></code></pre>
+    </div>
+    <p>{% endif %}</p>
+  </body>
+</html>

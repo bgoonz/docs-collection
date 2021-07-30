@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>GitHub Enterprise Server releases</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">GitHub Enterprise Server releases</h1>
+    </header>
+    <h2 id="currently-supported">Currently supported</h2>
+    <p>
+      See
+      <a href="https://github.com/enterprise"
+        >{% data variables.product.prodname_enterprise %}</a
+      >
+      for information about the latest release.
+    </p>
+    <p>
+      {% for supportedRelease in enterpriseServerReleases.supported %} -
+      <a href="/enterprise-server@%7B%7BsupportedRelease%7D%7D"
+        >{% data variables.product.prodname_ghe_server %}
+        {{supportedRelease}}</a
+      >
+      {% endfor %}
+    </p>
+    <h2 id="deprecated">Deprecated</h2>
+    <p>
+      Documentation for deprecated versions remains available but is no longer
+      maintained.
+    </p>
+    <p>
+      {% for deprecatedRelease in
+      enterpriseServerReleases.deprecatedReleasesWithNewFormat %} -
+      <a href="/enterprise-server@%7B%7BdeprecatedRelease%7D%7D"
+        >Enterprise Server {{deprecatedRelease}}</a
+      >
+      {% endfor %}
+    </p>
+    <p>
+      {% for deprecatedReleaseLegacyFormat in
+      enterpriseServerReleases.deprecatedReleasesWithLegacyFormat %} -
+      <a href="/enterprise/%7B%7BdeprecatedReleaseLegacyFormat%7D%7D"
+        >Enterprise Server {{deprecatedReleaseLegacyFormat}}</a
+      >
+      {% endfor %}
+    </p>
+    <h2 id="deprecated-developer-documentation">
+      Deprecated developer documentation
+    </h2>
+    <p>
+      Developer documentation for deprecated versions remains available but is
+      no longer maintained.
+    </p>
+    <p>
+      {% for deprecatedDevRelease in
+      enterpriseServerReleases.deprecatedReleasesOnDeveloperSite %} -
+      <a
+        href="https://developer.github.com/enterprise/%7B%7BdeprecatedDevRelease%7D%7D"
+        >Enterprise Server {{deprecatedDevRelease}}</a
+      >
+      {% endfor %}
+    </p>
+  </body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Managing complex workflows</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Managing complex workflows</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>
+      This article describes some of the advanced features of {% data
+      variables.product.prodname_actions %} that help you work create more
+      complex workflows.
+    </p>
+    <h2 id="storing-secrets">Storing secrets</h2>
+    <p>
+      If your workflows use sensitive data, such as passwords or certificates,
+      you can save these in {% data variables.product.prodname_dotcom %} as
+      <em>secrets</em> and then use them in your workflows as environment
+      variables. This means that you will be able to create and share workflows
+      without having to embed sensitive values directly in the YAML workflow.
+    </p>
+    <p>
+      This example action demonstrates how to reference an existing secret as an
+      environment variable, and send it as a parameter to an example command.
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">example-job:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Retrieve secret</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">          <span class="fu">super_secret:</span><span class="at"> ${{ secrets.SUPERSECRET }}</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb1-9" title="9">          example-command &quot;$super_secret&quot;</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      For more information, see “<a
+        href="/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets"
+        >Creating and storing encrypted secrets</a
+      >.”
+    </p>
+    <h2 id="creating-dependent-jobs">Creating dependent jobs</h2>
+    <p>
+      By default, the jobs in your workflow all run in parallel at the same
+      time. So if you have a job that must only run after another job has
+      completed, you can use the <code>needs</code> keyword to create this
+      dependency. If one of the jobs fails, all dependent jobs are skipped;
+      however, if you need the jobs to continue, you can define this using the
+      <a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif"
+        ><code>if</code></a
+      >
+      conditional statement.
+    </p>
+    <p>
+      In this example, the <code>setup</code>, <code>build</code>, and
+      <code>test</code> jobs run in series, with <code>build</code> and
+      <code>test</code> being dependent on the successful completion of the job
+      that precedes them:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">setup:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> ./setup_server.sh</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="fu">needs:</span><span class="at"> setup</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> ./build_server.sh</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="fu">test:</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="fu">needs:</span><span class="at"> build</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> ./test_server.sh</span></a></code></pre>
+    </div>
+    <p>
+      For more information, see
+      <a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds"
+        ><code>jobs.&lt;job_id&gt;.needs</code></a
+      >.
+    </p>
+    <h2 id="using-a-build-matrix">Using a build matrix</h2>
+    <p>
+      You can use a build matrix if you want your workflow to run tests across
+      multiple combinations of operating systems, platforms, and languages. The
+      build matrix is created using the <code>strategy</code> keyword, which
+      receives the build options as an array. For example, this build matrix
+      will run the job multiple times, using different versions of Node.js:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb3-6" title="6">        <span class="fu">node:</span><span class="at"> </span><span class="kw">[</span><span class="dv">6</span><span class="kw">,</span> <span class="dv">8</span><span class="kw">,</span> <span class="dv">10</span><span class="kw">]</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/setup-node@v2</span></a>
+<a class="sourceLine" id="cb3-9" title="9">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb3-10" title="10">          <span class="fu">node-version:</span><span class="at"> ${{ matrix.node }}</span></a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      For more information, see
+      <a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix"
+        ><code>jobs.&lt;job_id&gt;.strategy.matrix</code></a
+      >.
+    </p>
+    <p>{% ifversion fpt %} ## Caching dependencies</p>
+    <p>
+      {% data variables.product.prodname_dotcom %}-hosted runners are started as
+      fresh environments for each job, so if your jobs regularly reuse
+      dependencies, you can consider caching these files to help improve
+      performance. Once the cache is created, it is available to all workflows
+      in the same repository.
+    </p>
+    <p>
+      This example demonstrates how to cache the <code>~/.npm</code> directory:
+    </p>
+    <p>{% raw %}</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">example-job:</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Cache node modules</span></a>
+<a class="sourceLine" id="cb4-5" title="5">        <span class="fu">uses:</span><span class="at"> actions/cache@v2</span></a>
+<a class="sourceLine" id="cb4-6" title="6">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb4-7" title="7">          <span class="fu">cache-name:</span><span class="at"> cache-node-modules</span></a>
+<a class="sourceLine" id="cb4-8" title="8">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb4-9" title="9">          <span class="fu">path:</span><span class="at"> ~/.npm</span></a>
+<a class="sourceLine" id="cb4-10" title="10">          <span class="fu">key:</span><span class="at"> ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles(&#39;**/package-lock.json&#39;) }}</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="fu">          restore-keys:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb4-12" title="12">            ${{ runner.os }}-build-${{ env.cache-name }}-</a></code></pre>
+    </div>
+    <p>{% endraw %}</p>
+    <p>
+      For more information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >.” {% endif %}
+    </p>
+    <h2 id="using-databases-and-service-containers">
+      Using databases and service containers
+    </h2>
+    <p>
+      If your job requires a database or cache service, you can use the
+      <a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idservices"
+        ><code>services</code></a
+      >
+      keyword to create an ephemeral container to host the service; the
+      resulting container is then available to all steps in that job and is
+      removed when the job has completed. This example demonstrates how a job
+      can use <code>services</code> to create a <code>postgres</code> container,
+      and then use <code>node</code> to connect to the service.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">container-job:</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="fu">container:</span><span class="at"> node:10.18-jessie</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="fu">services:</span></a>
+<a class="sourceLine" id="cb5-6" title="6">      <span class="fu">postgres:</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="fu">image:</span><span class="at"> postgres</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-9" title="9">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Check out repository code</span></a>
+<a class="sourceLine" id="cb5-10" title="10">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb5-11" title="11">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install dependencies</span></a>
+<a class="sourceLine" id="cb5-12" title="12">        <span class="fu">run:</span><span class="at"> npm ci</span></a>
+<a class="sourceLine" id="cb5-13" title="13">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Connect to PostgreSQL</span></a>
+<a class="sourceLine" id="cb5-14" title="14">        <span class="fu">run:</span><span class="at"> node client.js</span></a>
+<a class="sourceLine" id="cb5-15" title="15">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb5-16" title="16">          <span class="fu">POSTGRES_HOST:</span><span class="at"> postgres</span></a>
+<a class="sourceLine" id="cb5-17" title="17">          <span class="fu">POSTGRES_PORT:</span><span class="at"> </span><span class="dv">5432</span></a></code></pre>
+    </div>
+    <p>
+      For more information, see “<a
+        href="/actions/configuring-and-managing-workflows/using-databases-and-service-containers"
+        >Using databases and service containers</a
+      >.”
+    </p>
+    <h2 id="using-labels-to-route-workflows">
+      Using labels to route workflows
+    </h2>
+    <p>
+      This feature helps you assign jobs to a specific hosted runner. If you
+      want to be sure that a particular type of runner will process your job,
+      you can use labels to control where jobs are executed. You can assign
+      labels to a hosted runner, and then refer to these labels in your YAML
+      workflow, ensuring that the job is routed in a predictable way.
+    </p>
+    <p>
+      {% ifversion ghae %} This example shows how a workflow can use labels to
+      specify the required runner:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">example-job:</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="fu">runs-on:</span><span class="at"> </span><span class="kw">[</span>AE-runner-for-CI<span class="kw">]</span></a></code></pre>
+    </div>
+    <p>
+      For more information, see
+      <a
+        href="/actions/using-github-hosted-runners/using-labels-with-ae-hosted-runners"
+        >"Using labels with {% data variables.actions.hosted_runner %}</a
+      >." {% else %}
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="fu">example-job:</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="fu">runs-on:</span><span class="at"> </span><span class="kw">[</span>self-hosted<span class="kw">,</span> linux<span class="kw">,</span> x64<span class="kw">,</span> gpu<span class="kw">]</span></a></code></pre>
+    </div>
+    <p>
+      For more information, see
+      <a
+        href="/actions/hosting-your-own-runners/using-labels-with-self-hosted-runners"
+        >"Using labels with self-hosted runners</a
+      >." {% endif %}
+    </p>
+    <p>{% ifversion fpt or ghes &gt; 3.0 %} ## Using environments</p>
+    <p>
+      You can configure environments with protection rules and secrets. Each job
+      in a workflow can reference a single environment. Any protection rules
+      configured for the environment must pass before a job referencing the
+      environment is sent to a runner. For more information, see “<a
+        href="/actions/reference/environments"
+        >Environments</a
+      >.” {% endif %}
+    </p>
+    <h2 id="using-a-workflow-template">Using a workflow template</h2>
+    <p>{% data reusables.actions.workflow-template-overview %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} 1. If your repository already has
+      existing workflows: In the upper-left corner, click
+      <strong>New workflow</strong>.
+      <img
+        src="/assets/images/help/repository/actions-new-workflow.png"
+        alt="Create a new workflow"
+      />
+      1. Under the name of the template you’d like to use, click
+      <strong>Set up this workflow</strong>.
+      <img
+        src="/assets/images/help/settings/actions-create-starter-workflow.png"
+        alt="Set up this workflow"
+      />
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>
+      To continue learning about {% data variables.product.prodname_actions %},
+      see “<a
+        href="/actions/learn-github-actions/sharing-workflows-with-your-organization"
+        >Sharing workflows with your organization</a
+      >.”
+    </p>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Migrations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Migrations</h1>
+</header>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<h2 id="organization">Organization</h2>
+<p>The Migrations API is only available to authenticated organization owners. For more information, see “<a href="/organizations/managing-peoples-access-to-your-organization-with-roles/permission-levels-for-an-organization#permission-levels-for-an-organization">Permission levels for an organization</a>” and “<a href="/rest/overview/other-authentication-methods">Other authentication methods</a>.”</p>
+<p>{% data variables.migrations.organization_migrations_intro %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘orgs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="source-imports">Source imports</h2>
+<p>{% data variables.migrations.source_imports_intro %}</p>
+<p>A typical source import would start the import and then (optionally) update the authors and/or update the preference for using Git LFS if large files exist in the import. You can also create a webhook that listens for the <a href="/developers/webhooks-and-events/webhook-events-and-payloads#repository_import"><code>RepositoryImportEvent</code></a> to find out the status of the import.</p>
+<p>A more detailed example can be seen in this diagram:</p>
+<pre><code>+---------+                     +--------+                              +---------------------+
+| Tooling |                     | GitHub |                              | Original Repository |
++---------+                     +--------+                              +---------------------+
+     |                              |                                              |
+     |  Start import                |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |                                              |
+     |                              |  Download source data                        |
+     |                              |---------------------------------------------&gt;|
+     |                              |                        Begin streaming data  |
+     |                              |&lt;---------------------------------------------|
+     |                              |                                              |
+     |  Get import progress         |                                              |
+     |-----------------------------&gt;|                                              |
+     |       &quot;status&quot;: &quot;importing&quot;  |                                              |
+     |&lt;-----------------------------|                                              |
+     |                              |                                              |
+     |  Get commit authors          |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |                                              |
+     |  Map a commit author         |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |                                              |
+     |                              |                                              |
+     |                              |                       Finish streaming data  |
+     |                              |&lt;---------------------------------------------|
+     |                              |                                              |
+     |                              |  Rewrite commits with mapped authors         |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |                              |  Update repository on GitHub                 |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |  Map a commit author         |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |  Rewrite commits with mapped authors         |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |                              |  Update repository on GitHub                 |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |  Get large files             |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |                                              |
+     |  opt_in to Git LFS           |                                              |
+     |-----------------------------&gt;|                                              |
+     |                              |  Rewrite commits for large files             |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |                              |  Update repository on GitHub                 |
+     |                              |------+                                       |
+     |                              |      |                                       |
+     |                              |&lt;-----+                                       |
+     |                              |                                              |
+     |  Get import progress         |                                              |
+     |-----------------------------&gt;|                                              |
+     |        &quot;status&quot;: &quot;complete&quot;  |                                              |
+     |&lt;-----------------------------|                                              |
+     |                              |                                              |
+     |                              |                                              |</code></pre>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘source-imports’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<h2 id="user">User</h2>
+<p>The User migrations API is only available to authenticated account owners. For more information, see “<a href="/rest/overview/other-authentication-methods">Other authentication methods</a>.”</p>
+<p>{% data variables.migrations.user_migrations_intro %} For a list of migration data that you can download, see “<a href="#download-a-user-migration-archive">Download a user migration archive</a>.”</p>
+<p>To download an archive, you’ll need to start a user migration first. Once the status of the migration is <code>exported</code>, you can download the migration.</p>
+<p>Once you’ve created a migration archive, it will be available to download for seven days. But, you can delete the user migration archive sooner if you’d like. You can unlock your repository when the migration is <code>exported</code> to begin using your repository again or delete the repository if you no longer need the source data.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘users’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Resource limitations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Resource limitations</h1>
+</header>
+<h2 id="node-limit">Node limit</h2>
+<p>To pass <a href="/graphql/guides/introduction-to-graphql#schema">schema</a> validation, all GraphQL API v4 <a href="/graphql/guides/forming-calls-with-graphql">calls</a> must meet these standards:</p>
+<ul>
+<li>Clients must supply a <code>first</code> or <code>last</code> argument on any <a href="/graphql/guides/introduction-to-graphql#connection">connection</a>.</li>
+<li>Values of <code>first</code> and <code>last</code> must be within 1-100.</li>
+<li>Individual calls cannot request more than 500,000 total <a href="/graphql/guides/introduction-to-graphql#node">nodes</a>.</li>
+</ul>
+<h3 id="calculating-nodes-in-a-call">Calculating nodes in a call</h3>
+<p>These two examples show how to calculate the total nodes in a call.</p>
+<ol type="1">
+<li>Simple query:</li>
+</ol>
+<pre>query {
+    viewer {
+      repositories(first: <span class="redbox">50</span>) {
+        edges {
+          repository:node {
+            name
+
+            issues(first: <span class="greenbox">10</span>) {
+              totalCount
+              edges {
+                node {
+                  title
+                  bodyHTML
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }</pre>
+<p>Calculation:</p>
+<pre><span class="redbox">50</span>         = 50 repositories
+   +
+  <span class="redbox">50</span> x <span class="greenbox">10</span>  = 500 repository issues
+
+              = 550 total nodes</pre>
+<ol start="2" type="1">
+<li>Complex query:</li>
+</ol>
+<pre>query {
+    viewer {
+      repositories(first: <span class="redbox">50</span>) {
+        edges {
+          repository:node {
+            name
+
+            pullRequests(first: <span class="greenbox">20</span>) {
+              edges {
+                pullRequest:node {
+                  title
+
+                  comments(first: <span class="bluebox">10</span>) {
+                    edges {
+                      comment:node {
+                        bodyHTML
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            issues(first: <span class="greenbox">20</span>) {
+              totalCount
+              edges {
+                issue:node {
+                  title
+                  bodyHTML
+
+                  comments(first: <span class="bluebox">10</span>) {
+                    edges {
+                      comment:node {
+                        bodyHTML
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      followers(first: <span class="bluebox">10</span>) {
+        edges {
+          follower:node {
+            login
+          }
+        }
+      }
+    }
+  }</code></pre>
+<p>Calculation:</p>
+<pre><span class="redbox">50</span>              = 50 repositories
+   +
+  <span class="redbox">50</span> x <span class="greenbox">20</span>       = 1,000 pullRequests
+   +
+  <span class="redbox">50</span> x <span class="greenbox">20</span> x <span class="bluebox">10</span> = 10,000 pullRequest comments
+   +
+  <span class="redbox">50</span> x <span class="greenbox">20</span>       = 1,000 issues
+   +
+  <span class="redbox">50</span> x <span class="greenbox">20</span> x <span class="bluebox">10</span> = 10,000 issue comments
+   +
+  <span class="bluebox">10</span>              = 10 followers
+
+                   = 22,060 total nodes</pre>
+<h2 id="rate-limit">Rate limit</h2>
+<p>The GraphQL API v4 limit is different from the REST API v3’s <a href="/rest/overview/resources-in-the-rest-api#rate-limiting">rate limits</a>.</p>
+<p>Why are the API rate limits different? With <a href="/graphql">GraphQL</a>, one GraphQL call can replace <a href="/graphql/guides/migrating-from-rest-to-graphql">multiple REST calls</a>. A single complex GraphQL call could be the equivalent of thousands of REST requests. While a single GraphQL call would fall well below the REST API rate limit, the query might be just as expensive for GitHub’s servers to compute.</p>
+<p>To accurately represent the server cost of a query, the GraphQL API v4 calculates a call’s <strong>rate limit score</strong> based on a normalized scale of points. A query’s score factors in first and last arguments on a parent connection and its children.</p>
+<ul>
+<li>The formula uses the <code>first</code> and <code>last</code> arguments on a parent connection and its children to pre-calculate the potential load on GitHub’s systems, such as MySQL, ElasticSearch, and Git.</li>
+<li>Each new connection has its own point value. Points are combined with other points from the call into an overall rate limit score.</li>
+</ul>
+<p>The GraphQL API v4 rate limit is <strong>5,000 points per hour</strong>.</p>
+<p>Note that 5,000 points per hour is not the same as 5,000 calls per hour: the GraphQL API v4 and REST API v3 use different rate limits.</p>
+<p>{% note %}</p>
+<p><strong>Note</strong>: The current formula and rate limit are subject to change as we observe how developers use the GraphQL API v4.</p>
+<p>{% endnote %}</p>
+<h3 id="returning-a-calls-rate-limit-status">Returning a call’s rate limit status</h3>
+<p>With the REST API v3, you can check the rate limit status by <a href="/rest/overview/resources-in-the-rest-api#rate-limiting">inspecting</a> the returned HTTP headers.</p>
+<p>With the GraphQL API v4, you can check the rate limit status by querying fields on the <code>rateLimit</code> object:</p>
+<pre class="graphql"><code>query {
+  viewer {
+    login
+  }
+  rateLimit {
+    limit
+    cost
+    remaining
+    resetAt
+  }
+}</code></pre>
+<ul>
+<li><p>The <code>limit</code> field returns the maximum number of points the client is permitted to consume in a 60-minute window.</p></li>
+<li><p>The <code>cost</code> field returns the point cost for the current call that counts against the rate limit.</p></li>
+<li><p>The <code>remaining</code> field returns the number of points remaining in the current rate limit window.)</p></li>
+<li><p>The <code>resetAt</code> field returns the time at which the current rate limit window resets in <a href="http://en.wikipedia.org/wiki/Unix_time">UTC epoch seconds</a>.</p></li>
+</ul>
+<h3 id="calculating-a-rate-limit-score-before-running-the-call">Calculating a rate limit score before running the call</h3>
+<p>Querying the <code>rateLimit</code> object returns a call’s score, but running the call counts against the limit. To avoid this dilemma, you can calculate the score of a call before you run it. The following calculation works out to roughly the same cost that <code>rateLimit { cost }</code> returns.</p>
+<ol type="1">
+<li>Add up the number of requests needed to fulfill each unique connection in the call. Assume every request will reach the <code>first</code> or <code>last</code> argument limits.</li>
+<li>Divide the number by <strong>100</strong> and round the result to get the final aggregate cost. This step normalizes large numbers.</li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note</strong>: The minimum cost of a call to the GraphQL API v4 is <strong>1</strong>, representing a single request.</p>
+<p>{% endnote %}</p>
+<p>Here’s an example query and score calculation:</p>
+<pre class="graphql"><code>query {
+  viewer {
+    login
+    repositories(first: 100) {
+      edges {
+        node {
+          id
+
+          issues(first: 50) {
+            edges {
+              node {
+                id
+
+                labels(first: 60) {
+                  edges {
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>This query requires 5,101 requests to fulfill:</p>
+<ul>
+<li>Although we’re returning 100 repositories, the API has to connect to the viewer’s account <strong>once</strong> to get the list of repositories. So, requests for repositories = <strong>1</strong></li>
+<li>Although we’re returning 50 issues, the API has to connect to each of the <strong>100</strong> repositories to get the list of issues. So, requests for issues = <strong>100</strong></li>
+<li>Although we’re returning 60 labels, the API has to connect to each of the <strong>5,000</strong> potential total issues to get the list of labels. So, requests for labels = <strong>5,000</strong></li>
+<li>Total = <strong>5,101</strong></li>
+</ul>
+<p>Dividing by 100 and rounding gives us the final score of the query: <strong>51</strong></p>
+</body>
+</html>

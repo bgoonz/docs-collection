@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching discussions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching discussions</h1>
+</header>
+<p>{% data reusables.discussions.beta %}</p>
+<h2 id="about-searching-for-discussions">About searching for discussions</h2>
+<p>You can search for discussions globally across all of {% data variables.product.product_name %}, or search for discussions within a particular organization or repository. For more information, see “<a href="/github/searching-for-information-on-github/about-searching-on-github">About searching on {% data variables.product.prodname_dotcom %}</a>.”</p>
+<p>{% data reusables.search.syntax_tips %}</p>
+<h2 id="search-by-the-title-body-or-comments">Search by the title, body, or comments</h2>
+<p>With the <code>in</code> qualifier you can restrict your search for discussions to the title, body, or comments. You can also combine qualifiers to search a combination of title, body, or comments. When you omit the <code>in</code> qualifier, {% data variables.product.product_name %} searches the title, body, and comments.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>in:title</code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=welcome+in%3Atitle&amp;type=Discussions"><strong>welcome in:title</strong></a> matches discussions with “welcome” in the title.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>in:body</code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=onboard+in%3Atitle%2Cbody&amp;type=Discussions"><strong>onboard in:title,body</strong></a> matches discussions with “onboard” in the title or body.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>in:comments</code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=thanks+in%3Acomment&amp;type=Discussions"><strong>thanks in:comments</strong></a> matches discussions with “thanks” in the comments for the discussion.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-within-a-users-or-organizations-repositories">Search within a user’s or organization’s repositories</h2>
+<p>To search discussions in all repositories owned by a certain user or organization, you can use the <code>user</code> or <code>org</code> qualifier. To search discussions in a specific repository, you can use the <code>repo</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>user:<em>USERNAME</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=user%3Aoctocat+feedback&amp;type=Discussions"><strong>user:octocat feedback</strong></a> matches discussions with the word “feedback” from repositories owned by <span class="citation" data-cites="octocat">@octocat</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>org:<em>ORGNAME</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=org%3Agithub&amp;type=Discussions&amp;utf8=%E2%9C%93"><strong>org:github</strong></a> matches discussions in repositories owned by the GitHub organization.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>repo:<em>USERNAME/REPOSITORY</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=repo%3Anodejs%2Fnode+created%3A%3C2020-01-01&amp;type=Discussions"><strong>repo:nodejs/node created:&lt;2021-01-01</strong></a> matches discussions from <span class="citation" data-cites="nodejs">@nodejs</span>’ Node.js runtime project that were created before January 2021.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filter-by-repository-visibility">Filter by repository visibility</h2>
+<p>You can filter by the visibility of the repository containing the discussions using the <code>is</code> qualifier. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility">About repository visibility</a>.”</p>
+<div class="line-block">Qualifier | Example<br />
+:- | :- |{% ifversion fpt or ghes %}<br />
+<code>is:public</code> | <a href="https://github.com/search?q=is%3Apublic&amp;type=Discussions"><strong>is:public</strong></a> matches discussions in public repositories.{% endif %}<br />
+<code>is:internal</code> | <a href="https://github.com/search?q=is%3Ainternal&amp;type=Discussions"><strong>is:internal</strong></a> matches discussions in internal repositories.<br />
+<code>is:private</code> | <a href="https://github.com/search?q=is%3Aprivate+tiramisu&amp;type=Discussions"><strong>is:private tiramisu</strong></a> matches discussions that contain the word “tiramisu” in private repositories you can access.</div>
+<h2 id="search-by-author">Search by author</h2>
+<p>The <code>author</code> qualifier finds discussions created by a certain user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>author:<em>USERNAME</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=cool+author%3Aoctocat&amp;type=Discussions"><strong>cool author:octocat</strong></a> matches discussions with the word “cool” that were created by <span class="citation" data-cites="octocat">@octocat</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=bootstrap+in%3Abody+author%3Aoctocat&amp;type=Discussions"><strong>bootstrap in:body author:octocat</strong></a> matches discussions created by <span class="citation" data-cites="octocat">@octocat</span> that contain the word “bootstrap” in the body.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-commenter">Search by commenter</h2>
+<p>The <code>commenter</code> qualifier finds discussions that contain a comment from a certain user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>commenter:<em>USERNAME</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=github+commenter%3Abecca+org%3Agithub&amp;type=Discussions"><strong>github commenter:becca org:github</strong></a> matches discussions in repositories owned by GitHub, that contain the word “github,” and have a comment by <span class="citation" data-cites="becca">@becca</span>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-a-user-thats-involved-in-a-discussion">Search by a user that’s involved in a discussion</h2>
+<p>You can use the <code>involves</code> qualifier to find discussions that involve a certain user. The qualifier returns discussions that were either created by a certain user, mention the user, or contain comments by the user. The <code>involves</code> qualifier is a logical OR between the <code>author</code>, <code>mentions</code>, and <code>commenter</code> qualifiers for a single user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>involves:<em>USERNAME</em></code></td>
+<td style="text-align: left;"><strong><a href="https://github.com/search?q=involves%3Abecca+involves%3Aoctocat&amp;type=Discussions">involves:becca involves:octocat</a></strong> matches discussions either <span class="citation" data-cites="becca">@becca</span> or <span class="citation" data-cites="octocat">@octocat</span> are involved in.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=NOT+beta+in%3Abody+involves%3Abecca&amp;type=Discussions"><strong>NOT beta in:body involves:becca</strong></a> matches discussions <span class="citation" data-cites="becca">@becca</span> is involved in that do not contain the word “beta” in the body.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-comments">Search by number of comments</h2>
+<p>You can use the <code>comments</code> qualifier along with greater than, less than, and range qualifiers to search by the number of comments. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>comments:<em>n</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=comments%3A%3E100&amp;type=Discussions"><strong>comments:&gt;100</strong></a> matches discussions with more than 100 comments.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=comments%3A500..1000&amp;type=Discussions"><strong>comments:500..1000</strong></a> matches discussions with comments ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-interactions">Search by number of interactions</h2>
+<p>You can filter discussions by the number of interactions with the <code>interactions</code> qualifier along with greater than, less than, and range qualifiers. The interactions count is the number of reactions and comments on a discussion. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>interactions:<em>n</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=interactions%3A%3E2000">** interactions:&gt;2000**</a> matches discussions with more than 2,000 interactions.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=interactions%3A500..1000"><strong>interactions:500..1000</strong></a> matches discussions with interactions ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-reactions">Search by number of reactions</h2>
+<p>You can filter discussions by the number of reactions using the <code>reactions</code> qualifier along with greater than, less than, and range qualifiers. For more information, see “<a href="/github/searching-for-information-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>reactions:<em>n</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=reactions%3A%3E500">** reactions:&gt;1000**</a> matches discussions with more than 500 reactions.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=reactions%3A500..1000"><strong>reactions:500..1000</strong></a> matches discussions with reactions ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-a-discussion-was-created-or-last-updated">Search by when a discussion was created or last updated</h2>
+<p>You can filter discussions based on times of creation, or when the discussion was last updated. For discussion creation, you can use the <code>created</code> qualifier; to find out when an discussion was last updated, use the <code>updated</code> qualifier.</p>
+<p>Both qualifiers take a date as a parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Qualifier</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>created:<em>YYYY-MM-DD</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=created%3A%3E%3D2020-11-15&amp;type=discussions"><strong>created:&gt;2020-11-15</strong></a> matches discussions that were created after November 15, 2020.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>updated:<em>YYYY-MM-DD</em></code></td>
+<td style="text-align: left;"><a href="https://github.com/search?q=weird+in%3Abody+updated%3A%3E%3D2020-12-01&amp;type=Discussions"><strong>weird in:body updated:&gt;=2020-02-01</strong></a> matches discussions with the word “weird” in the body that were updated after December 2020.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+</ul>
+</body>
+</html>

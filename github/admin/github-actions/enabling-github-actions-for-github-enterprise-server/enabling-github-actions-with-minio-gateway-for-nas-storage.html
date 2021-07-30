@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enabling GitHub Actions with MinIO Gateway for NAS storage</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Enabling GitHub Actions with MinIO Gateway for NAS storage
+      </h1>
+    </header>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>{% data reusables.actions.enterprise-s3-support-warning %}</p>
+    <p>
+      Before enabling {% data variables.product.prodname_actions %}, make sure
+      you have completed the following steps:
+    </p>
+    <ul>
+      <li>
+        To avoid resource contention on the appliance, we recommend that MinIO
+        be hosted separately from {% data variables.product.product_location %}.
+      </li>
+      <li>
+        Create your bucket for storing workflow artifacts. To set up your bucket
+        and access key, see the
+        <a href="https://docs.min.io/docs/minio-gateway-for-nas.html"
+          >MinIO documentation</a
+        >. {% indented_data_reference reusables.actions.enterprise-s3-permission
+        spaces=2 %}
+      </li>
+    </ul>
+    <p>{% data reusables.actions.enterprise-common-prereqs %}</p>
+    <h2
+      id="enabling-data-variables.product.prodname_actions-with-minio-gateway-for-nas-storage"
+    >
+      Enabling {% data variables.product.prodname_actions %} with MinIO Gateway
+      for NAS storage
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.actions %} {% data
+      reusables.actions.enterprise-enable-checkbox %} 1. Under “Artifact &amp;
+      Log Storage”, select <strong>Amazon S3</strong>, and enter your storage
+      bucket’s details:
+    </p>
+    <ul>
+      <li>
+        <strong>AWS Service URL</strong>: The URL to your MinIO service. For
+        example, <code>https://my-minio.example:9000</code>.
+      </li>
+      <li><strong>AWS S3 Bucket</strong>: The name of your S3 bucket.</li>
+      <li>
+        <strong>AWS S3 Access Key</strong> and
+        <strong>AWS S3 Secret Key</strong>: The
+        <code>MINIO_ACCESS_KEY</code> and <code>MINIO_SECRET_KEY</code> used for
+        your MinIO instance. For more information, see the
+        <a href="https://docs.min.io/docs/minio-gateway-for-nas.html"
+          >MinIO documentation</a
+        >.
+      </li>
+    </ul>
+    <p>
+      <img
+        src="/assets/images/enterprise/management-console/actions-minio-s3-storage.png"
+        alt="Radio button for selecting Amazon S3 Storage and fields for MinIO configuration"
+      />
+      1. Under “Artifact &amp; Log Storage”, select
+      <strong>Force path style</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/actions-minio-force-path-style.png"
+        alt="Checkbox to Force path style"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <p>{% data reusables.actions.enterprise-postinstall-nextsteps %}</p>
+  </body>
+</html>

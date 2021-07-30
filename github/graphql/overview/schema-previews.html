@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Schema previews</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Schema previews</h1>
+</header>
+<h2 id="about-schema-previews">About schema previews</h2>
+<p>During the preview period, we may change some features based on developer feedback. If we do make changes, we’ll announce them on the <a href="https://developer.github.com/changes/">developer blog</a> without advance notice.</p>
+<p>To access a schema preview, you’ll need to provide a custom <a href="/rest/overview/media-types">media type</a> in the <code>Accept</code> header for your requests. Feature documentation for each preview specifies which custom media type to provide.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The GraphQL schema members under preview cannot be accessed via the Explorer at this time.</p>
+<p>{% endnote %}</p>
+<p>{% for preview in graphql.previewsForCurrentVersion %} ## {{ preview.title }}</p>
+<p>{{ preview.description }}</p>
+<p>To toggle this preview and access the following schema members, you must provide a custom media type in the <code>Accept</code> header:</p>
+<pre><code>{{ preview.accept_header }}</code></pre>
+<p>Previewed schema members:</p>
+<p>{% for schemaMemberPath in preview.toggled_on %} - <code>{{ schemaMemberPath }}</code> {% endfor %}</p>
+<p>{% if preview.announcement %} <strong>Announced:</strong> <a href="%7B%7B%20preview.announcement.url%20%7D%7D">{{ preview.announcement.date }}</a> {% endif %}</p>
+<p>{% if preview.updates %} {% for update in preview.updates %} <strong>Updated:</strong> <a href="%7B%7B%20update.url%20%7D%7D">{{ update.date }}</a> {% endfor %} {% endif %}</p>
+<p>{% endfor %}</p>
+</body>
+</html>

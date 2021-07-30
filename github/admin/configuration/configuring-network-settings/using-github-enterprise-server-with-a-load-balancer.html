@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using GitHub Enterprise Server with a load balancer</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using GitHub Enterprise Server with a load balancer</h1>
+    </header>
+    <p>{% data reusables.enterprise_clustering.load_balancer_intro %}</p>
+    <p>{% data reusables.enterprise_clustering.load_balancer_dns %}</p>
+    <h2 id="handling-client-connection-information">
+      Handling client connection information
+    </h2>
+    <p>
+      Because client connections to {% data
+      variables.product.prodname_ghe_server %} come from the load balancer, the
+      client IP address can be lost.
+    </p>
+    <p>{% data reusables.enterprise_clustering.proxy_preference %}</p>
+    <p>{% data reusables.enterprise_clustering.proxy_xff_firewall_warning %}</p>
+    <h3
+      id="enabling-proxy-protocol-support-on-data-variables.product.product_location"
+    >
+      Enabling PROXY protocol support on {% data
+      variables.product.product_location %}
+    </h3>
+    <p>
+      We strongly recommend enabling PROXY protocol support for both your
+      appliance and the load balancer. Use the instructions provided by your
+      vendor to enable the PROXY protocol on your load balancer. For more
+      information, see
+      <a href="http://www.haproxy.org/download/1.6/doc/proxy-protocol.txt"
+        >the PROXY protocol documentation</a
+      >.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.privacy %} 3. Under
+      <strong>External load balancers</strong>, select
+      <strong>Enable support for PROXY protocol</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/enable-proxy.png"
+        alt="Checkbox to enable support for PROXY protocol"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <p>{% data reusables.enterprise_clustering.proxy_protocol_ports %}</p>
+    <h3
+      id="enabling-x-forwarded-for-support-on-data-variables.product.product_location"
+    >
+      Enabling X-Forwarded-For support on {% data
+      variables.product.product_location %}
+    </h3>
+    <p>{% data reusables.enterprise_clustering.x-forwarded-for %}</p>
+    <p>{% data reusables.enterprise_installation.terminating-tls %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.privacy %} 3. Under
+      <strong>External load balancers</strong>, select
+      <strong>Allow HTTP X-Forwarded-For header</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/allow-xff.png"
+        alt="Checkbox to allow the HTTP X-Forwarded-For header"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <p>
+      {% data reusables.enterprise_clustering.without_proxy_protocol_ports %}
+    </p>
+    <h2 id="configuring-health-checks">Configuring health checks</h2>
+    <p>
+      Health checks allow a load balancer to stop sending traffic to a node that
+      is not responding if a pre-configured check fails on that node. If the
+      appliance is offline due to maintenance or unexpected failure, the load
+      balancer can display a status page. In a High Availability (HA)
+      configuration, a load balancer can be used as part of a failover strategy.
+      However, automatic failover of HA pairs is not supported. You must
+      manually promote the replica appliance before it will begin serving
+      requests. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-github-enterprise-server-for-high-availability/"
+        >Configuring {% data variables.product.prodname_ghe_server %} for High
+        Availability</a
+      >.”
+    </p>
+    <p>
+      {% data reusables.enterprise_clustering.health_checks %} {% data
+      reusables.enterprise_site_admin_settings.maintenance-mode-status %}
+    </p>
+  </body>
+</html>

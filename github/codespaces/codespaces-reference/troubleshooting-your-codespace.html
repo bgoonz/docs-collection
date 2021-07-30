@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Troubleshooting your codespace</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Troubleshooting your codespace</h1>
+</header>
+<p>{% data reusables.codespaces.release-stage %}</p>
+<h2 id="known-limitations">Known Limitations</h2>
+<p>{% data reusables.codespaces.beta-functionality-limited %}</p>
+<p>{% data reusables.codespaces.unsupported-repos %}</p>
+<h2 id="data-variables.product.prodname_vscode-troubleshooting">{% data variables.product.prodname_vscode %} troubleshooting</h2>
+<p>Use <strong>Issues</strong> in the <a href="https://github.com/microsoft/vscode/issues"><code>microsoft/vscode</code></a> repository to check for known issues or to log issues about the {% data variables.product.prodname_vscode %} experience.</p>
+<h2 id="configuration-troubleshooting">Configuration troubleshooting</h2>
+<p>{% data reusables.codespaces.recovery-mode %}</p>
+<pre><code>This codespace is currently running in recovery mode due to a container error.</code></pre>
+<p>Review the creation logs, update the configuration as needed, and run <strong>Codespaces: Rebuild Container</strong> in the command palette to retry. For more information, see “<a href="/github/developing-online-with-codespaces/configuring-codespaces-for-your-project#apply-changes-to-your-configuration">Configuring {% data variables.product.prodname_codespaces %} for your project</a>.”</p>
+<h2 id="dotfiles-troubleshooting">dotfiles troubleshooting</h2>
+<ul>
+<li>Make sure your dotfiles repository is public. If you have secrets or sensitive data you want to use in your codespace, use <a href="/codespaces/managing-your-codespaces/managing-encrypted-secrets-for-your-codespaces">Codespace secrets</a> instead of private dotfiles.</li>
+<li>Check <code>/workspaces/.codespaces/.persistedshare/dotfiles</code> to see if your dotfiles were cloned.
+<ul>
+<li>If your dotfiles were cloned, try manually re-running your install script to verify it’s executable.</li>
+<li>If your dotfiles weren’t cloned, check <code>/workspaces/.codespaces/.persistedshare/EnvironmentLog.txt</code> to see if there was a problem cloning them.</li>
+</ul></li>
+<li>Check <code>/workspaces/.codespaces/.persistedshare/creation.log</code> for possible issues. Alternatively, you can view the <code>creation.log</code> by navigating to the command palette and entering <strong>Codespaces: View Creation Log</strong>.</li>
+</ul>
+<h2 id="browser-troubleshooting">Browser troubleshooting</h2>
+<p>If you encounter issues while using a browser that is not Chromium-based, try switching to a Chromium-based browser, or check for known issues with your browser in the <code>microsoft/vscode</code> repository by searching for issues labeled with the name of your browser, such as<a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+label%3Afirefox"><code>firefox</code></a> or <a href="https://github.com/Microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Asafari"><code>safari</code></a>.</p>
+<p>If you encounter issues while using a Chromium-based browser, you can check if you’re experiencing another known issue with {% data variables.product.prodname_vscode %} in the <a href="https://github.com/microsoft/vscode/issues"><code>microsoft/vscode</code></a> repository.</p>
+<h2 id="container-storage-troubleshooting">Container storage troubleshooting</h2>
+<p>When you create a codespace, it has a finite amount of storage and over time it may be necessary for you to free up space. Try any of the following items to free up storage space.</p>
+<ul>
+<li>Remove packages that are no longer by using <code>sudo apt autoremove</code></li>
+<li>Clean the apt cache by using <code>sudo apt clean</code></li>
+<li>Delete unneeded files like build artifacts and logs (these are very project-dependent)</li>
+<li>See the top 10 largest files in the codespace: <code>sudo find / -printf '%s %p\n'| sort -nr | head -10</code></li>
+</ul>
+<p>More destructive options: - Remove unused Docker images, networks, and containers by using <code>docker system prune</code> (append <code>-a</code> if you want to remove all images, and <code>--volumes</code> if you want to remove all volumes) - Remove untracked files from working tree: <code>git clean -i</code></p>
+<h2 id="contact-us">Contact us</h2>
+<p>If you still need help, you can contact us. For more information, see “<a href="/github/developing-online-with-codespaces/about-codespaces#contacting-us-about-codespaces">About {% data variables.product.prodname_codespaces %}</a>.”</p>
+</body>
+</html>

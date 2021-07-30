@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Removing a high availability replica</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Removing a high availability replica</h1>
+    </header>
+    <h2 id="stopping-replication-temporarily">
+      Stopping replication temporarily
+    </h2>
+    <ol type="1">
+      <li>
+        If necessary, stop a geo-replication replica from serving user traffic
+        by removing the Geo DNS entries for the replica.
+      </li>
+      <li>
+        On the replica where you wish to temporarily stop replication, run
+        ghe-repl-stop.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-stop</code></pre>
+    <ol start="3" type="1">
+      <li>To start replication again, run <code>ghe-repl-start</code>.</li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-start</code></pre>
+    <h2 id="removing-replication-permanently">
+      Removing replication permanently
+    </h2>
+    <ol type="1">
+      <li>
+        If necessary, stop a geo-replication replica from serving user traffic
+        by removing the Geo DNS entries for the replica.
+      </li>
+      <li>
+        On the replica you wish to remove replication from, run
+        <code>ghe-repl-stop</code>.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-stop</code></pre>
+    <ol start="3" type="1">
+      <li>
+        On the replica, to tear down the replication state, run
+        <code>ghe-repl-teardown</code>.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-repl-teardown</code></pre>
+    <p>{% ifversion ghes &gt; 2.22 %} {% note %}</p>
+    <p>
+      <strong>Note:</strong> If you have {% data
+      variables.product.prodname_actions %} enabled, you should decommission the
+      former replica server or update its {% data
+      variables.product.prodname_actions %} configuration to use different
+      external storage. For more information, see “<a
+        href="/admin/github-actions/high-availability-for-github-actions#high-availability-replicas"
+        >High availability for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>{% endnote %} {% endif %}</p>
+  </body>
+</html>

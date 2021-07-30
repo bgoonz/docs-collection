@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About webhooks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About webhooks</h1>
+</header>
+<p>Webhooks allow you to build or set up integrations, such as <a href="/apps/building-github-apps/">{% data variables.product.prodname_github_apps %}</a> or <a href="/apps/building-oauth-apps/">{% data variables.product.prodname_oauth_apps %}</a>, which subscribe to certain events on GitHub.com. When one of those events is triggered, we’ll send a HTTP POST payload to the webhook’s configured URL. Webhooks can be used to update an external issue tracker, trigger CI builds, update a backup mirror, or even deploy to your production server. You’re only limited by your imagination.</p>
+<p>Webhooks can be installed on{% ifversion ghes or ghae %} <a href="/rest/reference/enterprise-admin#global-webhooks/">{% data variables.product.prodname_enterprise %}</a>,{% endif %} an <a href="/rest/reference/orgs#webhooks/">organization</a>, a specific <a href="/rest/reference/repos#hooks">repository</a>, or a {% data variables.product.prodname_github_app %}. Once installed, the webhook will be sent each time one or more subscribed events occurs.</p>
+<p>You can create up to {% ifversion ghes or ghae %}250{% else %}20{% endif %} webhooks for each event on each installation target {% ifversion ghes or ghae %}({% data variables.product.prodname_ghe_server %} instance, specific organization, or specific repository).{% else %}(specific organization or specific repository).{% endif %}</p>
+<h2 id="events">Events</h2>
+<p>{% data reusables.webhooks.webhooks_intro %}</p>
+<p>Each event corresponds to a certain set of actions that can happen to your organization and/or repository. For example, if you subscribe to the <code>issues</code> event you’ll receive detailed payloads every time an issue is opened, closed, labeled, etc.</p>
+<p>For a complete list of available webhook events and their payloads, see “<a href="/developers/webhooks-and-events/webhook-events-and-payloads">Webhook events and payloads</a>.”</p>
+<h2 id="ping-event">Ping event</h2>
+<p>{% data reusables.webhooks.ping_short_desc %}</p>
+<p>For more information about the <code>ping</code> event webhook payload, see the <a href="/webhooks/event-payloads/#ping"><code>ping</code></a> event.</p>
+</body>
+</html>

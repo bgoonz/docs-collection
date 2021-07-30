@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Migrating data to your enterprise</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Migrating data to your enterprise</h1>
+</header>
+<h2 id="applying-the-imported-data-on-data-variables.product.prodname_ghe_server">Applying the imported data on {% data variables.product.prodname_ghe_server %}</h2>
+<p>Once you have <a href="/admin/user-management/preparing-to-migrate-data-to-your-enterprise">prepared your migration</a> you can use the following steps to complete the migration.</p>
+<p>{% data reusables.enterprise_installation.ssh-into-target-instance %}</p>
+<ol start="2" type="1">
+<li>Using the <code>ghe-migrator import</code> command, start the import process. You’ll need:
+<ul>
+<li>Your Migration GUID. For more information, see “<a href="/admin/user-management/preparing-to-migrate-data-to-your-enterprise">Preparing to migrate data to your enterprise</a>.”</li>
+<li>Your personal access token for authentication. The personal access token that you use is only for authentication as a site administrator, and does not require any specific scope. For more information, see “<a href="/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>.”</li>
+</ul>
+<pre class="shell"><code>$ ghe-migrator import /home/admin/&lt;em&gt;MIGRATION_GUID&lt;/em&gt;.tar.gz -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt; -u &lt;em&gt;username&lt;/em&gt; -p &lt;em&gt;TOKEN&lt;/em&gt;
+
+&gt; Starting GitHub::Migrator
+&gt; Import 100% complete /</code></pre>
+<ul>
+<li>{% data reusables.enterprise_migrations.specify-staging-path %}</li>
+</ul></li>
+</ol>
+<h2 id="reviewing-migration-data">Reviewing migration data</h2>
+<p>By default, <code>ghe-migrator audit</code> returns every record. It also allows you to filter records by:</p>
+<ul>
+<li>The types of records.</li>
+<li>The state of the records.</li>
+</ul>
+<p>The record types match those found in the <a href="/enterprise/admin/guides/migrations/about-migrations/#migrated-data">migrated data</a>.</p>
+<h2 id="record-type-filters">Record type filters</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Record type</th>
+<th>Filter name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Users</td>
+<td><code>user</code></td>
+</tr>
+<tr class="even">
+<td>Organizations</td>
+<td><code>organization</code></td>
+</tr>
+<tr class="odd">
+<td>Repositories</td>
+<td><code>repository</code></td>
+</tr>
+<tr class="even">
+<td>Teams</td>
+<td><code>team</code></td>
+</tr>
+<tr class="odd">
+<td>Milestones</td>
+<td><code>milestone</code></td>
+</tr>
+<tr class="even">
+<td>Project boards</td>
+<td><code>project</code></td>
+</tr>
+<tr class="odd">
+<td>Issues</td>
+<td><code>issue</code></td>
+</tr>
+<tr class="even">
+<td>Issue comments</td>
+<td><code>issue_comment</code></td>
+</tr>
+<tr class="odd">
+<td>Pull requests</td>
+<td><code>pull_request</code></td>
+</tr>
+<tr class="even">
+<td>Pull request reviews</td>
+<td><code>pull_request_review</code></td>
+</tr>
+<tr class="odd">
+<td>Commit comments</td>
+<td><code>commit_comment</code></td>
+</tr>
+<tr class="even">
+<td>Pull request review comments</td>
+<td><code>pull_request_review_comment</code></td>
+</tr>
+<tr class="odd">
+<td>Releases</td>
+<td><code>release</code></td>
+</tr>
+<tr class="even">
+<td>Actions taken on pull requests or issues</td>
+<td><code>issue_event</code></td>
+</tr>
+<tr class="odd">
+<td>Protected branches</td>
+<td><code>protected_branch</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="record-state-filters">Record state filters</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Record state</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>export</code></td>
+<td>The record will be exported.</td>
+</tr>
+<tr class="even">
+<td><code>import</code></td>
+<td>The record will be imported.</td>
+</tr>
+<tr class="odd">
+<td><code>map</code></td>
+<td>The record will be mapped.</td>
+</tr>
+<tr class="even">
+<td><code>rename</code></td>
+<td>The record will be renamed.</td>
+</tr>
+<tr class="odd">
+<td><code>merge</code></td>
+<td>The record will be merged.</td>
+</tr>
+<tr class="even">
+<td><code>exported</code></td>
+<td>The record was successfully exported.</td>
+</tr>
+<tr class="odd">
+<td><code>imported</code></td>
+<td>The record was successfully imported.</td>
+</tr>
+<tr class="even">
+<td><code>mapped</code></td>
+<td>The record was successfully mapped.</td>
+</tr>
+<tr class="odd">
+<td><code>renamed</code></td>
+<td>The record was successfully renamed.</td>
+</tr>
+<tr class="even">
+<td><code>merged</code></td>
+<td>The record was successfully merged.</td>
+</tr>
+<tr class="odd">
+<td><code>failed_export</code></td>
+<td>The record failed to export.</td>
+</tr>
+<tr class="even">
+<td><code>failed_import</code></td>
+<td>The record failed to be imported.</td>
+</tr>
+<tr class="odd">
+<td><code>failed_map</code></td>
+<td>The record failed to be mapped.</td>
+</tr>
+<tr class="even">
+<td><code>failed_rename</code></td>
+<td>The record failed to be renamed.</td>
+</tr>
+<tr class="odd">
+<td><code>failed_merge</code></td>
+<td>The record failed to be merged.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filtering-audited-records">Filtering audited records</h2>
+<p>With the <code>ghe-migrator audit</code> command, you can filter based on the record type using the <code>-m</code> flag. Similarly, you can filter on the import state using the <code>-s</code> flag. The command looks like this:</p>
+<pre class="shell"><code>$ ghe-migrator audit -m &lt;em&gt;RECORD_TYPE&lt;/em&gt; -s &lt;em&gt;STATE&lt;/em&gt; -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;</code></pre>
+<p>For example, to view every successfully imported organization and team, you would enter:</p>
+<pre class="shell"><code>$ ghe-migrator audit -m organization,team -s mapped,renamed -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;
+&gt; model_name,source_url,target_url,state
+&gt; organization,https://gh.source/octo-org/,https://ghe.target/octo-org/,renamed</code></pre>
+<p><strong>We strongly recommend auditing every import that failed.</strong> To do that, you will enter:</p>
+<pre class="shell"><code>$ ghe-migrator audit -s failed_import,failed_map,failed_rename,failed_merge -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;
+&gt; model_name,source_url,target_url,state
+&gt; user,https://gh.source/octocat,https://gh.target/octocat,failed
+&gt; repository,https://gh.source/octo-org/octo-project,https://ghe.target/octo-org/octo-project,failed</code></pre>
+<p>If you have any concerns about failed imports, contact {% data variables.contact.contact_ent_support %}.</p>
+<h2 id="completing-the-import-on-data-variables.product.prodname_ghe_server">Completing the import on {% data variables.product.prodname_ghe_server %}</h2>
+<p>After your migration is applied to your target instance and you have reviewed the migration, you’’ll unlock the repositories and delete them off the source. Before deleting your source data we recommend waiting around two weeks to ensure that everything is functioning as expected.</p>
+<h2 id="unlocking-repositories-on-the-target-instance">Unlocking repositories on the target instance</h2>
+<p>{% data reusables.enterprise_installation.ssh-into-instance %} {% data reusables.enterprise_migrations.unlocking-on-instances %}</p>
+<h2 id="unlocking-repositories-on-the-source">Unlocking repositories on the source</h2>
+<h3 id="unlocking-repositories-from-an-organization-on-data-variables.product.prodname_dotcom_the_website">Unlocking repositories from an organization on {% data variables.product.prodname_dotcom_the_website %}</h3>
+<p>To unlock the repositories on a {% data variables.product.prodname_dotcom_the_website %} organization, you’ll send a <code>DELETE</code> request to <a href="/rest/reference/migrations#unlock-an-organization-repository" class="dotcom-only">the migration unlock endpoint</a>. You’ll need: * Your access token for authentication * The unique <code>id</code> of the migration * The name of the repository to unlock</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token &lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt;&quot; -X DELETE \
+  -H &quot;Accept: application/vnd.github.wyandotte-preview+json&quot; \
+  https://api.github.com/orgs/&lt;em&gt;orgname&lt;/em&gt;/migrations/&lt;em&gt;id&lt;/em&gt;/repos/&lt;em&gt;repo_name&lt;/em&gt;/lock</code></pre>
+<h3 id="deleting-repositories-from-an-organization-on-data-variables.product.prodname_dotcom_the_website">Deleting repositories from an organization on {% data variables.product.prodname_dotcom_the_website %}</h3>
+<p>After unlocking the {% data variables.product.prodname_dotcom_the_website %} organization’s repositories, you should delete every repository you previously migrated using <a href="/rest/reference/repos/#delete-a-repository">the repository delete endpoint</a>. You’ll need your access token for authentication:</p>
+<pre class="shell"><code>curl -H &quot;Authorization: token &lt;em&gt;GITHUB_ACCESS_TOKEN&lt;/em&gt;&quot; -X DELETE \
+  https://api.github.com/repos/&lt;em&gt;orgname&lt;/em&gt;/&lt;em&gt;repo_name&lt;/em&gt;</code></pre>
+<h3 id="unlocking-repositories-from-a-data-variables.product.prodname_ghe_server-instance">Unlocking repositories from a {% data variables.product.prodname_ghe_server %} instance</h3>
+<p>{% data reusables.enterprise_installation.ssh-into-instance %} {% data reusables.enterprise_migrations.unlocking-on-instances %}</p>
+</body>
+</html>

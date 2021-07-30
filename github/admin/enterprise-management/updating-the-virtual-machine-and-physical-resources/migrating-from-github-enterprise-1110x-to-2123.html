@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Migrating from GitHub Enterprise 11.10.x to 2.1.23</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Migrating from GitHub Enterprise 11.10.x to 2.1.23</h1>
+    </header>
+    <p>
+      Migrations from {% data variables.product.prodname_enterprise %} 11.10.348
+      and later are supported. Migrating from {% data
+      variables.product.prodname_enterprise %} 11.10.348 and earlier is not
+      supported. You must first upgrade to 11.10.348 in several upgrades. For
+      more information, see the 11.10.348 upgrading procedure, “<a
+        href="/enterprise/11.10.340/admin/articles/upgrading-to-the-latest-release/"
+        >Upgrading to the latest release</a
+      >.”
+    </p>
+    <p>
+      To upgrade to the latest version of {% data
+      variables.product.prodname_enterprise %}, you must first migrate to {%
+      data variables.product.prodname_ghe_server %} 2.1, then you can follow the
+      normal upgrade process. For more information, see “<a
+        href="/enterprise/admin/guides/installation/upgrading-github-enterprise-server/"
+        >Upgrading {% data variables.product.prodname_enterprise %}</a
+      >”.
+    </p>
+    <h2 id="prepare-for-the-migration">Prepare for the migration</h2>
+    <ol type="1">
+      <li>
+        Review the Provisioning and Installation guide and check that all
+        prerequisites needed to provision and configure {% data
+        variables.product.prodname_enterprise %} 2.1.23 in your environment are
+        met. For more information, see “<a
+          href="/enterprise/2.1/admin/guides/installation/provisioning-and-installation/"
+          >Provisioning and Installation</a
+        >.”
+      </li>
+      <li>
+        Verify that the current instance is running a supported upgrade version.
+      </li>
+      <li>
+        Set up the latest version of the {% data
+        variables.product.prodname_enterprise_backup_utilities %}. For more
+        information, see
+        <a href="https://github.com/github/backup-utils"
+          >{% data variables.product.prodname_enterprise_backup_utilities %}</a
+        >.
+        <ul>
+          <li>
+            If you have already configured scheduled backups using {% data
+            variables.product.prodname_enterprise_backup_utilities %}, make sure
+            you have updated to the latest version.
+          </li>
+          <li>
+            If you are not currently running scheduled backups, set up {% data
+            variables.product.prodname_enterprise_backup_utilities %}.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          Take an initial full backup snapshot of the current instance using the
+          <code>ghe-backup</code> command. If you have already configured
+          scheduled backups for your current instance, you don’t need to take a
+          snapshot of your instance.
+        </p>
+        <p>{% tip %}</p>
+        <p>
+          <strong>Tip:</strong> You can leave the instance online and in active
+          use during the snapshot. You’ll take another snapshot during the
+          maintenance portion of the migration. Since backups are incremental,
+          this initial snapshot reduces the amount of data transferred in the
+          final snapshot, which may shorten the maintenance window.
+        </p>
+        <p>{% endtip %}</p>
+      </li>
+      <li>
+        Determine the method for switching user network traffic to the new
+        instance. After you’ve migrated, all HTTP and Git network traffic
+        directs to the new instance.
+        <ul>
+          <li>
+            <strong>DNS</strong> - We recommend this method for all
+            environments, as it’s simple and works well even when migrating from
+            one datacenter to another. Before starting migration, reduce the
+            existing DNS record’s TTL to five minutes or less and allow the
+            change to propagate. Once the migration is complete, update the DNS
+            record(s) to point to the IP address of the new instance.
+          </li>
+          <li>
+            <strong>IP address assignment</strong> - This method is only
+            available on VMware to VMware migration and is not recommended
+            unless the DNS method is unavailable. Before starting the migration,
+            you’ll need to shut down the old instance and assign its IP address
+            to the new instance.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          Schedule a maintenance window. The maintenance window should include
+          enough time to transfer data from the backup host to the new instance
+          and will vary based on the size of the backup snapshot and available
+          network bandwidth. During this time your current instance will be
+          unavailable and in maintenance mode while you migrate to the new
+          instance.
+        </p>
+      </li>
+    </ol>
+    <h2 id="perform-the-migration">Perform the migration</h2>
+    <ol type="1">
+      <li>
+        Provision a new {% data variables.product.prodname_enterprise %} 2.1
+        instance. For more information, see the “<a
+          href="/enterprise/2.1/admin/guides/installation/provisioning-and-installation/"
+          >Provisioning and Installation</a
+        >” guide for your target platform.
+      </li>
+      <li>
+        In a browser, navigate to the new replica appliance’s IP address and
+        upload your {% data variables.product.prodname_enterprise %} license.
+      </li>
+      <li>Set an admin password.</li>
+      <li>
+        Click <strong>Migrate</strong>.
+        <img
+          src="/assets/images/enterprise/migration/migration-choose-install-type.png"
+          alt="Choosing install type"
+        />
+      </li>
+      <li>
+        Paste your backup host access SSH key into “Add new SSH key”.
+        <img
+          src="/assets/images/enterprise/migration/migration-authorize-backup-host.png"
+          alt="Authorizing backup"
+        />
+      </li>
+      <li>
+        Click <strong>Add key</strong> and then click <strong>Continue</strong>.
+      </li>
+      <li>
+        Copy the <code>ghe-restore</code> command that you’ll run on the backup
+        host to migrate data to the new instance.
+        <img
+          src="/assets/images/enterprise/migration/migration-restore-start.png"
+          alt="Starting a migration"
+        />
+      </li>
+      <li>
+        Enable maintenance mode on the old instance and wait for all active
+        processes to complete. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/enabling-and-scheduling-maintenance-mode"
+          >Enabling and scheduling maintenance mode</a
+        >.”
+      </li>
+    </ol>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> The instance will be unavailable for normal use
+      from this point forward.
+    </p>
+    <p>{% endnote %}</p>
+    <ol start="10" type="1">
+      <li>
+        On the backup host, run the <code>ghe-backup</code> command to take a
+        final backup snapshot. This ensures that all data from the old instance
+        is captured.
+      </li>
+      <li>
+        On the backup host, run the <code>ghe-restore</code> command you copied
+        on the new instance’s restore status screen to restore the latest
+        snapshot.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-restore 169.254.1.1
+The authenticity of host &#39;169.254.1.1:122&#39; can&#39;t be established.
+RSA key fingerprint is fe:96:9e:ac:d0:22:7c:cf:22:68:f2:c3:c9:81:53:d1.
+Are you sure you want to continue connecting (yes/no)? yes
+Connect 169.254.1.1:122 OK (v2.0.0)
+Starting restore of 169.254.1.1:122 from snapshot 20141014T141425
+Restoring Git repositories ...
+Restoring GitHub Pages ...
+Restoring asset attachments ...
+Restoring hook deliveries ...
+Restoring MySQL database ...
+Restoring Redis database ...
+Restoring SSH authorized keys ...
+Restoring Elasticsearch indices ...
+Restoring SSH host keys ...
+Completed restore of 169.254.1.1:122 from snapshot 20141014T141425
+Visit https://169.254.1.1/setup/settings to review appliance configuration.</code></pre>
+    <ol start="12" type="1">
+      <li>
+        Return to the new instance’s restore status screen to see that the
+        restore completed.
+        <img
+          src="/assets/images/enterprise/migration/migration-status-complete.png"
+          alt="Restore complete screen"
+        />
+      </li>
+      <li>
+        Click <strong>Continue to settings</strong> to review and adjust the
+        configuration information and settings that were imported from the
+        previous instance.
+        <img
+          src="/assets/images/enterprise/migration/migration-status-complete.png"
+          alt="Review imported settings"
+        />
+      </li>
+      <li>Click <strong>Save settings</strong>.</li>
+    </ol>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> You can use the new instance after you’ve applied
+      configuration settings and restarted the server.
+    </p>
+    <p>{% endnote %}</p>
+    <ol start="15" type="1">
+      <li>
+        Switch user network traffic from the old instance to the new instance
+        using either DNS or IP address assignment.
+      </li>
+      <li>
+        Upgrade to the latest patch release of {{ currentVersion }}. For more
+        information, see “<a
+          href="/enterprise/admin/guides/installation/upgrading-github-enterprise-server/"
+          >Upgrading {% data variables.product.prodname_ghe_server %}</a
+        >.”
+      </li>
+    </ol>
+  </body>
+</html>

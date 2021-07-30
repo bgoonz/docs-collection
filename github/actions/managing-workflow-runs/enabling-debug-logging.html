@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Enabling debug logging</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Enabling debug logging</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      These extra logs are enabled by setting secrets in the repository
+      containing the workflow, so the same permissions requirements will apply:
+    </p>
+    <ul>
+      <li>
+        {% data
+        reusables.github-actions.permissions-statement-secrets-repository %} {%
+        ifversion fpt or ghes &gt; 3.0 or ghae %}
+      </li>
+      <li>
+        {% data
+        reusables.github-actions.permissions-statement-secrets-environment %} {%
+        endif %}
+      </li>
+      <li>
+        {% data
+        reusables.github-actions.permissions-statement-secrets-organization %}
+      </li>
+      <li>
+        {% data reusables.github-actions.permissions-statement-secrets-api %}
+      </li>
+    </ul>
+    <p>
+      For more information on setting secrets, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+        >Creating and using encrypted secrets</a
+      >.”
+    </p>
+    <h2 id="enabling-runner-diagnostic-logging">
+      Enabling runner diagnostic logging
+    </h2>
+    <p>
+      Runner diagnostic logging provides additional log files that contain
+      information about how a runner is executing a job. Two extra log files are
+      added to the log archive:
+    </p>
+    <ul>
+      <li>
+        The runner process log, which includes information about coordinating
+        and setting up runners to execute jobs.
+      </li>
+      <li>The worker process log, which logs the execution of a job.</li>
+    </ul>
+    <ol type="1">
+      <li>
+        <p>
+          To enable runner diagnostic logging, set the following secret in the
+          repository that contains the workflow:
+          <code>ACTIONS_RUNNER_DEBUG</code> to <code>true</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          To download runner diagnostic logs, download the log archive of the
+          workflow run. The runner diagnostic logs are contained in the
+          <code>runner-diagnostic-logs</code> folder. For more information on
+          downloading logs, see “<a
+            href="/actions/managing-workflow-runs/using-workflow-run-logs/#downloading-logs"
+            >Downloading logs</a
+          >.”
+        </p>
+      </li>
+    </ol>
+    <h2 id="enabling-step-debug-logging">Enabling step debug logging</h2>
+    <p>
+      Step debug logging increases the verbosity of a job’s logs during and
+      after a job’s execution.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          To enable step debug logging, you must set the following secret in the
+          repository that contains the workflow:
+          <code>ACTIONS_STEP_DEBUG</code> to <code>true</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          After setting the secret, more debug events are shown in the step
+          logs. For more information, see
+          <a
+            href="/actions/managing-workflow-runs/using-workflow-run-logs/#viewing-logs-to-diagnose-failures"
+            >“Viewing logs to diagnose failures”</a
+          >.
+        </p>
+      </li>
+    </ol>
+  </body>
+</html>

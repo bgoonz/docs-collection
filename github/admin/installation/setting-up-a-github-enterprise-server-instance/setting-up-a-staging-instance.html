@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Setting up a staging instance</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Setting up a staging instance</h1>
+    </header>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Tip:</strong> You may reuse your existing {% data
+      variables.product.prodname_enterprise %} license file as long as the
+      staging instance is not used for production.
+    </p>
+    <p>{% endtip %}</p>
+    <p>
+      To thoroughly test a {% data variables.product.prodname_ghe_server %}
+      appliance you will need to consider external systems that interact with
+      it. Some factors to consider testing are:
+    </p>
+    <ul>
+      <li>
+        Authentication, especially if are using an external authentication
+        provider
+      </li>
+      <li>Integration with an external ticketing system</li>
+      <li>Integration with a continuous integration server</li>
+      <li>
+        External scripts or software that use {% data
+        variables.product.prodname_enterprise_api %}
+      </li>
+      <li>External SMTP server for email notifications</li>
+    </ul>
+    <ol type="1">
+      <li>
+        Perform a backup of your production instance using {% data
+        variables.product.prodname_enterprise_backup_utilities %}. For more
+        information, see the “About {% data
+        variables.product.prodname_enterprise_backup_utilities %}” section of
+        “<a
+          href="/enterprise/admin/guides/installation/configuring-backups-on-your-appliance#about-github-enterprise-server-backup-utilities"
+          >Configuring backups on your appliance</a
+        >.”
+      </li>
+      <li>
+        Set up a new instance to act as your staging environment. You can use
+        the same guides for provisioning and installing your staging instance as
+        you did for your production instance. For more information, see “<a
+          href="/enterprise/admin/guides/installation/setting-up-a-github-enterprise-server-instance/"
+          >Setting up a {% data variables.product.prodname_ghe_server %}
+          instance</a
+        >.”
+      </li>
+      <li>
+        Restore your backup onto your staging instance. For more information,
+        see the “Restoring a backup” section of “<a
+          href="/enterprise/admin/guides/installation/configuring-backups-on-your-appliance#restoring-a-backup"
+          >Configuring backups on your appliance</a
+        >.”
+      </li>
+    </ol>
+    <p>{% ifversion ghes &gt; 2.22 %} ## Further reading</p>
+    <ul>
+      <li>
+        “<a href="/admin/overview/about-upgrades-to-new-releases"
+          >About upgrades to new releases</a
+        >” {% endif %}
+      </li>
+    </ul>
+  </body>
+</html>

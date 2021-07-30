@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Setting up code scanning for a repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Setting up code scanning for a repository</h1>
+</header>
+<!--See /content/code-security/secure-coding for the latest version of this article -->
+<p>{% data reusables.code-scanning.beta %} {% data reusables.code-scanning.enterprise-enable-code-scanning-actions %}</p>
+<h2 id="options-for-setting-up-data-variables.product.prodname_code_scanning">Options for setting up {% data variables.product.prodname_code_scanning %}</h2>
+<p>You decide how to generate {% data variables.product.prodname_code_scanning %} alerts, and which tools to use, at a repository level. {% data variables.product.product_name %} provides fully integrated support for {% data variables.product.prodname_codeql %} analysis, and also supports analysis using third-party tools. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning#about-codeql">About {% data variables.product.prodname_codeql %}</a>.”</p>
+<p>{% data reusables.code-scanning.enabling-options %}</p>
+<h2 id="setting-up-data-variables.product.prodname_code_scanning-using-actions">Setting up {% data variables.product.prodname_code_scanning %} using actions</h2>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-security %} 3. To the right of “{% data variables.product.prodname_code_scanning_capc %} alerts”, click <strong>Set up {% data variables.product.prodname_code_scanning %}</strong>. <img src="/assets/images/help/security/overview-set-up-code-scanning.png" alt="“Set up {% data variables.product.prodname_code_scanning %}” button to the right of “{% data variables.product.prodname_code_scanning_capc %}” in the Security Overview" /> 4. Under “Get started with {% data variables.product.prodname_code_scanning %}”, click <strong>Set up this workflow</strong> on the {% data variables.product.prodname_codeql_workflow %} or on a third-party workflow. <img src="/assets/images/help/repository/code-scanning-set-up-this-workflow.png" alt="“Set up this workflow” button under “Get started with {% data variables.product.prodname_code_scanning %}” heading" /> 5. To customize how {% data variables.product.prodname_code_scanning %} scans your code, edit the workflow.</p>
+<p>Generally you can commit the {% data variables.product.prodname_codeql_workflow %} without making any changes to it. However, many of the third-party workflows require additional configuration, so read the comments in the workflow before committing.</p>
+<p>For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning">Configuring {% data variables.product.prodname_code_scanning %}</a>.” 6. Use the <strong>Start commit</strong> drop-down, and type a commit message. <img src="/assets/images/help/repository/start-commit-commit-new-file.png" alt="Start commit" /> 7. Choose whether you’d like to commit directly to the default branch, or create a new branch and start a pull request. <img src="/assets/images/help/repository/start-commit-choose-where-to-commit.png" alt="Choose where to commit" /> 8. Click <strong>Commit new file</strong> or <strong>Propose new file</strong>.</p>
+<p>In the default {% data variables.product.prodname_codeql_workflow %}, {% data variables.product.prodname_code_scanning %} is configured to analyze your code each time you either push a change to the default branch or any protected branches, or raise a pull request against the default branch. As a result, {% data variables.product.prodname_code_scanning %} will now commence.</p>
+<h2 id="bulk-set-up-of-data-variables.product.prodname_code_scanning">Bulk set up of {% data variables.product.prodname_code_scanning %}</h2>
+<p>You can set up {% data variables.product.prodname_code_scanning %} in many repositories at once using a script. For an example of a script that raises pull requests to add a {% data variables.product.prodname_actions %} workflow to multiple repositories, see the <a href="https://github.com/jhutchings1/Create-ActionsPRs"><code>jhutchings1/Create-ActionsPRs</code></a> repository.</p>
+<h2 id="viewing-the-logging-output-from-data-variables.product.prodname_code_scanning">Viewing the logging output from {% data variables.product.prodname_code_scanning %}</h2>
+<p>After setting up {% data variables.product.prodname_code_scanning %} for your repository, you can watch the output of the actions as they run.</p>
+<p>{% data reusables.repositories.actions-tab %}</p>
+<p>You’ll see a list that includes an entry for running the {% data variables.product.prodname_code_scanning %} workflow. The text of the entry is the title you gave your commit message.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-actions-list.png" alt="Actions list showing {% data variables.product.prodname_code_scanning %} workflow" /><figcaption>Actions list showing {% data variables.product.prodname_code_scanning %} workflow</figcaption>
+</figure>
+<ol type="1">
+<li><p>Click the entry for the {% data variables.product.prodname_code_scanning %} workflow.</p></li>
+<li><p>Click the job name on the left. For example, <strong>Analyze (LANGUAGE)</strong>.</p></li>
+</ol>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-logging-analyze-action.png" alt="Log output from the {% data variables.product.prodname_code_scanning %} workflow" /><figcaption>Log output from the {% data variables.product.prodname_code_scanning %} workflow</figcaption>
+</figure>
+<ol type="1">
+<li><p>Review the logging output from the actions in this workflow as they run.</p></li>
+<li><p>Once all jobs are complete, you can view the details of any {% data variables.product.prodname_code_scanning %} alerts that were identified. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository#viewing-the-alerts-for-a-repository">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</p></li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you raised a pull request to add the {% data variables.product.prodname_code_scanning %} workflow to the repository, alerts from that pull request aren’t displayed directly on the {% data variables.product.prodname_code_scanning_capc %} page until the pull request is merged. If any alerts were found you can view these, before the pull request is merged, by clicking the <strong><em>n</em> alerts found</strong> link in the banner on the {% data variables.product.prodname_code_scanning_capc %} page.</p>
+<figure>
+<img src="/assets/images/enterprise/3.1/help/repository/code-scanning-alerts-found-link.png" alt="Click the “n alerts found” link" /><figcaption>Click the “n alerts found” link</figcaption>
+</figure>
+<p>{% endnote %}</p>
+<h2 id="understanding-the-pull-request-checks">Understanding the pull request checks</h2>
+<p>Each {% data variables.product.prodname_code_scanning %} workflow you set to run on pull requests always has at least two entries listed in the checks section of a pull request. There is one entry for each of the analysis jobs in the workflow, and a final one for the results of the analysis.</p>
+<p>The names of the {% data variables.product.prodname_code_scanning %} analysis checks take the form: “TOOL NAME / JOB NAME (TRIGGER).” For example, for {% data variables.product.prodname_codeql %}, analysis of C++ code has the entry “{% data variables.product.prodname_codeql %} / Analyze (cpp) (pull_request).” You can click <strong>Details</strong> on a {% data variables.product.prodname_code_scanning %} analysis entry to see logging data. This allows you to debug a problem if the analysis job failed. For example, for {% data variables.product.prodname_code_scanning %} analysis of compiled languages, this can happen if the action can’t build the code.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-pr-checks.png" alt="{% data variables.product.prodname_code_scanning %} pull request checks" /><figcaption>{% data variables.product.prodname_code_scanning %} pull request checks</figcaption>
+</figure>
+<p>When the {% data variables.product.prodname_code_scanning %} jobs complete, {% data variables.product.prodname_dotcom %} works out whether any alerts were added by the pull request and adds the “{% data variables.product.prodname_code_scanning_capc %} results / TOOL NAME” entry to the list of checks. After {% data variables.product.prodname_code_scanning %} has been performed at least once, you can click <strong>Details</strong> to view the results of the analysis. If you used a pull request to add {% data variables.product.prodname_code_scanning %} to the repository, you will initially see a “Missing analysis” message when you click <strong>Details</strong> on the “{% data variables.product.prodname_code_scanning_capc %} results / TOOL NAME” check.</p>
+<figure>
+<img src="/assets/images/help/repository/code-scanning-missing-analysis.png" alt="Missing analysis for commit message" /><figcaption>Missing analysis for commit message</figcaption>
+</figure>
+<h3 id="reasons-for-the-missing-analysis-message">Reasons for the “missing analysis” message</h3>
+<p>After {% data variables.product.prodname_code_scanning %} has analyzed the code in a pull request, it needs to compare the analysis of the topic branch (the branch you used to create the pull request) with the analysis of the base branch (the branch into which you want to merge the pull request). This allows {% data variables.product.prodname_code_scanning %} to compute which alerts are newly introduced by the pull request, which alerts were already present in the base branch, and whether any existing alerts are fixed by the changes in the pull request. Initially, if you use a pull request to add {% data variables.product.prodname_code_scanning %} to a repository, the base branch has not yet been analyzed, so it’s not possible to compute these details. In this case, when you click through from the results check on the pull request you will see the “Missing analysis for base commit SHA-HASH” message.</p>
+<p>There are other situations where there may be no analysis for the latest commit to the base branch for a pull request. These include:</p>
+<ul>
+<li><p>The pull request has been raised against a branch other than the default branch, and this branch hasn’t been analyzed.</p>
+<p>To check whether a branch has been scanned, go to the {% data variables.product.prodname_code_scanning_capc %} page, click the <strong>Branch</strong> drop-down and select the relevant branch.</p>
+<figure>
+<img src="/assets/images/enterprise/3.1/help/repository/code-scanning-branch-dropdown.png" alt="Choose a branch from the Branch drop-down menu" /><figcaption>Choose a branch from the Branch drop-down menu</figcaption>
+</figure>
+<p>The solution in this situation is to add the name of the base branch to the <code>on:push</code> and <code>on:pull_request</code> specification in the {% data variables.product.prodname_code_scanning %} workflow on that branch and then make a change that updates the open pull request that you want to scan.</p></li>
+<li><p>The latest commit on the base branch for the pull request is currently being analyzed and analysis is not yet available.</p>
+<p>Wait a few minutes and then push a change to the pull request to retrigger {% data variables.product.prodname_code_scanning %}.</p></li>
+<li><p>An error occurred while analyzing the latest commit on the base branch and analysis for that commit isn’t available.</p>
+<p>Merge a trivial change into the base branch to trigger {% data variables.product.prodname_code_scanning %} on this latest commit, then push a change to the pull request to retrigger {% data variables.product.prodname_code_scanning %}.</p></li>
+</ul>
+<h2 id="next-steps">Next steps</h2>
+<p>After setting up {% data variables.product.prodname_code_scanning %}, and allowing its actions to complete, you can:</p>
+<ul>
+<li>View all of the {% data variables.product.prodname_code_scanning %} alerts generated for this repository. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</li>
+<li>View any alerts generated for a pull request submitted after you set up {% data variables.product.prodname_code_scanning %}. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">Triaging {% data variables.product.prodname_code_scanning %} alerts in pull requests</a>.”</li>
+<li>Set up notifications for completed runs. For more information, see “<a href="/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#github-actions-notification-options">Configuring notifications</a>.”</li>
+<li>Investigate any problems that occur with the initial setup of {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %}. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/troubleshooting-the-codeql-workflow">Troubleshooting the {% data variables.product.prodname_codeql %} workflow</a>.”</li>
+<li>Customize how {% data variables.product.prodname_code_scanning %} scans the code in your repository. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning">Configuring {% data variables.product.prodname_code_scanning %}</a>.”</li>
+</ul>
+</body>
+</html>

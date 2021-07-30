@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Syncing your branch</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Syncing your branch</h1>
+</header>
+<h2 id="about-branch-synchronization">About branch synchronization</h2>
+<p>You can sync your local branch with the remote repository by pulling any commits that have been added to the branch on {% data variables.product.product_name %} since the last time you synced. If you make commits from another device or if multiple people contribute to a project, you will need to sync your local branch to keep the branch updated.</p>
+<p>When you pull to your local branch, you only update your local copy of the repository. To update your branch on {% data variables.product.prodname_dotcom %}, you must push your changes. For more information, see “<a href="/desktop/contributing-to-projects/pushing-changes-to-github">Pushing changes to {% data variables.product.prodname_dotcom %}</a>.”</p>
+<p>To add changes from one branch to another branch, you can merge the branches. To apply changes to your branch from another branch in the same repository, you can merge the other branch into your branch on {% data variables.product.prodname_desktop %}. To request that changes from your branch are merged into another branch, in the same repository or in another repository in the network, you can create a pull request on {% data variables.product.prodname_desktop %}. For more information, see “<a href="#merging-another-branch-into-your-project-branch">Merging another branch into your project branch</a>” and “<a href="/github/collaborating-with-issues-and-pull-requests/about-pull-requests">About pull requests</a>.”</p>
+<p>Some workflows require or benefit from rebasing instead of merging. By rebasing you can reorder, edit, or squash commits together. For more information, see “<a href="/github/getting-started-with-github/about-git-rebase">About Git rebase</a>” and “<a href="#rebasing-your-project-branch-onto-another-branch">Rebasing your project branch onto another branch</a>.”</p>
+<h2 id="pulling-to-your-local-branch-from-the-remote">Pulling to your local branch from the remote</h2>
+<ol type="1">
+<li>In {% data variables.product.prodname_desktop %}, use the {% octicon “git-branch” aria-label=“The branch icon” %} <strong>Current Branch</strong> drop-down, and select the local branch you want to update.</li>
+<li>To check for commits on the remote branch, click <strong>Fetch origin</strong> <img src="/assets/images/help/desktop/fetch-button.png" alt="The Fetch origin button" /></li>
+<li>To pull any commits from the remote branch, click <strong>Pull origin</strong> or <strong>Pull origin with rebase</strong>. <img src="/assets/images/help/desktop/pull-button.png" alt="The Pull origin button" /> {% data reusables.desktop.resolve-merge-conflicts %}</li>
+</ol>
+<h2 id="merging-another-branch-into-your-project-branch">Merging another branch into your project branch</h2>
+<p>{% data reusables.desktop.current-branch-menu %} {% data reusables.desktop.choose-a-branch-to-merge %} {% data reusables.desktop.confirm-merging-branch %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If there are merge conflicts, {% data variables.product.prodname_desktop %} will warn you above the <strong>Merge <em>BRANCH</em> into <em>BRANCH</em></strong> button. You will not be able to merge the branches until you have resolved all conflicts.</p>
+<p>{% endnote %}</p>
+<p><img src="/assets/images/help/desktop/merge-branch-button.png" alt="The Merge button" /> {% data reusables.desktop.push-origin %}</p>
+<h2 id="rebasing-your-project-branch-onto-another-branch">Rebasing your project branch onto another branch</h2>
+<p>{% mac %}</p>
+<ol type="1">
+<li>In the menu bar, use the <strong>Branch</strong> drop-down and click <strong>Rebase Current Branch</strong>. <img src="/assets/images/help/desktop/mac-rebase-current-branch.png" alt="Rebase Current Branch in branch dropdown" /></li>
+<li>Click the branch you want to rebase into the current branch, then click <strong>Start rebase</strong>. <img src="/assets/images/help/desktop/start-rebase-button.png" alt="Start rebase button" /></li>
+<li>If you’re sure you want to rebase, click <strong>Begin rebase</strong>. <img src="/assets/images/help/desktop/begin-rebase-button.png" alt="Begin rebase button" /> {% data reusables.desktop.resolve-merge-conflicts %}</li>
+<li>To push your local changes, click <strong>Force push origin</strong>. <img src="/assets/images/help/desktop/force-push-origin.png" alt="Force push origin" /></li>
+</ol>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<ol type="1">
+<li>Use the <strong>Branch</strong> drop-down and click <strong>Rebase Current Branch</strong>. <img src="/assets/images/help/desktop/windows-rebase-current-branch.png" alt="Rebase Current Branch in branch dropdown" /></li>
+<li>Click the branch you want to rebase into the current branch, then click <strong>Start rebase</strong>. <img src="/assets/images/help/desktop/start-rebase-button.png" alt="Start rebase button" /></li>
+<li>If you’re sure you want to rebase, click <strong>Begin rebase</strong>. <img src="/assets/images/help/desktop/begin-rebase-button.png" alt="Begin rebase button" /> {% data reusables.desktop.resolve-merge-conflicts %}</li>
+<li>To push up your local changes, click <strong>Force push origin</strong>. <img src="/assets/images/help/desktop/force-push-origin.png" alt="Force push origin" /></li>
+</ol>
+<p>{% endwindows %}</p>
+<h2 id="squashing-and-merging-another-branch-into-your-project-branch">Squashing and merging another branch into your project branch</h2>
+<ol type="1">
+<li>Use the <strong>Branch</strong> drop-down and click <strong>Squash and Merge into Current Branch</strong>. <img src="/assets/images/help/desktop/squash-and-merge-menu.png" alt="Squash and merge in branch dropdown" /></li>
+<li><p>Click the branch you want to merge into the current branch, then click <strong>Squash and merge</strong>. <img src="/assets/images/help/desktop/squash-and-merge-selection.png" alt="Squash and merge button" /> {% note %}</p>
+<p><strong>Note:</strong> If there are merge conflicts, {% data variables.product.prodname_desktop %} will warn you above the <strong>Squash and merge</strong> button. You will not be able to squash and merge the branch until you have resolved all conflicts.</p>
+<p>{% endnote %} {% data reusables.desktop.push-origin %}</p></li>
+</ol>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li>“<a href="/github/getting-started-with-github/github-glossary#pull">Pull</a>” in the {% data variables.product.prodname_dotcom %} glossary</li>
+<li>“<a href="/github/getting-started-with-github/github-glossary#merge">Merge</a>” in the {% data variables.product.prodname_dotcom %} glossary</li>
+<li>“<a href="/github/getting-started-with-github/github-glossary#rebase">Rebase</a>” in the {% data variables.product.prodname_dotcom %} glossary</li>
+</ul>
+</body>
+</html>

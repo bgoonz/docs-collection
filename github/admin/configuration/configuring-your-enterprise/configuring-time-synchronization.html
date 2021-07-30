@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring time synchronization</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring time synchronization</h1>
+    </header>
+    <h2 id="changing-the-default-ntp-servers">
+      Changing the default NTP servers
+    </h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 2. In
+      the left sidebar, click <strong>Time</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/sidebar-time.png"
+        alt="The Time button in the {% data variables.enterprise.management_console %} sidebar"
+      />
+      3. Under “Primary NTP server,” type the hostname of the primary NTP
+      server. Under “Secondary NTP server,” type the hostname of the secondary
+      NTP server.
+      <img
+        src="/assets/images/enterprise/management-console/ntp-servers.png"
+        alt="The fields for primary and secondary NTP servers in the {% data variables.enterprise.management_console %}"
+      />
+      4. At the bottom of the page, click <strong>Save settings</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/save-settings.png"
+        alt="The Save settings button in the {% data variables.enterprise.management_console %}"
+      />
+      5. Wait for the configuration run to complete.
+    </p>
+    <h2 id="correcting-a-large-time-drift">Correcting a large time drift</h2>
+    <p>
+      The NTP protocol continuously corrects small time synchronization
+      discrepancies. You can use the administrative shell to synchronize time
+      immediately.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Notes:</strong> - You can’t modify the Coordinated Universal Time
+      (UTC) zone. - You should prevent your hypervisor from trying to set the
+      virtual machine’s clock. For more information, see the documentation
+      provided by the virtualization provider.
+    </p>
+    <p>{% endnote %}</p>
+    <ul>
+      <li>
+        Use the <code>chronyc</code> command to synchronize the server with the
+        configured NTP server. For example:
+      </li>
+    </ul>
+    <pre class="shell"><code>$ sudo chronyc -a makestep</code></pre>
+  </body>
+</html>

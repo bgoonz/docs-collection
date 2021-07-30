@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Connect a learning management system to GitHub Classroom</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Connect a learning management system to GitHub Classroom</h1>
+</header>
+<h2 id="about-configuration-of-your-lms">About configuration of your LMS</h2>
+<p>You can connect a learning management system (LMS) to {% data variables.product.prodname_classroom %}, and {% data variables.product.prodname_classroom %} can import a roster of student identifiers from the LMS. To connect your LMS to {% data variables.product.prodname_classroom %}, you must enter configuration credentials for {% data variables.product.prodname_classroom %} in your LMS.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To configure an LMS to connect to {% data variables.product.prodname_classroom %}, you must first create a classroom. For more information, see “<a href="/education/manage-coursework-with-github-classroom/manage-classrooms#creating-a-classroom">Manage classrooms</a>.”</p>
+<h2 id="supported-lmses">Supported LMSes</h2>
+<p>{% data variables.product.prodname_classroom %} supports import of roster data from LMSes that implement Learning Tools Interoperability (LTI) standards.</p>
+<ul>
+<li>LTI version 1.0 and/or 1.1</li>
+<li>LTI Names and Roles Provisioning 1.X</li>
+</ul>
+<p>Using LTI helps keep your information safe and secure. LTI is an industry-standard protocol and GitHub Classroom’s use of LTI is certified by the Instructional Management System (IMS) Global Learning Consortium. For more information, see <a href="https://www.imsglobal.org/activity/learning-tools-interoperability">Learning Tools Interoperability</a> and <a href="http://www.imsglobal.org/aboutims.html">About IMS Global Learning Consortium</a> on the IMS Global Learning Consortium website.</p>
+<p>{% data variables.product.company_short %} has tested import of roster data from the following LMSes into {% data variables.product.prodname_classroom %}.</p>
+<ul>
+<li>Canvas</li>
+<li>Google Classroom</li>
+<li>Moodle</li>
+<li>Sakai</li>
+</ul>
+<p>Currently, {% data variables.product.prodname_classroom %} doesn’t support import of roster data from Blackboard or Brightspace.</p>
+<h2 id="generating-configuration-credentials-for-your-classroom">Generating configuration credentials for your classroom</h2>
+<p>{% data reusables.classroom.sign-into-github-classroom %} {% data reusables.classroom.click-classroom-in-list %} {% data reusables.classroom.click-students %} 1. If your classroom already has a roster, you can either update the roster or delete the roster and create a new roster. - For more information about deleting and creating a roster, see “<a href="/education/manage-coursework-with-github-classroom/manage-classrooms#deleting-a-roster-for-a-classroom">Deleting a roster for a classroom</a>” and “<a href="/education/manage-coursework-with-github-classroom/manage-classrooms#creating-a-roster-for-your-classroom">Creating a roster for your classroom</a>.” - For more information about updating a roster, see “<a href="/education/manage-coursework-with-github-classroom/manage-classrooms#adding-students-to-the-roster-for-your-classroom">Adding students to the roster for your classroom</a>.” 1. In the list of LMSes, click your LMS. If your LMS is not supported, click <strong>Other LMS</strong>. <img src="/assets/images/help/classroom/classroom-settings-click-lms.png" alt="List of LMSes" /> 1. Read about connecting your LMS, then click <strong>Connect to <em>LMS</em></strong>. 1. Copy the “Consumer Key”, “Shared Secret”, and “Launch URL” for the connection to the classroom. <img src="/assets/images/help/classroom/classroom-copy-credentials.png" alt="Copy credentials" /></p>
+<h2 id="configuring-a-generic-lms">Configuring a generic LMS</h2>
+<p>You must configure the privacy settings for your LMS to allow external tools to receive roster information.</p>
+<ol type="1">
+<li>Navigate to your LMS.</li>
+<li>Configure an external tool.</li>
+<li>Provide the configuration credentials you generated in {% data variables.product.prodname_classroom %}.
+<ul>
+<li>Consumer key</li>
+<li>Shared secret</li>
+<li>Launch URL (sometimes called “tool URL” or similar)</li>
+</ul></li>
+</ol>
+<h2 id="configuring-canvas">Configuring Canvas</h2>
+<p>You can configure {% data variables.product.prodname_classroom %} as an external app for Canvas to import roster data into your classroom. For more information about Canvas, see the <a href="https://www.instructure.com/canvas/">Canvas website</a>.</p>
+<ol type="1">
+<li>Sign into <a href="https://www.instructure.com/canvas/#login">Canvas</a>.</li>
+<li>Select the Canvas course to integrate with {% data variables.product.prodname_classroom %}.</li>
+<li>In the left sidebar, click <strong>Settings</strong>.</li>
+<li>Click the <strong>Apps</strong> tab.</li>
+<li>Click <strong>View app configurations</strong>.</li>
+<li>Click <strong>+App</strong>.</li>
+<li>Select the <strong>Configuration Type</strong> drop-down menu, and click <strong>By URL</strong>.</li>
+<li><p>Paste the configuration credentials from {% data variables.product.prodname_classroom %}. For more information, see “<a href="#generating-configuration-credentials-for-your-classroom">Generating configuration credentials for your classroom</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field in Canvas app configuration</th>
+<th style="text-align: left;">Value or setting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Consumer Key</strong></td>
+<td style="text-align: left;">Consumer key from {% data variables.product.prodname_classroom %}</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Shared Secret</strong></td>
+<td style="text-align: left;">Shared secret from {% data variables.product.prodname_classroom %}</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Allow this tool to access the IMS Names and Role Provisioning Service</strong></td>
+<td style="text-align: left;">Enabled</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Configuration URL</strong></td>
+<td style="text-align: left;">Launch URL from {% data variables.product.prodname_classroom %}</td>
+</tr>
+</tbody>
+</table>
+<p>{% note %}</p>
+<p><strong>Note</strong>: If you don’t see a checkbox in Canvas labeled “Allow this tool to access the IMS Names and Role Provisioning Service”, then your Canvas administrator must contact Canvas support to enable membership service configuration for your Canvas account. Without enabling this feature, you won’t be able to sync the roster from Canvas. For more information, see <a href="https://community.canvaslms.com/t5/Canvas-Basics-Guide/How-do-I-contact-Canvas-Support/ta-p/389767">How do I contact Canvas Support?</a> on the Canvas website.</p>
+<p>{% endnote %}</p></li>
+<li>Click <strong>Submit</strong>.</li>
+<li>In the left sidebar, click <strong>Home</strong>.</li>
+<li><p>To prompt Canvas to send a confirmation email, in the left sidebar, click <strong>GitHub Classroom</strong>. Follow the instructions in the email to finish linking {% data variables.product.prodname_classroom %}.</p></li>
+</ol>
+<h2 id="configuring-moodle">Configuring Moodle</h2>
+<p>You can configure {% data variables.product.prodname_classroom %} as an activity for Moodle to import roster data into your classroom. For more information about Moodle, see the <a href="https://moodle.org">Moodle website</a>.</p>
+<p>You must be using Moodle version 3.0 or greater.</p>
+<ol type="1">
+<li>Sign into <a href="https://moodle.org/login/index.php">Moodle</a>.</li>
+<li>Select the Moodle course to integrate with {% data variables.product.prodname_classroom %}.</li>
+<li>Click <strong>Turn editing on</strong>.</li>
+<li>Wherever you’d like {% data variables.product.prodname_classroom %} to be available in Moodle, click <strong>Add an activity or resource</strong>.</li>
+<li>Choose <strong>External tool</strong> and click <strong>Add</strong>.</li>
+<li>In the “Activity name” field, type “GitHub Classroom”.</li>
+<li>In the <strong>Preconfigured tool</strong> field, to the right of the drop-down menu, click <strong>+</strong>.</li>
+<li><p>Under “External tool configuration”, paste the configuration credentials from {% data variables.product.prodname_classroom %}. For more information, see “<a href="#generating-configuration-credentials-for-your-classroom">Generating configuration credentials for your classroom</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field in Moodle app configuration</th>
+<th style="text-align: left;">Value or setting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Tool name</strong></td>
+<td style="text-align: left;">{% data variables.product.prodname_classroom %} - <em>YOUR CLASSROOM NAME</em><br/><br/><strong>Note</strong>: You can use any name, but we suggest this value for clarity.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Tool URL</strong></td>
+<td style="text-align: left;">Launch URL from {% data variables.product.prodname_classroom %}</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>LTI version</strong></td>
+<td style="text-align: left;">LTI 1.0/1.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Default launch container</strong></td>
+<td style="text-align: left;">New window</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Consumer key</strong></td>
+<td style="text-align: left;">Consumer key from {% data variables.product.prodname_classroom %}</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Shared secret</strong></td>
+<td style="text-align: left;">Shared secret from {% data variables.product.prodname_classroom %}</td>
+</tr>
+</tbody>
+</table></li>
+<li>Scroll to and click <strong>Services</strong>.</li>
+<li>To the right of “IMS LTI Names and Role Provisioning”, select the drop-down menu and click <strong>Use this service to retrieve members’ information as per privacy settings</strong>.</li>
+<li>Scroll to and click <strong>Privacy</strong>.</li>
+<li>To the right of <strong>Share launcher’s name with tool</strong> and <strong>Share launcher’s email with tool</strong>, select the drop-down menus to click <strong>Always</strong>.</li>
+<li>At the bottom of the page, click <strong>Save changes</strong>.</li>
+<li>In the <strong>Preconfigure tool</strong> menu, click <strong>GitHub Classroom - <em>YOUR CLASSROOM NAME</em></strong>.</li>
+<li>Under “Common module settings”, to the right of “Availability”, select the drop-down menu and click <strong>Hide from students</strong>.</li>
+<li>At the bottom of the page, click <strong>Save and return to course</strong>.</li>
+<li><p>Navigate to anywhere you chose to display {% data variables.product.prodname_classroom %}, and click the {% data variables.product.prodname_classroom %} activity.</p></li>
+</ol>
+<h2 id="importing-a-roster-from-your-lms">Importing a roster from your LMS</h2>
+<p>For more information about importing the roster from your LMS into {% data variables.product.prodname_classroom %}, see “<a href="/education/manage-coursework-with-github-classroom/manage-classrooms#creating-a-roster-for-your-classroom">Manage classrooms</a>.”</p>
+<h2 id="disconnecting-your-lms">Disconnecting your LMS</h2>
+<p>{% data reusables.classroom.sign-into-github-classroom %} {% data reusables.classroom.click-classroom-in-list %} {% data reusables.classroom.click-settings %} 1. Under “Connect to a learning management system (LMS)”, click <strong>Connection Settings</strong>. <img src="/assets/images/help/classroom/classroom-settings-click-connection-settings.png" alt="“Connection settings” link in classroom settings" /> 1. Under “Delete Connection to your learning management system”, click <strong>Disconnect from your learning management system</strong>. <img src="/assets/images/help/classroom/classroom-settings-click-disconnect-from-your-lms-button.png" alt="“Disconnect from your learning management system” button in connection settings for classroom" /></p>
+</body>
+</html>

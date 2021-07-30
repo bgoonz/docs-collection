@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Finding and customizing actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Finding and customizing actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>The actions you use in your workflow can be defined in:</p>
+    <ul>
+      <li>A public repository</li>
+      <li>
+        The same repository where your workflow file references the action
+      </li>
+      <li>A published Docker container image on Docker Hub</li>
+    </ul>
+    <p>
+      {% data variables.product.prodname_marketplace %} is a central location
+      for you to find actions created by the {% data
+      variables.product.prodname_dotcom %} community.{% ifversion fpt %}
+      <a href="https://github.com/marketplace/actions/"
+        >{% data variables.product.prodname_marketplace %} page</a
+      >
+      enables you to filter for actions by category. {% endif %}
+    </p>
+    <p>{% data reusables.actions.enterprise-marketplace-actions %}</p>
+    <p>{% ifversion fpt %}</p>
+    <h2 id="browsing-marketplace-actions-in-the-workflow-editor">
+      Browsing Marketplace actions in the workflow editor
+    </h2>
+    <p>
+      You can search and browse actions directly in your repository’s workflow
+      editor. From the sidebar, you can search for a specific action, view
+      featured actions, and browse featured categories. You can also view the
+      number of stars an action has received from the {% data
+      variables.product.prodname_dotcom %} community.
+    </p>
+    <ol type="1">
+      <li>In your repository, browse to the workflow file you want to edit.</li>
+      <li>
+        In the upper right corner of the file view, to open the workflow editor,
+        click {% octicon “pencil” aria-label=“The edit icon” %}.
+        <img
+          src="/assets/images/help/repository/actions-edit-workflow-file.png"
+          alt="Edit workflow file button"
+        />
+      </li>
+      <li>
+        To the right of the editor, use the {% data
+        variables.product.prodname_marketplace %} sidebar to browse actions.
+        Actions with the {% octicon “verified” aria-label=“The verified badge”
+        %} badge indicate {% data variables.product.prodname_dotcom %} has
+        verified the creator of the action as a partner organization.
+        <img
+          src="/assets/images/help/repository/actions-marketplace-sidebar.png"
+          alt="Marketplace workflow sidebar"
+        />
+      </li>
+    </ol>
+    <h2 id="adding-an-action-to-your-workflow">
+      Adding an action to your workflow
+    </h2>
+    <p>
+      An action’s listing page includes the action’s version and the workflow
+      syntax required to use the action. To keep your workflow stable even when
+      updates are made to an action, you can reference the version of the action
+      to use by specifying the Git or Docker tag number in your workflow file.
+    </p>
+    <ol type="1">
+      <li>Navigate to the action you want to use in your workflow.</li>
+      <li>
+        Under “Installation”, click {% octicon “clippy” aria-label=“The edit
+        icon” %} to copy the workflow syntax.
+        <img
+          src="/assets/images/help/repository/actions-sidebar-detailed-view.png"
+          alt="View action listing"
+        />
+      </li>
+      <li>
+        Paste the syntax as a new step in your workflow. For more information,
+        see “<a
+          href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps"
+          >Workflow syntax for {% data variables.product.prodname_actions %}</a
+        >.”
+      </li>
+      <li>
+        If the action requires you to provide inputs, set them in your workflow.
+        For information on inputs an action might require, see “<a
+          href="/actions/learn-github-actions/finding-and-customizing-actions#using-inputs-and-outputs-with-an-action"
+          >Using inputs and outputs with an action</a
+        >.”
+      </li>
+    </ol>
+    <p>{% data reusables.dependabot.version-updates-for-actions %}</p>
+    <p>{% endif %}</p>
+    <h2 id="using-release-management-for-your-custom-actions">
+      Using release management for your custom actions
+    </h2>
+    <p>
+      The creators of a community action have the option to use tags, branches,
+      or SHA values to manage releases of the action. Similar to any dependency,
+      you should indicate the version of the action you’d like to use based on
+      your comfort with automatically accepting updates to the action.
+    </p>
+    <p>
+      You will designate the version of the action in your workflow file. Check
+      the action’s documentation for information on their approach to release
+      management, and to see which tag, branch, or SHA value to use.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> We recommend that you use a SHA value when using
+      third-party actions. For more information, see
+      <a
+        href="/actions/learn-github-actions/security-hardening-for-github-actions#using-third-party-actions"
+        >Security hardening for GitHub Actions</a
+      >
+    </p>
+    <p>{% endnote %}</p>
+    <h3 id="using-tags">Using tags</h3>
+    <p>
+      Tags are useful for letting you decide when to switch between major and
+      minor versions, but these are more ephemeral and can be moved or deleted
+      by the maintainer. This example demonstrates how to target an action
+      that’s been tagged as <code>v1.0.1</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/javascript-action@v1.0.1</span></a></code></pre>
+    </div>
+    <h3 id="using-shas">Using SHAs</h3>
+    <p>
+      If you need more reliable versioning, you should use the SHA value
+      associated with the version of the action. SHAs are immutable and
+      therefore more reliable than tags or branches. However this approach means
+      you will not automatically receive updates for an action, including
+      important bug fixes and security updates. {% ifversion fpt or ghes &gt;
+      3.0 or ghae %}You must use a commit’s full SHA value, and not an
+      abbreviated value. {% endif %}This example targets an action’s SHA:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/javascript-action@172239021f7ba04fe7327647b213799853a9eb89</span></a></code></pre>
+    </div>
+    <h3 id="using-branches">Using branches</h3>
+    <p>
+      Specifying a target branch for the action means it will always run the
+      version currently on that branch. This approach can create problems if an
+      update to the branch includes breaking changes. This example targets a
+      branch named <code>@main</code>:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/javascript-action@main</span></a></code></pre>
+    </div>
+    <p>
+      For more information, see “<a
+        href="/actions/creating-actions/about-actions#using-release-management-for-actions"
+        >Using release management for actions</a
+      >.”
+    </p>
+    <h2 id="using-inputs-and-outputs-with-an-action">
+      Using inputs and outputs with an action
+    </h2>
+    <p>
+      An action often accepts or requires inputs and generates outputs that you
+      can use. For example, an action might require you to specify a path to a
+      file, the name of a label, or other data it will use as part of the action
+      processing.
+    </p>
+    <p>
+      To see the inputs and outputs of an action, check the
+      <code>action.yml</code> or <code>action.yaml</code> in the root directory
+      of the repository.
+    </p>
+    <p>
+      In this example <code>action.yml</code>, the <code>inputs</code> keyword
+      defines a required input called <code>file-path</code>, and includes a
+      default value that will be used if none is specified. The
+      <code>outputs</code> keyword defines an output called
+      <code>results-file</code>, which tells you where to locate the results.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">name:</span><span class="at"> </span><span class="st">&quot;Example&quot;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="fu">description:</span><span class="at"> </span><span class="st">&quot;Receives file and generates output&quot;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="fu">file-path:</span><span class="at"> </span><span class="co"># id of input</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">description:</span><span class="at"> </span><span class="st">&quot;Path to test script&quot;</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="fu">required:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="fu">default:</span><span class="at"> </span><span class="st">&quot;test-file.js&quot;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="fu">outputs:</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="fu">results-file:</span><span class="at"> </span><span class="co"># id of output</span></a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="fu">description:</span><span class="at"> </span><span class="st">&quot;Path to results file&quot;</span></a></code></pre>
+    </div>
+    <p>{% ifversion ghae %}</p>
+    <h2
+      id="using-the-actions-included-with-data-variables.product.prodname_ghe_managed"
+    >
+      Using the actions included with {% data
+      variables.product.prodname_ghe_managed %}
+    </h2>
+    <p>
+      By default, you can use most of the official {% data
+      variables.product.prodname_dotcom %}-authored actions in {% data
+      variables.product.prodname_ghe_managed %}. For more information, see “<a
+        href="/admin/github-actions/using-actions-in-github-ae"
+        >Using actions in {% data variables.product.prodname_ghe_managed %}</a
+      >.” {% endif %}
+    </p>
+    <h2
+      id="referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action"
+    >
+      Referencing an action in the same repository where a workflow file uses
+      the action
+    </h2>
+    <p>
+      If an action is defined in the same repository where your workflow file
+      uses the action, you can reference the action with either the ‌<code
+        >{owner}/{repo}@{ref}</code
+      >
+      or <code>./path/to/dir</code> syntax in your workflow file.
+    </p>
+    <p>Example repository file structure:</p>
+    <pre><code>|-- hello-world (repository)
+|   |__ .github
+|       └── workflows
+|           └── my-first-workflow.yml
+|       └── actions
+|           |__ hello-world-action
+|               └── action.yml</code></pre>
+    <p>Example workflow file:</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-5" title="5">      <span class="co"># This step checks out a copy of your repository.</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="co"># This step references the directory that contains the action.</span></a>
+<a class="sourceLine" id="cb6-8" title="8">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ./.github/actions/hello-world-action</span></a></code></pre>
+    </div>
+    <p>
+      The <code>action.yml</code> file is used to provide metadata for the
+      action. Learn about the content of this file in “<a
+        href="/actions/creating-actions/metadata-syntax-for-github-actions"
+        >Metadata syntax for GitHub Actions</a
+      >”
+    </p>
+    <h2 id="referencing-a-container-on-docker-hub">
+      Referencing a container on Docker Hub
+    </h2>
+    <p>
+      If an action is defined in a published Docker container image on Docker
+      Hub, you must reference the action with the
+      <code>docker://{image}:{tag}</code> syntax in your workflow file. To
+      protect your code and data, we strongly recommend you verify the integrity
+      of the Docker container image from Docker Hub before using it in your
+      workflow.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="fu">my_first_job:</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-4" title="4">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> My first step</span></a>
+<a class="sourceLine" id="cb7-5" title="5">        <span class="fu">uses:</span><span class="at"> docker://alpine:3.8</span></a></code></pre>
+    </div>
+    <p>
+      For some examples of Docker actions, see the
+      <a
+        href="https://github.com/actions/starter-workflows/blob/main/ci/docker-image.yml"
+        >Docker-image.yml workflow</a
+      >
+      and “<a href="/articles/creating-a-docker-container-action"
+        >Creating a Docker container action</a
+      >.”
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>
+      To continue learning about {% data variables.product.prodname_actions %},
+      see “<a
+        href="/actions/learn-github-actions/essential-features-of-github-actions"
+        >Essential features of {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+  </body>
+</html>

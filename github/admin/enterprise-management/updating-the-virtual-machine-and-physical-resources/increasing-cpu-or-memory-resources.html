@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Increasing CPU or memory resources</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Increasing CPU or memory resources</h1>
+    </header>
+    <p>
+      {% data
+      reusables.enterprise_installation.warning-on-upgrading-physical-resources
+      %}
+    </p>
+    <h2 id="adding-cpu-or-memory-resources-for-aws">
+      Adding CPU or memory resources for AWS
+    </h2>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> To add CPU or memory resources for AWS, you must be
+      familiar with using either the AWS management console or the
+      <code>aws ec2</code> command line interface to manage EC2 instances. For
+      background and details on using the AWS tools of your choice to perform
+      the resize, see the AWS documentation on
+      <a
+        href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html"
+        >resizing an Amazon EBS-backed instance</a
+      >.
+    </p>
+    <p>{% endnote %}</p>
+    <h3 id="resizing-considerations">Resizing considerations</h3>
+    <p>
+      Before increasing CPU or memory resources for {% data
+      variables.product.product_location %}, review the following
+      recommendations.
+    </p>
+    <ul>
+      <li>
+        <strong>Scale your memory with CPUs</strong>. {% data
+        reusables.enterprise_installation.increasing-cpus-req %}
+      </li>
+      <li>
+        <strong>Assign an Elastic IP address to the instance</strong>. If you
+        haven’t assigned an Elastic IP to your instance, you’ll have to adjust
+        the DNS A records for your {% data variables.product.prodname_ghe_server
+        %} host after the restart to account for the change in public IP
+        address. Once your instance restarts, the instance keeps the Elastic IP
+        if you launched the instance in a virtual private cloud (VPC). If you
+        create the instance in an EC2-Classic network, you must manually
+        reassign the Elastic IP to the instance.
+      </li>
+    </ul>
+    <h3 id="supported-aws-instance-types">Supported AWS instance types</h3>
+    <p>
+      You need to determine the instance type you would like to upgrade to based
+      on CPU/memory specifications.
+    </p>
+    <p>{% data reusables.enterprise_installation.warning-on-scaling %}</p>
+    <p>
+      {% data reusables.enterprise_installation.aws-instance-recommendation %}
+    </p>
+    <h3 id="resizing-for-aws">Resizing for AWS</h3>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> For instances launched in EC2-Classic, write down
+      both the Elastic IP address associated with the instance and the
+      instance’s ID. Once you restart the instance, re-associate the Elastic IP
+      address.
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      It’s not possible to add CPU or memory resources to an existing AWS/EC2
+      instance. Instead, you must:
+    </p>
+    <ol type="1">
+      <li>Stop the instance.</li>
+      <li>Change the instance type.</li>
+      <li>
+        Start the instance. {% data
+        reusables.enterprise_installation.configuration-recognized %}
+      </li>
+    </ol>
+    <h2 id="adding-cpu-or-memory-resources-for-openstack-kvm">
+      Adding CPU or memory resources for OpenStack KVM
+    </h2>
+    <p>
+      It’s not possible to add CPU or memory resources to an existing OpenStack
+      KVM instance. Instead, you must:
+    </p>
+    <ol type="1">
+      <li>Take a snapshot of the current instance.</li>
+      <li>Stop the instance.</li>
+      <li>
+        Select a new instance flavor that has the desired CPU and/or memory
+        resources.
+      </li>
+    </ol>
+    <h2 id="adding-cpu-or-memory-resources-for-vmware">
+      Adding CPU or memory resources for VMware
+    </h2>
+    <p>{% data reusables.enterprise_installation.increasing-cpus-req %}</p>
+    <ol type="1">
+      <li>Use the vSphere Client to connect to the VMware ESXi host.</li>
+      <li>Shut down {% data variables.product.product_location %}.</li>
+      <li>
+        Select the virtual machine and click <strong>Edit Settings</strong>.
+      </li>
+      <li>
+        Under “Hardware”, adjust the CPU and/or memory resources allocated to
+        the virtual machine as needed:
+        <img
+          src="/assets/images/enterprise/vmware/vsphere-hardware-tab.png"
+          alt="VMware setup resources"
+        />
+      </li>
+      <li>
+        To start the virtual machine, click <strong>OK</strong>. {% data
+        reusables.enterprise_installation.configuration-recognized %}
+      </li>
+    </ol>
+  </body>
+</html>

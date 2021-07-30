@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Requiring two-factor authentication for an organization</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Requiring two-factor authentication for an organization
+      </h1>
+    </header>
+    <p>
+      When using LDAP or built-in authentication, two-factor authentication is
+      supported on {% data variables.product.product_location %}. Organization
+      administrators can require members to have two-factor authentication
+      enabled.
+    </p>
+    <p>
+      {% data reusables.enterprise_user_management.external_auth_disables_2fa %}
+    </p>
+    <p>
+      For more information, see “<a
+        href="/github/authenticating-to-github/about-two-factor-authentication"
+        >About two-factor authentication</a
+      >.”
+    </p>
+    <h2 id="requirements-for-enforcing-two-factor-authentication">
+      Requirements for enforcing two-factor authentication
+    </h2>
+    <p>
+      Before you can require organization members and outside collaborators to
+      use 2FA, you must
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/securing-your-account-with-two-factor-authentication-2fa/"
+        >enable two-factor authentication</a
+      >
+      for your own personal account.
+    </p>
+    <p>{% warning %}</p>
+    <p><strong>Warnings:</strong></p>
+    <ul>
+      <li>
+        When your require two-factor authentication, members and outside
+        collaborators (including bot accounts) who do not use 2FA will be
+        removed from the organization and lose access to its repositories,
+        including their forks of private repositories. If they enable 2FA for
+        their personal account within three months of being removed from the
+        organization, you can
+        <a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/reinstating-a-former-member-of-your-organization"
+          >reinstate their access privileges and settings</a
+        >.
+      </li>
+      <li>
+        When 2FA is required, organization members or outside collaborators who
+        disable 2FA will automatically be removed from the organization.
+      </li>
+      <li>
+        If you’re the sole owner of an organization that requires two-factor
+        authentication, you won’t be able to disable 2FA for your personal
+        account without disabling required two-factor authentication for the
+        organization.
+      </li>
+    </ul>
+    <p>{% endwarning %}</p>
+    <p>
+      Before you require use of two-factor authentication, we recommend
+      notifying organization members and outside collaborators and asking them
+      to set up 2FA for their accounts. You can
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/viewing-whether-users-in-your-organization-have-2fa-enabled"
+        >see if members and outside collaborators already use 2FA</a
+      >
+      on an organization’s People tab.
+    </p>
+    <p>
+      {% data reusables.profile.access_org %} {% data
+      reusables.profile.org_settings %} {% data reusables.organizations.security
+      %} {% data reusables.organizations.require_two_factor_authentication %} {%
+      data reusables.organizations.removed_outside_collaborators %}
+    </p>
+    <h2 id="viewing-people-who-were-removed-from-your-organization">
+      Viewing people who were removed from your organization
+    </h2>
+    <p>
+      To view people who were automatically removed from your organization for
+      non-compliance when you required two-factor authentication, you can
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/searching-the-audit-log/"
+        >search the audit log</a
+      >
+      using <code>reason:two_factor_requirement_non_compliance</code> in the
+      search field.
+    </p>
+    <p>
+      {% data reusables.audit_log.octicon_icon %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.audit_log.audit_log_sidebar_for_site_admins %} 4. Enter your
+      search query using
+      <code>reason:two_factor_requirement_non_compliance</code>.
+      <img
+        src="/assets/images/help/2fa/2fa_noncompliance_stafftools_audit_log_search.png"
+        alt="Staff tools audit log event showing a user removed for 2FA non-compliance"
+      />
+      To narrow your search for: - Organizations members removed, enter
+      <code
+        >action:org.remove_member AND
+        reason:two_factor_requirement_non_compliance</code
+      >
+      - Outside collaborators removed, enter
+      <code
+        >action:org.remove_outside_collaborator AND
+        reason:two_factor_requirement_non_compliance</code
+      >
+    </p>
+    <p>
+      You can also view people removed from a particular organization by using
+      the organization name in your search: -
+      <code>org:octo-org AND reason:two_factor_requirement_non_compliance</code>
+      5. Click <strong>Search</strong>.
+    </p>
+    <h2
+      id="helping-removed-members-and-outside-collaborators-rejoin-your-organization"
+    >
+      Helping removed members and outside collaborators rejoin your organization
+    </h2>
+    <p>
+      If any members or outside collaborators are removed from the organization
+      when you enable required use of two-factor authentication, they’ll receive
+      an email notifying them that they’ve been removed. They should then enable
+      2FA for their personal account, and contact an organization owner to
+      request access to your organization.
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/viewing-whether-users-in-your-organization-have-2fa-enabled"
+          >Viewing whether users in your organization have 2FA enabled</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/securing-your-account-with-two-factor-authentication-2fa"
+          >Securing your account with two-factor authentication (2FA)</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/reinstating-a-former-member-of-your-organization"
+          >Reinstating a former member of your organization</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/reinstating-a-former-outside-collaborator-s-access-to-your-organization"
+          >Reinstating a former outside collaborator’s access to your
+          organization</a
+        >”
+      </li>
+    </ul>
+  </body>
+</html>

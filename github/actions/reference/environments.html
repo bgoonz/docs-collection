@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Environments</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Environments</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <h2 id="about-environments">About environments</h2>
+    <p>
+      You can configure environments with protection rules and secrets. When a
+      workflow job references an environment, the job won’t start until all of
+      the environment’s protection rules pass. A job also cannot access secrets
+      that are defined in an environment until all the environment protection
+      rules pass.
+    </p>
+    <p>
+      {% ifversion fpt %} Environment protection rules and environment secrets
+      are only available on public repositories and private repositories on an
+      enterprise plan. If you convert a repository from public to private on a
+      non-enterprise plan, any configured protection rules or environment
+      secrets will be ignored, and you will not be able to configure any
+      environments. If you convert your repository back to public, you will have
+      access to any previously configured protection rules and environment
+      secrets. {% endif %}
+    </p>
+    <h3 id="environment-protection-rules">Environment protection rules</h3>
+    <p>
+      Environment protection rules require specific conditions to pass before a
+      job referencing the environment can proceed. {% ifversion fpt or ghae-next
+      or ghes &gt; 3.1 %}You can use environment protection rules to require a
+      manual approval, delay a job, or restrict the environment to certain
+      branches.{% else %}You can use environment protection rules to require a
+      manual approval or delay a job.{% endif %}
+    </p>
+    <h4 id="required-reviewers">Required reviewers</h4>
+    <p>
+      Use required reviewers to require a specific person or team to approve
+      workflow jobs that reference the environment. You can list up to six users
+      or teams as reviewers. The reviewers must have at least read access to the
+      repository. Only one of the required reviewers needs to approve the job
+      for it to proceed.
+    </p>
+    <p>
+      For more information on reviewing jobs that reference an environment with
+      required reviewers, see “<a
+        href="/actions/managing-workflow-runs/reviewing-deployments"
+        >Reviewing deployments</a
+      >.”
+    </p>
+    <h4 id="wait-timer">Wait timer</h4>
+    <p>
+      Use a wait timer to delay a job for a specific amount of time after the
+      job is initially triggered. The time (in minutes) must be an integer
+      between 0 and 43,200 (30 days).
+    </p>
+    <p>
+      {% ifversion fpt or ghae-next or ghes &gt; 3.1 %} #### Deployment branches
+    </p>
+    <p>
+      Use deployment branches to restrict which branches can deploy to the
+      environment. Below are the options for deployment branches for an
+      environment:
+    </p>
+    <ul>
+      <li>
+        <strong>All branches</strong>: All branches in the repository can deploy
+        to the environment.
+      </li>
+      <li>
+        <strong>Protected branches</strong>: Only branches with branch
+        protection rules enabled can deploy to the environment. If no branch
+        protection rules are defined for any branch in the repository, then all
+        branches can deploy. For more information about branch protection rules,
+        see “<a
+          href="/github/administering-a-repository/about-protected-branches"
+          >About protected branches</a
+        >.”
+      </li>
+      <li>
+        <p>
+          <strong>Selected branches</strong>: Only branches that match your
+          specified name patterns can deploy to the environment.
+        </p>
+        <p>
+          For example, if you specify <code>releases/*</code> as a deployment
+          branch rule, only branches whose name begins with
+          <code>releases/</code> can deploy to the environment. (Wildcard
+          characters will not match <code>/</code>. To match branches that begin
+          with <code>release/</code> and contain an additional single slash, use
+          <code>release/*/*</code>.) If you add <code>main</code> as a
+          deployment branch rule, a branch named <code>main</code> can also
+          deploy to the environment. For more information about syntax options
+          for deployment branches, see the
+          <a href="https://ruby-doc.org/core-2.5.1/File.html#method-c-fnmatch"
+            >Ruby File.fnmatch documentation</a
+          >. {% endif %} ### Environment secrets
+        </p>
+      </li>
+    </ul>
+    <p>
+      Secrets stored in an environment are only available to workflow jobs that
+      reference the environment. If the environment requires approval, a job
+      cannot access environment secrets until one of the required reviewers
+      approves it. For more information about secrets, see “<a
+        href="/actions/reference/encrypted-secrets"
+        >Encrypted secrets</a
+      >.”
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> Workflows that run on self-hosted runners are not
+      run in an isolated container, even if they use environments. Environment
+      secrets should be treated with the same level as security as repository
+      and organization secrets. For more information, see “<a
+        href="/actions/learn-github-actions/security-hardening-for-github-actions#hardening-for-self-hosted-runners"
+        >Security hardening for GitHub Actions</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="creating-an-environment">Creating an environment</h2>
+    <p>{% data reusables.github-actions.permissions-statement-environment %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.sidebar-settings %} {% data
+      reusables.github-actions.sidebar-environment %} 1. Click
+      <strong>New environment</strong>. 1. Enter a name for the environment,
+      then click <strong>Configure environment</strong>. Environment names are
+      not case sensitive. An environment name may not exceed 255 characters and
+      must be unique within the repository. 1. Configure any environment
+      protection rules or environment secrets.
+    </p>
+    <p>
+      {% ifversion fpt or ghae-next or ghes &gt; 3.1 %}You can also create and
+      configure environments through the REST API. For more information, see “<a
+        href="/rest/reference/repos#environments"
+        >Environments</a
+      >” and “<a href="/rest/reference/actions#secrets">Secrets</a>.”{% endif %}
+    </p>
+    <p>
+      Running a workflow that references an environment that does not exist will
+      create an environment with the referenced name. The newly created
+      environment will not have any protection rules or secrets configured.
+      Anyone that can edit workflows in the repository can create environments
+      via a workflow file, but only repository admins can configure the
+      environment.
+    </p>
+    <h2 id="referencing-an-environment">Referencing an environment</h2>
+    <p>
+      Each job in a workflow can reference a single environment. Any protection
+      rules configured for the environment must pass before a job referencing
+      the environment is sent to a runner. When the job is sent to the runner,
+      the job can access the environment’s secrets.
+    </p>
+    <p>
+      For more information on syntax to reference environments in workflows, see
+      “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idenvironment"
+        >Workflow syntax for GitHub Actions</a
+      >.” For more information on reviewing jobs that reference an environment
+      with required reviewers, see “<a
+        href="/actions/managing-workflow-runs/reviewing-deployments"
+        >Reviewing deployments</a
+      >.”
+    </p>
+    <p>
+      When a workflow references an environment, the environment will appear in
+      the repository’s deployments. For more information about viewing current
+      and previous deployments, see “<a
+        href="/developers/overview/viewing-deployment-history"
+        >Viewing deployment history</a
+      >.”
+    </p>
+    <p>
+      {% ifversion fpt or ghae-next or ghes &gt; 3.1 %} ## Using concurrency to
+      serialize deployments in an environment You can use concurrency so that an
+      environment has a maximum of one deployment in progress and one deployment
+      pending at a time. For more information, see “<a
+        href="/actions/reference/workflow-syntax-for-github-actions#concurrency"
+        >Workflow syntax for GitHub Actions</a
+      >.”{% endif %}
+    </p>
+    <h2 id="deleting-an-environment">Deleting an environment</h2>
+    <p>{% data reusables.github-actions.permissions-statement-environment %}</p>
+    <p>
+      Deleting an environment will delete all secrets and protection rules
+      associated with the environment. Any jobs currently waiting because of
+      protection rules from the deleted environment will automatically fail.
+    </p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.sidebar-settings %} {% data
+      reusables.github-actions.sidebar-environment %} 1. Next to the environment
+      that you want to delete, click {% octicon “trash” aria-label=“The trash
+      icon” %}. 2. Click <strong>I understand, delete this environment</strong>.
+    </p>
+    <p>
+      {% ifversion fpt or ghae-next or ghes &gt; 3.1 %}You can also delete
+      environments through the REST API. For more information, see “<a
+        href="/rest/reference/repos#environments"
+        >Environments</a
+      >.”{% endif %}
+    </p>
+  </body>
+</html>

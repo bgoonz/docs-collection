@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Working with pre-receive hooks</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Working with pre-receive hooks</h1>
+</header>
+<p>Pre-receive hooks run tests on code pushed to a repository to ensure contributions meet repository or organization policy. If the commit contents pass the tests, the push will be accepted into the repository. If the commit contents do not pass the tests, the push will not be accepted.</p>
+<p>If your push isn’t accepted, you’ll see an error message corresponding to the failed pre-receive hook.</p>
+<pre class="shell"><code>$ git push
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 916 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: always_reject.sh: failed with exit status 1
+remote: error: rejecting all pushes
+To https://54.204.174.51/hodor/nope.git
+ ! [remote rejected] main -&gt; main (pre-receive hook declined)
+error: failed to push some refs to &#39;https://54.204.174.51/hodor/nope.git&#39;</code></pre>
+<figure>
+<img src="/assets/images/help/pull_requests/pre-receive-hook-failed-error.png" alt="Error message for failed pre-receive hook" /><figcaption>Error message for failed pre-receive hook</figcaption>
+</figure>
+<p>Your {% data variables.product.product_name %} site administrator can create and remove pre-receive hooks for your organization or repository, and may allow organization or repository administrators to enable or disable pre-receive hooks. For more information, see “<a href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/developer-workflow/using-pre-receive-hooks-to-enforce-policy">Using pre-receive hooks to enforce policy</a>.”</p>
+</body>
+</html>

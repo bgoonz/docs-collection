@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Changing authentication methods</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Changing authentication methods</h1>
+    </header>
+    <p>
+      User accounts on {% data variables.product.product_location %} are
+      preserved when you change the authentication method and users will
+      continue to log into the same account as long as their username doesn’t
+      change.
+    </p>
+    <p>
+      If the new method of authentication changes usernames, new accounts will
+      be created. As an administrator, you can rename users through the site
+      admin settings or by using
+      <a href="/rest/reference/enterprise-admin#update-the-username-for-a-user"
+        >the User Administration API</a
+      >.
+    </p>
+    <p>Other issues you should take into consideration include:</p>
+    <ul>
+      <li>
+        <p>
+          <strong>Passwords:</strong> If you switch to using built-in
+          authentication for your instance, users must
+          <a href="/enterprise/user/articles/how-can-i-reset-my-password/"
+            >set a password</a
+          >
+          after the change is completed.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Site administrators:</strong> Administrative privileges are
+          <a
+            href="/enterprise/admin/guides/user-management/using-saml/#saml-attributes"
+            >controlled by your identity provider when you use SAML</a
+          >
+          and can be
+          <a
+            href="/enterprise/admin/authentication/using-ldap#configuring-ldap-with-your-github-enterprise-server-instance"
+            >controlled by group membership when you use LDAP</a
+          >.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Team membership:</strong> Only LDAP lets you
+          <a
+            href="/enterprise/admin/authentication/using-ldap#configuring-ldap-with-your-github-enterprise-server-instance"
+            >control team membership</a
+          >
+          from your directory server.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>User suspension:</strong> When you use LDAP to authenticate,
+          access to {% data variables.product.prodname_ghe_server %} can be
+          controlled via <em>restricted groups</em>. After switching to LDAP, if
+          restricted groups are configured, existing users who are not in one of
+          those groups will be suspended. Suspension will occur either when they
+          log in or during the next LDAP Sync.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Group membership:</strong> When you use LDAP to authenticate,
+          users are automatically
+          <a
+            href="/enterprise/admin/guides/user-management/suspending-and-unsuspending-users"
+            >suspended and unsuspended</a
+          >
+          based on restricted group membership and account status with Active
+          Directory.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Git authentication:</strong> SAML and CAS only supports Git
+          authentication over HTTP or HTTPS using a
+          <a href="/articles/creating-an-access-token-for-command-line-use"
+            >personal access token</a
+          >. Password authentication over HTTP or HTTPS is not supported. LDAP
+          supports password-based Git authentication by default, but we
+          recommend that you
+          <a
+            href="/enterprise/admin/authentication/using-ldap#disabling-password-authentication-for-git-operations"
+            >disable that method</a
+          >
+          and force authentication via a personal access token or SSH key.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>API authentication:</strong> SAML and CAS only supports API
+          authentication using a
+          <a href="/articles/creating-an-access-token-for-command-line-use"
+            >personal access token</a
+          >. Basic authentication is not supported.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Two-factor authentication:</strong> {% data
+          reusables.enterprise_user_management.external_auth_disables_2fa %}
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong
+            >Built-in authentication for users outside your identity
+            provider:</strong
+          >
+          You can invite users to authenticate to {% data
+          variables.product.product_location %} without adding them to your
+          identity provider. For more information, see “<a
+            href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/user-management/allowing-built-in-authentication-for-users-outside-your-identity-provider"
+            >Allowing built-in authentication for users outside your identity
+            provider</a
+          >.”
+        </p>
+      </li>
+    </ul>
+  </body>
+</html>

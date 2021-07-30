@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using Git rebase on the command line</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using Git rebase on the command line</h1>
+</header>
+<h2 id="using-git-rebase">Using Git rebase</h2>
+<p>In this example, we will cover all of the <code>git rebase</code> commands available, except for <code>exec</code>.</p>
+<p>We’ll start our rebase by entering <code>git rebase --interactive HEAD~7</code> on the terminal. Our favorite text editor will display the following lines:</p>
+<pre><code>pick 1fc6c95 Patch A
+pick 6b2481b Patch B
+pick dd1475d something I want to split
+pick c619268 A fix for Patch B
+pick fa39187 something to add to patch A
+pick 4ca2acc i cant&#39; typ goods
+pick 7b36971 something to move before patch B</code></pre>
+<p>In this example, we’re going to:</p>
+<ul>
+<li>Squash the fifth commit (<code>fa39187</code>) into the <code>"Patch A"</code> commit (<code>1fc6c95</code>), using <code>squash</code>.</li>
+<li>Move the last commit (<code>7b36971</code>) up before the <code>"Patch B"</code> commit (<code>6b2481b</code>), and keep it as <code>pick</code>.</li>
+<li>Merge the <code>"A fix for Patch B"</code> commit (<code>c619268</code>) into the <code>"Patch B"</code> commit (<code>6b2481b</code>), and disregard the commit message using <code>fixup</code>.</li>
+<li>Split the third commit (<code>dd1475d</code>) into two smaller commits, using <code>edit</code>.</li>
+<li>Fix the commit message of the misspelled commit (<code>4ca2acc</code>), using <code>reword</code>.</li>
+</ul>
+<p>Phew! This sounds like a lot of work, but by taking it one step at a time, we can easily make those changes.</p>
+<p>To start, we’ll need to modify the commands in the file to look like this:</p>
+<pre><code>pick 1fc6c95 Patch A
+squash fa39187 something to add to patch A
+pick 7b36971 something to move before patch B
+pick 6b2481b Patch B
+fixup c619268 A fix for Patch B
+edit dd1475d something I want to split
+reword 4ca2acc i cant&#39; typ goods</code></pre>
+<p>We’ve changed each line’s command from <code>pick</code> to the command we’re interested in.</p>
+<p>Now, save and close the editor; this will start the interactive rebase.</p>
+<p>Git skips the first rebase command, <code>pick 1fc6c95</code>, since it doesn’t need to do anything. It goes to the next command, <code>squash fa39187</code>. Since this operation requires your input, Git opens your text editor once again. The file it opens up looks something like this:</p>
+<pre><code># This is a combination of two commits.
+# The first commit&#39;s message is:
+
+Patch A
+
+# This is the 2nd commit message:
+
+something to add to patch A
+
+# Please enter the commit message for your changes. Lines starting
+# with &#39;#&#39; will be ignored, and an empty message aborts the commit.
+# Not currently on any branch.
+# Changes to be committed:
+#   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+#
+# modified:   a
+#</code></pre>
+<p>This file is Git’s way of saying, “Hey, here’s what I’m about to do with this <code>squash</code>.” It lists the first commit’s message (<code>"Patch A"</code>), and the second commit’s message (<code>"something to add to patch A"</code>). If you’re happy with these commit messages, you can save the file, and close the editor. Otherwise, you have the option of changing the commit message by simply changing the text.</p>
+<p>When the editor is closed, the rebase continues:</p>
+<pre><code>pick 1fc6c95 Patch A
+squash fa39187 something to add to patch A
+pick 7b36971 something to move before patch B
+pick 6b2481b Patch B
+fixup c619268 A fix for Patch B
+edit dd1475d something I want to split
+reword 4ca2acc i cant&#39; typ goods</code></pre>
+<p>Git processes the two <code>pick</code> commands (for <code>pick 7b36971</code> and <code>pick 6b2481b</code>). It <em>also</em> processes the <code>fixup</code> command (<code>fixup c619268</code>), since it doesn’t require any interaction. <code>fixup</code> merges the changes from <code>c619268</code> into the commit before it, <code>6b2481b</code>. Both changes will have the same commit message: <code>"Patch B"</code>.</p>
+<p>Git gets to the <code>edit dd1475d</code> operation, stops, and prints the following message to the terminal:</p>
+<pre class="shell"><code>You can amend the commit now, with
+
+        git commit --amend
+
+Once you are satisfied with your changes, run
+
+        git rebase --continue</code></pre>
+<p>At this point, you can edit any of the files in your project to make any additional changes. For each change you make, you’ll need to perform a new commit, and you can do that by entering the <code>git commit --amend</code> command. When you’re finished making all your changes, you can run <code>git rebase --continue</code>.</p>
+<p>Git then gets to the <code>reword 4ca2acc</code> command. It opens up your text editor one more time, and presents the following information:</p>
+<pre><code>i cant&#39; typ goods
+
+# Please enter the commit message for your changes. Lines starting
+# with &#39;#&#39; will be ignored, and an empty message aborts the commit.
+# Not currently on any branch.
+# Changes to be committed:
+#   (use &quot;git reset HEAD^1 &lt;file&gt;...&quot; to unstage)
+#
+# modified:   a
+#</code></pre>
+<p>As before, Git is showing the commit message for you to edit. You can change the text (<code>"i cant' typ goods"</code>), save the file, and close the editor. Git will finish the rebase and return you to the terminal.</p>
+<h2 id="pushing-rebased-code-to-github">Pushing rebased code to GitHub</h2>
+<p>Since you’ve altered Git history, the usual <code>git push origin</code> <strong>will not</strong> work. You’ll need to modify the command by “force-pushing” your latest changes:</p>
+<pre class="shell"><code># Don&#39;t override changes
+$ git push origin main --force-with-lease
+
+# Override changes
+$ git push origin main --force</code></pre>
+<p>{% warning %}</p>
+<p>Force pushing has serious implications because it changes the historical sequence of commits for the branch. Use it with caution, especially if your repository is being accessed by multiple people.</p>
+<p>{% endwarning %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/getting-started-with-github/resolving-merge-conflicts-after-a-git-rebase">Resolving merge conflicts after a Git rebase</a>”</li>
+</ul>
+</body>
+</html>

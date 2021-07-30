@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Removing files from a repository’s history</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Removing files from a repository’s history</h1>
+</header>
+<p>{% warning %}</p>
+<p><strong>Warning</strong>: These procedures will permanently remove files from the repository on your computer and {% data variables.product.product_location %}. If the file is important, make a local backup copy in a directory outside of the repository.</p>
+<p>{% endwarning %}</p>
+<h2 id="removing-a-file-added-in-the-most-recent-unpushed-commit">Removing a file added in the most recent unpushed commit</h2>
+<p>If the file was added with your most recent commit, and you have not pushed to {% data variables.product.product_location %}, you can delete the file and amend the commit:</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} {% data reusables.command_line.switching_directories_procedural %} 3. To remove the file, enter <code>git rm --cached</code>: <code>shell   $ git rm --cached &lt;em&gt;giant_file&lt;/em&gt;   # Stage our giant file for removal, but leave it on disk</code> 4. Commit this change using <code>--amend -CHEAD</code>: <code>shell   $ git commit --amend -CHEAD   # Amend the previous commit with your change   # Simply making a new commit won't work, as you need   # to remove the file from the unpushed history as well</code> 5. Push your commits to {% data variables.product.product_location %}: <code>shell   $ git push   # Push our rewritten, smaller commit</code></p>
+<h2 id="removing-a-file-that-was-added-in-an-earlier-commit">Removing a file that was added in an earlier commit</h2>
+<p>If you added a file in an earlier commit, you need to remove it from the repository’s history. To remove files from the repository’s history, you can use the BFG Repo-Cleaner or the <code>git filter-branch</code> command. For more information see “<a href="/github/authenticating-to-github/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>.”</p>
+</body>
+</html>

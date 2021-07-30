@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Packages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Packages</h1>
+</header>
+<p>The {% data variables.product.prodname_registry %} API enables you to manage packages using the REST API. To learn more about restoring or deleting packages, see “<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Restoring and deleting packages</a>.”</p>
+<p>To use this API, you must authenticate using a personal access token. - To access package metadata, your token must include the <code>read:packages</code> scope. - To delete packages and package versions, your token must include the <code>read:packages</code> and <code>delete:packages</code> scopes. - To restore packages and package versions, your token must include the <code>read:packages</code> and <code>write:packages</code> scopes.</p>
+<p>If your <code>package_type</code> is <code>npm</code>, <code>maven</code>, <code>rubygems</code>, or <code>nuget</code>, then your token must also include the <code>repo</code> scope since your package inherits permissions from a {% data variables.product.prodname_dotcom %} repository. If your package is in the {% data variables.product.prodname_container_registry %}, then your <code>package_type</code> is <code>container</code> and your token does not need the <code>repo</code> scope to access or manage this <code>package_type</code>. <code>container</code> packages offer granular permissions separate from a repository. For more information, see “<a href="/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries">About permissions for {% data variables.product.prodname_registry %}</a>.”</p>
+<p>If you want to use the {% data variables.product.prodname_registry %} API to access resources in an organization with SSO enabled, then you must enable SSO for your personal access token. For more information, see “<a href="/github/authenticating-to-github/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on">Authorizing a personal access token for use with SAML single sign-on</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+</body>
+</html>

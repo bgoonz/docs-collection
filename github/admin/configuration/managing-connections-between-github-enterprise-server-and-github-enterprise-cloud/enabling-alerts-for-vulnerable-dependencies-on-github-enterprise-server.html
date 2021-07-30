@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>
+      Enabling alerts for vulnerable dependencies on GitHub Enterprise Server
+    </title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Enabling alerts for vulnerable dependencies on GitHub Enterprise Server
+      </h1>
+    </header>
+    <h2
+      id="about-alerts-for-vulnerable-dependencies-on-data-variables.product.prodname_ghe_server"
+    >
+      About alerts for vulnerable dependencies on {% data
+      variables.product.prodname_ghe_server %}
+    </h2>
+    <p>
+      To identify vulnerable dependencies in your repository and receive
+      vulnerability alerts, you can use two security features: - The dependency
+      graph - {% ifversion ghes &gt; 2.21 %}{% data
+      variables.product.prodname_dependabot %}{% else %}Security{% endif %}
+      alerts
+    </p>
+    <p>
+      For more information, see “<a
+        href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph"
+        >About the dependency graph</a
+      >” and “<a
+        href="/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies"
+        >About alerts for vulnerable dependencies</a
+      >.”
+    </p>
+    <p>{% data reusables.repositories.tracks-vulnerabilities %}</p>
+    <p>
+      You can connect {% data variables.product.product_location %} to {% data
+      variables.product.prodname_dotcom_the_website %}, then sync vulnerability
+      data to your instance and generate {% ifversion ghes &gt; 2.21 %}{% data
+      variables.product.prodname_dependabot %}{% else %}security{% endif %}
+      alerts in repositories with a vulnerable dependency.
+    </p>
+    <p>
+      After connecting {% data variables.product.product_location %} to {% data
+      variables.product.prodname_dotcom_the_website %} and enabling the
+      dependency graph and {% ifversion ghes &gt; 2.21 %}{% data
+      variables.product.prodname_dependabot %}{% else %}security{% endif %}
+      alerts for vulnerable dependencies, vulnerability data is synced from {%
+      data variables.product.prodname_dotcom_the_website %} to your instance
+      once every hour. You can also choose to manually sync vulnerability data
+      at any time. No code or information about code from {% data
+      variables.product.product_location %} is uploaded to {% data
+      variables.product.prodname_dotcom_the_website %}.
+    </p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %}When {% data
+      variables.product.product_location %} receives information about a
+      vulnerability, it will identify repositories in your instance that use the
+      affected version of the dependency and generate {% data
+      variables.product.prodname_dependabot_alerts %}. You can customize how you
+      receive {% data variables.product.prodname_dependabot_alerts %}. For more
+      information, see “<a
+        href="/github/managing-security-vulnerabilities/configuring-notifications-for-vulnerable-dependencies/#configuring-notifications-for-dependabot-alerts"
+        >Configuring notifications for vulnerable dependencies</a
+      >.” {% endif %}
+    </p>
+    <p>
+      {% ifversion ghes = 2.21 %}When {% data variables.product.product_location
+      %} receives information about a vulnerability, it will identify
+      repositories in your instance that use the affected version of the
+      dependency and generate security alerts. You can customize how you receive
+      security alerts. For more information, see “<a
+        href="/github/managing-security-vulnerabilities/configuring-notifications-for-vulnerable-dependencies/#configuring-notifications-for-security-alerts"
+        >Configuring notifications for vulnerable dependencies</a
+      >.” {% endif %}
+    </p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %} ## Enabling the dependency graph and {%
+      data variables.product.prodname_dependabot_alerts %} for vulnerable
+      dependencies on {% data variables.product.prodname_ghe_server %} {% else
+      %} ## Enabling the dependency graph and security alerts for vulnerable
+      dependencies on {% data variables.product.prodname_ghe_server %} {% endif
+      %}
+    </p>
+    <p>
+      Before enabling the dependency graph and {% ifversion ghes &gt; 2.21 %}{%
+      data variables.product.prodname_dependabot %}{% else %}security{% endif %}
+      alerts for vulnerable dependencies on {% data
+      variables.product.product_location %}, you must connect {% data
+      variables.product.product_location %} to {% data
+      variables.product.prodname_dotcom_the_website %}. For more information,
+      see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/connecting-github-enterprise-server-to-github-enterprise-cloud"
+        >Connecting {% data variables.product.prodname_ghe_server %} to {% data
+        variables.product.prodname_ghe_cloud %}</a
+      >.”
+    </p>
+    <p>{% ifversion ghes %}</p>
+    <p>
+      {% ifversion ghes &gt; 2.21 %}We recommend configuring {% data
+      variables.product.prodname_dependabot_alerts %} without notifications for
+      the first few days to avoid an overload of emails. After a few days, you
+      can enable notifications to receive {% data
+      variables.product.prodname_dependabot_alerts %} as usual.{% endif %}
+    </p>
+    <p>
+      {% ifversion ghes = 2.21 %}We recommend configuring security alerts
+      without notifications for the first few days to avoid an overload of
+      emails. After a few days, you can enable notifications to receive security
+      alerts as usual.{% endif %}
+    </p>
+    <p>{% endif %}</p>
+    <p>{% data reusables.enterprise_site_admin_settings.sign-in %}</p>
+    <ol type="1">
+      <li>
+        In the administrative shell, enable the dependency graph and {%
+        ifversion ghes &gt; 2.21 %}{% data variables.product.prodname_dependabot
+        %}{% else %}security{% endif %} alerts for vulnerable dependencies on {%
+        data variables.product.product_location %}:
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ghe-dep-graph-enable</code></pre>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note</strong>: For more information about enabling access to the
+      administrative shell via SSH, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/configuration/accessing-the-administrative-shell-ssh"
+        >Accessing the administrative shell (SSH)</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <ol start="3" type="1">
+      <li>
+        Return to {% data variables.product.prodname_ghe_server %}. {% data
+        reusables.enterprise-accounts.access-enterprise %} {% data
+        reusables.enterprise-accounts.settings-tab %} {% data
+        reusables.enterprise-accounts.github-connect-tab %}{% ifversion ghes %}
+      </li>
+      <li>
+        Under “Repositories can be scanned for vulnerabilities”, use the
+        drop-down menu and select
+        <strong>Enabled without notifications</strong>. Optionally, to enable
+        alerts with notifications, select
+        <strong>Enabled with notifications</strong>.{% else %}
+      </li>
+      <li>
+        Under “Repositories can be scanned for vulnerabilities”, use the
+        drop-down menu and select <strong>Enabled</strong>. {% endif %}
+        <img
+          src="/assets/images/enterprise/site-admin-settings/enable-vulnerability-scanning-in-repositories.png"
+          alt="Drop-down menu to enable scanning repositories for vulnerabilities"
+        />
+      </li>
+    </ol>
+    <h2
+      id="viewing-vulnerable-dependencies-on-data-variables.product.prodname_ghe_server"
+    >
+      Viewing vulnerable dependencies on {% data
+      variables.product.prodname_ghe_server %}
+    </h2>
+    <p>
+      You can view all vulnerabilities in {% data
+      variables.product.product_location %} and manually sync vulnerability data
+      from {% data variables.product.prodname_dotcom_the_website %} to update
+      the list.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} 2. In
+      the left sidebar, click <strong>Vulnerabilities</strong>.
+      <img
+        src="/assets/images/enterprise/business-accounts/vulnerabilities-tab.png"
+        alt="Vulnerabilities tab in the site admin sidebar"
+      />
+      3. To sync vulnerability data, click
+      <strong>Sync Vulnerabilities now</strong>.
+      <img
+        src="/assets/images/enterprise/site-admin-settings/sync-vulnerabilities-button.png"
+        alt="Sync vulnerabilities now button"
+      />
+    </p>
+  </body>
+</html>

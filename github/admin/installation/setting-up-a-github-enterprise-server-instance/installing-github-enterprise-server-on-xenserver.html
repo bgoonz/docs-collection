@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Installing GitHub Enterprise Server on XenServer</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Installing GitHub Enterprise Server on XenServer</h1>
+    </header>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> Support for {% data
+      variables.product.prodname_ghe_server %} on XenServer will be discontinued
+      in {% data variables.product.prodname_ghe_server %} 3.3. For more
+      information, see the
+      <a href="/admin/release-notes#3.1.0"
+        >{% data variables.product.prodname_ghe_server %} 3.1 release notes</a
+      >
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <ul>
+      <li>{% data reusables.enterprise_installation.software-license %}</li>
+      <li>
+        You must install the XenServer Hypervisor on the machine that will run
+        your {% data variables.product.prodname_ghe_server %} virtual machine
+        (VM). We support versions 6.0 through 7.0.
+      </li>
+      <li>
+        We recommend using the XenCenter Windows Management Console for initial
+        setup. Instructions using the XenCenter Windows Management Console are
+        included below. For more information, see the Citrix guide “<a
+          href="https://support.citrix.com/article/CTX118531"
+          >How to Download and Install a New Version of XenCenter</a
+        >.”
+      </li>
+    </ul>
+    <h2 id="hardware-considerations">Hardware considerations</h2>
+    <p>
+      {% data
+      reusables.enterprise_installation.hardware-considerations-all-platforms %}
+    </p>
+    <h2 id="downloading-the-data-variables.product.prodname_ghe_server-image">
+      Downloading the {% data variables.product.prodname_ghe_server %} image
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.enterprise-download-procedural
+      %} {% data reusables.enterprise_installation.download-license %} {% data
+      reusables.enterprise_installation.download-appliance %} 4. Select {% data
+      variables.product.prodname_dotcom %} On-premises, then click
+      <strong>XenServer (VHD)</strong>. 5. To download your license file, click
+      <strong>Download license</strong>.
+    </p>
+    <h2 id="creating-the-data-variables.product.prodname_ghe_server-instance">
+      Creating the {% data variables.product.prodname_ghe_server %} instance
+    </h2>
+    <p>{% data reusables.enterprise_installation.create-ghe-instance %}</p>
+    <ol type="1">
+      <li>
+        In XenCenter, import the {% data variables.product.prodname_ghe_server
+        %} image you downloaded. For instructions, see the XenCenter guide “<a
+          href="https://docs.citrix.com/en-us/xencenter/current-release/vms-importdiskimage.html"
+          >Import Disk Images</a
+        >.”
+        <ul>
+          <li>
+            For the “Enable Operating System Fixup” step, select
+            <strong>Don’t use Operating System Fixup</strong>.
+          </li>
+          <li>
+            Leave the VM powered off when you’re finished. {% data
+            reusables.enterprise_installation.create-attached-storage-volume %}
+            For instructions, see the XenCenter guide “<a
+              href="https://docs.citrix.com/en-us/xencenter/current-release/vms-storage-addnewdisk.html"
+              >Add Virtual Disks</a
+            >.”
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <h2
+      id="configuring-the-data-variables.product.prodname_ghe_server-instance"
+    >
+      Configuring the {% data variables.product.prodname_ghe_server %} instance
+    </h2>
+    <p>
+      {% data reusables.enterprise_installation.copy-the-vm-public-dns-name %}
+      {% data reusables.enterprise_installation.upload-a-license-file %} {% data
+      reusables.enterprise_installation.save-settings-in-web-based-mgmt-console
+      %} For more information, see “<a
+        href="/enterprise/admin/guides/installation/configuring-the-github-enterprise-server-appliance"
+        >Configuring the {% data variables.product.prodname_ghe_server %}
+        appliance</a
+      >.” {% data
+      reusables.enterprise_installation.instance-will-restart-automatically %}
+      {% data reusables.enterprise_installation.visit-your-instance %}
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a href="/enterprise/admin/guides/installation/system-overview"
+          >System overview</a
+        >”{% ifversion ghes &gt; 2.22 %}
+      </li>
+      <li>
+        “<a href="/admin/overview/about-upgrades-to-new-releases"
+          >About upgrades to new releases</a
+        >”{% endif %}
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Securing your repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Securing your repository</h1>
+</header>
+<h2 id="introduction">Introduction</h2>
+<p>This guide shows you how to configure security features for a repository. You must be a repository administrator or organization owner to configure security settings for a repository.</p>
+<p>Your security needs are unique to your repository, so you may not need to enable every feature for your repository. For more information, see “<a href="/code-security/getting-started/github-security-features">{% data variables.product.prodname_dotcom %} security features</a>.”</p>
+<p>Some security features are only available {% ifversion fpt %}for public repositories, and for private repositories owned by organizations with {% else %}if you have {% endif %}an {% data variables.product.prodname_advanced_security %} license. {% data reusables.advanced-security.more-info-ghas %}</p>
+<h2 id="managing-access-to-your-repository">Managing access to your repository</h2>
+<p>The first step to securing a repository is to set up who can see and modify your code. For more information, see “<a href="/github/administering-a-repository/managing-repository-settings">Managing repository settings</a>.”</p>
+<p>From the main page of your repository, click <strong>{% octicon “gear” aria-label=“The Settings gear” %}Settings</strong>, then scroll down to the “Danger Zone.”</p>
+<ul>
+<li>To change who can view your repository, click <strong>Change visibility</strong>. For more information, see “<a href="/github/administering-a-repository/setting-repository-visibility">Setting repository visibility</a>.”{% ifversion fpt %}</li>
+<li>To change who can access your repository and adjust permissions, click <strong>Manage access</strong>. For more information, see“<a href="/github/administering-a-repository/managing-teams-and-people-with-access-to-your-repository">Managing teams and people with access to your repository</a>.”{% endif %}</li>
+</ul>
+<p>{% ifversion fpt or ghes &gt; 3.0 or ghae-next %} ## Setting a security policy</p>
+<ol type="1">
+<li>From the main page of your repository, click <strong>{% octicon “shield” aria-label=“The shield symbol” %} Security</strong>.</li>
+<li>Click <strong>Security policy</strong>.</li>
+<li>Click <strong>Start setup</strong>.</li>
+<li>Add information about supported versions of your project and how to report vulnerabilities.</li>
+</ol>
+<p>For more information, see “<a href="/code-security/getting-started/adding-a-security-policy-to-your-repository">Adding a security policy to your repository</a>.”</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} ## Managing the dependency graph</p>
+<p>The dependency graph is automatically generated for {% ifversion fpt or ghes &gt; 2.22 %} all public repositories and you can choose to enable it for private repositories.{% else %} all repositories.{% endif %}</p>
+<ol type="1">
+<li>From the main page of your repository, click <strong>{% octicon “gear” aria-label=“The Settings gear” %} Settings</strong>.</li>
+<li>Click <strong>Security &amp; analysis</strong>.</li>
+<li>Next to Dependency graph, click <strong>Enable</strong> or <strong>Disable</strong>.</li>
+</ol>
+<p>For more information, see “<a href="/code-security/supply-chain-security/exploring-the-dependencies-of-a-repository#enabling-and-disabling-the-dependency-graph-for-a-private-repository">Exploring the dependencies of a repository</a>.”</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} ## Managing {% data variables.product.prodname_dependabot_alerts %}</p>
+<p>By default, {% data variables.product.prodname_dotcom %} detects vulnerabilities in public repositories and generates {% data variables.product.prodname_dependabot_alerts %}. {% data variables.product.prodname_dependabot_alerts %} can also be enabled for private repositories.</p>
+<ol type="1">
+<li>Click your profile photo, then click <strong>Settings</strong>.</li>
+<li>Click <strong>Security &amp; analysis</strong>.</li>
+<li>Click <strong>Enable all</strong> next to {% data variables.product.prodname_dependabot_alerts %}.</li>
+</ol>
+<p>For more information, see “<a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">About alerts for vulnerable dependencies</a>{% ifversion fpt %}” and “<a href="/github/setting-up-and-managing-your-github-user-account/managing-security-and-analysis-settings-for-your-user-account">Managing security and analysis settings for your user account</a>{% endif %}.”</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 3.1 %} ## Managing dependency review</p>
+<p>Dependency review lets you visualize dependency changes in pull requests before they are merged into your repository. Dependency review is available in all public repositories and in repositories owned by organizations with an {% data variables.product.prodname_advanced_security %} license that have the dependency graph enabled. For more information, see “<a href="/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review">About dependency review</a>.”</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="managing-data-variables.product.prodname_dependabot_security_updates">Managing {% data variables.product.prodname_dependabot_security_updates %}</h2>
+<p>For any repository that uses {% data variables.product.prodname_dependabot_alerts %}, you can enable {% data variables.product.prodname_dependabot_security_updates %} to raise pull requests with security updates when vulnerabilities are detected.</p>
+<ol type="1">
+<li>From the main page of your repository, click <strong>{% octicon “gear” aria-label=“The Settings gear” %}Settings</strong>.</li>
+<li>Click <strong>Security &amp; analysis</strong>.</li>
+<li>Next to {% data variables.product.prodname_dependabot_security_updates %}, click <strong>Enable</strong>.</li>
+</ol>
+<p>For more information, see “<a href="/code-security/supply-chain-security/about-dependabot-security-updates">About {% data variables.product.prodname_dependabot_security_updates %}</a>” and “<a href="/code-security/supply-chain-security/configuring-dependabot-security-updates">Configuring {% data variables.product.prodname_dependabot_security_updates %}</a>.”</p>
+<h2 id="managing-data-variables.product.prodname_dependabot_version_updates">Managing {% data variables.product.prodname_dependabot_version_updates %}</h2>
+<p>You can enable {% data variables.product.prodname_dependabot %} to automatically raise pull requests to keep your dependencies up-to-date. For more information, see “<a href="/code-security/supply-chain-security/about-dependabot-version-updates">About {% data variables.product.prodname_dependabot_version_updates %}</a>.”</p>
+<p>To enable {% data variables.product.prodname_dependabot_version_updates %}, you must create a <em>dependabot.yml</em> configuration file. For more information, see “<a href="/code-security/supply-chain-security/enabling-and-disabling-version-updates">Enabling and disabling version updates</a>.”</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Configuring {% data variables.product.prodname_code_scanning %}</p>
+<p>{% data variables.product.prodname_code_scanning_capc %} is available {% ifversion fpt %}for all public repositories, and for private repositories owned by organizations with {% else %} for organization-owned repositories if you have {% endif %}an {% data variables.product.prodname_advanced_security %} license.</p>
+<p>You can set up {% data variables.product.prodname_code_scanning %} to automatically identify vulnerabilities and errors in the code stored in your repository by using a {% data variables.product.prodname_codeql_workflow %} or third-party tool. For more information, see “<a href="/code-security/secure-coding/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>.”</p>
+<h2 id="configuring-data-variables.product.prodname_secret_scanning">Configuring {% data variables.product.prodname_secret_scanning %}</h2>
+<p>{% data variables.product.prodname_secret_scanning_caps %} is available {% ifversion fpt %}for all public repositories, and for private repositories owned by organizations with {% else %} for organization-owned repositories if you have {% endif %}an {% data variables.product.prodname_advanced_security %} license.</p>
+<p>{% data variables.product.prodname_secret_scanning_caps %} may be enabled for your repository by default depending upon your organization’s settings.</p>
+<ol type="1">
+<li>From the main page of your repository, click <strong>{% octicon “gear” aria-label=“The Settings gear” %}Settings</strong>.</li>
+<li>Click <strong>Security &amp; analysis</strong>.</li>
+<li>If {% data variables.product.prodname_GH_advanced_security %} is not already enabled, click <strong>Enable</strong>.</li>
+<li>Next to {% data variables.product.prodname_secret_scanning_caps %}, click <strong>Enable</strong>.</li>
+</ol>
+<p>{% endif %}</p>
+<h2 id="next-steps">Next steps</h2>
+<p>You can view and manage alerts from security features to address dependencies and vulnerabilities in your code. For more information, see {% ifversion fpt or ghes &gt; 2.22 %} “<a href="/code-security/supply-chain-security/viewing-and-updating-vulnerable-dependencies-in-your-repository">Viewing and updating vulnerable dependencies in your repository</a>,”{% endif %} {% ifversion fpt %}“<a href="/code-security/supply-chain-security/managing-pull-requests-for-dependency-updates">Managing pull requests for dependency updates</a>,” {% endif %}“<a href="/code-security/secure-coding/managing-code-scanning-alerts-for-your-repository">Managing {% data variables.product.prodname_code_scanning %} for your repository</a>,” and “<a href="/code-security/secret-security/managing-alerts-from-secret-scanning">Managing alerts from {% data variables.product.prodname_secret_scanning %}</a>.”</p>
+<p>{% ifversion fpt %}If you have a security vulnerability, you can create a security advisory to privately discuss and fix the vulnerability. For more information, see “<a href="/code-security/security-advisories/about-github-security-advisories">About {% data variables.product.prodname_security_advisories %}</a>” and “<a href="/code-security/security-advisories/creating-a-security-advisory">Creating a security advisory</a>.” {% endif %}</p>
+</body>
+</html>

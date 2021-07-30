@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring SAML single sign-on and SCIM using Okta</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring SAML single sign-on and SCIM using Okta</h1>
+</header>
+<h2 id="about-saml-and-scim-with-okta">About SAML and SCIM with Okta</h2>
+<p>You can control access to your {% data variables.product.prodname_dotcom %} organization and other web applications from one central interface by configuring the organization to use SAML SSO and SCIM with Okta, an Identity Provider (IdP).</p>
+<p>SAML SSO controls and secures access to organization resources like repositories, issues, and pull requests. SCIM automatically adds, manages, and removes members’ access to your {% data variables.product.prodname_dotcom %} organization when you make changes in Okta. For more information, see “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on">About identity and access management with SAML single sign-on</a>” and “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/about-scim">About SCIM</a>.”</p>
+<p>After you enable SCIM, the following provisioning features are available for any users that you assign your {% data variables.product.prodname_ghe_cloud %} application to in Okta.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Push New Users</td>
+<td>When you create a new user in Okta, the user will receive an email to join your {% data variables.product.prodname_dotcom %} organization.</td>
+</tr>
+<tr class="even">
+<td>Push User Deactivation</td>
+<td>When you deactivate a user in Okta, Okta will remove the user from your {% data variables.product.prodname_dotcom %} organization.</td>
+</tr>
+<tr class="odd">
+<td>Push Profile Updates</td>
+<td>When you update a user’s profile in Okta, Okta will update the metadata for the user’s membership in your {% data variables.product.prodname_dotcom %} organization.</td>
+</tr>
+<tr class="even">
+<td>Reactivate Users</td>
+<td>When you reactivate a user in Okta, Okta will send an email invitation for the user to rejoin your {% data variables.product.prodname_dotcom %} organization.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>{% data reusables.saml.use-classic-ui %}</p>
+<h2 id="adding-the-data-variables.product.prodname_ghe_cloud-application-in-okta">Adding the {% data variables.product.prodname_ghe_cloud %} application in Okta</h2>
+<p>{% data reusables.saml.okta-dashboard-click-applications %} {% data reusables.saml.add-okta-application %} {% data reusables.saml.search-ghec-okta %} 4. To the right of “Github Enterprise Cloud - Organization”, click <strong>Add</strong>. <img src="/assets/images/help/saml/okta-add-ghec-application.png" alt="Clicking “Add” for the {% data variables.product.prodname_ghe_cloud %} application" /></p>
+<ol start="5" type="1">
+<li><p>In the <strong>GitHub Organization</strong> field, type the name of your {% data variables.product.prodname_dotcom %} organization. For example, if your organization’s URL is https://github.com/octo-org, the organization name would be <code>octo-org</code>. <img src="/assets/images/help/saml/okta-github-organization-name.png" alt="Type GitHub organization name" /></p></li>
+<li><p>Click <strong>Done</strong>.</p></li>
+</ol>
+<h2 id="enabling-and-testing-saml-sso">Enabling and testing SAML SSO</h2>
+<p>{% data reusables.saml.okta-dashboard-click-applications %} {% data reusables.saml.okta-applications-click-ghec-application-label %} {% data reusables.saml.assign-yourself-to-okta %} {% data reusables.saml.okta-sign-on-tab %} {% data reusables.saml.okta-view-setup-instructions %} 6. Enable and test SAML SSO on {% data variables.product.prodname_dotcom %} using the sign on URL, issuer URL, and public certificates from the “How to Configure SAML 2.0” guide. For more information, see “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/enabling-and-testing-saml-single-sign-on-for-your-organization">Enabling and testing SAML single sign-on for your organization</a>.”</p>
+<h2 id="configuring-access-provisioning-with-scim-in-okta">Configuring access provisioning with SCIM in Okta</h2>
+<p>{% data reusables.saml.okta-dashboard-click-applications %} {% data reusables.saml.okta-applications-click-ghec-application-label %} {% data reusables.saml.okta-provisioning-tab %} {% data reusables.saml.okta-configure-api-integration %} {% data reusables.saml.okta-enable-api-integration %}</p>
+<ol start="6" type="1">
+<li><p>Click <strong>Authenticate with Github Enterprise Cloud - Organization</strong>. <img src="/assets/images/help/saml/okta-authenticate-with-ghec-organization.png" alt="“Authenticate with Github Enterprise Cloud - Organization” button for Okta application" /></p></li>
+<li><p>To the right of your organization’s name, click <strong>Grant</strong>. <img src="/assets/images/help/saml/okta-scim-integration-grant-organization-access.png" alt="“Grant” button for authorizing Okta SCIM integration to access organization" /></p></li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note</strong>: If you don’t see your organization in the list, go to <code>https://github.com/orgs/ORGANIZATION-NAME/sso</code> in your browser and authenticate with your organization via SAML SSO using your administrator account on the IdP. For example, if your organization’s name is <code>octo-org</code>, the URL would be <code>https://github.com/orgs/octo-org/sso</code>. For more information, see “<a href="/github/authenticating-to-github/about-authentication-with-saml-single-sign-on">About authentication with SAML single sign-on</a>.”</p>
+<p>{% endnote %} 1. Click <strong>Authorize OktaOAN</strong>. <img src="/assets/images/help/saml/okta-scim-integration-authorize-oktaoan.png" alt="“Authorize OktaOAN” button for authorizing Okta SCIM integration to access organization" /> {% data reusables.saml.okta-save-provisioning %} {% data reusables.saml.okta-edit-provisioning %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/setting-up-and-managing-your-enterprise/configuring-saml-single-sign-on-for-your-enterprise-account-using-okta">Configuring SAML single sign-on for your enterprise account using Okta</a>”</li>
+<li>“<a href="/organizations/managing-saml-single-sign-on-for-your-organization/managing-team-synchronization-for-your-organization#enabling-team-synchronization-for-okta">Managing team synchronization for your organization</a>”</li>
+<li><a href="https://developer.okta.com/docs/concepts/saml/">Understanding SAML</a> in the Okta documentation</li>
+<li><a href="https://developer.okta.com/docs/concepts/scim/">Understanding SCIM</a> in the Okta documentation</li>
+</ul>
+</body>
+</html>

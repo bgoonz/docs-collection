@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating a Docker container action</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating a Docker container action</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      In this guide, you’ll learn about the basic components needed to create
+      and use a packaged Docker container action. To focus this guide on the
+      components needed to package the action, the functionality of the action’s
+      code is minimal. The action prints “Hello World” in the logs or “Hello
+      [who-to-greet]” if you provide a custom name.
+    </p>
+    <p>
+      Once you complete this project, you should understand how to build your
+      own Docker container action and test it in a workflow.
+    </p>
+    <p>{% data reusables.github-actions.self-hosted-runner-reqs-docker %}</p>
+    <p>{% data reusables.github-actions.context-injection-warning %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      You may find it helpful to have a basic understanding of {% data
+      variables.product.prodname_actions %} environment variables and the Docker
+      container filesystem:
+    </p>
+    <ul>
+      <li>
+        “<a
+          href="/actions/automating-your-workflow-with-github-actions/using-environment-variables"
+          >Using environment variables</a
+        >” {% ifversion ghae %}
+      </li>
+      <li>
+        “<a
+          href="/actions/using-github-hosted-runners/about-ae-hosted-runners#docker-container-filesystem"
+          >Docker container filesystem</a
+        >.” {% else %}
+      </li>
+      <li>
+        “<a
+          href="/actions/automating-your-workflow-with-github-actions/virtual-environments-for-github-hosted-runners#docker-container-filesystem"
+          >Virtual environments for {% data variables.product.prodname_dotcom
+          %}</a
+        >” {% endif %}
+      </li>
+    </ul>
+    <p>
+      Before you begin, you’ll need to create a {% data
+      variables.product.prodname_dotcom %} repository.
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Create a new repository on {% data variables.product.product_location
+          %}. You can choose any repository name or use
+          “hello-world-docker-action” like this example. For more information,
+          see “<a href="/articles/creating-a-new-repository"
+            >Create a new repository</a
+          >.”
+        </p>
+      </li>
+      <li>
+        <p>
+          Clone your repository to your computer. For more information, see “<a
+            href="/articles/cloning-a-repository"
+            >Cloning a repository</a
+          >.”
+        </p>
+      </li>
+      <li>
+        <p>From your terminal, change directories into your new repository.</p>
+      </li>
+    </ol>
+    <pre class="shell{:copy}"><code>cd hello-world-docker-action</code></pre>
+    <h2 id="creating-a-dockerfile">Creating a Dockerfile</h2>
+    <p>
+      In your new <code>hello-world-docker-action</code> directory, create a new
+      <code>Dockerfile</code> file. For more information, see “<a
+        href="/actions/creating-actions/dockerfile-support-for-github-actions"
+        >Dockerfile support for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p><strong>Dockerfile</strong></p>
+    <pre class="dockerfile{:copy}"><code># Container image that runs your code
+FROM alpine:3.10
+
+# Copies your code file from your action repository to the filesystem path `/` of the container
+COPY entrypoint.sh /entrypoint.sh
+
+# Code file to execute when the docker container starts up (`entrypoint.sh`)
+ENTRYPOINT [&quot;/entrypoint.sh&quot;]</code></pre>
+    <h2 id="creating-an-action-metadata-file">
+      Creating an action metadata file
+    </h2>
+    <p>
+      Create a new <code>action.yml</code> file in the
+      <code>hello-world-docker-action</code> directory you created above. For
+      more information, see “<a
+        href="/actions/creating-actions/metadata-syntax-for-github-actions"
+        >Metadata syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>{% raw %} <strong>action.yml</strong></p>
+    <pre class="yaml{:copy}"><code># action.yml
+name: &#39;Hello World&#39;
+description: &#39;Greet someone and record the time&#39;
+inputs:
+  who-to-greet:  # id of input
+    description: &#39;Who to greet&#39;
+    required: true
+    default: &#39;World&#39;
+outputs:
+  time: # id of output
+    description: &#39;The time we greeted you&#39;
+runs:
+  using: &#39;docker&#39;
+  image: &#39;Dockerfile&#39;
+  args:
+    - ${{ inputs.who-to-greet }}</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      This metadata defines one <code>who-to-greet</code> input and one
+      <code>time</code> output parameter. To pass inputs to the Docker
+      container, you must declare the input using <code>inputs</code> and pass
+      the input in the <code>args</code> keyword.
+    </p>
+    <p>
+      {% data variables.product.prodname_dotcom %} will build an image from your
+      <code>Dockerfile</code>, and run commands in a new container using this
+      image.
+    </p>
+    <h2 id="writing-the-action-code">Writing the action code</h2>
+    <p>
+      You can choose any base Docker image and, therefore, any language for your
+      action. The following shell script example uses the
+      <code>who-to-greet</code> input variable to print “Hello [who-to-greet]”
+      in the log file.
+    </p>
+    <p>
+      Next, the script gets the current time and sets it as an output variable
+      that actions running later in a job can use. In order for {% data
+      variables.product.prodname_dotcom %} to recognize output variables, you
+      must use a workflow command in a specific syntax:
+      <code>echo "::set-output name=&lt;output name&gt;::&lt;value&gt;"</code>.
+      For more information, see “<a
+        href="/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter"
+        >Workflow commands for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          Create a new <code>entrypoint.sh</code> file in the
+          <code>hello-world-docker-action</code> directory.
+        </p>
+      </li>
+      <li>
+        <p>Add the following code to your <code>entrypoint.sh</code> file.</p>
+      </li>
+    </ol>
+    <p><strong>entrypoint.sh</strong> ```shell{:copy} #!/bin/sh -l</p>
+    <p>
+      echo “Hello <span class="math inline">$1" time=$</span>(date)
+      echo”::set-output name=time::$time" ``<code>If</code>entrypoint.sh<code
+        >executes without any errors, the action's status is set to</code
+      >success`. You can also explicitly set exit codes in your action’s code to
+      provide an action’s status. For more information, see “<a
+        href="/actions/creating-actions/setting-exit-codes-for-actions"
+        >Setting exit codes for actions</a
+      >.”
+    </p>
+    <ol type="1">
+      <li>
+        Make your <code>entrypoint.sh</code> file executable by running the
+        following command on your system.
+      </li>
+    </ol>
+    <pre class="shell{:copy}"><code>$ chmod +x entrypoint.sh</code></pre>
+    <h2 id="creating-a-readme">Creating a README</h2>
+    <p>
+      To let people know how to use your action, you can create a README file. A
+      README is most helpful when you plan to share your action publicly, but is
+      also a great way to remind you or your team how to use the action.
+    </p>
+    <p>
+      In your <code>hello-world-docker-action</code> directory, create a
+      <code>README.md</code> file that specifies the following information:
+    </p>
+    <ul>
+      <li>A detailed description of what the action does.</li>
+      <li>Required input and output arguments.</li>
+      <li>Optional input and output arguments.</li>
+      <li>Secrets the action uses.</li>
+      <li>Environment variables the action uses.</li>
+      <li>An example of how to use your action in a workflow.</li>
+    </ul>
+    <p><strong>README.md</strong></p>
+    <pre class="markdown{:copy}"><code># Hello world docker action
+
+This action prints &quot;Hello World&quot; or &quot;Hello&quot; + the name of a person to greet to the log.
+
+## Inputs
+
+## `who-to-greet`
+
+**Required** The name of the person to greet. Default `&quot;World&quot;`.
+
+## Outputs
+
+## `time`
+
+The time we greeted you.
+
+## Example usage
+
+uses: actions/hello-world-docker-action@v1
+with:
+  who-to-greet: &#39;Mona the Octocat&#39;</code></pre>
+    <h2
+      id="commit-tag-and-push-your-action-to-data-variables.product.product_name"
+    >
+      Commit, tag, and push your action to {% data
+      variables.product.product_name %}
+    </h2>
+    <p>
+      From your terminal, commit your <code>action.yml</code>,
+      <code>entrypoint.sh</code>, <code>Dockerfile</code>, and
+      <code>README.md</code> files.
+    </p>
+    <p>
+      It’s best practice to also add a version tag for releases of your action.
+      For more information on versioning your action, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/about-actions#using-release-management-for-actions"
+        >About actions</a
+      >.”
+    </p>
+    <pre
+      class="shell{:copy}"
+    ><code>git add action.yml entrypoint.sh Dockerfile README.md
+git commit -m &quot;My first action is ready&quot;
+git tag -a -m &quot;My first action release&quot; v1
+git push --follow-tags</code></pre>
+    <h2 id="testing-out-your-action-in-a-workflow">
+      Testing out your action in a workflow
+    </h2>
+    <p>
+      Now you’re ready to test your action out in a workflow. When an action is
+      in a private repository, the action can only be used in workflows in the
+      same repository. Public actions can be used by workflows in any
+      repository.
+    </p>
+    <p>{% data reusables.actions.enterprise-marketplace-actions %}</p>
+    <h3 id="example-using-a-public-action">Example using a public action</h3>
+    <p>
+      The following workflow code uses the completed <em>hello world</em> action
+      in the public
+      <a href="https://github.com/actions/hello-world-docker-action"
+        ><code>actions/hello-world-docker-action</code></a
+      >
+      repository. Copy the following workflow example code into a
+      <code>.github/workflows/main.yml</code> file, but replace the
+      <code>actions/hello-world-docker-action</code> with your repository and
+      action name. You can also replace the <code>who-to-greet</code> input with
+      your name. {% ifversion fpt %}Public actions can be used even if they’re
+      not published to {% data variables.product.prodname_marketplace %}. For
+      more information, see “<a
+        href="/actions/creating-actions/publishing-actions-in-github-marketplace#publishing-an-action"
+        >Publishing an action</a
+      >.” {% endif %}
+    </p>
+    <p>{% raw %} <strong>.github/workflows/main.yml</strong></p>
+    <pre class="yaml{:copy}"><code>on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - name: Hello world action step
+        id: hello
+        uses: actions/hello-world-docker-action@v1
+        with:
+          who-to-greet: &#39;Mona the Octocat&#39;
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo &quot;The time was ${{ steps.hello.outputs.time }}&quot;</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="example-using-a-private-action">Example using a private action</h3>
+    <p>
+      Copy the following example workflow code into a
+      <code>.github/workflows/main.yml</code> file in your action’s repository.
+      You can also replace the <code>who-to-greet</code> input with your name.
+      {% ifversion fpt %}This private action can’t be published to {% data
+      variables.product.prodname_marketplace %}, and can only be used in this
+      repository.{% endif %}
+    </p>
+    <p>{% raw %} <strong>.github/workflows/main.yml</strong></p>
+    <pre class="yaml{:copy}"><code>on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      # To use this repository&#39;s private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: &#39;Mona the Octocat&#39;
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo &quot;The time was ${{ steps.hello.outputs.time }}&quot;</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      From your repository, click the <strong>Actions</strong> tab, and select
+      the latest workflow run. {% ifversion fpt or ghes &gt; 3.0 or ghae %}Under
+      <strong>Jobs</strong> or in the visualization graph, click
+      <strong>A job to say hello</strong>. {% endif %}You should see “Hello Mona
+      the Octocat” or the name you used for the <code>who-to-greet</code> input
+      and the timestamp printed in the log.
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/docker-action-workflow-run-updated.png"
+        alt="A screenshot of using your action in a workflow"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/docker-action-workflow-run.png"
+        alt="A screenshot of using your action in a workflow"
+      />
+      {% endif %}
+    </p>
+  </body>
+</html>

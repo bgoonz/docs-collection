@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Breaking changes</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Breaking changes</h1>
+</header>
+<h2 id="about-breaking-changes">About breaking changes</h2>
+<p>Breaking changes are any changes that might require action from our integrators. We divide these changes into two categories:</p>
+<ul>
+<li><strong>Breaking:</strong> Changes that will break existing queries to the GraphQL API. For example, removing a field would be a breaking change.</li>
+<li><strong>Dangerous:</strong> Changes that won’t break existing queries but could affect the runtime behavior of clients. Adding an enum value is an example of a dangerous change.</li>
+</ul>
+<p>We strive to provide stable APIs for our integrators. When a new feature is still evolving, we release it behind a <a href="/graphql/overview/schema-previews">schema preview</a>.</p>
+<p>We’ll announce upcoming breaking changes at least three months before making changes to the GraphQL schema, to give integrators time to make the necessary adjustments. Changes go into effect on the first day of a quarter (January 1st, April 1st, July 1st, or October 1st). For example, if we announce a change on January 15th, it will be made on July 1st.</p>
+<p>{% for date in graphql.upcomingChangesForCurrentVersion %} ## Changes scheduled for {{ date[0] }}</p>
+{% for change in date[1] %}
+<ul>
+<li>
+<p><span class="border rounded-1 m-1 p-1 {% if change.criticality == &#39;breaking&#39; %}color-border-danger color-bg-danger{% else %}color-border-info color-bg-info{% endif %}">{% if change.criticality == ‘breaking’ %}Breaking{% else %}Dangerous{% endif %}</span> A change will be made to <code>{{ change.location }}</code>.</p>
+<p>
+<b>Description:</b> {{ change.description }}
+</p>
+<p>
+<b>Reason:</b> {{ change.reason }}
+</p>
+</li>
+</ul>
+<p>{% endfor %} {% endfor %}</p>
+</body>
+</html>

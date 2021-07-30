@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting started with the Git Database API</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting started with the Git Database API</h1>
+</header>
+<h2 id="overview">Overview</h2>
+<p>This basically allows you to reimplement a lot of Git functionality over our API - by creating raw objects directly into the database and updating branch references you could technically do just about anything that Git can do without having Git installed.</p>
+<p>Git Database API functions will return a <code>409 Conflict</code> if the Git repository is empty or unavailable. An unavailable repository typically means {% data variables.product.product_name %} is in the process of creating the repository. For an empty repository, you can use the “<a href="/rest/reference/repos#create-or-update-file-contents">Create or update file contents</a>” endpoint to create content and initialize the repository so you can use the Git Database API. Contact {% data variables.contact.contact_support %} if this response status persists.</p>
+<figure>
+<img src="/assets/images/git-database-overview.png" alt="git database overview" /><figcaption>git database overview</figcaption>
+</figure>
+<p>For more information on the Git object database, please read the <a href="http://git-scm.com/book/en/v1/Git-Internals">Git Internals</a> chapter of the Pro Git book.</p>
+<p>As an example, if you wanted to commit a change to a file in your repository, you would:</p>
+<ul>
+<li>Get the current commit object</li>
+<li>Retrieve the tree it points to</li>
+<li>Retrieve the content of the blob object that tree has for that particular file path</li>
+<li>Change the content somehow and post a new blob object with that new content, getting a blob SHA back</li>
+<li>Post a new tree object with that file path pointer replaced with your new blob SHA getting a tree SHA back</li>
+<li>Create a new commit object with the current commit SHA as the parent and the new tree SHA, getting a commit SHA back</li>
+<li>Update the reference of your branch to point to the new commit SHA</li>
+</ul>
+<p>It might seem complex, but it’s actually pretty simple when you understand the model and it opens up a ton of things you could potentially do with the API.</p>
+<h2 id="checking-mergeability-of-pull-requests">Checking mergeability of pull requests</h2>
+<p>{% warning %}</p>
+<p><strong>Warning!</strong> Please do not depend on using Git directly or <a href="/rest/reference/git#get-a-reference"><code>GET /repos/{owner}/{repo}/git/refs/{ref}</code></a> for updates to <code>merge</code> Git refs, because this content becomes outdated without warning.</p>
+<p>{% endwarning %}</p>
+<p>A consuming API needs to explicitly request a pull request to create a <em>test</em> merge commit. A <em>test</em> merge commit is created when you view the pull request in the UI and the “Merge” button is displayed, or when you <a href="/rest/reference/pulls#get-a-pull-request">get</a>, <a href="/rest/reference/pulls#create-a-pull-request">create</a>, or <a href="/rest/reference/pulls#update-a-pull-request">edit</a> a pull request using the REST API. Without this request, the <code>merge</code> Git refs will fall out of date until the next time someone views the pull request.</p>
+<p>If you are currently using polling methods that produce outdated <code>merge</code> Git refs, then GitHub recommends using the following steps to get the latest changes from the default branch:</p>
+<ol type="1">
+<li>Receive the pull request webhook.</li>
+<li>Call <a href="/rest/reference/pulls#get-a-pull-request"><code>GET /repos/{owner}/{repo}/pulls/{pull_number}</code></a> to start a background job for creating the merge commit candidate.</li>
+<li>Poll your repository using <a href="/rest/reference/pulls#get-a-pull-request"><code>GET /repos/{owner}/{repo}/pulls/{pull_number}</code></a> to see if the <code>mergeable</code> attribute is <code>true</code> or <code>false</code>. You can use Git directly or <a href="/rest/reference/git#get-a-reference"><code>GET /repos/{owner}/{repo}/git/refs/{ref}</code></a> for updates to <code>merge</code> Git refs only after performing the previous steps.</li>
+</ol>
+</body>
+</html>

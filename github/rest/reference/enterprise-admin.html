@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>GitHub Enterprise administration</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">GitHub Enterprise administration</h1>
+</header>
+<p>You can use these endpoints to administer your enterprise.</p>
+<p>{% ifversion fpt %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> This article applies to {% data variables.product.prodname_ghe_cloud %}. To see the {% data variables.product.prodname_ghe_managed %} or {% data variables.product.prodname_ghe_server %} version, use the <strong>{% data ui.pages.article_version %}</strong> drop-down menu.</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<h3 id="endpoint-urls">Endpoint URLs</h3>
+<p>REST API endpoints{% ifversion ghes %}—except <a href="#management-console">Management Console</a> API endpoints—{% endif %} are prefixed with the following URL:</p>
+<pre class="shell"><code>{% data variables.product.api_url_pre %}</code></pre>
+<p>{% ifversion ghes %} <a href="#management-console">Management Console</a> API endpoints are only prefixed with a hostname:</p>
+<pre class="shell"><code>http(s)://&lt;em&gt;hostname&lt;/em&gt;/</code></pre>
+<p>{% endif %} {% ifversion ghae or ghes %} ### Authentication</p>
+<p>Your {% data variables.product.product_name %} installation’s API endpoints accept <a href="/rest/overview/resources-in-the-rest-api#authentication">the same authentication methods</a> as the GitHub.com API. You can authenticate yourself with <strong><a href="/apps/building-integrations/setting-up-and-registering-oauth-apps/">OAuth tokens</a></strong> {% ifversion ghes %}(which can be created using the <a href="/rest/reference/oauth-authorizations#create-a-new-authorization">Authorizations API</a>) {% endif %}or <strong><a href="/rest/overview/resources-in-the-rest-api#basic-authentication">basic authentication</a></strong>. {% ifversion ghes %} OAuth tokens must have the <code>site_admin</code> <a href="/developers/apps/scopes-for-oauth-apps#available-scopes">OAuth scope</a> when used with Enterprise-specific endpoints.{% endif %}</p>
+<p>Enterprise administration API endpoints are only accessible to authenticated {% data variables.product.product_name %} site administrators{% ifversion ghes %}, except for the <a href="#management-console">Management Console</a> API, which requires the <a href="/enterprise/admin/articles/accessing-the-management-console/">Management Console password</a>{% endif %}.</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %} ### Version information</p>
+<p>The current version of your enterprise is returned in the response header of every API: <code>X-GitHub-Enterprise-Version: {{currentVersion}}.0</code> You can also read the current version by calling the <a href="/rest/reference/meta/">meta endpoint</a>.</p>
+<p>{% for operation in currentRestOperations %} {% unless operation.subcategory %}{% include rest_operation %}{% endunless %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="audit-log">Audit log</h2>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘audit-log’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ## Billing</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘billing’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %} ## GitHub Actions</p>
+<p>{% data reusables.actions.ae-beta %}</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘actions’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %} ## Admin stats</p>
+<p>The Admin Stats API provides a variety of metrics about your installation. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘admin-stats’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes &gt; 2.22 %}</p>
+<h2 id="announcements">Announcements</h2>
+<p>The Announcements API allows you to manage the global announcement banner in your enterprise. For more information, see “<a href="/admin/user-management/customizing-user-messages-for-your-enterprise#creating-a-global-announcement-banner">Customizing user messages for your enterprise</a>.”</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘announcement’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %}</p>
+<h2 id="global-webhooks">Global webhooks</h2>
+<p>Global webhooks are installed on your enterprise. You can use global webhooks to automatically monitor, respond to, or enforce rules for users, organizations, teams, and repositories on your enterprise. Global webhooks can subscribe to the <a href="/developers/webhooks-and-events/webhook-events-and-payloads#organization">organization</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#user">user</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#repository">repository</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#team">team</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#member">member</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#membership">membership</a>, <a href="/developers/webhooks-and-events/webhook-events-and-payloads#fork">fork</a>, and <a href="/developers/webhooks-and-events/about-webhooks#ping-event">ping</a> event types.</p>
+<p><em>This API is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it. To learn how to configure global webhooks, see <a href="/enterprise/admin/user-management/about-global-webhooks">About global webhooks</a>.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘global-webhooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %}</p>
+<h2 id="ldap">LDAP</h2>
+<p>You can use the LDAP API to update account relationships between a {% data variables.product.product_name %} user or team and its linked LDAP entry or queue a new synchronization.</p>
+<p>With the LDAP mapping endpoints, you’re able to update the Distinguished Name (DN) that a user or team maps to. Note that the LDAP endpoints are generally only effective if your {% data variables.product.product_name %} appliance has <a href="/enterprise/admin/authentication/using-ldap">LDAP Sync enabled</a>. The <a href="#update-ldap-mapping-for-a-user">Update LDAP mapping for a user</a> endpoint can be used when LDAP is enabled, even if LDAP Sync is disabled.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘ldap’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %} ## License</p>
+<p>The License API provides information on your Enterprise license. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘license’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %}</p>
+<h2 id="management-console">Management console</h2>
+<p>The Management Console API helps you manage your {% data variables.product.product_name %} installation.</p>
+<p>{% tip %}</p>
+<p>You must explicitly set the port number when making API calls to the Management Console. If TLS is enabled on your enterprise, the port number is <code>8443</code>; otherwise, the port number is <code>8080</code>.</p>
+<p>If you don’t want to provide a port number, you’ll need to configure your tool to automatically follow redirects.</p>
+<p>You may also need to add the <a href="http://curl.haxx.se/docs/manpage.html#-k"><code>-k</code> flag</a> when using <code>curl</code>, since {% data variables.product.product_name %} uses a self-signed certificate before you <a href="/enterprise/admin/guides/installation/configuring-tls/">add your own TLS certificate</a>.</p>
+<p>{% endtip %}</p>
+<h3 id="authentication">Authentication</h3>
+<p>You need to pass your <a href="/enterprise/admin/articles/accessing-the-management-console/">Management Console password</a> as an authentication token to every Management Console API endpoint except <a href="#create-a-github-enterprise-server-license"><code>/setup/api/start</code></a>.</p>
+<p>Use the <code>api_key</code> parameter to send this token with each request. For example:</p>
+<pre class="shell"><code>$ curl -L &#39;https://&lt;em&gt;hostname&lt;/em&gt;:&lt;em&gt;admin_port&lt;/em&gt;/setup/api?api_key=&lt;em&gt;your-amazing-password&lt;/em&gt;&#39;</code></pre>
+<p>You can also use standard HTTP authentication to send this token. For example:</p>
+<pre class="shell"><code>$ curl -L &#39;https://api_key:&lt;em&gt;your-amazing-password&lt;/em&gt;@&lt;em&gt;hostname&lt;/em&gt;:&lt;em&gt;admin_port&lt;/em&gt;/setup/api&#39;</code></pre>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘management-console’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %} ## Organizations</p>
+<p>The Organization Administration API allows you to create organizations on your enterprise. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘orgs’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %} ## Organization pre-receive hooks</p>
+<p>The Organization Pre-receive Hooks API allows you to view and modify enforcement of the pre-receive hooks that are available to an organization.</p>
+<h3 id="object-attributes">Object attributes</h3>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 10%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the hook.</td>
+</tr>
+<tr class="even">
+<td><code>enforcement</code></td>
+<td><code>string</code></td>
+<td>The state of enforcement for the hook on this repository.</td>
+</tr>
+<tr class="odd">
+<td><code>allow_downstream_configuration</code></td>
+<td><code>boolean</code></td>
+<td>Whether repositories can override enforcement.</td>
+</tr>
+<tr class="even">
+<td><code>configuration_url</code></td>
+<td><code>string</code></td>
+<td>URL for the endpoint where enforcement is set.</td>
+</tr>
+</tbody>
+</table>
+<p>Possible values for <em>enforcement</em> are <code>enabled</code>, <code>disabled</code> and<code>testing</code>. <code>disabled</code> indicates the pre-receive hook will not run. <code>enabled</code> indicates it will run and reject any pushes that result in a non-zero status. <code>testing</code> means the script will run but will not cause any pushes to be rejected.</p>
+<p><code>configuration_url</code> may be a link to this endpoint or this hook’s global configuration. Only site admins are able to access the global configuration.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘org-pre-receive-hooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %}</p>
+<h2 id="pre-receive-environments">Pre-receive environments</h2>
+<p>The Pre-receive Environments API allows you to create, list, update and delete environments for pre-receive hooks. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it.</p>
+<h3 id="object-attributes-1">Object attributes</h3>
+<h4 id="pre-receive-environment">Pre-receive Environment</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the environment as displayed in the UI.</td>
+</tr>
+<tr class="even">
+<td><code>image_url</code></td>
+<td><code>string</code></td>
+<td>URL to the tarball that will be downloaded and extracted.</td>
+</tr>
+<tr class="odd">
+<td><code>default_environment</code></td>
+<td><code>boolean</code></td>
+<td>Whether this is the default environment that ships with {% data variables.product.product_name %}.</td>
+</tr>
+<tr class="even">
+<td><code>download</code></td>
+<td><code>object</code></td>
+<td>This environment’s download status.</td>
+</tr>
+<tr class="odd">
+<td><code>hooks_count</code></td>
+<td><code>integer</code></td>
+<td>The number of pre-receive hooks that use this environment.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pre-receive-environment-download">Pre-receive Environment Download</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>state</code></td>
+<td><code>string</code></td>
+<td>The state of the most recent download.</td>
+</tr>
+<tr class="even">
+<td><code>downloaded_at</code></td>
+<td><code>string</code></td>
+<td>The time when the most recent download started.</td>
+</tr>
+<tr class="odd">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>On failure, this will have any error messages produced.</td>
+</tr>
+</tbody>
+</table>
+<p>Possible values for <code>state</code> are <code>not_started</code>, <code>in_progress</code>, <code>success</code>, <code>failed</code>.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘pre-receive-environments’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %} ## Pre-receive hooks</p>
+<p>The Pre-receive Hooks API allows you to create, list, update and delete pre-receive hooks. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>404</code> response if they try to access it.</p>
+<h3 id="object-attributes-2">Object attributes</h3>
+<h4 id="pre-receive-hook">Pre-receive Hook</h4>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 10%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the hook.</td>
+</tr>
+<tr class="even">
+<td><code>script</code></td>
+<td><code>string</code></td>
+<td>The script that the hook runs.</td>
+</tr>
+<tr class="odd">
+<td><code>script_repository</code></td>
+<td><code>object</code></td>
+<td>The GitHub repository where the script is kept.</td>
+</tr>
+<tr class="even">
+<td><code>environment</code></td>
+<td><code>object</code></td>
+<td>The pre-receive environment where the script is executed.</td>
+</tr>
+<tr class="odd">
+<td><code>enforcement</code></td>
+<td><code>string</code></td>
+<td>The state of enforcement for this hook.</td>
+</tr>
+<tr class="even">
+<td><code>allow_downstream_configuration</code></td>
+<td><code>boolean</code></td>
+<td>Whether enforcement can be overridden at the org or repo level.</td>
+</tr>
+</tbody>
+</table>
+<p>Possible values for <em>enforcement</em> are <code>enabled</code>, <code>disabled</code> and<code>testing</code>. <code>disabled</code> indicates the pre-receive hook will not run. <code>enabled</code> indicates it will run and reject any pushes that result in a non-zero status. <code>testing</code> means the script will run but will not cause any pushes to be rejected.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘pre-receive-hooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghes %}</p>
+<h2 id="repository-pre-receive-hooks">Repository pre-receive hooks</h2>
+<p>The Repository Pre-receive Hooks API allows you to view and modify enforcement of the pre-receive hooks that are available to a repository.</p>
+<h3 id="object-attributes-3">Object attributes</h3>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 11%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the hook.</td>
+</tr>
+<tr class="even">
+<td><code>enforcement</code></td>
+<td><code>string</code></td>
+<td>The state of enforcement for the hook on this repository.</td>
+</tr>
+<tr class="odd">
+<td><code>configuration_url</code></td>
+<td><code>string</code></td>
+<td>URL for the endpoint where enforcement is set.</td>
+</tr>
+</tbody>
+</table>
+<p>Possible values for <em>enforcement</em> are <code>enabled</code>, <code>disabled</code> and<code>testing</code>. <code>disabled</code> indicates the pre-receive hook will not run. <code>enabled</code> indicates it will run and reject any pushes that result in a non-zero status. <code>testing</code> means the script will run but will not cause any pushes to be rejected.</p>
+<p><code>configuration_url</code> may be a link to this repository, it’s organization owner or global configuration. Authorization to access the endpoint at <code>configuration_url</code> is determined at the owner or site admin level.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘repo-pre-receive-hooks’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion ghae or ghes %} ## Users</p>
+<p>The User Administration API allows you to suspend{% ifversion ghes %}, unsuspend, promote, and demote{% endif %}{% ifversion ghae %} and unsuspend{% endif %} users on your enterprise. <em>It is only available to <a href="/rest/overview/resources-in-the-rest-api#authentication">authenticated</a> site administrators.</em> Normal users will receive a <code>403</code> response if they try to access it.</p>
+<p>{% for operation in currentRestOperations %} {% if operation.subcategory == ‘users’ %}{% include rest_operation %}{% endif %} {% endfor %}</p>
+<p>{% endif %}</p>
+</body>
+</html>

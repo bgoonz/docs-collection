@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Troubleshooting SSL errors</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Troubleshooting SSL errors</h1>
+    </header>
+    <h2 id="removing-the-passphrase-from-your-key-file">
+      Removing the passphrase from your key file
+    </h2>
+    <p>
+      If you have a Linux machine with OpenSSL installed, you can remove your
+      passphrase.
+    </p>
+    <ol type="1">
+      <li>Rename your original key file.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ mv yourdomain.key yourdomain.key.orig</code></pre>
+    <ol start="2" type="1">
+      <li>Generate a new key without a passphrase.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ openssl rsa -in yourdomain.key.orig -out yourdomain.key</code></pre>
+    <p>
+      You’ll be prompted for the key’s passphrase when you run this command.
+    </p>
+    <p>
+      For more information about OpenSSL, see
+      <a href="https://www.openssl.org/docs/">OpenSSL’s documentation</a>.
+    </p>
+    <h2 id="converting-your-ssl-certificate-or-key-into-pem-format">
+      Converting your SSL certificate or key into PEM format
+    </h2>
+    <p>
+      If you have OpenSSL installed, you can convert your key into PEM format by
+      using the <code>openssl</code> command. For example, you can convert a key
+      from DER format into PEM format.
+    </p>
+    <pre
+      class="shell"
+    ><code>$ openssl rsa -in yourdomain.der -inform DER -out yourdomain.key -outform PEM</code></pre>
+    <p>
+      Otherwise, you can use the SSL Converter tool to convert your certificate
+      into the PEM format. For more information, see the
+      <a href="https://www.sslshopper.com/ssl-converter.html"
+        >SSL Converter tool’s documentation</a
+      >.
+    </p>
+    <h2 id="unresponsive-installation-after-uploading-a-key">
+      Unresponsive installation after uploading a key
+    </h2>
+    <p>
+      If {% data variables.product.product_location %} is unresponsive after
+      uploading an SSL key, please
+      <a href="https://enterprise.github.com/support"
+        >contact {% data variables.product.prodname_enterprise %} Support</a
+      >
+      with specific details, including a copy of your SSL certificate.
+    </p>
+    <h2 id="certificate-validity-errors">Certificate validity errors</h2>
+    <p>
+      Clients such as web browsers and command-line Git will display an error
+      message if they cannot verify the validity of an SSL certificate. This
+      often occurs with self-signed certificates as well as “chained root”
+      certificates issued from an intermediate root certificate that is not
+      recognized by the client.
+    </p>
+    <p>
+      If you are using a certificate signed by a certificate authority (CA), the
+      certificate file that you upload to {% data
+      variables.product.prodname_ghe_server %} must include a certificate chain
+      with that CA’s root certificate. To create such a file, concatenate your
+      entire certificate chain (or “certificate bundle”) onto the end of your
+      certificate, ensuring that the principal certificate with your hostname
+      comes first. On most systems you can do this with a command similar to:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ cat yourdomain.com.crt bundle-certificates.crt &gt; yourdomain.combined.crt</code></pre>
+    <p>
+      You should be able to download a certificate bundle (for example,
+      <code>bundle-certificates.crt</code>) from your certificate authority or
+      SSL vendor.
+    </p>
+    <h2
+      id="installing-self-signed-or-untrusted-certificate-authority-ca-root-certificates"
+    >
+      Installing self-signed or untrusted certificate authority (CA) root
+      certificates
+    </h2>
+    <p>
+      If your {% data variables.product.prodname_ghe_server %} appliance
+      interacts with other machines on your network that use a self-signed or
+      untrusted certificate, you will need to import the signing CA’s root
+      certificate into the system-wide certificate store in order to access
+      those systems over HTTPS.
+    </p>
+    <ol type="1">
+      <li>
+        Obtain the CA’s root certificate from your local certificate authority
+        and ensure it is in PEM format.
+      </li>
+      <li>
+        Copy the file to your {% data variables.product.prodname_ghe_server %}
+        appliance over SSH as the “admin” user on port 122.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ scp -P 122 rootCA.crt admin@HOSTNAME:/home/admin</code></pre>
+    <ol start="3" type="1">
+      <li>
+        Connect to the {% data variables.product.prodname_ghe_server %}
+        administrative shell over SSH as the “admin” user on port 122.
+      </li>
+    </ol>
+    <pre class="shell"><code>$ ssh -p 122 admin@HOSTNAME</code></pre>
+    <ol start="4" type="1">
+      <li>Import the certificate into the system-wide certificate store.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-ssl-ca-certificate-install -c rootCA.crt</code></pre>
+  </body>
+</html>

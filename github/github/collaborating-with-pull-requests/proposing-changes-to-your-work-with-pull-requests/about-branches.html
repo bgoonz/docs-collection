@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About branches</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About branches</h1>
+</header>
+<h2 id="about-branches">About branches</h2>
+<p>Branches allow you to develop features, fix bugs, or safely experiment with new ideas in a contained area of your repository.</p>
+<p>You always create a branch from an existing branch. Typically, you might create a new branch from the default branch of your repository. You can then work on this new branch in isolation from changes that other people are making to the repository. A branch you create to build a feature is commonly referred to as a feature branch or topic branch. For more information, see “<a href="/articles/creating-and-deleting-branches-within-your-repository/">Creating and deleting branches within your repository</a>.”</p>
+<p>You can also use a branch to publish a {% data variables.product.prodname_pages %} site. For more information, see “<a href="/articles/what-is-github-pages">About {% data variables.product.prodname_pages %}</a>.”</p>
+<p>You must have write access to a repository to create a branch, open a pull request, or delete and restore branches in a pull request. For more information, see “<a href="/github/getting-started-with-github/access-permissions-on-github">Access permissions on {% data variables.product.prodname_dotcom %}</a>.”</p>
+<h2 id="about-the-default-branch">About the default branch</h2>
+<p>{% data reusables.branches.new-repo-default-branch %} The default branch is the branch that {% data variables.product.prodname_dotcom %} displays when anyone visits your repository. The default branch is also the initial branch that Git checks out locally when someone clones the repository. {% data reusables.branches.default-branch-automatically-base-branch %}</p>
+<p>By default, {% data variables.product.product_name %} names the default branch {% ifversion fpt or ghes &gt; 2.22 or ghae %}<code>main</code>{% else %}<code>master</code>{% endif %} in any new repository.</p>
+<p>{% data reusables.branches.change-default-branch %}</p>
+<p>{% ifversion fpt or ghes &gt; 2.22 or ghae %}</p>
+<p>{% data reusables.branches.set-default-branch %}</p>
+<p>{% endif %}</p>
+<h2 id="working-with-branches">Working with branches</h2>
+<p>Once you’re satisfied with your work, you can open a pull request to merge the changes in the current branch (the <em>head</em> branch) into another branch (the <em>base</em> branch). For more information, see “<a href="/articles/about-pull-requests">About pull requests</a>.”</p>
+<p>After a pull request has been merged, or closed, you can delete the head branch as this is no longer needed. You must have write access in the repository to delete branches. You can’t delete branches that are directly associated with open pull requests. For more information, see “<a href="/github/administering-a-repository/deleting-and-restoring-branches-in-a-pull-request">Deleting and restoring branches in a pull request</a>”</p>
+<p>{% ifversion fpt or ghae or ghes &gt; 2.21 %} {% data reusables.pull_requests.retargeted-on-branch-deletion %} The following diagrams illustrate this.</p>
+<p>Here someone has created a branch called <code>feature1</code> from the <code>master</code> branch, and you’ve then created a branch called <code>feature2</code> from <code>feature1</code>. There are open pull requests for both branches. The arrows indicate the current base branch for each pull request. At this point, <code>feature1</code> is the base branch for <code>feature2</code>. If the pull request for <code>feature2</code> is merged now, the <code>feature2</code> branch will be merged into <code>feature1</code>.</p>
+<figure>
+<img src="/assets/images/help/branches/pr-retargeting-diagram1.png" alt="merge-pull-request-button" /><figcaption>merge-pull-request-button</figcaption>
+</figure>
+<p>In the next diagram, someone has merged the pull request for <code>feature1</code> into the <code>master</code> branch, and they have deleted the <code>feature1</code> branch. As a result, {% data variables.product.prodname_dotcom %} has automatically retargeted the pull request for <code>feature2</code> so that its base branch is now <code>master</code>.</p>
+<figure>
+<img src="/assets/images/help/branches/pr-retargeting-diagram2.png" alt="merge-pull-request-button" /><figcaption>merge-pull-request-button</figcaption>
+</figure>
+<p>Now when you merge the <code>feature2</code> pull request, it’ll be merged into the <code>master</code> branch. {% endif %}</p>
+<h2 id="working-with-protected-branches">Working with protected branches</h2>
+<p>Repository administrators can enable protections on a branch. If you’re working on a branch that’s protected, you won’t be able to delete or force push to the branch. Repository administrators can additionally enable several other protected branch settings to enforce various workflows before a branch can be merged.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you’re a repository administrator, you can merge pull requests on branches with branch protections enabled even if the pull request does not meet the requirements, unless branch protections have been set to “Include administrators.”</p>
+<p>{% endnote %}</p>
+<p>To see if your pull request can be merged, look in the merge box at the bottom of the pull request’s <strong>Conversation</strong> tab. For more information, see “<a href="/articles/about-protected-branches">About protected branches</a>.”</p>
+<p>When a branch is protected:</p>
+<ul>
+<li>You won’t be able to delete or force push to the branch.</li>
+<li>If required status checks are enabled on the branch, you won’t be able to merge changes into the branch until all of the required CI tests pass. For more information, see “<a href="/articles/about-status-checks">About status checks</a>.”</li>
+<li>If required pull request reviews are enabled on the branch, you won’t be able to merge changes into the branch until all requirements in the pull request review policy have been met. For more information, see “<a href="/articles/merging-a-pull-request">Merging a pull request</a>.”</li>
+<li>If required review from a code owner is enabled on a branch, and a pull request modifies code that has an owner, a code owner must approve the pull request before it can be merged. For more information, see “<a href="/articles/about-code-owners">About code owners</a>.”</li>
+<li>If required commit signing is enabled on a branch, you won’t be able to push any commits to the branch that are not signed and verified. For more information, see “<a href="/articles/about-commit-signature-verification">About commit signature verification</a>” and “<a href="/github/administering-a-repository/about-protected-branches#require-signed-commits">About protected branches</a>.”{% ifversion fpt or ghae or ghes &gt; 2.21 %}</li>
+<li>If you use {% data variables.product.prodname_dotcom %}’s conflict editor to fix conflicts for a pull request that you created from a protected branch, {% data variables.product.prodname_dotcom %} helps you to create an alternative branch for the pull request, so that your resolution of the conflicts can be merged. For more information, see “<a href="/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-on-github">Resolving a merge conflict on {% data variables.product.prodname_dotcom %}</a>.”{% endif %}</li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-pull-requests">About pull requests</a>”</li>
+<li>“<a href="/articles/github-glossary/#branch">Branch</a>” in the {% data variables.product.prodname_dotcom %} glossary</li>
+<li>“<a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Branches in a Nutshell</a>” in the Git documentation</li>
+</ul>
+</body>
+</html>

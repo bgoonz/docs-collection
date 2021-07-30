@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Building and testing Python</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Building and testing Python</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you how to build, test, and publish a Python package.
+    </p>
+    <p>
+      {% ifversion ghae %} For instructions on how to make sure your {% data
+      variables.actions.hosted_runner %} has the required software installed,
+      see “<a href="/actions/using-github-hosted-runners/creating-custom-images"
+        >Creating custom images</a
+      >.” {% else %} {% data variables.product.prodname_dotcom %}-hosted runners
+      have a tools cache with pre-installed software, which includes Python and
+      PyPy. You don’t have to install anything! For a full list of up-to-date
+      software and the pre-installed versions of Python and PyPy, see “<a
+        href="/actions/reference/specifications-for-github-hosted-runners/#supported-software"
+        >Specifications for {% data variables.product.prodname_dotcom %}-hosted
+        runners</a
+      >”. {% endif %}
+    </p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      You should be familiar with YAML and the syntax for {% data
+      variables.product.prodname_actions %}. For more information, see “<a
+        href="/actions/learn-github-actions"
+        >Learn {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      We recommend that you have a basic understanding of Python, PyPy, and pip.
+      For more information, see: -
+      <a href="https://www.python.org/about/gettingstarted/"
+        >Getting started with Python</a
+      >
+      - <a href="https://pypy.org/">PyPy</a> -
+      <a href="https://pypi.org/project/pip/">Pip package manager</a>
+    </p>
+    <p>{% data reusables.actions.enterprise-setup-prereq %}</p>
+    <h2 id="starting-with-the-python-workflow-template">
+      Starting with the Python workflow template
+    </h2>
+    <p>
+      {% data variables.product.prodname_dotcom %} provides a Python workflow
+      template that should work for most Python projects. This guide includes
+      examples that you can use to customize the template. For more information,
+      see the
+      <a
+        href="https://github.com/actions/starter-workflows/blob/main/ci/python-package.yml"
+        >Python workflow template</a
+      >.
+    </p>
+    <p>
+      To get started quickly, add the template to the
+      <code>.github/workflows</code> directory of your repository.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="specifying-a-python-version">Specifying a Python version</h2>
+    <p>
+      To use a pre-installed version of Python or PyPy on a {% data
+      variables.product.prodname_dotcom %}-hosted runner, use the
+      <code>setup-python</code> action. This action finds a specific version of
+      Python or PyPy from the tools cache on each runner and adds the necessary
+      binaries to <code>PATH</code>, which persists for the rest of the job. If
+      a specific version of Python is not pre-installed in the tools cache, the
+      <code>setup-python</code> action will download and set up the appropriate
+      version from the
+      <a href="https://github.com/actions/python-versions"
+        ><code>python-versions</code></a
+      >
+      repository.
+    </p>
+    <p>
+      Using the <code>setup-python</code> action is the recommended way of using
+      Python with {% data variables.product.prodname_actions %} because it
+      ensures consistent behavior across different runners and different
+      versions of Python. If you are using a self-hosted runner, you must
+      install Python and add it to <code>PATH</code>. For more information, see
+      the
+      <a href="https://github.com/marketplace/actions/setup-python"
+        ><code>setup-python</code> action</a
+      >.
+    </p>
+    <p>
+      The table below describes the locations for the tools cache in each {%
+      data variables.product.prodname_dotcom %}-hosted runner.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 24%" />
+        <col style="width: 20%" />
+        <col style="width: 34%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th></th>
+          <th>Ubuntu</th>
+          <th>Mac</th>
+          <th>Windows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>Tool Cache Directory</strong></td>
+          <td><code>/opt/hostedtoolcache/*</code></td>
+          <td><code>/Users/runner/hostedtoolcache/*</code></td>
+          <td><code>C:\hostedtoolcache\windows\*</code></td>
+        </tr>
+        <tr class="even">
+          <td><strong>Python Tool Cache</strong></td>
+          <td><code>/opt/hostedtoolcache/Python/*</code></td>
+          <td><code>/Users/runner/hostedtoolcache/Python/*</code></td>
+          <td><code>C:\hostedtoolcache\windows\Python\*</code></td>
+        </tr>
+        <tr class="odd">
+          <td><strong>PyPy Tool Cache</strong></td>
+          <td><code>/opt/hostedtoolcache/PyPy/*</code></td>
+          <td><code>/Users/runner/hostedtoolcache/PyPy/*</code></td>
+          <td><code>C:\hostedtoolcache\windows\PyPy\*</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      If you are using a self-hosted runner, you can configure the runner to use
+      the <code>setup-python</code> action to manage your dependencies. For more
+      information, see
+      <a
+        href="https://github.com/actions/setup-python#using-setup-python-with-a-self-hosted-runner"
+        >using setup-python with a self-hosted runner</a
+      >
+      in the <code>setup-python</code> README.
+    </p>
+    <p>
+      {% data variables.product.prodname_dotcom %} supports semantic versioning
+      syntax. For more information, see “<a
+        href="https://docs.npmjs.com/about-semantic-versioning#using-semantic-versioning-to-specify-update-types-your-package-can-accept"
+        >Using semantic versioning</a
+      >” and the “<a href="https://semver.org/"
+        >Semantic versioning specification</a
+      >.”
+    </p>
+    <h3 id="using-multiple-python-versions">Using multiple Python versions</h3>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      # You can use PyPy versions in python-version.
+      # For example, pypy2 and pypy3
+      matrix:
+        python-version: [2.7, 3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c &quot;import sys; print(sys.version)&quot;</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="using-a-specific-python-version">
+      Using a specific Python version
+    </h3>
+    <p>
+      You can configure a specific version of python. For example, 3.8.
+      Alternatively, you can use semantic version syntax to get the latest minor
+      release. This example uses the latest minor release of Python 3.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: &#39;3.x&#39;
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: &#39;x64&#39;
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c &quot;import sys; print(sys.version)&quot;</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="excluding-a-version">Excluding a version</h3>
+    <p>
+      If you specify a version of Python that is not available,
+      <code>setup-python</code> fails with an error such as:
+      <code>##[error]Version 3.4 with arch x64 not found</code>. The error
+      message includes the available versions.
+    </p>
+    <p>
+      You can also use the <code>exclude</code> keyword in your workflow if
+      there is a configuration of Python that you do not wish to run. For more
+      information, see “<a
+        href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategy"
+        >Workflow syntax for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9, pypy2, pypy3]
+        exclude:
+          - os: macos-latest
+            python-version: 3.6
+          - os: windows-latest
+            python-version: 3.6</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="using-the-default-python-version">
+      Using the default Python version
+    </h3>
+    <p>
+      We recommend using <code>setup-python</code> to configure the version of
+      Python used in your workflows because it helps make your dependencies
+      explicit. If you don’t use <code>setup-python</code>, the default version
+      of Python set in <code>PATH</code> is used in any shell when you call
+      <code>python</code>. The default version of Python varies between {% data
+      variables.product.prodname_dotcom %}-hosted runners, which may cause
+      unexpected changes or use an older version than expected.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>{% data variables.product.prodname_dotcom %}-hosted runner</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Ubuntu</td>
+          <td>
+            Ubuntu runners have multiple versions of system Python installed
+            under <code>/usr/bin/python</code> and
+            <code>/usr/bin/python3</code>. The Python versions that come
+            packaged with Ubuntu are in addition to the versions that {% data
+            variables.product.prodname_dotcom %} installs in the tools cache.
+          </td>
+        </tr>
+        <tr class="even">
+          <td>Windows</td>
+          <td>
+            Excluding the versions of Python that are in the tools cache,
+            Windows does not ship with an equivalent version of system Python.
+            To maintain consistent behavior with other runners and to allow
+            Python to be used out-of-the-box without the
+            <code>setup-python</code> action, {% data
+            variables.product.prodname_dotcom %} adds a few versions from the
+            tools cache to <code>PATH</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>macOS</td>
+          <td>
+            The macOS runners have more than one version of system Python
+            installed, in addition to the versions that are part of the tools
+            cache. The system Python versions are located in the
+            <code>/usr/local/Cellar/python/*</code> directory.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="installing-dependencies">Installing dependencies</h2>
+    <p>
+      {% data variables.product.prodname_dotcom %}-hosted runners have the pip
+      package manager installed. You can use pip to install dependencies from
+      the PyPI package registry before building and testing your code. For
+      example, the YAML below installs or upgrades the <code>pip</code> package
+      installer and the <code>setuptools</code> and <code>wheel</code> packages.
+    </p>
+    <p>
+      When using {% data variables.product.prodname_dotcom %}-hosted runners,
+      you can also cache dependencies to speed up your workflow. For more
+      information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >.”
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+- uses: actions/checkout@v2
+- name: Set up Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: &#39;3.x&#39;
+- name: Install dependencies
+  run: python -m pip install --upgrade pip setuptools wheel</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="requirements-file">Requirements file</h3>
+    <p>
+      After you update <code>pip</code>, a typical next step is to install
+      dependencies from <em>requirements.txt</em>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+- uses: actions/checkout@v2
+- name: Set up Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: &#39;3.x&#39;
+- name: Install dependencies
+  run: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="caching-dependencies">Caching Dependencies</h3>
+    <p>
+      When using {% data variables.product.prodname_dotcom %}-hosted runners,
+      you can cache pip dependencies using a unique key, and restore the
+      dependencies when you run future workflows using the
+      <a href="https://github.com/marketplace/actions/cache"
+        ><code>cache</code></a
+      >
+      action. For more information, see “<a
+        href="/actions/guides/caching-dependencies-to-speed-up-workflows"
+        class="dotcom-only"
+        >Caching dependencies to speed up workflows</a
+      >.”
+    </p>
+    <p>
+      Pip caches dependencies in different locations, depending on the operating
+      system of the runner. The path you’ll need to cache may differ from the
+      Ubuntu example below depending on the operating system you use. For more
+      information, see
+      <a
+        href="https://github.com/actions/cache/blob/main/examples.md#python---pip"
+        >Python caching examples</a
+      >.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+- uses: actions/checkout@v2
+- name: Setup Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: &#39;3.x&#39;
+- name: Cache pip
+  uses: actions/cache@v2
+  with:
+    # This path is specific to Ubuntu
+    path: ~/.cache/pip
+    # Look to see if there is a cache hit for the corresponding requirements file
+    key: ${{ runner.os }}-pip-${{ hashFiles(&#39;requirements.txt&#39;) }}
+    restore-keys: |
+      ${{ runner.os }}-pip-
+      ${{ runner.os }}-
+- name: Install dependencies
+  run: pip install -r requirements.txt</code></pre>
+    <p>{% endraw %}</p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> Depending on the number of dependencies, it may be
+      faster to use the dependency cache. Projects with many large dependencies
+      should see a performance increase as it cuts down the time required for
+      downloading. Projects with fewer dependencies may not see a significant
+      performance increase and may even see a slight decrease due to how pip
+      installs cached dependencies. The performance varies from project to
+      project.
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="testing-your-code">Testing your code</h2>
+    <p>
+      You can use the same commands that you use locally to build and test your
+      code.
+    </p>
+    <h3 id="testing-with-pytest-and-pytest-cov">
+      Testing with pytest and pytest-cov
+    </h3>
+    <p>
+      This example installs or upgrades <code>pytest</code> and
+      <code>pytest-cov</code>. Tests are then run and output in JUnit format
+      while code coverage results are output in Cobertura. For more information,
+      see <a href="https://junit.org/junit5/">JUnit</a> and
+      <a href="https://cobertura.github.io/cobertura/">Cobertura</a>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+- uses: actions/checkout@v2
+- name: Set up Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: &#39;3.x&#39;
+- name: Install dependencies
+  run: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+- name: Test with pytest
+  run: |
+    pip install pytest
+    pip install pytest-cov
+    pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="using-flake8-to-lint-code">Using Flake8 to lint code</h3>
+    <p>
+      The following example installs or upgrades <code>flake8</code> and uses it
+      to lint all files. For more information, see
+      <a href="http://flake8.pycqa.org/en/latest/">Flake8</a>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+- uses: actions/checkout@v2
+- name: Set up Python
+  uses: actions/setup-python@v2
+  with:
+    python-version: &#39;3.x&#39;
+- name: Install dependencies
+  run: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+- name: Lint with flake8
+  run: |
+    pip install flake8
+    flake8 .</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="running-tests-with-tox">Running tests with tox</h3>
+    <p>
+      With {% data variables.product.prodname_actions %}, you can run tests with
+      tox and spread the work across multiple jobs. You’ll need to invoke tox
+      using the <code>-e py</code> option to choose the version of Python in
+      your <code>PATH</code>, rather than specifying a specific version. For
+      more information, see
+      <a href="https://tox.readthedocs.io/en/latest/">tox</a>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox and any other packages
+        run: pip install tox
+      - name: Run Tox
+        # Run tox using the version of Python in `PATH`
+        run: tox -e py</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="packaging-workflow-data-as-artifacts">
+      Packaging workflow data as artifacts
+    </h2>
+    <p>
+      You can upload artifacts to view after a workflow completes. For example,
+      you may need to save log files, core dumps, test results, or screenshots.
+      For more information, see “<a
+        href="/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts"
+        >Persisting workflow data using artifacts</a
+      >.”
+    </p>
+    <p>
+      The following example demonstrates how you can use the
+      <code>upload-artifact</code> action to archive test results from running
+      <code>pytest</code>. For more information, see the
+      <a href="https://github.com/actions/upload-artifact"
+        ><code>upload-artifact</code> action</a
+      >.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python # Set Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      # Install pip and pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+      - name: Test with pytest
+        run: pytest tests.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/test-results-${{ matrix.python-version }}.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}</code></pre>
+    <p>{% endraw %}</p>
+    <h2 id="publishing-to-package-registries">
+      Publishing to package registries
+    </h2>
+    <p>
+      You can configure your workflow to publish your Python package to a
+      package registry once your CI tests pass. This section demonstrates how
+      you can use {% data variables.product.prodname_actions %} to upload your
+      package to PyPI each time you
+      <a
+        href="/github/administering-a-repository/managing-releases-in-a-repository"
+        >publish a release</a
+      >.
+    </p>
+    <p>
+      For this example, you will need to create two
+      <a href="https://pypi.org/help/#apitoken">PyPI API tokens</a>. You can use
+      secrets to store the access tokens or credentials needed to publish your
+      package. For more information, see “<a
+        href="/github/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+        >Creating and using encrypted secrets</a
+      >.”
+    </p>
+    <pre
+      class="yaml{:copy}"
+    ><code>{% data reusables.actions.actions-not-certified-by-github-comment %}
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: &#39;3.x&#39;
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+      - name: Build package
+        run: python -m build
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        with:
+          user: __token__
+          password: {% raw %}${{ secrets.PYPI_API_TOKEN }}{% endraw %}</code></pre>
+    <p>
+      For more information about the template workflow, see
+      <a
+        href="https://github.com/actions/starter-workflows/blob/main/ci/python-publish.yml"
+        ><code>python-publish</code></a
+      >.
+    </p>
+  </body>
+</html>

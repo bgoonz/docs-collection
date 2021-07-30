@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Canceling a workflow</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Canceling a workflow</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>{% data reusables.repositories.permissions-statement-write %}</p>
+    <h2 id="canceling-a-workflow-run">Canceling a workflow run</h2>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow %} 1. From the list of
+      workflow runs, click the name of the <code>queued</code> or
+      <code>in progress</code> run that you want to cancel.
+      <img
+        src="/assets/images/help/repository/in-progress-run.png"
+        alt="Name of workflow run"
+      />
+      1. In the upper-right corner of the workflow, click
+      <strong>Cancel workflow</strong>. {% ifversion fpt or ghes &gt; 3.0 or
+      ghae %}
+      <img
+        src="/assets/images/help/repository/cancel-check-suite-updated.png"
+        alt="Cancel check suite button"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/cancel-check-suite.png"
+        alt="Cancel check suite button"
+      />
+      {% endif %}
+    </p>
+    <h2
+      id="steps-data-variables.product.prodname_dotcom-takes-to-cancel-a-workflow-run"
+    >
+      Steps {% data variables.product.prodname_dotcom %} takes to cancel a
+      workflow run
+    </h2>
+    <p>
+      When canceling workflow run, you may be running other software that uses
+      resources that are related to the workflow run. To help you free up
+      resources related to the workflow run, it may help to understand the steps
+      {% data variables.product.prodname_dotcom %} performs to cancel a workflow
+      run.
+    </p>
+    <ol type="1">
+      <li>
+        To cancel the workflow run, the server re-evaluates
+        <code>if</code> conditions for all currently running jobs. If the
+        condition evaluates to <code>true</code>, the job will not get canceled.
+        For example, the condition <code>if: always()</code> would evaluate to
+        true and the job continues to run. When there is no condition, that is
+        the equivalent of the condition <code>if: success()</code>, which only
+        runs if the previous step finished successfully.
+      </li>
+      <li>
+        For jobs that need to be canceled, the server sends a cancellation
+        message to all the runner machines with jobs that need to be canceled.
+      </li>
+      <li>
+        For jobs that continue to run, the server re-evaluates
+        <code>if</code> conditions for the unfinished steps. If the condition
+        evaluates to <code>true</code>, the step continues to run.
+      </li>
+      <li>
+        For steps that need to be canceled, the runner machine sends
+        <code>SIGINT/Ctrl-C</code> to the step’s entry process (<code
+          >node</code
+        >
+        for javascript action, <code>docker</code> for container action, and
+        <code>bash/cmd/pwd</code> when using <code>run</code> in a step). If the
+        process doesn’t exit within 7500 ms, the runner will send
+        <code>SIGTERM/Ctrl-Break</code> to the process, then wait for 2500 ms
+        for the process to exit. If the process is still running, the runner
+        kills the process tree.
+      </li>
+      <li>
+        After the 5 minutes cancellation timeout period, the server will force
+        terminate all jobs and steps that don’t finish running or fail to
+        complete the cancellation process.
+      </li>
+    </ol>
+  </body>
+</html>

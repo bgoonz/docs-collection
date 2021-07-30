@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About GitHub Copilot telemetry</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About GitHub Copilot telemetry</h1>
+</header>
+<h2 id="what-data-is-collected">What data is collected</h2>
+<p>The {% data variables.product.prodname_dotcom %} Copilot collects activity from the user’s Visual Studio Code editor, tied to a timestamp, and metadata. This metadata consists of the extension settings and the standard metadata collected by the <a href="https://www.npmjs.com/package/vscode-extension-telemetry">Visual Studio Code extension telemetry package</a>:</p>
+<ul>
+<li>Visual Studio Code machine ID (pseudonymized identifier)</li>
+<li>Visual Studio Code session ID (pseudonymized identifier)</li>
+<li>Visual Studio Code version</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/ip-collection?tabs=net">Geolocation from IP address</a> (country, state/province and city, but not the IP address itself)</li>
+<li>Operating system and version</li>
+<li>Extension version</li>
+<li>The VS Code UI (web or desktop)</li>
+</ul>
+<p>The activity collected consists of events that are triggered when:</p>
+<ul>
+<li>An error occurs (it records the error kind and relevant background; e.g. if it’s an authentication error the key expiry date is recorded)</li>
+<li>Our models are accessed to ask for code suggestions (it records editor state like position of cursor and snippets of code)—this includes cases when the user takes an action to request code suggestions</li>
+<li>Code suggestions are received or displayed (it records the suggestions, post-processing, and metadata like model certainty and latency)</li>
+<li>Code suggestions are redacted due to filters that ensure AI safety</li>
+<li>The user acts on code suggestions (e.g. to accept or reject them)</li>
+<li>The user has acted on code suggestions and then it records whether or how they persisted in the code</li>
+</ul>
+<h2 id="how-the-data-is-used">How the data is used</h2>
+<p>This data will only be used by {% data variables.product.company_short %} for:</p>
+<ul>
+<li>Directly improving the product, including assessing different strategies in processing and predicting which suggestions users may find helpful</li>
+<li>Directly evaluating the product, e.g. by measuring the positive impact it has on the user</li>
+<li>Improving the underlying code generation models, e.g. by providing positive and negative examples (but always so that your private code is not used as input to suggest code for other users of {% data variables.product.prodname_dotcom %} Copilot)</li>
+<li>Guiding closely related {% data variables.product.prodname_dotcom %} products</li>
+<li>Investigating and detecting potential abuse of the {% data variables.product.prodname_dotcom %} Copilot service</li>
+<li>Other purposes related to improving the {% data variables.product.prodname_dotcom %} Copilot service</li>
+</ul>
+<h2 id="how-the-data-is-shared">How the data is shared</h2>
+<p>The telemetry data is stored securely on {% data variables.product.prodname_dotcom %} systems, with appropriate encryption in place.</p>
+<p>We know user edit actions and source code snippets are very sensitive data, and access is strictly controlled. The data can only be accessed by (1) named {% data variables.product.company_short %} personnel (employees and contractors) working on the {% data variables.product.company_short %} Copilot team or on the {% data variables.product.company_short %} platform health team, (2) select Microsoft personnel (employees and contractors) working on or with the {% data variables.product.company_short %} Copilot team, and (3) select employees of OpenAI who work on {% data variables.product.company_short %} Copilot.</p>
+</body>
+</html>

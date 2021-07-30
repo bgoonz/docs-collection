@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Handling plan changes</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Handling plan changes</h1>
+</header>
+<p>For more information about upgrading and downgrading as it relates to billing, see “<a href="/marketplace/integrating-with-the-github-marketplace-api/">Integrating with the {% data variables.product.prodname_marketplace %} API</a>.”</p>
+<h2 id="step-1.-pricing-plan-change-event">Step 1. Pricing plan change event</h2>
+<p>GitHub send the <code>marketplace_purchase</code> webhook with the <code>changed</code> action to your app, when a customer makes any of these changes to their {% data variables.product.prodname_marketplace %} order: * Upgrades to a more expensive pricing plan or downgrades to a lower priced plan. * Adds or removes seats to their existing plan. * Changes the billing cycle.</p>
+<p>GitHub will send the webhook when the change takes effect. For example, when a customer downgrades a plan, GitHub sends the webhook at the end of the customer’s billing cycle. GitHub sends a webhook to your app immediately when a customer upgrades their plan to allow them access to the new service right away. If a customer switches from a monthly to a yearly billing cycle, it’s considered an upgrade. See “<a href="/marketplace/selling-your-app/billing-customers-in-github-marketplace/">Billing customers in {% data variables.product.prodname_marketplace %}</a>” to learn more about what actions are considered an upgrade or downgrade.</p>
+<p>Read the <code>effective_date</code>, <code>marketplace_purchase</code>, and <code>previous_marketplace_purchase</code> from the <code>marketplace_purchase</code> webhook to update the plan’s start date and make changes to the customer’s billing cycle and pricing plan. See “<a href="/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events/">{% data variables.product.prodname_marketplace %} webhook events</a>” for an example of the <code>marketplace_purchase</code> event payload.</p>
+<p>If your app offers free trials, you’ll receive the <code>marketplace_purchase</code> webhook with the <code>changed</code> action when the free trial expires. If the customer’s free trial expires, upgrade the customer to the paid version of the free-trial plan.</p>
+<h2 id="step-2.-updating-customer-accounts">Step 2. Updating customer accounts</h2>
+<p>You’ll need to update the customer’s account information to reflect the billing cycle and pricing plan changes the customer made to their {% data variables.product.prodname_marketplace %} order. Display upgrades to the pricing plan, <code>seat_count</code> (for per-unit pricing plans), and billing cycle on your Marketplace app’s website or your app’s UI when you receive the <code>changed</code> action webhook.</p>
+<p>When a customer downgrades a plan, it’s recommended to review whether a customer has exceeded their plan limits and engage with them directly in your UI or by reaching out to them by phone or email.</p>
+<p>To encourage people to upgrade you can display an upgrade URL in your app’s UI. See “<a href="#about-upgrade-urls">About upgrade URLs</a>” for more details.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> We recommend performing a periodic synchronization using <code>GET /marketplace_listing/plans/:id/accounts</code> to ensure your app has the correct plan, billing cycle information, and unit count (for per-unit pricing) for each account.</p>
+<p>{% endnote %}</p>
+<h2 id="failed-upgrade-payments">Failed upgrade payments</h2>
+<p>{% data reusables.marketplace.marketplace-failed-purchase-event %}</p>
+<h2 id="about-upgrade-urls">About upgrade URLs</h2>
+<p>You can redirect users from your app’s UI to upgrade on GitHub using an upgrade URL:</p>
+<pre><code>https://www.github.com/marketplace/&lt;LISTING_NAME&gt;/upgrade/&lt;LISTING_PLAN_NUMBER&gt;/&lt;CUSTOMER_ACCOUNT_ID&gt;</code></pre>
+<p>For example, if you notice that a customer is on a 5 person plan and needs to move to a 10 person plan, you could display a button in your app’s UI that says “Here’s how to upgrade” or show a banner with a link to the upgrade URL. The upgrade URL takes the customer to your listing plan’s upgrade confirmation page.</p>
+<p>Use the <code>LISTING_PLAN_NUMBER</code> for the plan the customer would like to purchase. When you create new pricing plans they receive a <code>LISTING_PLAN_NUMBER</code>, which is unique to each plan across your listing, and a <code>LISTING_PLAN_ID</code>, which is unique to each plan in the {% data variables.product.prodname_marketplace %}. You can find these numbers when you <a href="/rest/reference/apps#list-plans">List plans</a>, which identifies your listing’s pricing plans. Use the <code>LISTING_PLAN_ID</code> and the “<a href="/rest/reference/apps#list-accounts-for-a-plan">List accounts for a plan</a>” endpoint to get the <code>CUSTOMER_ACCOUNT_ID</code>.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If your customer upgrades to additional units (such as seats), you can still send them to the appropriate plan for their purchase, but we are unable to support <code>unit_count</code> parameters at this time.</p>
+<p>{% endnote %}</p>
+</body>
+</html>

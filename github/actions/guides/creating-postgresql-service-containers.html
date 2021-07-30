@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating PostgreSQL service containers</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating PostgreSQL service containers</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      This guide shows you workflow examples that configure a service container
+      using the Docker Hub <code>postgres</code> image. The workflow runs a
+      script that connects to the PostgreSQL service, creates a table, and then
+      populates it with data. To test that the workflow creates and populates
+      the PostgreSQL table, the script prints the data from the table to the
+      console.
+    </p>
+    <p>{% data reusables.github-actions.docker-container-os-support %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>{% data reusables.github-actions.service-container-prereqs %}</p>
+    <p>
+      You may also find it helpful to have a basic understanding of YAML, the
+      syntax for {% data variables.product.prodname_actions %}, and PostgreSQL.
+      For more information, see:
+    </p>
+    <ul>
+      <li>
+        “<a href="/actions/learn-github-actions"
+          >Learn {% data variables.product.prodname_actions %}</a
+        >”
+      </li>
+      <li>
+        “<a href="https://www.postgresqltutorial.com/">PostgreSQL tutorial</a>”
+        in the PostgreSQL documentation
+      </li>
+    </ul>
+    <h2 id="running-jobs-in-containers">Running jobs in containers</h2>
+    <p>{% data reusables.github-actions.container-jobs-intro %}</p>
+    <p>{% data reusables.github-actions.copy-workflow-file %}</p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: PostgreSQL service example
+on: push
+
+jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: &gt;-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Performs a clean installation of all dependencies in the `package.json` file
+      # For more information, see https://docs.npmjs.com/cli/ci.html
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data.
+        run: node client.js
+        # Environment variables used by the `client.js` script to create a new PostgreSQL table.
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: postgres
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="configuring-the-runner-job">Configuring the runner job</h3>
+    <p>{% data reusables.github-actions.service-container-host %}</p>
+    <p>{% data reusables.github-actions.postgres-label-description %}</p>
+    <pre class="yaml{:copy}"><code>jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: &gt;-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5</code></pre>
+    <h3 id="configuring-the-steps">Configuring the steps</h3>
+    <p>{% data reusables.github-actions.service-template-steps %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  # Downloads a copy of the code in your repository before running CI tests
+  - name: Check out repository code
+    uses: actions/checkout@v2
+
+  # Performs a clean installation of all dependencies in the `package.json` file
+  # For more information, see https://docs.npmjs.com/cli/ci.html
+  - name: Install dependencies
+    run: npm ci
+
+  - name: Connect to PostgreSQL
+    # Runs a script that creates a PostgreSQL table, populates
+    # the table with data, and then retrieves the data.
+    run: node client.js
+    # Environment variable used by the `client.js` script to create
+    # a new PostgreSQL client.
+    env:
+      # The hostname used to communicate with the PostgreSQL service container
+      POSTGRES_HOST: postgres
+      # The default PostgreSQL port
+      POSTGRES_PORT: 5432</code></pre>
+    <p>{% data reusables.github-actions.postgres-environment-variables %}</p>
+    <p>
+      The hostname of the PostgreSQL service is the label you configured in your
+      workflow, in this case, <code>postgres</code>. Because Docker containers
+      on the same user-defined bridge network open all ports by default, you’ll
+      be able to access the service container on the default PostgreSQL port
+      5432.
+    </p>
+    <h2 id="running-jobs-directly-on-the-runner-machine">
+      Running jobs directly on the runner machine
+    </h2>
+    <p>
+      When you run a job directly on the runner machine, you’ll need to map the
+      ports on the service container to ports on the Docker host. You can access
+      service containers from the Docker host using <code>localhost</code> and
+      the Docker host port number.
+    </p>
+    <p>{% data reusables.github-actions.copy-workflow-file %}</p>
+    <p>{% raw %}</p>
+    <pre class="yaml{:copy}"><code>name: PostgreSQL Service Example
+on: push
+
+jobs:
+  # Label of the runner job
+  runner-job:
+    # You must use a Linux environment when using service containers or container jobs
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: &gt;-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Performs a clean installation of all dependencies in the `package.json` file
+      # For more information, see https://docs.npmjs.com/cli/ci.html
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data
+        run: node client.js
+        # Environment variables used by the `client.js` script to create
+        # a new PostgreSQL table.
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432</code></pre>
+    <p>{% endraw %}</p>
+    <h3 id="configuring-the-runner-job-1">Configuring the runner job</h3>
+    <p>{% data reusables.github-actions.service-container-host-runner %}</p>
+    <p>{% data reusables.github-actions.postgres-label-description %}</p>
+    <p>
+      The workflow maps port 5432 on the PostgreSQL service container to the
+      Docker host. For more information about the <code>ports</code> keyword,
+      see “<a
+        href="/actions/automating-your-workflow-with-github-actions/about-service-containers#mapping-docker-host-and-service-container-ports"
+        >About service containers</a
+      >.”
+    </p>
+    <pre class="yaml{:copy}"><code>jobs:
+  # Label of the runner job
+  runner-job:
+    # You must use a Linux environment when using service containers or container jobs
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: &gt;-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432</code></pre>
+    <h3 id="configuring-the-steps-1">Configuring the steps</h3>
+    <p>{% data reusables.github-actions.service-template-steps %}</p>
+    <pre class="yaml{:copy}"><code>steps:
+  # Downloads a copy of the code in your repository before running CI tests
+  - name: Check out repository code
+    uses: actions/checkout@v2
+
+  # Performs a clean installation of all dependencies in the `package.json` file
+  # For more information, see https://docs.npmjs.com/cli/ci.html
+  - name: Install dependencies
+    run: npm ci
+
+  - name: Connect to PostgreSQL
+    # Runs a script that creates a PostgreSQL table, populates
+    # the table with data, and then retrieves the data
+    run: node client.js
+    # Environment variables used by the `client.js` script to create
+    # a new PostgreSQL table.
+    env:
+      # The hostname used to communicate with the PostgreSQL service container
+      POSTGRES_HOST: localhost
+      # The default PostgreSQL port
+      POSTGRES_PORT: 5432</code></pre>
+    <p>{% data reusables.github-actions.postgres-environment-variables %}</p>
+    <p>{% data reusables.github-actions.service-container-localhost %}</p>
+    <h2 id="testing-the-postgresql-service-container">
+      Testing the PostgreSQL service container
+    </h2>
+    <p>
+      You can test your workflow using the following script, which connects to
+      the PostgreSQL service and adds a new table with some placeholder data.
+      The script then prints the values stored in the PostgreSQL table to the
+      terminal. Your script can use any language you’d like, but this example
+      uses Node.js and the <code>pg</code> npm module. For more information, see
+      the <a href="https://www.npmjs.com/package/pg">npm pg module</a>.
+    </p>
+    <p>
+      You can modify <em>client.js</em> to include any PostgreSQL operations
+      needed by your workflow. In this example, the script connects to the
+      PostgreSQL service, adds a table to the <code>postgres</code> database,
+      inserts some placeholder data, and then retrieves the data.
+    </p>
+    <p>{% data reusables.github-actions.service-container-add-script %}</p>
+    <pre
+      class="javascript{:copy}"
+    ><code>const { Client } = require(&#39;pg&#39;);
+
+const pgclient = new Client({
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: &#39;postgres&#39;,
+    password: &#39;postgres&#39;,
+    database: &#39;postgres&#39;
+});
+
+pgclient.connect();
+
+const table = &#39;CREATE TABLE student(id SERIAL PRIMARY KEY, firstName VARCHAR(40) NOT NULL, lastName VARCHAR(40) NOT NULL, age INT, address VARCHAR(80), email VARCHAR(40))&#39;
+const text = &#39;INSERT INTO student(firstname, lastname, age, address, email) VALUES($1, $2, $3, $4, $5) RETURNING *&#39;
+const values = [&#39;Mona the&#39;, &#39;Octocat&#39;, 9, &#39;88 Colin P Kelly Jr St, San Francisco, CA 94107, United States&#39;, &#39;octocat@github.com&#39;]
+
+pgclient.query(table, (err, res) =&gt; {
+    if (err) throw err
+});
+
+pgclient.query(text, values, (err, res) =&gt; {
+    if (err) throw err
+});
+
+pgclient.query(&#39;SELECT * FROM student&#39;, (err, res) =&gt; {
+    if (err) throw err
+    console.log(err, res.rows) // Print the data in student table
+    pgclient.end()
+});</code></pre>
+    <p>
+      The script creates a new connection to the PostgreSQL service, and uses
+      the <code>POSTGRES_HOST</code> and <code>POSTGRES_PORT</code> environment
+      variables to specify the PostgreSQL service IP address and port. If
+      <code>host</code> and <code>port</code> are not defined, the default host
+      is <code>localhost</code> and the default port is 5432.
+    </p>
+    <p>
+      The script creates a table and populates it with placeholder data. To test
+      that the <code>postgres</code> database contains the data, the script
+      prints the contents of the table to the console log.
+    </p>
+    <p>
+      When you run this workflow, you should see the following output in the
+      “Connect to PostgreSQL” step, which confirms that you successfully created
+      the PostgreSQL table and added data:
+    </p>
+    <pre><code>null [ { id: 1,
+    firstname: &#39;Mona the&#39;,
+    lastname: &#39;Octocat&#39;,
+    age: 9,
+    address:
+     &#39;88 Colin P Kelly Jr St, San Francisco, CA 94107, United States&#39;,
+    email: &#39;octocat@github.com&#39; } ]</code></pre>
+  </body>
+</html>

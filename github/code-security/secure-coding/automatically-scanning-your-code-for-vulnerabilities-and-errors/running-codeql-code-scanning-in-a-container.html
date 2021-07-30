@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Running CodeQL code scanning in a container</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Running CodeQL code scanning in a container</h1>
+</header>
+<!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
+<p>{% data reusables.code-scanning.beta %}</p>
+<h2 id="about-data-variables.product.prodname_code_scanning-with-a-containerized-build">About {% data variables.product.prodname_code_scanning %} with a containerized build</h2>
+<p>If you’re setting up {% data variables.product.prodname_code_scanning %} for a compiled language, and you’re building the code in a containerized environment, the analysis may fail with the error message “No source code was seen during the build.” This indicates that {% data variables.product.prodname_codeql %} was unable to monitor your code as it was compiled.</p>
+<p>{% ifversion fpt or ghes &gt; 3.0 or ghae-next %} You must run {% data variables.product.prodname_codeql %} inside the container in which you build your code. This applies whether you are using the {% data variables.product.prodname_codeql_cli %}, the {% data variables.product.prodname_codeql_runner %}, or {% data variables.product.prodname_actions %}. For the {% data variables.product.prodname_codeql_cli %} or the {% data variables.product.prodname_codeql_runner %}, see “<a href="/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system">Installing {% data variables.product.prodname_codeql_cli %} in your CI system</a>” or “<a href="/code-security/secure-coding/running-codeql-runner-in-your-ci-system">Running {% data variables.product.prodname_codeql_runner %} in your CI system</a>” for more information. If you’re using {% data variables.product.prodname_actions %}, configure your workflow to run all the actions in the same container. For more information, see “<a href="#example-workflow">Example workflow</a>.” {% else %} You must run {% data variables.product.prodname_codeql %} inside the container in which you build your code. This applies whether you are using the {% data variables.product.prodname_codeql_runner %} or {% data variables.product.prodname_actions %}. For the {% data variables.product.prodname_codeql_runner %}, see “<a href="/code-security/secure-coding/running-codeql-runner-in-your-ci-system">Running {% data variables.product.prodname_codeql_runner %} in your CI system</a>” for more information. If you’re using {% data variables.product.prodname_actions %}, configure your workflow to run all the actions in the same container. For more information, see “<a href="#example-workflow">Example workflow</a>.” {% endif %}</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>You may have difficulty running {% data variables.product.prodname_code_scanning %} if the container you’re using is missing certain dependencies (for example, Git must be installed and added to the PATH variable). If you encounter dependency issues, review the list of software typically included on {% data variables.product.prodname_dotcom %}’s virtual environments. For more information, see the version-specific <code>readme</code> files in these locations:</p>
+<ul>
+<li>Linux: https://github.com/actions/virtual-environments/tree/main/images/linux</li>
+<li>macOS: https://github.com/actions/virtual-environments/tree/main/images/macos</li>
+<li>Windows: https://github.com/actions/virtual-environments/tree/main/images/win</li>
+</ul>
+<h2 id="example-workflow">Example workflow</h2>
+<p>This sample workflow uses {% data variables.product.prodname_actions %} to run {% data variables.product.prodname_codeql %} analysis in a containerized environment. The value of <code>container.image</code> identifies the container to use. In this example the image is named <code>codeql-container</code>, with a tag of <code>f0f91db</code>. For more information, see “<a href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontainer">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">name:</span><span class="at"> </span><span class="st">&quot;{% data variables.product.prodname_codeql %}&quot;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">on:</span><span class="at"> </span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">pull_request:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="fu">branches:</span><span class="at"> </span><span class="kw">[</span>main<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="kw">-</span> <span class="fu">cron:</span><span class="at"> </span><span class="st">&#39;15 5 * * 3&#39;</span></a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="fu">analyze:</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">name:</span><span class="at"> Analyze</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest{% ifversion fpt or ghes &gt; 3.1 or ghae-next %}</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb1-16" title="16">      <span class="fu">security-events:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb1-17" title="17">      <span class="fu">actions:</span><span class="at"> read{% endif %}</span></a>
+<a class="sourceLine" id="cb1-18" title="18"></a>
+<a class="sourceLine" id="cb1-19" title="19">    <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb1-20" title="20">      <span class="fu">fail-fast:</span><span class="at"> </span><span class="ch">false</span></a>
+<a class="sourceLine" id="cb1-21" title="21">      <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb1-22" title="22">        <span class="fu">language:</span><span class="at"> </span><span class="kw">[</span>java<span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-23" title="23"></a>
+<a class="sourceLine" id="cb1-24" title="24">    <span class="co"># Specify the container in which actions will run</span></a>
+<a class="sourceLine" id="cb1-25" title="25">    <span class="fu">container:</span></a>
+<a class="sourceLine" id="cb1-26" title="26">      <span class="fu">image:</span><span class="at"> codeql-container:f0f91db</span></a>
+<a class="sourceLine" id="cb1-27" title="27"></a>
+<a class="sourceLine" id="cb1-28" title="28">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-29" title="29">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Checkout repository</span></a>
+<a class="sourceLine" id="cb1-30" title="30">        <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb1-31" title="31">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Initialize {% data variables.product.prodname_codeql %}</span></a>
+<a class="sourceLine" id="cb1-32" title="32">        <span class="fu">uses:</span><span class="at"> github/codeql-action/init@v1</span></a>
+<a class="sourceLine" id="cb1-33" title="33">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb1-34" title="34">          <span class="fu">languages:</span><span class="at"> </span><span class="kw">{</span>% raw %<span class="kw">}</span><span class="at">${{ matrix.language }}{% endraw %}</span></a>
+<a class="sourceLine" id="cb1-35" title="35">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Build</span></a>
+<a class="sourceLine" id="cb1-36" title="36"><span class="fu">        run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb1-37" title="37">          ./configure</a>
+<a class="sourceLine" id="cb1-38" title="38">          make</a>
+<a class="sourceLine" id="cb1-39" title="39">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Perform {% data variables.product.prodname_codeql %} Analysis</span></a>
+<a class="sourceLine" id="cb1-40" title="40">        <span class="fu">uses:</span><span class="at"> github/codeql-action/analyze@v1</span></a></code></pre></div>
+</body>
+</html>

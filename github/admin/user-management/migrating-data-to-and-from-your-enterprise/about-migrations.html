@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About migrations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About migrations</h1>
+</header>
+<h2 id="types-of-migrations">Types of migrations</h2>
+<p>There are three types of migrations you can perform:</p>
+<ul>
+<li>A migration from a {% data variables.product.prodname_ghe_server %} instance to another {% data variables.product.prodname_ghe_server %} instance. You can migrate any number of repositories owned by any user or organization on the instance. Before performing a migration, you must have site administrator access to both instances.</li>
+<li>A migration from a {% data variables.product.prodname_dotcom_the_website %} organization to a {% data variables.product.prodname_ghe_server %} instance. You can migrate any number of repositories owned by the organization. Before performing a migration, you must have <a href="/enterprise/user/articles/permission-levels-for-an-organization/">administrative access</a> to the {% data variables.product.prodname_dotcom_the_website %} organization as well as site administrator access to the target instance.</li>
+<li><em>Trial runs</em> are migrations that import data to a <a href="/enterprise/admin/guides/installation/setting-up-a-staging-instance/">staging instance</a>. These can be useful to see what <em>would</em> happen if a migration were applied to {% data variables.product.product_location %}. <strong>We strongly recommend that you perform a trial run on a staging instance before importing data to your production instance.</strong></li>
+</ul>
+<h2 id="migrated-data">Migrated data</h2>
+<p>In a migration, everything revolves around a repository. Most data associated with a repository can be migrated. For example, a repository within an organization will migrate the repository <em>and</em> the organization, as well as any users, teams, issues, and pull requests associated with the repository.</p>
+<p>The items in the table below can be migrated with a repository. Any items not shown in the list of migrated data can not be migrated.</p>
+<p>{% data reusables.enterprise_migrations.fork-persistence %}</p>
+<table>
+<colgroup>
+<col style="width: 84%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data associated with a migrated repository</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Users</td>
+<td><strong><span class="citation" data-cites="mentions">@mentions</span></strong> of users are rewritten to match the target.</td>
+</tr>
+<tr class="even">
+<td>Organizations</td>
+<td>An organization’s name and details are migrated.</td>
+</tr>
+<tr class="odd">
+<td>Repositories</td>
+<td>Links to Git trees, blobs, commits, and lines are rewritten to match the target. The migrator follows a maximum of three repository redirects.</td>
+</tr>
+<tr class="even">
+<td>Wikis</td>
+<td>All wiki data is migrated.</td>
+</tr>
+<tr class="odd">
+<td>Teams</td>
+<td><strong><span class="citation" data-cites="mentions">@mentions</span></strong> of teams are rewritten to match the target.</td>
+</tr>
+<tr class="even">
+<td>Milestones</td>
+<td>Timestamps are preserved.</td>
+</tr>
+<tr class="odd">
+<td>Project boards</td>
+<td>Project boards associated with the repository and with the organization that owns the repository are migrated.</td>
+</tr>
+<tr class="even">
+<td>Issues</td>
+<td>Issue references and timestamps are preserved.</td>
+</tr>
+<tr class="odd">
+<td>Issue comments</td>
+<td>Cross-references to comments are rewritten for the target instance.</td>
+</tr>
+<tr class="even">
+<td>Pull requests</td>
+<td>Cross-references to pull requests are rewritten to match the target. Timestamps are preserved.</td>
+</tr>
+<tr class="odd">
+<td>Pull request reviews</td>
+<td>Pull request reviews and associated data are migrated.</td>
+</tr>
+<tr class="even">
+<td>Pull request review comments</td>
+<td>Cross-references to comments are rewritten for the target instance. Timestamps are preserved.</td>
+</tr>
+<tr class="odd">
+<td>Commit comments</td>
+<td>Cross-references to comments are rewritten for the target instance. Timestamps are preserved.</td>
+</tr>
+<tr class="even">
+<td>Releases</td>
+<td>All releases data is migrated.</td>
+</tr>
+<tr class="odd">
+<td>Actions taken on pull requests or issues</td>
+<td>All modifications to pull requests or issues, such as assigning users, renaming titles, and modifying labels are preserved, along with timestamps for each action.</td>
+</tr>
+<tr class="even">
+<td>File attachments</td>
+<td><a href="/articles/file-attachments-on-issues-and-pull-requests">File attachments on issues and pull requests</a> are migrated. You can choose to disable this as part of the migration.</td>
+</tr>
+<tr class="odd">
+<td>Webhooks</td>
+<td>Only active webhooks are migrated.</td>
+</tr>
+<tr class="even">
+<td>Repository deploy keys</td>
+<td>Repository deploy keys are migrated.</td>
+</tr>
+<tr class="odd">
+<td>Protected branches</td>
+<td>Protected branch settings and associated data are migrated.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

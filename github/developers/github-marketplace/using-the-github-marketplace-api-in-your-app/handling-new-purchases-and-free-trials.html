@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Handling new purchases and free trials</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Handling new purchases and free trials</h1>
+</header>
+<p>{% warning %}</p>
+<p>If you offer a {% data variables.product.prodname_github_app %} in {% data variables.product.prodname_marketplace %}, your app must identify users following the OAuth authorization flow. You don’t need to set up a separate {% data variables.product.prodname_oauth_app %} to support this flow. See “<a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">Identifying and authorizing users for {% data variables.product.prodname_github_apps %}</a>” for more information.</p>
+<p>{% endwarning %}</p>
+<h2 id="step-1.-initial-purchase-and-webhook-event">Step 1. Initial purchase and webhook event</h2>
+<p>Before a customer purchases your {% data variables.product.prodname_marketplace %} app, they select a <a href="/marketplace/selling-your-app/github-marketplace-pricing-plans/">listing plan</a>. They also choose whether to purchase the app from their personal account or an organization account.</p>
+<p>The customer completes the purchase by clicking <strong>Complete order and begin installation</strong>.</p>
+<p>{% data variables.product.product_name %} then sends the <a href="/webhooks/event-payloads/#marketplace_purchase"><code>marketplace_purchase</code></a> webhook with the <code>purchased</code> action to your app.</p>
+<p>Read the <code>effective_date</code> and <code>marketplace_purchase</code> object from the <code>marketplace_purchase</code> webhook to determine which plan the customer purchased, when the billing cycle starts, and when the next billing cycle begins.</p>
+<p>If your app offers a free trial, read the <code>marketplace_purchase[on_free_trial]</code> attribute from the webhook. If the value is <code>true</code>, your app will need to track the free trial start date (<code>effective_date</code>) and the date the free trial ends (<code>free_trial_ends_on</code>). Use the <code>free_trial_ends_on</code> date to display the remaining days left in a free trial in your app’s UI. You can do this in either a banner or in your <a href="/marketplace/selling-your-app/billing-customers-in-github-marketplace/#providing-billing-services-in-your-apps-ui">billing UI</a>. To learn how to handle cancellations before a free trial ends, see “<a href="/developers/github-marketplace/handling-plan-cancellations">Handling plan cancellations</a>.” See “<a href="/developers/github-marketplace/handling-plan-changes">Handling plan changes</a>” to find out how to transition a free trial to a paid plan when a free trial expires.</p>
+<p>See “<a href="/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events/">{% data variables.product.prodname_marketplace %} webhook events</a>” for an example of the <code>marketplace_purchase</code> event payload.</p>
+<h2 id="step-2.-installation">Step 2. Installation</h2>
+<p>If your app is a {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} prompts the customer to select which repositories the app can access when they purchase it. {% data variables.product.product_name %} then installs the app on the account the customer selected and grants access to the selected repositories.</p>
+<p>At this point, if you specified a <strong>Setup URL</strong> in your {% data variables.product.prodname_github_app %} settings, {% data variables.product.product_name %} will redirect the customer to that URL. If you do not specify a setup URL, you will not be able to handle purchases of your {% data variables.product.prodname_github_app %}.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> The <strong>Setup URL</strong> is described as optional in {% data variables.product.prodname_github_app %} settings, but it is a required field if you want to offer your app in {% data variables.product.prodname_marketplace %}.</p>
+<p>{% endnote %}</p>
+<p>If your app is an {% data variables.product.prodname_oauth_app %}, {% data variables.product.product_name %} does not install it anywhere. Instead, {% data variables.product.product_name %} redirects the customer to the <strong>Installation URL</strong> you specified in your <a href="/marketplace/listing-on-github-marketplace/writing-github-marketplace-listing-descriptions/#listing-urls">{% data variables.product.prodname_marketplace %} listing</a>.</p>
+<p>When a customer purchases an {% data variables.product.prodname_oauth_app %}, {% data variables.product.product_name %} redirects the customer to the URL you choose (either Setup URL or Installation URL) and the URL includes the customer’s selected pricing plan as a query parameter: <code>marketplace_listing_plan_id</code>.</p>
+<h2 id="step-3.-authorization">Step 3. Authorization</h2>
+<p>When a customer purchases your app, you must send the customer through the OAuth authorization flow:</p>
+<ul>
+<li><p>If your app is a {% data variables.product.prodname_github_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the <strong>Setup URL</strong>. Follow the steps in “<a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">Identifying and authorizing users for {% data variables.product.prodname_github_apps %}</a>.”</p></li>
+<li><p>If your app is an {% data variables.product.prodname_oauth_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the <strong>Installation URL</strong>. Follow the steps in “<a href="/apps/building-oauth-apps/authorizing-oauth-apps/">Authorizing {% data variables.product.prodname_oauth_apps %}</a>.”</p></li>
+</ul>
+<p>For either type of app, the first step is to redirect the customer to https://github.com/login/oauth/authorize.</p>
+<p>After the customer completes the authorization, your app receives an OAuth access token for the customer. You’ll need this token for the next step.</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> When authorizing a customer on a free trial, grant them the same access they would have on the paid plan. You’ll move them to the paid plan after the trial period ends.</p>
+<p>{% endnote %}</p>
+<h2 id="step-4.-provisioning-customer-accounts">Step 4. Provisioning customer accounts</h2>
+<p>Your app must provision a customer account for all new purchases. Using the access token you received for the customer in <a href="#step-3-authorization">Step 3. Authorization</a>, call the “<a href="/rest/reference/apps#list-subscriptions-for-the-authenticated-user">List subscriptions for the authenticated user</a>” endpoint. The response will include the customer’s <code>account</code> information and show whether they are on a free trial (<code>on_free_trial</code>). Use this information to complete setup and provisioning.</p>
+<p>{% data reusables.marketplace.marketplace-double-purchases %}</p>
+<p>If the purchase is for an organization and per-user, you can prompt the customer to choose which organization members will have access to the purchased app.</p>
+<p>You can customize the way that organization members receive access to your app. Here are a few suggestions:</p>
+<p><strong>Flat-rate pricing:</strong> If the purchase is made for an organization using flat-rate pricing, your app can <a href="/rest/reference/orgs#list-organization-members">get all the organization’s members</a> via the API and prompt the organization admin to choose which members will have paid users on the integrator side.</p>
+<p><strong>Per-unit pricing:</strong> One method of provisioning per-unit seats is to allow users to occupy a seat as they log in to the app. Once the customer hits the seat count threshold, your app can alert the user that they need to upgrade through {% data variables.product.prodname_marketplace %}.</p>
+</body>
+</html>

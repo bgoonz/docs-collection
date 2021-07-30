@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Duplicating a repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Duplicating a repository</h1>
+</header>
+<p>Before you can duplicate a repository and push to your new copy, or <em>mirror</em>, of the repository, you must <a href="/articles/creating-a-new-repository">create the new repository</a> on {% data variables.product.product_location %}. In these examples, <code>exampleuser/new-repository</code> or <code>exampleuser/mirrored</code> are the mirrors.</p>
+<h2 id="mirroring-a-repository">Mirroring a repository</h2>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Create a bare clone of the repository. <code>shell   $ git clone --bare https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;old-repository&lt;/em&gt;.git</code> 3. Mirror-push to the new repository. <code>shell   $ cd &lt;em&gt;old-repository&lt;/em&gt;   $ git push --mirror https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;new-repository&lt;/em&gt;.git</code> 4. Remove the temporary local repository you created earlier. <code>shell   $ cd ..   $ rm -rf &lt;em&gt;old-repository&lt;/em&gt;</code></p>
+<h2 id="mirroring-a-repository-that-contains-data-variables.large_files.product_name_long-objects">Mirroring a repository that contains {% data variables.large_files.product_name_long %} objects</h2>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Create a bare clone of the repository. Replace the example username with the name of the person or organization who owns the repository, and replace the example repository name with the name of the repository you’d like to duplicate. <code>shell   $ git clone --bare https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;old-repository&lt;/em&gt;.git</code> 3. Navigate to the repository you just cloned. <code>shell   $ cd &lt;em&gt;old-repository&lt;/em&gt;</code> 4. Pull in the repository’s {% data variables.large_files.product_name_long %} objects. <code>shell   $ git lfs fetch --all</code> 5. Mirror-push to the new repository. <code>shell   $ git push --mirror https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;new-repository&lt;/em&gt;.git</code> 6. Push the repository’s {% data variables.large_files.product_name_long %} objects to your mirror. <code>shell   $ git lfs push --all https://github.com/&lt;em&gt;exampleuser/new-repository.git&lt;/em&gt;</code> 7. Remove the temporary local repository you created earlier. <code>shell   $ cd ..   $ rm -rf &lt;em&gt;old-repository&lt;/em&gt;</code></p>
+<h2 id="mirroring-a-repository-in-another-location">Mirroring a repository in another location</h2>
+<p>If you want to mirror a repository in another location, including getting updates from the original, you can clone a mirror and periodically push the changes.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Create a bare mirrored clone of the repository. <code>shell   $ git clone --mirror https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;repository-to-mirror&lt;/em&gt;.git</code> 3. Set the push location to your mirror. <code>shell   $ cd &lt;em&gt;repository-to-mirror&lt;/em&gt;   $ git remote set-url --push origin https://{% data variables.command_line.codeblock %}/&lt;em&gt;exampleuser&lt;/em&gt;/&lt;em&gt;mirrored&lt;/em&gt;</code></p>
+<p>As with a bare clone, a mirrored clone includes all remote branches and tags, but all local references will be overwritten each time you fetch, so it will always be the same as the original repository. Setting the URL for pushes simplifies pushing to your mirror. To update your mirror, fetch updates and push.</p>
+<pre class="shell"><code>$ git fetch -p origin
+$ git push --mirror</code></pre>
+</body>
+</html>

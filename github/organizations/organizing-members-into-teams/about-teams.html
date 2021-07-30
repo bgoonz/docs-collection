@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About teams</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About teams</h1>
+</header>
+<figure>
+<img src="/assets/images/help/teams/org-list-of-teams.png" alt="List of teams in an organization" /><figcaption>List of teams in an organization</figcaption>
+</figure>
+<p>Organization owners and team maintainers can give teams admin, read, or write access to organization repositories. Organization members can send a notification to an entire team by mentioning the team’s name. Organization members can also send a notification to an entire team by requesting a review from that team. Organization members can request reviews from specific teams with read access to the repository where the pull request is opened. Teams can be designated as owners of certain types or areas of code in a CODEOWNERS file.</p>
+<p>For more information, see: - “<a href="/articles/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a>” - “<a href="/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams">Mentioning people and teams</a>” - “<a href="/articles/about-code-owners/">About code owners</a>”</p>
+<figure>
+<img src="/assets/images/help/teams/team-mention.png" alt="Image of a team mention" /><figcaption>Image of a team mention</figcaption>
+</figure>
+<p>{% ifversion ghes %}</p>
+<p>You can also use LDAP Sync to synchronize {% data variables.product.product_location %} team members and team roles against your established LDAP groups. This lets you establish role-based access control for users from your LDAP server instead of manually within {% data variables.product.product_location %}. For more information, see “<a href="/enterprise/admin/authentication/using-ldap#enabling-ldap-sync">Enabling LDAP Sync</a>.”</p>
+<p>{% endif %}</p>
+<p>{% data reusables.organizations.team-synchronization %}</p>
+<h2 id="team-visibility">Team visibility</h2>
+<p>{% data reusables.organizations.types-of-team-visibility %}</p>
+<h2 id="team-pages">Team pages</h2>
+<p>Each team has its own page within an organization. On a team’s page, you can view team members, child teams, and the team’s repositories. Organization owners and team maintainers can access team settings and update the team’s description and profile picture from the team’s page.</p>
+<p>Organization members can create and participate in discussions with the team. For more information, see “<a href="/organizations/collaborating-with-your-team/about-team-discussions">About team discussions</a>.”</p>
+<figure>
+<img src="/assets/images/help/organizations/team-page-discussions-tab.png" alt="Team page listing team members and discussions" /><figcaption>Team page listing team members and discussions</figcaption>
+</figure>
+<h2 id="nested-teams">Nested teams</h2>
+<p>You can reflect your group or company’s hierarchy within your {% data variables.product.product_name %} organization with multiple levels of nested teams. A parent team can have multiple child teams, while each child team only has one parent team. You cannot nest secret teams.</p>
+<p>Child teams inherit the parent’s access permissions, simplifying permissions management for large groups. Members of child teams also receive notifications when the parent team is <span class="citation" data-cites="mentioned">@mentioned</span>, simplifying communication with multiple groups of people.</p>
+<p>For example, if your team structure is Employees &gt; Engineering &gt; Application Engineering &gt; Identity, granting Engineering write access to a repository means Application Engineering and Identity also get that access. If you <span class="citation" data-cites="mention">@mention</span> the Identity Team or any team at the bottom of the organization hierarchy, they’re the only ones who will receive a notification.</p>
+<figure>
+<img src="/assets/images/help/teams/nested-teams-eng-example.png" alt="Teams page with a parent team and child teams" /><figcaption>Teams page with a parent team and child teams</figcaption>
+</figure>
+<p>To easily understand who shares a parent team’s permissions and mentions, you can see all of the members of a parent team’s child teams on the Members tab of the parent team’s page. Members of a child team are not direct members of the parent team.</p>
+<figure>
+<img src="/assets/images/help/teams/team-and-subteam-members.png" alt="Parent team page with all members of child teams" /><figcaption>Parent team page with all members of child teams</figcaption>
+</figure>
+<p>You can choose a parent when you create the team, or you can move a team in your organization’s hierarchy later. For more information see, “<a href="/articles/moving-a-team-in-your-organization-s-hierarchy">Moving a team in your organization’s hierarchy</a>.”</p>
+<p>{% data reusables.enterprise_user_management.ldap-sync-nested-teams %}</p>
+<h2 id="preparing-to-nest-teams-in-your-organization">Preparing to nest teams in your organization</h2>
+<p>If your organization already has existing teams, you should audit each team’s repository access permissions before you nest teams above or below it. You should also consider the new structure you’d like to implement for your organization.</p>
+<p>At the top of the team hierarchy, you should give parent teams repository access permissions that are safe for every member of the parent team and its child teams. As you move toward the bottom of the hierarchy, you can grant child teams additional, more granular access to more sensitive repositories.</p>
+<ol type="1">
+<li>Remove all members from existing teams</li>
+<li>Audit and adjust each team’s repository access permissions and give each team a parent</li>
+<li>Create any new teams you’d like to, choose a parent for each new team, and give them repository access</li>
+<li>Add people directly to teams</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/creating-a-team">Creating a team</a>”</li>
+<li>“<a href="/articles/adding-organization-members-to-a-team">Adding organization members to a team</a>”</li>
+</ul>
+</body>
+</html>

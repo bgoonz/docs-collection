@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Providing data to GitHub Support</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Providing data to GitHub Support</h1>
+    </header>
+    <h2 id="creating-and-sharing-diagnostic-files">
+      Creating and sharing diagnostic files
+    </h2>
+    <p>
+      Diagnostics are an overview of a {% data
+      variables.product.prodname_ghe_server %} instance’s settings and
+      environment that contains:
+    </p>
+    <ul>
+      <li>
+        Client license information, including company name, expiration date, and
+        number of user licenses
+      </li>
+      <li>Version numbers and SHAs</li>
+      <li>VM architecture</li>
+      <li>Host name, private mode, SSL settings</li>
+      <li>Load and process listings</li>
+      <li>Network settings</li>
+      <li>Authentication method and details</li>
+      <li>Number of repositories, users, and other installation data</li>
+    </ul>
+    <p>
+      You can download the diagnostics for your instance from the {% data
+      variables.enterprise.management_console %} or by running the
+      <code>ghe-diagnostics</code> command-line utility.
+    </p>
+    <h3
+      id="creating-a-diagnostic-file-from-the-data-variables.enterprise.management_console"
+    >
+      Creating a diagnostic file from the {% data
+      variables.enterprise.management_console %}
+    </h3>
+    <p>
+      You can use this method if you don’t have your SSH key readily available.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data
+      reusables.enterprise_management_console.type-management-console-password
+      %} {% data reusables.enterprise_management_console.support-link %} 5.
+      Click <strong>Download diagnostics info</strong>.
+    </p>
+    <h3 id="creating-a-diagnostic-file-using-ssh">
+      Creating a diagnostic file using SSH
+    </h3>
+    <p>
+      You can use this method without signing into the {% data
+      variables.enterprise.management_console %}.
+    </p>
+    <p>
+      Use the
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/command-line-utilities#ghe-diagnostics"
+        >ghe-diagnostics</a
+      >
+      command-line utility to retrieve the diagnostics for your instance.
+    </p>
+    <pre
+      class="shell"
+    ><code>$ ssh -p122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-diagnostics&#39; &gt; diagnostics.txt</code></pre>
+    <h2 id="creating-and-sharing-support-bundles">
+      Creating and sharing support bundles
+    </h2>
+    <p>
+      After you submit your support request, we may ask you to share a support
+      bundle with our team. The support bundle is a gzip-compressed tar archive
+      that includes diagnostics and important logs from your instance, such as:
+    </p>
+    <ul>
+      <li>
+        Authentication-related logs that may be helpful when troubleshooting
+        authentication errors, or configuring LDAP, CAS, or SAML
+      </li>
+      <li>{% data variables.enterprise.management_console %} log</li>
+      <li>
+        <code>github-logs/exceptions.log</code>: Information about 500 errors
+        encountered on the site
+      </li>
+      <li>
+        <code>github-logs/audit.log</code>: {% data
+        variables.product.prodname_ghe_server %} audit logs
+      </li>
+      <li><code>babeld-logs/babeld.log</code>: Git proxy logs</li>
+      <li><code>system-logs/haproxy.log</code>: HAProxy logs</li>
+      <li>
+        <code>elasticsearch-logs/github-enterprise.log</code>: Elasticsearch
+        logs
+      </li>
+      <li>
+        <code>configuration-logs/ghe-config.log</code>: {% data
+        variables.product.prodname_ghe_server %} configuration logs
+      </li>
+      <li><code>collectd/logs/collectd.log</code>: Collectd logs</li>
+      <li>
+        <code>mail-logs/mail.log</code>: SMTP email delivery logs {% ifversion
+        ghes &lt; 3.0 %}
+      </li>
+      <li>
+        <code>hookshot-logs/exceptions.log</code>: Webhook delivery errors {%
+        endif %}
+      </li>
+    </ul>
+    <p>
+      For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/audit-logging"
+        >Audit logging</a
+      >.”
+    </p>
+    <p>
+      Support bundles include logs from the past two days. To get logs from the
+      past seven days, you can download an extended support bundle. For more
+      information, see “<a href="#creating-and-sharing-extended-support-bundles"
+        >Creating and sharing extended support bundles</a
+      >.”
+    </p>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Tip:</strong> When you contact {% data
+      variables.contact.github_support %}, you’ll be sent a confirmation email
+      that will contain a ticket reference link. If {% data
+      variables.contact.github_support %} asks you to upload a support bundle,
+      you can use the ticket reference link to upload the support bundle.
+    </p>
+    <p>{% endtip %}</p>
+    <h3
+      id="creating-a-support-bundle-from-the-data-variables.enterprise.management_console"
+    >
+      Creating a support bundle from the {% data
+      variables.enterprise.management_console %}
+    </h3>
+    <p>
+      You can use these steps to create and share a support bundle if you can
+      access the web-based {% data variables.enterprise.management_console %}
+      and have outbound internet access.
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data
+      reusables.enterprise_management_console.type-management-console-password
+      %} {% data reusables.enterprise_management_console.support-link %} 5.
+      Click <strong>Download support bundle</strong>. {% data
+      reusables.enterprise_enterprise_support.sign-in-to-support %} {% data
+      reusables.enterprise_enterprise_support.upload-support-bundle %}
+    </p>
+    <h3 id="creating-a-support-bundle-using-ssh">
+      Creating a support bundle using SSH
+    </h3>
+    <p>
+      You can use these steps to create and share a support bundle if you have
+      SSH access to {% data variables.product.product_location %} and have
+      outbound internet access.
+    </p>
+    <p>
+      {% data
+      reusables.enterprise_enterprise_support.use_ghe_cluster_support_bundle %}
+    </p>
+    <ol type="1">
+      <li>Download the support bundle via SSH:</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -o&#39; &gt; support-bundle.tgz</code></pre>
+    <p>
+      For more information about the <code>ghe-support-bundle</code> command,
+      see “<a
+        href="/enterprise/admin/guides/installation/command-line-utilities#ghe-support-bundle"
+        >Command-line utilities</a
+      >”. {% data reusables.enterprise_enterprise_support.sign-in-to-support %}
+      {% data reusables.enterprise_enterprise_support.upload-support-bundle %}
+    </p>
+    <h3 id="uploading-a-support-bundle-using-your-enterprise-account">
+      Uploading a support bundle using your enterprise account
+    </h3>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise-on-dotcom %} {%
+      data reusables.enterprise-accounts.settings-tab %} 3. In the left sidebar,
+      click <strong>Enterprise licensing</strong>.
+      <img
+        src="/assets/images/help/enterprises/enterprise-licensing-tab.png"
+        alt="“Enterprise licensing” tab in the enterprise account settings sidebar"
+      />
+      4. Under “{% data variables.product.prodname_enterprise %} Help”, click
+      <strong>Upload a support bundle</strong>.
+      <img
+        src="/assets/images/enterprise/support/upload-support-bundle.png"
+        alt="Upload a support bundle link"
+      />
+      5. Under “Select an enterprise account”, select the support bundle’s
+      associated account from the drop-down menu.
+      <img
+        src="/assets/images/enterprise/support/support-bundle-account.png"
+        alt="Choose the support bundle’s enterprise account"
+      />
+      6. Under “Upload a support bundle for {% data
+      variables.contact.enterprise_support %}”, to select your support bundle,
+      click <strong>Choose file</strong>, or drag your support bundle file onto
+      <strong>Choose file</strong>.
+      <img
+        src="/assets/images/enterprise/support/choose-support-bundle-file.png"
+        alt="Upload support bundle file"
+      />
+      7. Click <strong>Upload</strong>.
+    </p>
+    <h3 id="uploading-a-support-bundle-directly-using-ssh">
+      Uploading a support bundle directly using SSH
+    </h3>
+    <p>
+      You can directly upload a support bundle to our server if: - You have SSH
+      access to {% data variables.product.product_location %}. - Outbound HTTPS
+      connections over TCP port 443 are allowed from {% data
+      variables.product.product_location %} to
+      <em>enterprise-bundles.github.com</em> and
+      <em>esbtoolsproduction.blob.core.windows.net</em>.
+    </p>
+    <ol type="1">
+      <li>Upload the bundle to our support bundle server:</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -u&#39;</code></pre>
+    <h2 id="creating-and-sharing-extended-support-bundles">
+      Creating and sharing extended support bundles
+    </h2>
+    <p>
+      Support bundles include logs from the past two days, while
+      <em>extended</em> support bundles include logs from the past seven days.
+      If the events that {% data variables.contact.github_support %} is
+      investigating occurred more than two days ago, we may ask you to share an
+      extended support bundle. You will need SSH access to download an extended
+      bundle - you cannot download an extended bundle from the {% data
+      variables.enterprise.management_console %}.
+    </p>
+    <p>
+      To prevent bundles from becoming too large, bundles only contain logs that
+      haven’t been rotated and compressed. Log rotation on {% data
+      variables.product.prodname_ghe_server %} happens at various frequencies
+      (daily or weekly) for different log files, depending on how large we
+      expect the logs to be.
+    </p>
+    <h3 id="creating-an-extended-support-bundle-using-ssh">
+      Creating an extended support bundle using SSH
+    </h3>
+    <p>
+      You can use these steps to create and share an extended support bundle if
+      you have SSH access to {% data variables.product.product_location %} and
+      you have outbound internet access.
+    </p>
+    <ol type="1">
+      <li>
+        Download the extended support bundle via SSH by adding the
+        <code>-x</code> flag to the <code>ghe-support-bundle</code> command:
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -o -x&#39; &gt; support-bundle.tgz</code></pre>
+    <p>
+      {% data reusables.enterprise_enterprise_support.sign-in-to-support %} {%
+      data reusables.enterprise_enterprise_support.upload-support-bundle %}
+    </p>
+    <h3 id="uploading-an-extended-support-bundle-directly-using-ssh">
+      Uploading an extended support bundle directly using SSH
+    </h3>
+    <p>
+      You can directly upload a support bundle to our server if: - You have SSH
+      access to {% data variables.product.product_location %}. - Outbound HTTPS
+      connections over TCP port 443 are allowed from {% data
+      variables.product.product_location %} to
+      <em>enterprise-bundles.github.com</em> and
+      <em>esbtoolsproduction.blob.core.windows.net</em>.
+    </p>
+    <ol type="1">
+      <li>Upload the bundle to our support bundle server:</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p122 admin@&lt;em&gt;hostname&lt;/em&gt; -- &#39;ghe-support-bundle -u -x&#39;</code></pre>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="/enterprise/admin/guides/enterprise-support/about-github-enterprise-support"
+          >About {% data variables.contact.enterprise_support %}</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/admin/guides/enterprise-support/about-github-premium-support-for-github-enterprise-server"
+          >About {% data variables.contact.premium_support %} for {% data
+          variables.product.prodname_ghe_server %}</a
+        >.”
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>About using actions in your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">About using actions in your enterprise</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      {% data variables.product.prodname_actions %} workflows can use
+      <em>actions</em>, which are individual tasks that you can combine to
+      create jobs and customize your workflow. You can create your own actions,
+      or use and customize actions shared by the {% data
+      variables.product.prodname_dotcom %} community.
+    </p>
+    <p>{% data reusables.actions.enterprise-no-internet-actions %}</p>
+    <h2 id="official-actions-bundled-with-your-enterprise-instance">
+      Official actions bundled with your enterprise instance
+    </h2>
+    <p>
+      Most official {% data variables.product.prodname_dotcom %}-authored
+      actions are automatically bundled with {% data
+      variables.product.product_name %}, and are captured at a point in time
+      from {% data variables.product.prodname_marketplace %}.
+    </p>
+    <p>
+      The bundled official actions include <code>actions/checkout</code>,
+      <code>actions/upload-artifact</code>,
+      <code>actions/download-artifact</code>, <code>actions/labeler</code>, and
+      various <code>actions/setup-</code> actions, among others. To see all the
+      official actions included on your enterprise instance, browse to the
+      <code>actions</code> organization on your instance:
+      <code>https://<em>HOSTNAME</em>/actions</code>.
+    </p>
+    <p>
+      Each action is a repository in the <code>actions</code> organization, and
+      each action repository includes the necessary tags, branches, and commit
+      SHAs that your workflows can use to reference the action. For information
+      on how to update the bundled official actions, see “<a
+        href="/admin/github-actions/using-the-latest-version-of-the-official-bundled-actions"
+        >Using the latest version of the official bundled actions</a
+      >.”
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> When using setup actions (such as
+      <code>actions/setup-LANGUAGE</code>) on {% data
+      variables.product.product_name %} with self-hosted runners, you might need
+      to set up the tools cache on runners that do not have internet access. For
+      more information, see “<a
+        href="/enterprise/admin/github-actions/setting-up-the-tool-cache-on-self-hosted-runners-without-internet-access"
+        >Setting up the tool cache on self-hosted runners without internet
+        access</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <h2
+      id="configuring-access-to-actions-on-data-variables.product.prodname_dotcom_the_website"
+    >
+      Configuring access to actions on {% data
+      variables.product.prodname_dotcom_the_website %}
+    </h2>
+    <p>
+      If users in your enterprise need access to other actions from {% data
+      variables.product.prodname_dotcom_the_website %} or {% data
+      variables.product.prodname_marketplace %}, there are a few configuration
+      options.
+    </p>
+    <p>
+      The recommended approach is to enable automatic access to all actions from
+      {% data variables.product.prodname_dotcom_the_website %}. You can do this
+      by using {% data variables.product.prodname_github_connect %} to integrate
+      {% data variables.product.product_name %} with {% data
+      variables.product.prodname_ghe_cloud %}. For more information, see “<a
+        href="/enterprise/admin/github-actions/enabling-automatic-access-to-githubcom-actions-using-github-connect"
+        >Enabling automatic access to {% data
+        variables.product.prodname_dotcom_the_website %} actions using {% data
+        variables.product.prodname_github_connect %}</a
+      >”. {% data reusables.actions.enterprise-limit-actions-use %}
+    </p>
+    <p>
+      Alternatively, if you want stricter control over which actions are allowed
+      in your enterprise, you can manually download and sync actions onto your
+      enterprise instance using the <code>actions-sync</code> tool. For more
+      information, see “<a
+        href="/enterprise/admin/github-actions/manually-syncing-actions-from-githubcom"
+        >Manually syncing actions from {% data
+        variables.product.prodname_dotcom_the_website %}</a
+      >.”
+    </p>
+  </body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Creating a pre-receive hook script</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Creating a pre-receive hook script</h1>
+    </header>
+    <p>
+      You can see examples of pre-receive hooks for {% data
+      variables.product.prodname_ghe_server %} in the
+      <a
+        href="https://github.com/github/platform-samples/tree/master/pre-receive-hooks"
+        ><code>github/platform-samples</code> repository</a
+      >.
+    </p>
+    <h2 id="writing-a-pre-receive-hook-script">
+      Writing a pre-receive hook script
+    </h2>
+    <p>
+      A pre-receive hook script executes in a pre-receive hook environment on {%
+      data variables.product.product_location %}. When you create a pre-receive
+      hook script, consider the available input, output, exit status, and
+      environment variables.
+    </p>
+    <h3 id="input-stdin">Input (<code>stdin</code>)</h3>
+    <p>
+      After a push occurs and before any refs are updated for the remote
+      repository, the <code>git-receive-pack</code> process on {% data
+      variables.product.product_location %} invokes the pre-receive hook script.
+      Standard input for the script, <code>stdin</code>, is a string containing
+      a line for each ref to update. Each line contains the old object name for
+      the ref, the new object name for the ref, and the full name of the ref.
+    </p>
+    <pre><code>&lt;old-value&gt; SP &lt;new-value&gt; SP &lt;ref-name&gt; LF</code></pre>
+    <p>This string represents the following arguments.</p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Argument</th>
+          <th style="text-align: left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left"><code>&lt;old-value&gt;</code></td>
+          <td style="text-align: left">
+            Old object name stored in the ref.<br />
+            When you create a new ref, the value is 40 zeroes.
+          </td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left"><code>&lt;new-value&gt;</code></td>
+          <td style="text-align: left">
+            New object name to be stored in the ref.<br />
+            When you delete a ref, the value is 40 zeroes.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left"><code>&lt;ref-name&gt;</code></td>
+          <td style="text-align: left">The full name of the ref.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      For more information about <code>git-receive-pack</code>, see “<a
+        href="https://git-scm.com/docs/git-receive-pack"
+        >git-receive-pack</a
+      >” in the Git documentation. For more information about refs, see “<a
+        href="https://git-scm.com/book/en/v2/Git-Internals-Git-References"
+        >Git References</a
+      >” in <em>Pro Git</em>.
+    </p>
+    <h3 id="output-stdout">Output (<code>stdout</code>)</h3>
+    <p>
+      The standard output for the script, <code>stdout</code>, is passed back to
+      the client. Any <code>echo</code> statements will be visible to the user
+      on the command line or in the user interface.
+    </p>
+    <h3 id="exit-status">Exit status</h3>
+    <p>
+      The exit status of a pre-receive script determines if the push will be
+      accepted.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Exit-status value</th>
+          <th style="text-align: left">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">The push will be accepted.</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">non-zero</td>
+          <td style="text-align: left">The push will be rejected.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="environment-variables">Environment variables</h3>
+    <p>
+      In addition to the standard input for your pre-receive hook script,
+      <code>stdin</code>, {% data variables.product.prodname_ghe_server %} makes
+      the following variables available in the Bash environment for your
+      script’s execution. For more information about <code>stdin</code> for your
+      pre-receive hook script, see “<a href="#input-stdin"
+        >Input (<code>stdin</code>)</a
+      >.”
+    </p>
+    <p>
+      Different environment variables are available to your pre-receive hook
+      script depending on what triggers the script to run.
+    </p>
+    <ul>
+      <li><a href="#always-available">Always available</a></li>
+      <li>
+        <a href="#available-for-pushes-from-the-web-interface-or-api"
+          >Available for pushes from the web interface or API</a
+        >
+      </li>
+      <li>
+        <a href="#available-for-pull-request-merges"
+          >Available for pull request merges</a
+        >
+      </li>
+      <li>
+        <a href="#available-for-pushes-using-ssh-authentication"
+          >Available for pushes using SSH authentication</a
+        >
+      </li>
+    </ul>
+    <h4 id="always-available">Always available</h4>
+    <p>
+      The following variables are always available in the pre-receive hook
+      environment.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Variable</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Example value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    |
+    <pre>$GIT_DIR</pre>
+    | Path to the remote repository on the instance |
+    /data/user/repositories/a/ab/<br />a1/b2/34/100001234/1234.git | |
+    <pre>$GIT_PUSH_OPTION_COUNT</pre>
+    | The number of push options that were sent by the client with
+    <code>--push-option</code>. For more information, see “<a
+      href="https://git-scm.com/docs/git-push#Documentation/git-push.txt---push-optionltoptiongt"
+      >git-push</a
+    >” in the Git documentation. | 1 | |
+    <pre>$GIT\_PUSH\_OPTION\_<em>N</em></pre>
+    | Where <em>N</em> is an integer starting at 0, this variable contains the
+    push option string that was sent by the client. The first option that was
+    sent is stored in <code>GIT_PUSH_OPTION_0</code>, the second option that was
+    sent is stored in <code>GIT_PUSH_OPTION_1</code>, and so on. For more
+    information about push options, see “<a
+      href="https://git-scm.com/docs/git-push#git-push---push-optionltoptiongt"
+      >git-push</a
+    >” in the Git documentation. | abcd |{% ifversion ghes &gt; 2.21 %} |
+    <pre>$GIT_USER_AGENT</pre>
+    | User-agent string sent by the Git client that pushed the changes |
+    git/2.0.0{% endif %} |
+    <pre>$GITHUB_REPO_NAME</pre>
+    | Name of the repository being updated in <em>NAME</em>/<em>OWNER</em>
+    format | octo-org/hello-enterprise | |
+    <pre>$GITHUB_REPO_PUBLIC</pre>
+    | Boolean representing whether the repository being updated is public |
+    <ul>
+      <li>true: Repository’s visibility is public</li>
+      <li>false: Repository’s visibility is private or internal</li>
+    </ul>
+    |
+    <pre>$GITHUB_USER_IP</pre>
+    | IP address of client that initiated the push | 192.0.2.1 | |
+    <pre>$GITHUB_USER_LOGIN</pre>
+    <p>| Username for account that initiated the push | octocat |</p>
+    <h4 id="available-for-pushes-from-the-web-interface-or-api">
+      Available for pushes from the web interface or API
+    </h4>
+    <p>
+      The <code>$GITHUB_VIA</code> variable is available in the pre-receive hook
+      environment when the ref update that triggers the hook occurs via either
+      the web interface or the API for {% data
+      variables.product.prodname_ghe_server %}. The value describes the action
+      that updated the ref.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Value</th>
+          <th style="text-align: left">Action</th>
+          <th style="text-align: left">More information</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    |
+    <pre>auto-merge deployment api</pre>
+    | Automatic merge of the base branch via a deployment created with the API |
+    “<a href="/rest/reference/repos#create-a-deployment">Repositories</a>” in
+    the REST API documentation | |
+    <pre>blob#save</pre>
+    | Change to a file’s contents in the web interface | “<a
+      href="/github/managing-files-in-a-repository/editing-files-in-your-repository"
+      >Editing files in your repository</a
+    >” | |
+    <pre>branch merge api</pre>
+    | Merge of a branch via the API | “<a
+      href="/rest/reference/repos#merge-a-branch"
+      >Repositories</a
+    >” in the REST API documentation | |
+    <pre>branches page delete button</pre>
+    | Deletion of a branch in the web interface | “<a
+      href="/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository#deleting-a-branch"
+      >Creating and deleting branches within your repository</a
+    >” | |
+    <pre>git refs create api</pre>
+    | Creation of a ref via the API | “<a
+      href="/rest/reference/git#create-a-reference"
+      >Git database</a
+    >” in the REST API documentation | |
+    <pre>git refs delete api</pre>
+    | Deletion of a ref via the API | “<a
+      href="/rest/reference/git#delete-a-reference"
+      >Git database</a
+    >” in the REST API documentation | |
+    <pre>git refs update api</pre>
+    | Update of a ref via the API | “<a
+      href="/rest/reference/git#update-a-reference"
+      >Git database</a
+    >” in the REST API documentation | |
+    <pre>git repo contents api</pre>
+    | Change to a file’s contents via the API | “<a
+      href="/rest/reference/repos#create-or-update-file-contents"
+      >Repositories</a
+    >” in the REST API documentation | |
+    <pre>merge base into head</pre>
+    | Update of the topic branch from the base branch when the base branch
+    requires strict status checks (via <strong>Update branch</strong> in a pull
+    request, for example) | “<a
+      href="/github/administering-a-repository/about-protected-branches#require-status-checks-before-merging"
+      >About protected branches</a
+    >” | |
+    <pre>pull request branch delete button</pre>
+    | Deletion of a topic branch from a pull request in the web interface | “<a
+      href="/github/administering-a-repository/deleting-and-restoring-branches-in-a-pull-request#deleting-a-branch-used-for-a-pull-request"
+      >Deleting and restoring branches in a pull request</a
+    >” | |
+    <pre>pull request branch undo button</pre>
+    | Restoration of a topic branch from a pull request in the web interface |
+    “<a
+      href="/github/administering-a-repository/deleting-and-restoring-branches-in-a-pull-request#restoring-a-deleted-branch"
+      >Deleting and restoring branches in a pull request</a
+    >” | |
+    <pre>pull request merge api</pre>
+    | Merge of a pull request via the API | “<a
+      href="/rest/reference/pulls#merge-a-pull-request"
+      >Pulls</a
+    >” in the REST API documentation | |
+    <pre>pull request merge button</pre>
+    | Merge of a pull request in the web interface | “<a
+      href="/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request#merging-a-pull-request-on-github"
+      >Merging a pull request</a
+    >” | |
+    <pre>pull request revert button</pre>
+    | Revert of a pull request | “<a
+      href="/github/collaborating-with-issues-and-pull-requests/reverting-a-pull-request"
+      >Reverting a pull request</a
+    >” | |
+    <pre>releases delete button</pre>
+    | Deletion of a release | “<a
+      href="/github/administering-a-repository/managing-releases-in-a-repository#deleting-a-release"
+      >Managing releases in a repository</a
+    >” | |
+    <pre>stafftools branch restore</pre>
+    | Restoration of a branch from the site admin dashboard | “<a
+      href="/admin/configuration/site-admin-dashboard#repositories"
+      >Site admin dashboard</a
+    >” | |
+    <pre>tag create api</pre>
+    | Creation of a tag via the API | “<a
+      href="/rest/reference/git#create-a-tag-object"
+      >Git database</a
+    >” in the REST API documentation | |
+    <pre>slumlord (#<em>SHA</em>)</pre>
+    | Commit via Subversion | “<a
+      href="/github/importing-your-projects-to-github/support-for-subversion-clients#making-commits-to-subversion"
+      >Support for Subversion clients</a
+    >” | |
+    <pre>web branch create</pre>
+    <p>
+      | Creation of a branch via the web interface | “<a
+        href="/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository#creating-a-branch"
+        >Creating and deleting branches within your repository</a
+      >” |
+    </p>
+    <h4 id="available-for-pull-request-merges">
+      Available for pull request merges
+    </h4>
+    <p>
+      The following variables are available in the pre-receive hook environment
+      when the push that triggers the hook is a push due to the merge of a pull
+      request.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Variable</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Example value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    |
+    <pre>$GITHUB_PULL_REQUEST_AUTHOR_LOGIN</pre>
+    | Username of account that authored the pull request | octocat | |
+    <pre>$GITHUB_PULL_REQUEST_HEAD</pre>
+    | The name of the pull request’s topic branch, in the format
+    <code>USERNAME:BRANCH</code> | <nobr>octocat:fix-bug</nobr> | |
+    <pre>$GITHUB_PULL_REQUEST_BASE</pre>
+    <p>
+      | The name of the pull request’s base branch, in the format
+      <code>USERNAME:BRANCH</code> | octocat:main |
+    </p>
+    <h4 id="available-for-pushes-using-ssh-authentication">
+      Available for pushes using SSH authentication
+    </h4>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Variable</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Example value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    |
+    <pre>$GITHUB_PUBLIC_KEY_FINGERPRINT</pre>
+    <p>
+      | The public key fingerprint for the user who pushed the changes |
+      a1:b2:c3:d4:e5:f6:g7:h8:i9:j0:k1:l2:m3:n4:o5:p6 |
+    </p>
+    <h2
+      id="setting-permissions-and-pushing-a-pre-receive-hook-to-data-variables.product.prodname_ghe_server"
+    >
+      Setting permissions and pushing a pre-receive hook to {% data
+      variables.product.prodname_ghe_server %}
+    </h2>
+    <p>
+      A pre-receive hook script is contained in a repository on {% data
+      variables.product.product_location %}. A site administrator must take into
+      consideration the repository permissions and ensure that only the
+      appropriate users have access.
+    </p>
+    <p>
+      We recommend consolidating hooks to a single repository. If the
+      consolidated hook repository is public, the <code>README.md</code> can be
+      used to explain policy enforcements. Also, contributions can be accepted
+      via pull requests. However, pre-receive hooks can only be added from the
+      default branch. For a testing workflow, forks of the repository with
+      configuration should be used.
+    </p>
+    <ol type="1">
+      <li>
+        <p>For Mac users, ensure the scripts have execute permissions:</p>
+        <pre
+          class="shell"
+        ><code>$ sudo chmod +x &lt;em&gt;SCRIPT_FILE.sh&lt;/em&gt;</code></pre>
+        <p>For Windows users, ensure the scripts have execute permissions:</p>
+        <pre
+          class="shell"
+        ><code>git update-index --chmod=+x &lt;em&gt;SCRIPT_FILE.sh&lt;/em&gt;</code></pre>
+      </li>
+      <li>
+        <p>
+          Commit and push to the designated repository for pre-receive hooks on
+          {% data variables.product.product_location %}.
+        </p>
+        <pre
+          class="shell"
+        ><code>$ git commit -m &quot;&lt;em&gt;YOUR COMMIT MESSAGE&lt;/em&gt;&quot;
+$ git push</code></pre>
+      </li>
+      <li>
+        <p>
+          <a
+            href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/developer-workflow/managing-pre-receive-hooks-on-the-github-enterprise-server-appliance/#creating-pre-receive-hooks"
+            >Create the pre-receive hook</a
+          >
+          on the {% data variables.product.prodname_ghe_server %} instance.
+        </p>
+      </li>
+    </ol>
+    <h2 id="testing-pre-receive-scripts-locally">
+      Testing pre-receive scripts locally
+    </h2>
+    <p>
+      You can test a pre-receive hook script locally before you create or update
+      it on {% data variables.product.product_location %}. One method is to
+      create a local Docker environment to act as a remote repository that can
+      execute the pre-receive hook.
+    </p>
+    <p>{% data reusables.linux.ensure-docker %}</p>
+    <ol start="2" type="1">
+      <li>
+        <p>Create a file called <code>Dockerfile.dev</code> containing:</p>
+        <div class="sourceCode" id="cb5">
+          <pre
+            class="sourceCode dockerfile"
+          ><code class="sourceCode dockerfile"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">FROM</span> gliderlabs/alpine:3.3</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">RUN</span> \</a>
+<a class="sourceLine" id="cb5-3" title="3">  apk add --no-cache git openssh bash &amp;&amp; \</a>
+<a class="sourceLine" id="cb5-4" title="4">  ssh-keygen -A &amp;&amp; \</a>
+<a class="sourceLine" id="cb5-5" title="5">  sed -i <span class="st">&quot;s/#AuthorizedKeysFile/AuthorizedKeysFile/g&quot;</span> /etc/ssh/sshd_config &amp;&amp; \</a>
+<a class="sourceLine" id="cb5-6" title="6">  adduser git -D -G root -h /home/git -s /bin/bash &amp;&amp; \</a>
+<a class="sourceLine" id="cb5-7" title="7">  passwd -d git &amp;&amp; \</a>
+<a class="sourceLine" id="cb5-8" title="8">  su git -c <span class="st">&quot;mkdir /home/git/.ssh &amp;&amp; </span><span class="op">\</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="st">  ssh-keygen -t ed25519 -f /home/git/.ssh/id_ed25519 -P &#39;&#39; &amp;&amp; </span><span class="op">\</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="st">  mv /home/git/.ssh/id_ed25519.pub /home/git/.ssh/authorized_keys &amp;&amp; </span><span class="op">\</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="st">  mkdir /home/git/test.git &amp;&amp; </span><span class="op">\</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="st">  git --bare init /home/git/test.git&quot;</span></a>
+<a class="sourceLine" id="cb5-13" title="13"></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="kw">VOLUME</span> [<span class="st">&quot;/home/git/.ssh&quot;</span>, <span class="st">&quot;/home/git/test.git/hooks&quot;</span>]</a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="kw">WORKDIR</span> /home/git</a>
+<a class="sourceLine" id="cb5-16" title="16"></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="kw">CMD</span> [<span class="st">&quot;/usr/sbin/sshd&quot;</span>, <span class="st">&quot;-D&quot;</span>]</a></code></pre>
+        </div>
+      </li>
+      <li>
+        <p>
+          Create a test pre-receive script called <code>always_reject.sh</code>.
+          This example script will reject all pushes, which is useful for
+          locking a repository:
+        </p>
+        <pre><code>#!/usr/bin/env bash
+
+echo &quot;error: rejecting all pushes&quot;
+exit 1</code></pre>
+      </li>
+      <li>
+        <p>
+          Ensure the <code>always_reject.sh</code> scripts has execute
+          permissions:
+        </p>
+        <pre class="shell"><code>$ chmod +x always_reject.sh</code></pre>
+      </li>
+      <li>
+        <p>
+          From the directory containing <code>Dockerfile.dev</code>, build an
+          image:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker build -f Dockerfile.dev -t pre-receive.dev .
+&gt; Sending build context to Docker daemon 3.584 kB
+&gt; Step 1 : FROM gliderlabs/alpine:3.3
+&gt;  ---&gt; 8944964f99f4
+&gt; Step 2 : RUN apk add --no-cache git openssh bash &amp;&amp; ssh-keygen -A &amp;&amp; sed -i &quot;s/#AuthorizedKeysFile/AuthorizedKeysFile/g&quot;  /etc/ssh/sshd_config &amp;&amp; adduser git -D -G root -h /home/git -s /bin/bash &amp;&amp; passwd -d git &amp;&amp; su git -c &quot;mkdir /home/git/.ssh &amp;&amp; ssh-keygen -t ed25519 -f /home/git/.ssh/id_ed25519 -P &#39; &amp;&amp; mv /home/git/.ssh/id_ed25519.pub /home/git/.ssh/authorized_keys &amp;&amp; mkdir /home/git/test.git &amp;&amp; git --bare init /home/git/test.git&quot;
+&gt;  ---&gt; Running in e9d79ab3b92c
+&gt; fetch http://alpine.gliderlabs.com/alpine/v3.3/main/x86_64/APKINDEX.tar.gz
+&gt; fetch http://alpine.gliderlabs.com/alpine/v3.3/community/x86_64/APKINDEX.tar.gz
+....truncated output....
+&gt; OK: 34 MiB in 26 packages
+&gt; ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
+&gt; Password for git changed by root
+&gt; Generating public/private ed25519 key pair.
+&gt; Your identification has been saved in /home/git/.ssh/id_ed25519.
+&gt; Your public key has been saved in /home/git/.ssh/id_ed25519.pub.
+....truncated output....
+&gt; Initialized empty Git repository in /home/git/test.git/
+&gt; Successfully built dd8610c24f82</code></pre>
+      </li>
+      <li>
+        <p>Run a data container that contains a generated SSH key:</p>
+        <pre
+          class="shell"
+        ><code>$ docker run --name data pre-receive.dev /bin/true</code></pre>
+      </li>
+      <li>
+        <p>
+          Copy the test pre-receive hook <code>always_reject.sh</code> into the
+          data container:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker cp always_reject.sh data:/home/git/test.git/hooks/pre-receive</code></pre>
+      </li>
+      <li>
+        <p>
+          Run an application container that runs <code>sshd</code> and executes
+          the hook. Take note of the container id that is returned:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker run -d -p 52311:22 --volumes-from data pre-receive.dev
+&gt; 7f888bc700b8d23405dbcaf039e6c71d486793cad7d8ae4dd184f4a47000bc58</code></pre>
+      </li>
+      <li>
+        <p>
+          Copy the generated SSH key from the data container to the local
+          machine:
+        </p>
+        <pre
+          class="shell"
+        ><code>$ docker cp data:/home/git/.ssh/id_ed25519 .</code></pre>
+      </li>
+      <li>
+        <p>
+          Modify the remote of a test repository and push to the
+          <code>test.git</code> repo within the Docker container. This example
+          uses <code>git@github.com:octocat/Hello-World.git</code> but you can
+          use any repository you want. This example assumes your local machine
+          (127.0.0.1) is binding port 52311, but you can use a different IP
+          address if docker is running on a remote machine.
+        </p>
+      </li>
+    </ol>
+    <pre class="shell"><code>$ git clone git@github.com:octocat/Hello-World.git
+$ cd Hello-World
+$ git remote add test git@127.0.0.1:test.git
+$ GIT_SSH_COMMAND=&quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 52311 -i ../id_ed25519&quot; git push -u test main
+&gt; Warning: Permanently added &#39;[192.168.99.100]:52311&#39; (ECDSA) to the list of known hosts.
+&gt; Counting objects: 7, done.
+&gt; Delta compression using up to 4 threads.
+&gt; Compressing objects: 100% (3/3), done.
+&gt; Writing objects: 100% (7/7), 700 bytes | 0 bytes/s, done.
+&gt; Total 7 (delta 0), reused 7 (delta 0)
+&gt; remote: error: rejecting all pushes
+&gt; To git@192.168.99.100:test.git
+&gt;  ! [remote rejected] main -&gt; main (pre-receive hook declined)
+&gt; error: failed to push some refs to &#39;git@192.168.99.100:test.git&#39;</code></pre>
+    <p>
+      Notice that the push was rejected after executing the pre-receive hook and
+      echoing the output from the script.
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a
+          href="https://git-scm.com/book/en/v2/Customizing-Git-An-Example-Git-Enforced-Policy"
+          >Customizing Git - An Example Git-Enforced Policy</a
+        >” from the <em>Pro Git website</em>
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring the CodeQL workflow for compiled languages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring the CodeQL workflow for compiled languages</h1>
+</header>
+<!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
+<p>{% data reusables.code-scanning.beta %} {% data reusables.code-scanning.enterprise-enable-code-scanning-actions %}</p>
+<h2 id="about-the-data-variables.product.prodname_codeql_workflow-and-compiled-languages">About the {% data variables.product.prodname_codeql_workflow %} and compiled languages</h2>
+<p>You set up {% data variables.product.prodname_dotcom %} to run {% data variables.product.prodname_code_scanning %} for your repository by adding a {% data variables.product.prodname_actions %} workflow to the repository. For {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %}, you add the {% data variables.product.prodname_codeql_workflow %}. For more information, see “<a href="/code-security/secure-coding/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>.”</p>
+<p>{% data reusables.code-scanning.edit-workflow %} For general information about configuring {% data variables.product.prodname_code_scanning %} and editing workflow files, see “<a href="/code-security/secure-coding/configuring-code-scanning">Configuring {% data variables.product.prodname_code_scanning %}</a>” and “<a href="/actions/learn-github-actions">Learn {% data variables.product.prodname_actions %}</a>.”</p>
+<h2 id="about-autobuild-for-data-variables.product.prodname_codeql">About autobuild for {% data variables.product.prodname_codeql %}</h2>
+<p>Code scanning works by running queries against one or more databases. Each database contains a representation of all of the code in a single language in your repository. For the compiled languages C/C++, C#, and Java, the process of populating this database involves building the code and extracting data. {% data reusables.code-scanning.analyze-go %}</p>
+<p>{% data reusables.code-scanning.autobuild-compiled-languages %}</p>
+<p>If your workflow uses a <code>language</code> matrix, <code>autobuild</code> attempts to build each of the compiled languages listed in the matrix. Without a matrix <code>autobuild</code> attempts to build the supported compiled language that has the most source files in the repository. With the exception of Go, analysis of other compiled languages in your repository will fail unless you supply explicit build commands.</p>
+<p>{% note %}</p>
+<p>{% ifversion ghae %}<strong>Note</strong>: For instructions on how to make sure your {% data variables.actions.hosted_runner %} has the required software installed, see “<a href="/actions/using-github-hosted-runners/creating-custom-images">Creating custom images</a>.” {% else %} <strong>Note</strong>: If you use self-hosted runners for {% data variables.product.prodname_actions %}, you may need to install additional software to use the <code>autobuild</code> process. Additionally, if your repository requires a specific version of a build tool, you may need to install it manually. For more information, see “<a href="/actions/reference/specifications-for-github-hosted-runners/#supported-software">Specifications for {% data variables.product.prodname_dotcom %}-hosted runners</a>”. {% endif %}</p>
+<p>{% endnote %}</p>
+<h3 id="cc">C/C++</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Supported system type</th>
+<th>System name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Operating system</td>
+<td>Windows, macOS, and Linux</td>
+</tr>
+<tr class="even">
+<td>Build system</td>
+<td>Windows: MSbuild and build scripts<br/>Linux and macOS: Autoconf, Make, CMake, qmake, Meson, Waf, SCons, Linux Kbuild, and build scripts</td>
+</tr>
+</tbody>
+</table>
+<p>The behavior of the <code>autobuild</code> step varies according to the operating system that the extraction runs on. On Windows, the <code>autobuild</code> step attempts to autodetect a suitable build method for C/C++ using the following approach:</p>
+<ol type="1">
+<li>Invoke <code>MSBuild.exe</code> on the solution (<code>.sln</code>) or project (<code>.vcxproj</code>) file closest to the root. If <code>autobuild</code> detects multiple solution or project files at the same (shortest) depth from the top level directory, it will attempt to build all of them.</li>
+<li>Invoke a script that looks like a build script—<em>build.bat</em>, <em>build.cmd</em>, <em>and build.exe</em> (in that order).</li>
+</ol>
+<p>On Linux and macOS, the <code>autobuild</code> step reviews the files present in the repository to determine the build system used:</p>
+<ol type="1">
+<li>Look for a build system in the root directory.</li>
+<li>If none are found, search subdirectories for a unique directory with a build system for C/C++.</li>
+<li>Run an appropriate command to configure the system.</li>
+</ol>
+<h3 id="c">C</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Supported system type</th>
+<th>System name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Operating system</td>
+<td>Windows and Linux</td>
+</tr>
+<tr class="even">
+<td>Build system</td>
+<td>.NET and MSbuild, as well as build scripts</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>autobuild</code> process attempts to autodetect a suitable build method for C# using the following approach:</p>
+<ol type="1">
+<li>Invoke <code>dotnet build</code> on the solution (<code>.sln</code>) or project (<code>.csproj</code>) file closest to the root.</li>
+<li>Invoke <code>MSbuild</code> (Linux) or <code>MSBuild.exe</code> (Windows) on the solution or project file closest to the root. If <code>autobuild</code> detects multiple solution or project files at the same (shortest) depth from the top level directory, it will attempt to build all of them.</li>
+<li>Invoke a script that looks like a build script—<em>build</em> and <em>build.sh</em> (in that order, for Linux) or <em>build.bat</em>, <em>build.cmd</em>, <em>and build.exe</em> (in that order, for Windows).</li>
+</ol>
+<h3 id="java">Java</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Supported system type</th>
+<th>System name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Operating system</td>
+<td>Windows, macOS, and Linux (no restriction)</td>
+</tr>
+<tr class="even">
+<td>Build system</td>
+<td>Gradle, Maven and Ant</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>autobuild</code> process tries to determine the build system for Java codebases by applying this strategy:</p>
+<ol type="1">
+<li>Search for a build file in the root directory. Check for Gradle then Maven then Ant build files.</li>
+<li>Run the first build file found. If both Gradle and Maven files are present, the Gradle file is used.</li>
+<li>Otherwise, search for build files in direct subdirectories of the root directory. If only one subdirectory contains build files, run the first file identified in that subdirectory (using the same preference as for 1). If more than one subdirectory contains build files, report an error.</li>
+</ol>
+<h2 id="adding-build-steps-for-a-compiled-language">Adding build steps for a compiled language</h2>
+<p>{% data reusables.code-scanning.autobuild-add-build-steps %} For information on how to edit the workflow file, see “<a href="/code-security/secure-coding/configuring-code-scanning#editing-a-code-scanning-workflow">Configuring {% data variables.product.prodname_code_scanning %}</a>.”</p>
+<p>After removing the <code>autobuild</code> step, uncomment the <code>run</code> step and add build commands that are suitable for your repository. The workflow <code>run</code> step runs command-line programs using the operating system’s shell. You can modify these commands and add more commands to customize the build process.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">- </span><span class="fu">run:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  make bootstrap</a>
+<a class="sourceLine" id="cb1-3" title="3">  make release</a></code></pre></div>
+<p>For more information about the <code>run</code> keyword, see “<a href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun">Workflow syntax for {% data variables.product.prodname_actions %}</a>.”</p>
+<p>If your repository contains multiple compiled languages, you can specify language-specific build commands. For example, if your repository contains C/C++, C# and Java, and <code>autobuild</code> correctly builds C/C++ and C# but fails to build Java, you could use the following configuration in your workflow, after the <code>init</code> step. This specifies build steps for Java while still using <code>autobuild</code> for C/C++ and C#:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">-</span> <span class="fu">if:</span><span class="at"> matrix.language == &#39;cpp&#39; || matrix.language == &#39;csharp&#39; </span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">name:</span><span class="at"> Autobuild</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="fu">uses:</span><span class="at"> github/codeql-action/autobuild@v1</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw">-</span> <span class="fu">if:</span><span class="at"> matrix.language == &#39;java&#39; </span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">name:</span><span class="at"> Build Java</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="fu">  run:</span> <span class="st">|</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    make bootstrap</a>
+<a class="sourceLine" id="cb2-9" title="9">    make release</a></code></pre></div>
+<p>For more information about the <code>if</code> conditional, see “<a href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsif">Workflow syntax for GitHub Actions</a>.”</p>
+<p>For more tips and tricks about why <code>autobuild</code> won’t build your code, see “<a href="/code-security/secure-coding/troubleshooting-the-codeql-workflow">Troubleshooting the {% data variables.product.prodname_codeql %} workflow</a>.”</p>
+<p>If you added manual build steps for compiled languages and {% data variables.product.prodname_code_scanning %} is still not working on your repository, contact {% data variables.contact.contact_support %}.</p>
+</body>
+</html>

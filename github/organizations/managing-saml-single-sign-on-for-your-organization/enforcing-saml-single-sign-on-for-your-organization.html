@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Enforcing SAML single sign-on for your organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Enforcing SAML single sign-on for your organization</h1>
+</header>
+<h2 id="about-enforcement-of-saml-sso-for-your-organization">About enforcement of SAML SSO for your organization</h2>
+<p>When you enable SAML SSO, {% data variables.product.prodname_dotcom %} will prompt members who visit the organization’s resources on {% data variables.product.prodname_dotcom_the_website %} to authenticate on your IdP, which links the member’s user account to an identity on the IdP. Members can still access the organization’s resources before authentication with your IdP.</p>
+<figure>
+<img src="/assets/images/help/saml/sso-has-been-enabled.png" alt="Banner with prompt to authenticate via SAML SSO to access organization" /><figcaption>Banner with prompt to authenticate via SAML SSO to access organization</figcaption>
+</figure>
+<p>You can also enforce SAML SSO for your organization. {% data reusables.saml.when-you-enforce %} Enforcement removes any members and administrators who have not authenticated via your IdP from the organization. {% data variables.product.company_short %} sends an email notification to each removed user. You can restore organization members once they successfully complete single sign-on.</p>
+<p>Bots and service accounts that do not have external identities set up in your organization’s IdP will also be removed when you enforce SAML SSO. For more information about bots and service accounts, see “<a href="/articles/managing-bots-and-service-accounts-with-saml-single-sign-on">Managing bots and service accounts with SAML single sign-on</a>.”</p>
+<p>If your organization is owned by an enterprise account, requiring SAML for the enterprise account will override your organization-level SAML configuration and enforce SAML SSO for every organization in the enterprise. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/configuring-identity-and-access-management-for-your-enterprise-account/enforcing-saml-single-sign-on-for-organizations-in-your-enterprise-account">Enforcing SAML single sign-on for organizations in your enterprise account</a>.”</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> {% data reusables.saml.testing-saml-sso %}</p>
+<p>{% endtip %}</p>
+<h2 id="enforcing-saml-sso-for-your-organization">Enforcing SAML SSO for your organization</h2>
+<ol type="1">
+<li>Enable and test SAML SSO for your organization, then authenticate with your IdP at least once. For more information, see “<a href="/articles/enabling-and-testing-saml-single-sign-on-for-your-organization">Enabling and testing SAML single sign-on for your organization</a>.”</li>
+<li>Prepare to enforce SAML SSO for your organization. For more information, see “<a href="/organizations/managing-saml-single-sign-on-for-your-organization/preparing-to-enforce-saml-single-sign-on-in-your-organization">Preparing to enforce SAML single sign-on in your organization</a>.” {% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.organizations.security %}</li>
+<li>Under “SAML single sign-on”, select <strong>Require SAML SSO authentication for all members of the <em>ORGANIZATION</em> organization</strong>. <img src="/assets/images/help/saml/require-saml-sso-authentication.png" alt="“Require SAML SSO authentication” checkbox" /></li>
+<li>If any organization members have not authenticated via your IdP, {% data variables.product.company_short %} displays the members. If you enforce SAML SSO, {% data variables.product.company_short %} will remove the members from the organization. Review the warning and click <strong>Remove members and require SAML single sign-on</strong>. <img src="/assets/images/help/saml/confirm-saml-sso-enforcement.png" alt="“Confirm SAML SSO enforcement” dialog with list of members to remove from organization" /></li>
+<li>Under “Single sign-on recovery codes”, review your recovery codes. Store the recovery codes in a safe location like a password manager.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization">Viewing and managing a member’s SAML access to your organization</a>”</li>
+</ul>
+</body>
+</html>

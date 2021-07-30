@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Accessing the administrative shell (SSH)</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Accessing the administrative shell (SSH)</h1>
+    </header>
+    <h2 id="about-administrative-shell-access">
+      About administrative shell access
+    </h2>
+    <p>
+      If you have SSH access to the administrative shell, you can run {% data
+      variables.product.prodname_ghe_server %}’s command line utilities. SSH
+      access is also useful for troubleshooting, running backups, and
+      configuring replication. Administrative SSH access is managed separately
+      from Git SSH access and is accessible only via port 122.
+    </p>
+    <h2 id="enabling-access-to-the-administrative-shell-via-ssh">
+      Enabling access to the administrative shell via SSH
+    </h2>
+    <p>
+      To enable administrative SSH access, you must add your SSH public key to
+      your instance’s list of authorized keys.
+    </p>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Tip:</strong> Changes to authorized SSH keys take effect
+      immediately.
+    </p>
+    <p>{% endtip %}</p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 3.
+      Under “SSH access”, paste your key into the text box, then click
+      <strong>Add key</strong>.
+      <img
+        src="/assets/images/enterprise/settings/add-authorized-ssh-key-admin-shell.png"
+        alt="Text box and button for adding an SSH key"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2 id="connecting-to-the-administrative-shell-over-ssh">
+      Connecting to the administrative shell over SSH
+    </h2>
+    <p>
+      After you’ve added your SSH key to the list, connect to the instance over
+      SSH as the <code>admin</code> user on port 122.
+    </p>
+    <pre class="shell"><code>$ ssh -p 122 admin@github.example.com
+Last login: Sun Nov 9 07:53:29 2014 from 169.254.1.1
+admin@github-example-com:~$ █</code></pre>
+    <h3 id="troubleshooting-ssh-connection-problems">
+      Troubleshooting SSH connection problems
+    </h3>
+    <p>
+      If you encounter the <code>Permission denied (publickey)</code> error when
+      you try to connect to {% data variables.product.product_location %} via
+      SSH, confirm that you are connecting over port 122. You may need to
+      explicitly specify which private SSH key to use.
+    </p>
+    <p>
+      To specify a private SSH key using the command line, run
+      <code>ssh</code> with the <code>-i</code> argument.
+    </p>
+    <pre
+      class="shell"
+    ><code>ssh -i /path/to/ghe_private_key -p 122 admin@&lt;em&gt;hostname&lt;/em&gt;</code></pre>
+    <p>
+      You can also specify a private SSH key using the SSH configuration file
+      (<code>~/.ssh/config</code>).
+    </p>
+    <pre class="shell"><code>Host &lt;em&gt;hostname&lt;/em&gt;
+  IdentityFile /path/to/ghe_private_key
+  User admin
+  Port 122</code></pre>
+    <h2 id="accessing-the-administrative-shell-using-the-local-console">
+      Accessing the administrative shell using the local console
+    </h2>
+    <p>
+      In an emergency situation, for example if SSH is unavailable, you can
+      access the administrative shell locally. Sign in as the
+      <code>admin</code> user and use the password established during initial
+      setup of {% data variables.product.prodname_ghe_server %}.
+    </p>
+    <h2 id="access-limitations-for-the-administrative-shell">
+      Access limitations for the administrative shell
+    </h2>
+    <p>
+      Administrative shell access is permitted for troubleshooting and
+      performing documented operations procedures only. Modifying system and
+      application files, running programs, or installing unsupported software
+      packages may void your support contract. Please contact {% data
+      variables.contact.contact_ent_support %} if you have a question about the
+      activities allowed by your support contract.
+    </p>
+  </body>
+</html>

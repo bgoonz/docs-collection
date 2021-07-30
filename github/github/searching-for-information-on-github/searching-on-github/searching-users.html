@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching users</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching users</h1>
+</header>
+<p>You can search for users globally across all of {% data variables.product.product_name %}. For more information, see “<a href="/articles/about-searching-on-github">About searching on {% data variables.product.company_short %}</a>.”</p>
+<p>{% data reusables.search.syntax_tips %}</p>
+<h2 id="search-only-users-or-organizations">Search only users or organizations</h2>
+<p>By default, searching users will return both personal and organizations. However, you can use the <code>type</code> qualifier to restrict search results to personal accounts or organizations only.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>type:user</code></td>
+<td><a href="https://github.com/search?q=mike+in:name+created%3A%3C2011-01-01+type%3Auser&amp;type=Users"><strong>mike in:name created:&lt;2011-01-01 type:user</strong></a> matches personal accounts named “mike” that were created before 2011.</td>
+</tr>
+<tr class="even">
+<td><code>type:org</code></td>
+<td><a href="https://github.com/search?q=data+in%3Aemail+type%3Aorg&amp;type=Users"><strong>data in:email type:org</strong></a> matches organizations with the word “data” in their email.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-account-name-full-name-or-public-email">Search by account name, full name, or public email</h2>
+<p>You can filter your search to the personal user or organization account name with <code>user</code> or <code>org</code> qualifiers.</p>
+<p>With the <code>in</code> qualifier you can restrict your search to the username (<code>login</code>), full name, public email, or any combination of these. When you omit this qualifier, only the username and email address are searched. For privacy reasons, you cannot search by email domain name.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user:name</code></td>
+<td><a href="https://github.com/search?q=user%3Aoctocat&amp;type=Users"><strong>user:octocat</strong></a> matches the user with the username “octocat”.</td>
+</tr>
+<tr class="even">
+<td><code>org:name</code></td>
+<td><a href="https://github.com/search?q=org%3Aelectron+type%3Ausers&amp;type=Users"><strong>org:electron type:users</strong></a> matches the Electron organization’s account name.</td>
+</tr>
+<tr class="odd">
+<td><code>in:login</code></td>
+<td><a href="https://github.com/search?q=kenya+in%3Alogin&amp;type=Users"><strong>kenya in:login</strong></a> matches users with the word “kenya” in their username.</td>
+</tr>
+<tr class="even">
+<td><code>in:name</code></td>
+<td><a href="https://github.com/search?q=bolton+in%3Afullname&amp;type=Users"><strong>bolton in:name</strong></a> matches users whose real name contains the word “bolton.”</td>
+</tr>
+<tr class="odd">
+<td><code>fullname:firstname lastname</code></td>
+<td><a href="https://github.com/search?q=fullname%3Anat+friedman&amp;type=Users"><strong>fullname:nat friedman</strong></a> matches a user with the full name “Nat Friedman.” Note: This search qualifier is sensitive to spacing.</td>
+</tr>
+<tr class="even">
+<td><code>in:email</code></td>
+<td><a href="https://github.com/search?q=data+in%3Aemail&amp;type=Users&amp;utf8=%E2%9C%93"><strong>data in:email</strong></a> matches users with the word “data” in their email.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-repositories-a-user-owns">Search by number of repositories a user owns</h2>
+<p>You can filter users based on the number of repositories they own, using the <code>repos</code> qualifier and <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>repos:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=repos%3A%3E%3D9000&amp;type=Users"><strong>repos:&gt;9000</strong></a> matches users whose repository count is over 9,000.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=bert+repos%3A10..30&amp;type=Users"><strong>bert repos:10..30</strong></a> matches users with the word “bert” in their username or real name who own 10 to 30 repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-location">Search by location</h2>
+<p>You can search for users by the location indicated in their profile.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>location:<em>LOCATION</em></code></td>
+<td><a href="https://github.com/search?q=repos%3A1+location%3Aiceland&amp;type=Users"><strong>repos:1 location:iceland</strong></a> matches users with exactly one repository that live in Iceland.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-repository-language">Search by repository language</h2>
+<p>Using the <code>language</code> qualifier you can search for users based on the languages of repositories they own.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>language:<em>LANGUAGE</em></code></td>
+<td><a href="https://github.com/search?q=language%3Ajavascript+location%3Arussia&amp;type=Users"><strong>language:javascript location:russia</strong></a> matches users in Russia with a majority of their repositories written in JavaScript.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=jenny+language%3Ajavascript+in%3Afullname&amp;type=Users"><strong>jenny language:javascript in:fullname</strong></a> matches users with JavaScript repositories whose full name contains the word “jenny.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-a-user-account-was-created">Search by when a user account was created</h2>
+<p>You can filter users based on when they joined {% data variables.product.product_name %} with the <code>created</code> qualifier. This takes a date as its parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>created:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=created%3A%3C2011-01-01&amp;type=Users"><strong>created:&lt;2011-01-01</strong></a> matches users that joined before 2011.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=created%3A%3E%3D2013-05-11&amp;type=Users"><strong>created:&gt;=2013-05-11</strong></a> matches users that joined at or after May 11th, 2013.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?q=created%3A2013-03-06+location%3Alondon&amp;type=Users"><strong>created:2013-03-06 location:london</strong></a> matches users that joined on March 6th, 2013, who list their location as London.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=created%3A2010-01-01..2011-01-01+john+in%3Ausername&amp;type=Users"><strong>created:2010-01-01..2011-01-01 john in:login</strong></a> matches users that joined between 2010 and 2011 with the word “john” in their username.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-followers">Search by number of followers</h2>
+<p>You can filter users based on the number of followers that they have, using the <code>followers</code> qualifier with <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>followers:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=followers%3A%3E%3D1000&amp;type=Users"><strong>followers:&gt;=1000</strong></a> matches users with 1,000 or more followers.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=sparkle+followers%3A1..10&amp;type=Users"><strong>sparkle followers:1..10</strong></a> matches users with between 1 and 10 followers, with the word “sparkle” in their name.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+</ul>
+</body>
+</html>

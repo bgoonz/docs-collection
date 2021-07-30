@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Monitoring and troubleshooting self-hosted runners</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Monitoring and troubleshooting self-hosted runners</h1>
+    </header>
+    <p>
+      {% data reusables.actions.ae-self-hosted-runners-notice %} {% data
+      reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="checking-the-status-of-a-self-hosted-runner">
+      Checking the status of a self-hosted runner
+    </h2>
+    <p>
+      {% data
+      reusables.github-actions.self-hosted-runner-management-permissions-required
+      %}
+    </p>
+    <p>
+      {% data reusables.github-actions.self-hosted-runner-navigate-repo-and-org
+      %} {% data reusables.github-actions.settings-sidebar-actions-runners %} 1.
+      Under {% ifversion fpt %}“Runners”{% else %}“Self-hosted runners”{% endif
+      %}, you can view a list of registered runners, including the runner’s
+      name, labels, and status.
+    </p>
+    <pre><code>![Runner list](/assets/images/help/settings/actions-runner-list.png)
+
+The status can be one of the following:
+
+* **Idle**: The runner is connected to {% data variables.product.product_name %} and is ready to execute jobs.
+* **Active**: The runner is currently executing a job.
+* **Offline**: The runner is not connected to {% data variables.product.product_name %}. This could be because the machine is offline, the self-hosted runner application is not running on the machine, or the self-hosted runner application cannot communicate with {% data variables.product.product_name %}.</code></pre>
+    <h2 id="reviewing-the-self-hosted-runner-application-log-files">
+      Reviewing the self-hosted runner application log files
+    </h2>
+    <p>
+      You can monitor the status of the self-hosted runner application and its
+      activities. Log files are kept in the <code>_diag</code> directory, and a
+      new one is generated each time the application is started. The filename
+      begins with <em>Runner_</em>, and is followed by a UTC timestamp of when
+      the application was started.
+    </p>
+    <p>
+      For detailed logs on workflow job executions, see the next section
+      describing the <em>Worker_</em> files.
+    </p>
+    <h2 id="reviewing-a-jobs-log-file">Reviewing a job’s log file</h2>
+    <p>
+      The self-hosted runner application creates a detailed log file for each
+      job that it processes. These files are stored in the
+      <code>_diag</code> directory, and the filename begins with
+      <em>Worker_</em>.
+    </p>
+    <p>{% linux %}</p>
+    <h2
+      id="using-journalctl-to-check-the-self-hosted-runner-application-service"
+    >
+      Using journalctl to check the self-hosted runner application service
+    </h2>
+    <p>
+      For Linux-based self-hosted runners running the application using a
+      service, you can use <code>journalctl</code> to monitor their real-time
+      activity. The default systemd-based service uses the following naming
+      convention:
+      <code
+        >actions.runner.&lt;org&gt;-&lt;repo&gt;.&lt;runnerName&gt;.service</code
+      >. This name is truncated if it exceeds 80 characters, so the preferred
+      way of finding the service’s name is by checking the
+      <em>.service</em> file. For example:
+    </p>
+    <pre class="shell"><code>$ cat ~/actions-runner/.service
+actions.runner.octo-org-octo-repo.runner01.service</code></pre>
+    <p>
+      You can use <code>journalctl</code> to monitor the real-time activity of
+      the self-hosted runner:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ sudo journalctl -u actions.runner.octo-org-octo-repo.runner01.service -f</code></pre>
+    <p>
+      In this example output, you can see <code>runner01</code> start, receive a
+      job named <code>testAction</code>, and then display the resulting status:
+    </p>
+    <pre
+      class="shell"
+    ><code>Feb 11 14:57:07 runner01 runsvc.sh[962]: Starting Runner listener with startup type: service
+Feb 11 14:57:07 runner01 runsvc.sh[962]: Started listener process
+Feb 11 14:57:07 runner01 runsvc.sh[962]: Started running service
+Feb 11 14:57:16 runner01 runsvc.sh[962]: √ Connected to GitHub
+Feb 11 14:57:17 runner01 runsvc.sh[962]: 2020-02-11 14:57:17Z: Listening for Jobs
+Feb 11 16:06:54 runner01 runsvc.sh[962]: 2020-02-11 16:06:54Z: Running job: testAction
+Feb 11 16:07:10 runner01 runsvc.sh[962]: 2020-02-11 16:07:10Z: Job testAction completed with result: Succeeded</code></pre>
+    <p>
+      To view the systemd configuration, you can locate the service file here:
+      <code
+        >/etc/systemd/system/actions.runner.&lt;org&gt;-&lt;repo&gt;.&lt;runnerName&gt;.service</code
+      >. If you want to customize the self-hosted runner application service, do
+      not directly modify this file. Follow the instructions described in “<a
+        href="/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service#customizing-the-self-hosted-runner-service"
+        >Configuring the self-hosted runner application as a service</a
+      >.”
+    </p>
+    <p>{% endlinux %}</p>
+    <p>{% mac %}</p>
+    <h2 id="using-launchd-to-check-the-self-hosted-runner-application-service">
+      Using launchd to check the self-hosted runner application service
+    </h2>
+    <p>
+      For macOS-based self-hosted runners running the application as a service,
+      you can use <code>launchctl</code> to monitor their real-time activity.
+      The default launchd-based service uses the following naming convention:
+      <code>actions.runner.&lt;org&gt;-&lt;repo&gt;.&lt;runnerName&gt;</code>.
+      This name is truncated if it exceeds 80 characters, so the preferred way
+      of finding the service’s name is by checking the <em>.service</em> file in
+      the runner directory:
+    </p>
+    <pre class="shell"><code>% cat ~/actions-runner/.service
+/Users/exampleUsername/Library/LaunchAgents/actions.runner.octo-org-octo-repo.runner01.plist</code></pre>
+    <p>
+      The <code>svc.sh</code> script uses <code>launchctl</code> to check
+      whether the application is running. For example:
+    </p>
+    <pre class="shell"><code>$ ./svc.sh status
+status actions.runner.example.runner01:
+/Users/exampleUsername/Library/LaunchAgents/actions.runner.example.runner01.plist
+Started:
+379 0 actions.runner.example.runner01</code></pre>
+    <p>
+      The resulting output includes the process ID and the name of the
+      application’s launchd service.
+    </p>
+    <p>
+      To view the launchd configuration, you can locate the service file here:
+      <code
+        >/Users/exampleUsername/Library/LaunchAgents/actions.runner.&lt;repoName&gt;.&lt;runnerName&gt;.service</code
+      >. If you want to customize the self-hosted runner application service, do
+      not directly modify this file. Follow the instructions described in “<a
+        href="/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service#customizing-the-self-hosted-runner-service-1"
+        >Configuring the self-hosted runner application as a service</a
+      >.”
+    </p>
+    <p>{% endmac %}</p>
+    <p>{% windows %}</p>
+    <h2
+      id="using-powershell-to-check-the-self-hosted-runner-application-service"
+    >
+      Using PowerShell to check the self-hosted runner application service
+    </h2>
+    <p>
+      For Windows-based self-hosted runners running the application as a
+      service, you can use PowerShell to monitor their real-time activity. The
+      service uses the naming convention
+      <code
+        >GitHub Actions Runner
+        (&lt;org&gt;-&lt;repo&gt;.&lt;runnerName&gt;)</code
+      >. You can also find the service’s name by checking the
+      <em>.service</em> file in the runner directory:
+    </p>
+    <pre class="shell"><code>PS C:\actions-runner&gt; Get-Content .service
+actions.runner.octo-org-octo-repo.runner01.service</code></pre>
+    <p>
+      You can view the status of the runner in the Windows
+      <em>Services</em> application (<code>services.msc</code>). You can also
+      use PowerShell to check whether the service is running:
+    </p>
+    <pre
+      class="shell"
+    ><code>PS C:\actions-runner&gt; Get-Service &quot;actions.runner.octo-org-octo-repo.runner01.service&quot; | Select-Object Name, Status
+Name                                                  Status
+----                                                  ------
+actions.runner.octo-org-octo-repo.runner01.service    Running</code></pre>
+    <p>
+      You can use PowerShell to check the recent activity of the self-hosted
+      runner. In this example output, you can see the application start, receive
+      a job named <code>testAction</code>, and then display the resulting
+      status:
+    </p>
+    <pre
+      class="shell"
+    ><code>PS C:\actions-runner&gt; Get-EventLog -LogName Application -Source ActionsRunnerService
+
+   Index Time          EntryType   Source                 InstanceID Message
+   ----- ----          ---------   ------                 ---------- -------
+     136 Mar 17 13:45  Information ActionsRunnerService          100 2020-03-17 13:45:48Z: Job Greeting completed with result: Succeeded
+     135 Mar 17 13:45  Information ActionsRunnerService          100 2020-03-17 13:45:34Z: Running job: testAction
+     134 Mar 17 13:41  Information ActionsRunnerService          100 2020-03-17 13:41:54Z: Listening for Jobs
+     133 Mar 17 13:41  Information ActionsRunnerService          100 û Connected to GitHub
+     132 Mar 17 13:41  Information ActionsRunnerService            0 Service started successfully.
+     131 Mar 17 13:41  Information ActionsRunnerService          100 Starting Actions Runner listener
+     130 Mar 17 13:41  Information ActionsRunnerService          100 Starting Actions Runner Service
+     129 Mar 17 13:41  Information ActionsRunnerService          100 create event log trace source for actions-runner service</code></pre>
+    <p>{% endwindows %}</p>
+    <h2 id="monitoring-the-automatic-update-process">
+      Monitoring the automatic update process
+    </h2>
+    <p>
+      We recommend that you regularly check the automatic update process, as the
+      self-hosted runner will not be able to process jobs if it falls below a
+      certain version threshold. The self-hosted runner application
+      automatically updates itself, but note that this process does not include
+      any updates to the operating system or other software; you will need to
+      separately manage these updates.
+    </p>
+    <p>
+      You can view the update activities in the <em>Runner_</em> log files. For
+      example:
+    </p>
+    <pre
+      class="shell"
+    ><code>[Feb 12 12:37:07 INFO SelfUpdater] An update is available.</code></pre>
+    <p>
+      In addition, you can find more information in the <em>SelfUpdate</em> log
+      files located in the <code>_diag</code> directory.
+    </p>
+    <p>{% linux %}</p>
+    <h2 id="troubleshooting-containers-in-self-hosted-runners">
+      Troubleshooting containers in self-hosted runners
+    </h2>
+    <h3 id="checking-that-docker-is-installed">
+      Checking that Docker is installed
+    </h3>
+    <p>
+      If your jobs require containers, then the self-hosted runner must be
+      Linux-based and needs to have Docker installed. Check that your
+      self-hosted runner has Docker installed and that the service is running.
+    </p>
+    <p>You can use <code>systemctl</code> to check the service status:</p>
+    <pre class="shell"><code>$ sudo systemctl is-active docker.service
+active</code></pre>
+    <p>
+      If Docker is not installed, then dependent actions will fail with the
+      following errors:
+    </p>
+    <pre
+      class="shell"
+    ><code>[2020-02-13 16:56:10Z INFO DockerCommandManager] Which: &#39;docker&#39;
+[2020-02-13 16:56:10Z INFO DockerCommandManager] Not found.
+[2020-02-13 16:56:10Z ERR  StepsRunner] Caught exception from step: System.IO.FileNotFoundException: File not found: &#39;docker&#39;</code></pre>
+    <h3 id="checking-the-docker-permissions">
+      Checking the Docker permissions
+    </h3>
+    <p>If your job fails with the following error:</p>
+    <pre
+      class="shell"
+    ><code>dial unix /var/run/docker.sock: connect: permission denied</code></pre>
+    <p>
+      Check that the self-hosted runner’s service account has permission to use
+      the Docker service. You can identify this account by checking the
+      configuration of the self-hosted runner in systemd. For example:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ sudo systemctl show -p User actions.runner.octo-org-octo-repo.runner01.service
+User=runner-user</code></pre>
+    <p>{% endlinux %}</p>
+  </body>
+</html>

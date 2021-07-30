@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Installing GitHub Insights</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Installing GitHub Insights</h1>
+</header>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>You must have a {% data variables.product.prodname_enterprise %} license file that includes {% data variables.product.prodname_insights %}. After you purchase {% data variables.product.prodname_insights %}, you can download the updated license file in the <a href="https://enterprise.github.com/download">{% data variables.product.prodname_enterprise %} web portal</a>.</li>
+<li>{% data reusables.github-insights.requires-machine %} For more information, see “<a href="/github/installing-and-configuring-github-insights/system-overview-for-github-insights#requirements-for-running-github-insights">System overview for {% data variables.product.prodname_insights %}</a>.”</li>
+<li>You must install dependencies on the application server.
+<ul>
+<li><a href="https://docs.docker.com/install/">Docker</a> 1.13.0+</li>
+<li><a href="https://docs.docker.com/compose/install/">Docker Compose</a> v1.17.0+</li>
+<li><a href="http://netcat.sourceforge.net/">netcat</a>, available via apt for <a href="https://packages.debian.org/search?keywords=netcat">Debian</a> and <a href="https://packages.ubuntu.com/search?keywords=netcat&amp;searchon=names">Ubuntu</a></li>
+</ul>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data reusables.github-insights.docker-requirements %}</p>
+<p>{% endnote %}</p></li>
+</ul>
+<h2 id="creating-a-data-variables.product.prodname_github_app">Creating a {% data variables.product.prodname_github_app %}</h2>
+<p>To connect {% data variables.product.prodname_insights %} to {% data variables.product.prodname_enterprise %}, you must create a {% data variables.product.prodname_github_app %} in an organization on {% data variables.product.prodname_enterprise %}. A slugged version of your app’s name will be shown on {% data variables.product.prodname_enterprise %} when your integration takes an action.</p>
+<p>{% data reusables.enterprise_site_admin_settings.sign-in %} 2. Navigate to the organization you’d like to connect to {% data variables.product.prodname_insights %}. {% data reusables.organizations.org_settings %} {% data reusables.organizations.github-apps-settings-sidebar %} 5. Click <strong>New {% data variables.product.prodname_github_app %}</strong>. <img src="/assets/images/github-apps/github_apps_new.png" alt="New GitHub App button" /> 6. Under “{% data variables.product.prodname_github_app %} name”, type a name for the app. Your app cannot have the same name as an existing user or organization, unless the name is your own user or organization name. <img src="/assets/images/github-apps/github_apps_app_name.png" alt="GitHub App name field" /> 7. Under “Homepage URL”, type the URL of the application server for {% data variables.product.prodname_insights %}. For more information, see “<a href="/insights/installing-and-configuring-github-insights/system-overview-for-github-insights#requirements-for-running-github-insights">System overview for {% data variables.product.prodname_insights %}</a>.” <img src="/assets/images/github-apps/github_apps_homepage_url.png" alt="Homepage URL field" /> 8. Under “User authorization callback URL”, type the following, replacing <code>&lt;application-server-url&gt;</code> with the URL of the application server. <code>&lt;application-server-url&gt;/public/applogin</code> <img src="/assets/images/github-apps/github_apps_user_authorization.png" alt="User authorization callback field" /> 9. Under “Setup URL”, type <code>&lt;application-server-url&gt;/public/setup</code>. <img src="/assets/images/help/apps/github-apps-setup-url.png" alt="Setup URL field" /> 9. Under “Webhook URL”, type <code>&lt;application-server-url&gt;/webhooks</code>. <img src="/assets/images/github-apps/github_apps_webhook_url.png" alt="Webhook URL field" /> 10. Under “Webhook secret”, type a secret, then record the secret for later reference. <img src="/assets/images/github-apps/github_apps_webhook_secret.png" alt="Webhook secret field" /> 11. Under “Permissions”, use the drop-down menus and configure the following permissions for the app. - Repository: - Contents: <strong>Read-only</strong> - Metadata: <strong>Read-only</strong> - Pull requests: <strong>Read-only</strong> - Commit statuses: <strong>Read-only</strong> - Organization: - Members: <strong>Read-only</strong> - Projects: <strong>Read-only</strong></p>
+<p><img src="/assets/images/help/apps/github_apps_new_permissions_post2dot13.png" alt="Permissions drop-down menus" /> 12. Under “Subscribe to events”, select: - Member - Pull request - Push - Repository - Team <img src="/assets/images/help/apps/github_apps_subscribe_to_events_pr_push_repository.png" alt="Subscribe to events checkboxes" /></p>
+<ol start="13" type="1">
+<li>To enable the {% data variables.product.prodname_github_app %} to access data from any user or organization in {% data variables.product.product_location %}, under “Where can this {% data variables.product.prodname_github_app %} be installed?”, select <strong>Any account</strong>. <img src="/assets/images/help/apps/github_apps_installation_options_any_account.png" alt="Radio buttons to enable access to any account" /></li>
+<li>Click <strong>Create {% data variables.product.prodname_github_app %}</strong>. <img src="/assets/images/github-apps/github_apps_create_github_app.png" alt="Create GitHub App button" /></li>
+<li>Review your app’s configuration.</li>
+<li>Under “Private keys”, click <strong>Generate a private key</strong>. <img src="/assets/images/help/apps/generate-private-key.png" alt="Generate a private key button" /></li>
+<li>Save the resulting PEM file for later reference.</li>
+<li>Make note of the following information about your app for later reference.
+<ul>
+<li>App ID</li>
+<li>Client ID</li>
+<li>Client secret</li>
+<li>Private key</li>
+<li>Webhook secret</li>
+</ul></li>
+</ol>
+<h2 id="installing-data-variables.product.prodname_insights">Installing {% data variables.product.prodname_insights %}</h2>
+<p>{% data reusables.github-insights.download-latest-release %} {% data reusables.github-insights.install-script %} {% data reusables.github-insights.run-script %}</p>
+<h2 id="configuring-data-variables.product.prodname_insights">Configuring {% data variables.product.prodname_insights %}</h2>
+<p>To configure {% data variables.product.prodname_insights %} to connect to {% data variables.product.prodname_ghe_server %}, you must provide the information you recorded in previous steps.</p>
+<ol type="1">
+<li>In your browser, navigate to <code>&lt;application-server-url&gt;/setup</code>. {% data reusables.github-insights.enterprise-api-url %} {% data reusables.github-insights.insights-license %} {% data reusables.github-insights.app-id %} {% data reusables.github-insights.client-id %} {% data reusables.github-insights.client-secret %} {% data reusables.github-insights.private-key %} {% data reusables.github-insights.webhook-secret %} {% data reusables.github-insights.skip-ssl %}</li>
+<li>Click <strong>Submit</strong>.</li>
+<li>Click <strong>Log in with {% data variables.product.prodname_dotcom %}</strong>.</li>
+<li>To authorize the {% data variables.product.prodname_github_app %} and access {% data variables.product.prodname_insights %}, click <strong>Authorize {% data variables.product.prodname_github_app %}</strong>.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/insights/installing-and-configuring-github-insights/managing-repositories">Managing repositories</a>”</li>
+<li>“<a href="/github/site-policy/github-insights-and-data-protection-for-your-organization" class="dotcom-only">{% data variables.product.prodname_insights %} and data protection for your organization</a>”</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Exploring the dependencies of a repository</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exploring the dependencies of a repository</h1>
+</header>
+<!--For this article in earlier GHES versions, see /content/github/visualizing-repository-data-with-graphs-->
+<h2 id="viewing-the-dependency-graph">Viewing the dependency graph</h2>
+<p>{% data reusables.repositories.enable-security-alerts %}</p>
+<p>The dependency graph shows the dependencies{% ifversion fpt %} and dependents{% endif %} of your repository. For information about the detection of dependencies and which ecosystems are supported, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>.”</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.accessing-repository-graphs %} {% data reusables.repositories.click-dependency-graph %}{% ifversion fpt %} 4. Optionally, under “Dependency graph”, click <strong>Dependents</strong>. <img src="/assets/images/help/graphs/dependency-graph-dependents-tab.png" alt="Dependents tab on the dependency graph page" />{% endif %}</p>
+<h3 id="dependencies-view">Dependencies view</h3>
+<p>{% ifversion fpt %} Dependencies are grouped by ecosystem. You can expand a dependency to view its dependencies. For dependencies on public repositories hosted on {% data variables.product.product_name %}, you can also click a dependency to view the repository. Dependencies on private repositories, private packages, or unrecognized files are shown in plain text.</p>
+<p>If vulnerabilities have been detected in the repository, these are shown at the top of the view for users with access to {% data variables.product.prodname_dependabot_alerts %}.</p>
+<figure>
+<img src="/assets/images/help/graphs/dependencies_graph.png" alt="Dependencies graph" /><figcaption>Dependencies graph</figcaption>
+</figure>
+<p>{% endif %}</p>
+<p>{% ifversion ghes &gt; 2.21 %} Any direct and indirect dependencies that are specified in the repository’s manifest or lock files are listed, grouped by ecosystem. If vulnerabilities have been detected in the repository, these are shown at the top of the view for users with access to {% data variables.product.prodname_dependabot_alerts %}.</p>
+<figure>
+<img src="/assets/images/help/graphs/dependencies_graph_server.png" alt="Dependencies graph" /><figcaption>Dependencies graph</figcaption>
+</figure>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data variables.product.prodname_ghe_server %} does not populate the <strong>Dependents</strong> view.</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<p>{% ifversion fpt %} ### Dependents view</p>
+<p>For public repositories, the dependents view shows how the repository is used by other repositories. To show only the repositories that contain a library in a package manager, click <strong>NUMBER Packages</strong> immediately above the list of dependent repositories. The dependent counts are approximate and may not always match the dependents listed.</p>
+<figure>
+<img src="/assets/images/help/graphs/dependents_graph.png" alt="Dependents graph" /><figcaption>Dependents graph</figcaption>
+</figure>
+<h2 id="enabling-and-disabling-the-dependency-graph-for-a-private-repository">Enabling and disabling the dependency graph for a private repository</h2>
+<p>Repository administrators can enable or disable the dependency graph for private repositories.</p>
+<p>You can also enable or disable the dependency graph for all repositories owned by your user account or organization. For more information, see “<a href="/github/setting-up-and-managing-your-github-user-account/managing-security-and-analysis-settings-for-your-user-account">Managing security and analysis settings for your user account</a>” or “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>.”</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} 4. Read the message about granting {% data variables.product.product_name %} read-only access to the repository data to enable the dependency graph, then next to “Dependency Graph”, click <strong>Enable</strong>. <img src="/assets/images/help/repository/dependency-graph-enable-button.png" alt="“Enable” button for the dependency graph" /></p>
+<p>You can disable the dependency graph at any time by clicking <strong>Disable</strong> next to “Dependency Graph” on the Security &amp; analysis tab.</p>
+<h2 id="changing-the-used-by-package">Changing the “Used by” package</h2>
+<p>If the dependency graph is enabled, and your repository contains a package that’s published on a supported package ecosystem, {% data variables.product.prodname_dotcom %} displays a “Used by” section in the sidebar of the <strong>Code</strong> tab of your repository. For more information about the supported package ecosystems, see “<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph#supported-package-ecosystems">About the dependency graph</a>.”</p>
+<p>The “Used by” section shows the number of public references to the package that were found, and displays the avatars of some of the owners of the dependent projects.</p>
+<figure>
+<img src="/assets/images/help/repository/used-by-section.png" alt="“Used by” sidebar section" /><figcaption>“Used by” sidebar section</figcaption>
+</figure>
+<p>Clicking any item in this section takes you to the <strong>Dependents</strong> tab of the dependency graph.</p>
+<p>The “Used by” section represents a single package from the repository. If you have admin permissions to a repository that contains multiple packages, you can choose which package the “Used by” section represents.</p>
+<p>{% data reusables.repositories.navigate-to-repo %} {% data reusables.repositories.sidebar-settings %} {% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under “Configure security and analysis features”, click the drop-down menu in the “Used by counter” section and choose a package. <img src="/assets/images/help/repository/choose-used-by-package.png" alt="Choose a “Used by” package" /></p>
+<p>{% endif %}</p>
+<h2 id="troubleshooting-the-dependency-graph">Troubleshooting the dependency graph</h2>
+<p>If your dependency graph is empty, there may be a problem with the file containing your dependencies. Check the file to ensure that it’s correctly formatted for the file type.</p>
+<p>{% ifversion fpt %} If the file is correctly formatted, then check its size. The dependency graph ignores individual manifest and lock files that are over 0.5 Mb, unless you are a {% data variables.product.prodname_enterprise %} user. It processes up to 20 manifest or lock files per repository by default, so you can split dependencies into smaller files in subdirectories of the repository.{% endif %}</p>
+<p>If a manifest or lock file is not processed, its dependencies are omitted from the dependency graph and they can’t be checked for vulnerable dependencies.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>”</li>
+<li>“<a href="/github/managing-security-vulnerabilities/viewing-and-updating-vulnerable-dependencies-in-your-repository">Viewing and updating vulnerable dependencies in your repository</a>”{% ifversion fpt %}</li>
+<li>“<a href="/organizations/collaborating-with-groups-in-organizations/viewing-insights-for-your-organization">Viewing insights for your organization</a>”</li>
+<li>“<a href="/github/understanding-how-github-uses-and-protects-your-data">Understanding how {% data variables.product.product_name %} uses and protects your data</a>” {% endif %}</li>
+</ul>
+</body>
+</html>

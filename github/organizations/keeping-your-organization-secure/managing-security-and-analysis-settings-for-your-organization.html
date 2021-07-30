@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing security and analysis settings for your organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing security and analysis settings for your organization</h1>
+</header>
+<h2 id="about-management-of-security-and-analysis-settings">About management of security and analysis settings</h2>
+<p>{% data variables.product.prodname_dotcom %} can help secure the repositories in your organization. You can manage the security and analysis features for all existing or new repositories that members create in your organization. {% ifversion fpt %}If you have a license for {% data variables.product.prodname_GH_advanced_security %} then you can also manage access to these features. {% data reusables.advanced-security.more-info-ghas %}{% endif %}</p>
+<p>{% data reusables.security.some-security-and-analysis-features-are-enabled-by-default %} {% data reusables.security.security-and-analysis-features-enable-read-only %}</p>
+<h2 id="displaying-the-security-and-analysis-settings">Displaying the security and analysis settings</h2>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.organizations.security-and-analysis %}</p>
+<p>The page that’s displayed allows you to enable or disable all security and analysis features for the repositories in your organization.</p>
+<p>{% ifversion fpt %}If your organization belongs to an enterprise with a license for {% data variables.product.prodname_GH_advanced_security %}, the page will also contain options to enable and disable {% data variables.product.prodname_advanced_security %} features. Any repositories that use {% data variables.product.prodname_GH_advanced_security %} are listed at the bottom of the page.{% endif %}</p>
+<p>{% ifversion ghes &gt; 3.0 %}If you have a license for {% data variables.product.prodname_GH_advanced_security %}, the page will also contain options to enable and disable {% data variables.product.prodname_advanced_security %} features. Any repositories that use {% data variables.product.prodname_GH_advanced_security %} are listed at the bottom of the page.{% endif %}</p>
+<p>{% ifversion ghae %}The page will also contain options to enable and disable {% data variables.product.prodname_advanced_security %} features.{% endif %}</p>
+<h2 id="enabling-or-disabling-a-feature-for-all-existing-repositories">Enabling or disabling a feature for all existing repositories</h2>
+<p>You can enable or disable features for all repositories. {% ifversion fpt %}The impact of your changes on repositories in your organization is determined by their visibility:</p>
+<ul>
+<li><strong>Dependency graph</strong> - Your changes affect only private repositories because the feature is always enabled for public repositories.</li>
+<li><strong>{% data variables.product.prodname_dependabot_alerts %}</strong> - Your changes affect all repositories.</li>
+<li><strong>{% data variables.product.prodname_dependabot_security_updates %}</strong> - Your changes affect all repositories.</li>
+<li><strong>{% data variables.product.prodname_GH_advanced_security %}</strong> - Your changes affect only private repositories because {% data variables.product.prodname_GH_advanced_security %} and the related features are always enabled for public repositories.</li>
+<li><strong>{% data variables.product.prodname_secret_scanning_caps %}</strong> - Your changes affect only private repositories where {% data variables.product.prodname_GH_advanced_security %} is also enabled. {% data variables.product.prodname_secret_scanning_caps %} is always enabled for public repositories.{% endif %}</li>
+</ul>
+<p>{% data reusables.advanced-security.note-org-enable-uses-seats %}</p>
+<ol type="1">
+<li>Go to the security and analysis settings for your organization. For more information, see “<a href="#displaying-the-security-and-analysis-settings">Displaying the security and analysis settings</a>.”</li>
+<li>Under “Configure security and analysis features”, to the right of the feature, click <strong>Disable all</strong> or <strong>Enable all</strong>. {% ifversion fpt or ghes &gt; 3.0 %}The control for “{% data variables.product.prodname_GH_advanced_security %}” is disabled if you have no available seats in your {% data variables.product.prodname_GH_advanced_security %} license.{% endif %} {% ifversion fpt %} <img src="/assets/images/help/organizations/security-and-analysis-disable-or-enable-all-ghas-dotcom.png" alt="“Enable all” or “Disable all” button for “Configure security and analysis” features" /> {% endif %} {% ifversion ghes &gt; 3.0 %} <img src="/assets/images/enterprise/3.1/help/organizations/security-and-analysis-disable-or-enable-all-ghas.png" alt="“Enable all” or “Disable all” button for “Configure security and analysis” features" /> {% endif %} {% ifversion ghes = 3.0 %} <img src="/assets/images/enterprise/3.0/organizations/security-and-analysis-disable-or-enable-all-ghas.png" alt="“Enable all” or “Disable all” button for “Configure security and analysis” features" /> {% endif %} {% ifversion ghae %} <img src="/assets/images/enterprise/github-ae/organizations/security-and-analysis-disable-or-enable-all-ghae.png" alt="“Enable all” or “Disable all” button for “Configure security and analysis” features" /> {% endif %} {% ifversion fpt or ghes = 3.0 %}</li>
+<li>Optionally, enable the feature by default for new repositories in your organization. {% ifversion fpt %} <img src="/assets/images/help/organizations/security-and-analysis-enable-by-default-in-modal.png" alt="“Enable by default” option for new repositories" /> {% endif %} {% ifversion ghes = 3.0 %} <img src="/assets/images/enterprise/3.0/organizations/security-and-analysis-secret-scanning-enable-by-default.png" alt="“Enable by default” option for new repositories" /> {% endif %} {% endif %} {% ifversion fpt or ghes = 3.0 %}</li>
+<li>Click <strong>Disable FEATURE</strong> or <strong>Enable FEATURE</strong> to disable or enable the feature for all the repositories in your organization. {% ifversion fpt %} <img src="/assets/images/help/organizations/security-and-analysis-enable-dependency-graph.png" alt="Button to disable or enable feature" /> {% endif %} {% ifversion ghes = 3.0 %} <img src="/assets/images/enterprise/3.0/organizations/security-and-analysis-enable-secret-scanning.png" alt="Button to disable or enable feature" /> {% endif %} {% endif %} {% ifversion ghae or ghes &gt; 3.0 %}</li>
+<li><p>Click <strong>Enable/Disable all</strong> or <strong>Enable/Disable for eligible repositories</strong> to confirm the change. <img src="/assets/images/enterprise/github-ae/organizations/security-and-analysis-enable-secret-scanning-existing-repos-ghae.png" alt="Button to enable feature for all the eligible repositories in the organization" /> {% endif %}</p>
+<p>{% data reusables.security.displayed-information %}</p></li>
+</ol>
+<h2 id="enabling-or-disabling-a-feature-automatically-when-new-repositories-are-added">Enabling or disabling a feature automatically when new repositories are added</h2>
+<ol type="1">
+<li>Go to the security and analysis settings for your organization. For more information, see “<a href="#displaying-the-security-and-analysis-settings">Displaying the security and analysis settings</a>.”</li>
+<li>Under “Configure security and analysis features”, to the right of the feature, enable or disable the feature by default for new repositories{% ifversion fpt %}, or all new private repositories,{% endif %} in your organization. {% ifversion fpt or ghes &gt; 3.1 %} <img src="/assets/images/help/organizations/security-and-analysis-enable-or-disable-feature-checkbox-dotcom.png" alt="Checkbox for enabling or disabling a feature for new repositories" /> {% endif %} {% ifversion ghes = 3.1 %} <img src="/assets/images/enterprise/3.1/help/organizations/security-and-analysis-enable-or-disable-feature-checkbox.png" alt="Checkbox for enabling or disabling a feature for new repositories" /> {% endif %} {% ifversion ghes = 3.0 %} <img src="/assets/images/enterprise/3.0/organizations/security-and-analysis-enable-or-disable-secret-scanning-checkbox.png" alt="Checkbox for enabling or disabling a feature for new repositories" /> {% endif %} {% ifversion ghae %} <img src="/assets/images/enterprise/github-ae/organizations/security-and-analysis-enable-or-disable-secret-scanning-checkbox-ghae.png" alt="Checkbox for enabling or disabling a feature for new repositories" /> {% endif %}</li>
+</ol>
+<p>{% ifversion fpt %}</p>
+<h2 id="allowing-data-variables.product.prodname_dependabot-to-access-private-dependencies">Allowing {% data variables.product.prodname_dependabot %} to access private dependencies</h2>
+<p>{% data variables.product.prodname_dependabot %} can check for outdated dependency references in a project and automatically generate a pull request to update them. To do this, {% data variables.product.prodname_dependabot %} must have access to all of the targeted dependency files. Typically, version updates will fail if one or more dependencies are inaccessible. For more information, see “<a href="/github/administering-a-repository/about-dependabot-version-updates">About {% data variables.product.prodname_dependabot %} version updates</a>.”</p>
+<p>By default, {% data variables.product.prodname_dependabot %} can’t update dependencies that are located in private repositories or private package registries. However, if a dependency is in a private {% data variables.product.prodname_dotcom %} repository within the same organization as the project that uses that dependency, you can allow {% data variables.product.prodname_dependabot %} to update the version successfully by giving it access to the host repository.</p>
+<p>If your code depends on packages in a private registry, you can allow {% data variables.product.prodname_dependabot %} to update the versions of these dependencies by configuring this at the repository level. You do this by adding authentication details to the <em>dependabot.yml</em> file for the repository. For more information, see “<a href="/github/administering-a-repository/configuration-options-for-dependency-updates#configuration-options-for-private-registries">Configuration options for dependency updates</a>.”</p>
+<p>To allow {% data variables.product.prodname_dependabot %} to access a private {% data variables.product.prodname_dotcom %} repository:</p>
+<ol type="1">
+<li>Go to the security and analysis settings for your organization. For more information, see “<a href="#displaying-the-security-and-analysis-settings">Displaying the security and analysis settings</a>.”</li>
+<li>Under “{% data variables.product.prodname_dependabot %} private repository access”, click <strong>Add private repositories</strong> or <strong>Add internal and private repositories</strong>. <img src="/assets/images/help/organizations/dependabot-private-repository-access.png" alt="Add repositories button" /></li>
+<li>Start typing the name of the repository you want to allow. <img src="/assets/images/help/organizations/dependabot-private-repo-choose.png" alt="Add repositories button" /></li>
+<li><p>Click the repository you want to allow.</p></li>
+<li><p>Optionally, to remove a repository from the list, to the right of the repository, click {% octicon “x” aria-label=“The X icon” %}. <img src="/assets/images/help/organizations/dependabot-private-repository-list.png" alt="“X” button to remove a repository" /> {% endif %}</p></li>
+</ol>
+<p>{% ifversion fpt or ghes &gt; 3.0 %}</p>
+<h2 id="removing-access-to-data-variables.product.prodname_gh_advanced_security-from-individual-repositories-in-an-organization">Removing access to {% data variables.product.prodname_GH_advanced_security %} from individual repositories in an organization</h2>
+<p>You can manage access to {% data variables.product.prodname_GH_advanced_security %} features for a repository from its “Settings” tab. For more information, see “<a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository">Managing security and analysis settings for your repository</a>.” However, you can also disable {% data variables.product.prodname_GH_advanced_security %} features for a repository from the “Settings” tab for the organization.</p>
+<ol type="1">
+<li>Go to the security and analysis settings for your organization. For more information, see “<a href="#displaying-the-security-and-analysis-settings">Displaying the security and analysis settings</a>.”</li>
+<li>To see a list of all the repositories in your organization with {% data variables.product.prodname_GH_advanced_security %} enabled, scroll to the “{% data variables.product.prodname_GH_advanced_security %} repositories” section. <img src="/assets/images/help/organizations/settings-security-analysis-ghas-repos-list.png" alt="{% data variables.product.prodname_GH_advanced_security %} repositories section" /> The table lists the number of unique committers for each repository. This is the number of seats you could free up on your license by removing access to {% data variables.product.prodname_GH_advanced_security %}. {% ifversion fpt %}For more information, see “<a href="/billing/managing-licensing-for-github-advanced-security/about-licensing-for-github-advanced-security">About licensing for {% data variables.product.prodname_GH_advanced_security %}</a>.”{% else %}For more information, see “<a href="/admin/advanced-security/about-licensing-for-github-advanced-security">About licensing for {% data variables.product.prodname_GH_advanced_security %}</a>.”{% endif %}</li>
+<li>To remove access to {% data variables.product.prodname_GH_advanced_security %} from a repository and free up seats used by any committers that are unique to the repository, click the adjacent {% octicon “x” aria-label=“X symbol” %}.</li>
+<li>In the confirmation dialog, click <strong>Remove repository</strong> to remove access to the features of {% data variables.product.prodname_GH_advanced_security %}.</li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you remove access to {% data variables.product.prodname_GH_advanced_security %} for a repository, you should communicate with the affected development team so that they know that the change was intended. This ensures that they don’t waste time debugging failed runs of code scanning.</p>
+<p>{% endnote %}</p>
+<p>{% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/code-security/getting-started/securing-your-repository">Securing your repository</a>”</li>
+<li>“<a href="/github/administering-a-repository/about-secret-scanning">About secret scanning</a>”{% ifversion fpt %}</li>
+<li>“<a href="/github/administering-a-repository/keeping-your-dependencies-updated-automatically">Keeping your dependencies updated automatically</a>”{% endif %}{% ifversion not ghae %}</li>
+<li>“<a href="/github/visualizing-repository-data-with-graphs/about-the-dependency-graph">About the dependency graph</a>”</li>
+<li>“<a href="/github/managing-security-vulnerabilities/managing-vulnerabilities-in-your-projects-dependencies">Managing vulnerabilities in your project’s dependencies</a>”{% endif %}</li>
+</ul>
+</body>
+</html>

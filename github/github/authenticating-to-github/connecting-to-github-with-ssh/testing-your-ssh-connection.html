@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Testing your SSH connection</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Testing your SSH connection</h1>
+</header>
+<p>Before testing your SSH connection, you should have: - <a href="/articles/checking-for-existing-ssh-keys">Checked for existing SSH keys</a> - <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generated a new SSH key</a> - <a href="/articles/adding-a-new-ssh-key-to-your-github-account">Added a new SSH key to your GitHub account</a></p>
+<p>When you test your connection, you’ll need to authenticate this action using your password, which is the SSH key passphrase you created earlier. For more information on working with SSH key passphrases, see <a href="/articles/working-with-ssh-key-passphrases">“Working with SSH key passphrases”</a>.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Enter the following: <code>shell   $ ssh -T git@{% data variables.command_line.codeblock %}   # Attempts to ssh to {% data variables.product.product_name %}</code></p>
+<p>You may see a warning like this:</p>
+<pre class="shell"><code>&gt; The authenticity of host &#39;{% data variables.command_line.codeblock %} (IP ADDRESS)&#39; can&#39;t be established.
+&gt; RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+&gt; Are you sure you want to continue connecting (yes/no)?</code></pre>
+<ol start="3" type="1">
+<li>Verify that the fingerprint in the message you see matches {% ifversion fpt %}<a href="/github/authenticating-to-github/githubs-ssh-key-fingerprints">{% data variables.product.prodname_dotcom %}’s RSA public key fingerprint</a>{% else %} your enterprise’s public key fingerprint{% endif %}. If it does, then type <code>yes</code>:</li>
+</ol>
+<pre class="shell"><code>&gt; Hi &lt;em&gt;username&lt;/em&gt;! You&#39;ve successfully authenticated, but GitHub does not
+&gt; provide shell access.</code></pre>
+<p>{% linux %}</p>
+<p>You may see this error message: <code>shell   ...   Agent admitted failure to sign using the key.   debug1: No more authentication methods to try.   Permission denied (publickey).</code></p>
+<p>This is a known problem with certain Linux distributions. For more information, see <a href="/articles/error-agent-admitted-failure-to-sign">“Error: Agent admitted failure to sign”</a>.</p>
+<p>{% endlinux %}</p>
+<ol start="4" type="1">
+<li>Verify that the resulting message contains your username. If you receive a “permission denied” message, see <a href="/articles/error-permission-denied-publickey">“Error: Permission denied (publickey)”</a>.</li>
+</ol>
+</body>
+</html>

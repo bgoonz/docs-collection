@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Automating Dependabot with GitHub Actions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Automating Dependabot with GitHub Actions</h1>
+</header>
+<h2 id="about-data-variables.product.prodname_dependabot-and-data-variables.product.prodname_actions">About {% data variables.product.prodname_dependabot %} and {% data variables.product.prodname_actions %}</h2>
+<p>{% data variables.product.prodname_dependabot %} creates pull requests to keep your dependencies up to date, and you can use {% data variables.product.prodname_actions %} to perform automated tasks when these pull requests are created. For example, fetch additional artifacts, add labels, run tests, or otherwise modifying the pull request.</p>
+<h2 id="responding-to-events">Responding to events</h2>
+<p>{% data variables.product.prodname_dependabot %} is able to trigger {% data variables.product.prodname_actions %} workflows on its pull requests and comments; however, due to <a href="https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/">“GitHub Actions: Workflows triggered by Dependabot PRs will run with read-only permissions”</a>, certain events are treated differently.</p>
+<p>For workflows initiated by {% data variables.product.prodname_dependabot %} (<code>github.actor == "dependabot[bot]"</code>) using the <code>pull_request</code>, <code>pull_request_review</code>, <code>pull_request_review_comment</code>, and <code>push</code> events, the following restrictions apply:</p>
+<ul>
+<li><code>GITHUB_TOKEN</code> has read-only permissions.</li>
+<li>Secrets are inaccessible.</li>
+</ul>
+<p>For more information, see <a href="https://securitylab.github.com/research/github-actions-preventing-pwn-requests/">“Keeping your GitHub Actions and workflows secure: Preventing pwn requests”</a>.</p>
+<h3 id="handling-pull_request-events">Handling <code>pull_request</code> events</h3>
+<p>If your workflow needs access to secrets or a <code>GITHUB_TOKEN</code> with write permissions, you have two options: using <code>pull_request_target</code>, or using two separate workflows. We will detail using <code>pull_request_target</code> in this section, and using two workflows below in “<a href="#handling-push-events">Handling <code>push</code> events</a>.”</p>
+<p>Below is a simple example of a <code>pull_request</code> workflow that might now be failing:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="co">### This workflow now has no secrets and a read-only token</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">name:</span><span class="at"> Dependabot Workflow</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  pull_request</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="co"># Always check the actor is Dependabot to prevent your workflow from failing on non-Dependabot PRs</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>You can replace <code>pull_request</code> with <code>pull_request_target</code>, which is used for pull requests from forks, and explicitly check out the pull request <code>HEAD</code>.</p>
+<p>{% warning %}</p>
+<p><strong>Warning:</strong> Using <code>pull_request_target</code> as a substitute for <code>pull_request</code> exposes you to insecure behavior. We recommend you use the two workflow method, as described below in “<a href="#handling-push-events">Handling <code>push</code> events</a>.”</p>
+<p>{% endwarning %}</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="co">### This workflow has access to secrets and a read-write token</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="fu">name:</span><span class="at"> Dependabot Workflow</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  pull_request_target</a>
+<a class="sourceLine" id="cb2-5" title="5">  </a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="co"># Downscope as necessary, since you now have a read-write token</span></a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb2-15" title="15">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb2-16" title="16">          <span class="co"># Check out the pull request HEAD</span></a>
+<a class="sourceLine" id="cb2-17" title="17">          <span class="fu">ref:</span><span class="at"> ${{ github.event.pull_request.head.sha }}</span></a>
+<a class="sourceLine" id="cb2-18" title="18">          <span class="fu">github-token:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>It is also strongly recommended that you downscope the permissions granted to the <code>GITHUB_TOKEN</code> in order to avoid leaking a token with more privilege than necessary. For more information, see “<a href="/actions/reference/authentication-in-a-workflow#permissions-for-the-github_token">Permissions for the <code>GITHUB_TOKEN</code></a>.”</p>
+<h3 id="handling-push-events">Handling <code>push</code> events</h3>
+<p>As there is no <code>pull_request_target</code> equivalent for <code>push</code> events, you will have to use two workflows: one untrusted workflow that ends by uploading artifacts, which triggers a second trusted workflow that downloads artifacts and continues processing.</p>
+<p>The first workflow performs any untrusted work:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="co">### This workflow doesn&#39;t have access to secrets and has a read-only token</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="fu">name:</span><span class="at"> Dependabot Untrusted Workflow</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  push</a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="fu">check-dependabot:</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb3-11" title="11">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ...</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>The second workflow performs trusted work after the first workflow completes successfully:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="co">### This workflow has access to secrets and a read-write token</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="fu">name:</span><span class="at"> Dependabot Trusted Workflow</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="fu">workflow_run:</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">workflows:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;Dependabot Untrusted Workflow&quot;</span><span class="kw">]</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="fu">types:</span><span class="at"> </span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="kw">-</span> completed</a>
+<a class="sourceLine" id="cb4-8" title="8"></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="co"># Downscope as necessary, since you now have a read-write token</span></a>
+<a class="sourceLine" id="cb4-11" title="11"></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb4-14" title="14">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="fu">if:</span><span class="at"> ${{ github.event.workflow_run.conclusion == &#39;success&#39; }}</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb4-17" title="17">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> ...</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<h3 id="manually-re-running-a-workflow">Manually re-running a workflow</h3>
+<p>You can also manually re-run a failed Dependabot workflow, and it will run with a read-write token and access to secrets. Before manually re-running a failed workflow, you should always check the dependency being updated to ensure that the change doesn’t introduce any malicious or unintended behavior.</p>
+<h2 id="common-dependabot-automations">Common Dependabot automations</h2>
+<p>Here are several common scenarios that can be automated using {% data variables.product.prodname_actions %}.</p>
+<h3 id="fetch-metadata-about-a-pull-request">Fetch metadata about a pull request</h3>
+<p>A large amount of automation requires knowing information about the contents of the pull request: what the dependency name was, if it’s a production dependency, and if it’s a major, minor, or patch update.</p>
+<p>The <code>dependabot/fetch-metadata</code> action provides all that information for you:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">name:</span><span class="at"> Dependabot auto-label</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="fu">on:</span><span class="at"> pull_request_target</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="fu">pull-requests:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="fu">issues:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="fu">repository-projects:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-14" title="14">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Dependabot metadata</span></a>
+<a class="sourceLine" id="cb5-15" title="15">        <span class="fu">id:</span><span class="at"> metadata</span></a>
+<a class="sourceLine" id="cb5-16" title="16">        <span class="fu">uses:</span><span class="at"> dependabot/fetch-metadata@v1.1.0</span></a>
+<a class="sourceLine" id="cb5-17" title="17">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb5-18" title="18">          <span class="fu">github-token:</span><span class="at"> </span><span class="st">&quot;${{ secrets.GITHUB_TOKEN }}&quot;</span></a>
+<a class="sourceLine" id="cb5-19" title="19">      <span class="co"># The following properties are now available:</span></a>
+<a class="sourceLine" id="cb5-20" title="20">      <span class="co">#  - steps.metadata.outputs.dependency-names</span></a>
+<a class="sourceLine" id="cb5-21" title="21">      <span class="co">#  - steps.metadata.outputs.dependency-type</span></a>
+<a class="sourceLine" id="cb5-22" title="22">      <span class="co">#  - steps.metadata.outputs.update-type      </span></a></code></pre></div>
+<p>{% endraw %}</p>
+<p>For more information, see the <a href="https://github.com/dependabot/fetch-metadata"><code>dependabot/fetch-metadata</code></a> repository.</p>
+<h3 id="label-a-pull-request">Label a pull request</h3>
+<p>If you have other automation or triage workflows based on {% data variables.product.prodname_dotcom %} labels, you can configure an action to assign labels based on the metadata provided.</p>
+<p>For example, if you want to flag all production dependency updates with a label:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">name:</span><span class="at"> Dependabot auto-label</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="fu">on:</span><span class="at"> pull_request_target</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="fu">pull-requests:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="fu">issues:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="fu">repository-projects:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-10" title="10">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb6-11" title="11">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb6-12" title="12">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb6-13" title="13">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb6-14" title="14">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Dependabot metadata</span></a>
+<a class="sourceLine" id="cb6-15" title="15">        <span class="fu">id:</span><span class="at"> metadata</span></a>
+<a class="sourceLine" id="cb6-16" title="16">        <span class="fu">uses:</span><span class="at"> dependabot/fetch-metadata@v1.1.0</span></a>
+<a class="sourceLine" id="cb6-17" title="17">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb6-18" title="18">          <span class="fu">github-token:</span><span class="at"> </span><span class="st">&quot;${{ secrets.GITHUB_TOKEN }}&quot;</span></a>
+<a class="sourceLine" id="cb6-19" title="19">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Add a label for all production dependencies</span></a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="fu">if:</span><span class="at"> ${{ steps.metadata.outputs.dependency-type == &#39;direct:production&#39; }}</span></a>
+<a class="sourceLine" id="cb6-21" title="21">        <span class="fu">run:</span><span class="at"> gh pr edit &quot;$PR_URL&quot; --add-label &quot;production&quot;</span></a>
+<a class="sourceLine" id="cb6-22" title="22">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb6-23" title="23">          <span class="fu">PR_URL:</span><span class="at"> ${{github.event.pull_request.html_url}}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<h3 id="approve-a-pull-request">Approve a pull request</h3>
+<p>If you want to automatically approve Dependabot pull requests, you can use the {% data variables.product.prodname_cli %} in a workflow:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">name:</span><span class="at"> Dependabot auto-approve</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="fu">on:</span><span class="at"> pull_request_target</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="fu">pull-requests:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb7-6" title="6"></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb7-12" title="12">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Dependabot metadata</span></a>
+<a class="sourceLine" id="cb7-13" title="13">        <span class="fu">id:</span><span class="at"> metadata</span></a>
+<a class="sourceLine" id="cb7-14" title="14">        <span class="fu">uses:</span><span class="at"> dependabot/fetch-metadata@v1.1.0</span></a>
+<a class="sourceLine" id="cb7-15" title="15">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb7-16" title="16">          <span class="fu">github-token:</span><span class="at"> </span><span class="st">&quot;${{ secrets.GITHUB_TOKEN }}&quot;</span></a>
+<a class="sourceLine" id="cb7-17" title="17">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Approve a PR</span></a>
+<a class="sourceLine" id="cb7-18" title="18">        <span class="fu">run:</span><span class="at"> gh pr review --approve &quot;$PR_URL&quot;</span></a>
+<a class="sourceLine" id="cb7-19" title="19">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb7-20" title="20">          <span class="fu">PR_URL:</span><span class="at"> ${{github.event.pull_request.html_url}}</span></a>
+<a class="sourceLine" id="cb7-21" title="21">          <span class="fu">GITHUB_TOKEN:</span><span class="at"> ${{secrets.GITHUB_TOKEN}}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<h3 id="enable-auto-merge-on-a-pull-request">Enable auto-merge on a pull request</h3>
+<p>If you want to auto-merge your pull requests, you can use {% data variables.product.prodname_dotcom %}’s auto-merge functionality. This enables the pull request to be merged when all required tests and approvals are successfully met. For more information on auto-merge, see “<a href="/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request">Automatically merging a pull request"</a>.”</p>
+<p>Here is an example of enabling auto-merge for all patch updates to <code>my-dependency</code>:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">name:</span><span class="at"> Dependabot auto-merge</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="fu">on:</span><span class="at"> pull_request_target</span></a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="fu">permissions:</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="fu">pull-requests:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="fu">contents:</span><span class="at"> write</span></a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="fu">dependabot:</span></a>
+<a class="sourceLine" id="cb8-10" title="10">    <span class="fu">runs-on:</span><span class="at"> ubuntu-latest</span></a>
+<a class="sourceLine" id="cb8-11" title="11">    <span class="fu">if:</span><span class="at"> ${{ github.actor == &#39;dependabot[bot]&#39; }}</span></a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-13" title="13">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Dependabot metadata</span></a>
+<a class="sourceLine" id="cb8-14" title="14">        <span class="fu">id:</span><span class="at"> metadata</span></a>
+<a class="sourceLine" id="cb8-15" title="15">        <span class="fu">uses:</span><span class="at"> dependabot/fetch-metadata@v1.1.0</span></a>
+<a class="sourceLine" id="cb8-16" title="16">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb8-17" title="17">          <span class="fu">github-token:</span><span class="at"> </span><span class="st">&quot;${{ secrets.GITHUB_TOKEN }}&quot;</span></a>
+<a class="sourceLine" id="cb8-18" title="18">      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Enable auto-merge for Dependabot PRs</span></a>
+<a class="sourceLine" id="cb8-19" title="19">        <span class="fu">if:</span><span class="at"> ${{contains(steps.metadata.outputs.dependency-names, &#39;my-dependency&#39;) &amp;&amp; steps.metadata.outputs.update-type == &#39;version-update:semver-patch&#39;}}</span></a>
+<a class="sourceLine" id="cb8-20" title="20">        <span class="fu">run:</span><span class="at"> gh pr merge --auto --merge &quot;$PR_URL&quot;</span></a>
+<a class="sourceLine" id="cb8-21" title="21">        <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb8-22" title="22">          <span class="fu">PR_URL:</span><span class="at"> ${{github.event.pull_request.html_url}}</span></a>
+<a class="sourceLine" id="cb8-23" title="23">          <span class="fu">GITHUB_TOKEN:</span><span class="at"> ${{secrets.GITHUB_TOKEN}}</span></a></code></pre></div>
+<p>{% endraw %}</p>
+<h2 id="troubleshooting-failed-workflow-runs">Troubleshooting failed workflow runs</h2>
+<p>If your workflow run fails, check the following:</p>
+<ul>
+<li>You are running the workflow only when the correct actor triggers it.</li>
+<li>You are checking out the correct <code>ref</code> for your <code>pull_request</code>.</li>
+<li>You aren’t trying to access secrets from within a Dependabot-triggered <code>pull_request</code>, <code>pull_request_review</code>, <code>pull_request_review_comment</code>, or <code>push</code> event.</li>
+<li>You aren’t trying to perform any <code>write</code> actions from within a Dependabot-triggered <code>pull_request</code>, <code>pull_request_review</code>, <code>pull_request_review_comment</code>, or <code>push</code> event.</li>
+</ul>
+<p>For information on writing and debugging {% data variables.product.prodname_actions %}, see “<a href="/actions/learn-github-actions">Learning GitHub Actions</a>.”</p>
+</body>
+</html>

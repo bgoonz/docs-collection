@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Reviewing deployments</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Reviewing deployments</h1>
+    </header>
+    <p>{% data reusables.actions.ae-beta %}</p>
+    <h2 id="about-required-reviews-in-workflows">
+      About required reviews in workflows
+    </h2>
+    <p>
+      Jobs that reference an environment configured with required reviewers will
+      wait for an approval before starting. While a job is awaiting approval, it
+      has a status of “Waiting”. If a job is not approved within 30 days, the
+      workflow run will be automatically canceled.
+    </p>
+    <p>
+      For more information about environments and required approvals, see “<a
+        href="/actions/reference/environments"
+        >Environments</a
+      >.”{% ifversion fpt or ghae-next or ghes &gt; 3.1 %} For information about
+      how to review deployments with the REST API, see “<a
+        href="/rest/reference/actions#workflow-runs"
+        >Workflow Runs</a
+      >.”{% endif %}
+    </p>
+    <h2 id="approving-or-rejecting-a-job">Approving or rejecting a job</h2>
+    <ol type="1">
+      <li>
+        Navigate to the workflow run that requires review. For more information
+        about navigating to a workflow run, see “<a
+          href="/actions/managing-workflow-runs/viewing-workflow-run-history"
+          >Viewing workflow run history</a
+        >.”
+      </li>
+      <li>
+        Click <strong>Review deployments</strong>.
+        <img
+          src="/assets/images/actions-review-deployments.png"
+          alt="Review deployments"
+        />
+      </li>
+      <li>
+        Select the job environment(s) to approve or reject. Optionally, leave a
+        comment.
+        <img
+          src="/assets/images/actions-approve-deployments.png"
+          alt="Approve deployments"
+        />
+      </li>
+      <li>
+        Approve or reject:
+        <ul>
+          <li>
+            To approve the job, click <strong>Approve and deploy</strong>. Once
+            a job is approved (and any other environment protection rules have
+            passed), the job will proceed. At this point, the job can access any
+            secrets stored in the environment.
+          </li>
+          <li>
+            To reject the job, click <strong>Reject</strong>. If a job is
+            rejected, the workflow will fail.
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </body>
+</html>

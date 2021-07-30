@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Managing billing for your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Managing billing for your enterprise</h1>
+    </header>
+    <p>{% ifversion ghae %}</p>
+    <p>
+      {% data reusables.github-ae.about-billing %} Once per day, {% data
+      variables.product.prodname_dotcom %} will count the number of users with a
+      license for your enterprise. {% data variables.product.company_short %}
+      bills you for each licensed user regardless of whether the user logged
+      into {% data variables.product.prodname_ghe_managed %} that day.
+    </p>
+    <p>
+      For commercial regions, the price per user per day is $1.2580645161. For
+      31-day months, the monthly cost for each user is $39. For months with
+      fewer days, the monthly cost is lower. Each billing month begins at a
+      fixed time on the first day of the calendar month.
+    </p>
+    <p>
+      If you add a licensed user mid-month, that user will only be included in
+      the count for the days they have a license. When you remove a licensed
+      user, that user will remain in the count until the end of that month.
+      Therefore, if you add a user mid-month and later remove the user in the
+      same month, the user will be included in the count from the day the user
+      was added through the end of the month. There is no additional cost if you
+      re-add a user during the same month the user was removed.
+    </p>
+    <p>
+      For example, here are the costs for users with licenses on different
+      dates.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>User</th>
+          <th>License dates</th>
+          <th>Counted days</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><span class="citation" data-cites="octocat">@octocat</span></td>
+          <td>January 1 - January 31</td>
+          <td>31</td>
+          <td>$39</td>
+        </tr>
+        <tr class="even">
+          <td><span class="citation" data-cites="robocat">@robocat</span></td>
+          <td>February 1 - February 28</td>
+          <td>28</td>
+          <td>$35.23</td>
+        </tr>
+        <tr class="odd">
+          <td><span class="citation" data-cites="devtocat">@devtocat</span></td>
+          <td>January 15 - January 31</td>
+          <td>17</td>
+          <td>$21.39</td>
+        </tr>
+        <tr class="even">
+          <td><span class="citation" data-cites="doctocat">@doctocat</span></td>
+          <td>January 1 - January 15</td>
+          <td>31</td>
+          <td>$39</td>
+        </tr>
+        <tr class="odd">
+          <td><span class="citation" data-cites="prodocat">@prodocat</span></td>
+          <td>January 7 - January 15</td>
+          <td>25</td>
+          <td>$31.45</td>
+        </tr>
+        <tr class="even">
+          <td><span class="citation" data-cites="monalisa">@monalisa</span></td>
+          <td>January 1 - January 7,<br />January 15 - January 31</td>
+          <td>31</td>
+          <td>$39</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      {% data variables.product.prodname_ghe_managed %} has a 500-user minimum
+      per instance. {% data variables.product.company_short %} bills you for a
+      minimum of 500 users per instance, even if there are fewer than 500 users
+      with a license that day.
+    </p>
+    <p>
+      You can see your current usage in your
+      <a href="https://portal.azure.com">Azure account portal</a>.
+    </p>
+    <p>{% else %}</p>
+    <h2 id="about-billing-for-enterprise-accounts">
+      About billing for enterprise accounts
+    </h2>
+    <p>
+      Enterprise accounts are currently available to {% data
+      variables.product.prodname_enterprise %} customers paying by invoice.
+      Billing for all of the organizations and {% data
+      variables.product.prodname_ghe_server %} instances connected to your
+      enterprise account is aggregated into a single bill charge for all of your
+      paid {% data variables.product.prodname_dotcom_the_website %} services
+      (including paid licenses in organizations, {% data
+      variables.large_files.product_name_long %} data packs, and subscriptions
+      for {% data variables.product.prodname_marketplace %} apps).
+    </p>
+    <p>
+      Enterprise owners and billing managers can access and manage all billing
+      settings for enterprise accounts. For more information about enterprise
+      accounts, {% ifversion fpt or ghae %}“<a
+        href="/github/setting-up-and-managing-your-enterprise/roles-in-an-enterprise#enterprise-members"
+        >Roles in an enterprise</a
+      >” and {% endif %}“<a
+        href="/articles/repository-permission-levels-for-an-organization"
+        >Repository permission levels for an organization</a
+      >.”For more information about managing billing managers, see “<a
+        href="/github/setting-up-and-managing-your-enterprise/inviting-people-to-manage-your-enterprise"
+        >Inviting people to manage your enterprise</a
+      >.”
+    </p>
+    <h2 id="viewing-your-current-invoice">Viewing your current invoice</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.billing-tab %} 4. Under “Quick Actions”,
+      click <strong>View invoice</strong>.
+      <img
+        src="/assets/images/help/business-accounts/view-invoice-link.png"
+        alt="View invoice link"
+      />
+    </p>
+    <h2 id="paying-your-current-invoice">Paying your current invoice</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.billing-tab %} 4. Under “Quick Actions”,
+      click <strong>Pay invoice</strong>.
+      <img
+        src="/assets/images/help/business-accounts/pay-invoice-link.png"
+        alt="Pay invoice link"
+      />
+      5. Under “Pay invoice”, type your credit card information in the secure
+      form, then click <strong>Pay Invoice</strong>.
+      <img
+        src="/assets/images/help/business-accounts/pay-invoice.png"
+        alt="Confirm and pay invoice"
+      />
+    </p>
+    <h2 id="downloading-your-current-invoice">
+      Downloading your current invoice
+    </h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.billing-tab %} 4. Under “Quick Actions”,
+      click <strong>Download current invoice</strong>.
+      <img
+        src="/assets/images/help/business-accounts/download-current-invoice.png"
+        alt="Download current invoice link"
+      />
+    </p>
+    <h2 id="viewing-your-payment-history">Viewing your payment history</h2>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.billing-tab %} 4. Under “Billing”, click the
+      <strong>Past Invoices</strong> tab to see a summary of your past billing
+      activity.
+      <img
+        src="/assets/images/help/business-accounts/view-payment-history.png"
+        alt="View payment history tab"
+      />
+    </p>
+    <p>{% endif %}</p>
+  </body>
+</html>

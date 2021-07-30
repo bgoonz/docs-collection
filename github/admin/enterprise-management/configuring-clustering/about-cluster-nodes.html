@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>About cluster nodes</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">About cluster nodes</h1>
+    </header>
+    <p>{% data reusables.enterprise_clustering.clustering-requires-https %}</p>
+    <h2 id="minimum-hardware-recommendations">
+      Minimum hardware recommendations
+    </h2>
+    <p>
+      Each node must have a root volume, as well as a separate data volume.
+      These are minimum recommendations. More resources may be required
+      depending on your usage, such as user activity and selected integrations.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: center">Services</th>
+          <th style="text-align: center">Minimum Memory Required</th>
+          <th style="text-align: center">
+            Minimum Data Volume Free Space Required
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: center">
+            <code>job-server</code>,<br /><code>memcache-server</code
+            >,<br /><code>web-server</code>
+          </td>
+          <td style="text-align: center">14 GB</td>
+          <td style="text-align: center">1 GB</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: center">
+            <code>consul-server</code>,<br /><code>mysql-server</code
+            >,<br /><code>redis-server</code>
+          </td>
+          <td style="text-align: center">14 GB</td>
+          <td style="text-align: center">10 GB</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: center">
+            <code>git-server</code>,<br /><code>metrics-server</code
+            >,<br /><code>pages-server</code>,<br /><code>storage-server</code>
+          </td>
+          <td style="text-align: center">7 GB</td>
+          <td style="text-align: center">10 GB</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: center"><code>elasticsearch-server</code></td>
+          <td style="text-align: center">14 GB</td>
+          <td style="text-align: center">10 GB</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="services-required-for-clustering">
+      Services required for clustering
+    </h2>
+    <p>
+      For adequate redundancy, use these minimum nodes operating each service.
+    </p>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Note:</strong> Your organization’s needs for scalability will
+      depend on many factors including the size and number of repositories,
+      number of users, and overall utilization.
+    </p>
+    <p>{% endtip %}</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th style="text-align: center">Services</th>
+          <th style="text-align: center">Minimum Nodes Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: center">
+            <code>job-server</code>,<br /><code>memcache-server</code
+            >,<br /><code>metrics-server</code>,<br /><code>web-server</code>
+          </td>
+          <td style="text-align: center">2</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: center">
+            <code>mysql-server</code>,<br /><code>redis-server</code>
+          </td>
+          <td style="text-align: center">2</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: center"><code>consul-server</code></td>
+          <td style="text-align: center">3</td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: center">
+            <code>git-server</code>,<br /><code>pages-server</code>,<br /><code
+              >storage-server</code
+            >
+          </td>
+          <td style="text-align: center">3</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: center"><code>elasticsearch-server</code></td>
+          <td style="text-align: center">3</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="cluster-design-recommendations">Cluster design recommendations</h2>
+    <p>
+      Clustering allows services that make up {% data
+      variables.product.prodname_ghe_server %} to be scaled out independently of
+      each other. This flexibility can be used to design and implement a cluster
+      that fits organizations with different scalability requirements. For
+      example, some organizations may need more storage throughput for large or
+      frequent fetches, but web server usage may be relatively low. Another
+      organization may have good performance with fewer storage resources, but
+      need many nodes running <code>pages-server</code> or
+      <code>elasticsearch-server</code>. Many different combinations are
+      possible. Work with your account representative to determine the best
+      cluster configuration for your specific needs.
+    </p>
+    <ul>
+      <li>
+        Spread redundant nodes across independent hardware. If you share CPU,
+        memory, or storage devices, you’ll reduce performance and introduce
+        single points of failure. Shared networking components can also reduce
+        throughput and increase risk of loss of connectivity in the event of an
+        outage.
+      </li>
+      <li>
+        Use fast storage. Storage area networks (SAN) are often optimized for
+        maximum space utilization, availability and fault tolerance, not
+        absolute throughput. {% data variables.product.prodname_ghe_server %}
+        clustering provides redundancy and availability, and will perform best
+        on the fastest storage available. Local SSD storage is recommended.
+      </li>
+      <li>
+        Establish tiers of nodes that make sense for your organization. An
+        example configuration:
+        <ul>
+          <li>
+            Front-end tier with two nodes and the following services:
+            <ul>
+              <li><code>web-server</code></li>
+              <li><code>jobs-server</code></li>
+              <li><code>memcache-server</code></li>
+            </ul>
+          </li>
+          <li>
+            Database tier with three nodes and the following services:
+            <ul>
+              <li><code>consul-server</code></li>
+              <li><code>mysql-server</code></li>
+              <li><code>redis-server</code></li>
+            </ul>
+          </li>
+          <li>
+            Search tier with three nodes and the following service:
+            <ul>
+              <li><code>elasticsearch-server</code></li>
+            </ul>
+          </li>
+          <li>
+            Storage tier with three nodes and the following services:
+            <ul>
+              <li><code>git-server</code></li>
+              <li><code>pages-server</code></li>
+              <li><code>storage-server</code></li>
+              <li><code>metrics-server</code></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="example-cluster-diagram">Example cluster diagram</h3>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note: This is only an example.</strong> Your organization’s
+      optimal cluster design will depend on your unique needs. Talk to your
+      dedicated representative or {% data
+      variables.contact.contact_enterprise_sales %} so we can help you determine
+      the best cluster configuration.
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      <img
+        src="/assets/images/enterprise/cluster/cluster-diagram.png"
+        alt="Example Cluster"
+        style="width: 800px; border: 0"
+      />
+    </p>
+  </body>
+</html>

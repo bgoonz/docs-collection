@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Removing files from Git Large File Storage</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Removing files from Git Large File Storage</h1>
+</header>
+<h2 id="removing-a-single-file">Removing a single file</h2>
+<ol type="1">
+<li>Remove the file from the repository’s Git history using either the <code>filter-branch</code> command or BFG Repo-Cleaner. For detailed information on using these, see “<a href="/articles/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>.”</li>
+<li>Navigate to your <em>.gitattributes</em> file.</li>
+</ol>
+<p>{% note %}</p>
+<p><strong>Note:</strong> Your <em>.gitattributes</em> file is generally saved within your local repository. In some cases, you may have created a global <em>.gitattributes</em> file that contains all of your {% data variables.large_files.product_name_short %} associations.</p>
+<p>{% endnote %} 3. Find and remove the associated {% data variables.large_files.product_name_short %} tracking rule within the <em>.gitattributes</em> file. 4. Save and exit the <em>.gitattributes</em> file.</p>
+<h2 id="removing-all-files-within-a-data-variables.large_files.product_name_short-repository">Removing all files within a {% data variables.large_files.product_name_short %} repository</h2>
+<ol type="1">
+<li>Remove the files from the repository’s Git history using either the <code>filter-branch</code> command or BFG Repo-Cleaner. For detailed information on using these, see “<a href="/articles/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>.”</li>
+<li>Optionally, to uninstall {% data variables.large_files.product_name_short %} in the repository, run:</li>
+</ol>
+<pre class="shell"><code>$ git lfs uninstall</code></pre>
+<p>For {% data variables.large_files.product_name_short %} versions below 1.1.0, run: <code>shell   $ git lfs uninit</code></p>
+<h2 id="data-variables.large_files.product_name_short-objects-in-your-repository">{% data variables.large_files.product_name_short %} objects in your repository</h2>
+<p>After you remove files from {% data variables.large_files.product_name_short %}, the {% data variables.large_files.product_name_short %} objects still exist on the remote storage{% ifversion fpt %} and will continue to count toward your {% data variables.large_files.product_name_short %} storage quota{% endif %}.</p>
+<p>To remove {% data variables.large_files.product_name_short %} objects from a repository, {% ifversion fpt %}delete and recreate the repository. When you delete a repository, any associated issues, stars, and forks are also deleted. For more information, see “<a href="/github/administering-a-repository/deleting-a-repository">Deleting a repository</a>.” If you need to purge a removed object and you are unable to delete the repository, please <a href="/github/working-with-github-support">contact support</a> for help.{% else %}contact your {% data variables.product.prodname_enterprise %} administrator to archive the objects. Archived objects are purged after three months.{% endif %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> If you removed a single file and have other {% data variables.large_files.product_name_short %} objects that you’d like to keep in your repository, after deleting and recreating your repository, reconfigure your {% data variables.large_files.product_name_short %}-associated files. For more information, see “<a href="#removing-a-single-file">Removing a single file</a>” and “<a href="/github/managing-large-files/configuring-git-large-file-storage">Configuring {% data variables.large_files.product_name_long %}</a>.”</p>
+<p>{% endnote %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/about-git-large-file-storage">About {% data variables.large_files.product_name_long %}</a>”</li>
+<li>“<a href="/articles/collaboration-with-git-large-file-storage/">Collaboration with {% data variables.large_files.product_name_long %}</a>”</li>
+<li>“<a href="/articles/installing-git-large-file-storage">Installing {% data variables.large_files.product_name_long %}</a>”</li>
+</ul>
+</body>
+</html>

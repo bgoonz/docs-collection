@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Key already in use</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Key already in use</h1>
+</header>
+<h2 id="finding-where-the-key-has-been-used">Finding where the key has been used</h2>
+<p>To determine where the key has already been used, open a terminal and type the <code>ssh</code> command. Use the <code>-i</code> flag to provide the path to the key you want to check:</p>
+<pre class="shell"><code>$ ssh -T -ai &lt;em&gt;~/.ssh/id_rsa&lt;/em&gt; git@{% data variables.command_line.codeblock %}
+# Connect to {% data variables.product.product_location %} using a specific ssh key
+&gt; Hi &lt;em&gt;username&lt;/em&gt;! You&#39;ve successfully authenticated, but GitHub does not
+&gt; provide shell access.</code></pre>
+<p>The <em>username</em> in the response is the {% data variables.product.product_name %} account that the key is currently attached to. If the response looks something like “username/repo”, the key has been attached to a repository as a <a href="/guides/managing-deploy-keys#deploy-keys"><em>deploy key</em></a>.</p>
+<h2 id="fixing-the-issue">Fixing the issue</h2>
+<p>To resolve the issue, first remove the key from the other account or repository and then <a href="/articles/adding-a-new-ssh-key-to-your-github-account">add it to your account</a>.</p>
+<p>If you don’t have permissions to transfer the key, and can’t contact a user who does, remove the keypair and <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a brand new one</a>.</p>
+<h2 id="deploy-keys">Deploy keys</h2>
+<p>Once a key has been attached to one repository as a deploy key, it cannot be used on another repository. If you’re running into this error while setting up deploy keys, see “<a href="/guides/managing-deploy-keys">Managing deploy keys</a>.”</p>
+</body>
+</html>

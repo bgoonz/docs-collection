@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Preparing to migrate data to your enterprise</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Preparing to migrate data to your enterprise</h1>
+</header>
+<h2 id="preparing-the-migrated-data-for-import-to-data-variables.product.prodname_ghe_server">Preparing the migrated data for import to {% data variables.product.prodname_ghe_server %}</h2>
+<ol type="1">
+<li><p>Using the <a href="https://linuxacademy.com/blog/linux/ssh-and-scp-howto-tips-tricks#scp"><code>scp</code></a> command, copy the migration archive generated from your source instance or organization to your {% data variables.product.prodname_ghe_server %} target:</p>
+<pre class="shell"><code>$ scp -P 122 &lt;em&gt;/path/to/archive/MIGRATION_GUID.tar.gz&lt;/em&gt; admin@&lt;em&gt;hostname&lt;/em&gt;:/home/admin/</code></pre></li>
+</ol>
+<p>{% data reusables.enterprise_installation.ssh-into-target-instance %}</p>
+<ol start="3" type="1">
+<li><p>Use the <code>ghe-migrator prepare</code> command to prepare the archive for import on the target instance and generate a new Migration GUID for you to use in subsequent steps:</p>
+<pre class="shell"><code>ghe-migrator prepare /home/admin/&lt;em&gt;MIGRATION_GUID&lt;/em&gt;.tar.gz</code></pre>
+<ul>
+<li>To start a new import attempt, run <code>ghe-migrator prepare</code> again and get a new Migration GUID.</li>
+<li>{% data reusables.enterprise_migrations.specify-staging-path %}</li>
+</ul></li>
+</ol>
+<h2 id="generating-a-list-of-migration-conflicts">Generating a list of migration conflicts</h2>
+<ol type="1">
+<li>Using the <code>ghe-migrator conflicts</code> command with the Migration GUID, generate a <em>conflicts.csv</em> file: <code>shell  $ ghe-migrator conflicts -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt; &gt; conflicts.csv</code>
+<ul>
+<li>If no conflicts are reported, you can safely import the data by following the steps in “<a href="/enterprise/admin/guides/migrations/applying-the-imported-data-on-github-enterprise-server/">Migrating data to your enterprise</a>”.</li>
+</ul></li>
+<li>If there are conflicts, using the <a href="https://linuxacademy.com/blog/linux/ssh-and-scp-howto-tips-tricks#scp"><code>scp</code></a> command, copy <em>conflicts.csv</em> to your local computer:</li>
+</ol>
+<pre class="shell"><code>$ scp -P 122 admin@&lt;em&gt;hostname&lt;/em&gt;:conflicts.csv ~/Desktop</code></pre>
+<ol start="3" type="1">
+<li>Continue to “<a href="#resolving-migration-conflicts-or-setting-up-custom-mappings">Resolving migration conflicts or setting up custom mappings</a>”.</li>
+</ol>
+<h2 id="reviewing-migration-conflicts">Reviewing migration conflicts</h2>
+<ol type="1">
+<li>Using a text editor or <a href="https://en.wikipedia.org/wiki/Comma-separated_values#Application_support">CSV-compatible spreadsheet software</a>, open <em>conflicts.csv</em>.</li>
+<li>With guidance from the examples and reference tables below, review the <em>conflicts.csv</em> file to ensure that the proper actions will be taken upon import.</li>
+</ol>
+<p>The <em>conflicts.csv</em> file contains a <em>migration map</em> of conflicts and recommended actions. A migration map lists out both what data is being migrated from the source, and how the data will be applied to the target.</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>model_name</code></th>
+<th><code>source_url</code></th>
+<th><code>target_url</code></th>
+<th><code>recommended_action</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user</code></td>
+<td><code>https://example-gh.source/octocat</code></td>
+<td><code>https://example-gh.target/octocat</code></td>
+<td><code>map</code></td>
+</tr>
+<tr class="even">
+<td><code>organization</code></td>
+<td><code>https://example-gh.source/octo-org</code></td>
+<td><code>https://example-gh.target/octo-org</code></td>
+<td><code>map</code></td>
+</tr>
+<tr class="odd">
+<td><code>repository</code></td>
+<td><code>https://example-gh.source/octo-org/widgets</code></td>
+<td><code>https://example-gh.target/octo-org/widgets</code></td>
+<td><code>rename</code></td>
+</tr>
+<tr class="even">
+<td><code>team</code></td>
+<td><code>https://example-gh.source/orgs/octo-org/teams/admins</code></td>
+<td><code>https://example-gh.target/orgs/octo-org/teams/admins</code></td>
+<td><code>merge</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each row in <em>conflicts.csv</em> provides the following information:</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>model_name</code></td>
+<td>The type of data being changed.</td>
+</tr>
+<tr class="even">
+<td><code>source_url</code></td>
+<td>The source URL of the data.</td>
+</tr>
+<tr class="odd">
+<td><code>target_url</code></td>
+<td>The expected target URL of the data.</td>
+</tr>
+<tr class="even">
+<td><code>recommended_action</code></td>
+<td>The preferred action <code>ghe-migrator</code> will take when importing the data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="possible-mappings-for-each-record-type">Possible mappings for each record type</h3>
+<p>There are several different mapping actions that <code>ghe-migrator</code> can take when transferring data:</p>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 23%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>action</code></th>
+<th>Description</th>
+<th>Applicable models</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>import</code></td>
+<td>(default) Data from the source is imported to the target.</td>
+<td>All record types</td>
+</tr>
+<tr class="even">
+<td><code>map</code></td>
+<td>Data from the source is replaced by existing data on the target.</td>
+<td>Users, organizations, repositories</td>
+</tr>
+<tr class="odd">
+<td><code>rename</code></td>
+<td>Data from the source is renamed, then copied over to the target.</td>
+<td>Users, organizations, repositories</td>
+</tr>
+<tr class="even">
+<td><code>map_or_rename</code></td>
+<td>If the target exists, map to that target. Otherwise, rename the imported model.</td>
+<td>Users</td>
+</tr>
+<tr class="odd">
+<td><code>merge</code></td>
+<td>Data from the source is combined with existing data on the target.</td>
+<td>Teams</td>
+</tr>
+</tbody>
+</table>
+<p><strong>We strongly suggest you review the <em>conflicts.csv</em> file and use <a href="/enterprise/admin/guides/migrations/reviewing-migration-data"><code>ghe-migrator audit</code></a> to ensure that the proper actions are being taken.</strong> If everything looks good, you can continue to “<a href="/enterprise/admin/guides/migrations/applying-the-imported-data-on-github-enterprise-server">Migrating data to your enterprise</a>”.</p>
+<h2 id="resolving-migration-conflicts-or-setting-up-custom-mappings">Resolving migration conflicts or setting up custom mappings</h2>
+<p>If you believe that <code>ghe-migrator</code> will perform an incorrect change, you can make corrections by changing the data in <em>conflicts.csv</em>. You can make changes to any of the rows in <em>conflicts.csv</em>.</p>
+<p>For example, let’s say you notice that the <code>octocat</code> user from the source is being mapped to <code>octocat</code> on the target:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>model_name</code></th>
+<th><code>source_url</code></th>
+<th><code>target_url</code></th>
+<th><code>recommended_action</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user</code></td>
+<td><code>https://example-gh.source/octocat</code></td>
+<td><code>https://example-gh.target/octocat</code></td>
+<td><code>map</code></td>
+</tr>
+</tbody>
+</table>
+<p>You can choose to map the user to a different user on the target. Suppose you know that <code>octocat</code> should actually be <code>monalisa</code> on the target. You can change the <code>target_url</code> column in <em>conflicts.csv</em> to refer to <code>monalisa</code>:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>model_name</code></th>
+<th><code>source_url</code></th>
+<th><code>target_url</code></th>
+<th><code>recommended_action</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user</code></td>
+<td><code>https://example-gh.source/octocat</code></td>
+<td><code>https://example-gh.target/monalisa</code></td>
+<td><code>map</code></td>
+</tr>
+</tbody>
+</table>
+<p>As another example, if you want to rename the <code>octo-org/widgets</code> repository to <code>octo-org/amazing-widgets</code> on the target instance, change the <code>target_url</code> to <code>octo-org/amazing-widgets</code> and the <code>recommend_action</code> to <code>rename</code>:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>model_name</code></th>
+<th><code>source_url</code></th>
+<th><code>target_url</code></th>
+<th><code>recommended_action</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>repository</code></td>
+<td><code>https://example-gh.source/octo-org/widgets</code></td>
+<td><code>https://example-gh.target/octo-org/amazing-widgets</code></td>
+<td><code>rename</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="adding-custom-mappings">Adding custom mappings</h3>
+<p>A common scenario during a migration is for migrated users to have different usernames on the target than they have on the source.</p>
+<p>Given a list of usernames from the source and a list of usernames on the target, you can build a CSV file with custom mappings and then apply it to ensure each user’s username and content is correctly attributed to them at the end of a migration.</p>
+<p>You can quickly generate a CSV of users being migrated in the CSV format needed to apply custom mappings by using the <a href="/enterprise/admin/guides/migrations/reviewing-migration-data"><code>ghe-migrator audit</code></a> command:</p>
+<pre class="shell"><code>$ ghe-migrator audit -m user -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt; &gt; users.csv</code></pre>
+<p>Now, you can edit that CSV and enter the new URL for each user you would like to map or rename, and then update the fourth column to have <code>map</code> or <code>rename</code> as appropriate.</p>
+<p>For example, to rename the user <code>octocat</code> to <code>monalisa</code> on the target <code>https://example-gh.target</code> you would create a row with the following content:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>model_name</code></th>
+<th><code>source_url</code></th>
+<th><code>target_url</code></th>
+<th><code>state</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user</code></td>
+<td><code>https://example-gh.source/octocat</code></td>
+<td><code>https://example-gh.target/monalisa</code></td>
+<td><code>rename</code></td>
+</tr>
+</tbody>
+</table>
+<p>The same process can be used to create mappings for each record that supports custom mappings. For more information, see <a href="/enterprise/admin/guides/migrations/reviewing-migration-conflicts#possible-mappings-for-each-record-type">our table on the possible mappings for records</a>.</p>
+<h3 id="applying-modified-migration-data">Applying modified migration data</h3>
+<ol type="1">
+<li><p>After making changes, use the <a href="https://linuxacademy.com/blog/linux/ssh-and-scp-howto-tips-tricks#scp"><code>scp</code></a> command to apply your modified <em>conflicts.csv</em> (or any other mapping <em>.csv</em> file in the correct format) to the target instance:</p>
+<pre class="shell"><code>$ scp -P 122 ~/Desktop/conflicts.csv admin@&lt;em&gt;hostname&lt;/em&gt;:/home/admin/</code></pre></li>
+<li><p>Re-map the migration data using the <code>ghe-migrator map</code> command, passing in the path to your modified <em>.csv</em> file and the Migration GUID:</p>
+<pre class="shell"><code>$ ghe-migrator map -i conflicts.csv  -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;</code></pre></li>
+<li><p>If the <code>ghe-migrator map -i conflicts.csv  -g MIGRATION_GUID</code> command reports that conflicts still exist, run through the migration conflict resolution process again.</p></li>
+</ol>
+</body>
+</html>

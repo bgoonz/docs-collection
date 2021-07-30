@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring SAML single sign-on for your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring SAML single sign-on for your enterprise</h1>
+    </header>
+    <h2 id="about-saml-sso">About SAML SSO</h2>
+    <p>{% ifversion ghae %}</p>
+    <p>
+      SAML SSO allows you to centrally control and secure access to {% data
+      variables.product.product_location %} from your SAML IdP. When an
+      unauthenticated user visits {% data variables.product.product_location %}
+      in a browser, {% data variables.product.product_name %} will redirect the
+      user to your SAML IdP to authenticate. After the user successfully
+      authenticates with an account on the IdP, the IdP redirects the user back
+      to {% data variables.product.product_location %}. {% data
+      variables.product.product_name %} validates the response from your IdP,
+      then grants access to the user.
+    </p>
+    <p>
+      After a user successfully authenticates on your IdP, the user’s SAML
+      session for {% data variables.product.product_location %} is active in the
+      browser for 24 hours. After 24 hours, the user must authenticate again
+      with your IdP.
+    </p>
+    <p>{% data reusables.saml.assert-the-administrator-attribute %}</p>
+    <p>
+      {% data reusables.scim.after-you-configure-saml %} For more information,
+      see “<a
+        href="/admin/authentication/configuring-user-provisioning-for-your-enterprise"
+        >Configuring user provisioning for your enterprise</a
+      >.”
+    </p>
+    <p>{% endif %}</p>
+    <h2 id="supported-identity-providers">Supported identity providers</h2>
+    <p>
+      {% data variables.product.product_name %} supports SAML SSO with IdPs that
+      implement the SAML 2.0 standard. For more information, see the
+      <a href="https://wiki.oasis-open.org/security">SAML Wiki</a> on the OASIS
+      website.
+    </p>
+    <p>
+      {% data variables.product.company_short %} has tested SAML SSO for {% data
+      variables.product.product_name %} with the following IdPs.
+    </p>
+    <p>{% ifversion ghae %} - Azure AD {% endif %}</p>
+    <h2 id="enabling-saml-sso">Enabling SAML SSO</h2>
+    <p>{% ifversion ghae %}</p>
+    <p>{% data reusables.saml.ae-enable-saml-sso-during-bootstrapping %}</p>
+    <p>
+      The following IdPs provide documentation about configuring SAML SSO for {%
+      data variables.product.product_name %}. If your IdP isn’t listed, please
+      contact your IdP to request support for {% data
+      variables.product.product_name %}.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">IdP</th>
+          <th style="text-align: left">More information</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">Azure AD</td>
+          <td style="text-align: left">
+            <a
+              href="https://docs.microsoft.com/azure/active-directory/saas-apps/github-ae-tutorial"
+              >Tutorial: Azure Active Directory single sign-on (SSO) integration
+              with {% data variables.product.prodname_ghe_managed %}</a
+            >
+            in the Microsoft Docs
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      During initialization for {% data variables.product.product_name %}, you
+      must configure {% data variables.product.product_name %} as a SAML Service
+      Provider (SP) on your IdP. You must enter several unique values on your
+      IdP to configure {% data variables.product.product_name %} as a valid SP.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th style="text-align: left">Value</th>
+          <th style="text-align: left">Other names</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td style="text-align: left">SP Entity ID</td>
+          <td style="text-align: left">SP URL</td>
+          <td style="text-align: left">
+            Your top-level URL for {% data
+            variables.product.prodname_ghe_managed %}
+          </td>
+          <td style="text-align: left">
+            <code>https://<em>YOUR-GITHUB-AE-HOSTNAME</em></code>
+          </td>
+        </tr>
+        <tr class="even">
+          <td style="text-align: left">
+            SP Assertion Consumer Service (ACS) URL
+          </td>
+          <td style="text-align: left">Reply URL</td>
+          <td style="text-align: left">URL where IdP sends SAML responses</td>
+          <td style="text-align: left">
+            <code>https://<em>YOUR-GITHUB-AE-HOSTNAME</em>/saml/consume</code>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align: left">SP Single Sign-On (SSO) URL</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">URL where IdP begins SSO</td>
+          <td style="text-align: left">
+            <code>https://<em>YOUR-GITHUB-AE-HOSTNAME</em>/sso</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{% endif %}</p>
+    <h2 id="editing-the-saml-sso-configuration">
+      Editing the SAML SSO configuration
+    </h2>
+    <p>
+      If the details for your IdP change, you’ll need to edit the SAML SSO
+      configuration for {% data variables.product.product_location %}. For
+      example, if the certificate for your IdP expires, you can edit the value
+      for the public certificate.
+    </p>
+    <p>{% ifversion ghae %}</p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note</strong>: {% data
+      reusables.saml.contact-support-if-your-idp-is-unavailable %}
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.security-tab %} 1. Under “SAML single
+      sign-on”, type the new details for your IdP.
+      <img
+        src="/assets/images/help/saml/ae-edit-idp-details.png"
+        alt="Text entry fields with IdP details for SAML SSO configuration for an enterprise"
+      />
+      1. Optionally, click {% octicon “pencil” aria-label=“The edit icon” %} to
+      configure a new signature or digest method.
+      <img
+        src="/assets/images/help/saml/ae-edit-idp-details-edit-signature-and-digest.png"
+        alt="Edit icon for changing signature and digest method"
+      />
+    </p>
+    <pre><code>- Use the drop-down menus and choose the new signature or digest method.
+  ![Drop-down menus for choosing a new signature or digest method](/assets/images/help/saml/ae-edit-idp-details-edit-signature-and-digest-drop-down-menus.png)</code></pre>
+    <ol type="1">
+      <li>
+        To ensure that the information you’ve entered is correct, click
+        <strong>Test SAML configuration</strong>.
+        <img
+          src="/assets/images/help/saml/ae-edit-idp-details-test-saml-configuration.png"
+          alt="“Test SAML configuration” button"
+        />
+      </li>
+      <li>
+        Click <strong>Save</strong>.
+        <img
+          src="/assets/images/help/saml/ae-edit-idp-details-save.png"
+          alt="“Save” button for SAML SSO configuration"
+        />
+      </li>
+      <li>
+        Optionally, to automatically provision and deprovision user accounts for
+        {% data variables.product.product_location %}, reconfigure user
+        provisioning with SCIM. For more information, see “<a
+          href="/admin/authentication/configuring-user-provisioning-for-your-enterprise"
+          >Configuring user provisioning for your enterprise</a
+        >.”
+      </li>
+    </ol>
+    <p>{% endif %}</p>
+    <h2 id="disabling-saml-sso">Disabling SAML SSO</h2>
+    <p>{% ifversion ghae %}</p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning</strong>: If you disable SAML SSO for {% data
+      variables.product.product_location %}, users without existing SAML SSO
+      sessions cannot sign into {% data variables.product.product_location %}.
+      SAML SSO sessions on {% data variables.product.product_location %} end
+      after 24 hours.
+    </p>
+    <p>{% endwarning %}</p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note</strong>: {% data
+      reusables.saml.contact-support-if-your-idp-is-unavailable %}
+    </p>
+    <p>{% endnote %}</p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.security-tab %} 1. Under “SAML single
+      sign-on”, unselect <strong>Enable SAML authentication</strong>.
+      <img
+        src="/assets/images/help/saml/ae-saml-disabled.png"
+        alt="Checkbox for “Enable SAML authentication”"
+      />
+      1. To disable SAML SSO and require signing in with the built-in user
+      account you created during initialization, click <strong>Save</strong>.
+      <img
+        src="/assets/images/help/saml/ae-saml-disabled-save.png"
+        alt="“Save” button for SAML SSO configuration"
+      />
+    </p>
+    <p>{% endif %}</p>
+  </body>
+</html>

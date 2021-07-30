@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Verifying or approving a domain for your organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Verifying or approving a domain for your organization</h1>
+</header>
+<h2 id="about-domain-verification">About domain verification</h2>
+<p>After verifying ownership of your organization’s domains, a “Verified” badge will display on the organization’s profile. If your organization is on {% data variables.product.prodname_ghe_cloud %} and has agreed to the Corporate Terms of Service, organization owners will be able to verify the identity of organization members by viewing each member’s email address within the verified domain. For more information, see “<a href="/articles/about-your-organization-s-profile/">About your organization’s profile page</a>” and “<a href="/articles/upgrading-to-the-corporate-terms-of-service">Upgrading to the Corporate Terms of Service</a>.”</p>
+<p>If your organization is owned by an enterprise account, a “Verified” badge will display on your organization’s profile for any domains verified for the enterprise account, in addition to any domains verified for the organization. Organization owners can view any domains that an enterprise owner has verified or approved, and edit the domains if the organization owner is also an enterprise owners. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/verifying-or-approving-a-domain-for-your-enterprise-account">Verifying or approving a domain for your enterprise account</a>.”</p>
+<p>{% data reusables.organizations.verified-domains-details %}</p>
+<p>On {% data variables.product.prodname_ghe_cloud %}, after verifying ownership of your organization’s domain, you can restrict email notifications for the organization to that domain. For more information, see “<a href="/organizations/keeping-your-organization-secure/restricting-email-notifications-for-your-organization">Restricting email notifications for your organization</a>.”</p>
+<h2 id="about-domain-approval">About domain approval</h2>
+<p>{% data reusables.enterprise-accounts.approved-domains-beta-note %}</p>
+<p>{% data reusables.enterprise-accounts.approved-domains-about %}</p>
+<p>After you approve domains for your organization, you can restrict email notifications for activity within the organization to users with verified email addresses within verified or approved domains. For more information, see “<a href="/organizations/keeping-your-organization-secure/restricting-email-notifications-for-your-organization">Restricting email notifications for your organization</a>.”</p>
+<p>Enterprise owners cannot see which organization members or email addresses receive notifications within approved domains.</p>
+<p>Enterprise owners can also approve additional domains for organizations owned by the enterprise. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/verifying-or-approving-a-domain-for-your-enterprise-account">Verifying or approving a domain for your enterprise account</a>.”</p>
+<h2 id="verifying-a-domain-for-your-organization">Verifying a domain for your organization</h2>
+<p>To verify a domain, you must have access to modify domain records with your domain hosting service.</p>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.organizations.verified-domains %} {% data reusables.organizations.add-a-domain %} {% data reusables.organizations.add-domain %} {% data reusables.organizations.add-dns-txt-record %} 1. Wait for your DNS configuration to change, which may take up to 72 hours. You can confirm your DNS configuration has changed by running the <code>dig</code> command on the command line, replacing <code>ORGANIZATION</code> with the name of your organization and <code>example.com</code> with the domain you’d like to verify. You should see your new TXT record listed in the command output. <code>shell    $ dig _github-challenge-&lt;em&gt;ORGANIZATION&lt;/em&gt;.&lt;em&gt;example.com&lt;/em&gt; +nostats +nocomments +nocmd TXT</code> 1. After confirming your TXT record is added to your DNS, follow steps one through three above to navigate to your organization’s approved and verified domains. {% data reusables.organizations.continue-verifying-domain %} 11. Optionally, once the “Verified” badge is visible on your organization’s profile page, you can delete the TXT entry from the DNS record at your domain hosting service. <img src="/assets/images/help/organizations/verified-badge.png" alt="Verified badge" /></p>
+<h2 id="approving-a-domain-for-your-organization">Approving a domain for your organization</h2>
+<p>{% ifversion fpt or ghes &gt; 3.1 %}</p>
+<p>{% data reusables.enterprise-accounts.approved-domains-beta-note %}</p>
+<p>{% endif %}</p>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.organizations.verified-domains %} {% data reusables.organizations.add-a-domain %} {% data reusables.organizations.add-domain %} {% data reusables.organizations.domains-approve-it-instead %} {% data reusables.organizations.domains-approve-domain %}</p>
+<h2 id="removing-an-approved-or-verified-domain">Removing an approved or verified domain</h2>
+<p>{% data reusables.profile.access_org %} {% data reusables.profile.org_settings %} {% data reusables.organizations.verified-domains %} 1. To the right of the domain to remove, click {% octicon “kebab-horizontal” aria-label=“The horizontal kebab icon” %}, then click <strong>Delete</strong>. <img src="/assets/images/help/organizations/domains-delete.png" alt="“Delete” for a domain" /></p>
+</body>
+</html>

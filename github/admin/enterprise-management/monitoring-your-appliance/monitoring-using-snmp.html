@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Monitoring using SNMP</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Monitoring using SNMP</h1>
+    </header>
+    <p>
+      SNMP is a common standard for monitoring devices over a network. We
+      strongly recommend enabling SNMP so you can monitor the health of {% data
+      variables.product.product_location %} and know when to add more memory,
+      storage, or processor power to the host machine.
+    </p>
+    <p>
+      {% data variables.product.prodname_enterprise %} has a standard SNMP
+      installation, so you can take advantage of the
+      <a href="http://www.monitoring-plugins.org/doc/man/check_snmp.html"
+        >many plugins</a
+      >
+      available for Nagios or for any other monitoring system.
+    </p>
+    <h2 id="configuring-snmp-v2c">Configuring SNMP v2c</h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.access-monitoring %} {% data
+      reusables.enterprise_management_console.enable-snmp %} 4. In the
+      <strong>Community string</strong> field, enter a new community string. If
+      left blank, this defaults to <code>public</code>.
+      <img
+        src="/assets/images/enterprise/management-console/community-string.png"
+        alt="Field to add the community string"
+      />
+      {% data reusables.enterprise_management_console.save-settings %} 5. Test
+      your SNMP configuration by running the following command on a separate
+      workstation with SNMP support in your network:
+      <code
+        >shell # community-string is your community string # hostname is the IP
+        or domain of your Enterprise instance $ snmpget -v 2c -c
+        &lt;em&gt;community-string&lt;/em&gt; -O e &lt;em&gt;hostname&lt;/em&gt;
+        hrSystemDate.0</code
+      >
+    </p>
+    <p>
+      This should return the system time on {% data
+      variables.product.product_location %} host.
+    </p>
+    <h2 id="user-based-security">User-based security</h2>
+    <p>
+      If you enable SNMP v3, you can take advantage of increased user based
+      security through the User Security Model (USM). For each unique user, you
+      can specify a security level: - <code>noAuthNoPriv</code>: This security
+      level provides no authentication and no privacy. -
+      <code>authNoPriv</code>: This security level provides authentication but
+      no privacy. To query the appliance you’ll need a username and password
+      (that must be at least eight characters long). Information is sent without
+      encryption, similar to SNMPv2. The authentication protocol can be either
+      MD5 or SHA and defaults to SHA. - <code>authPriv</code>: This security
+      level provides authentication with privacy. Authentication, including a
+      minimum eight-character authentication password, is required and responses
+      are encrypted. A privacy password is not required, but if provided it must
+      be at least eight characters long. If a privacy password isn’t provided,
+      the authentication password is used. The privacy protocol can be either
+      DES or AES and defaults to AES.
+    </p>
+    <h2 id="configuring-users-for-snmp-v3">Configuring users for SNMP v3</h2>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} {%
+      data reusables.enterprise_management_console.access-monitoring %} {% data
+      reusables.enterprise_management_console.enable-snmp %} 4. Select
+      <strong>SNMP v3</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/enable-snmpv3.png"
+        alt="Button to enable SNMP v3"
+      />
+      5. In “Username”, type the unique username of your SNMP v3 user.
+      <img
+        src="/assets/images/enterprise/management-console/snmpv3-username.png"
+        alt="Field to type the SNMP v3 username"
+      />
+      6. In the <strong>Security Level</strong> dropdown menu, click the
+      security level for your SNMP v3 user.
+      <img
+        src="/assets/images/enterprise/management-console/snmpv3-securitylevel.png"
+        alt="Dropdown menu for the SNMP v3 user’s security level"
+      />
+      7. For SNMP v3 users with the <code>authnopriv</code> security level:
+      <img
+        src="/assets/images/enterprise/management-console/snmpv3-authnopriv.png"
+        alt="Settings for the authnopriv security level"
+      />
+      - {% data reusables.enterprise_management_console.authentication-password
+      %} - {% data
+      reusables.enterprise_management_console.authentication-protocol %} 8. For
+      SNMP v3 users with the <code>authpriv</code> security level:
+      <img
+        src="/assets/images/enterprise/management-console/snmpv3-authpriv.png"
+        alt="Settings for the authpriv security level"
+      />
+      - {% data reusables.enterprise_management_console.authentication-password
+      %} - {% data
+      reusables.enterprise_management_console.authentication-protocol %} -
+      Optionally, in “Privacy password”, type the privacy password. - On the
+      right side of “Privacy password”, in the
+      <strong>Protocol</strong> dropdown menu, click the privacy protocol method
+      you want to use. 9. Click <strong>Add user</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/snmpv3-adduser.png"
+        alt="Button to add SNMP v3 user"
+      />
+      {% data reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h4 id="querying-snmp-data">Querying SNMP data</h4>
+    <p>
+      Both hardware and software-level information about your appliance is
+      available with SNMP v3. Due to the lack of encryption and privacy for the
+      <code>noAuthNoPriv</code> and <code>authNoPriv</code> security levels, we
+      exclude the <code>hrSWRun</code> table (1.3.6.1.2.1.25.4) from the
+      resulting SNMP reports. We include this table if you’re using the
+      <code>authPriv</code> security level. For more information, see the “<a
+        href="http://oidref.com/1.3.6.1.2.1.25.4"
+        >OID reference documentation</a
+      >.”
+    </p>
+    <p>
+      With SNMP v2c, only hardware-level information about your appliance is
+      available. The applications and services within {% data
+      variables.product.prodname_enterprise %} do not have OIDs configured to
+      report metrics. Several MIBs are available, which you can see by running
+      <code>snmpwalk</code> on a separate workstation with SNMP support in your
+      network:
+    </p>
+    <pre class="shell"><code># community-string is your community string
+# hostname is the IP or domain of your Enterprise instance
+$ snmpwalk -v 2c -c &lt;em&gt;community-string&lt;/em&gt; -O e &lt;em&gt;hostname&lt;/em&gt;</code></pre>
+    <p>
+      Of the available MIBs for SNMP, the most useful is
+      <code>HOST-RESOURCES-MIB</code> (1.3.6.1.2.1.25). See the table below for
+      some important objects in this MIB:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 22%" />
+        <col style="width: 16%" />
+        <col style="width: 61%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>OID</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>hrSystemDate.2</td>
+          <td>1.3.6.1.2.1.25.1.2</td>
+          <td>The hosts notion of the local date and time of day.</td>
+        </tr>
+        <tr class="even">
+          <td>hrSystemUptime.0</td>
+          <td>1.3.6.1.2.1.25.1.1.0</td>
+          <td>How long it’s been since the host was last initialized.</td>
+        </tr>
+        <tr class="odd">
+          <td>hrMemorySize.0</td>
+          <td>1.3.6.1.2.1.25.2.2.0</td>
+          <td>The amount of RAM on the host.</td>
+        </tr>
+        <tr class="even">
+          <td>hrSystemProcesses.0</td>
+          <td>1.3.6.1.2.1.25.1.6.0</td>
+          <td>
+            The number of process contexts currently loaded or running on the
+            host.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>hrStorageUsed.1</td>
+          <td>1.3.6.1.2.1.25.2.3.1.6.1</td>
+          <td>
+            The amount of storage space consumed on the host, in
+            hrStorageAllocationUnits.
+          </td>
+        </tr>
+        <tr class="even">
+          <td>hrStorageAllocationUnits.1</td>
+          <td>1.3.6.1.2.1.25.2.3.1.4.1</td>
+          <td>The size, in bytes, of an hrStorageAllocationUnit</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      For example, to query for <code>hrMemorySize</code> with SNMP v3, run the
+      following command on a separate workstation with SNMP support in your
+      network:
+    </p>
+    <pre
+      class="shell"
+    ><code># username is the unique username of your SNMP v3 user
+# auth password is the authentication password
+# privacy password is the privacy password
+# hostname is the IP or domain of your Enterprise instance
+$ snmpget -v 3 -u &lt;em&gt;username&lt;/em&gt; -l authPriv \
+  -A &quot;&lt;em&gt;auth password&lt;/em&gt;&quot; -a SHA \
+  -X &quot;&lt;em&gt;privacy password&lt;/em&gt;&quot; -x AES \
+  -O e &lt;em&gt;hostname&lt;/em&gt; HOST-RESOURCES-MIB::hrMemorySize.0</code></pre>
+    <p>
+      With SNMP v2c, to query for <code>hrMemorySize</code>, run the following
+      command on a separate workstation with SNMP support in your network:
+    </p>
+    <pre class="shell"><code># community-string is your community string
+# hostname is the IP or domain of your Enterprise instance
+snmpget -v 2c -c &lt;em&gt;community-string&lt;/em&gt; &lt;em&gt;hostname&lt;/em&gt; HOST-RESOURCES-MIB::hrMemorySize.0</code></pre>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Note:</strong> To prevent leaking information about services
+      running on your appliance, we exclude the <code>hrSWRun</code> table
+      (1.3.6.1.2.1.25.4) from the resulting SNMP reports unless you’re using the
+      <code>authPriv</code> security level with SNMP v3. If you’re using the
+      <code>authPriv</code> security level, we include the
+      <code>hrSWRun</code> table.
+    </p>
+    <p>{% endtip %}</p>
+    <p>
+      For more information on OID mappings for common system attributes in SNMP,
+      see “<a
+        href="http://www.linux-admins.net/2012/02/linux-snmp-oids-for-cpumemory-and-disk.html"
+        >Linux SNMP OID’s for CPU, Memory and Disk Statistics</a
+      >”.
+    </p>
+  </body>
+</html>

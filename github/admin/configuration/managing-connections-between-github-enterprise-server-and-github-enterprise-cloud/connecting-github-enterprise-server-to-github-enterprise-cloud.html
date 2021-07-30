@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>
+      Connecting GitHub Enterprise Server to GitHub Enterprise Cloud
+    </title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">
+        Connecting GitHub Enterprise Server to GitHub Enterprise Cloud
+      </h1>
+    </header>
+    <h2 id="about-data-variables.product.prodname_github_connect">
+      About {% data variables.product.prodname_github_connect %}
+    </h2>
+    <p>
+      To enable {% data variables.product.prodname_github_connect %}, you must
+      configure the connection in both {% data
+      variables.product.product_location_enterprise %} and in your {% data
+      variables.product.prodname_ghe_cloud %} organization or enterprise
+      account.
+    </p>
+    <p>
+      To configure a connection, your proxy configuration must allow
+      connectivity to <code>github.com</code> and <code>api.github.com</code>.
+      For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-an-outbound-web-proxy-server"
+        >Configuring an outbound web proxy server</a
+      >.”
+    </p>
+    <p>
+      After enabling {% data variables.product.prodname_github_connect %}, you
+      will be able to enable features such as unified search and unified
+      contributions. For more information about all of the features available,
+      see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/managing-connections-between-github-enterprise-server-and-github-enterprise-cloud"
+        >Managing connections between {% data
+        variables.product.prodname_ghe_server %} and {% data
+        variables.product.prodname_ghe_cloud %}</a
+      >.”
+    </p>
+    <p>
+      When you connect {% data variables.product.product_location_enterprise %}
+      to {% data variables.product.prodname_ghe_cloud %}, a record on {% data
+      variables.product.prodname_dotcom_the_website %} stores information about
+      the connection: - The public key portion of your {% data
+      variables.product.prodname_ghe_server %} license - A hash of your {% data
+      variables.product.prodname_ghe_server %} license - The customer name on
+      your {% data variables.product.prodname_ghe_server %} license - The
+      hostname of {% data variables.product.product_location_enterprise %} - The
+      version of {% data variables.product.product_location_enterprise %} - The
+      organization or enterprise account on {% data
+      variables.product.prodname_dotcom_the_website %} that’s connected to {%
+      data variables.product.product_location_enterprise %} - The authentication
+      token that’s used by {% data variables.product.product_location_enterprise
+      %} to make requests to {% data
+      variables.product.prodname_dotcom_the_website %}
+    </p>
+    <p>
+      Enabling {% data variables.product.prodname_github_connect %} also creates
+      a {% data variables.product.prodname_github_app %} owned by your {% data
+      variables.product.prodname_ghe_cloud %} organization or enterprise
+      account. {% data variables.product.prodname_ghe_server %} uses the {% data
+      variables.product.prodname_github_app %}’s credentials to make requests to
+      {% data variables.product.prodname_dotcom_the_website %}.
+    </p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} stores credentials from
+      the {% data variables.product.prodname_github_app %}. These credentials
+      will be replicated to any high availability or clustering environments,
+      and stored in any backups, including snapshots created by {% data
+      variables.product.prodname_enterprise_backup_utilities %}. - An
+      authentication token, which is valid for one hour - A private key, which
+      is used to generate a new authentication token
+    </p>
+    <p>
+      Enabling {% data variables.product.prodname_github_connect %} will not
+      allow {% data variables.product.prodname_dotcom_the_website %} users to
+      make changes to {% data variables.product.prodname_ghe_server %}.
+    </p>
+    <p>
+      For more information about managing enterprise accounts using the GraphQL
+      API, see “<a href="/graphql/guides/managing-enterprise-accounts"
+        >Enterprise accounts</a
+      >.” ## Enabling {% data variables.product.prodname_github_connect %}
+    </p>
+    <ol type="1">
+      <li>
+        Sign in to {% data variables.product.product_location_enterprise %} and
+        {% data variables.product.prodname_dotcom_the_website %}. {% data
+        reusables.enterprise-accounts.access-enterprise %} {% data
+        reusables.enterprise-accounts.settings-tab %} {% data
+        reusables.enterprise-accounts.github-connect-tab %}
+      </li>
+      <li>
+        Under “{% data variables.product.prodname_dotcom_the_website %} is not
+        enabled yet”, click
+        <strong
+          >Enable {% data variables.product.prodname_github_connect %}</strong
+        >. By clicking
+        <strong
+          >Enable {% data variables.product.prodname_github_connect %}</strong
+        >, you agree to the
+        <a
+          href="/articles/github-connect-addendum-to-the-github-enterprise-license-agreement/"
+          class="dotcom-only"
+          >{% data variables.product.prodname_github_connect %} Addendum to the
+          {% data variables.product.prodname_enterprise %} License Agreement</a
+        >.
+        <img
+          src="/assets/images/enterprise/business-accounts/enable-github-connect-button.png"
+          alt="Enable GitHub Connect button"
+        />
+      </li>
+      <li>
+        Next to the enterprise account or organization you’d like to connect,
+        click <strong>Connect</strong>.
+        <img
+          src="/assets/images/enterprise/business-accounts/choose-enterprise-or-org-connect.png"
+          alt="Connect button next to an enterprise account or business"
+        />
+      </li>
+    </ol>
+    <h2
+      id="disconnecting-a-data-variables.product.prodname_ghe_cloud-organization-or-enterprise-account-from-data-variables.product.product_location_enterprise"
+    >
+      Disconnecting a {% data variables.product.prodname_ghe_cloud %}
+      organization or enterprise account from {% data
+      variables.product.product_location_enterprise %}
+    </h2>
+    <p>
+      When you disconnect from {% data variables.product.prodname_ghe_cloud %},
+      the {% data variables.product.prodname_github_connect %} {% data
+      variables.product.prodname_github_app %} is deleted from your enterprise
+      account or organization and credentials stored on {% data
+      variables.product.product_location_enterprise %} are deleted.
+    </p>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.github-connect-tab %} 5. Next to the
+      enterprise account or organization you’d like to disconnect, click
+      <strong
+        >Disable {% data variables.product.prodname_github_connect %}</strong
+      >.
+      <img
+        src="/assets/images/enterprise/business-accounts/disable-github-connect-button.png"
+        alt="Disable GitHub Connect button next to an enterprise account or organization name"
+      />
+      6. Read the information about disconnecting and click
+      <strong
+        >Disable {% data variables.product.prodname_github_connect %}</strong
+      >.
+      <img
+        src="/assets/images/enterprise/business-accounts/confirm-disable-github-connect.png"
+        alt="Modal with warning information about disconnecting and confirmation button"
+      />
+    </p>
+  </body>
+</html>

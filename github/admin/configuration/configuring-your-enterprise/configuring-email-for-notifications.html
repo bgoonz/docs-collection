@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring email for notifications</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring email for notifications</h1>
+    </header>
+    <p>
+      {% ifversion ghae %} Enterprise owners can configure email for
+      notifications. {% endif %} ## Configuring SMTP for your enterprise
+    </p>
+    <p>
+      {% ifversion ghes %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.management-console %} 2. At the
+      top of the page, click <strong>Settings</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/settings-tab.png"
+        alt="Settings tab"
+      />
+      3. In the left sidebar, click <strong>Email</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/email-sidebar.png"
+        alt="Email tab"
+      />
+      4. Select <strong>Enable email</strong>. This will enable both outbound
+      and inbound email, however for inbound email to work you will also need to
+      configure your DNS settings as described below in “<a
+        href="#configuring-dns-and-firewall-settings-to-allow-incoming-emails"
+        >Configuring DNS and firewall settings to allow incoming emails</a
+      >.”
+      <img
+        src="/assets/images/enterprise/management-console/enable-outbound-email.png"
+        alt="Enable outbound email"
+      />
+      5. Type the settings for your SMTP server. - In the
+      <strong>Server address</strong> field, type the address of your SMTP
+      server. - In the <strong>Port</strong> field, type the port that your SMTP
+      server uses to send email. - In the <strong>Domain</strong> field, type
+      the domain name that your SMTP server will send with a HELO response, if
+      any. - Select the <strong>Authentication</strong> dropdown, and choose the
+      type of encryption used by your SMTP server. - In the
+      <strong>No-reply email address</strong> field, type the email address to
+      use in the From and To fields for all notification emails.<br />
+      6. If you want to discard all incoming emails that are addressed to the
+      no-reply email address, select
+      <strong>Discard email addressed to the no-reply email address</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/discard-noreply-emails.png"
+        alt="Checkbox to discard emails addressed to the no-reply email address"
+      />
+      7. Under <strong>Support</strong>, choose a type of link to offer
+      additional support to your users. - <strong>Email:</strong> An internal
+      email address. - <strong>URL:</strong> A link to an internal support site.
+      You must include either <code>http://</code> or <code>https://</code>.
+      <img
+        src="/assets/images/enterprise/management-console/support-email-url.png"
+        alt="Support email or URL"
+      />
+      8. <a href="#testing-email-delivery">Test email delivery</a>. {% elsif
+      ghae %} {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.email-tab %} 2. Select
+      <strong>Enable email</strong>.
+      <img
+        src="/assets/images/enterprise/configuration/ae-enable-email-configure.png"
+        alt="“Enable” checkbox for email settings configuration"
+      />
+      3. Type the settings for your email server. - In the
+      <strong>Server address</strong> field, type the address of your SMTP
+      server. - In the <strong>Port</strong> field, type the port that your SMTP
+      server uses to send email. - In the <strong>Domain</strong> field, type
+      the domain name that your SMTP server will send with a HELO response, if
+      any. - Select the <strong>Authentication</strong> dropdown, and choose the
+      type of encryption used by your SMTP server. - In the
+      <strong>No-reply email address</strong> field, type the email address to
+      use in the From and To fields for all notification emails. 4. If you want
+      to discard all incoming emails that are addressed to the no-reply email
+      address, select
+      <strong>Discard email addressed to the no-reply email address</strong>.
+      <img
+        src="/assets/images/enterprise/configuration/ae-discard-email.png"
+        alt="“Discard” checkbox for email settings configuration"
+      />
+      5. Click <strong>Test email settings</strong>.
+      <img
+        src="/assets/images/enterprise/configuration/ae-test-email.png"
+        alt="“Test email settings” button for email settings configuration"
+      />
+      6. Under “Send test email to,” type the email address where you want to
+      send a test email, then click <strong>Send test email</strong>.
+      <img
+        src="/assets/images/enterprise/configuration/ae-send-test-email.png"
+        alt="“Send test email” button for email settings configuration"
+      />
+      7. Click <strong>Save</strong>.
+      <img
+        src="/assets/images/enterprise/configuration/ae-save.png"
+        alt="“Save” button for enterprise support contact configuration"
+      />
+      {% endif %}
+    </p>
+    <p>{% ifversion ghes %} ## Testing email delivery</p>
+    <ol type="1">
+      <li>
+        At the top of the <strong>Email</strong> section, click
+        <strong>Test email settings</strong>.
+        <img
+          src="/assets/images/enterprise/management-console/test-email.png"
+          alt="Test email settings"
+        />
+      </li>
+      <li>
+        In the <strong>Send test email to</strong> field, type an address to
+        send the test email to.
+        <img
+          src="/assets/images/enterprise/management-console/test-email-address.png"
+          alt="Test email address"
+        />
+      </li>
+      <li>
+        Click <strong>Send test email</strong>.
+        <img
+          src="/assets/images/enterprise/management-console/test-email-address-send.png"
+          alt="Send test email"
+        />
+      </li>
+    </ol>
+    <p>{% tip %}</p>
+    <p>
+      <strong>Tip:</strong> If SMTP errors occur while sending a test email—such
+      as an immediate delivery failure or an outgoing mail configuration
+      error—you will see them in the Test email settings dialog box.
+    </p>
+    <p>{% endtip %}</p>
+    <ol start="4" type="1">
+      <li>
+        If the test email fails,
+        <a href="#troubleshooting-email-delivery"
+          >troubleshoot your email settings</a
+        >.
+      </li>
+      <li>
+        When the test email succeeds, at the bottom of the page, click
+        <strong>Save settings</strong>.
+        <img
+          src="/assets/images/enterprise/management-console/save-settings.png"
+          alt="Save settings button"
+        />
+      </li>
+      <li>
+        Wait for the configuration run to complete.
+        <img
+          src="/assets/images/enterprise/management-console/configuration-run.png"
+          alt="Configuring your instance"
+        />
+      </li>
+    </ol>
+    <h2 id="configuring-dns-and-firewall-settings-to-allow-incoming-emails">
+      Configuring DNS and firewall settings to allow incoming emails
+    </h2>
+    <p>
+      If you want to allow email replies to notifications, you must configure
+      your DNS settings.
+    </p>
+    <ol type="1">
+      <li>
+        Ensure that port 25 on the instance is accessible to your SMTP server.
+      </li>
+      <li>
+        Create an A record that points to <code>reply.[hostname]</code>.
+        Depending on your DNS provider and instance host configuration, you may
+        be able to instead create a single A record that points to
+        <code>*.[hostname]</code>.
+      </li>
+      <li>
+        Create an MX record that points to <code>reply.[hostname]</code> so that
+        emails to that domain are routed to the instance.
+      </li>
+      <li>
+        Create an MX record that points <code>noreply.[hostname]</code> to
+        <code>[hostname]</code> so that replies to the <code>cc</code> address
+        in notification emails are routed to the instance. For more information,
+        see {% ifversion ghes %}“<a
+          href="/github/managing-subscriptions-and-notifications-on-github/configuring-notifications"
+          >Configuring notifications</a
+        >{% else %}”<a
+          href="/github/receiving-notifications-about-activity-on-github/about-email-notifications"
+          >About email notifications</a
+        >{% endif %}."
+      </li>
+    </ol>
+    <h2 id="troubleshooting-email-delivery">Troubleshooting email delivery</h2>
+    <h3 id="create-a-support-bundle">Create a Support Bundle</h3>
+    <p>
+      If you cannot determine what is wrong from the displayed error message,
+      you can download a
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/enterprise-support/providing-data-to-github-support"
+        >support bundle</a
+      >
+      containing the entire SMTP conversation between your mail server and {%
+      data variables.product.prodname_ghe_server %}. Once you’ve downloaded and
+      extracted the bundle, check the entries in
+      <em>enterprise-manage-logs/unicorn.log</em> for the entire SMTP
+      conversation log and any related errors.
+    </p>
+    <p>The unicorn log should show a transaction similar to the following:</p>
+    <pre
+      class="shell"
+    ><code>This is a test email generated from https://10.0.0.68/setup/settings
+Connection opened: smtp.yourdomain.com:587
+-&gt; &quot;220 smtp.yourdomain.com ESMTP nt3sm2942435pbc.14\r\n&quot;
+&lt;- &quot;EHLO yourdomain.com\r\n&quot;
+-&gt; &quot;250-smtp.yourdomain.com at your service, [1.2.3.4]\r\n&quot;
+-&gt; &quot;250-SIZE 35882577\r\n&quot;
+-&gt; &quot;250-8BITMIME\r\n&quot;
+-&gt; &quot;250-STARTTLS\r\n&quot;
+-&gt; &quot;250-ENHANCEDSTATUSCODES\r\n&quot;
+-&gt; &quot;250 PIPELINING\r\n&quot;
+&lt;- &quot;STARTTLS\r\n&quot;
+-&gt; &quot;220 2.0.0 Ready to start TLS\r\n&quot;
+TLS connection started
+&lt;- &quot;EHLO yourdomain.com\r\n&quot;
+-&gt; &quot;250-smtp.yourdomain.com at your service, [1.2.3.4]\r\n&quot;
+-&gt; &quot;250-SIZE 35882577\r\n&quot;
+-&gt; &quot;250-8BITMIME\r\n&quot;
+-&gt; &quot;250-AUTH LOGIN PLAIN XOAUTH\r\n&quot;
+-&gt; &quot;250-ENHANCEDSTATUSCODES\r\n&quot;
+-&gt; &quot;250 PIPELINING\r\n&quot;
+&lt;- &quot;AUTH LOGIN\r\n&quot;
+-&gt; &quot;334 VXNlcm5hbWU6\r\n&quot;
+&lt;- &quot;dGhpc2lzbXlAYWRkcmVzcy5jb20=\r\n&quot;
+-&gt; &quot;334 UGFzc3dvcmQ6\r\n&quot;
+&lt;- &quot;aXRyZWFsbHl3YXM=\r\n&quot;
+-&gt; &quot;535-5.7.1 Username and Password not accepted. Learn more at\r\n&quot;
+-&gt; &quot;535 5.7.1 http://support.yourdomain.com/smtp/auth-not-accepted nt3sm2942435pbc.14\r\n&quot;</code></pre>
+    <p>This log shows that the appliance:</p>
+    <ul>
+      <li>
+        Opened a connection with the SMTP server (<code
+          >Connection opened: smtp.yourdomain.com:587</code
+        >).
+      </li>
+      <li>
+        Successfully made a connection and chose to use TLS (<code
+          >TLS connection started</code
+        >).
+      </li>
+      <li>
+        The <code>login</code> authentication type was performed (<code
+          >&lt;- "AUTH LOGIN\r\n"</code
+        >).
+      </li>
+      <li>
+        The SMTP Server rejected the authentication as invalid (<code
+          >-&gt; "535-5.7.1 Username and Password not accepted.</code
+        >).
+      </li>
+    </ul>
+    <h3 id="check-data-variables.product.product_location-logs">
+      Check {% data variables.product.product_location %} logs
+    </h3>
+    <p>
+      If you need to verify that your inbound email is functioning, there are
+      two log files that you can examine on your instance: To verify that
+      <em>/var/log/mail.log</em> and
+      <em>/var/log/mail-replies/metroplex.log</em>.
+    </p>
+    <p>
+      <em>/var/log/mail.log</em> verifies that messages are reaching your
+      server. Here’s an example of a successful email reply:
+    </p>
+    <pre><code>Oct 30 00:47:18 54-171-144-1 postfix/smtpd[13210]: connect from st11p06mm-asmtp002.mac.com[17.172.124.250]
+Oct 30 00:47:19 54-171-144-1 postfix/smtpd[13210]: 51DC9163323: client=st11p06mm-asmtp002.mac.com[17.172.124.250]
+Oct 30 00:47:19 54-171-144-1 postfix/cleanup[13216]: 51DC9163323: message-id=&lt;b2b9c260-4aaa-4a93-acbb-0b2ddda68579@me.com&gt;
+Oct 30 00:47:19 54-171-144-1 postfix/qmgr[17250]: 51DC9163323: from=&lt;tcook@icloud.com&gt;, size=5048, nrcpt=1 (queue active)
+Oct 30 00:47:19 54-171-144-1 postfix/virtual[13217]: 51DC9163323: to=&lt;reply+i-1-1801beb4df676a79250d1e61e54ab763822c207d-5@reply.ghe.tjl2.co.ie&gt;, relay=virtual, delay=0.12, delays=0.11/0/0/0, dsn=2.0.0, status=sent (delivered to maildir)
+Oct 30 00:47:19 54-171-144-1 postfix/qmgr[17250]: 51DC9163323: removed
+Oct 30 00:47:19 54-171-144-1 postfix/smtpd[13210]: disconnect from st11p06mm-asmtp002.mac.com[17.172.124.250]</code></pre>
+    <p>
+      Note that the client first connects; then, the queue becomes active. Then,
+      the message is delivered, the client is removed from the queue, and the
+      session disconnects.
+    </p>
+    <p>
+      <em>/var/log/mail-replies/metroplex.log</em> shows whether inbound emails
+      are being processed to add to issues and pull requests as replies. Here’s
+      an example of a successful message:
+    </p>
+    <pre><code>[2014-10-30T00:47:23.306 INFO (5284) #] metroplex: processing &lt;b2b9c260-4aaa-4a93-acbb-0b2ddda68579@me.com&gt;
+[2014-10-30T00:47:23.333 DEBUG (5284) #] Matched /data/user/mail/reply/new/1414630039.Vfc00I12000eM445784.ghe-tjl2-co-ie
+[2014-10-30T00:47:23.334 DEBUG (5284) #] Moving /data/user/mail/reply/new/1414630039.Vfc00I12000eM445784.ghe-tjl2-co-ie =&gt; /data/user/incoming-mail/success</code></pre>
+    <p>
+      You’ll notice that <code>metroplex</code> catches the inbound message,
+      processes it, then moves the file over to
+      <code>/data/user/incoming-mail/success</code>.{% endif %}
+    </p>
+    <h3 id="verify-your-dns-settings">Verify your DNS settings</h3>
+    <p>
+      In order to properly process inbound emails, you must configure a valid A
+      Record (or CNAME), as well as an MX Record. For more information, see “<a
+        href="#configuring-dns-and-firewall-settings-to-allow-incoming-emails"
+        >Configuring DNS and firewall settings to allow incoming emails</a
+      >.”
+    </p>
+    <h3 id="check-firewall-or-aws-security-group-settings">
+      Check firewall or AWS Security Group settings
+    </h3>
+    <p>
+      If {% data variables.product.product_location %} is behind a firewall or
+      is being served through an AWS Security Group, make sure port 25 is open
+      to all mail servers that send emails to
+      <code>reply@reply.[hostname]</code>.
+    </p>
+    <h3 id="contact-support">Contact support</h3>
+    <p>
+      {% ifversion ghes %} If you’re still unable to resolve the problem,
+      contact {% data variables.contact.contact_ent_support %}. Please attach
+      the output file from
+      <code>http(s)://[hostname]/setup/diagnostics</code> to your email to help
+      us troubleshoot your problem. {% elsif ghae %} You can contact {% data
+      variables.contact.github_support %} for help configuring email for
+      notifications to be sent through your SMTP server. For more information,
+      see “<a
+        href="/admin/enterprise-support/receiving-help-from-github-support"
+        >Receiving help from {% data variables.contact.github_support %}</a
+      >.” {% endif %}
+    </p>
+  </body>
+</html>

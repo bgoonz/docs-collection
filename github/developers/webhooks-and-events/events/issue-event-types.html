@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Issue event types</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Issue event types</h1>
+</header>
+<p>Issue events are triggered by activity in issues and pull requests and are available in the <a href="/rest/reference/issues#events">Issue Events API</a> and the <a href="/rest/reference/issues#timeline">Timeline Events API</a>. Each event type specifies whether the event is available in the Issue Events or Timeline Events APIs.</p>
+<p>GitHub’s REST API considers every pull request to be an issue, but not every issue is a pull request. For this reason, the Issue Events and Timeline Events endpoints may return both issues and pull requests in the response. Pull requests have a <code>pull_request</code> property in the <code>issue</code> object. Because pull requests are issues, issue and pull request numbers do not overlap in a repository. For example, if you open your first issue in a repository, the number will be 1. If you then open a pull request, the number will be 2. Each event type specifies if the event occurs in pull request, issues, or both.</p>
+<h2 id="issue-event-object-common-properties">Issue event object common properties</h2>
+<p>Issue events all have the same object structure, except events that are only available in the Timeline Events API. Some events also include additional properties that provide more context about the event resources. Refer to the specific event to for details about any properties that differ from this object format.</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="added_to_project">added_to_project</h2>
+<p>The issue or pull request was added to a project board. {% data reusables.projects.disabled-projects %}</p>
+<h3 id="availability">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull request
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties">Event object properties</h3>
+<p>{% data reusables.pre-release-program.starfox-preview %} {% data reusables.pre-release-program.api-preview-warning %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.project-card-properties %}</p>
+<h2 id="assigned">assigned</h2>
+<p>The issue or pull request was assigned to a user.</p>
+<h3 id="availability-1">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-1">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.assignee-properties %}</p>
+<h2 id="automatic_base_change_failed">automatic_base_change_failed</h2>
+<p>GitHub unsuccessfully attempted to automatically change the base branch of the pull request.</p>
+<h3 id="availability-2">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | |</p>
+<h3 id="event-object-properties-2">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="automatic_base_change_succeeded">automatic_base_change_succeeded</h2>
+<p>GitHub successfully attempted to automatically change the base branch of the pull request.</p>
+<h3 id="availability-3">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | |</p>
+<h3 id="event-object-properties-3">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="base_ref_changed">base_ref_changed</h2>
+<p>The base reference branch of the pull request changed.</p>
+<h3 id="availability-4">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | |</p>
+<h3 id="event-object-properties-4">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="closed">closed</h2>
+<p>The issue or pull request was closed. When the <code>commit_id</code> is present, it identifies the commit that closed the issue using “closes / fixes” syntax. For more information about the syntax, see “<a href="/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword">Linking a pull request to an issue</a>”.</p>
+<h3 id="availability-5">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-5">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="commented">commented</h2>
+<p>A comment was added to the issue or pull request.</p>
+<h3 id="availability-6">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| | <strong>X</strong> |</p>
+<h3 id="event-object-properties-6">Event object properties</h3>
+<p>{% data reusables.issue-events.timeline_events_object_properties %}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>url</code></td>
+<td><code>string</code></td>
+<td>The REST API URL to retrieve the issue comment.</td>
+</tr>
+<tr class="even">
+<td><code>html_url</code></td>
+<td><code>string</code></td>
+<td>The HTML URL of the issue comment.</td>
+</tr>
+<tr class="odd">
+<td><code>issue_url</code></td>
+<td><code>string</code></td>
+<td>The HTML URL of the issue.</td>
+</tr>
+<tr class="even">
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>The unique identifier of the event.</td>
+</tr>
+<tr class="odd">
+<td><code>node_id</code></td>
+<td><code>string</code></td>
+<td>The <a href="/graphql/guides/using-global-node-ids">Global Node ID</a> of the event.</td>
+</tr>
+<tr class="even">
+<td><code>user</code></td>
+<td><code>object</code></td>
+<td>The person who commented on the issue.</td>
+</tr>
+<tr class="odd">
+<td><code>created_at</code></td>
+<td><code>string</code></td>
+<td>The timestamp indicating when the comment was added.</td>
+</tr>
+<tr class="even">
+<td><code>updated_at</code></td>
+<td><code>string</code></td>
+<td>The timestamp indicating when the comment was updated or created, if the comment is never updated.</td>
+</tr>
+<tr class="odd">
+<td><code>author_association</code></td>
+<td><code>string</code></td>
+<td>The permissions the user has in the issue’s repository. For example, the value would be <code>"OWNER"</code> if the owner of repository created a comment.</td>
+</tr>
+<tr class="even">
+<td><code>body</code></td>
+<td><code>string</code></td>
+<td>The comment body text.</td>
+</tr>
+<tr class="odd">
+<td><code>event</code></td>
+<td><code>string</code></td>
+<td>The event value is <code>"commented"</code>.</td>
+</tr>
+<tr class="even">
+<td><code>actor</code></td>
+<td><code>object</code></td>
+<td>The person who generated the event.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="committed">committed</h2>
+<p>A commit was added to the pull request’s <code>HEAD</code> branch.</p>
+<h3 id="availability-7">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| | <strong>X</strong> |</p>
+<h3 id="event-object-properties-7">Event object properties</h3>
+<p>{% data reusables.issue-events.timeline_events_object_properties %}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sha</code></td>
+<td><code>string</code></td>
+<td>The SHA of the commit in the pull request.</td>
+</tr>
+<tr class="even">
+<td><code>node_id</code></td>
+<td><code>string</code></td>
+<td>The <a href="/graphql/guides/using-global-node-ids">Global Node ID</a> of the event.</td>
+</tr>
+<tr class="odd">
+<td><code>url</code></td>
+<td><code>string</code></td>
+<td>The REST API URL to retrieve the commit.</td>
+</tr>
+<tr class="even">
+<td><code>html_url</code></td>
+<td><code>string</code></td>
+<td>The HTML URL of the commit.</td>
+</tr>
+<tr class="odd">
+<td><code>author</code></td>
+<td><code>object</code></td>
+<td>The person who authored the commit.</td>
+</tr>
+<tr class="even">
+<td><code>committer</code></td>
+<td><code>object</code></td>
+<td>The person who committed the commit on behalf of the author.</td>
+</tr>
+<tr class="odd">
+<td><code>tree</code></td>
+<td><code>object</code></td>
+<td>The Git tree of the commit.</td>
+</tr>
+<tr class="even">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>The commit message.</td>
+</tr>
+<tr class="odd">
+<td><code>parents</code></td>
+<td><code>array of objects</code></td>
+<td>A list of parent commits.</td>
+</tr>
+<tr class="even">
+<td><code>verification</code></td>
+<td><code>object</code></td>
+<td>The result of verifying the commit’s signature. For more information, see “<a href="/rest/reference/git#get-a-commit">Signature verification object</a>.”</td>
+</tr>
+<tr class="odd">
+<td><code>event</code></td>
+<td><code>string</code></td>
+<td>The event value is <code>"committed"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="connected">connected</h2>
+<p>The issue or pull request was linked to another issue or pull request. For more information, see “<a href="/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue">Linking a pull request to an issue</a>”.</p>
+<h3 id="availability-8">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-8">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="convert_to_draft">convert_to_draft</h2>
+<p>The pull request was converted to draft mode.</p>
+<h3 id="availability-9">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-9">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="converted_note_to_issue">converted_note_to_issue</h2>
+<p>The issue was created by converting a note in a project board to an issue. {% data reusables.projects.disabled-projects %}</p>
+<h3 id="availability-10">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-10">Event object properties</h3>
+<p>{% data reusables.pre-release-program.starfox-preview %} {% data reusables.pre-release-program.api-preview-warning %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.project-card-properties %}</p>
+<h2 id="cross-referenced">cross-referenced</h2>
+<p>The issue or pull request was referenced from another issue or pull request.</p>
+<h3 id="availability-11">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| | <strong>X</strong> |</p>
+<h3 id="event-object-properties-11">Event object properties</h3>
+<p>{% data reusables.issue-events.timeline_events_object_properties %}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>actor</code></td>
+<td><code>object</code></td>
+<td>The person who generated the event.</td>
+</tr>
+<tr class="even">
+<td><code>created_at</code></td>
+<td><code>string</code></td>
+<td>The timestamp indicating when the cross-reference was added.</td>
+</tr>
+<tr class="odd">
+<td><code>updated_at</code></td>
+<td><code>string</code></td>
+<td>The timestamp indicating when the cross-reference was updated or created, if the cross-reference is never updated.</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>object</code></td>
+<td>The issue or pull request that added a cross-reference.</td>
+</tr>
+<tr class="odd">
+<td><code>source[type]</code></td>
+<td><code>string</code></td>
+<td>This value will always be <code>"issue"</code> because pull requests are of type issue. Only cross-reference events triggered by issues or pull requests are returned in the Timeline Events API. To determine if the issue that triggered the event is a pull request, you can check if the <code>source[issue][pull_request</code> object exists.</td>
+</tr>
+<tr class="even">
+<td><code>source[issue]</code></td>
+<td><code>object</code></td>
+<td>The <code>issue</code> object that added the cross-reference.</td>
+</tr>
+<tr class="odd">
+<td><code>event</code></td>
+<td><code>string</code></td>
+<td>The event value is <code>"cross-referenced"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="demilestoned">demilestoned</h2>
+<p>The issue or pull request was removed from a milestone.</p>
+<h3 id="availability-12">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-12">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} <code>milestone</code> | <code>object</code> | The milestone object. <code>milestone[title]</code> | <code>string</code> | The title of the milestone.</p>
+<h2 id="deployed">deployed</h2>
+<p>The pull request was deployed.</p>
+<h3 id="availability-13">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-13">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="deployment_environment_changed">deployment_environment_changed</h2>
+<p>The pull request deployment environment was changed.</p>
+<h3 id="availability-14">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | |</p>
+<h3 id="event-object-properties-14">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="disconnected">disconnected</h2>
+<p>The issue or pull request was unlinked from another issue or pull request. For more information, see “<a href="/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue">Linking a pull request to an issue</a>”.</p>
+<h3 id="availability-15">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-15">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="head_ref_deleted">head_ref_deleted</h2>
+<p>The pull request’s <code>HEAD</code> branch was deleted.</p>
+<h3 id="availability-16">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-16">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="head_ref_restored">head_ref_restored</h2>
+<p>The pull request’s <code>HEAD</code> branch was restored to the last known commit.</p>
+<h3 id="availability-17">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-17">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="labeled">labeled</h2>
+<p>A label was added to the issue or pull request.</p>
+<h3 id="availability-18">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-18">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.label-properties %}</p>
+<h2 id="locked">locked</h2>
+<p>The issue or pull request was locked.</p>
+<h3 id="availability-19">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-19">Event object properties</h3>
+<p>{% ifversion ghes &lt; 2.22 %} {% data reusables.pre-release-program.sailor-v-preview %} {% data reusables.pre-release-program.api-preview-warning %} {% endif %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} <code>lock_reason</code> | <code>string</code> | The reason an issue or pull request conversation was locked, if one was provided.</p>
+<h2 id="mentioned">mentioned</h2>
+<p>The <code>actor</code> was <code>@mentioned</code> in an issue or pull request body.</p>
+<h3 id="availability-20">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-20">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="marked_as_duplicate">marked_as_duplicate</h2>
+<p>A user with write permissions marked an issue as a duplicate of another issue, or a pull request as a duplicate of another pull request.</p>
+<h3 id="availability-21">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-21">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="merged">merged</h2>
+<p>The pull request was merged. The <code>commit_id</code> attribute is the SHA1 of the <code>HEAD</code> commit that was merged. The <code>commit_repository</code> is always the same as the main repository.</p>
+<h3 id="availability-22">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | |</p>
+<h3 id="event-object-properties-22">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="milestoned">milestoned</h2>
+<p>The issue or pull request was added to a milestone.</p>
+<h3 id="availability-23">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-23">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} <code>milestone</code> | <code>object</code> | The milestone object. <code>milestone[title]</code> | <code>string</code> | The title of the milestone.</p>
+<h2 id="moved_columns_in_project">moved_columns_in_project</h2>
+<p>The issue or pull request was moved between columns in a project board. {% data reusables.projects.disabled-projects %}</p>
+<h3 id="availability-24">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-24">Event object properties</h3>
+<p>{% data reusables.pre-release-program.starfox-preview %} {% data reusables.pre-release-program.api-preview-warning %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.project-card-properties %} <code>previous_column_name</code> | <code>string</code> | The name of the column the issue was moved from.</p>
+<h2 id="pinned">pinned</h2>
+<p>The issue was pinned.</p>
+<h3 id="availability-25">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-25">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="ready_for_review">ready_for_review</h2>
+<p>A pull request was created that is not in draft mode.</p>
+<h3 id="availability-26">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-26">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="referenced">referenced</h2>
+<p>The issue was referenced from a commit message. The <code>commit_id</code> attribute is the commit SHA1 of where that happened and the commit_repository is where that commit was pushed.</p>
+<h3 id="availability-27">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-27">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="removed_from_project">removed_from_project</h2>
+<p>The issue or pull request was removed from a project board. {% data reusables.projects.disabled-projects %}</p>
+<h3 id="availability-28">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-28">Event object properties</h3>
+<p>{% data reusables.pre-release-program.starfox-preview %} {% data reusables.pre-release-program.api-preview-warning %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.project-card-properties %}</p>
+<h2 id="renamed">renamed</h2>
+<p>The issue or pull request title was changed.</p>
+<h3 id="availability-29">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-29">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} <code>rename</code> | <code>object</code> | The name details. <code>rename[from]</code> | <code>string</code> | The previous name. <code>rename[to]</code> | <code>string</code> | The new name.</p>
+<h2 id="reopened">reopened</h2>
+<p>The issue or pull request was reopened.</p>
+<h3 id="availability-30">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-30">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="review_dismissed">review_dismissed</h2>
+<p>The pull request review was dismissed.</p>
+<h3 id="availability-31">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-31">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.review-dismissed-properties %}</p>
+<h2 id="review_requested">review_requested</h2>
+<p>A pull request review was requested.</p>
+<h3 id="availability-32">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-32">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.review-request-properties %}</p>
+<h2 id="review_request_removed">review_request_removed</h2>
+<p>A pull request review request was removed.</p>
+<h3 id="availability-33">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-33">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.review-request-properties %}</p>
+<h2 id="reviewed">reviewed</h2>
+<p>The pull request was reviewed.</p>
+<h3 id="availability-34">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| | <strong>X</strong> |</p>
+<h3 id="event-object-properties-34">Event object properties</h3>
+<p>{% data reusables.issue-events.timeline_events_object_properties %}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>The unique identifier of the event.</td>
+</tr>
+<tr class="even">
+<td><code>node_id</code></td>
+<td><code>string</code></td>
+<td>The <a href="/graphql/guides/using-global-node-ids">Global Node ID</a> of the event.</td>
+</tr>
+<tr class="odd">
+<td><code>user</code></td>
+<td><code>object</code></td>
+<td>The person who commented on the issue.</td>
+</tr>
+<tr class="even">
+<td><code>body</code></td>
+<td><code>string</code></td>
+<td>The review summary text.</td>
+</tr>
+<tr class="odd">
+<td><code>commit_id</code></td>
+<td><code>string</code></td>
+<td>The SHA of the latest commit in the pull request at the time of the review.</td>
+</tr>
+<tr class="even">
+<td><code>submitted_at</code></td>
+<td><code>string</code></td>
+<td>The timestamp indicating when the review was submitted.</td>
+</tr>
+<tr class="odd">
+<td><code>state</code></td>
+<td><code>string</code></td>
+<td>The state of the submitted review. Can be one of: <code>commented</code>, <code>changes_requested</code>, or <code>approved</code>.</td>
+</tr>
+<tr class="even">
+<td><code>html_url</code></td>
+<td><code>string</code></td>
+<td>The HTML URL of the review.</td>
+</tr>
+<tr class="odd">
+<td><code>pull_request_url</code></td>
+<td><code>string</code></td>
+<td>The REST API URL to retrieve the pull request.</td>
+</tr>
+<tr class="even">
+<td><code>author_association</code></td>
+<td><code>string</code></td>
+<td>The permissions the user has in the issue’s repository. For example, the value would be <code>"OWNER"</code> if the owner of repository created a comment.</td>
+</tr>
+<tr class="odd">
+<td><code>_links</code></td>
+<td><code>object</code></td>
+<td>The <code>html_url</code> and <code>pull_request_url</code>.</td>
+</tr>
+<tr class="even">
+<td><code>event</code></td>
+<td><code>string</code></td>
+<td>The event value is <code>"reviewed"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="subscribed">subscribed</h2>
+<p>Someone subscribed to receive notifications for an issue or pull request.</p>
+<h3 id="availability-35">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-35">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="transferred">transferred</h2>
+<p>The issue was transferred to another repository.</p>
+<h3 id="availability-36">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-36">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="unassigned">unassigned</h2>
+<p>A user was unassigned from the issue.</p>
+<h3 id="availability-37">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-37">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.assignee-properties %}</p>
+<h2 id="unlabeled">unlabeled</h2>
+<p>A label was removed from the issue.</p>
+<h3 id="availability-38">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-38">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %} {% data reusables.issue-events.label-properties %}</p>
+<h2 id="unlocked">unlocked</h2>
+<p>The issue was unlocked.</p>
+<h3 id="availability-39">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-39">Event object properties</h3>
+<p>{% ifversion ghes &lt; 2.22 %} {% data reusables.pre-release-program.sailor-v-preview %} {% data reusables.pre-release-program.api-preview-warning %} {% endif %}</p>
+<p>{% data reusables.issue-events.issue-event-common-properties %} <code>lock_reason</code> | <code>string</code> | The reason an issue or pull request conversation was locked, if one was provided.</p>
+<h2 id="unmarked_as_duplicate">unmarked_as_duplicate</h2>
+<p>An issue that a user had previously marked as a duplicate of another issue is no longer considered a duplicate, or a pull request that a user had previously marked as a duplicate of another pull request is no longer considered a duplicate.</p>
+<h3 id="availability-40">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-40">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="unpinned">unpinned</h2>
+<p>The issue was unpinned.</p>
+<h3 id="availability-41">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-41">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<h2 id="unsubscribed">unsubscribed</h2>
+<p>Someone unsubscribed from receiving notifications for an issue or pull request.</p>
+<h3 id="availability-42">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| | <strong>X</strong> |</p>
+<h3 id="event-object-properties-42">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<p>{% ifversion fpt %} ## user_blocked</p>
+<p>An organization owner blocked a user from the organization. This was done <a href="/communities/maintaining-your-safety-on-github/blocking-a-user-from-your-organization#blocking-a-user-in-a-comment">through one of the blocked user’s comments on the issue</a>.</p>
+<h3 id="availability-43">Availability</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue type</th>
+<th style="text-align: center;">Issue events API</th>
+<th style="text-align: center;">Timeline events API</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+|
+<ul>
+<li>
+Issues
+</li>
+<li>
+Pull requests
+</li>
+</ul>
+<p>| <strong>X</strong> | <strong>X</strong> |</p>
+<h3 id="event-object-properties-43">Event object properties</h3>
+<p>{% data reusables.issue-events.issue-event-common-properties %}</p>
+<p>{% endif %}</p>
+</body>
+</html>

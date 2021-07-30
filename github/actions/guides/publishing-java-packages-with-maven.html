@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Publishing Java packages with Maven</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Publishing Java packages with Maven</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>{% data reusables.github-actions.publishing-java-packages-intro %}</p>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      We recommend that you have a basic understanding of workflow files and
+      configuration options. For more information, see “<a
+        href="/actions/learn-github-actions"
+        >Learn {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <p>
+      For more information about creating a CI workflow for your Java project
+      with Maven, see “<a
+        href="/actions/language-and-framework-guides/building-and-testing-java-with-maven"
+        >Building and testing Java with Maven</a
+      >.”
+    </p>
+    <p>
+      You may also find it helpful to have a basic understanding of the
+      following:
+    </p>
+    <ul>
+      <li>
+        “<a
+          href="/packages/working-with-a-github-packages-registry/working-with-the-npm-registry"
+          >Working with the npm registry</a
+        >”
+      </li>
+      <li>
+        “<a href="/actions/reference/environment-variables"
+          >Environment variables</a
+        >”
+      </li>
+      <li>
+        “<a href="/actions/reference/encrypted-secrets">Encrypted secrets</a>”
+      </li>
+      <li>
+        “<a href="/actions/reference/authentication-in-a-workflow"
+          >Authentication in a workflow</a
+        >”
+      </li>
+    </ul>
+    <h2 id="about-package-configuration">About package configuration</h2>
+    <p>
+      The <code>groupId</code> and <code>artifactId</code> fields in the
+      <em>pom.xml</em> file create a unique identifier for your package that
+      registries use to link your package to a registry. For more information
+      see
+      <a
+        href="http://maven.apache.org/repository/guide-central-repository-upload.html"
+        >Guide to uploading artifacts to the Central Repository</a
+      >
+      in the Apache Maven documentation.
+    </p>
+    <p>
+      The <em>pom.xml</em> file also contains configuration for the distribution
+      management repositories that Maven will deploy packages to. Each
+      repository must have a name and a deployment URL. Authentication for these
+      repositories can be configured in the <em>.m2/settings.xml</em> file in
+      the home directory of the user running Maven.
+    </p>
+    <p>
+      You can use the <code>setup-java</code> action to configure the deployment
+      repository as well as authentication for that repository. For more
+      information, see
+      <a href="https://github.com/actions/setup-java"><code>setup-java</code></a
+      >.
+    </p>
+    <h2 id="publishing-packages-to-the-maven-central-repository">
+      Publishing packages to the Maven Central Repository
+    </h2>
+    <p>
+      Each time you create a new release, you can trigger a workflow to publish
+      your package. The workflow in the example below runs when the
+      <code>release</code> event triggers with type <code>created</code>. The
+      workflow publishes the package to the Maven Central Repository if CI tests
+      pass. For more information on the <code>release</code> event, see “<a
+        href="/actions/reference/events-that-trigger-workflows#release"
+        >Events that trigger workflows</a
+      >.”
+    </p>
+    <p>
+      In this workflow, you can use the <code>setup-java</code> action. This
+      action installs the given version of the JDK into the <code>PATH</code>,
+      but it also configures a Maven <em>settings.xml</em> for publishing
+      packages. By default, the settings file will be configured for {% data
+      variables.product.prodname_registry %}, but it can be configured to deploy
+      to another package registry, such as the Maven Central Repository. If you
+      already have a distribution management repository configured in
+      <em>pom.xml</em>, then you can specify that <code>id</code> during the
+      <code>setup-java</code> action invocation.
+    </p>
+    <p>
+      For example, if you were deploying to the Maven Central Repository through
+      the OSSRH hosting project, your <em>pom.xml</em> could specify a
+      distribution management repository with the <code>id</code> of
+      <code>ossrh</code>.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="xml{:copy}"><code>&lt;project ...&gt;
+  ...
+  &lt;distributionManagement&gt;
+    &lt;repository&gt;
+      &lt;id&gt;ossrh&lt;/id&gt;
+      &lt;name&gt;Central Repository OSSRH&lt;/name&gt;
+      &lt;url&gt;https://oss.sonatype.org/service/local/staging/deploy/maven2/&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/distributionManagement&gt;
+&lt;/project&gt;</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      With this configuration, you can create a workflow that publishes your
+      package to the Maven Central Repository by specifying the repository
+      management <code>id</code> to the <code>setup-java</code> action. You’ll
+      also need to provide environment variables that contain the username and
+      password to authenticate to the repository.
+    </p>
+    <p>
+      In the deploy step, you’ll need to set the environment variables to the
+      username that you authenticate with to the repository, and to a secret
+      that you’ve configured with the password or token to authenticate with.
+      For more information, see “<a
+        href="/github/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+        >Creating and using encrypted secrets</a
+      >.”
+    </p>
+    <p>{% raw %}</p>
+    <pre
+      class="yaml{:copy}"
+    ><code>name: Publish package to the Maven Central Repository
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v2
+        with:
+          java-version: &#39;11&#39;
+          distribution: &#39;adopt&#39;
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}</code></pre>
+    <p>{% endraw %}</p>
+    <p>This workflow performs the following steps:</p>
+    <ol type="1">
+      <li>Checks out a copy of project’s repository.</li>
+      <li>
+        Sets up the Java JDK, and also configures the Maven
+        <em>settings.xml</em> file to add authentication for the
+        <code>ossrh</code> repository using the <code>MAVEN_USERNAME</code> and
+        <code>MAVEN_PASSWORD</code> environment variables.
+      </li>
+      <li>
+        <p>
+          {% data reusables.github-actions.publish-to-maven-workflow-step %}
+        </p>
+        <p>
+          For more information about using secrets in your workflow, see “<a
+            href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+            >Creating and using encrypted secrets</a
+          >.”
+        </p>
+      </li>
+    </ol>
+    <h2 id="publishing-packages-to-data-variables.product.prodname_registry">
+      Publishing packages to {% data variables.product.prodname_registry %}
+    </h2>
+    <p>
+      Each time you create a new release, you can trigger a workflow to publish
+      your package. The workflow in the example below runs when the
+      <code>release</code> event triggers with type <code>created</code>. The
+      workflow publishes the package to {% data
+      variables.product.prodname_registry %} if CI tests pass. For more
+      information on the <code>release</code> event, see “<a
+        href="/actions/reference/events-that-trigger-workflows#release"
+        >Events that trigger workflows</a
+      >.”
+    </p>
+    <p>
+      In this workflow, you can use the <code>setup-java</code> action. This
+      action installs the given version of the JDK into the <code>PATH</code>,
+      and also sets up a Maven <em>settings.xml</em> for publishing the package
+      to {% data variables.product.prodname_registry %}. The generated
+      <em>settings.xml</em> defines authentication for a server with an
+      <code>id</code> of <code>github</code>, using the
+      <code>GITHUB_ACTOR</code> environment variable as the username and the
+      <code>GITHUB_TOKEN</code> environment variable as the password. The
+      <code>GITHUB_TOKEN</code> environment variable is assigned the value of
+      the special <code>GITHUB_TOKEN</code> secret.
+    </p>
+    <p>{% data reusables.github-actions.github-token-permissions %}</p>
+    <p>
+      For a Maven-based project, you can make use of these settings by creating
+      a distribution repository in your <em>pom.xml</em> file with an
+      <code>id</code> of <code>github</code> that points to your {% data
+      variables.product.prodname_registry %} endpoint.
+    </p>
+    <p>
+      For example, if your organization is named “octocat” and your repository
+      is named “hello-world”, then the {% data
+      variables.product.prodname_registry %} configuration in
+      <em>pom.xml</em> would look similar to the below example.
+    </p>
+    <p>{% raw %}</p>
+    <pre class="xml{:copy}"><code>&lt;project ...&gt;
+  ...
+  &lt;distributionManagement&gt;
+    &lt;repository&gt;
+      &lt;id&gt;github&lt;/id&gt;
+      &lt;name&gt;GitHub Packages&lt;/name&gt;
+      &lt;url&gt;https://maven.pkg.github.com/octocat/hello-world&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/distributionManagement&gt;
+&lt;/project&gt;</code></pre>
+    <p>{% endraw %}</p>
+    <p>
+      With this configuration, you can create a workflow that publishes your
+      package to {% data variables.product.prodname_registry %} by making use of
+      the automatically generated <em>settings.xml</em>.
+    </p>
+    <pre class="yaml{:copy}"><code>name: Publish package to GitHub Packages
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest {% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+    permissions: 
+      contents: read
+      packages: write {% endif %}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: &#39;11&#39;
+          distribution: &#39;adopt&#39;
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}</code></pre>
+    <p>This workflow performs the following steps:</p>
+    <ol type="1">
+      <li>Checks out a copy of project’s repository.</li>
+      <li>
+        Sets up the Java JDK, and also automatically configures the Maven
+        <em>settings.xml</em> file to add authentication for the
+        <code>github</code> Maven repository to use the
+        <code>GITHUB_TOKEN</code> environment variable.
+      </li>
+      <li>
+        <p>
+          {% data reusables.github-actions.publish-to-packages-workflow-step %}
+        </p>
+        <p>
+          For more information about using secrets in your workflow, see “<a
+            href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+            >Creating and using encrypted secrets</a
+          >.”
+        </p>
+      </li>
+    </ol>
+    <h2
+      id="publishing-packages-to-the-maven-central-repository-and-data-variables.product.prodname_registry"
+    >
+      Publishing packages to the Maven Central Repository and {% data
+      variables.product.prodname_registry %}
+    </h2>
+    <p>
+      You can publish your packages to both the Maven Central Repository and {%
+      data variables.product.prodname_registry %} by using the
+      <code>setup-java</code> action for each registry.
+    </p>
+    <p>
+      Ensure your <em>pom.xml</em> file includes a distribution management
+      repository for both your {% data variables.product.prodname_dotcom %}
+      repository and your Maven Central Repository provider. For example, if you
+      deploy to the Central Repository through the OSSRH hosting project, you
+      might want to specify it in a distribution management repository with the
+      <code>id</code> set to <code>ossrh</code>, and you might want to specify
+      {% data variables.product.prodname_registry %} in a distribution
+      management repository with the <code>id</code> set to <code>github</code>.
+    </p>
+    <pre
+      class="yaml{:copy}"
+    ><code>name: Publish package to the Maven Central Repository and GitHub Packages
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest {% ifversion fpt or ghes &gt; 3.1 or ghae-next %}
+    permissions: 
+      contents: read
+      packages: write {% endif %}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Java for publishing to Maven Central Repository
+        uses: actions/setup-java@v2
+        with:
+          java-version: &#39;11&#39;
+          distribution: &#39;adopt&#39;
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: Publish to the Maven Central Repository
+        run: mvn --batch-mode deploy
+        env:{% raw %}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      - name: Set up Java for publishing to GitHub Packages
+        uses: actions/setup-java@v2
+        with:
+          java-version: &#39;11&#39;
+          distribution: &#39;adopt&#39;
+      - name: Publish to GitHub Packages
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}</code></pre>
+    <p>
+      This workflow calls the <code>setup-java</code> action twice. Each time
+      the <code>setup-java</code> action runs, it overwrites the Maven
+      <em>settings.xml</em> file for publishing packages. For authentication to
+      the repository, the <em>settings.xml</em> file references the distribution
+      management repository <code>id</code>, and the username and password.
+    </p>
+    <p>This workflow performs the following steps:</p>
+    <ol type="1">
+      <li>Checks out a copy of project’s repository.</li>
+      <li>
+        Calls <code>setup-java</code> the first time. This configures the Maven
+        <em>settings.xml</em> file for the <code>ossrh</code> repository, and
+        sets the authentication options to environment variables that are
+        defined in the next step.
+      </li>
+      <li>
+        {% data reusables.github-actions.publish-to-maven-workflow-step %}
+      </li>
+      <li>
+        Calls <code>setup-java</code> the second time. This automatically
+        configures the Maven <em>settings.xml</em> file for {% data
+        variables.product.prodname_registry %}.
+      </li>
+      <li>
+        <p>
+          {% data reusables.github-actions.publish-to-packages-workflow-step %}
+        </p>
+        <p>
+          For more information about using secrets in your workflow, see “<a
+            href="/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+            >Creating and using encrypted secrets</a
+          >.”
+        </p>
+      </li>
+    </ol>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Exporting migration data from your enterprise</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exporting migration data from your enterprise</h1>
+</header>
+<h2 id="preparing-the-data-variables.product.prodname_ghe_server-source-instance">Preparing the {% data variables.product.prodname_ghe_server %} source instance</h2>
+<ol type="1">
+<li><p>Verify that you are a site administrator on the {% data variables.product.prodname_ghe_server %} source. The best way to do this is to verify that you can <a href="/enterprise/admin/guides/installation/accessing-the-administrative-shell-ssh/">SSH into the instance</a>.</p></li>
+<li><p>{% data reusables.enterprise_migrations.token-generation %} on the {% data variables.product.prodname_ghe_server %} source instance.</p></li>
+</ol>
+<p>{% data reusables.enterprise_migrations.make-a-list %}</p>
+<h2 id="exporting-the-data-variables.product.prodname_ghe_server-source-repositories">Exporting the {% data variables.product.prodname_ghe_server %} source repositories</h2>
+<p>{% data reusables.enterprise_migrations.locking-repositories %}</p>
+<p>{% data reusables.enterprise_installation.ssh-into-instance %} 2. To prepare a repository for export, use the <code>ghe-migrator add</code> command with the repository’s URL: * If you’re locking the repository, append the command with <code>--lock</code>. If you’re performing a trial run, <code>--lock</code> is not needed. <code>shell       $ ghe-migrator add https://&lt;em&gt;hostname&lt;/em&gt;/&lt;em&gt;username&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt; --lock</code> * You can exclude file attachments by appending <code>--exclude_attachments</code> to the command. {% data reusables.enterprise_migrations.exclude-file-attachments %} * To prepare multiple repositories at once for export, create a text file listing each repository URL on a separate line, and run the <code>ghe-migrator add</code> command with the <code>-i</code> flag and the path to your text file. <code>shell       $ ghe-migrator add -i &lt;em&gt;PATH&lt;/em&gt;/&lt;em&gt;TO&lt;/em&gt;/&lt;em&gt;YOUR&lt;/em&gt;/&lt;em&gt;REPOSITORY_URLS&lt;/em&gt;.txt</code></p>
+<ol start="3" type="1">
+<li>When prompted, enter your {% data variables.product.prodname_ghe_server %} username:</li>
+</ol>
+<pre class="shell"><code>Enter username authorized for migration:  admin</code></pre>
+<ol start="4" type="1">
+<li>When prompted for a personal access token, enter the access token you created in “<a href="#preparing-the-github-enterprise-server-source-instance">Preparing the {% data variables.product.prodname_ghe_server %} source instance</a>”:</li>
+</ol>
+<pre class="shell"><code>Enter personal access token:  **************</code></pre>
+<ol start="5" type="1">
+<li>When <code>ghe-migrator add</code> has finished it will print the unique “Migration GUID” that it generated to identify this export as well as a list of the resources that were added to the export. You will use the Migration GUID that it generated in subsequent <code>ghe-migrator add</code> and <code>ghe-migrator export</code> steps to tell <code>ghe-migrator</code> to continue operating on the same export.</li>
+</ol>
+<pre class="shell"><code>&gt; 101 models added to export
+&gt; Migration GUID: &lt;em&gt;example-migration-guid&lt;/em&gt;
+&gt; Number of records in this migration:
+&gt; users                        |  5
+&gt; organizations                |  1
+&gt; repositories                 |  1
+&gt; teams                        |  3
+&gt; protected_branches           |  1
+&gt; pull_request_reviews         |  1
+&gt; milestones                   |  1
+&gt; issues                       |  3
+&gt; pull_requests                |  5
+&gt; pull_request_review_comments |  4
+&gt; commit_comments              |  2
+&gt; issue_comments               | 10
+&gt; issue_events                 | 63
+&gt; releases                     |  3
+&gt; attachments                  |  4
+&gt; projects                     |  2</code></pre>
+<p>Each time you add a new repository with an existing Migration GUID it will update the existing export. If you run <code>ghe-migrator add</code> again without a Migration GUID it will start a new export and generate a new Migration GUID. <strong>Do not re-use the Migration GUID generated during an export when you start preparing your migration for import</strong>.</p>
+<ol start="3" type="1">
+<li>If you locked the source repository, you can use the <code>ghe-migrator target_url</code> command to set a custom lock message on the repository page that links to the repository’s new location. Pass the source repository URL, the target repository URL, and the Migration GUID from Step 5:</li>
+</ol>
+<pre class="shell"><code>$ ghe-migrator target_url https://&lt;em&gt;hostname&lt;/em&gt;/&lt;em&gt;username&lt;/em&gt;/&lt;em&gt;reponame&lt;/em&gt; https://&lt;em&gt;target_hostname&lt;/em&gt;/&lt;em&gt;target_username&lt;/em&gt;/&lt;em&gt;target_reponame&lt;/em&gt; -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;</code></pre>
+<ol start="6" type="1">
+<li>To add more repositories to the same export, use the <code>ghe-migrator add</code> command with the <code>-g</code> flag. You’ll pass in the new repository URL and the Migration GUID from Step 5:</li>
+</ol>
+<pre class="shell"><code>$ ghe-migrator add https://&lt;em&gt;hostname&lt;/em&gt;/&lt;em&gt;username&lt;/em&gt;/&lt;em&gt;other_reponame&lt;/em&gt; -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt; --lock</code></pre>
+<ol start="7" type="1">
+<li>When you’ve finished adding repositories, generate the migration archive using the <code>ghe-migrator export</code> command with the <code>-g</code> flag and the Migration GUID from Step 5: <code>shell  $ ghe-migrator export -g &lt;em&gt;MIGRATION_GUID&lt;/em&gt;  &gt; Archive saved to: /data/github/current/tmp/&lt;em&gt;MIGRATION_GUID&lt;/em&gt;.tar.gz</code>
+<ul>
+<li>{% data reusables.enterprise_migrations.specify-staging-path %}</li>
+</ul></li>
+<li>Close the connection to {% data variables.product.product_location %}:</li>
+</ol>
+<pre class="shell"><code>$ exit
+&gt; logout
+&gt; Connection to &lt;em&gt;hostname&lt;/em&gt; closed.</code></pre>
+<ol start="9" type="1">
+<li>Copy the migration archive to your computer using the <a href="https://linuxacademy.com/blog/linux/ssh-and-scp-howto-tips-tricks#scp"><code>scp</code></a> command. The archive file will be named with the Migration GUID:</li>
+</ol>
+<pre class="shell"><code>$ scp -P 122 admin@&lt;em&gt;hostname&lt;/em&gt;:/data/github/current/tmp/&lt;em&gt;MIGRATION_GUID&lt;/em&gt;.tar.gz ~/Desktop</code></pre>
+<p>{% data reusables.enterprise_migrations.ready-to-import-migrations %}</p>
+</body>
+</html>

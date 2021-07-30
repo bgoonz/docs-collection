@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Best practices for integrators</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Best practices for integrators</h1>
+</header>
+<p>Interested in integrating with the GitHub platform? <a href="https://github.com/integrations">You’re in good company</a>. This guide will help you build an app that provides the best experience for your users <em>and</em> ensure that it’s reliably interacting with the API.</p>
+<h2 id="secure-payloads-delivered-from-github">Secure payloads delivered from GitHub</h2>
+<p>It’s very important that you secure <a href="/webhooks/event-payloads">the payloads sent from GitHub</a>. Although no personal information (like passwords) is ever transmitted in a payload, leaking <em>any</em> information is not good. Some information that might be sensitive include committer email address or the names of private repositories.</p>
+<p>There are several steps you can take to secure receipt of payloads delivered by GitHub:</p>
+<ol type="1">
+<li>Ensure that your receiving server is on an HTTPS connection. By default, GitHub will verify SSL certificates when delivering payloads.{% ifversion fpt %}</li>
+<li>You can add <a href="/github/authenticating-to-github/about-githubs-ip-addresses">the IP address we use when delivering hooks</a> to your server’s allow list. To ensure that you’re always checking the right IP address, you can <a href="/rest/reference/meta#meta">use the <code>/meta</code> endpoint</a> to find the address we use.{% endif %}</li>
+<li>Provide <a href="/webhooks/securing/">a secret token</a> to ensure payloads are definitely coming from GitHub. By enforcing a secret token, you’re ensuring that any data received by your server is absolutely coming from GitHub. Ideally, you should provide a different secret token <em>per user</em> of your service. That way, if one token is compromised, no other user would be affected.</li>
+</ol>
+<h2 id="favor-asynchronous-work-over-synchronous">Favor asynchronous work over synchronous</h2>
+<p>GitHub expects that integrations respond within {% ifversion fpt %}10{% else %}30{% endif %} seconds of receiving the webhook payload. If your service takes longer than that to complete, then GitHub terminates the connection and the payload is lost.</p>
+<p>Since it’s impossible to predict how fast your service will complete, you should do all of “the real work” in a background job. <a href="https://github.com/resque/resque/">Resque</a> (for Ruby), <a href="http://python-rq.org/">RQ</a> (for Python), or <a href="http://www.rabbitmq.com/">RabbitMQ</a> (for Java) are examples of libraries that can handle queuing and processing of background jobs.</p>
+<p>Note that even with a background job running, GitHub still expects your server to respond within {% ifversion fpt %}ten{% else %}thirty{% endif %} seconds. Your server needs to acknowledge that it received the payload by sending some sort of response. It’s critical that your service performs any validations on a payload as soon as possible, so that you can accurately report whether your server will continue with the request or not.</p>
+<h2 id="use-appropriate-http-status-codes-when-responding-to-github">Use appropriate HTTP status codes when responding to GitHub</h2>
+<p>Every webhook has its own “Recent Deliveries” section, which lists whether a deployment was successful or not.</p>
+<figure>
+<img src="/assets/images/webhooks_recent_deliveries.png" alt="Recent Deliveries view" /><figcaption>Recent Deliveries view</figcaption>
+</figure>
+<p>You should make use of proper HTTP status codes in order to inform users. You can use codes like <code>201</code> or <code>202</code> to acknowledge receipt of payload that won’t be processed (for example, a payload delivered by a branch that’s not the default). Reserve the <code>500</code> error code for catastrophic failures.</p>
+<h2 id="provide-as-much-information-as-possible-to-the-user">Provide as much information as possible to the user</h2>
+<p>Users can dig into the server responses you send back to GitHub. Ensure that your messages are clear and informative.</p>
+<figure>
+<img src="/assets/images/payload_response_tab.png" alt="Viewing a payload response" /><figcaption>Viewing a payload response</figcaption>
+</figure>
+<h2 id="follow-any-redirects-that-the-api-sends-you">Follow any redirects that the API sends you</h2>
+<p>GitHub is explicit in telling you when a resource has moved by providing a redirect status code. You should follow these redirections. Every redirect response sets the <code>Location</code> header with the new URI to go to. If you receive a redirect, it’s best to update your code to follow the new URI, in case you’re requesting a deprecated path that we might remove.</p>
+<p>We’ve provided <a href="/rest#http-redirects">a list of HTTP status codes</a> to watch out for when designing your app to follow redirects.</p>
+<h2 id="dont-manually-parse-urls">Don’t manually parse URLs</h2>
+<p>Often, API responses contain data in the form of URLs. For example, when requesting a repository, we’ll send a key called <code>clone_url</code> with a URL you can use to clone the repository.</p>
+<p>For the stability of your app, you shouldn’t try to parse this data or try to guess and construct the format of future URLs. Your app is liable to break if we decide to change the URL.</p>
+<p>For example, when working with paginated results, it’s often tempting to construct URLs that append <code>?page=&lt;number&gt;</code> to the end. Avoid that temptation. <a href="/guides/traversing-with-pagination">Our guide on pagination</a> offers some safe tips on dependably following paginated results.</p>
+<h2 id="check-the-event-type-and-action-before-processing-the-event">Check the event type and action before processing the event</h2>
+<p>There are multiple <a href="/webhooks/event-payloads">webhook event types</a>, and each event can have multiple actions. As GitHub’s feature set grows, we will occasionally add new event types or add new actions to existing event types. Ensure that your application explicitly checks the type and action of an event before doing any webhook processing. The <code>X-GitHub-Event</code> request header can be used to know which event has been received so that processing can be handled appropriately. Similarly, the payload has a top-level <code>action</code> key that can be used to know which action was taken on the relevant object.</p>
+<p>For example, if you have configured a GitHub webhook to “Send me <strong>everything</strong>”, your application will begin receiving new event types and actions as they are added. It is therefore <strong>not recommended to use any sort of catch-all else clause</strong>. Take the following code example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Not recommended: a catch-all else clause</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">def</span> receive</a>
+<a class="sourceLine" id="cb1-3" title="3">  event_type = request.headers[<span class="st">&quot;X-GitHub-Event&quot;</span>]</a>
+<a class="sourceLine" id="cb1-4" title="4">  payload    = request.body</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">case</span> event_type</a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="kw">when</span> <span class="st">&quot;repository&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    process_repository(payload)</a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="kw">when</span> <span class="st">&quot;issues&quot;</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    process_issues(payload)</a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="kw">else</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    process_pull_requests</a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="kw">end</span></a></code></pre></div>
+<p>In this code example, the <code>process_repository</code> and <code>process_issues</code> methods will be correctly called if a <code>repository</code> or <code>issues</code> event was received. However, any other event type would result in <code>process_pull_requests</code> being called. As new event types are added, this would result in incorrect behavior and new event types would be processed in the same way that a <code>pull_request</code> event would be processed.</p>
+<p>Instead, we suggest explicitly checking event types and acting accordingly. In the following code example, we explicitly check for a <code>pull_request</code> event and the <code>else</code> clause simply logs that we’ve received a new event type:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Recommended: explicitly check each event type</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">def</span> receive</a>
+<a class="sourceLine" id="cb2-3" title="3">  event_type = request.headers[<span class="st">&quot;X-GitHub-Event&quot;</span>]</a>
+<a class="sourceLine" id="cb2-4" title="4">  payload    = <span class="dt">JSON</span>.parse(request.body)</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">case</span> event_type</a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="kw">when</span> <span class="st">&quot;repository&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    process_repository(payload)</a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="kw">when</span> <span class="st">&quot;issues&quot;</span></a>
+<a class="sourceLine" id="cb2-10" title="10">    process_issue(payload)</a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="kw">when</span> <span class="st">&quot;pull_request&quot;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    process_pull_requests(payload)</a>
+<a class="sourceLine" id="cb2-13" title="13">  <span class="kw">else</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    puts <span class="st">&quot;Oooh, something new from GitHub: </span><span class="ot">#{</span>event_type<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="kw">end</span></a></code></pre></div>
+<p>Because each event can also have multiple actions, it’s recommended that actions are checked similarly. For example, the <a href="/webhooks/event-payloads/#issues"><code>IssuesEvent</code></a> has several possible actions. These include <code>opened</code> when the issue is created, <code>closed</code> when the issue is closed, and <code>assigned</code> when the issue is assigned to someone.</p>
+<p>As with adding event types, we may add new actions to existing events. It is therefore again <strong>not recommended to use any sort of catch-all else clause</strong> when checking an event’s action. Instead, we suggest explicitly checking event actions as we did with the event type. An example of this looks very similar to what we suggested for event types above:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Recommended: explicitly check each action</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">def</span> process_issue(payload)</a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="kw">case</span> payload[<span class="st">&quot;action&quot;</span>]</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="kw">when</span> <span class="st">&quot;opened&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    process_issue_opened(payload)</a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="kw">when</span> <span class="st">&quot;assigned&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    process_issue_assigned(payload)</a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="kw">when</span> <span class="st">&quot;closed&quot;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    process_issue_closed(payload)</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="kw">else</span></a>
+<a class="sourceLine" id="cb3-11" title="11">    puts <span class="st">&quot;Oooh, something new from GitHub: </span><span class="ot">#{</span>payload[<span class="st">&quot;action&quot;</span>]<span class="ot">}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="kw">end</span></a></code></pre></div>
+<p>In this example the <code>closed</code> action is checked first before calling the <code>process_closed</code> method. Any unidentified actions are logged for future reference.</p>
+<p>{% ifversion fpt %}</p>
+<h2 id="dealing-with-rate-limits">Dealing with rate limits</h2>
+<p>The GitHub API <a href="/rest/overview/resources-in-the-rest-api#rate-limiting">rate limit</a> ensures that the API is fast and available for everyone.</p>
+<p>If you hit a rate limit, it’s expected that you back off from making requests and try again later when you’re permitted to do so. Failure to do so may result in the banning of your app.</p>
+<p>You can always <a href="/rest/reference/rate-limit">check your rate limit status</a> at any time. Checking your rate limit incurs no cost against your rate limit.</p>
+<h2 id="dealing-with-abuse-rate-limits">Dealing with abuse rate limits</h2>
+<p><a href="/rest/overview/resources-in-the-rest-api#abuse-rate-limits">Abuse rate limits</a> are another way we ensure the API’s availability. To avoid hitting this limit, you should ensure your application follows the guidelines below.</p>
+<ul>
+<li>Make authenticated requests, or use your application’s client ID and secret. Unauthenticated requests are subject to more aggressive abuse rate limiting.</li>
+<li>Make requests for a single user or client ID serially. Do not make requests for a single user or client ID concurrently.</li>
+<li>If you’re making a large number of <code>POST</code>, <code>PATCH</code>, <code>PUT</code>, or <code>DELETE</code> requests for a single user or client ID, wait at least one second between each request.</li>
+<li>When you have been limited, use the <code>Retry-After</code> response header to slow down. The value of the <code>Retry-After</code> header will always be an integer, representing the number of seconds you should wait before making requests again. For example, <code>Retry-After: 30</code> means you should wait 30 seconds before sending more requests.</li>
+<li>Requests that create content which triggers notifications, such as issues, comments and pull requests, may be further limited and will not include a <code>Retry-After</code> header in the response. Please create this content at a reasonable pace to avoid further limiting.</li>
+</ul>
+<p>We reserve the right to change these guidelines as needed to ensure availability.</p>
+<p>{% endif %}</p>
+<h2 id="dealing-with-api-errors">Dealing with API errors</h2>
+<p>Although your code would never introduce a bug, you may find that you’ve encountered successive errors when trying to access the API.</p>
+<p>Rather than ignore repeated <code>4xx</code> and <code>5xx</code> status codes, you should ensure that you’re correctly interacting with the API. For example, if an endpoint requests a string and you’re passing it a numeric value, you’re going to receive a <code>5xx</code> validation error, and your call won’t succeed. Similarly, attempting to access an unauthorized or nonexistent endpoint will result in a <code>4xx</code> error.</p>
+<p>Intentionally ignoring repeated validation errors may result in the suspension of your app for abuse.</p>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Disabling and enabling a workflow</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Disabling and enabling a workflow</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      Disabling a workflow allows you to stop a workflow from being triggered
+      without having to delete the file from the repo. You can easily re-enable
+      the workflow again on {% data variables.product.prodname_dotcom %}.
+    </p>
+    <p>
+      Temporarily disabling a workflow can be useful in many scenarios. These
+      are a few examples where disabling a workflow might be helpful:
+    </p>
+    <ul>
+      <li>
+        A workflow error that produces too many or wrong requests, impacting
+        external services negatively.
+      </li>
+      <li>
+        A workflow that is not critical and is consuming too many minutes on
+        your account.
+      </li>
+      <li>A workflow that sends requests to a service that is down.</li>
+      <li>
+        Workflows on a forked repository that aren’t needed (for example,
+        scheduled workflows).
+      </li>
+    </ul>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> {% data
+      reusables.actions.scheduled-workflows-disabled %}
+    </p>
+    <p>{% endwarning %}</p>
+    <p>
+      You can also disable and enable a workflow using the REST API. For more
+      information, see the “<a href="/rest/reference/actions#workflows"
+        >Actions REST API</a
+      >.”
+    </p>
+    <h3 id="disabling-a-workflow">Disabling a workflow</h3>
+    <p>{% include tool-switcher %}</p>
+    <p>{% webui %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} 1. In the left sidebar, click the
+      workflow you want to disable.
+      <img
+        src="/assets/images/actions-select-workflow.png"
+        alt="actions select workflow"
+      />
+      1. Click {% octicon “kebab-horizontal” aria-label=“The horizontal kebab
+      icon” %}.
+      <img
+        src="/assets/images/help/repository/actions-workflow-menu-kebab.png"
+        alt="actions kebab menu"
+      />
+      1. Click <strong>Disable workflow</strong>.
+      <img
+        src="/assets/images/help/repository/actions-disable-workflow.png"
+        alt="actions disable workflow"
+      />
+      The disabled workflow is marked {% octicon “stop” aria-label=“The stop
+      icon” %} to indicate its status.
+      <img
+        src="/assets/images/help/repository/actions-find-disabled-workflow.png"
+        alt="actions list disabled workflow"
+      />
+    </p>
+    <p>{% endwebui %}</p>
+    <p>{% cli %}</p>
+    <p>{% data reusables.cli.download-cli %}</p>
+    <p>{% data reusables.actions.actions-cli %}</p>
+    <p>
+      To disable a workflow, use the <code>workflow disable</code> subcommand.
+      Replace <code>workflow</code> with either the name, ID, or file name of
+      the workflow you want to disable. For example,
+      <code>"Link Checker"</code>, <code>1234567</code>, or
+      <code>"link-check-test.yml"</code>. If you don’t specify a workflow, {%
+      data variables.product.prodname_cli %} returns an interactive menu for you
+      to choose a workflow.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh workflow disable &lt;em&gt;workflow&lt;/em&gt;</code></pre>
+    <p>{% endcli %}</p>
+    <h3 id="enabling-a-workflow">Enabling a workflow</h3>
+    <p>{% include tool-switcher %}</p>
+    <p>{% webui %}</p>
+    <p>You can re-enable a workflow that was previously disabled.</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} 1. In the left sidebar, click the
+      workflow you want to enable.
+      <img
+        src="/assets/images/help/repository/actions-select-disabled-workflow.png"
+        alt="actions select disabled workflow"
+      />
+      1. Click <strong>Enable workflow</strong>.
+      <img
+        src="/assets/images/help/repository/actions-enable-workflow.png"
+        alt="actions enable workflow"
+      />
+    </p>
+    <p>{% endwebui %}</p>
+    <p>{% cli %}</p>
+    <p>{% data reusables.actions.actions-cli %}</p>
+    <p>
+      To enable a workflow, use the <code>workflow enable</code> subcommand.
+      Replace <code>workflow</code> with either the name, ID, or file name of
+      the workflow you want to enable. For example, <code>"Link Checker"</code>,
+      <code>1234567</code>, or <code>"link-check-test.yml"</code>. If you don’t
+      specify a workflow, {% data variables.product.prodname_cli %} returns an
+      interactive menu for you to choose a workflow.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh workflow enable &lt;em&gt;workflow&lt;/em&gt;</code></pre>
+    <p>{% endcli %}</p>
+  </body>
+</html>

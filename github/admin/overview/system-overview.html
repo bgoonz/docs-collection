@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>System overview</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">System overview</h1>
+    </header>
+    <h2 id="storage-architecture">Storage architecture</h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} requires two storage
+      volumes, one mounted to the <em>root filesystem</em> path (<code>/</code>)
+      and the other to the <em>user filesystem</em> path
+      (<code>/data/user</code>). This architecture simplifies the upgrade,
+      rollback, and recovery procedures by separating the running software
+      environment from persistent application data.
+    </p>
+    <p>
+      The root filesystem is included in the distributed machine image. It
+      contains the base operating system and the {% data
+      variables.product.prodname_ghe_server %} application environment. The root
+      filesystem should be treated as ephemeral. Any data on the root filesystem
+      will be replaced when upgrading to future {% data
+      variables.product.prodname_ghe_server %} releases.
+    </p>
+    <p>
+      The root filesystem contains: - Custom certificate authority (CA)
+      certificates (in <em>/usr/local/share/ca-certificates</em>) - Custom
+      networking configurations - Custom firewall configurations - The
+      replication state
+    </p>
+    <p>
+      The user filesystem contains user configuration and data, such as: - Git
+      repositories - Databases - Search indexes - Content published on {% data
+      variables.product.prodname_pages %} sites - Large files from {% data
+      variables.large_files.product_name_long %} - Pre-receive hook environments
+    </p>
+    <h2 id="deployment-options">Deployment options</h2>
+    <p>
+      You can deploy {% data variables.product.prodname_ghe_server %} as a
+      single virtual appliance, or in a high availability configuration. For
+      more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-github-enterprise-server-for-high-availability/"
+        >Configuring {% data variables.product.prodname_ghe_server %} for High
+        Availability</a
+      >.”
+    </p>
+    <p>
+      Some organizations with tens of thousands of developers may also benefit
+      from {% data variables.product.prodname_ghe_server %} Clustering. For more
+      information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/clustering/about-clustering"
+        >About clustering</a
+      >.”
+    </p>
+    <h2 id="data-retention-and-datacenter-redundancy">
+      Data retention and datacenter redundancy
+    </h2>
+    <p>{% danger %}</p>
+    <p>
+      Before using {% data variables.product.prodname_ghe_server %} in a
+      production environment, we strongly recommend you set up backups and a
+      disaster recovery plan. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-backups-on-your-appliance"
+        >Configuring backups on your appliance</a
+      >.”
+    </p>
+    <p>{% enddanger %}</p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} includes support for
+      online and incremental backups with the
+      <a href="https://github.com/github/backup-utils"
+        >{% data variables.product.prodname_enterprise_backup_utilities %}</a
+      >. You can take incremental snapshots over a secure network link (the SSH
+      administrative port) over long distances for off-site or geographically
+      dispersed storage. You can restore snapshots over the network into a newly
+      provisioned appliance at time of recovery in case of disaster at the
+      primary datacenter.
+    </p>
+    <p>
+      In addition to network backups, both AWS (EBS) and VMware disk snapshots
+      of the user storage volumes are supported while the appliance is offline
+      or in maintenance mode. Regular volume snapshots can be used as a
+      low-cost, low-complexity alternative to network backups with {% data
+      variables.product.prodname_enterprise_backup_utilities %} if your service
+      level requirements allow for regular offline maintenance.
+    </p>
+    <p>
+      For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/configuring-backups-on-your-appliance"
+        >Configuring backups on your appliance</a
+      >.”
+    </p>
+    <h2 id="security">Security</h2>
+    <p>
+      {% data variables.product.prodname_ghe_server %} is a virtual appliance
+      that runs on your infrastructure and is governed by your existing
+      information security controls, such as firewalls, IAM, monitoring, and
+      VPNs. Using {% data variables.product.prodname_ghe_server %} can help you
+      avoid regulatory compliance issues that arise from cloud-based solutions.
+    </p>
+    <p>
+      {% data variables.product.prodname_ghe_server %} also includes additional
+      security features.
+    </p>
+    <ul>
+      <li>
+        <a href="#operating-system-software-and-patches"
+          >Operating system, software, and patches</a
+        >
+      </li>
+      <li><a href="#network-security">Network security</a></li>
+      <li><a href="#application-security">Application security</a></li>
+      <li>
+        <a href="#external-services-and-support-access"
+          >External services and support access</a
+        >
+      </li>
+      <li><a href="#encrypted-communication">Encrypted communication</a></li>
+      <li>
+        <a href="#users-and-access-permissions">Users and access permissions</a>
+      </li>
+      <li><a href="#authentication">Authentication</a></li>
+      <li><a href="#audit-and-access-logging">Audit and access logging</a></li>
+    </ul>
+    <h3 id="operating-system-software-and-patches">
+      Operating system, software, and patches
+    </h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} runs a customized Linux
+      operating system with only the necessary applications and services. {%
+      data variables.product.prodname_dotcom %} manages patching of the
+      appliance’s core operating system as part of its standard product release
+      cycle. Patches address functionality, stability, and non-critical security
+      issues for {% data variables.product.prodname_dotcom %} applications. {%
+      data variables.product.prodname_dotcom %} also provides critical security
+      patches as needed outside of the regular release cycle.
+    </p>
+    <h3 id="network-security">Network security</h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %}’s internal firewall
+      restricts network access to the appliance’s services. Only services
+      necessary for the appliance to function are available over the network.
+      For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/network-ports"
+        >Network ports</a
+      >.”
+    </p>
+    <h3 id="application-security">Application security</h3>
+    <p>
+      {% data variables.product.prodname_dotcom %}’s application security team
+      focuses full-time on vulnerability assessment, penetration testing, and
+      code review for {% data variables.product.prodname_dotcom %} products,
+      including {% data variables.product.prodname_ghe_server %}. {% data
+      variables.product.prodname_dotcom %} also contracts with outside security
+      firms to provide point-in-time security assessments of {% data
+      variables.product.prodname_dotcom %} products.
+    </p>
+    <h3 id="external-services-and-support-access">
+      External services and support access
+    </h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} can operate without any
+      egress access from your network to outside services. You can optionally
+      enable integration with external services for email delivery, external
+      monitoring, and log forwarding. For more information, see “<a
+        href="/admin/configuration/configuring-email-for-notifications"
+        >Configuring email for notifications</a
+      >,” “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/setting-up-external-monitoring"
+        >Setting up external monitoring</a
+      >,” and “<a href="/admin/user-management/log-forwarding">Log forwarding</a
+      >.”
+    </p>
+    <p>
+      You can manually collect and send troubleshooting data to {% data
+      variables.contact.github_support %}. For more information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/enterprise-support/providing-data-to-github-support"
+        >Providing data to {% data variables.contact.github_support %}</a
+      >.”
+    </p>
+    <h3 id="encrypted-communication">Encrypted communication</h3>
+    <p>
+      {% data variables.product.prodname_dotcom %} designs {% data
+      variables.product.prodname_ghe_server %} to run behind your corporate
+      firewall. To secure communication over the wire, we encourage you to
+      enable Transport Layer Security (TLS). {% data
+      variables.product.prodname_ghe_server %} supports 2048-bit and higher
+      commercial TLS certificates for HTTPS traffic. For more information, see
+      “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/configuring-tls"
+        >Configuring TLS</a
+      >.”
+    </p>
+    <p>
+      By default, the appliance also offers Secure Shell (SSH) access for both
+      repository access using Git and administrative purposes. For more
+      information, see “<a href="/enterprise/user/articles/about-ssh"
+        >About SSH</a
+      >” and “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/accessing-the-administrative-shell-ssh"
+        >Accessing the administrative shell (SSH)</a
+      >.”
+    </p>
+    <h3 id="users-and-access-permissions">Users and access permissions</h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} provides three types of
+      accounts.
+    </p>
+    <ul>
+      <li>
+        The <code>admin</code> Linux user account has controlled access to the
+        underlying operating system, including direct filesystem and database
+        access. A small set of trusted administrators should have access to this
+        account, which they can access over SSH. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/accessing-the-administrative-shell-ssh"
+          >Accessing the administrative shell (SSH)</a
+        >.”
+      </li>
+      <li>
+        User accounts in the appliance’s web application have full access to
+        their own data and any data that other users or organizations explicitly
+        grant.
+      </li>
+      <li>
+        Site administrators in the appliance’s web application are user accounts
+        that can manage high-level web application and appliance settings, user
+        and organization account settings, and repository data.
+      </li>
+    </ul>
+    <p>
+      For more information about {% data variables.product.prodname_ghe_server
+      %}’s user permissions, see “<a
+        href="/enterprise/user/articles/access-permissions-on-github"
+        >Access permissions on GitHub</a
+      >.”
+    </p>
+    <h3 id="authentication">Authentication</h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} provides four
+      authentication methods.
+    </p>
+    <ul>
+      <li>
+        SSH public key authentication provides both repository access using Git
+        and administrative shell access. For more information, see “<a
+          href="/enterprise/user/articles/about-ssh"
+          >About SSH</a
+        >” and “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/installation/accessing-the-administrative-shell-ssh"
+          >Accessing the administrative shell (SSH)</a
+        >.”
+      </li>
+      <li>
+        Username and password authentication with HTTP cookies provides web
+        application access and session management, with optional two-factor
+        authentication (2FA). For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/user-management/using-built-in-authentication"
+          >Using built-in authentication</a
+        >.”
+      </li>
+      <li>
+        External LDAP, SAML, or CAS authentication using an LDAP service, SAML
+        Identity Provider (IdP), or other compatible service provides access to
+        the web application. For more information, see “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/user-management/authenticating-users-for-your-github-enterprise-server-instance"
+          >Authenticating users for your GitHub Enterprise Server instance</a
+        >.”
+      </li>
+      <li>
+        OAuth and Personal Access Tokens provide access to Git repository data
+        and APIs for both external clients and services. For more information,
+        see “<a
+          href="/github/authenticating-to-github/creating-a-personal-access-token"
+          >Creating a personal access token</a
+        >.”
+      </li>
+    </ul>
+    <h3 id="audit-and-access-logging">Audit and access logging</h3>
+    <p>
+      {% data variables.product.prodname_ghe_server %} stores both traditional
+      operating system and application logs. The application also writes
+      detailed auditing and security logs, which {% data
+      variables.product.prodname_ghe_server %} stores permanently. You can
+      forward both types of logs in real time to multiple destinations via the
+      <code>syslog-ng</code> protocol. For more information, see “<a
+        href="/admin/user-management/log-forwarding"
+        >Log forwarding</a
+      >.”
+    </p>
+    <p>Access and audit logs include information like the following.</p>
+    <h4 id="access-logs">Access logs</h4>
+    <ul>
+      <li>Full web server logs for both browser and API access</li>
+      <li>
+        Full logs for access to repository data over Git, HTTPS, and SSH
+        protocols
+      </li>
+      <li>Administrative access logs over HTTPS and SSH</li>
+    </ul>
+    <h4 id="audit-logs">Audit logs</h4>
+    <ul>
+      <li>
+        User logins, password resets, 2FA requests, email setting changes, and
+        changes to authorized applications and APIs
+      </li>
+      <li>
+        Site administrator actions, such as unlocking user accounts and
+        repositories
+      </li>
+      <li>Repository push events, access grants, transfers, and renames</li>
+      <li>
+        Organization membership changes, including team creation and destruction
+      </li>
+    </ul>
+    <h2
+      id="open-source-dependencies-for-data-variables.product.prodname_ghe_server"
+    >
+      Open source dependencies for {% data variables.product.prodname_ghe_server
+      %}
+    </h2>
+    <p>
+      You can see a complete list of dependencies in your appliance’s version of
+      {% data variables.product.prodname_ghe_server %}, as well as each
+      project’s license, at <code>http(s)://HOSTNAME/site/credits</code>.
+    </p>
+    <p>
+      Tarballs with a full list of dependencies and associated metadata are
+      available on your appliance: - For dependencies common to all platforms,
+      at
+      <code
+        >/usr/local/share/enterprise/dependencies-&lt;GHE
+        version&gt;-base.tar.gz</code
+      >
+      - For dependencies specific to a platform, at
+      <code
+        >/usr/local/share/enterprise/dependencies-&lt;GHE
+        version&gt;-&lt;platform&gt;.tar.gz</code
+      >
+    </p>
+    <p>
+      Tarballs are also available, with a full list of dependencies and
+      metadata, at
+      <code
+        >https://enterprise.github.com/releases/&lt;version&gt;/download.html</code
+      >.
+    </p>
+    <h2 id="further-reading">Further reading</h2>
+    <ul>
+      <li>
+        “<a href="/articles/setting-up-a-trial-of-github-enterprise-server"
+          >Setting up a trial of {% data variables.product.prodname_ghe_server
+          %}</a
+        >”
+      </li>
+      <li>
+        “<a
+          href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/setting-up-a-github-enterprise-server-instance"
+          >Setting up a {% data variables.product.prodname_ghe_server %}
+          instance</a
+        >”
+      </li>
+      <li>
+        <a href="%7B%%20data%20variables.product.prodname_roadmap_link%20%%7D"
+          >{% data variables.product.prodname_roadmap %}</a
+        >
+        in the <code>github/roadmap</code> repository
+      </li>
+    </ul>
+  </body>
+</html>

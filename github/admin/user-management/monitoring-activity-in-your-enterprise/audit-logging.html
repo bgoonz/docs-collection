@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Audit logging</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Audit logging</h1>
+</header>
+<p>For a full list, see “<a href="/admin/user-management/audited-actions">Audited actions</a>.” For more information on finding a particular action, see “<a href="/admin/user-management/searching-the-audit-log">Searching the audit log</a>.”</p>
+<h2 id="push-logs">Push logs</h2>
+<p>Every Git push operation is logged. For more information, see “<a href="/admin/user-management/viewing-push-logs">Viewing push logs</a>.”</p>
+<p>{% ifversion ghes %} ## System events</p>
+<p>All audited system events, including all pushes and pulls, are logged to <code>/var/log/github/audit.log</code>. Logs are automatically rotated every 24 hours and are retained for seven days.</p>
+<p>The support bundle includes system logs. For more information, see “<a href="/admin/enterprise-support/providing-data-to-github-support">Providing data to {% data variables.product.prodname_dotcom %} Support</a>.”</p>
+<h2 id="support-bundles">Support bundles</h2>
+<p>All audit information is logged to the <code>audit.log</code> file in the <code>github-logs</code> directory of any support bundle. If log forwarding is enabled, you can stream this data to an external syslog stream consumer such as <a href="http://www.splunk.com/">Splunk</a> or <a href="http://logstash.net/">Logstash</a>. All entries from this log use and can be filtered with the <code>github_audit</code> keyword. For more information see “<a href="/admin/user-management/log-forwarding">Log forwarding</a>.”</p>
+<p>For example, this entry shows that a new repository was created.</p>
+<pre><code>Oct 26 01:42:08 github-ent github_audit: {:created_at=&gt;1351215728326, :actor_ip=&gt;&quot;10.0.0.51&quot;, :data=&gt;{}, :user=&gt;&quot;some-user&quot;, :repo=&gt;&quot;some-user/some-repository&quot;, :actor=&gt;&quot;some-user&quot;, :actor_id=&gt;2, :user_id=&gt;2, :action=&gt;&quot;repo.create&quot;, :repo_id=&gt;1, :from=&gt;&quot;repositories#create&quot;}</code></pre>
+<p>This example shows that commits were pushed to a repository.</p>
+<pre><code>Oct 26 02:19:31 github-ent github_audit: { &quot;pid&quot;:22860, &quot;ppid&quot;:22859, &quot;program&quot;:&quot;receive-pack&quot;, &quot;git_dir&quot;:&quot;/data/repositories/some-user/some-repository.git&quot;, &quot;hostname&quot;:&quot;github-ent&quot;, &quot;pusher&quot;:&quot;some-user&quot;, &quot;real_ip&quot;:&quot;10.0.0.51&quot;, &quot;user_agent&quot;:&quot;git/1.7.10.4&quot;, &quot;repo_id&quot;:1, &quot;repo_name&quot;:&quot;some-user/some-repository&quot;, &quot;transaction_id&quot;:&quot;b031b7dc7043c87323a75f7a92092ef1456e5fbaef995c68&quot;, &quot;frontend_ppid&quot;:1, &quot;repo_public&quot;:true, &quot;user_name&quot;:&quot;some-user&quot;, &quot;user_login&quot;:&quot;some-user&quot;, &quot;frontend_pid&quot;:18238, &quot;frontend&quot;:&quot;github-ent&quot;, &quot;user_email&quot;:&quot;some-user@github.example.com&quot;, &quot;user_id&quot;:2, &quot;pgroup&quot;:&quot;github-ent_22860&quot;, &quot;status&quot;:&quot;post_receive_hook&quot;, &quot;features&quot;:&quot; report-status side-band-64k&quot;, &quot;received_objects&quot;:3, &quot;receive_pack_size&quot;:243, &quot;non_fast_forward&quot;:false, &quot;current_ref&quot;:&quot;refs/heads/main&quot; }</code></pre>
+<p>{% endif %}</p>
+</body>
+</html>

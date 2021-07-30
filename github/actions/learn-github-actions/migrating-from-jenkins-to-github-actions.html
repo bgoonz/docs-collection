@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Migrating from Jenkins to GitHub Actions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Migrating from Jenkins to GitHub Actions</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      Jenkins and {% data variables.product.prodname_actions %} both allow you
+      to create workflows that automatically build, test, publish, release, and
+      deploy code. Jenkins and {% data variables.product.prodname_actions %}
+      share some similarities in workflow configuration:
+    </p>
+    <ul>
+      <li>
+        Jenkins creates workflows using <em>Declarative Pipelines</em>, which
+        are similar to {% data variables.product.prodname_actions %} workflow
+        files.
+      </li>
+      <li>
+        Jenkins uses <em>stages</em> to run a collection of steps, while {% data
+        variables.product.prodname_actions %} uses jobs to group one or more
+        steps or individual commands.
+      </li>
+      <li>
+        Jenkins and {% data variables.product.prodname_actions %} support
+        container-based builds. For more information, see “<a
+          href="/articles/creating-a-docker-container-action"
+          >Creating a Docker container action</a
+        >.”
+      </li>
+      <li>Steps or tasks can be reused and shared with the community.</li>
+    </ul>
+    <p>
+      For more information, see “<a
+        href="/actions/getting-started-with-github-actions/core-concepts-for-github-actions"
+        >Core concepts for {% data variables.product.prodname_actions %}</a
+      >.”
+    </p>
+    <h2 id="key-differences">Key differences</h2>
+    <ul>
+      <li>
+        Jenkins has two types of syntax for creating pipelines: Declarative
+        Pipeline and Scripted Pipeline. {% data
+        variables.product.prodname_actions %} uses YAML to create workflows and
+        configuration files. For more information, see “<a
+          href="/actions/reference/workflow-syntax-for-github-actions"
+          >Workflow syntax for GitHub Actions</a
+        >.”
+      </li>
+      <li>
+        Jenkins deployments are typically self-hosted, with users maintaining
+        the servers in their own data centers. {% data
+        variables.product.prodname_actions %} offers a hybrid cloud approach by
+        hosting its own runners that you can use to run jobs, while also
+        supporting self-hosted runners. For more information, see
+        <a href="/actions/hosting-your-own-runners/about-self-hosted-runners"
+          >About self-hosted runners</a
+        >.
+      </li>
+    </ul>
+    <h2 id="comparing-capabilities">Comparing capabilities</h2>
+    <h3 id="distributing-your-builds">Distributing your builds</h3>
+    <p>
+      Jenkins lets you send builds to a single build agent, or you can
+      distribute them across multiple agents. You can also classify these agents
+      according to various attributes, such as operating system types.
+    </p>
+    <p>
+      Similarly, {% data variables.product.prodname_actions %} can send jobs to
+      {% data variables.product.prodname_dotcom %}-hosted or self-hosted
+      runners, and you can use labels to classify runners according to various
+      attributes. The following table compares how the distributed build concept
+      is implemented for both Jenkins and {% data
+      variables.product.prodname_actions %}.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Jenkins</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://wiki.jenkins.io/display/JENKINS/Distributed+builds"
+              ><code>agents</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/learn-github-actions/introduction-to-github-actions#runners"
+              ><code>runners</code></a
+            >
+            <br />
+            <a
+              href="/actions/hosting-your-own-runners/about-self-hosted-runners"
+              ><code>self-hosted runners</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="using-sections-to-organize-pipelines">
+      Using sections to organize pipelines
+    </h3>
+    <p>
+      Jenkins splits its Declarative Pipelines into multiple sections.
+      Similarly, {% data variables.product.prodname_actions %} organizes its
+      workflows into separate sections. The table below compares Jenkins
+      sections with the {% data variables.product.prodname_actions %} workflow.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Jenkins Directives</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#agent"
+              ><code>agent</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on"
+              ><code>jobs.&lt;job_id&gt;.runs-on</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idcontainer"
+              ><code>jobs.&lt;job_id&gt;.container</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#post"
+              ><code>post</code></a
+            >
+          </td>
+          <td></td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#stages"
+              ><code>stages</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobs"
+              ><code>jobs</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#steps"
+              ><code>steps</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps"
+              ><code>jobs.&lt;job_id&gt;.steps</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="using-directives">Using directives</h2>
+    <p>
+      Jenkins uses directives to manage <em>Declarative Pipelines</em>. These
+      directives define the characteristics of your workflow and how it will
+      execute. The table below demonstrates how these directives map to concepts
+      within {% data variables.product.prodname_actions %}.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Jenkins Directives</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#environment"
+              ><code>environment</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#env"
+              ><code>jobs.&lt;job_id&gt;.env</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsenv"
+              ><code>jobs.&lt;job_id&gt;.steps[*].env</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#parameters"
+              ><code>options</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategy"
+              ><code>jobs.&lt;job_id&gt;.strategy</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast"
+              ><code>jobs.&lt;job_id&gt;.strategy.fail-fast</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes"
+              ><code>jobs.&lt;job_id&gt;.timeout-minutes</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#parameters"
+              ><code>parameters</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/creating-actions/metadata-syntax-for-github-actions#inputs"
+              ><code>inputs</code></a
+            >
+            <br />
+            <a
+              href="/actions/creating-actions/metadata-syntax-for-github-actions#outputs"
+              ><code>outputs</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#triggers"
+              ><code>triggers</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on"
+              ><code>on</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onevent_nametypes"
+              ><code>on.&lt;event_name&gt;.types</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onpushpull_requestbranchestags"
+              ><code
+                >on.&lt;push|pull_request&gt;.&lt;branches|tags&gt;</code
+              ></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths"
+              ><code>on.&lt;push|pull_request&gt;.paths</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#triggers"
+              ><code>triggers { upstreamprojects() }</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idneeds"
+              ><code>jobs.&lt;job_id&gt;.needs</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#cron-syntax"
+              >Jenkins cron syntax</a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onschedule"
+              ><code>on.schedule</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#stage"
+              ><code>stage</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_id"
+              ><code>jobs.&lt;job_id&gt;</code></a
+            >
+            <br />
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idname"
+              ><code>jobs.&lt;job_id&gt;.name</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#tools"
+              ><code>tools</code></a
+            >
+          </td>
+          <td>
+            {% ifversion ghae %}For instructions on how to make sure your {%
+            data variables.actions.hosted_runner %} has the required software
+            installed, see “<a
+              href="/actions/using-github-hosted-runners/creating-custom-images"
+              >Creating custom images</a
+            >.”{% else %}<a
+              href="/actions/reference/specifications-for-github-hosted-runners/#supported-software"
+              >Specifications for {% data variables.product.prodname_dotcom
+              %}-hosted runners</a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#input"
+              ><code>input</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#inputs"
+              ><code>inputs</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#when"
+              ><code>when</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idif"
+              ><code>jobs.&lt;job_id&gt;.if</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="using-sequential-stages">Using sequential stages</h2>
+    <h3 id="parallel-job-processing">Parallel job processing</h3>
+    <p>
+      Jenkins can run the <code>stages</code> and <code>steps</code> in
+      parallel, while {% data variables.product.prodname_actions %} currently
+      only runs jobs in parallel.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Jenkins Parallel</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#parallel"
+              ><code>parallel</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategymax-parallel"
+              ><code>jobs.&lt;job_id&gt;.strategy.max-parallel</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="build-matrix">Build matrix</h3>
+    <p>
+      Both {% data variables.product.prodname_actions %} and Jenkins let you use
+      a build matrix to define various system combinations.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Jenkins</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#matrix-axes"
+              ><code>axis</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/learn-github-actions/managing-complex-workflows/#using-a-build-matrix"
+              ><code>strategy/matrix</code></a
+            >
+            <br />
+            <a
+              href="/actions/reference/context-and-expression-syntax-for-github-actions"
+              ><code>context</code></a
+            >
+          </td>
+        </tr>
+        <tr class="even">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#matrix-stages"
+              ><code>stages</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/reference/context-and-expression-syntax-for-github-actions#steps-context"
+              ><code>steps-context</code></a
+            >
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#matrix-stages"
+              ><code>excludes</code></a
+            >
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="using-steps-to-execute-tasks">Using steps to execute tasks</h3>
+    <p>
+      Jenkins groups <code>steps</code> together in <code>stages</code>. Each of
+      these steps can be a script, function, or command, among others.
+      Similarly, {% data variables.product.prodname_actions %} uses
+      <code>jobs</code> to execute specific groups of <code>steps</code>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Jenkins steps</th>
+          <th>{% data variables.product.prodname_actions %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <a href="https://jenkins.io/doc/book/pipeline/syntax/#script"
+              ><code>script</code></a
+            >
+          </td>
+          <td>
+            <a
+              href="/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps"
+              ><code>jobs.&lt;job_id&gt;.steps</code></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="examples-of-common-tasks">Examples of common tasks</h2>
+    <h3 id="scheduling-a-pipeline-to-run-with-cron">
+      Scheduling a pipeline to run with <code>cron</code>
+    </h3>
+    <table>
+      <tr>
+        <th>Jenkins Pipeline</th>
+        <th>{% data variables.product.prodname_actions %} Workflow</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb1">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1">pipeline <span class="kw">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  agent any</a>
+<a class="sourceLine" id="cb1-3" title="3">  triggers {</a>
+<a class="sourceLine" id="cb1-4" title="4">    cron(<span class="st">&#39;H/15 * * * 1-5&#39;</span>)</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">}</span></a>
+<a class="sourceLine" id="cb1-6" title="6">}</a></code></pre>
+          </div>
+        </td>
+        <td>
+          <div class="sourceCode" id="cb2">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">schedule:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">-</span> <span class="fu">cron:</span><span class="at"> </span><span class="st">&#39;*/15 * * * 1-5&#39;</span></a></code></pre>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <h3 id="configuring-environment-variables-in-a-pipeline">
+      Configuring environment variables in a pipeline
+    </h3>
+    <table>
+      <tr>
+        <th>Jenkins Pipeline</th>
+        <th>{% data variables.product.prodname_actions %} Workflow</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb3">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1">pipeline <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  agent any</a>
+<a class="sourceLine" id="cb3-3" title="3">  environment {</a>
+<a class="sourceLine" id="cb3-4" title="4">    MAVEN_PATH = <span class="st">&#39;/usr/local/maven&#39;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-6" title="6">}</a></code></pre>
+          </div>
+        </td>
+        <td>
+          <div class="sourceCode" id="cb4">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">maven-build:</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      <span class="fu">MAVEN_PATH:</span><span class="at"> </span><span class="st">&#39;/usr/local/maven&#39;</span></a></code></pre>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <h3 id="building-from-upstream-projects">
+      Building from upstream projects
+    </h3>
+    <table>
+      <tr>
+        <th>Jenkins Pipeline</th>
+        <th>{% data variables.product.prodname_actions %} Workflow</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb5">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1">pipeline <span class="kw">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  triggers {</a>
+<a class="sourceLine" id="cb5-3" title="3">    upstream(</a>
+<a class="sourceLine" id="cb5-4" title="4">      <span class="fu">upstreamProjects:</span><span class="at"> </span><span class="st">&#39;job1,job2&#39;</span><span class="kw">,</span></a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="fu">threshold:</span><span class="at"> hudson.model.Result.SUCCESS</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="at">    )</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="at">  </span><span class="kw">}</span></a>
+<a class="sourceLine" id="cb5-8" title="8">}</a></code></pre>
+          </div>
+        </td>
+        <td>
+          <div class="sourceCode" id="cb6">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="fu">job1:</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="fu">job2:</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="fu">needs:</span><span class="at"> job1</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="fu">job3:</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="fu">needs:</span><span class="at"> </span><span class="kw">[</span>job1<span class="kw">,</span> job2<span class="kw">]</span></a></code></pre>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <h3 id="building-with-multiple-operating-systems">
+      Building with multiple operating systems
+    </h3>
+    <table>
+      <tr>
+        <th>Jenkins Pipeline</th>
+        <th>{% data variables.product.prodname_actions %} Workflow</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="sourceCode" id="cb7">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1">pipeline <span class="kw">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  agent none</a>
+<a class="sourceLine" id="cb7-3" title="3">  stages {</a>
+<a class="sourceLine" id="cb7-4" title="4">    stage(<span class="st">&#39;Run Tests&#39;</span>) {</a>
+<a class="sourceLine" id="cb7-5" title="5">      matrix {</a>
+<a class="sourceLine" id="cb7-6" title="6">        axes {</a>
+<a class="sourceLine" id="cb7-7" title="7">          axis {</a>
+<a class="sourceLine" id="cb7-8" title="8">            <span class="fu">name:</span><span class="at"> </span><span class="st">&#39;PLATFORM&#39;</span></a>
+<a class="sourceLine" id="cb7-9" title="9">            <span class="fu">values:</span><span class="at"> </span><span class="st">&#39;macos&#39;</span><span class="er">,</span> <span class="er">&#39;linux&#39;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">          }</a>
+<a class="sourceLine" id="cb7-11" title="11">        }</a>
+<a class="sourceLine" id="cb7-12" title="12">        agent <span class="kw">{</span> label <span class="st">&quot;${PLATFORM}&quot;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb7-13" title="13">        stages <span class="kw">{</span></a>
+<a class="sourceLine" id="cb7-14" title="14">          stage(<span class="st">&#39;test&#39;</span>) {</a>
+<a class="sourceLine" id="cb7-15" title="15">            tools { nodejs <span class="st">&quot;node-12&quot;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb7-16" title="16">            steps <span class="kw">{</span></a>
+<a class="sourceLine" id="cb7-17" title="17">              dir(<span class="st">&quot;scripts/myapp&quot;</span>) {</a>
+<a class="sourceLine" id="cb7-18" title="18">                <span class="fu">sh(script:</span><span class="at"> </span><span class="st">&quot;npm install -g bats&quot;</span><span class="er">)</span></a>
+<a class="sourceLine" id="cb7-19" title="19">                <span class="fu">sh(script:</span><span class="at"> </span><span class="st">&quot;bats tests&quot;</span><span class="er">)</span></a>
+<a class="sourceLine" id="cb7-20" title="20">              }</a>
+<a class="sourceLine" id="cb7-21" title="21">            }</a>
+<a class="sourceLine" id="cb7-22" title="22">          }</a>
+<a class="sourceLine" id="cb7-23" title="23">        }</a>
+<a class="sourceLine" id="cb7-24" title="24">      }</a>
+<a class="sourceLine" id="cb7-25" title="25">    }</a>
+<a class="sourceLine" id="cb7-26" title="26">  }</a>
+<a class="sourceLine" id="cb7-27" title="27">}</a></code></pre>
+          </div>
+        </td>
+        <td>
+          <p>{% raw %}</p>
+          <div class="sourceCode" id="cb8">
+            <pre
+              class="sourceCode yaml"
+            ><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">name:</span><span class="at"> demo-workflow</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="fu">test:</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="fu">runs-on:</span><span class="at"> ${{ matrix.os }}</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb8-8" title="8">      <span class="fu">fail-fast:</span><span class="at"> </span><span class="ch">false</span></a>
+<a class="sourceLine" id="cb8-9" title="9">      <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="fu">os:</span><span class="at"> </span><span class="kw">[</span>macos-latest<span class="kw">,</span> ubuntu-latest<span class="kw">]</span></a>
+<a class="sourceLine" id="cb8-11" title="11">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb8-13" title="13">      <span class="kw">-</span> <span class="fu">uses:</span><span class="at"> actions/setup-node@v2</span></a>
+<a class="sourceLine" id="cb8-14" title="14">        <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb8-15" title="15">          <span class="fu">node-version:</span><span class="at"> </span><span class="dv">12</span></a>
+<a class="sourceLine" id="cb8-16" title="16">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> npm install -g bats</span></a>
+<a class="sourceLine" id="cb8-17" title="17">      <span class="kw">-</span> <span class="fu">run:</span><span class="at"> bats tests</span></a>
+<a class="sourceLine" id="cb8-18" title="18">        <span class="fu">working-directory:</span><span class="at"> scripts/myapp</span></a></code></pre>
+          </div>
+          <p>{% endraw %}</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

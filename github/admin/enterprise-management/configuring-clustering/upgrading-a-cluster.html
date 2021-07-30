@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Upgrading a cluster</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Upgrading a cluster</h1>
+    </header>
+    <h2 id="upgrading-with-a-hotpatch">Upgrading with a hotpatch</h2>
+    <p>
+      {% data reusables.enterprise_installation.hotpatching-explanation %} The
+      hotpatch installation script installs the hotpatch on every node in the
+      cluster and restarts the services in their proper sequence to avoid
+      downtime.
+    </p>
+    <ol type="1">
+      <li>
+        Back up your data with
+        <a href="https://github.com/github/backup-utils#readme"
+          >{% data variables.product.prodname_enterprise_backup_utilities %}</a
+        >.
+      </li>
+      <li>
+        From the administrative shell of any node, use the
+        <code>ghe-cluster-hotpatch</code> command to install the latest
+        hotpatch. You can provide a URL for a hotpatch, or manually download the
+        hotpatch and specify a local filename.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-cluster-hotpatch https://&lt;em&gt;HOTPATCH-URL/FILENAME&lt;/em&gt;.hpkg</code></pre>
+    <h2 id="upgrading-with-an-upgrade-package">
+      Upgrading with an upgrade package
+    </h2>
+    <p>
+      Use an upgrade package to upgrade a {% data
+      variables.product.prodname_ghe_server %} cluster to the latest feature
+      release. For example, you can upgrade from <code>2.11</code> to
+      <code>2.13</code>.
+    </p>
+    <h3 id="preparing-to-upgrade">Preparing to upgrade</h3>
+    <ol type="1">
+      <li>
+        Review
+        <a
+          href="/enterprise/admin/guides/clustering/cluster-network-configuration"
+          >Cluster network configuration</a
+        >
+        for the version you are upgrading to, and update your configuration as
+        needed.
+      </li>
+      <li>
+        Back up your data with
+        <a href="https://github.com/github/backup-utils#readme"
+          >{% data variables.product.prodname_enterprise_backup_utilities %}</a
+        >.
+      </li>
+      <li>
+        Schedule a maintenance window for end users of your {% data
+        variables.product.prodname_ghe_server %} cluster, as it will be
+        unavailable for normal use during the upgrade. Maintenance mode blocks
+        user access and prevents data changes while the cluster upgrade is in
+        progress.
+      </li>
+      <li>
+        On the
+        <a href="https://enterprise.github.com/download"
+          >{% data variables.product.prodname_ghe_server %} Download Page</a
+        >, copy the URL for the upgrade <em>.pkg</em> file to the clipboard.
+      </li>
+      <li>
+        From the administrative shell of any node, use the
+        <code>ghe-cluster-each</code> command combined with <code>curl</code> to
+        download the release package to each node in a single step. Use the URL
+        you copied in the previous step as an argument.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-cluster-each -- &quot;cd /home/admin &amp;&amp; curl -L -O  https://&lt;em&gt;PACKAGE-URL&lt;/em&gt;.pkg&quot;
+&gt; ghe-app-node-1:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+&gt; ghe-app-node-1:                                  Dload  Upload   Total   Spent    Left  Speed
+&gt; 100  496M  100  496M    0     0  24.2M      0  0:00:20  0:00:20 --:--:-- 27.4M
+&gt; ghe-data-node-2:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+&gt; ghe-data-node-2:                                  Dload  Upload   Total   Spent    Left  Speed
+&gt; 100  496M  100  496M    0     0  21.3M      0  0:00:23  0:00:23 --:--:-- 25.8M
+&gt; ghe-data-node-1:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+&gt; ghe-data-node-1:                                  Dload  Upload   Total   Spent    Left  Speed
+&gt; 100  496M  100  496M    0     0  19.7M      0  0:00:25  0:00:25 --:--:-- 25.6M
+&gt; ghe-app-node-2:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+&gt; ghe-app-node-2:                                  Dload  Upload   Total   Spent    Left  Speed
+&gt; 100  496M  100  496M    0     0  19.8M      0  0:00:25  0:00:25 --:--:-- 17.6M
+&gt; ghe-data-node-3:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+&gt; ghe-data-node-3:                                  Dload  Upload   Total   Spent    Left  Speed
+&gt; 100  496M  100  496M    0     0  19.7M      0  0:00:25  0:00:25 --:--:-- 25.5M</code></pre>
+    <ol start="6" type="1">
+      <li>
+        Identify the primary MySQL node, which is defined as
+        <code>mysql-master = &lt;hostname&gt;</code> in
+        <code>cluster.conf</code>. This node will be upgraded last.
+      </li>
+    </ol>
+    <h3 id="upgrading-the-cluster-nodes">Upgrading the cluster nodes</h3>
+    <ol type="1">
+      <li>
+        Enable maintenance mode according to your scheduled window by connecting
+        to the administrative shell of any cluster node and running
+        <code>ghe-cluster-maintenance -s</code>.
+      </li>
+      <li>
+        <strong>With the exception of the primary MySQL node</strong>, connect
+        to the administrative shell of each of the {% data
+        variables.product.prodname_ghe_server %} nodes. Run the
+        <code>ghe-upgrade</code> command, providing the package file name you
+        downloaded in Step 4 of
+        <a href="#preparing-to-upgrade">Preparing to upgrade</a>:
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade &lt;em&gt;PACKAGE-FILENAME&lt;/em&gt;.pkg
+&gt; *** verifying upgrade package signature...
+&gt;  497MB 0:00:04 [ 117MB/s] [==========================================&gt;] 100%            
+&gt; gpg: Signature made Fri 19 Feb 2016 02:33:50 PM UTC using RSA key ID 0D65D57A
+&gt; gpg: checking the trustdb
+&gt; gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+&gt; gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+&gt; gpg: Good signature from &quot;GitHub Enterprise (Upgrade Package Key) &gt; &lt;enterprise@github.com&gt;&quot;</code></pre>
+    <ol start="3" type="1">
+      <li>
+        The upgrade process will reboot the node once it completes. Verify that
+        you can <code>ping</code> each node after it reboots.
+      </li>
+      <li>
+        Connect to the administrative shell of the primary MySQL node. Run the
+        <code>ghe-upgrade</code> command, providing the package file name you
+        downloaded in Step 4 of
+        <a href="#preparing-to-upgrade">Preparing to upgrade</a>:
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-upgrade &lt;em&gt;PACKAGE-FILENAME&lt;/em&gt;.pkg
+&gt; *** verifying upgrade package signature...
+&gt;  497MB 0:00:04 [ 117MB/s] [==========================================&gt;] 100%            
+&gt; gpg: Signature made Fri 19 Feb 2016 02:33:50 PM UTC using RSA key ID 0D65D57A
+&gt; gpg: checking the trustdb
+&gt; gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+&gt; gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+&gt; gpg: Good signature from &quot;GitHub Enterprise (Upgrade Package Key) &gt; &lt;enterprise@github.com&gt;&quot;</code></pre>
+    <ol start="5" type="1">
+      <li>
+        The upgrade process will reboot the primary MySQL node once it
+        completes. Verify that you can <code>ping</code> each node after it
+        reboots.
+      </li>
+      <li>
+        Exit maintenance mode from the administrative shell of any node by
+        running <code>ghe-cluster-maintenance -u</code>.
+      </li>
+    </ol>
+  </body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Syntax for GitHub’s form schema</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Syntax for GitHub’s form schema</h1>
+</header>
+<p>{% note %}</p>
+<p><strong>Note:</strong> {% data variables.product.company_short %}’s form schema is currently in beta and subject to change.</p>
+<p>{% endnote %}</p>
+<h2 id="about-data-variables.product.company_short-s-form-schema">About {% data variables.product.company_short %}’s form schema</h2>
+<p>You can use {% data variables.product.company_short %}’s form schema to configure forms for supported features. For more information, see “<a href="/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms">Configuring issue templates for your repository</a>.”</p>
+<p>A form is a set of elements for requesting user input. You can configure a form by creating a YAML form definition, which is an array of form elements. Each form element is a set of key-value pairs that determine the type of the element, the properties of the element, and the constraints you want to apply to the element. For some keys, the value is another set of key-value pairs.</p>
+<p>For example, the following form definition includes four form elements: a text area for providing the user’s operating system, a dropdown menu for choosing the software version the user is running, a checkbox to acknowledge the Code of Conduct, and Markdown that thanks the user for completing the form.</p>
+<pre class="yaml{:copy}"><code>- type: textarea
+  attributes:
+    label: Operating System
+    description: What operating system are you using?
+    placeholder: Example: macOS Big Sur
+    value: operating system
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Version
+    description: What version of our software are you running?
+    multiple: false
+    options:
+      - label: 1.0.2 (Default)
+      - label: 1.0.3 (Edge)
+  validations:
+    required: true
+- type: checkboxes
+  attributes:
+    label: Code of Conduct
+    description: The Code of Conduct helps create a safe space for everyone. We require
+      that everyone agrees to it.
+    options:
+      - label: I agree to follow this project&#39;s [Code of Conduct](link/to/coc)
+        required: true
+- type: markdown
+  attributes:
+    value: &quot;Thanks for completing our form!&quot;</code></pre>
+<h2 id="keys">Keys</h2>
+<p>For each form element, you can set the following keys.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| <code>type</code> | The type of element that you want to define. | Required | String | {% octicon “dash” aria-label=“The dash icon” %} |
+<ul>
+<li>
+<code>checkboxes</code>
+</li>
+<li>
+<code>dropdown</code>
+</li>
+<li>
+<code>input</code>
+</li>
+<li>
+<code>markdown</code>
+</li>
+<li>
+<code>textarea</code>
+</li>
+</ul>
+<p>| | <code>attributes</code> | A set of key-value pairs that define the properties of the element. | Required | Hash | {% octicon “dash” aria-label=“The dash icon” %} | {% octicon “dash” aria-label=“The dash icon” %} | | <code>validations</code> | A set of key-value pairs that set constraints on the element. | Optional | Hash | {% octicon “dash” aria-label=“The dash icon” %} | {% octicon “dash” aria-label=“The dash icon” %} |</p>
+<p>You can choose from the following types of form elements. Each type has unique attributes and validations.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#markdown"><code>markdown</code></a></td>
+<td>Markdown text that is displayed in the form to provide extra context to the user, but is <strong>not submitted</strong>.</td>
+</tr>
+<tr class="even">
+<td><a href="#textarea"><code>textarea</code></a></td>
+<td>A multi-line text field.</td>
+</tr>
+<tr class="odd">
+<td><a href="#input"><code>input</code></a></td>
+<td>A single-line text field.</td>
+</tr>
+<tr class="even">
+<td><a href="#dropdown"><code>dropdown</code></a></td>
+<td>A dropdown menu.</td>
+</tr>
+<tr class="odd">
+<td><a href="#checkboxes"><code>checkboxes</code></a></td>
+<td>A set of checkboxes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="markdown"><code>markdown</code></h3>
+<p>You can use a <code>markdown</code> element to display Markdown in your form that provides extra context to the user, but is not submitted.</p>
+<h4 id="attributes">Attributes</h4>
+<p>{% data reusables.form-schema.attributes-intro %}</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>value</code></td>
+<td>The text that is rendered. Markdown formatting is supported.</td>
+<td>Required</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+</tbody>
+</table>
+<p>{% tip %}</p>
+<p><strong>Tips:</strong> YAML processing will treat the hash symbol as a comment. To insert Markdown headers, wrap your text in quotes.</p>
+<p>For multi-line text, you can use the pipe operator.</p>
+<p>{% endtip %}</p>
+<h4 id="example">Example</h4>
+<pre class="yaml{:copy}"><code>body:
+- type: markdown
+  value: &quot;## Thank you for contributing to our project!&quot;
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to fill out this bug report.</code></pre>
+<h3 id="textarea"><code>textarea</code></h3>
+<p>You can use a <code>textarea</code> element to add a multi-line text field to your form. Contributors can also attach files in <code>textarea</code> fields.</p>
+<h4 id="attributes-1">Attributes</h4>
+<p>{% data reusables.form-schema.attributes-intro %}</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>label</code></td>
+<td>A brief description of the expected user input, which is also displayed in the form.</td>
+<td>Required</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>description</code></td>
+<td>A description of the text area to provide context or guidance, which is displayed in the form.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>id</code></td>
+<td>The identifier for the text area. {% data reusables.form-schema.id-must-be-unique %} If provided, the <code>id</code> is the canonical identifier for the field in URL query parameter prefills.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>placeholder</code></td>
+<td>A semi-opaque placeholder that renders in the text area when empty.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>value</code></td>
+<td>Text that is pre-filled in the text area.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>render</code></td>
+<td>If a value is provided, submitted text will be formatted into a codeblock. When this key is provided, the text area will not expand for file attachments or Markdown editing.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>Languages known to {% data variables.product.prodname_dotcom %}. For more information, see <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml">the languages YAML file</a>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validations">Validations</h4>
+<p>{% data reusables.form-schema.validations-intro %}</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>{% data reusables.form-schema.required-key %}</p>
+<h4 id="example-1">Example</h4>
+<pre class="yaml{:copy}"><code>body:
+- type: textarea
+  id: repro
+  attributes:
+    label: Reproduction steps
+    description: &quot;How do you trigger this bug? Please walk us through it step by step.&quot;
+    value: |
+      1.
+      2.
+      3.
+      ...
+    render: bash
+  validations:
+    required: true</code></pre>
+<h3 id="input"><code>input</code></h3>
+<p>You can use an <code>input</code> element to add a single-line text field to your form.</p>
+<h4 id="attributes-2">Attributes</h4>
+<p>{% data reusables.form-schema.attributes-intro %}</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>label</code></td>
+<td>A brief description of the expected user input, which is also displayed in the form.</td>
+<td>Required</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>id</code></td>
+<td>The identifier for the input. {% data reusables.form-schema.id-must-be-unique %} If provided, the <code>id</code> is the canonical identifier for the field in URL query parameter prefills.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td>A description of the field to provide context or guidance, which is displayed in the form.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>placeholder</code></td>
+<td>A semi-transparent placeholder that renders in the field when empty.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>value</code></td>
+<td>Text that is pre-filled in the field.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validations-1">Validations</h4>
+<p>{% data reusables.form-schema.validations-intro %}</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>{% data reusables.form-schema.required-key %}</p>
+<h4 id="example-2">Example</h4>
+<pre class="yaml{:copy}"><code>body:
+- type: input
+  id: prevalence
+  attributes:
+    label: Bug prevalence
+    description: &quot;How often do you or others encounter this bug?&quot;
+    placeholder: &quot;Example: Whenever I visit the user account page (1-2 times a week)&quot;
+  validations:
+    required: true</code></pre>
+<h3 id="dropdown"><code>dropdown</code></h3>
+<p>You can use a <code>dropdown</code> element to add a dropdown menu in your form.</p>
+<h4 id="attributes-3">Attributes</h4>
+<p>{% data reusables.form-schema.attributes-intro %}</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>label</code></td>
+<td>A brief description of the expected user input, which is displayed in the form.</td>
+<td>Required</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>id</code></td>
+<td>The identifier for the dropdown. {% data reusables.form-schema.id-must-be-unique %}</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td>A description of the dropdown to provide extra context or guidance, which is displayed in the form.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>multiple</code></td>
+<td>Determines if the user can select more than one option.</td>
+<td>Optional</td>
+<td>Boolean</td>
+<td>false</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>options</code></td>
+<td>An array of options the user can choose from. Cannot be empty and all choices must be distinct.</td>
+<td>Required</td>
+<td>String array</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validations-2">Validations</h4>
+<p>{% data reusables.form-schema.validations-intro %}</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>{% data reusables.form-schema.required-key %}</p>
+<h4 id="example-3">Example</h4>
+<pre class="yaml{:copy}"><code>body:
+- type: dropdown
+  id: download
+  attributes:
+    label: How did you download the software?
+    options:
+      - Homebrew
+      - MacPorts
+      - apt-get
+      - Built from source
+  validations:
+    required: true</code></pre>
+<h3 id="checkboxes"><code>checkboxes</code></h3>
+<p>You can use the <code>checkboxes</code> element to add a set of checkboxes to your form.</p>
+<h4 id="attributes-4">Attributes</h4>
+<p>{% data reusables.form-schema.attributes-intro %}</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+<th>Valid values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>label</code></td>
+<td>A brief description of the expected user input, which is displayed in the form.</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>id</code></td>
+<td>The identifier for the set of checkboxes. {% data reusables.form-schema.id-must-be-unique %}</td>
+<td>Optional</td>
+<td>String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td>A description of the set of checkboxes, which is displayed in the form. Supports Markdown formatting.</td>
+<td>Optional</td>
+<td>String</td>
+<td>Empty String</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+<tr class="even">
+<td><code>options</code></td>
+<td>An array of checkboxes that the user can select. For syntax, see below.</td>
+<td>Required</td>
+<td>Array</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+<td>{% octicon “dash” aria-label=“The dash icon” %}</td>
+</tr>
+</tbody>
+</table>
+<p>{% data reusables.form-schema.options-syntax %} {% data reusables.form-schema.required-key %}</p>
+<h4 id="example-4">Example</h4>
+<pre class="yaml{:copy}"><code>body:
+- type: checkboxes
+  id: operating-systems
+  attributes:
+    label: Which operating systems have you used?
+    description: You may select more than one.
+    options:
+      - label: macOS
+      - label: Windows
+      - label: Linux</code></pre>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://yaml.org">YAML</a></li>
+</ul>
+</body>
+</html>

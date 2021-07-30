@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Enforcing security settings in your enterprise account</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Enforcing security settings in your enterprise account</h1>
+</header>
+<h2 id="requiring-two-factor-authentication-for-organizations-in-your-enterprise-account">Requiring two-factor authentication for organizations in your enterprise account</h2>
+<p>Enterprise owners can require that organization members, billing managers, and outside collaborators in all organizations owned by an enterprise account use two-factor authentication to secure their personal accounts.</p>
+<p>Before you can require 2FA for all organizations owned by your enterprise account, you must enable two-factor authentication for your own account. For more information, see “<a href="/articles/securing-your-account-with-two-factor-authentication-2fa/">Securing your account with two-factor authentication (2FA)</a>.”</p>
+<p>{% warning %}</p>
+<p><strong>Warnings:</strong></p>
+<ul>
+<li>When you require two-factor authentication for your enterprise account, members, outside collaborators, and billing managers (including bot accounts) in all organizations owned by your enterprise account who do not use 2FA will be removed from the organization and lose access to its repositories. They will also lose access to their forks of the organization’s private repositories. You can reinstate their access privileges and settings if they enable two-factor authentication for their personal account within three months of their removal from your organization. For more information, see “<a href="/articles/reinstating-a-former-member-of-your-organization">Reinstating a former member of your organization</a>.”</li>
+<li>Any organization owner, member, billing manager, or outside collaborator in any of the organizations owned by your enterprise account who disables 2FA for their personal account after you’ve enabled required two-factor authentication will automatically be removed from the organization.</li>
+<li>If you’re the sole owner of a enterprise account that requires two-factor authentication, you won’t be able to disable 2FA for your personal account without disabling required two-factor authentication for the enterprise account.</li>
+</ul>
+<p>{% endwarning %}</p>
+<p>Before you require use of two-factor authentication, we recommend notifying organization members, outside collaborators, and billing managers and asking them to set up 2FA for their accounts. Organization owners can see if members and outside collaborators already use 2FA on each organization’s People page. For more information, see “<a href="/articles/viewing-whether-users-in-your-organization-have-2fa-enabled">Viewing whether users in your organization have 2FA enabled</a>.”</p>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} 4. Under “Two-factor authentication”, review the information about changing the setting. {% data reusables.enterprise-accounts.view-current-policy-config-orgs %} 5. Under “Two-factor authentication”, select <strong>Require two-factor authentication for all organizations in your business</strong>, then click <strong>Save</strong>. <img src="/assets/images/help/business-accounts/require-2fa-checkbox.png" alt="Checkbox to require two-factor authentication" /> 6. If prompted, read the information about members and outside collaborators who will be removed from the organizations owned by your enterprise account. To confirm the change, type your enterprise account’s name, then click <strong>Remove members &amp; require two-factor authentication</strong>. <img src="/assets/images/help/business-accounts/confirm-require-2fa.png" alt="Confirm two-factor enforcement box" /> 7. Optionally, if any members or outside collaborators are removed from the organizations owned by your enterprise account, we recommend sending them an invitation to reinstate their former privileges and access to your organization. Each person must enable two-factor authentication before they can accept your invitation.</p>
+<h2 id="managing-allowed-ip-addresses-for-organizations-in-your-enterprise-account">Managing allowed IP addresses for organizations in your enterprise account</h2>
+<p>Enterprise owners can restrict access to assets owned by organizations in an enterprise account by configuring an allow list for specific IP addresses. {% data reusables.identity-and-permissions.ip-allow-lists-example-and-restrictions %}</p>
+<p>{% data reusables.identity-and-permissions.ip-allow-lists-cidr-notation %}</p>
+<p>{% data reusables.identity-and-permissions.ip-allow-lists-enable %} {% data reusables.identity-and-permissions.ip-allow-lists-enterprise %}</p>
+<p>You can also configure allowed IP addresses for an individual organization. For more information, see “<a href="/organizations/keeping-your-organization-secure/managing-allowed-ip-addresses-for-your-organization">Managing allowed IP addresses for your organization</a>.”</p>
+<h3 id="adding-an-allowed-ip-address">Adding an allowed IP address</h3>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} {% data reusables.identity-and-permissions.ip-allow-lists-add-ip %} {% data reusables.identity-and-permissions.ip-allow-lists-add-description %} {% data reusables.identity-and-permissions.ip-allow-lists-add-entry %}</p>
+<h3 id="allowing-access-by-data-variables.product.prodname_github_apps">Allowing access by {% data variables.product.prodname_github_apps %}</h3>
+<p>{% data reusables.identity-and-permissions.ip-allow-lists-githubapps-enterprise %}</p>
+<h3 id="enabling-allowed-ip-addresses">Enabling allowed IP addresses</h3>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} 3. Under “IP allow list”, select <strong>Enable IP allow list</strong>. <img src="/assets/images/help/security/enable-ip-allowlist-enterprise-checkbox.png" alt="Checkbox to allow IP addresses" /> 4. Click <strong>Save</strong>.</p>
+<h3 id="editing-an-allowed-ip-address">Editing an allowed IP address</h3>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} {% data reusables.identity-and-permissions.ip-allow-lists-edit-entry %} {% data reusables.identity-and-permissions.ip-allow-lists-edit-ip %} {% data reusables.identity-and-permissions.ip-allow-lists-edit-description %} 8. Click <strong>Update</strong>.</p>
+<h3 id="deleting-an-allowed-ip-address">Deleting an allowed IP address</h3>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} {% data reusables.identity-and-permissions.ip-allow-lists-delete-entry %} {% data reusables.identity-and-permissions.ip-allow-lists-confirm-deletion %}</p>
+<h3 id="using-data-variables.product.prodname_actions-with-an-ip-allow-list">Using {% data variables.product.prodname_actions %} with an IP allow list</h3>
+<p>{% data reusables.github-actions.ip-allow-list-self-hosted-runners %}</p>
+<h2 id="managing-your-enterprise-accounts-ssh-certificate-authorities">Managing your enterprise account’s SSH certificate authorities</h2>
+<p>Enterprise owners can add and delete an enterprise account’s SSH certificate authorities (CA).</p>
+<p>By adding an SSH CA to your enterprise account, you can allow members of any organization owned by your enterprise account to access that organization’s repositories using SSH certificates you provide. {% data reusables.organizations.can-require-ssh-cert %} For more information, see “<a href="/articles/about-ssh-certificate-authorities">About SSH certificate authorities</a>.”</p>
+<h3 id="adding-an-ssh-certificate-authority">Adding an SSH certificate authority</h3>
+<p>{% data reusables.organizations.add-extension-to-cert %}</p>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} {% data reusables.organizations.new-ssh-ca %} {% data reusables.organizations.require-ssh-cert %}</p>
+<h3 id="deleting-an-ssh-certificate-authority">Deleting an SSH certificate authority</h3>
+<p>Deleting a CA cannot be undone. If you want to use the same CA in the future, you’ll need to upload the CA again.</p>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} {% data reusables.organizations.delete-ssh-ca %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/github/setting-up-and-managing-your-enterprise/configuring-identity-and-access-management-for-your-enterprise-account">Configuring identity and access management for your enterprise account</a>”</li>
+</ul>
+</body>
+</html>

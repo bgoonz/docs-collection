@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About remote repositories</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About remote repositories</h1>
+</header>
+<h2 id="about-remote-repositories">About remote repositories</h2>
+<p>A remote URL is Git’s fancy way of saying “the place where your code is stored.” That URL could be your repository on GitHub, or another user’s fork, or even on a completely different server.</p>
+<p>You can only push to two types of URL addresses:</p>
+<ul>
+<li>An HTTPS URL like <code>https://{% data variables.command_line.backticks %}/user/repo.git</code></li>
+<li>An SSH URL, like <code>git@{% data variables.command_line.backticks %}:user/repo.git</code></li>
+</ul>
+<p>Git associates a remote URL with a name, and your default remote is usually called <code>origin</code>.</p>
+<h2 id="creating-remote-repositories">Creating remote repositories</h2>
+<p>You can use the <code>git remote add</code> command to match a remote URL with a name. For example, you’d type the following in the command line:</p>
+<pre class="shell"><code>git remote add origin &lt;em&gt; &amp;lt;REMOTE_URL&gt; &lt;/em&gt;</code></pre>
+<p>This associates the name <code>origin</code> with the <code>REMOTE_URL</code>.</p>
+<p>You can use the command <code>git remote set-url</code> to <a href="/github/getting-started-with-github/managing-remote-repositories">change a remote’s URL</a>.</p>
+<h2 id="choosing-a-url-for-your-remote-repository">Choosing a URL for your remote repository</h2>
+<p>There are several ways to clone repositories available on {% data variables.product.product_location %}.</p>
+<p>When you view a repository while signed in to your account, the URLs you can use to clone the project onto your computer are available below the repository details.</p>
+<p>For information on setting or changing your remote URL, see “<a href="/github/getting-started-with-github/managing-remote-repositories">Managing remote repositories</a>.”</p>
+<h2 id="cloning-with-https-urls">Cloning with HTTPS URLs</h2>
+<p>The <code>https://</code> clone URLs are available on all repositories, regardless of visibility. <code>https://</code> clone URLs work even if you are behind a firewall or proxy.</p>
+<p>When you <code>git clone</code>, <code>git fetch</code>, <code>git pull</code>, or <code>git push</code> to a remote repository using HTTPS URLs on the command line, Git will ask for your {% data variables.product.product_name %} username and password. {% data reusables.user_settings.password-authentication-deprecation %}</p>
+<p>{% data reusables.command_line.provide-an-access-token %}</p>
+<p>{% tip %}</p>
+<p><strong>Tips</strong>: - You can use a credential helper so Git will remember your {% data variables.product.prodname_dotcom %} credentials every time it talks to {% data variables.product.prodname_dotcom %}. For more information, see “<a href="/github/getting-started-with-github/caching-your-github-credentials-in-git">Caching your {% data variables.product.prodname_dotcom %} credentials in Git</a>.” - To clone a repository without authenticating to {% data variables.product.product_name %} on the command line, you can use {% data variables.product.prodname_desktop %} to clone instead. For more information, see “<a href="/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop">Cloning a repository from {% data variables.product.prodname_dotcom %} to {% data variables.product.prodname_dotcom %} Desktop</a>.”</p>
+<p>{% endtip %}</p>
+<p>{% ifversion fpt %}If you’d rather use SSH but cannot connect over port 22, you might be able to use SSH over the HTTPS port. For more information, see “<a href="/github/authenticating-to-github/using-ssh-over-the-https-port">Using SSH over the HTTPS port</a>.”{% endif %}</p>
+<h2 id="cloning-with-ssh-urls">Cloning with SSH URLs</h2>
+<p>SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the <strong>public</strong> key to your {% data variables.product.product_name %} account. For more information, see “<a href="/github/authenticating-to-github/connecting-to-github-with-ssh">Connecting to {% data variables.product.prodname_dotcom %} with SSH</a>.”</p>
+<p>When you <code>git clone</code>, <code>git fetch</code>, <code>git pull</code>, or <code>git push</code> to a remote repository using SSH URLs, you’ll be prompted for a password and must provide your SSH key passphrase. For more information, see “<a href="/github/authenticating-to-github/working-with-ssh-key-passphrases">Working with SSH key passphrases</a>.”</p>
+<p>{% ifversion fpt %}If you are accessing an organization that uses SAML single sign-on (SSO), you must authorize your SSH key to access the organization before you authenticate. For more information, see “<a href="/github/authenticating-to-github/about-authentication-with-saml-single-sign-on">About authentication with SAML single sign-on</a>” and “<a href="/github/authenticating-to-github/authorizing-an-ssh-key-for-use-with-saml-single-sign-on">Authorizing an SSH key for use with SAML single sign-on</a>.”{% endif %}</p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: You can use an SSH URL to clone a repository to your computer, or as a secure way of deploying your code to production servers. You can also use SSH agent forwarding with your deploy script to avoid managing keys on the server. For more information, see “<a href="/developers/overview/using-ssh-agent-forwarding">Using SSH Agent Forwarding</a>.”</p>
+<p>{% endtip %}</p>
+<p>{% ifversion fpt or ghes or ghae %}</p>
+<h2 id="cloning-with-data-variables.product.prodname_cli">Cloning with {% data variables.product.prodname_cli %}</h2>
+<p>You can also install {% data variables.product.prodname_cli %} to use {% data variables.product.product_name %} workflows in your terminal. For more information, the <a href="https://cli.github.com/manual/">{% data variables.product.prodname_cli %}</a> documentation.</p>
+<p>{% endif %}</p>
+<p>{% ifversion not ghae %} ## Cloning with Subversion</p>
+<p>You can also use a <a href="https://subversion.apache.org/">Subversion</a> client to access any repository on {% data variables.product.prodname_dotcom %}. Subversion offers a different feature set than Git. For more information, see “<a href="/github/importing-your-projects-to-github/what-are-the-differences-between-subversion-and-git">What are the differences between Subversion and Git?</a>”</p>
+<p>You can also access repositories on {% data variables.product.prodname_dotcom %} from Subversion clients. For more information, see “<a href="/github/importing-your-projects-to-github/support-for-subversion-clients">Support for Subversion clients</a>.” {% endif %}</p>
+</body>
+</html>

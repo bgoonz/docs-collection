@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About billing for GitHub Packages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About billing for GitHub Packages</h1>
+</header>
+<h2 id="about-billing-for-data-variables.product.prodname_registry">About billing for {% data variables.product.prodname_registry %}</h2>
+<p>{% data reusables.package_registry.packages-billing %}</p>
+<p>{% data reusables.package_registry.packages-spending-limit-brief %} For more information, see “<a href="#about-spending-limits">About spending limits</a>.”</p>
+<p>{% note %}</p>
+<p><strong>Billing update for container image storage:</strong> The period of free use for container image storage and bandwidth for the {% data variables.product.prodname_container_registry %} has been extended. If you are using {% data variables.product.prodname_container_registry %} you’ll be informed at least one month in advance of billing commencing and you’ll be given an estimate of how much you should expect to pay. For more information about the {% data variables.product.prodname_container_registry %}, see “<a href="/packages/working-with-a-github-packages-registry/working-with-the-container-registry">Working with the Container registry</a>.”</p>
+<p>{% endnote %}</p>
+<p>If you purchased {% data variables.product.prodname_enterprise %} through a Microsoft Enterprise Agreement, you can connect your Azure Subscription ID to your enterprise account to enable and pay for {% data variables.product.prodname_registry %} usage beyond the amounts including with your account. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/connecting-an-azure-subscription-to-your-enterprise">Connecting an Azure subscription to your enterprise</a>.”</p>
+<p>Data transfer resets every month, while storage usage does not.</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Product</th>
+<th>Storage</th>
+<th>Data transfer (per month)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>{% data variables.product.prodname_free_user %}</td>
+<td>500MB</td>
+<td>1GB</td>
+</tr>
+<tr class="even">
+<td>{% data variables.product.prodname_pro %}</td>
+<td>2GB</td>
+<td>10GB</td>
+</tr>
+<tr class="odd">
+<td>{% data variables.product.prodname_free_team %} for organizations</td>
+<td>500MB</td>
+<td>1GB</td>
+</tr>
+<tr class="even">
+<td>{% data variables.product.prodname_team %}</td>
+<td>2GB</td>
+<td>10GB</td>
+</tr>
+<tr class="odd">
+<td>{% data variables.product.prodname_ghe_cloud %}</td>
+<td>50GB</td>
+<td>100GB</td>
+</tr>
+</tbody>
+</table>
+<p>All data transferred out, when triggered by {% data variables.product.prodname_actions %}, and data transferred in from any source is free. We determine you are downloading packages using {% data variables.product.prodname_actions %} when you log in to {% data variables.product.prodname_registry %} using a <code>GITHUB_TOKEN</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Hosted</th>
+<th>Self-Hosted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Access using a <code>GITHUB_TOKEN</code></td>
+<td>Free</td>
+<td>Free</td>
+</tr>
+<tr class="even">
+<td>Access using a personal access token</td>
+<td>Free</td>
+<td>$</td>
+</tr>
+</tbody>
+</table>
+<p>Storage usage is shared with build artifacts produced by {% data variables.product.prodname_actions %} for repositories owned by your account. For more information, see “<a href="/billing/managing-billing-for-github-actions/about-billing-for-github-actions">About billing for {% data variables.product.prodname_actions %}</a>.”</p>
+<p>{% data variables.product.prodname_dotcom %} charges usage to the account that owns the repository where the package is published. If your account’s usage surpasses these limits and you have set a spending limit above $0, you will pay $0.25 USD per GB of storage and $0.50 USD per GB of data transfer.</p>
+<p>For example, if your organization uses {% data variables.product.prodname_team %}, allows unlimited spending, uses 150GB of storage, and has 50GB of data transfer out during a month, the organization would have overages of 148GB for storage and 40GB for data transfer for that month. The storage overage would cost $0.25 per GB or $37. The overage for data transfer would cost $0.50 per GB or $20. {% data reusables.dotcom_billing.pricing_cal %}</p>
+<p>At the end of the month, {% data variables.product.prodname_dotcom %} rounds your data transfer to the nearest GB.</p>
+<p>{% data variables.product.prodname_dotcom %} calculates your storage usage for each month based on hourly usage during that month. For example, if you use 3 GB of storage for 10 days of March and 12 GB for 21 days of March, your storage usage would be:</p>
+<ul>
+<li>3 GB x 10 days x (24 hours per day) = 720 GB-Hours</li>
+<li>12 GB x 21 days x (24 hours per day) = 6,048 GB-Hours</li>
+<li>720 GB-Hours + 6,048 GB-Hours = 6,768 GB-Hours</li>
+<li>6,768 GB-Hours / (744 hours per month) = 9.0967 GB-Months</li>
+</ul>
+<p>At the end of the month, {% data variables.product.prodname_dotcom %} rounds your storage to the nearest MB. Therefore, your storage usage for March would be 9.097 GB.</p>
+<p>Your {% data variables.product.prodname_registry %} usage shares your account’s existing billing date, payment method, and receipt. {% data reusables.dotcom_billing.view-all-subscriptions %}</p>
+<p>{% data reusables.user_settings.context_switcher %}</p>
+<h2 id="about-spending-limits">About spending limits</h2>
+<p>{% data reusables.package_registry.packages-spending-limit-detailed %}</p>
+<p>For information on managing and changing your account’s spending limit, see “<a href="/billing/managing-billing-for-github-packages/managing-your-spending-limit-for-github-packages">Managing your spending limit for {% data variables.product.prodname_registry %}</a>.”</p>
+<p>{% data reusables.dotcom_billing.actions-packages-unpaid-account %}</p>
+</body>
+</html>

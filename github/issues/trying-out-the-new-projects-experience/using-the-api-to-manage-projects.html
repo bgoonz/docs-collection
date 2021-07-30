@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using the API to manage projects (beta)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using the API to manage projects (beta)</h1>
+</header>
+<p>This article demonstrates how to use the GraphQL API to manage a project.</p>
+<p>{% data reusables.projects.projects-beta %}</p>
+<p>{% data reusables.projects.api-beta %}</p>
+<h2 id="authentication">Authentication</h2>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<p>In all of the following cURL examples, replace <code>TOKEN</code> with a token that has the <code>read:org</code> scope (for queries) or <code>write:org</code> scope (for queries and mutations). For more information about creating a token, see “<a href="/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">Creating a personal access token</a>.”</p>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<p>{% data reusables.cli.download-cli %}</p>
+<p>Before running {% data variables.product.prodname_cli %} commands, you must authenticate by running <code>gh auth login</code> and providing an authentication token that has the <code>read:org</code> scope (for queries) or <code>write:org</code> scope (for queries and mutations). During the beta, you will not be able to authenticate using a web browser. For more information on command line authentication, see “<a href="https://cli.github.com/manual/gh_auth_login">gh auth login</a>.” For more information about creating a token, see “<a href="/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">Creating a personal access token</a>.”</p>
+<p>{% endcli %}</p>
+<p>{% cli %}</p>
+<h2 id="using-variables">Using variables</h2>
+<p>In all of the following examples, you can use variables to simplify your scripts. Use <code>-F</code> to pass a variable that is a number, Boolean, or null. Use <code>-f</code> for other variables. For example,</p>
+<pre class="shell"><code>my_org=&quot;octo-org&quot;
+my_num=5
+gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  query($organization: String! $number: Int!){
+    organization(login: $organization){
+      projectNext(number: $number) {
+        id
+      }
+    }
+  }&#39; -f organization=$my_org -F number=$my_num</code></pre>
+<p>For more information, see “<a href="/graphql/guides/forming-calls-with-graphql#working-with-variables">Forming calls with GraphQL</a>.”</p>
+<p>{% endcli %}</p>
+<h2 id="finding-information-about-projects">Finding information about projects</h2>
+<p>Use queries to get data about projects. For more information, see “<a href="/graphql/guides/forming-calls-with-graphql#about-queries">About queries</a>.”</p>
+<h3 id="finding-the-node-id-of-a-project">Finding the node ID of a project</h3>
+<p>To update your project through the API, you will need to know the node ID of the project.</p>
+<p>You can find the node ID of a project if you know the organization name and project number. Replace <code>ORGANIZATION</code> with the name of your organization. For example, <code>octo-org</code>. Replace <code>NUMBER</code> with your project number. To find the project number, look at the project URL. For example, <code>https://github.com/orgs/octo-org/projects/5</code> has a project number of 5.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;query{organization(login: \&quot;&lt;em&gt;ORGANIZATION&lt;/em&gt;\&quot;) {projectNext(number: &lt;em&gt;NUMBER&lt;/em&gt;){id}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  query{
+    organization(login: &quot;&lt;em&gt;ORGANIZATION&lt;/em&gt;&quot;){
+      projectNext(number: &lt;em&gt;NUMBER&lt;/em&gt;) {
+        id
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<p>You can also find the node ID of all projects in your organization. The following example will return the node ID and title of the first 20 projects in an organization. Replace <code>ORGANIZATION</code> with the name of your organization. For example, <code>octo-org</code>.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;{organization(login: \&quot;&lt;em&gt;ORGANIZATION&lt;/em&gt;\&quot;) {projectsNext(first: 20) {nodes {id title}}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  query{
+    organization(login: &quot;&lt;em&gt;ORGANIZATION&lt;/em&gt;&quot;) {
+      projectsNext(first: 20) {
+        nodes {
+          id
+          title
+        }
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<h3 id="finding-the-node-id-of-a-field">Finding the node ID of a field</h3>
+<p>To update the value of a field, you will need to know the node ID of the field. Additionally, for single select fields, you will need to know the ID of the options.</p>
+<p>The following example will return the ID, name, and settings for the first 20 fields in a project. Replace <code>PROJECT_ID</code> with the node ID of your project.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;query{node(id: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot;) {... on ProjectNext {fields(first: 20) {nodes {id name settings}}}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  query{
+    node(id: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot;) {
+      ... on ProjectNext {
+        fields(first: 20) {
+          nodes {
+            id
+            name
+            settings
+          }
+        }
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<p>The response will look similar to the following example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">      <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-5" title="5">        <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-6" title="6">          <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-7" title="7">            <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDE2OlByb2plY3ROZXh0RmllbGQxMzE1OQ==&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Title&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">            <span class="dt">&quot;settings&quot;</span><span class="fu">:</span> <span class="st">&quot;null&quot;</span></a>
+<a class="sourceLine" id="cb8-10" title="10">          <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb8-11" title="11">          <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-12" title="12">            <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDE2OlByb2plY3ROZXh0RmllbGQxMzE2MA==&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-13" title="13">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Assignees&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-14" title="14">            <span class="dt">&quot;settings&quot;</span><span class="fu">:</span> <span class="st">&quot;null&quot;</span></a>
+<a class="sourceLine" id="cb8-15" title="15">          <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb8-16" title="16">          <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-17" title="17">            <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDE2OlByb2plY3ROZXh0RmllbGQxMzE2MQ==&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-18" title="18">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Status&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-19" title="19">            <span class="dt">&quot;settings&quot;</span><span class="fu">:</span> <span class="st">&quot;{</span><span class="ch">\&quot;</span><span class="st">options</span><span class="ch">\&quot;</span><span class="st">:[{</span><span class="ch">\&quot;</span><span class="st">id</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f75ad846</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Todo</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name_html</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Todo</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">id</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">47fc9ee4</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">In Progress</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name_html</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">In Progress</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">id</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">98236657</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Done</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name_html</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Done</span><span class="ch">\&quot;</span><span class="st">}]}&quot;</span></a>
+<a class="sourceLine" id="cb8-20" title="20">          <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-21" title="21">        <span class="ot">]</span></a>
+<a class="sourceLine" id="cb8-22" title="22">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-23" title="23">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-24" title="24">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="fu">}</span></a></code></pre></div>
+<p>Each field has an ID. Additionally, each option in a single select field has an ID.</p>
+<h3 id="finding-information-about-items-in-a-project">Finding information about items in a project</h3>
+<p>You can query the API to find information about items in your project.</p>
+<p>The following example will return the title and ID for the first 20 items in a project. For each item, it will also return the value and name for the first 8 fields in the project. If the item is an issue or pull request, it will return the login of the first 10 assignees. Replace <code>PROJECT_ID</code> with the node ID of your project.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;query{node(id: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot;) {... on ProjectNext {items(first: 20) {nodes{title id fieldValues(first: 8) {nodes{value projectField{name}}} content{...on Issue {assignees(first: 10) {nodes{login}}} ...on PullRequest {assignees(first: 10) {nodes{login}}}}}}}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  query{
+    node(id: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot;) {
+      ... on ProjectNext {
+        items(first: 20) {
+          nodes{
+            title
+            id
+            fieldValues(first: 8) {
+              nodes{
+                value
+                projectField{
+                  name
+                }
+              }
+            }
+            content{
+              ...on Issue {
+                assignees(first: 10) {
+                  nodes{
+                    login
+                  }
+                }
+              }
+              ...on PullRequest {
+                assignees(first: 10) {
+                  nodes{
+                    login
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<p>A project may contain items that a user does not have permission to view. In this case, the response will include redacted item.</p>
+<pre class="shell"><code>{
+  &quot;node&quot;: {
+  &quot;title&quot;: &quot;You can&#39;t see this item&quot;,
+  ...
+  }
+}</code></pre>
+<h2 id="updating-projects">Updating projects</h2>
+<p>Use mutations to update projects. For more information, see “<a href="/graphql/guides/forming-calls-with-graphql#about-mutations">About mutations</a>.”</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You cannot add and update an item in the same call. You must use <code>addProjectNextItem</code> to add the item and then use <code>updateProjectNextItemField</code> to update the item.</p>
+<p>{% endnote %}</p>
+<h3 id="adding-an-item-to-a-project">Adding an item to a project</h3>
+<p>The following example will add an issue or pull request to your project. Replace <code>PROJECT_ID</code> with the node ID of your project. Replace <code>CONTENT_ID</code> with the node ID of the issue or pull request that you want to add.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;mutation {addProjectNextItem(input: {projectId: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot; contentId: \&quot;&lt;em&gt;CONTENT_ID&lt;/em&gt;\&quot;}) {projectNextItem {id}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  mutation {
+    addProjectNextItem(input: {projectId: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot; contentId: &quot;&lt;em&gt;CONTENT_ID&lt;/em&gt;&quot;}) {
+      projectNextItem {
+        id
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<p>The response will contain the node ID of the newly created item.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="dt">&quot;addProjectNextItem&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">      <span class="dt">&quot;projectNextItem&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-5" title="5">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDE1OlByb2plY3ROZXh0SXRlbTM0MjEz&quot;</span></a>
+<a class="sourceLine" id="cb14-6" title="6">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="fu">}</span></a></code></pre></div>
+<p>If you try add an item that already exists, the existing item ID is returned instead.</p>
+<h3 id="updating-a-custom-non-single-select-field">Updating a custom, non-single select field</h3>
+<p>The following example will update a date field. Replace <code>PROJECT_ID</code> with the node ID of your project. Replace <code>ITEM_ID</code> with the node ID of the item you want to update. Replace <code>FIELD_ID</code> with the ID of the field that you want to update.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;mutation {updateProjectNextItemField(input: {projectId: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot; itemId: \&quot;&lt;em&gt;ITEM_ID&lt;/em&gt;\&quot; fieldId: \&quot;&lt;em&gt;FIELD_ID&lt;/em&gt;\&quot; value: \&quot;2021-5-11\&quot;}) {projectNextItem {id}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  mutation {
+    updateProjectNextItemField(
+      input: {
+        projectId: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot;
+        itemId: &quot;&lt;em&gt;ITEM_ID&lt;/em&gt;&quot;
+        fieldId: &quot;&lt;em&gt;FIELD_ID&lt;/em&gt;&quot;
+        value: &quot;2021-5-11&quot;
+      }
+    ) {
+      projectNextItem {
+        id
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<p>{% note %}</p>
+<p><strong>Note:</strong> You cannot use <code>updateProjectNextItemField</code> to change <code>Assignees</code>, <code>Labels</code>, <code>Milestone</code>, or <code>Repository</code> because these fields are properties of pull requests and issues, not of project items. Instead, you must use the <a href="/graphql/reference/mutations#addassigneestoassignable">addAssigneesToAssignable</a>, <a href="/graphql/reference/mutations#removeassigneesfromassignable">removeAssigneesFromAssignable</a>, <a href="/graphql/reference/mutations#addlabelstolabelable">addLabelsToLabelable</a>, <a href="/graphql/reference/mutations#removelabelsfromlabelable">removeLabelsFromLabelable</a>, <a href="/graphql/reference/mutations#updateissue">updateIssue</a>, <a href="/graphql/reference/mutations#updatepullrequest">updatePullRequest</a>, or <a href="/graphql/reference/mutations#transferissue">transferIssue</a> mutations.</p>
+<p>{% endnote %}</p>
+<h3 id="updating-a-single-select-field">Updating a single-select field</h3>
+<p>The following example will update a date field. - <code>PROJECT_ID</code> - Replace this with the node ID of your project. - <code>ITEM_ID</code> - Replace this with the node ID of the item you want to update. - <code>FIELD_ID</code> - Replace this with the ID of the field that you want to update. - <code>OPTION_ID</code> - Replace this with the ID of the desired value.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;mutation {updateProjectNextItemField(input: {projectId: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot; itemId: \&quot;&lt;em&gt;ITEM_ID&lt;/em&gt;\&quot; fieldId: \&quot;&lt;em&gt;FIELD_ID&lt;/em&gt;\&quot; value: \&quot;&lt;em&gt;OPTION_ID&lt;/em&gt;\&quot;}) {projectNextItem {id}}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  mutation {
+    updateProjectNextItemField(
+      input: {
+        projectId: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot;
+        itemId: &quot;&lt;em&gt;ITEM_ID&lt;/em&gt;&quot;
+        fieldId: &quot;&lt;em&gt;FIELD_ID&lt;/em&gt;&quot;
+        value: &quot;&lt;em&gt;OPTION_ID&lt;/em&gt;&quot;
+      }
+    ) {
+      projectNextItem {
+        id
+      }
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<h3 id="deleting-an-item-from-a-project">Deleting an item from a project</h3>
+<p>The following example will delete an item from a project. Replace <code>PROJECT_ID</code> with the node ID of your project. Replace <code>ITEM_ID</code> with the node ID of the item you want to delete.</p>
+<p>{% include tool-switcher %}</p>
+<p>{% curl %}</p>
+<pre class="shell"><code>curl --request POST \
+  --url https://api.github.com/graphql \
+  --header &#39;Authorization: token &lt;em&gt;TOKEN&lt;/em&gt;&#39; \
+  --header &#39;GraphQL-Features: projects_next_graphql&#39; \
+  --data &#39;{&quot;query&quot;:&quot;mutation {deleteProjectNextItem(input: {projectId: \&quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;\&quot; itemId: \&quot;&lt;em&gt;ITEM_ID&lt;/em&gt;\&quot;}) {deletedItemId}}&quot;}&#39;</code></pre>
+<p>{% endcurl %}</p>
+<p>{% cli %}</p>
+<pre class="shell"><code>gh api graphql --header &#39;GraphQL-Features: projects_next_graphql&#39; -f query=&#39;
+  mutation {
+    deleteProjectNextItem(
+      input: {
+        projectId: &quot;&lt;em&gt;PROJECT_ID&lt;/em&gt;&quot;
+        itemId: &quot;&lt;em&gt;ITEM_ID&lt;/em&gt;&quot;
+      }
+    ) {
+      deletedItemId
+    }
+  }&#39;</code></pre>
+<p>{% endcli %}</p>
+<h2 id="reference">Reference</h2>
+<h3 id="objects">Objects</h3>
+<h4 id="projectnext">ProjectNext</h4>
+<ul>
+<li><a href="/graphql/reference/interfaces#closable">Closable</a></li>
+<li><a href="/graphql/reference/interfaces#node">Node</a></li>
+<li><a href="/graphql/reference/interfaces#updatable">Updatable</a></li>
+</ul>
+<p><strong>Fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>closed</code> (<code>Boolean!</code>)</td>
+<td><code>true</code> if the project is closed.</td>
+</tr>
+<tr class="even">
+<td><code>closedAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was closed.</td>
+</tr>
+<tr class="odd">
+<td><code>createdAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was created.</td>
+</tr>
+<tr class="even">
+<td><code>creator</code> (<code>Actor</code>)</td>
+<td>The actor who originally created the project.</td>
+</tr>
+<tr class="odd">
+<td><code>databaseId</code> (<code>Int</code>)</td>
+<td>Identifies the primary key from the database.</td>
+</tr>
+<tr class="even">
+<td><code>description</code> (<code>String</code>)</td>
+<td>The project’s description.</td>
+</tr>
+<tr class="odd">
+<td><code>fields</code> (<code>[ProjectNextField]!</code>)</td>
+<td>List of fields in the project.<br><br><strong>Arguments</strong><br><code>after</code> (<code>String</code>): Returns the elements in the list that come after the specified cursor.<br><code>before</code> (<code>String</code>): Returns the elements in the list that come before the specified cursor.<br><code>first</code> (<code>Int</code>): Returns the first <em>n</em> elements from the list.<br><code>last</code> (<code>Int</code>): Returns the last <em>n</em> elements from the list.</td>
+</tr>
+<tr class="even">
+<td><code>items</code> (<code>[ProjectNextItem]</code>)</td>
+<td>List of items in the project.<br><br><strong>Arguments</strong><br><code>after</code> (<code>String</code>): Returns the elements in the list that come after the specified cursor.<br><code>before</code> (<code>String</code>): Returns the elements in the list that come before the specified cursor.<br><code>first</code> (<code>Int</code>): Returns the first <em>n</em> elements from the list.<br><code>last</code> (<code>Int</code>): Returns the last <em>n</em> elements from the list.</td>
+</tr>
+<tr class="odd">
+<td><code>number</code> (<code>Int!</code>)</td>
+<td>The project’s number.</td>
+</tr>
+<tr class="even">
+<td><code>owner</code> (<code>ProjectNextOwner!</code>)</td>
+<td>The project’s owner. Currently limited to organizations.</td>
+</tr>
+<tr class="odd">
+<td><code>title</code> (<code>String!</code>)</td>
+<td>The project’s name.</td>
+</tr>
+<tr class="even">
+<td><code>updatedAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was last updated.</td>
+</tr>
+<tr class="odd">
+<td><code>viewerCanUpdate</code> (<code>Boolean!</code>)</td>
+<td>Check if the current viewer can update this object.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextconnection">ProjectNextConnection</h4>
+<p>The connection type for ProjectNext.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>edges</code> (<a href="#projectnextedge">ProjectNextEdge</a>)</td>
+<td>A list of edges.</td>
+</tr>
+<tr class="even">
+<td><code>nodes</code> (<a href="#projectnext">ProjectNext</a>)</td>
+<td>A list of nodes.</td>
+</tr>
+<tr class="odd">
+<td><code>pageInfo</code> (PageInfo!)</td>
+<td>Information to aid in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>totalCount</code> (Int!)</td>
+<td>Identifies the total count of items in the connection.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextedge">ProjectNextEdge</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cursor</code> (String!)</td>
+<td>A cursor for use in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>node</code> (ProjectCard)</td>
+<td>The item at the end of the edge.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextfield">ProjectNextField</h4>
+<p>A field inside a project.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>createdAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was created.</td>
+</tr>
+<tr class="even">
+<td><code>name</code> (<code>String!</code>)</td>
+<td>The project field’s name.</td>
+</tr>
+<tr class="odd">
+<td><code>project</code> (<code>ProjectNext!</code>)</td>
+<td>The project that contains this field.</td>
+</tr>
+<tr class="even">
+<td><code>settings</code> (<code>String</code>)</td>
+<td>String representation of project field settings.</td>
+</tr>
+<tr class="odd">
+<td><code>updatedAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was last updated.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextfieldconnection">ProjectNextFieldConnection</h4>
+<p>The connection type for ProjectNextField.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>edges</code> (<a href="#projectnextfieldedge">ProjectNextFieldEdge</a>)</td>
+<td>A list of edges.</td>
+</tr>
+<tr class="even">
+<td><code>nodes</code> (<a href="#projectnextfield">ProjectNextField</a>)</td>
+<td>A list of nodes.</td>
+</tr>
+<tr class="odd">
+<td><code>pageInfo</code> (PageInfo!)</td>
+<td>Information to aid in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>totalCount</code> (Int!)</td>
+<td>Identifies the total count of items in the connection.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextfieldedge">ProjectNextFieldEdge</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cursor</code> (String!)</td>
+<td>A cursor for use in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>node</code> (ProjectCard)</td>
+<td>The item at the end of the edge.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitem">ProjectNextItem</h4>
+<ul>
+<li><a href="/graphql/reference/interfaces#node">Node</a></li>
+</ul>
+<p>An item in a <code>ProjectNext</code>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>content</code> (<code>ProjectNextItemContent</code>)</td>
+<td>The content of the referenced issue or pull request.</td>
+</tr>
+<tr class="even">
+<td><code>createdAt</code> (DateTime!)</td>
+<td>Identifies the date and time when the object was created.</td>
+</tr>
+<tr class="odd">
+<td><code>creator</code> (<code>Actor</code>)</td>
+<td>The actor who created this item.</td>
+</tr>
+<tr class="even">
+<td><code>databaseId</code> (<code>Int</code>)</td>
+<td>Identifies the primary key from the database.</td>
+</tr>
+<tr class="odd">
+<td><code>fieldValues</code> (<code>[ProjectNextItemFieldValue]!</code>)</td>
+<td>List of field values for the item.<br><br><strong>Arguments</strong><br><code>after</code> (<code>String</code>): Returns the elements in the list that come after the specified cursor.<br><code>before</code> (<code>String</code>): Returns the elements in the list that come before the specified cursor.<br><code>first</code> (<code>Int</code>): Returns the first <em>n</em> elements from the list.<br><code>last</code> (<code>Int</code>): Returns the last <em>n</em> elements from the list.</td>
+</tr>
+<tr class="even">
+<td><code>project</code> (<code>ProjectNext!</code>)</td>
+<td>The project that contains this item.</td>
+</tr>
+<tr class="odd">
+<td><code>title</code> (<code>String!</code>)</td>
+<td>Title of the item.</td>
+</tr>
+<tr class="even">
+<td><code>updatedAt</code> (DateTime!)</td>
+<td>Identifies the date and time when the object was last updated.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitemcontent">ProjectNextItemContent</h4>
+<p>Content associated with a <code>ProjectNextItem</code>.</p>
+<p><strong>Types:</strong></p>
+<ul>
+<li><code>issue</code> - Reference to an issue</li>
+<li><code>pull request</code> - Reference to a pull request.</li>
+</ul>
+<h4 id="projectnextitemconnection">ProjectNextItemConnection</h4>
+<p>The connection type for ProjectNextItem.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>edges</code> ([<code>ProjectNextItemEdge</code>])</td>
+<td>A list of edges.</td>
+</tr>
+<tr class="even">
+<td><code>nodes</code> ([<code>ProjectNextItem</code>])</td>
+<td>A list of nodes.</td>
+</tr>
+<tr class="odd">
+<td><code>pageInfo</code> (<code>PageInfo!</code>)</td>
+<td>Information to aid in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>totalCount</code> (<code>Int!</code>)</td>
+<td>Identifies the total count of items in the connection.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitemedge">ProjectNextItemEdge</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cursor</code> (<code>String!</code>)</td>
+<td>A cursor for use in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>node</code> (<code>ProjectCard</code>)</td>
+<td>The item at the end of the edge.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitemfieldvalue">ProjectNextItemFieldValue</h4>
+<ul>
+<li><a href="/graphql/reference/interfaces#node">Node</a></li>
+</ul>
+<p>A value of a field in an item in a <code>ProjectNext</code>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>createdAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was created.</td>
+</tr>
+<tr class="even">
+<td><code>creator</code> (<code>Actor</code>)</td>
+<td>The actor who created this item.</td>
+</tr>
+<tr class="odd">
+<td><code>databaseId</code> (<code>Int</code>)</td>
+<td>Identifies the primary key from the database.</td>
+</tr>
+<tr class="even">
+<td><code>projectField</code> (<code>ProjectNextField!</code>)</td>
+<td>The project field that contains this value.</td>
+</tr>
+<tr class="odd">
+<td><code>projectItem</code> (<code>ProjectNextItem!</code>)</td>
+<td>The project item that contains this value.</td>
+</tr>
+<tr class="even">
+<td><code>updatedAt</code> (<code>DateTime!</code>)</td>
+<td>Identifies the date and time when the object was last updated.</td>
+</tr>
+<tr class="odd">
+<td><code>value</code></td>
+<td>Value of the field.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitemfieldvalueconnection">ProjectNextItemFieldValueConnection</h4>
+<p>The connection type for ProjectNextItemFieldValue.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>edges</code> ([<code>ProjectNextItemFieldValueEdge</code>])</td>
+<td>A list of edges.</td>
+</tr>
+<tr class="even">
+<td><code>nodes</code> ([<code>ProjectNextItemFieldValue</code>])</td>
+<td>A list of nodes.</td>
+</tr>
+<tr class="odd">
+<td><code>pageInfo</code> (<code>PageInfo!</code>)</td>
+<td>Information to aid in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>totalCount</code> (<code>Int!</code>)</td>
+<td>Identifies the total count of items in the connection.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="projectnextitemedge-1">ProjectNextItemEdge</h4>
+<p>An edge in a connection.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cursor</code> (<code>String!</code>)</td>
+<td>A cursor for use in pagination.</td>
+</tr>
+<tr class="even">
+<td><code>node</code> (<code>ProjectCard</code>)</td>
+<td>The item at the end of the edge.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces">Interfaces</h3>
+<h4 id="projectnextowner">ProjectNextOwner</h4>
+<p>Represents an owner of a project.</p>
+<p><strong>Implemented by</strong></p>
+<ul>
+<li><code>Organization</code></li>
+</ul>
+<p><strong>Fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>projectNext</code> (<code>ProjectNext</code>)</td>
+<td>Find project by number.<br><br><strong>Arguments</strong><br><code>number</code> (<code>Int!</code>): The project number to find.</td>
+</tr>
+<tr class="even">
+<td><code>projectsNext</code> (<code>ProjectNextConnection!</code>)</td>
+<td>A list of project next items under the owner.<br><br><strong>Arguments</strong><br><code>after</code> (<code>String</code>): Returns the elements in the list that come after the specified cursor.<br><code>before</code> (<code>String</code>): Returns the elements in the list that come before the specified cursor.<br><code>first</code> (<code>Int</code>): Returns the first <em>n</em> elements from the list.<br><code>last</code> (<code>Int</code>): Returns the last <em>n</em> elements from the list.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mutations">Mutations</h3>
+<h4 id="addprojectnextitem">addProjectNextItem</h4>
+<p>Adds an existing item (Issue or PullRequest) to a project.</p>
+<p><strong>Input fields</strong></p>
+<ul>
+<li><code>input</code>(<code>AddProjectNextItemInput!</code>)</li>
+</ul>
+<p><strong>Return fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>projectNextItem</code> (<code>ProjectNextItem</code>)</td>
+<td>The item added to the project.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="updateprojectnextitemfield">updateProjectNextItemField</h4>
+<p>Updates a field of an item from a project.</p>
+<p><strong>Input fields</strong></p>
+<ul>
+<li><code>input</code>(<code>UpdateProjectNextItemFieldInput!</code>)</li>
+</ul>
+<p><strong>Return fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>projectNextItem</code> (<code>ProjectNextItem</code>)</td>
+<td>The item added to the project.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="deleteprojectnextitem">deleteProjectNextItem</h4>
+<p>Deletes an item from a project.</p>
+<p><strong>Input fields</strong></p>
+<ul>
+<li><code>input</code>(<code>DeleteProjectNextItemInput!</code>)</li>
+</ul>
+<p><strong>Return fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>deletedItemId</code> (<code>ID</code>)</td>
+<td>The ID of the deleted item.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="input-objects">Input Objects</h3>
+<h4 id="deleteprojectnextiteminput">DeleteProjectNextItemInput</h4>
+<p>Autogenerated input type of AddProjectNextItem.</p>
+<p><strong>Input fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>contentId</code> (<code>ID!</code>)</td>
+<td>The ID of the item (Issue or PullRequest) to add.</td>
+</tr>
+<tr class="odd">
+<td><code>projectId</code> (<code>ID!</code>)</td>
+<td>The ID of the Project to add the item to.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="updateprojectnextitemfieldinput">UpdateProjectNextItemFieldInput</h4>
+<p>Autogenerated input type of UpdateProjectNextItemField.</p>
+<p><strong>Input fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>fieldId</code> (<code>ID!</code>)</td>
+<td>The ID of the field to be updated. Currently supports custom fields and status.</td>
+</tr>
+<tr class="odd">
+<td><code>itemId</code> (<code>ID!</code>)</td>
+<td>The ID of the item to be updated.</td>
+</tr>
+<tr class="even">
+<td><code>projectId</code> (<code>ID!</code>)</td>
+<td>The ID of the Project.</td>
+</tr>
+<tr class="odd">
+<td><code>value</code> (<code>String!</code>)</td>
+<td>The value which will be set on the field.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="deleteprojectnextiteminput-1">DeleteProjectNextItemInput</h4>
+<p>Autogenerated input type of DeleteProjectNextItem.</p>
+<p><strong>Input fields</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clientMutationId</code> (<code>String</code>)</td>
+<td>A unique identifier for the client performing the mutation.</td>
+</tr>
+<tr class="even">
+<td><code>itemId</code> (<code>ID!</code>)</td>
+<td>The ID of the item to be removed.</td>
+</tr>
+<tr class="odd">
+<td><code>projectId</code> (<code>ID!</code>)</td>
+<td>The ID of the Project from which the item should be removed.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

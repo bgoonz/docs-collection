@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Configuring SAML single sign-on for your enterprise account using Okta</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Configuring SAML single sign-on for your enterprise account using Okta</h1>
+</header>
+<p>{% data reusables.enterprise-accounts.user-provisioning-release-stage %}</p>
+<h2 id="about-saml-with-okta">About SAML with Okta</h2>
+<p>You can control access to your enterprise account in {% data variables.product.product_name %} and other web applications from one central interface by configuring the enterprise account to use SAML SSO with Okta, an Identity Provider (IdP).</p>
+<p>SAML SSO controls and secures access to enterprise account resources like organizations, repositories, issues, and pull requests. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/configuring-identity-and-access-management-for-your-enterprise-account/enforcing-saml-single-sign-on-for-organizations-in-your-enterprise-account">Enforcing SAML single sign-on for organizations in your enterprise account</a>.”</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>{% data reusables.saml.use-classic-ui %}</p>
+<h2 id="adding-the-data-variables.product.prodname_ghe_cloud-application-in-okta">Adding the {% data variables.product.prodname_ghe_cloud %} application in Okta</h2>
+<p>{% data reusables.saml.okta-admin-button %} {% data reusables.saml.okta-dashboard-click-applications %} {% data reusables.saml.add-okta-application %} {% data reusables.saml.search-ghec-okta %} 1. Click “{% data variables.product.prodname_ghe_cloud %} - Enterprise Accounts”. 1. Click <strong>Add</strong>. 1. Optionally, to the right of “Application label”, type a descriptive name for the application. <img src="/assets/images/help/saml/okta-application-label.png" alt="Application label field" /> 1. To the right of “{% data variables.product.prodname_dotcom %} Enterprises”, type the name of your enterprise account. For example, if your enterprise account’s URL is <code>https://github.com/enterprises/octo-corp</code>, type <code>octo-corp</code>. <img src="/assets/images/help/saml/okta-github-enterprises.png" alt="GitHub Enterprises field" /> 1. Click <strong>Done</strong>.</p>
+<h2 id="enabling-and-testing-saml-sso">Enabling and testing SAML SSO</h2>
+<p>{% data reusables.saml.okta-admin-button %} {% data reusables.saml.okta-dashboard-click-applications %} {% data reusables.saml.click-enterprise-account-application %} {% data reusables.saml.assign-yourself-to-okta %} {% data reusables.saml.okta-sign-on-tab %} 1. To the right of Settings, click <strong>Edit</strong>. 1. Under “Configured SAML Attributes”, to the right of “groups”, use the drop-down menu and select <strong>Matches regex</strong>. 1. To the right of the drop-down menu, type <code>.*.*</code>. 1. Click <strong>Save</strong>. {% data reusables.saml.okta-view-setup-instructions %} 1. Enable SAML for your enterprise account using the information in the setup instructions. For more information, see “<a href="/github/setting-up-and-managing-your-enterprise/configuring-identity-and-access-management-for-your-enterprise-account/enforcing-saml-single-sign-on-for-organizations-in-your-enterprise-account">Enforcing SAML single sign-on for organizations in your enterprise account</a>.”</p>
+<h2 id="creating-groups-in-okta">Creating groups in Okta</h2>
+<ol type="1">
+<li>In Okta, create a group to match each organization owned by your enterprise account. The name of each group must match the account name of the organization (not the organization’s display name). For example, if the URL of the organization is <code>https://github.com/octo-org</code>, name the group <code>octo-org</code>.</li>
+<li>Assign the application you created for your enterprise account to each group. {% data variables.product.prodname_dotcom %} will receive all <code>groups</code> data for each user.</li>
+<li>Add users to groups based on the organizations you’d like users to belong to.</li>
+</ol>
+<h2 id="enabling-saml-user-provisioning">Enabling SAML user provisioning</h2>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.security-tab %} 1. Under “SAML User Provisioning”, select <strong>Enable SAML user provisioning</strong>. <img src="/assets/images/help/business-accounts/user-provisioning.png" alt="Checkbox to enable user provisioning with SAML" /> 1. Click <strong>Save</strong>. 1. Optionally, enable SAML user deprovisioning. - Select <strong>Enable SAML user deprovisioning</strong>, then click <strong>Save</strong>. <img src="/assets/images/help/business-accounts/saml-deprovisioning.png" alt="Checkbox to enable user deprovisioning with SAML" /> - Read the warning, then click <strong>Enable SAML deprovisioning</strong>. <img src="/assets/images/help/business-accounts/saml-deprovisioning-confirm.png" alt="Enable SAML deprovisioning button" /></p>
+</body>
+</html>

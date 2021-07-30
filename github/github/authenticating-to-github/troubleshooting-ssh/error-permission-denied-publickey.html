@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error: Permission denied (publickey)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error: Permission denied (publickey)</h1>
+</header>
+<h2 id="should-the-sudo-command-be-used-with-git">Should the <code>sudo</code> command be used with Git?</h2>
+<p>You should not be using the <code>sudo</code> command with Git. If you have a <em>very good reason</em> you must use <code>sudo</code>, then ensure you are using it with every command (it’s probably just better to use <code>su</code> to get a shell as root at that point). If you <a href="/articles/generating-an-ssh-key">generate SSH keys</a> without <code>sudo</code> and then try to use a command like <code>sudo git push</code>, you won’t be using the same keys that you generated.</p>
+<h2 id="check-that-you-are-connecting-to-the-correct-server">Check that you are connecting to the correct server</h2>
+<p>Typing is hard, we all know it. Pay attention to what you type; you won’t be able to connect to “githib.com” or “guthub.com”. In some cases, a corporate network may cause issues resolving the DNS record as well.</p>
+<p>To make sure you are connecting to the right domain, you can enter the following command:</p>
+<pre class="shell"><code>$ ssh -vT git@{% data variables.command_line.codeblock %}
+&gt; OpenSSH_8.1p1, LibreSSL 2.7.3
+&gt; debug1: Reading configuration data /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/config
+&gt; debug1: Reading configuration data /etc/ssh/ssh_config
+&gt; debug1: /etc/ssh/ssh_config line 47: Applying options for *
+&gt; debug1: Connecting to {% data variables.command_line.codeblock %} port 22.</code></pre>
+<p>The connection should be made on port 22{% ifversion fpt %}, unless you’re overriding settings to use <a href="/articles/using-ssh-over-the-https-port">SSH over HTTPS</a>{% endif %}.</p>
+<h2 id="always-use-the-git-user">Always use the “git” user</h2>
+<p>All connections, including those for remote URLs, must be made as the “git” user. If you try to connect with your {% data variables.product.product_name %} username, it will fail:</p>
+<pre class="shell"><code>$ ssh -T &lt;em&gt;GITHUB-USERNAME&lt;/em&gt;@{% data variables.command_line.codeblock %}
+&gt; Permission denied (publickey).</code></pre>
+<p>If your connection failed and you’re using a remote URL with your {% data variables.product.product_name %} username, you can <a href="/github/getting-started-with-github/managing-remote-repositories">change the remote URL to use the “git” user</a>.</p>
+<p>You should verify your connection by typing:</p>
+<pre class="shell"><code>$ ssh -T git@{% data variables.command_line.codeblock %}
+&gt; Hi &lt;em&gt;username&lt;/em&gt;! You&#39;ve successfully authenticated...</code></pre>
+<h2 id="make-sure-you-have-a-key-that-is-being-used">Make sure you have a key that is being used</h2>
+<p>{% mac %}</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Verify that you have a private key generated and loaded into SSH. {% ifversion ghes &lt; 3.0 %}If you’re using OpenSSH 6.7 or older: <code>shell   # start the ssh-agent in the background   $ eval "$(ssh-agent -s)"   &gt; Agent pid 59566   $ ssh-add -l   &gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code></p>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   # start the ssh-agent in the background   $ eval "$(ssh-agent -s)"   &gt; Agent pid 59566   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code> {% else %} <code>shell   # start the ssh-agent in the background   $ eval "$(ssh-agent -s)"   &gt; Agent pid 59566   $ ssh-add -l -E sha256   &gt; 2048 &lt;em&gt;SHA256:274ffWxgaxq/tSINAykStUL7XWyRNcRTlcST1Ei7gBQ&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code>{% endif %}</p>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<p>{% data reusables.desktop.windows_git_bash %}</p>
+<ol type="1">
+<li>{% data reusables.desktop.windows_git_bash_turn_on_ssh_agent %}</li>
+</ol>
+<p>{% data reusables.desktop.windows_git_for_windows_turn_on_ssh_agent %} 2. Verify that you have a private key generated and loaded into SSH. {% ifversion ghes &lt; 3.0 %}If you’re using OpenSSH 6.7 or older: <code>shell   $ ssh-add -l   &gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code></p>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code> {% else %} <code>shell   $ ssh-add -l -E sha256   &gt; 2048 &lt;em&gt;SHA256:274ffWxgaxq/tSINAykStUL7XWyRNcRTlcST1Ei7gBQ&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code>{% endif %}</p>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Verify that you have a private key generated and loaded into SSH. {% ifversion ghes &lt; 3.0 %}If you’re using OpenSSH 6.7 or older: <code>shell   # start the ssh-agent in the background   $ eval "$(ssh-agent -s)"   &gt; Agent pid 59566   $ ssh-add -l   &gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code></p>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   # start the ssh-agent in the background   $ eval "$(ssh-agent -s)"   &gt; Agent pid 59566   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa (RSA)</code> {% else %} <code>shell   $ ssh-add -l -E sha256   &gt; 2048 &lt;em&gt;SHA256:274ffWxgaxq/tSINAykStUL7XWyRNcRTlcST1Ei7gBQ&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code>{% endif %}</p>
+<p>{% endlinux %}</p>
+<p>The <code>ssh-add</code> command <em>should</em> print out a long string of numbers and letters. If it does not print anything, you will need to <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a new SSH key</a> and associate it with {% data variables.product.product_name %}.</p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: On most systems the default private keys (<code>~/.ssh/id_rsa</code> and <code>~/.ssh/identity</code>) are automatically added to the SSH authentication agent. You shouldn’t need to run <code>ssh-add path/to/key</code> unless you override the file name when you generate a key.</p>
+<p>{% endtip %}</p>
+<h3 id="getting-more-details">Getting more details</h3>
+<p>You can also check that the key is being used by trying to connect to <code>git@{% data variables.command_line.backticks %}</code>:</p>
+<pre class="shell"><code>$ ssh -vT git@{% data variables.command_line.codeblock %}
+&gt; ...
+&gt; debug1: identity file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa type -1
+&gt; debug1: identity file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa-cert type -1
+&gt; debug1: identity file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_dsa type -1
+&gt; debug1: identity file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_dsa-cert type -1
+&gt; ...
+&gt; debug1: Authentications that can continue: publickey
+&gt; debug1: Next authentication method: publickey
+&gt; debug1: Trying private key: /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa
+&gt; debug1: Trying private key: /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_dsa
+&gt; debug1: No more authentication methods to try.
+&gt; Permission denied (publickey).</code></pre>
+<p>In that example, we did not have any keys for SSH to use. The “-1” at the end of the “identity file” lines means SSH couldn’t find a file to use. Later on, the “Trying private key” lines also indicate that no file was found. If a file existed, those lines would be “1” and “Offering public key”, respectively:</p>
+<pre class="shell"><code>$ ssh -vT git@{% data variables.command_line.codeblock %}
+&gt; ...
+&gt; debug1: identity file /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa type 1
+&gt; ...
+&gt; debug1: Authentications that can continue: publickey
+&gt; debug1: Next authentication method: publickey
+&gt; debug1: Offering RSA public key: /Users/&lt;em&gt;you&lt;/em&gt;/.ssh/id_rsa</code></pre>
+<h2 id="verify-the-public-key-is-attached-to-your-account">Verify the public key is attached to your account</h2>
+<p>You must provide your public key to {% data variables.product.product_name %} to establish a secure connection.</p>
+<p>{% mac %}</p>
+<ol type="1">
+<li>Open Terminal.</li>
+<li>Start SSH agent in the background.</li>
+</ol>
+<pre class="shell"><code>$ eval &quot;$(ssh-agent -s)&quot;
+&gt; Agent pid 59566</code></pre>
+<ol start="3" type="1">
+<li>Find and take a note of your public key fingerprint. {% ifversion ghes &lt; 3.0 %}If you’re using OpenSSH 6.7 or older:</li>
+</ol>
+<pre class="shell"><code>$ ssh-add -l
+&gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code></pre>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code> {% else %} <code>shell   $ ssh-add -l -E sha256   &gt; 2048 &lt;em&gt;SHA256:274ffWxgaxq/tSINAykStUL7XWyRNcRTlcST1Ei7gBQ&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code>{% endif %}</p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.ssh %} 6. Compare the list of SSH keys with the output from the <code>ssh-add</code> command. <img src="/assets/images/help/settings/ssh_key_listing.png" alt="SSH key listing in {% data variables.product.product_name %}" /></p>
+<p>{% endmac %}</p>
+<p>{% windows %}</p>
+<ol type="1">
+<li>Open the command line.</li>
+<li>Start SSH agent in the background.</li>
+</ol>
+<pre class="shell"><code>$ ssh-agent -s
+&gt; Agent pid 59566</code></pre>
+<ol start="3" type="1">
+<li>Find and take a note of your public key fingerprint. {% ifversion ghes &lt; 3.0 %}If you’re using OpenSSH 6.7 or older:</li>
+</ol>
+<pre class="shell"><code>$ ssh-add -l
+&gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code></pre>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code> {% else %} <code>shell   $ ssh-add -l -E sha256   &gt; 2048 &lt;em&gt;SHA256:274ffWxgaxq/tSINAykStUL7XWyRNcRTlcST1Ei7gBQ&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code>{% endif %}</p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.ssh %} 6. Compare the list of SSH keys with the output from the <code>ssh-add</code> command. <img src="/assets/images/help/settings/ssh_key_listing.png" alt="SSH key listing in {% data variables.product.product_name %}" /></p>
+<p>{% endwindows %}</p>
+<p>{% linux %}</p>
+<ol type="1">
+<li>Open Terminal.</li>
+<li>Start SSH agent in the background.</li>
+</ol>
+<pre class="shell"><code>$ eval &quot;$(ssh-agent -s)&quot;
+&gt; Agent pid 59566</code></pre>
+<ol start="3" type="1">
+<li>Find and take a note of your public key fingerprint. If you’re using OpenSSH 6.7 or older:</li>
+</ol>
+<pre class="shell"><code>$ ssh-add -l
+&gt; 2048 &lt;em&gt;a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code></pre>
+<p>If you’re using OpenSSH 6.8 or newer: <code>shell   $ ssh-add -l -E md5   &gt; 2048 &lt;em&gt;MD5:a0:dd:42:3c:5a:9d:e4:2a:21:52:4e:78:07:6e:c8:4d&lt;/em&gt; /Users/&lt;em&gt;USERNAME&lt;/em&gt;/.ssh/id_rsa (RSA)</code></p>
+<p>{% data reusables.user_settings.access_settings %} {% data reusables.user_settings.ssh %} 6. Compare the list of SSH keys with the output from the <code>ssh-add</code> command. <img src="/assets/images/help/settings/ssh_key_listing.png" alt="SSH key listing in {% data variables.product.product_name %}" /></p>
+<p>{% endlinux %}</p>
+<p>If you don’t see your public key in {% data variables.product.product_name %}, you’ll need to <a href="/articles/adding-a-new-ssh-key-to-your-github-account">add your SSH key to {% data variables.product.product_name %}</a> to associate it with your computer.</p>
+<p>{% warning %}</p>
+<p><strong>Warning</strong>: If you see an SSH key you’re not familiar with on {% data variables.product.product_name %}, delete it immediately and contact {% data variables.contact.contact_support %}, for further help. An unidentified public key may indicate a possible security concern. For more information, see “<a href="/articles/reviewing-your-ssh-keys">Reviewing your SSH keys</a>.”</p>
+<p>{% endwarning %}</p>
+</body>
+</html>

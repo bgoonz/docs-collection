@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>About apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">About apps</h1>
+</header>
+<p>Apps on {% data variables.product.prodname_dotcom %} allow you to automate and improve your workflow. You can build apps to improve your workflow.{% ifversion fpt %} You can also share or sell apps in <a href="https://github.com/marketplace">{% data variables.product.prodname_marketplace %}</a>. To learn how to list an app on {% data variables.product.prodname_marketplace %}, see “<a href="/marketplace/getting-started/">Getting started with GitHub Marketplace</a>.”{% endif %}</p>
+<p>{% data reusables.marketplace.github_apps_preferred %}, but GitHub supports both {% data variables.product.prodname_oauth_apps %} and {% data variables.product.prodname_github_apps %}. For information on choosing a type of app, see “<a href="/developers/apps/differences-between-github-apps-and-oauth-apps">Differences between GitHub Apps and OAuth Apps</a>.”</p>
+<p>{% data reusables.apps.general-apps-restrictions %}</p>
+<p>For a walkthrough of the process of building a {% data variables.product.prodname_github_app %}, see “<a href="/apps/building-your-first-github-app">Building Your First {% data variables.product.prodname_github_app %}</a>.”</p>
+<h2 id="about-data-variables.product.prodname_github_apps">About {% data variables.product.prodname_github_apps %}</h2>
+<p>{% data variables.product.prodname_github_apps %} are first-class actors within GitHub. A {% data variables.product.prodname_github_app %} acts on its own behalf, taking actions via the API directly using its own identity, which means you don’t need to maintain a bot or service account as a separate user.</p>
+<p>{% data variables.product.prodname_github_apps %} can be installed directly on organizations and user accounts and granted access to specific repositories. They come with built-in webhooks and narrow, specific permissions. When you set up your {% data variables.product.prodname_github_app %}, you can select the repositories you want it to access. For example, you can set up an app called <code>MyGitHub</code> that writes issues in the <code>octocat</code> repository and <em>only</em> the <code>octocat</code> repository. To install a {% data variables.product.prodname_github_app %}, you must be an organization owner or have admin permissions in a repository.</p>
+<p>{% data reusables.apps.app_manager_role %}</p>
+<p>{% data variables.product.prodname_github_apps %} are applications that need to be hosted somewhere. For step-by-step instructions that cover servers and hosting, see “<a href="/apps/building-your-first-github-app">Building Your First {% data variables.product.prodname_github_app %}</a>.”</p>
+<p>To improve your workflow, you can create a {% data variables.product.prodname_github_app %} that contains multiple scripts or an entire application, and then connect that app to many other tools. For example, you can connect {% data variables.product.prodname_github_apps %} to GitHub, Slack, other in-house apps you may have, email programs, or other APIs.</p>
+<p>Keep these ideas in mind when creating {% data variables.product.prodname_github_apps %}:</p>
+<p>{% ifversion fpt %} * {% data reusables.apps.maximum-github-apps-allowed %} {% endif %} * A {% data variables.product.prodname_github_app %} should take actions independent of a user (unless the app is using a <a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps#user-to-server-requests">user-to-server</a> token). {% data reusables.apps.expiring_user_authorization_tokens %}</p>
+<ul>
+<li>Make sure the {% data variables.product.prodname_github_app %} integrates with specific repositories.</li>
+<li>The {% data variables.product.prodname_github_app %} should connect to a personal account or an organization.</li>
+<li>Don’t expect the {% data variables.product.prodname_github_app %} to know and do everything a user can.</li>
+<li>Don’t use a {% data variables.product.prodname_github_app %} if you just need a “Login with GitHub” service. But a {% data variables.product.prodname_github_app %} can use a <a href="/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/">user identification flow</a> to log users in <em>and</em> do other things.</li>
+<li>Don’t build a {% data variables.product.prodname_github_app %} if you <em>only</em> want to act as a GitHub user and do everything that user can do.{% ifversion fpt %}</li>
+<li>{% data reusables.apps.general-apps-restrictions %}{% endif %}</li>
+</ul>
+<p>To begin developing {% data variables.product.prodname_github_apps %}, start with “<a href="/apps/building-github-apps/creating-a-github-app/">Creating a {% data variables.product.prodname_github_app %}</a>.”{% ifversion fpt %} To learn how to use {% data variables.product.prodname_github_app %} Manifests, which allow people to create preconfigured {% data variables.product.prodname_github_apps %}, see “<a href="/apps/building-github-apps/creating-github-apps-from-a-manifest/">Creating {% data variables.product.prodname_github_apps %} from a manifest</a>.”{% endif %}</p>
+<h2 id="about-data-variables.product.prodname_oauth_apps">About {% data variables.product.prodname_oauth_apps %}</h2>
+<p>OAuth2 is a protocol that lets external applications request authorization to private details in a user’s {% data variables.product.prodname_dotcom %} account without accessing their password. This is preferred over Basic Authentication because tokens can be limited to specific types of data and can be revoked by users at any time.</p>
+<p>{% data reusables.apps.deletes_ssh_keys %}</p>
+<p>An {% data variables.product.prodname_oauth_app %} uses {% data variables.product.prodname_dotcom %} as an identity provider to authenticate as the user who grants access to the app. This means when a user grants an {% data variables.product.prodname_oauth_app %} access, they grant permissions to <em>all</em> repositories they have access to in their account, and also to any organizations they belong to that haven’t blocked third-party access.</p>
+<p>Building an {% data variables.product.prodname_oauth_app %} is a good option if you are creating more complex processes than a simple script can handle. Note that {% data variables.product.prodname_oauth_apps %} are applications that need to be hosted somewhere.</p>
+<p>Keep these ideas in mind when creating {% data variables.product.prodname_oauth_apps %}:</p>
+<p>{% ifversion fpt %} * {% data reusables.apps.maximum-oauth-apps-allowed %} {% endif %} * An {% data variables.product.prodname_oauth_app %} should always act as the authenticated {% data variables.product.prodname_dotcom %} user across all of {% data variables.product.prodname_dotcom %} (for example, when providing user notifications). * An {% data variables.product.prodname_oauth_app %} can be used as an identity provider by enabling a “Login with {% data variables.product.prodname_dotcom %}” for the authenticated user. * Don’t build an {% data variables.product.prodname_oauth_app %} if you want your application to act on a single repository. With the <code>repo</code> OAuth scope, {% data variables.product.prodname_oauth_apps %} can act on <em>all</em> of the authenticated user’s repositories. * Don’t build an {% data variables.product.prodname_oauth_app %} to act as an application for your team or company. {% data variables.product.prodname_oauth_apps %} authenticate as a single user, so if one person creates an {% data variables.product.prodname_oauth_app %} for a company to use, and then they leave the company, no one else will have access to it.{% ifversion fpt %} * {% data reusables.apps.oauth-apps-restrictions %}{% endif %}</p>
+<p>For more on {% data variables.product.prodname_oauth_apps %}, see “<a href="/apps/building-oauth-apps/creating-an-oauth-app/">Creating an {% data variables.product.prodname_oauth_app %}</a>” and “<a href="/rest/guides/basics-of-authentication#registering-your-app">Registering your app</a>.”</p>
+<h2 id="personal-access-tokens">Personal access tokens</h2>
+<p>A <a href="/articles/creating-a-personal-access-token-for-the-command-line/">personal access token</a> is a string of characters that functions similarly to an <a href="/apps/building-oauth-apps/authorizing-oauth-apps/">OAuth token</a> in that you can specify its permissions via <a href="/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/">scopes</a>. A personal access token is also similar to a password, but you can have many of them and you can revoke access to each one at any time.</p>
+<p>As an example, you can enable a personal access token to write to your repositories. If then you run a cURL command or write a script that <a href="/rest/reference/issues#create-an-issue">creates an issue</a> in your repository, you would pass the personal access token to authenticate. You can store the personal access token as an environment variable to avoid typing it every time you use it.</p>
+<p>Keep these ideas in mind when using personal access tokens:</p>
+<ul>
+<li>Remember to use this token to represent yourself only.</li>
+<li>You can perform one-off cURL requests.</li>
+<li>You can run personal scripts.</li>
+<li>Don’t set up a script for your whole team or company to use.</li>
+<li>Don’t set up a shared user account to act as a bot user.</li>
+<li>Do set an expiration for your personal access tokens, to help keep your information secure.</li>
+</ul>
+<h2 id="determining-which-integration-to-build">Determining which integration to build</h2>
+<p>Before you get started creating integrations, you need to determine the best way to access, authenticate, and interact with the {% data variables.product.prodname_dotcom %} APIs. The following image offers some questions to ask yourself when deciding whether to use personal access tokens, {% data variables.product.prodname_github_apps %}, or {% data variables.product.prodname_oauth_apps %} for your integration.</p>
+<figure>
+<img src="/assets/images/intro-to-apps-flow.png" alt="Intro to apps question flow" /><figcaption>Intro to apps question flow</figcaption>
+</figure>
+<p>Consider these questions about how your integration needs to behave and what it needs to access:</p>
+<ul>
+<li>Will my integration act only as me, or will it act more like an application?</li>
+<li>Do I want it to act independently of me as its own entity?</li>
+<li>Will it access everything that I can access, or do I want to limit its access?</li>
+<li>Is it simple or complex? For example, personal access tokens are good for simple scripts and cURLs, whereas an {% data variables.product.prodname_oauth_app %} can handle more complex scripting.</li>
+</ul>
+<h2 id="requesting-support">Requesting support</h2>
+<p>{% data reusables.support.help_resources %}</p>
+</body>
+</html>

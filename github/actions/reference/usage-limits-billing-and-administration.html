@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Usage limits, billing, and administration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Usage limits, billing, and administration</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="about-billing-for-data-variables.product.prodname_actions">
+      About billing for {% data variables.product.prodname_actions %}
+    </h2>
+    <p>
+      {% ifversion fpt %} {% data reusables.github-actions.actions-billing %}
+      For more information, see “<a
+        href="/billing/managing-billing-for-github-actions/about-billing-for-github-actions"
+        >About billing for {% data variables.product.prodname_actions %}</a
+      >.” {% else %} GitHub Actions usage is free for {% data
+      variables.product.prodname_ghe_server %}s that use self-hosted runners. {%
+      endif %}
+    </p>
+    <h2 id="usage-limits">Usage limits</h2>
+    <p>
+      {% ifversion fpt %} There are some limits on {% data
+      variables.product.prodname_actions %} usage when using {% data
+      variables.product.prodname_dotcom %}-hosted runners. These limits are
+      subject to change.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> For self-hosted runners, different usage limits
+      apply. For more information, see “<a
+        href="/actions/hosting-your-own-runners/about-self-hosted-runners/#usage-limits"
+        >About self-hosted runners</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <ul>
+      <li>
+        <strong>Job execution time</strong> - Each job in a workflow can run for
+        up to 6 hours of execution time. If a job reaches this limit, the job is
+        terminated and fails to complete. {% data
+        reusables.github-actions.usage-workflow-run-time %} {% data
+        reusables.github-actions.usage-api-requests %}
+      </li>
+      <li>
+        <p>
+          <strong>Concurrent jobs</strong> - The number of concurrent jobs you
+          can run in your account depends on your GitHub plan, as indicated in
+          the following table. If exceeded, any additional jobs are queued.
+        </p>
+        <table>
+          <thead>
+            <tr class="header">
+              <th>GitHub plan</th>
+              <th>Total concurrent jobs</th>
+              <th>Maximum concurrent macOS jobs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td>Free</td>
+              <td>20</td>
+              <td>5</td>
+            </tr>
+            <tr class="even">
+              <td>Pro</td>
+              <td>40</td>
+              <td>5</td>
+            </tr>
+            <tr class="odd">
+              <td>Team</td>
+              <td>60</td>
+              <td>5</td>
+            </tr>
+            <tr class="even">
+              <td>Enterprise</td>
+              <td>180</td>
+              <td>50</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>
+          <strong>Job matrix</strong> - {% data
+          reusables.github-actions.usage-matrix-limits %} {% data
+          reusables.github-actions.usage-workflow-queue-limits %}
+        </p>
+      </li>
+    </ul>
+    <p>
+      {% else %} Usage limits apply to self-hosted runners. For more
+      information, see “<a
+        href="/actions/hosting-your-own-runners/about-self-hosted-runners/#usage-limits"
+        >About self-hosted runners</a
+      >.” {% endif %}
+    </p>
+    <p>{% ifversion fpt %} ## Usage policy</p>
+    <p>
+      In addition to the usage limits, you must ensure that you use {% data
+      variables.product.prodname_actions %} within the
+      <a href="/articles/github-terms-of-service/">GitHub Terms of Service</a>.
+      For more information on {% data variables.product.prodname_actions
+      %}-specific terms, see the
+      <a
+        href="/github/site-policy/github-additional-product-terms#a-actions-usage"
+        >GitHub Additional Product Terms</a
+      >. {% endif %}
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Artifact and log
+      retention policy
+    </p>
+    <p>
+      You can configure the artifact and log retention period for your
+      repository, organization, or enterprise account.
+    </p>
+    <p>{% data reusables.actions.about-artifact-log-retention %}</p>
+    <p>For more information, see:</p>
+    <ul>
+      <li>
+        <a
+          href="/github/administering-a-repository/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-repository"
+          >Configuring the retention period for {% data
+          variables.product.prodname_actions %} for artifacts and logs in your
+          repository</a
+        >
+      </li>
+      <li>
+        <a
+          href="/organizations/managing-organization-settings/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-organization"
+          >Configuring the retention period for {% data
+          variables.product.prodname_actions %} for artifacts and logs in your
+          organization</a
+        >
+      </li>
+      <li>
+        <a
+          href="/github/setting-up-and-managing-your-enterprise/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-enterprise-account"
+          >Configuring the retention period for {% data
+          variables.product.prodname_actions %} for artifacts and logs in your
+          enterprise</a
+        >
+        {% endif %}
+      </li>
+    </ul>
+    <h2
+      id="disabling-or-limiting-data-variables.product.prodname_actions-for-your-repository-or-organization"
+    >
+      Disabling or limiting {% data variables.product.prodname_actions %} for
+      your repository or organization
+    </h2>
+    <p>{% data reusables.github-actions.disabling-github-actions %}</p>
+    <p>
+      For more information, see: - “<a
+        href="/github/administering-a-repository/disabling-or-limiting-github-actions-for-a-repository"
+        >Disabling or limiting {% data variables.product.prodname_actions %} for
+        a repository</a
+      >” - “<a
+        href="/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization"
+        >Disabling or limiting {% data variables.product.prodname_actions %} for
+        your organization</a
+      >”{% ifversion fpt %} - “<a
+        href="/github/setting-up-and-managing-your-enterprise/enforcing-github-actions-policies-in-your-enterprise-account"
+        >Enforcing {% data variables.product.prodname_actions %} policies in
+        your enterprise account</a
+      >” for {% data variables.product.prodname_ghe_cloud %}{% endif %}
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Disabling and enabling
+      workflows
+    </p>
+    <p>
+      You can enable and disable individual workflows in your repository on {%
+      data variables.product.prodname_dotcom %}.
+    </p>
+    <p>{% data reusables.actions.scheduled-workflows-disabled %}</p>
+    <p>
+      For more information, see “<a
+        href="/actions/managing-workflow-runs/disabling-and-enabling-a-workflow"
+        >Disabling and enabling a workflow</a
+      >.” {% endif %}
+    </p>
+  </body>
+</html>

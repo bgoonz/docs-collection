@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Repository permission levels for an organization</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Repository permission levels for an organization</h1>
+</header>
+<p>People with admin permissions can manage individual and team access to an organization-owned repository.</p>
+<h2 id="permission-levels-for-repositories-owned-by-an-organization">Permission levels for repositories owned by an organization</h2>
+<p>You can give organization members, outside collaborators, and teams of people different levels of access to repositories owned by an organization. Each permission level progressively increases access to a repository’s content and settings. Choose the level that best fits each person or team’s role in your project without giving people more access to the project than they need.</p>
+<p>From least access to most access, the permission levels for an organization repository are: - <strong>Read</strong>: Recommended for non-code contributors who want to view or discuss your project - <strong>Triage</strong>: Recommended for contributors who need to proactively manage issues and pull requests without write access - <strong>Write</strong>: Recommended for contributors who actively push to your project - <strong>Maintain</strong>: Recommended for project managers who need to manage the repository without access to sensitive or destructive actions - <strong>Admin</strong>: Recommended for people who need full access to the project, including sensitive and destructive actions like managing security or deleting a repository</p>
+<p>{% ifversion fpt %}</p>
+<p>{% endif %}</p>
+<p>For more information about giving people and teams access to repositories, see “<a href="/articles/managing-access-to-your-organizations-repositories">Managing access to your organization’s repositories</a>.”</p>
+<p>Organization owners can set base permissions that apply to all members of an organization when accessing any of the organization’s repositories. For more information, see “<a href="/organizations/managing-access-to-your-organizations-repositories/setting-base-permissions-for-an-organization#setting-base-permissions">Setting base permissions for an organization</a>.”</p>
+<p>Organization owners can also choose to further limit access to certain settings and actions across the organization. For more information on options for specific settings, see “<a href="/articles/managing-organization-settings">Managing organization settings</a>.”</p>
+<p>In addition to managing organization-level settings, organization owners have admin permissions for every repository owned by the organization. For more information, see “<a href="/articles/permission-levels-for-an-organization">Permission levels for an organization</a>.”</p>
+<p>{% warning %}</p>
+<p><strong>Warning:</strong> When someone adds a deploy key to a repository, any user who has the private key can read from or write to the repository (depending on the key settings), even if they’re later removed from the organization.</p>
+<p>{% endwarning %}</p>
+<h2 id="repository-access-for-each-permission-level">Repository access for each permission level</h2>
+<p>{% ifversion fpt or ghes &gt; 2.21 %} {% note %}</p>
+<p><strong>Note:</strong> Repository permissions required to use security features are listed in “<a href="#permission-requirements-for-security-features">Permission requirements for security features</a>” below.</p>
+<p>{% endnote %} {% endif %}</p>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Repository action</th>
+<th style="text-align: center;">Read</th>
+<th style="text-align: center;">Triage</th>
+<th style="text-align: center;">Write</th>
+<th style="text-align: center;">Maintain</th>
+<th style="text-align: center;">Admin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pull from the person or team’s assigned repositories</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fork the person or team’s assigned repositories</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Edit and delete their own comments</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Open issues</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Close issues they opened themselves</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reopen issues they closed themselves</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Have an issue assigned to them</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Send pull requests from forks of the team’s assigned repositories</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Submit reviews on pull requests</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">View published releases</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">View <a href="/actions/automating-your-workflow-with-github-actions/managing-a-workflow-run">GitHub Actions workflow runs</a></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Edit wikis</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/communities/maintaining-your-safety-on-github/reporting-abuse-or-spam">Report abusive or spammy content</a></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Apply/dismiss labels</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create, edit, delete labels</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Close, reopen, and assign all issues and pull requests</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/github/administering-a-repository/managing-auto-merge-for-pull-requests-in-your-repository">Enable and disable auto-merge on a pull request</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Apply milestones</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mark <a href="/articles/about-duplicate-issues-and-pull-requests">duplicate issues and pull requests</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Request <a href="/articles/requesting-a-pull-request-review">pull request reviews</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Push to (write) the person or team’s assigned repositories</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Edit and delete anyone’s comments on commits, pull requests, and issues</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/communities/moderating-comments-and-conversations/managing-disruptive-comments">Hide anyone’s comments</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/communities/moderating-comments-and-conversations/locking-conversations">Lock conversations</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transfer issues (see “<a href="/articles/transferring-an-issue-to-another-repository">Transferring an issue to another repository</a>” for details)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/about-code-owners">Act as a designated code owner for a repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/articles/changing-the-stage-of-a-pull-request">Mark a draft pull request as ready for review</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/changing-the-stage-of-a-pull-request">Convert a pull request to a draft</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Submit reviews that affect a pull request’s mergeability</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/incorporating-feedback-in-your-pull-request">Apply suggested changes</a> to pull requests</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create <a href="/articles/about-status-checks">status checks</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create, edit, run, re-run, and cancel <a href="/actions/automating-your-workflow-with-github-actions/">GitHub Actions workflows</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create and edit releases</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">View draft releases</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Edit a repository’s description</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/packages/publishing-and-managing-packages">View and install packages</a></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/packages/publishing-and-managing-packages/publishing-a-package">Publish packages</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">{% ifversion fpt or ghes &gt; 3.0 %}<a href="/packages/learn-github-packages/deleting-and-restoring-a-package">Delete and restore packages</a>{% elsif ghes &lt; 3.1 or ghae %}<a href="/packages/learn-github-packages/deleting-a-package">Delete packages</a>{% endif %}</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manage <a href="/articles/classifying-your-repository-with-topics">topics</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enable wikis and restrict wiki editors</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enable project boards</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Configure <a href="/articles/configuring-pull-request-merges">pull request merges</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Configure <a href="/articles/configuring-a-publishing-source-for-github-pages">a publishing source for {% data variables.product.prodname_pages %}</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/about-protected-branches">Push to protected branches</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/articles/customizing-your-repositorys-social-media-preview">Create and edit repository social cards</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Limit <a href="/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository">interactions in a repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Delete an issue (see “<a href="/articles/deleting-an-issue">Deleting an issue</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Merge pull requests on protected branches, even if there are no approving reviews</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/articles/about-code-owners">Define code owners for a repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Add a repository to a team (see “<a href="/organizations/managing-access-to-your-organizations-repositories/managing-team-access-to-an-organization-repository#giving-a-team-access-to-a-repository">Managing team access to an organization repository</a>” for details)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/articles/adding-outside-collaborators-to-repositories-in-your-organization">Manage outside collaborator access to a repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/restricting-repository-visibility-changes-in-your-organization">Change a repository’s visibility</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Make a repository a template (see “<a href="/articles/creating-a-template-repository">Creating a template repository</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Change a repository’s settings</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manage team and collaborator access to the repository</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Edit the repository’s default branch</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rename the repository’s default branch (see “<a href="/github/administering-a-repository/renaming-a-branch">Renaming a branch</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rename a branch other than the repository’s default branch (see “<a href="/github/administering-a-repository/renaming-a-branch">Renaming a branch</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manage webhooks and deploy keys</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/github/understanding-how-github-uses-and-protects-your-data/managing-data-use-settings-for-your-private-repository">Manage data use settings for your private repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/github/administering-a-repository/managing-the-forking-policy-for-your-repository">Manage the forking policy for a repository</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/restricting-repository-creation-in-your-organization">Transfer repositories into the organization</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/articles/setting-permissions-for-deleting-or-transferring-repositories">Delete or transfer repositories out of the organization</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/articles/about-archiving-repositories">Archive repositories</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Display a sponsor button (see “<a href="/articles/displaying-a-sponsor-button-in-your-repository">Displaying a sponsor button in your repository</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create autolink references to external resources, like JIRA or Zendesk (see “<a href="/articles/configuring-autolinks-to-reference-external-resources">Configuring autolinks to reference external resources</a>”)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/github/administering-a-repository/enabling-or-disabling-github-discussions-for-a-repository">Enable {% data variables.product.prodname_discussions %}</a> in a repository</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-categories-for-discussions-in-your-repository">Create and edit categories</a> for {% data variables.product.prodname_discussions %}</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository">Move a discussion to a different category</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository">Transfer a discussion</a> to a new repository</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository">Manage pinned discussions</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository">Convert issues to discussions in bulk</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/moderating-discussions">Lock and unlock discussions</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/moderating-discussions">Individually convert issues to discussions</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="/discussions/collaborating-with-your-community-using-discussions/participating-in-a-discussion">Create new discussions and comment on existing discussions</a></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository#deleting-a-discussion">Delete a discussion</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create <a href="/codespaces/about-codespaces">codespaces</a></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"><strong>X</strong></td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes &gt; 2.21 or ghae %} ### Permission requirements for security features</p>
+<p>In this section, you can find the repository permission levels required for security features, such as {% data variables.product.prodname_advanced_security %} features.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Repository action</th>
+<th style="text-align: center;">Read</th>
+<th style="text-align: center;">Triage</th>
+<th style="text-align: center;">Write</th>
+<th style="text-align: center;">Maintain</th>
+<th style="text-align: center;">Admin</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes &gt; 2.22 %} | Receive <a href="/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies">{% data variables.product.prodname_dependabot_alerts %} for vulnerable dependencies</a> in a repository | | | | | <strong>X</strong> | | <a href="/code-security/supply-chain-security/viewing-and-updating-vulnerable-dependencies-in-your-repository">Dismiss {% data variables.product.prodname_dependabot_alerts %}</a> | | | | | <strong>X</strong> | | <a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository#granting-access-to-security-alerts">Designate additional people or teams to receive {% data variables.product.prodname_dependabot_alerts %}</a> for vulnerable dependencies | | | | | <strong>X</strong> |{% endif %}{% ifversion fpt %} | Create <a href="/code-security/security-advisories/about-github-security-advisories">security advisories</a> | | | | | <strong>X</strong> |{% endif %}{% ifversion fpt or ghes &gt; 2.22 or ghae %} | Manage access to {% data variables.product.prodname_GH_advanced_security %} features (see “<a href="/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>”) | | | | | <strong>X</strong> |{% endif %}{% ifversion fpt %}<!--Set at site-level for GHES--> | <a href="/code-security/supply-chain-security/exploring-the-dependencies-of-a-repository">Enable the dependency graph</a> for a private repository | | | | | <strong>X</strong> | | <a href="/code-security/supply-chain-security/about-dependency-review">View dependency reviews</a> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> |{% endif %}{% ifversion fpt or ghes &gt; 2.21 or ghae %} | <a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/triaging-code-scanning-alerts-in-pull-requests">View {% data variables.product.prodname_code_scanning %} alerts on pull requests</a> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> | | <a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository">List, dismiss, and delete {% data variables.product.prodname_code_scanning %} alerts</a> | | | <strong>X</strong> | <strong>X</strong> | <strong>X</strong> |{% endif %}{% ifversion fpt or ghes &gt; 3.0 or ghae-next %} | <a href="/github/administering-a-repository/managing-alerts-from-secret-scanning">View {% data variables.product.prodname_secret_scanning %} alerts in a repository</a> | | | <strong>X</strong><sup>[1]</sup> | <strong>X</strong><sup>[1]</sup> | <strong>X</strong> | | <a href="/github/administering-a-repository/managing-alerts-from-secret-scanning">Resolve, revoke, or re-open {% data variables.product.prodname_secret_scanning %} alerts</a> | | | <strong>X</strong><sup>[1]</sup> | <strong>X</strong><sup>[1]</sup> | <strong>X</strong> |{% endif %}{% ifversion ghes = 3.0 %} | <a href="/github/administering-a-repository/managing-alerts-from-secret-scanning">View {% data variables.product.prodname_secret_scanning %} alerts in a repository</a> | | | | | <strong>X</strong> | | <a href="/github/administering-a-repository/managing-alerts-from-secret-scanning">Resolve, revoke, or re-open {% data variables.product.prodname_secret_scanning %} alerts</a> | | | | | <strong>X</strong> |{% endif %}{% ifversion fpt or ghes &gt; 2.22 %} | <a href="/github/administering-a-repository/managing-security-and-analysis-settings-for-your-repository#granting-access-to-security-alerts">Designate additional people or teams to receive {% data variables.product.prodname_secret_scanning %} alerts</a> in repositories | | | | | <strong>X</strong> |{% endif %}</p>
+<p>{% ifversion fpt or ghes &gt; 3.0 or ghae-next %} [1] Repository writers and maintainers can only see alert information for their own commits. {% endif %} {% endif %}</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/managing-access-to-your-organization-s-repositories">Managing access to your organization’s repositories</a>”</li>
+<li>“<a href="/articles/adding-outside-collaborators-to-repositories-in-your-organization">Adding outside collaborators to repositories in your organization</a>”</li>
+<li>“<a href="/articles/project-board-permissions-for-an-organization">Project board permissions for an organization</a>”</li>
+</ul>
+</body>
+</html>

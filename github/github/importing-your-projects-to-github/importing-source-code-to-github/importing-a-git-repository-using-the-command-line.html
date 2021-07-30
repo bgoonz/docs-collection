@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Importing a Git repository using the command line</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Importing a Git repository using the command line</h1>
+</header>
+<p>Before you start, make sure you know:</p>
+<ul>
+<li>Your {% data variables.product.product_name %} username</li>
+<li>The clone URL for the external repository, such as <code>https://external-host.com/user/repo.git</code> or <code>git://external-host.com/user/repo.git</code> (perhaps with a <code>user@</code> in front of the <code>external-host.com</code> domain name)</li>
+</ul>
+<p>{% tip %}</p>
+<p>For purposes of demonstration, we’ll use:</p>
+<ul>
+<li>An external account named <strong>extuser</strong></li>
+<li>An external Git host named <code>https://external-host.com</code></li>
+<li>A {% data variables.product.product_name %} personal user account named <strong>ghuser</strong></li>
+<li>A {% data variables.product.product_name %} repository named <strong>repo.git</strong></li>
+</ul>
+<p>{% endtip %}</p>
+<ol type="1">
+<li><a href="/articles/creating-a-new-repository">Create a new repository on {% data variables.product.product_name %}</a>. You’ll import your external Git repository to this new repository.</li>
+<li>On the command line, make a “bare” clone of the repository using the external clone URL. This creates a full copy of the data, but without a working directory for editing files, and ensures a clean, fresh export of all the old data.</li>
+</ol>
+<pre class="shell"><code>$ git clone --bare https://external-host.com/&lt;em&gt;extuser&lt;/em&gt;/&lt;em&gt;repo.git&lt;/em&gt;
+# Makes a bare clone of the external repository in a local directory</code></pre>
+<ol start="3" type="1">
+<li>Push the locally cloned repository to {% data variables.product.product_name %} using the “mirror” option, which ensures that all references, such as branches and tags, are copied to the imported repository.</li>
+</ol>
+<pre class="shell"><code>$ cd &lt;em&gt;repo.git&lt;/em&gt;
+$ git push --mirror https://{% data variables.command_line.codeblock %}/&lt;em&gt;ghuser&lt;/em&gt;/&lt;em&gt;repo.git&lt;/em&gt;
+# Pushes the mirror to the new {% data variables.product.product_name %} repository</code></pre>
+<ol start="4" type="1">
+<li>Remove the temporary local repository.</li>
+</ol>
+<pre class="shell"><code>$ cd ..
+$ rm -rf &lt;em&gt;repo.git&lt;/em&gt;</code></pre>
+</body>
+</html>

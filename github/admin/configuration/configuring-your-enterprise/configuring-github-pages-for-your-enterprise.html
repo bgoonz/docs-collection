@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring GitHub Pages for your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring GitHub Pages for your enterprise</h1>
+    </header>
+    <h2 id="enabling-public-sites-for-data-variables.product.prodname_pages">
+      Enabling public sites for {% data variables.product.prodname_pages %}
+    </h2>
+    <p>
+      {% ifversion ghes %}If private mode is enabled on your enterprise, the {%
+      else %}The {% endif %}public cannot access {% data
+      variables.product.prodname_pages %} sites hosted by your enterprise unless
+      you enable public sites.
+    </p>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> If you enable public sites for {% data
+      variables.product.prodname_pages %}, every site in every repository on
+      your enterprise will be accessible to the public.
+    </p>
+    <p>{% endwarning %}</p>
+    <p>
+      {% ifversion ghes %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.management-console %} {% data
+      reusables.enterprise_management_console.pages-tab %} 4. Select
+      <strong>Public Pages</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/public-pages-checkbox.png"
+        alt="Checkbox to enable Public Pages"
+      />
+      {% data reusables.enterprise_management_console.save-settings %} {% elsif
+      ghae %} {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.pages-tab %} 5. Under “Pages policies”,
+      select
+      <strong>Public {% data variables.product.prodname_pages %}</strong>.
+      <img
+        src="/assets/images/enterprise/business-accounts/public-github-pages-checkbox.png"
+        alt="Checkbox to enable public {% data variables.product.prodname_pages %}"
+      />
+      {% data reusables.enterprise-accounts.pages-policies-save %} {% endif %}
+    </p>
+    <h2
+      id="disabling-data-variables.product.prodname_pages-for-your-enterprise"
+    >
+      Disabling {% data variables.product.prodname_pages %} for your enterprise
+    </h2>
+    <p>
+      {% ifversion ghes %} If subdomain isolation is disabled for your
+      enterprise, you should also disable {% data
+      variables.product.prodname_pages %} to protect yourself from potential
+      security vulnerabilities. For more information, see “<a
+        href="/admin/configuration/enabling-subdomain-isolation"
+        >Enabling subdomain isolation</a
+      >.” {% endif %}
+    </p>
+    <p>
+      {% ifversion ghes %} {% data
+      reusables.enterprise_site_admin_settings.access-settings %} {% data
+      reusables.enterprise_site_admin_settings.management-console %} {% data
+      reusables.enterprise_management_console.pages-tab %} 4. Unselect
+      <strong>Enable Pages</strong>.
+      <img
+        src="/assets/images/enterprise/management-console/pages-select-button.png"
+        alt="Checkbox to disable {% data variables.product.prodname_pages %}"
+      />
+      {% data reusables.enterprise_management_console.save-settings %} {% elsif
+      ghae %} {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.policies-tab %} {% data
+      reusables.enterprise-accounts.pages-tab %} 5. Under “Pages policies”,
+      deselect
+      <strong>Enable {% data variables.product.prodname_pages %}</strong>.
+      <img
+        src="/assets/images/enterprise/business-accounts/enable-github-pages-checkbox.png"
+        alt="Checkbox to disable {% data variables.product.prodname_pages %}"
+      />
+      {% data reusables.enterprise-accounts.pages-policies-save %} {% endif %}
+    </p>
+    <p>{% ifversion ghes %} ## Further reading</p>
+    <ul>
+      <li>
+        “<a href="/admin/configuration/enabling-private-mode"
+          >Enabling private mode</a
+        >” {% endif %}
+      </li>
+    </ul>
+  </body>
+</html>

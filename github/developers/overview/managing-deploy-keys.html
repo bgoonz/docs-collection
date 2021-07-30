@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Managing deploy keys</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Managing deploy keys</h1>
+</header>
+<p>You can manage SSH keys on your servers when automating deployment scripts using SSH agent forwarding, HTTPS with OAuth tokens, deploy keys, or machine users.</p>
+<h2 id="ssh-agent-forwarding">SSH agent forwarding</h2>
+<p>In many cases, especially in the beginning of a project, SSH agent forwarding is the quickest and simplest method to use. Agent forwarding uses the same SSH keys that your local development computer uses.</p>
+<h4 id="pros">Pros</h4>
+<ul>
+<li>You do not have to generate or keep track of any new keys.</li>
+<li>There is no key management; users have the same permissions on the server that they do locally.</li>
+<li>No keys are stored on the server, so in case the server is compromised, you don’t need to hunt down and remove the compromised keys.</li>
+</ul>
+<h4 id="cons">Cons</h4>
+<ul>
+<li>Users <strong>must</strong> SSH in to deploy; automated deploy processes can’t be used.</li>
+<li>SSH agent forwarding can be troublesome to run for Windows users.</li>
+</ul>
+<h4 id="setup">Setup</h4>
+<ol type="1">
+<li>Turn on agent forwarding locally. See <a href="/guides/using-ssh-agent-forwarding/">our guide on SSH agent forwarding</a> for more information.</li>
+<li>Set your deploy scripts to use agent forwarding. For example, on a bash script, enabling agent forwarding would look something like this: <code>ssh -A serverA 'bash -s' &lt; deploy.sh</code></li>
+</ol>
+<h2 id="https-cloning-with-oauth-tokens">HTTPS cloning with OAuth tokens</h2>
+<p>If you don’t want to use SSH keys, you can use <a href="/articles/git-automation-with-oauth-tokens">HTTPS with OAuth tokens</a>.</p>
+<h4 id="pros-1">Pros</h4>
+<ul>
+<li>Anyone with access to the server can deploy the repository.</li>
+<li>Users don’t have to change their local SSH settings.</li>
+<li>Multiple tokens (one for each user) are not needed; one token per server is enough.</li>
+<li>A token can be revoked at any time, turning it essentially into a one-use password. {% ifversion ghes %}</li>
+<li>Generating new tokens can be easily scripted using <a href="/rest/reference/oauth-authorizations#create-a-new-authorization">the OAuth API</a>. {% endif %}</li>
+</ul>
+<h4 id="cons-1">Cons</h4>
+<ul>
+<li>You must make sure that you configure your token with the correct access scopes.</li>
+<li>Tokens are essentially passwords, and must be protected the same way.</li>
+</ul>
+<h4 id="setup-1">Setup</h4>
+<p>See <a href="/articles/git-automation-with-oauth-tokens">our guide on Git automation with tokens</a>.</p>
+<h2 id="deploy-keys">Deploy keys</h2>
+<p>{% data reusables.repositories.deploy-keys %}</p>
+<p>{% data reusables.repositories.deploy-keys-write-access %}</p>
+<h4 id="pros-2">Pros</h4>
+<ul>
+<li>Anyone with access to the repository and server has the ability to deploy the project.</li>
+<li>Users don’t have to change their local SSH settings.</li>
+<li>Deploy keys are read-only by default, but you can give them write access when adding them to a repository.</li>
+</ul>
+<h4 id="cons-2">Cons</h4>
+<ul>
+<li>Deploy keys only grant access to a single repository. More complex projects may have many repositories to pull to the same server.</li>
+<li>Deploy keys are usually not protected by a passphrase, making the key easily accessible if the server is compromised.</li>
+</ul>
+<h4 id="setup-2">Setup</h4>
+<ol type="1">
+<li><a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key">Run the <code>ssh-keygen</code> procedure</a> on your server, and remember where you save the generated public/private rsa key pair.</li>
+<li>In the upper-right corner of any {% data variables.product.product_name %} page, click your profile photo, then click <strong>Your profile</strong>. <img src="/assets/images/profile-page.png" alt="Navigation to profile" /></li>
+<li>On your profile page, click <strong>Repositories</strong>, then click the name of your repository. <img src="/assets/images/repos.png" alt="Repositories link" /></li>
+<li>From your repository, click <strong>Settings</strong>. <img src="/assets/images/repo-settings.png" alt="Repository settings" /></li>
+<li>In the sidebar, click <strong>Deploy Keys</strong>, then click <strong>Add deploy key</strong>. <img src="/assets/images/add-deploy-key.png" alt="Add Deploy Keys link" /></li>
+<li>Provide a title, paste in your public key. <img src="/assets/images/deploy-key.png" alt="Deploy Key page" /></li>
+<li>Select <strong>Allow write access</strong> if you want this key to have write access to the repository. A deploy key with write access lets a deployment push to the repository.</li>
+<li>Click <strong>Add key</strong>.</li>
+</ol>
+<h4 id="using-multiple-repositories-on-one-server">Using multiple repositories on one server</h4>
+<p>If you use multiple repositories on one server, you will need to generate a dedicated key pair for each one. You can’t reuse a deploy key for multiple repositories.</p>
+<p>In the server’s SSH configuration file (usually <code>~/.ssh/config</code>), add an alias entry for each repository. For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">Host</span> {% ifversion fpt %}<span class="ex">github.com</span>{% else %}<span class="ex">my-GHE-hostname.com</span>{% endif %}<span class="ex">-repo-0</span></a>
+<a class="sourceLine" id="cb1-2" title="2">        <span class="ex">Hostname</span> {% ifversion fpt %}<span class="ex">github.com</span>{% else %}<span class="ex">my-GHE-hostname.com</span>{% endif %}</a>
+<a class="sourceLine" id="cb1-3" title="3">        <span class="va">IdentityFile=</span>/home/user/.ssh/repo-0_deploy_key</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="ex">Host</span> {% ifversion fpt %}<span class="ex">github.com</span>{% else %}<span class="ex">my-GHE-hostname.com</span>{% endif %}<span class="ex">-repo-1</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="ex">Hostname</span> {% ifversion fpt %}<span class="ex">github.com</span>{% else %}<span class="ex">my-GHE-hostname.com</span>{% endif %}</a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="va">IdentityFile=</span>/home/user/.ssh/repo-1_deploy_key</a></code></pre></div>
+<ul>
+<li><code>Host {% ifversion fpt %}github.com{% else %}my-GHE-hostname.com{% endif %}-repo-0</code> - The repository’s alias.</li>
+<li><code>Hostname {% ifversion fpt %}github.com{% else %}my-GHE-hostname.com{% endif %}</code> - Configures the hostname to use with the alias.</li>
+<li><code>IdentityFile=/home/user/.ssh/repo-0_deploy_key</code> - Assigns a private key to the alias.</li>
+</ul>
+<p>You can then use the hostname’s alias to interact with the repository using SSH, which will use the unique deploy key assigned to that alias. For example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="fu">git</span> clone git@{% ifversion fpt %}<span class="ex">github.com</span>{% else %}<span class="ex">my-GHE-hostname.com</span>{% endif %}<span class="ex">-repo-1</span>:OWNER/repo-1.git</a></code></pre></div>
+<h2 id="server-to-server-tokens">Server-to-server tokens</h2>
+<p>If your server needs to access repositories across one or more organizations, you can use a GitHub App to define the access you need, and then generate <em>tightly-scoped</em>, <em>server-to-server</em> tokens from that GitHub App. The server-to-server tokens can be scoped to single or multiple repositories, and can have fine-grained permissions. For example, you can generate a token with read-only access to a repository’s contents.</p>
+<p>Since GitHub Apps are a first class actor on {% data variables.product.product_name %}, the server-to-server tokens are decoupled from any GitHub user, which makes them comparable to “service tokens”. Additionally, server-to-server tokens have dedicated rate limits that scale with the size of the organizations that they act upon. For more information, see <a href="/developers/apps/rate-limits-for-github-apps">Rate limits for Github Apps</a>.</p>
+<h4 id="pros-3">Pros</h4>
+<ul>
+<li>Tightly-scoped tokens with well-defined permission sets and expiration times (1 hour, or less if revoked manually using the API).</li>
+<li>Dedicated rate limits that grow with your organization.</li>
+<li>Decoupled from GitHub user identities, so they do not consume any licensed seats.</li>
+<li>Never granted a password, so cannot be directly signed in to.</li>
+</ul>
+<h4 id="cons-3">Cons</h4>
+<ul>
+<li>Additional setup is needed to create the GitHub App.</li>
+<li>Server-to-server tokens expire after 1 hour, and so need to be re-generated, typically on-demand using code.</li>
+</ul>
+<h4 id="setup-3">Setup</h4>
+<ol type="1">
+<li>Determine if your GitHub App should be public or private. If your GitHub App will only act on repositories within your organization, you likely want it private.</li>
+<li>Determine the permissions your GitHub App requires, such as read-only access to repository contents.</li>
+<li>Create your GitHub App via your organization’s settings page. For more information, see <a href="/developers/apps/creating-a-github-app">Creating a GitHub App</a>.</li>
+<li>Note your GitHub App <code>id</code>.</li>
+<li>Generate and download your GitHub App’s private key, and store this safely. For more information, see <a href="/developers/apps/authenticating-with-github-apps#generating-a-private-key">Generating a private key</a>.</li>
+<li>Install your GitHub App on the repositories it needs to act upon, optionally you may install the GitHub App on all repositories in your organization.</li>
+<li>Identify the <code>installation_id</code> that represents the connection between your GitHub App and the organization repositories it can access. Each GitHub App and organization pair have at most a single <code>installation_id</code>. You can identify this <code>installation_id</code> via <a href="/rest/reference/apps#get-an-organization-installation-for-the-authenticated-app">Get an organization installation for the authenticated app</a>. This requires authenticating as a GitHub App using a JWT, for more information see <a href="/developers/apps/authenticating-with-github-apps#authenticating-as-a-github-app">Authenticating as a GitHub App</a>.</li>
+<li>Generate a server-to-server token using the corresponding REST API endpoint, <a href="/rest/reference/apps#create-an-installation-access-token-for-an-app">Create an installation access token for an app</a>. This requires authenticating as a GitHub App using a JWT, for more information see <a href="/developers/apps/authenticating-with-github-apps#authenticating-as-a-github-app">Authenticating as a GitHub App</a>, and <a href="/developers/apps/authenticating-with-github-apps#authenticating-as-an-installation">Authenticating as an installation</a>.</li>
+<li>Use this server-to-server token to interact with your repositories, either via the REST or GraphQL APIs, or via a Git client.</li>
+</ol>
+<h2 id="machine-users">Machine users</h2>
+<p>If your server needs to access multiple repositories, you can create a new {% data variables.product.product_name %} account and attach an SSH key that will be used exclusively for automation. Since this {% data variables.product.product_name %} account won’t be used by a human, it’s called a <em>machine user</em>. You can add the machine user as a <a href="/articles/inviting-collaborators-to-a-personal-repository">collaborator</a> on a personal repository (granting read and write access), as an <a href="/articles/adding-outside-collaborators-to-repositories-in-your-organization">outside collaborator</a> on an organization repository (granting read, write, or admin access), or to a <a href="/articles/adding-organization-members-to-a-team">team</a> with access to the repositories it needs to automate (granting the permissions of the team).</p>
+<p>{% ifversion fpt %}</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> Our <a href="/articles/github-terms-of-service/">terms of service</a> state:</p>
+<blockquote>
+<p><em>Accounts registered by “bots” or other automated methods are not permitted.</em></p>
+</blockquote>
+<p>This means that you cannot automate the creation of accounts. But if you want to create a single machine user for automating tasks such as deploy scripts in your project or organization, that is totally cool.</p>
+<p>{% endtip %}</p>
+<p>{% endif %}</p>
+<h4 id="pros-4">Pros</h4>
+<ul>
+<li>Anyone with access to the repository and server has the ability to deploy the project.</li>
+<li>No (human) users need to change their local SSH settings.</li>
+<li>Multiple keys are not needed; one per server is adequate.</li>
+</ul>
+<h4 id="cons-4">Cons</h4>
+<ul>
+<li>Only organizations can restrict machine users to read-only access. Personal repositories always grant collaborators read/write access.</li>
+<li>Machine user keys, like deploy keys, are usually not protected by a passphrase.</li>
+</ul>
+<h4 id="setup-4">Setup</h4>
+<ol type="1">
+<li><a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key">Run the <code>ssh-keygen</code> procedure</a> on your server and attach the public key to the machine user account.</li>
+<li>Give the machine user account access to the repositories you want to automate. You can do this by adding the account as a <a href="/articles/inviting-collaborators-to-a-personal-repository">collaborator</a>, as an <a href="/articles/adding-outside-collaborators-to-repositories-in-your-organization">outside collaborator</a>, or to a <a href="/articles/adding-organization-members-to-a-team">team</a> in an organization.</li>
+</ol>
+</body>
+</html>

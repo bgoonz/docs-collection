@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Ignoring files</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Ignoring files</h1>
+</header>
+<h2 id="configuring-ignored-files-for-a-single-repository">Configuring ignored files for a single repository</h2>
+<p>You can create a <em>.gitignore</em> file in your repository’s root directory to tell Git which files and directories to ignore when you make a commit. To share the ignore rules with other users who clone the repository, commit the <em>.gitignore</em> file in to your repository.</p>
+<p>GitHub maintains an official list of recommended <em>.gitignore</em> files for many popular operating systems, environments, and languages in the <code>github/gitignore</code> public repository. You can also use gitignore.io to create a <em>.gitignore</em> file for your operating system, programming language, or IDE. For more information, see “<a href="https://github.com/github/gitignore">github/gitignore</a>” and the “<a href="https://www.gitignore.io/">gitignore.io</a>” site.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Navigate to the location of your Git repository. 3. Create a <em>.gitignore</em> file for your repository. <code>shell    $ touch .gitignore</code></p>
+<p>For an example <em>.gitignore</em> file, see “<a href="https://gist.github.com/octocat/9257657">Some common .gitignore configurations</a>” in the Octocat repository.</p>
+<p>If you want to ignore a file that is already checked in, you must untrack the file before you add a rule to ignore it. From your terminal, untrack the file.</p>
+<pre class="shell"><code>$ git rm --cached &lt;em&gt;FILENAME&lt;/em&gt;</code></pre>
+<h2 id="configuring-ignored-files-for-all-repositories-on-your-computer">Configuring ignored files for all repositories on your computer</h2>
+<p>You can also create a global <em>.gitignore</em> file to define a list of rules for ignoring files in every Git repository on your computer. For example, you might create the file at <em>~/.gitignore_global</em> and add some rules to it.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Configure Git to use the exclude file <em>~/.gitignore_global</em> for all Git repositories. <code>shell   $ git config --global core.excludesfile ~/.gitignore_global</code></p>
+<h2 id="excluding-local-files-without-creating-a-.gitignore-file">Excluding local files without creating a <em>.gitignore</em> file</h2>
+<p>If you don’t want to create a <em>.gitignore</em> file to share with others, you can create rules that are not committed with the repository. You can use this technique for locally-generated files that you don’t expect other users to generate, such as files created by your editor.</p>
+<p>Use your favorite text editor to open the file called <em>.git/info/exclude</em> within the root of your Git repository. Any rule you add here will not be checked in, and will only ignore files for your local repository.</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Navigate to the location of your Git repository. 3. Using your favorite text editor, open the file <em>.git/info/exclude</em>.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring">Ignoring files</a> in the Pro Git book</li>
+<li><a href="https://git-scm.com/docs/gitignore">.gitignore</a> in the man pages for Git</li>
+<li><a href="https://github.com/github/gitignore">A collection of useful <em>.gitignore</em> templates</a> in the github/gitignore repository</li>
+<li><a href="https://www.gitignore.io/">gitignore.io</a> site</li>
+</ul>
+</body>
+</html>

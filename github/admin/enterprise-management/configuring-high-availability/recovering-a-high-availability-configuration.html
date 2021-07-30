@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Recovering a high availability configuration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Recovering a high availability configuration</h1>
+    </header>
+    <p>
+      You can use the former primary appliance as the new replica appliance if
+      the failover was planned or was not related to the health of the
+      appliance. If the failover was related to an issue with the primary
+      appliance, you may prefer to create a new replica appliance. For more
+      information, see “<a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/admin/guides/installation/creating-a-high-availability-replica/"
+        >Creating a high availability replica</a
+      >.”
+    </p>
+    <h2 id="configuring-a-former-primary-appliance-as-a-new-replica">
+      Configuring a former primary appliance as a new replica
+    </h2>
+    <ol type="1">
+      <li>Connect to the former primary appliance’s IP address using SSH.</li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ssh -p 122 admin@&lt;em&gt;FORMER PRIMARY IP&lt;/em&gt;</code></pre>
+    <ol start="2" type="1">
+      <li>
+        On the former primary appliance, run <code>ghe-repl-setup</code> with
+        the IP address of the former replica.
+      </li>
+    </ol>
+    <pre
+      class="shell"
+    ><code>$ ghe-repl-setup &lt;em&gt;FORMER REPLICA IP&lt;/em&gt;</code></pre>
+    <p>
+      {% data reusables.enterprise_installation.add-ssh-key-to-primary %} 4. To
+      verify the connection to the new primary and enable replica mode for the
+      new replica, run <code>ghe-repl-setup</code> again.
+      <code>shell $ ghe-repl-setup &lt;em&gt;FORMER REPLICA IP&lt;/em&gt;</code>
+      {% data reusables.enterprise_installation.replication-command %}
+    </p>
+  </body>
+</html>

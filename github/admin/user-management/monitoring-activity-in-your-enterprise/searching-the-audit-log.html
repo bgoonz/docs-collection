@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching the audit log</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching the audit log</h1>
+</header>
+<h2 id="search-query-syntax">Search query syntax</h2>
+<p>Compose a search query from one or more key:value pairs separated by AND/OR logical operators.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><code>actor_id</code></td>
+<td>ID of the user account that initiated the action</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>actor</code></td>
+<td>Name of the user account that initiated the action</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>oauth_app_id</code></td>
+<td>ID of the OAuth application associated with the action</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>action</code></td>
+<td>Name of the audited action</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>user_id</code></td>
+<td>ID of the user affected by the action</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>user</code></td>
+<td>Name of the user affected by the action</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>repo_id</code></td>
+<td>ID of the repository affected by the action (if applicable)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>repo</code></td>
+<td>Name of the repository affected by the action (if applicable)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>actor_ip</code></td>
+<td>IP address from which the action was initiated</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>created_at</code></td>
+<td>Time at which the action occurred</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>from</code></td>
+<td>View from which the action was initiated</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>note</code></td>
+<td>Miscellaneous event-specific information (in either plain text or JSON format)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>org</code></td>
+<td>Name of the organization affected by the action (if applicable)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>org_id</code></td>
+<td>ID of the organization affected by the action (if applicable)</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to see all actions that have affected the repository <code>octocat/Spoon-Knife</code> since the beginning of 2017:</p>
+<p><code>repo:"octocat/Spoon-Knife" AND created_at:[2017-01-01 TO *]</code></p>
+<p>For a full list of actions, see “<a href="/admin/user-management/audited-actions">Audited actions</a>.”</p>
+<h2 id="searching-the-audit-log">Searching the audit log</h2>
+<p>{% data reusables.enterprise-accounts.access-enterprise %} {% data reusables.enterprise-accounts.settings-tab %} {% data reusables.enterprise-accounts.audit-log-tab %} 4. Type a search query. <img src="/assets/images/enterprise/site-admin-settings/search-query.png" alt="Search query" /></p>
+</body>
+</html>

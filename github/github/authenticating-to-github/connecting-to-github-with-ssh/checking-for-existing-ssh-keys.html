@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Checking for existing SSH keys</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Checking for existing SSH keys</h1>
+</header>
+<p>{% data reusables.ssh.dsa-support %}</p>
+<p>{% data reusables.command_line.open_the_multi_os_terminal %} 2. Enter <code>ls -al ~/.ssh</code> to see if existing SSH keys are present:</p>
+<pre class="shell"><code>$ ls -al ~/.ssh
+# Lists the files in your .ssh directory, if they exist</code></pre>
+<ol start="3" type="1">
+<li>Check the directory listing to see if you already have a public SSH key. By default, the filenames of the public keys are one of the following:
+<ul>
+<li><em>id_rsa.pub</em></li>
+<li><em>id_ecdsa.pub</em></li>
+<li><em>id_ed25519.pub</em></li>
+</ul></li>
+</ol>
+<p>If you don’t have an existing public and private key pair, or don’t wish to use any that are available to connect to {% data variables.product.product_name %}, then <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a new SSH key</a>.</p>
+<p>If you see an existing public and private key pair listed (for example <em>id_rsa.pub</em> and <em>id_rsa</em>) that you would like to use to connect to {% data variables.product.product_name %}, you can <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#adding-your-ssh-key-to-the-ssh-agent">add your SSH key to the ssh-agent</a>.</p>
+<p>{% tip %}</p>
+<p><strong>Tip:</strong> If you receive an error that <em>~/.ssh</em> doesn’t exist, don’t worry! We’ll create it when we <a href="/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a new SSH key</a>.</p>
+<p>{% endtip %}</p>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Re-running a workflow</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Re-running a workflow</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <p>
+      Re-running a workflow uses the same <code>GITHUB_SHA</code> (commit SHA)
+      and <code>GITHUB_REF</code> (Git ref) of the original event that triggered
+      the workflow run. You can re-run a workflow up to 30 days after the
+      initial run.
+    </p>
+    <p>{% include tool-switcher %}</p>
+    <p>{% webui %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow %} {% data
+      reusables.repositories.view-run %} 1. In the upper-right corner of the
+      workflow, use the <strong>Re-run jobs</strong> drop-down menu, and select
+      <strong>Re-run all jobs</strong>.{% ifversion fpt or ghes &gt; 3.0 or ghae
+      %}<img
+        src="/assets/images/help/repository/rerun-checks-drop-down-updated.png"
+        alt="Re-run checks drop-down menu"
+      />{% else %}<img
+        src="/assets/images/help/repository/rerun-checks-drop-down.png"
+        alt="Re-run checks drop-down menu"
+      />{% endif %}
+    </p>
+    <p>{% endwebui %}</p>
+    <p>{% cli %}</p>
+    <p>{% data reusables.cli.download-cli %}</p>
+    <p>{% data reusables.actions.actions-cli %}</p>
+    <p>
+      To re-run a failed workflow run, use the
+      <code>run rerun</code> subcommand. Replace <code>run-id</code> with the ID
+      of the failed run that you want to re-run. If you don’t specify a
+      <code>run-id</code>, {% data variables.product.prodname_cli %} returns an
+      interactive menu for you to choose a recent failed run.
+    </p>
+    <pre
+      class="shell"
+    ><code>gh run rerun &lt;em&gt;run-id&lt;/em&gt;</code></pre>
+    <p>
+      To view the progress of the workflow run, use the
+      <code>run watch</code> subcommand and select the run from the interactive
+      list.
+    </p>
+    <pre class="shell"><code>gh run watch</code></pre>
+    <p>{% endcli %}</p>
+  </body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Searching issues and pull requests</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Searching issues and pull requests</h1>
+</header>
+<p>You can search for issues and pull requests globally across all of {% data variables.product.product_name %}, or search for issues and pull requests within a particular organization. For more information, see “<a href="/articles/about-searching-on-github">About searching on {% data variables.product.company_short %}</a>.”</p>
+<p>{% tip %}</p>
+<p><strong>Tips:</strong>{% ifversion ghes or ghae %} - This article contains example searches on the {% data variables.product.prodname_dotcom %}.com website, but you can use the same search filters on {% data variables.product.product_location %}.{% endif %} - For a list of search syntaxes that you can add to any search qualifier to further improve your results, see “<a href="/articles/understanding-the-search-syntax">Understanding the search syntax</a>”. - Use quotations around multi-word search terms. For example, if you want to search for issues with the label “In progress,” you’d search for <code>label:"in progress"</code>. Search is not case sensitive. - {% data reusables.search.search_issues_and_pull_requests_shortcut %}</p>
+<p>{% endtip %}</p>
+<h2 id="search-only-issues-or-pull-requests">Search only issues or pull requests</h2>
+<p>By default, {% data variables.product.product_name %} search will return both issues and pull requests. However, you can restrict search results to just issues or pull requests using the <code>type</code> or <code>is</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>type:pr</code></td>
+<td><a href="https://github.com/search?q=cat+type%3Apr&amp;type=Issues"><strong>cat type:pr</strong></a> matches pull requests with the word “cat.”</td>
+</tr>
+<tr class="even">
+<td><code>type:issue</code></td>
+<td><a href="https://github.com/search?q=github+commenter%3Adefunkt+type%3Aissue&amp;type=Issues"><strong>github commenter:defunkt type:issue</strong></a> matches issues that contain the word “github,” and have a comment by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>is:pr</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=event+is%3Apr&amp;type="><strong>event is:pr</strong></a> matches pull requests with the word “event.”</td>
+</tr>
+<tr class="even">
+<td><code>is:issue</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=is%3Aissue+label%3Abug+is%3Aclosed&amp;type="><strong>is:issue label:bug is:closed</strong></a> matches closed issues with the label “bug.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-the-title-body-or-comments">Search by the title, body, or comments</h2>
+<p>With the <code>in</code> qualifier you can restrict your search to the title, body, comments, or any combination of these. When you omit this qualifier, the title, body, and comments are all searched.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>in:title</code></td>
+<td><a href="https://github.com/search?q=warning+in%3Atitle&amp;type=Issues"><strong>warning in:title</strong></a> matches issues with “warning” in their title.</td>
+</tr>
+<tr class="even">
+<td><code>in:body</code></td>
+<td><a href="https://github.com/search?q=error+in%3Atitle%2Cbody&amp;type=Issues"><strong>error in:title,body</strong></a> matches issues with “error” in their title or body.</td>
+</tr>
+<tr class="odd">
+<td><code>in:comments</code></td>
+<td><a href="https://github.com/search?q=shipit+in%3Acomment&amp;type=Issues"><strong>shipit in:comments</strong></a> matches issues mentioning “shipit” in their comments.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-within-a-users-or-organizations-repositories">Search within a user’s or organization’s repositories</h2>
+<p>To search issues and pull requests in all repositories owned by a certain user or organization, you can use the <code>user</code> or <code>org</code> qualifier. To search issues and pull requests in a specific repository, you can use the <code>repo</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>user:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=user%3Adefunkt+ubuntu&amp;type=Issues"><strong>user:defunkt ubuntu</strong></a> matches issues with the word “ubuntu” from repositories owned by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+<tr class="even">
+<td><code>org:<em>ORGNAME</em></code></td>
+<td><a href="https://github.com/search?q=org%3Agithub&amp;type=Issues&amp;utf8=%E2%9C%93"><strong>org:github</strong></a> matches issues in repositories owned by the GitHub organization.</td>
+</tr>
+<tr class="odd">
+<td><code>repo:<em>USERNAME/REPOSITORY</em></code></td>
+<td><a href="https://github.com/search?q=repo%3Amozilla%2Fshumway+created%3A%3C2012-03-01&amp;type=Issues"><strong>repo:mozilla/shumway created:&lt;2012-03-01</strong></a> matches issues from <span class="citation" data-cites="mozilla">@mozilla</span>’s shumway project that were created before March 2012.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-open-or-closed-state">Search by open or closed state</h2>
+<p>You can filter issues and pull requests based on whether they’re open or closed using the <code>state</code> or <code>is</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>state:open</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=libraries+state%3Aopen+mentions%3Avmg&amp;type=Issues"><strong>libraries state:open mentions:vmg</strong></a> matches open issues that mention <span class="citation" data-cites="vmg">@vmg</span> with the word “libraries.”</td>
+</tr>
+<tr class="even">
+<td><code>state:closed</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=design+state%3Aclosed+in%3Abody&amp;type=Issues"><strong>design state:closed in:body</strong></a> matches closed issues with the word “design” in the body.</td>
+</tr>
+<tr class="odd">
+<td><code>is:open</code></td>
+<td><a href="https://github.com/search?q=performance+is%3Aopen+is%3Aissue&amp;type=Issues"><strong>performance is:open is:issue</strong></a> matches open issues with the word “performance.”</td>
+</tr>
+<tr class="even">
+<td><code>is:closed</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=android+is%3Aclosed&amp;type="><strong>android is:closed</strong></a> matches closed issues and pull requests with the word “android.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filter-by-repository-visibility">Filter by repository visibility</h2>
+<p>You can filter by the visibility of the repository containing the issues and pull requests using the <code>is</code> qualifier. For more information, see “<a href="/github/creating-cloning-and-archiving-repositories/about-repository-visibility">About repository visibility</a>.”</p>
+<div class="line-block">Qualifier | Example<br />
+————- | ————- |{% ifversion fpt or ghes %}<br />
+<code>is:public</code> | <a href="https://github.com/search?q=is%3Apublic&amp;type=Issues"><strong>is:public</strong></a> matches issues and pull requests in public repositories.{% endif %}{% ifversion fpt or ghes or ghae %}<br />
+<code>is:internal</code> | <a href="https://github.com/search?q=is%3Ainternal&amp;type=Issues"><strong>is:internal</strong></a> matches issues and pull requests in internal repositories.{% endif %}<br />
+<code>is:private</code> | <a href="https://github.com/search?q=is%3Aprivate+cupcake&amp;type=Issues"><strong>is:private cupcake</strong></a> matches issues and pull requests that contain the word “cupcake” in private repositories you can access.</div>
+<h2 id="search-by-author">Search by author</h2>
+<p>The <code>author</code> qualifier finds issues and pull requests created by a certain user or integration account.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>author:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=cool+author%3Agjtorikian&amp;type=Issues"><strong>cool author:gjtorikian</strong></a> matches issues and pull requests with the word “cool” that were created by <span class="citation" data-cites="gjtorikian">@gjtorikian</span>.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=bootstrap+in%3Abody+author%3Amdo&amp;type=Issues"><strong>bootstrap in:body author:mdo</strong></a> matches issues written by <span class="citation" data-cites="mdo">@mdo</span> that contain the word “bootstrap” in the body.</td>
+</tr>
+<tr class="odd">
+<td><code>author:app/<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=author%3Aapp%2Frobot&amp;type=Issues"><strong>author:app/robot</strong></a> matches issues created by the integration account named “robot.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-assignee">Search by assignee</h2>
+<p>The <code>assignee</code> qualifier finds issues and pull requests that are assigned to a certain user. You cannot search for issues and pull requests that have <em>any</em> assignee, however, you can search for <a href="#search-by-missing-metadata">issues and pull requests that have no assignee</a>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>assignee:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=assignee%3Avmg+repo%3Alibgit2%2Flibgit2&amp;type=Issues"><strong>assignee:vmg repo:libgit2/libgit2</strong></a> matches issues and pull requests in libgit2’s project libgit2 that are assigned to <span class="citation" data-cites="vmg">@vmg</span>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-mention">Search by mention</h2>
+<p>The <code>mentions</code> qualifier finds issues that mention a certain user. For more information, see “<a href="/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams">Mentioning people and teams</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mentions:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?q=resque+mentions%3Adefunkt&amp;type=Issues"><strong>resque mentions:defunkt</strong></a> matches issues with the word “resque” that mention <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-team-mention">Search by team mention</h2>
+<p>For organizations and teams you belong to, you can use the <code>team</code> qualifier to find issues or pull requests that <span class="citation" data-cites="mention">@mention</span> a certain team within that organization. Replace these sample names with your organization and team name to perform a search.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>team:<em>ORGNAME/TEAMNAME</em></code></td>
+<td><strong>team:jekyll/owners</strong> matches issues where the <code>@jekyll/owners</code> team is mentioned.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>team:myorg/ops is:open is:pr</strong> matches open pull requests where the <code>@myorg/ops</code> team is mentioned.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-commenter">Search by commenter</h2>
+<p>The <code>commenter</code> qualifier finds issues that contain a comment from a certain user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>commenter:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=github+commenter%3Adefunkt+org%3Agithub&amp;type=Issues"><strong>github commenter:defunkt org:github</strong></a> matches issues in repositories owned by GitHub, that contain the word “github,” and have a comment by <span class="citation" data-cites="defunkt">@defunkt</span>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-a-user-thats-involved-in-an-issue-or-pull-request">Search by a user that’s involved in an issue or pull request</h2>
+<p>You can use the <code>involves</code> qualifier to find issues that in some way involve a certain user. The <code>involves</code> qualifier is a logical OR between the <code>author</code>, <code>assignee</code>, <code>mentions</code>, and <code>commenter</code> qualifiers for a single user. In other words, this qualifier finds issues and pull requests that were either created by a certain user, assigned to that user, mention that user, or were commented on by that user.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>involves:<em>USERNAME</em></code></td>
+<td><strong><a href="https://github.com/search?q=involves%3Adefunkt+involves%3Ajlord&amp;type=Issues">involves:defunkt involves:jlord</a></strong> matches issues either <span class="citation" data-cites="defunkt">@defunkt</span> or <span class="citation" data-cites="jlord">@jlord</span> are involved in.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=NOT+bootstrap+in%3Abody+involves%3Amdo&amp;type=Issues"><strong>NOT bootstrap in:body involves:mdo</strong></a> matches issues <span class="citation" data-cites="mdo">@mdo</span> is involved in that do not contain the word “bootstrap” in the body.</td>
+</tr>
+</tbody>
+</table>
+<p>{% ifversion fpt or ghes or ghae %} ## Search for linked issues and pull requests You can narrow your results to only include issues that are linked to a pull request by a closing reference, or pull requests that are linked to an issue that the pull request may close.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>linked:pr</code></td>
+<td><a href="https://github.com/search?q=repo%3Adesktop%2Fdesktop+is%3Aopen+linked%3Apr"><strong>repo:desktop/desktop is:open linked:pr</strong></a> matches open issues in the <code>desktop/desktop</code> repository that are linked to a pull request by a closing reference.</td>
+</tr>
+<tr class="even">
+<td><code>linked:issue</code></td>
+<td><a href="https://github.com/search?q=repo%3Adesktop%2Fdesktop+is%3Aclosed+linked%3Aissue"><strong>repo:desktop/desktop is:closed linked:issue</strong></a> matches closed pull requests in the <code>desktop/desktop</code> repository that were linked to an issue that the pull request may have closed.</td>
+</tr>
+<tr class="odd">
+<td><code>-linked:pr</code></td>
+<td><a href="https://github.com/search?q=repo%3Adesktop%2Fdesktop+is%3Aopen+-linked%3Apr"><strong>repo:desktop/desktop is:open -linked:pr</strong></a> matches open issues in the <code>desktop/desktop</code> repository that are not linked to a pull request by a closing reference.</td>
+</tr>
+<tr class="even">
+<td><code>-linked:issue</code></td>
+<td><a href="https://github.com/search?q=repo%3Adesktop%2Fdesktop+is%3Aopen+-linked%3Aissue"><strong>repo:desktop/desktop is:open -linked:issue</strong></a> matches open pull requests in the <code>desktop/desktop</code> repository that are not linked to an issue that the pull request may close.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-label">Search by label</h2>
+<p>You can narrow your results by labels, using the <code>label</code> qualifier. Since issues can have multiple labels, you can list a separate qualifier for each issue.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>label:<em>LABEL</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=label%3A%22help+wanted%22+language%3Aruby&amp;type=Issues"><strong>label:“help wanted” language:ruby</strong></a> matches issues with the label “help wanted” that are in Ruby repositories.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=broken+in%3Abody+-label%3Abug+label%3Apriority&amp;type=Issues"><strong>broken in:body -label:bug label:priority</strong></a> matches issues with the word “broken” in the body, that lack the label “bug”, but <em>do</em> have the label “priority.”</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="https://github.com/search?l=&amp;q=label%3Abug+label%3Aresolved&amp;type=Issues"><strong>label:bug label:resolved</strong></a> matches issues with the labels “bug” and “resolved.”{% ifversion fpt or ghes &gt; 3.2 or ghae-next %}</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=label%3Abug%2Cresolved&amp;type=Issues"><strong>label:bug,resolved</strong></a> matches issues with the label “bug” or the label “resolved.”{% endif %}</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-milestone">Search by milestone</h2>
+<p>The <code>milestone</code> qualifier finds issues or pull requests that are a part of a <a href="/articles/about-milestones">milestone</a> within a repository.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>milestone:<em>MILESTONE</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=milestone%3A%22overhaul%22&amp;type=Issues"><strong>milestone:“overhaul”</strong></a> matches issues that are in a milestone named “overhaul.”</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=milestone%3A%22bug+fix%22&amp;type=Issues"><strong>milestone:“bug fix”</strong></a> matches issues that are in a milestone named “bug fix.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-project-board">Search by project board</h2>
+<p>You can use the <code>project</code> qualifier to find issues that are associated with a specific <a href="/articles/about-project-boards/">project board</a> in a repository or organization. You must search project boards by the project board number. You can find the project board number at the end of a project board’s URL.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>project:<em>PROJECT_BOARD</em></code></td>
+<td><strong>project:github/57</strong> matches issues owned by GitHub that are associated with the organization’s project board 57.</td>
+</tr>
+<tr class="even">
+<td><code>project:<em>REPOSITORY/PROJECT_BOARD</em></code></td>
+<td><strong>project:github/linguist/1</strong> matches issues that are associated with project board 1 in <span class="citation" data-cites="github">@github</span>’s linguist repository.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-commit-status">Search by commit status</h2>
+<p>You can filter pull requests based on the status of the commits. This is especially useful if you are using <a href="/rest/reference/repos#statuses">the Status API</a> or a CI service.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>status:pending</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=language%3Ago+status%3Apending"><strong>language:go status:pending</strong></a> matches pull requests opened into Go repositories where the status is pending.</td>
+</tr>
+<tr class="even">
+<td><code>status:success</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=is%3Aopen+status%3Asuccess+finally+in%3Abody&amp;type=Issues"><strong>is:open status:success finally in:body</strong></a> matches open pull requests with the word “finally” in the body with a successful status.</td>
+</tr>
+<tr class="odd">
+<td><code>status:failure</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=created%3A2015-05-01..2015-05-30+status%3Afailure&amp;type=Issues"><strong>created:2015-05-01..2015-05-30 status:failure</strong></a> matches pull requests opened on May 2015 with a failed status.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-commit-sha">Search by commit SHA</h2>
+<p>If you know the specific SHA hash of a commit, you can use it to search for pull requests that contain that SHA. The SHA syntax must be at least seven characters.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code><em>SHA</em></code></td>
+<td><a href="https://github.com/search?q=e1109ab&amp;type=Issues"><strong>e1109ab</strong></a> matches pull requests with a commit SHA that starts with <code>e1109ab</code>.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=0eff326d+is%3Amerged&amp;type=Issues"><strong>0eff326d6213c is:merged</strong></a> matches merged pull requests with a commit SHA that starts with <code>0eff326d6213c</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-branch-name">Search by branch name</h2>
+<p>You can filter pull requests based on the branch they came from (the “head” branch) or the branch they are merging into (the “base” branch).</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>head:<em>HEAD_BRANCH</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=head%3Achange+is%3Aclosed+is%3Aunmerged"><strong>head:change is:closed is:unmerged</strong></a> matches pull requests opened from branch names beginning with the word “change” that are closed.</td>
+</tr>
+<tr class="even">
+<td><code>base:<em>BASE_BRANCH</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=base%3Agh-pages"><strong>base:gh-pages</strong></a> matches pull requests that are being merged into the <code>gh-pages</code> branch.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-language">Search by language</h2>
+<p>With the <code>language</code> qualifier you can search for issues and pull requests within repositories that are written in a certain language.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>language:<em>LANGUAGE</em></code></td>
+<td><a href="https://github.com/search?q=language%3Aruby+state%3Aopen&amp;type=Issues"><strong>language:ruby state:open</strong></a> matches open issues that are in Ruby repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-comments">Search by number of comments</h2>
+<p>You can use the <code>comments</code> qualifier along with <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a> to search by the number of comments.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>comments:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=state%3Aclosed+comments%3A%3E100&amp;type=Issues"><strong>state:closed comments:&gt;100</strong></a> matches closed issues with more than 100 comments.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=comments%3A500..1000&amp;type=Issues"><strong>comments:500..1000</strong></a> matches issues with comments ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-interactions">Search by number of interactions</h2>
+<p>You can filter issues and pull requests by the number of interactions with the <code>interactions</code> qualifier along with <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a>. The interactions count is the number of reactions and comments on an issue or pull request.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>interactions:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=interactions%3A%3E2000">** interactions:&gt;2000**</a> matches pull requests or issues with more than 2000 interactions.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=interactions%3A500..1000"><strong>interactions:500..1000</strong></a> matches pull requests or issues with interactions ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-number-of-reactions">Search by number of reactions</h2>
+<p>You can filter issues and pull requests by the number of reactions using the <code>reactions</code> qualifier along with <a href="/articles/understanding-the-search-syntax">greater than, less than, and range qualifiers</a>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>reactions:<em>n</em></code></td>
+<td><a href="https://github.com/search?q=reactions%3A%3E1000&amp;type=Issues">** reactions:&gt;1000**</a> matches issues with more than 1000 reactions.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=reactions%3A500..1000"><strong>reactions:500..1000</strong></a> matches issues with reactions ranging from 500 to 1,000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-for-draft-pull-requests">Search for draft pull requests</h2>
+<p>You can filter for draft pull requests. For more information, see “<a href="/articles/about-pull-requests#draft-pull-requests">About pull requests</a>.”</p>
+<div class="line-block">Qualifier | Example<br />
+————- | ————-{% ifversion fpt or ghes or ghae %}<br />
+<code>draft:true</code> | <a href="https://github.com/search?q=draft%3Atrue"><strong>draft:true</strong></a> matches draft pull requests.<br />
+<code>draft:false</code> | <a href="https://github.com/search?q=draft%3Afalse"><strong>draft:false</strong></a> matches pull requests that are ready for review.{% else %}<br />
+<code>is:draft</code> | <a href="https://github.com/search?q=is%3Adraft"><strong>is:draft</strong></a> matches draft pull requests.{% endif %}</div>
+<h2 id="search-by-pull-request-review-status-and-reviewer">Search by pull request review status and reviewer</h2>
+<p>You can filter pull requests based on their <a href="/articles/about-pull-request-reviews">review status</a> (<em>none</em>, <em>required</em>, <em>approved</em>, or <em>changes requested</em>), by reviewer, and by requested reviewer.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>review:none</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+review%3Anone&amp;type=Issues"><strong>type:pr review:none</strong></a> matches pull requests that have not been reviewed.</td>
+</tr>
+<tr class="even">
+<td><code>review:required</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+review%3Arequired&amp;type=Issues"><strong>type:pr review:required</strong></a> matches pull requests that require a review before they can be merged.</td>
+</tr>
+<tr class="odd">
+<td><code>review:approved</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+review%3Aapproved&amp;type=Issues"><strong>type:pr review:approved</strong></a> matches pull requests that a reviewer has approved.</td>
+</tr>
+<tr class="even">
+<td><code>review:changes_requested</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+review%3Achanges_requested&amp;type=Issues"><strong>type:pr review:changes_requested</strong></a> matches pull requests in which a reviewer has asked for changes.</td>
+</tr>
+<tr class="odd">
+<td><code>reviewed-by:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+reviewed-by%3Agjtorikian&amp;type=Issues"><strong>type:pr reviewed-by:gjtorikian</strong></a> matches pull requests reviewed by a particular person.</td>
+</tr>
+<tr class="even">
+<td><code>review-requested:<em>USERNAME</em></code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=type%3Apr+review-requested%3Abenbalter&amp;type=Issues"><strong>type:pr review-requested:benbalter</strong></a> matches pull requests where a specific person is requested for review. Requested reviewers are no longer listed in the search results after they review a pull request. If the requested person is on a team that is requested for review, then review requests for that team will also appear in the search results.</td>
+</tr>
+<tr class="odd">
+<td><code>team-review-requested:<em>TEAMNAME</em></code></td>
+<td><a href="https://github.com/search?q=type%3Apr+team-review-requested%3Aatom%2Fdesign&amp;type=Issues"><strong>type:pr team-review-requested:atom/design</strong></a> matches pull requests that have review requests from the team <code>atom/design</code>. Requested reviewers are no longer listed in the search results after they review a pull request.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-an-issue-or-pull-request-was-created-or-last-updated">Search by when an issue or pull request was created or last updated</h2>
+<p>You can filter issues based on times of creation, or when they were last updated. For issue creation, you can use the <code>created</code> qualifier; to find out when an issue was last updated, you’ll want to use the <code>updated</code> qualifier.</p>
+<p>Both take a date as a parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>created:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=language%3Ac%23+created%3A%3C2011-01-01+state%3Aopen&amp;type=Issues"><strong>language:c# created:&lt;2011-01-01 state:open</strong></a> matches open issues that were created before 2011 in repositories written in C#.</td>
+</tr>
+<tr class="even">
+<td><code>updated:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=weird+in%3Abody+updated%3A%3E%3D2013-02-01&amp;type=Issues"><strong>weird in:body updated:&gt;=2013-02-01</strong></a> matches issues with the word “weird” in the body that were updated after February 2013.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-an-issue-or-pull-request-was-closed">Search by when an issue or pull request was closed</h2>
+<p>You can filter issues and pull requests based on when they were closed, using the <code>closed</code> qualifier.</p>
+<p>This qualifier takes a date as its parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>closed:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=language%3Aswift+closed%3A%3E2014-06-11&amp;type=Issues"><strong>language:swift closed:&gt;2014-06-11</strong></a> matches issues and pull requests in Swift that were closed after June 11, 2014.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=data+in%3Abody+closed%3A%3C2012-10-01+&amp;type=Issues"><strong>data in:body closed:&lt;2012-10-01</strong></a> matches issues and pull requests with the word “data” in the body that were closed before October 2012.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-when-a-pull-request-was-merged">Search by when a pull request was merged</h2>
+<p>You can filter pull requests based on when they were merged, using the <code>merged</code> qualifier.</p>
+<p>This qualifier takes a date as its parameter. {% data reusables.time_date.date_format %} {% data reusables.time_date.time_format %}</p>
+<p>{% data reusables.search.date_gt_lt %}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>merged:<em>YYYY-MM-DD</em></code></td>
+<td><a href="https://github.com/search?q=language%3Ajavascript+merged%3A%3C2011-01-01+&amp;type=Issues"><strong>language:javascript merged:&lt;2011-01-01</strong></a> matches pull requests in JavaScript repositories that were merged before 2011.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><a href="https://github.com/search?q=fast+in%3Atitle+language%3Aruby+merged%3A%3E%3D2014-05-01+&amp;type=Issues"><strong>fast in:title language:ruby merged:&gt;=2014-05-01</strong></a> matches pull requests in Ruby with the word “fast” in the title that were merged after May 2014.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-based-on-whether-a-pull-request-is-merged-or-unmerged">Search based on whether a pull request is merged or unmerged</h2>
+<p>You can filter pull requests based on whether they’re merged or unmerged using the <code>is</code> qualifier.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is:merged</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=bugfix+is%3Apr+is%3Amerged&amp;type="><strong>bugfix is:pr is:merged</strong></a> matches merged pull requests with the word “bugfix.”</td>
+</tr>
+<tr class="even">
+<td><code>is:unmerged</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=error+is%3Aunmerged&amp;type="><strong>error is:unmerged</strong></a> matches closed issues and pull requests with the word “error.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-based-on-whether-a-repository-is-archived">Search based on whether a repository is archived</h2>
+<p>The <code>archived</code> qualifier filters your results based on whether an issue or pull request is in an archived repository.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>archived:true</code></td>
+<td><a href="https://github.com/search?q=archived%3Atrue+GNOME&amp;type="><strong>archived:true GNOME</strong></a> matches issues and pull requests that contain the word “GNOME” in archived repositories you have access to.</td>
+</tr>
+<tr class="even">
+<td><code>archived:false</code></td>
+<td><a href="https://github.com/search?q=archived%3Afalse+GNOME&amp;type="><strong>archived:false GNOME</strong></a> matches issues and pull requests that contain the word “GNOME” in unarchived repositories you have access to.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-based-on-whether-a-conversation-is-locked">Search based on whether a conversation is locked</h2>
+<p>You can search for an issue or pull request that has a locked conversation using the <code>is</code> qualifier. For more information, see “<a href="/communities/moderating-comments-and-conversations/locking-conversations">Locking conversations</a>.”</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is:locked</code></td>
+<td><a href="https://github.com/search?q=code+of+conduct+is%3Alocked+is%3Aissue+archived%3Afalse"><strong>code of conduct is:locked is:issue archived:false</strong></a> matches issues or pull requests with the words “code of conduct” that have a locked conversation in a repository that is not archived.</td>
+</tr>
+<tr class="even">
+<td><code>is:unlocked</code></td>
+<td><a href="https://github.com/search?q=code+of+conduct+is%3Aunlocked+archived%3Afalse"><strong>code of conduct is:unlocked is:issue archived:false</strong></a> matches issues or pull requests with the words “code of conduct” that have an unlocked conversation in a repository that is not archived.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-by-missing-metadata">Search by missing metadata</h2>
+<p>You can narrow your search to issues and pull requests that are missing certain metadata, using the <code>no</code> qualifier. That metadata includes:</p>
+<ul>
+<li>Labels</li>
+<li>Milestones</li>
+<li>Assignees</li>
+<li>Projects</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Qualifier</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>no:label</code></td>
+<td><a href="https://github.com/search?q=priority+no%3Alabel&amp;type=Issues"><strong>priority no:label</strong></a> matches issues and pull requests with the word “priority” that also don’t have any labels.</td>
+</tr>
+<tr class="even">
+<td><code>no:milestone</code></td>
+<td><a href="https://github.com/search?q=sprint+no%3Amilestone+type%3Aissue&amp;type=Issues"><strong>sprint no:milestone type:issue</strong></a> matches issues not associated with a milestone containing the word “sprint.”</td>
+</tr>
+<tr class="odd">
+<td><code>no:assignee</code></td>
+<td><a href="https://github.com/search?q=important+no%3Aassignee+language%3Ajava+type%3Aissue&amp;type=Issues"><strong>important no:assignee language:java type:issue</strong></a> matches issues not associated with an assignee, containing the word “important,” and in Java repositories.</td>
+</tr>
+<tr class="even">
+<td><code>no:project</code></td>
+<td><a href="https://github.com/search?utf8=%E2%9C%93&amp;q=build+no%3Aproject&amp;type=Issues"><strong>build no:project</strong></a> matches issues not associated with a project board, containing the word “build.”</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>“<a href="/articles/sorting-search-results/">Sorting search results</a>”</li>
+</ul>
+</body>
+</html>

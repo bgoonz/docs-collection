@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Commit exists on GitHub but not in my local clone</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Commit exists on GitHub but not in my local clone</h1>
+</header>
+<p>When you use <code>git show</code> to view a specific commit on the command line, you may get a fatal error.</p>
+<p>For example, you may receive a <code>bad object</code> error locally:</p>
+<pre class="shell"><code>$ git show 1095ff3d0153115e75b7bca2c09e5136845b5592
+&gt; fatal: bad object 1095ff3d0153115e75b7bca2c09e5136845b5592</code></pre>
+<p>However, when you view the commit on {% data variables.product.product_location %}, you’ll be able to see it without any problems:</p>
+<p><code>github.com/$account/$repository/commit/1095ff3d0153115e75b7bca2c09e5136845b5592</code></p>
+<p>There are several possible explanations:</p>
+<ul>
+<li>The local repository is out of date.</li>
+<li>The branch that contains the commit was deleted, so the commit is no longer referenced.</li>
+<li>Someone force pushed over the commit.</li>
+</ul>
+<h2 id="the-local-repository-is-out-of-date">The local repository is out of date</h2>
+<p>Your local repository may not have the commit yet. To get information from your remote repository to your local clone, use <code>git fetch</code>:</p>
+<pre class="shell"><code>$ git fetch &lt;em&gt;remote&lt;/em&gt;</code></pre>
+<p>This safely copies information from the remote repository to your local clone without making any changes to the files you have checked out. You can use <code>git fetch upstream</code> to get information from a repository you’ve forked, or <code>git fetch origin</code> to get information from a repository you’ve only cloned.</p>
+<p>{% tip %}</p>
+<p><strong>Tip</strong>: For more information, read about <a href="https://git-scm.com/book/en/Git-Basics-Working-with-Remotes">managing remotes and fetching data</a> in the <a href="https://git-scm.com/book">Pro Git</a> book.</p>
+<p>{% endtip %}</p>
+<h2 id="the-branch-that-contained-the-commit-was-deleted">The branch that contained the commit was deleted</h2>
+<p>If a collaborator on the repository has deleted the branch containing the commit or has force pushed over the branch, the missing commit may have been orphaned (i.e. it cannot be reached from any reference) and therefore will not be fetched into your local clone.</p>
+<p>Fortunately, if any collaborator has a local clone of the repository with the missing commit, they can push it back to {% data variables.product.product_name %}. They need to make sure the commit is referenced by a local branch and then push it as a new branch to {% data variables.product.product_name %}.</p>
+<p>Let’s say that the person still has a local branch (call it <code>B</code>) that contains the commit. This might be tracking the branch that was force pushed or deleted and they simply haven’t updated yet. To preserve the commit, they can push that local branch to a new branch (call it <code>recover-B</code>) on {% data variables.product.product_name %}. For this example, let’s assume they have a remote named <code>upstream</code> via which they have push access to <code>github.com/$account/$repository</code>.</p>
+<p>The other person runs:</p>
+<pre class="shell"><code>$ git branch recover-B B
+# Create a new local branch referencing the commit
+$ git push upstream B:recover-B
+# Push local B to new upstream branch, creating new reference to commit</code></pre>
+<p>Now, <em>you</em> can run:</p>
+<pre class="shell"><code>$ git fetch upstream recover-B
+# Fetch commit into your local repository.</code></pre>
+<h2 id="avoid-force-pushes">Avoid force pushes</h2>
+<p>Avoid force pushing to a repository unless absolutely necessary. This is especially true if more than one person can push to the repository.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/Git-Basics-Working-with-Remotes">“Working with Remotes” from the <em>Pro Git</em> book</a></li>
+<li><a href="https://git-scm.com/book/en/Git-Internals-Maintenance-and-Data-Recovery">“Data Recovery” from the <em>Pro Git</em> book</a></li>
+</ul>
+</body>
+</html>

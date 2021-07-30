@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Configuring collectd</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Configuring collectd</h1>
+    </header>
+    <h2 id="set-up-an-external-collectd-server">
+      Set up an external <code>collectd</code> server
+    </h2>
+    <p>
+      If you haven’t already set up an external <code>collectd</code> server,
+      you will need to do so before enabling <code>collectd</code> forwarding on
+      {% data variables.product.product_location %}. Your
+      <code>collectd</code> server must be running <code>collectd</code> version
+      5.x or higher.
+    </p>
+    <ol type="1">
+      <li>Log into your <code>collectd</code> server.</li>
+      <li>
+        Create or edit the <code>collectd</code> configuration file to load the
+        network plugin and populate the server and port directives with the
+        proper values. On most distributions, this is located at
+        <code>/etc/collectd/collectd.conf</code>
+      </li>
+    </ol>
+    <p>
+      An example <em>collectd.conf</em> to run a <code>collectd</code> server:
+    </p>
+    <pre><code>LoadPlugin network
+...
+...
+&lt;Plugin network&gt;
+    Listen &quot;0.0.0.0&quot; &quot;25826&quot;
+&lt;/Plugin&gt;</code></pre>
+    <h2
+      id="enable-collectd-forwarding-on-data-variables.product.prodname_enterprise"
+    >
+      Enable collectd forwarding on {% data
+      variables.product.prodname_enterprise %}
+    </h2>
+    <p>
+      By default, <code>collectd</code> forwarding is disabled on {% data
+      variables.product.prodname_enterprise %}. Follow the steps below to enable
+      and configure <code>collectd</code> forwarding:
+    </p>
+    <p>
+      {% data reusables.enterprise_site_admin_settings.access-settings %} {%
+      data reusables.enterprise_site_admin_settings.management-console %} 1.
+      Below the log forwarding settings, select
+      <strong>Enable collectd forwarding</strong>. 1. In the
+      <strong>Server address</strong> field, type the address of the
+      <code>collectd</code> server to which you’d like to forward {% data
+      variables.product.prodname_enterprise %} appliance statistics. 1. In the
+      <strong>Port</strong> field, type the port used to connect to the
+      <code>collectd</code> server. (Defaults to 25826) 1. In the
+      <strong>Cryptographic setup</strong> dropdown menu, select the security
+      level of communications with the <code>collectd</code> server. (None,
+      signed packets, or encrypted packets.) {% data
+      reusables.enterprise_management_console.save-settings %}
+    </p>
+    <h2 id="exporting-collectd-data-with-ghe-export-graphs">
+      Exporting collectd data with <code>ghe-export-graphs</code>
+    </h2>
+    <p>
+      The command-line tool <code>ghe-export-graphs</code> will export the data
+      that <code>collectd</code> stores in RRD databases. This command turns the
+      data into XML and exports it into a single tarball (.tgz).
+    </p>
+    <p>
+      Its primary use is to provide the {% data
+      variables.contact.contact_ent_support %} team with data about a VM’s
+      performance, without the need for downloading a full Support Bundle. It
+      shouldn’t be included in your regular backup exports and there is no
+      import counterpart. If you contact {% data
+      variables.contact.contact_ent_support %}, we may ask for this data to
+      assist with troubleshooting.
+    </p>
+    <h3 id="usage">Usage</h3>
+    <pre
+      class="shell"
+    ><code>ssh -p 122 admin@[hostname] -- &#39;ghe-export-graphs&#39; &amp;&amp; scp -P 122 admin@[hostname]:~/graphs.tar.gz .</code></pre>
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <h3 id="central-collectd-server-receives-no-data">
+      Central collectd server receives no data
+    </h3>
+    <p>
+      {% data variables.product.prodname_enterprise %} ships with
+      <code>collectd</code> version 5.x. <code>collectd</code> 5.x is not
+      backwards compatible with the 4.x release series. Your central
+      <code>collectd</code> server needs to be at least version 5.x to accept
+      data sent from {% data variables.product.product_location %}.
+    </p>
+    <p>
+      For help with further questions or issues, contact {% data
+      variables.contact.contact_ent_support %}.
+    </p>
+  </body>
+</html>

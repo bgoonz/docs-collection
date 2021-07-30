@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Removing workflow artifacts</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Removing workflow artifacts</h1>
+    </header>
+    <p>
+      {% data reusables.actions.enterprise-beta %} {% data
+      reusables.actions.enterprise-github-hosted-runners %} {% data
+      reusables.actions.ae-beta %}
+    </p>
+    <h2 id="deleting-an-artifact">Deleting an artifact</h2>
+    <p>{% warning %}</p>
+    <p>
+      <strong>Warning:</strong> Once you delete an artifact, it can not be
+      restored.
+    </p>
+    <p>{% endwarning %}</p>
+    <p>{% data reusables.repositories.permissions-statement-write %}</p>
+    <p>{% data reusables.github-actions.artifact-log-retention-statement %}</p>
+    <p>
+      {% data reusables.repositories.navigate-to-repo %} {% data
+      reusables.repositories.actions-tab %} {% data
+      reusables.repositories.navigate-to-workflow %} {% data
+      reusables.repositories.view-run %} 1. Under <strong>Artifacts</strong>,
+      click {% octicon “trash” aria-label=“The trash icon” %} next to the
+      artifact you want to remove. {% ifversion fpt or ghes &gt; 3.0 or ghae %}
+      <img
+        src="/assets/images/help/repository/actions-delete-artifact-updated.png"
+        alt="Delete artifact drop-down menu"
+      />
+      {% else %}
+      <img
+        src="/assets/images/help/repository/actions-delete-artifact.png"
+        alt="Delete artifact drop-down menu"
+      />
+      {% endif %}
+    </p>
+    <p>
+      {% ifversion fpt or ghes &gt; 2.22 or ghae %} ## Setting the retention
+      period for an artifact
+    </p>
+    <p>
+      Retention periods for artifacts and logs can be configured at the
+      repository, organization, and enterprise level. For more information, see
+      “<a
+        href="/actions/reference/usage-limits-billing-and-administration#artifact-and-log-retention-policy"
+        >Usage limits, billing, and administration</a
+      >.”
+    </p>
+    <p>
+      You can also define a custom retention period for individual artifacts
+      using the <code>actions/upload-artifact</code> action in a workflow. For
+      more information, see “<a
+        href="/actions/guides/storing-workflow-data-as-artifacts#configuring-a-custom-artifact-retention-period"
+        >Storing workflow data as artifacts</a
+      >.”
+    </p>
+    <h2 id="finding-the-expiration-date-of-an-artifact">
+      Finding the expiration date of an artifact
+    </h2>
+    <p>
+      You can use the API to confirm the date that an artifact is scheduled to
+      be deleted. For more information, see the <code>expires_at</code> value
+      returned by “<a href="/rest/reference/actions#artifacts"
+        >List artifacts for a repository</a
+      >.” {% endif %}
+    </p>
+  </body>
+</html>

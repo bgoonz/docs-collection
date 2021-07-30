@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Auditing users across your enterprise</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Auditing users across your enterprise</h1>
+    </header>
+    <h2 id="accessing-the-audit-log">Accessing the audit log</h2>
+    <p>
+      The audit log dashboard gives you a visual display of audit data across
+      your enterprise.
+    </p>
+    <figure>
+      <img
+        src="/assets/images/enterprise/site-admin-settings/audit-log-dashboard-admin-center.png"
+        alt="Instance wide audit log dashboard"
+      />
+      <figcaption>Instance wide audit log dashboard</figcaption>
+    </figure>
+    <p>
+      {% data reusables.enterprise-accounts.access-enterprise %} {% data
+      reusables.enterprise-accounts.settings-tab %} {% data
+      reusables.enterprise-accounts.audit-log-tab %}
+    </p>
+    <p>
+      Within the map, you can pan and zoom to see events around the world. Hover
+      over a country to see a quick count of events from that country.
+    </p>
+    <h2 id="searching-for-events-across-your-enterprise">
+      Searching for events across your enterprise
+    </h2>
+    <p>
+      The audit log lists the following information about actions made within
+      your enterprise:
+    </p>
+    <ul>
+      <li>
+        <a href="#search-based-on-the-repository">The repository</a> an action
+        was performed in
+      </li>
+      <li>
+        <a href="#search-based-on-the-user">The user</a> who performed the
+        action
+      </li>
+      <li>
+        <a href="#search-based-on-the-organization">Which organization</a> an
+        action pertained to
+      </li>
+      <li>
+        <a href="#search-based-on-the-action-performed">The action</a> that was
+        performed
+      </li>
+      <li>
+        <a href="#search-based-on-the-location">Which country</a> the action
+        took place in
+      </li>
+      <li>
+        <a href="#search-based-on-the-time-of-action">The date and time</a> the
+        action occurred
+      </li>
+    </ul>
+    <p>{% warning %}</p>
+    <p><strong>Notes:</strong></p>
+    <ul>
+      <li>
+        While you can’t use text to search for audit entries, you can construct
+        search queries using a variety of filters. {% data
+        variables.product.product_name %} supports many operators for searching
+        across {% data variables.product.product_name %}. For more information,
+        see “<a
+          href="/github/searching-for-information-on-github/about-searching-on-github"
+          >About searching on {% data variables.product.prodname_dotcom %}</a
+        >.”
+      </li>
+      <li>
+        To search for events older than 90 days, use the
+        <code>created</code> qualifier.
+      </li>
+    </ul>
+    <p>{% endwarning %}</p>
+    <h3 id="search-based-on-the-repository">Search based on the repository</h3>
+    <p>
+      The <code>repo</code> qualifier limits actions to a specific repository
+      owned by your organization. For example:
+    </p>
+    <ul>
+      <li>
+        <code>repo:my-org/our-repo</code> finds all events that occurred for the
+        <code>our-repo</code> repository in the
+        <code>my-org</code> organization.
+      </li>
+      <li>
+        <code>repo:my-org/our-repo repo:my-org/another-repo</code> finds all
+        events that occurred for both the <code>our-repo</code> and
+        <code>another-repo</code> repositories in the
+        <code>my-org</code> organization.
+      </li>
+      <li>
+        <code>-repo:my-org/not-this-repo</code> excludes all events that
+        occurred for the <code>not-this-repo</code> repository in the
+        <code>my-org</code> organization.
+      </li>
+    </ul>
+    <p>
+      You must include your organization’s name within the
+      <code>repo</code> qualifier; searching for just
+      <code>repo:our-repo</code> will not work.
+    </p>
+    <h3 id="search-based-on-the-user">Search based on the user</h3>
+    <p>
+      The <code>actor</code> qualifier scopes events based on the member of your
+      organization that performed the action. For example:
+    </p>
+    <ul>
+      <li>
+        <code>actor:octocat</code> finds all events performed by
+        <code>octocat</code>.
+      </li>
+      <li>
+        <code>actor:octocat actor:hubot</code> finds all events performed by
+        both <code>octocat</code> and <code>hubot</code>.
+      </li>
+      <li>
+        <code>-actor:hubot</code> excludes all events performed by
+        <code>hubot</code>.
+      </li>
+    </ul>
+    <p>
+      You can only use a {% data variables.product.product_name %} username, not
+      an individual’s real name.
+    </p>
+    <h3 id="search-based-on-the-organization">
+      Search based on the organization
+    </h3>
+    <p>
+      The <code>org</code> qualifier limits actions to a specific organization.
+      For example:
+    </p>
+    <ul>
+      <li>
+        <code>org:my-org</code> finds all events that occurred for the
+        <code>my-org</code> organization.
+      </li>
+      <li>
+        <code>org:my-org action:team</code> finds all team events performed
+        within the <code>my-org</code> organization.
+      </li>
+      <li>
+        <code>-org:my-org</code> excludes all events that occurred for the
+        <code>my-org</code> organization.
+      </li>
+    </ul>
+    <h3 id="search-based-on-the-action-performed">
+      Search based on the action performed
+    </h3>
+    <p>
+      The <code>action</code> qualifier searches for specific events, grouped
+      within categories. For information on the events associated with these
+      categories, see “<a href="/admin/user-management/audited-actions"
+        >Audited actions</a
+      >”.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 48%" />
+        <col style="width: 51%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Category name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>hook</code></td>
+          <td>Contains all activities related to webhooks.</td>
+        </tr>
+        <tr class="even">
+          <td><code>org</code></td>
+          <td>Contains all activities related organization membership</td>
+        </tr>
+        <tr class="odd">
+          <td><code>repo</code></td>
+          <td>
+            Contains all activities related to the repositories owned by your
+            organization.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>team</code></td>
+          <td>
+            Contains all activities related to teams in your organization.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      You can search for specific sets of actions using these terms. For
+      example:
+    </p>
+    <ul>
+      <li>
+        <code>action:team</code> finds all events grouped within the team
+        category.
+      </li>
+      <li>
+        <code>-action:billing</code> excludes all events in the billing
+        category.
+      </li>
+    </ul>
+    <p>
+      Each category has a set of associated events that you can filter on. For
+      example:
+    </p>
+    <ul>
+      <li>
+        <code>action:team.create</code> finds all events where a team was
+        created.
+      </li>
+      <li>
+        <code>-action:billing.change_email</code> excludes all events where the
+        billing email was changed.
+      </li>
+    </ul>
+    <h3 id="search-based-on-the-location">Search based on the location</h3>
+    <p>
+      The <code>country</code> qualifier filters actions by the originating
+      country. - You can use a country’s two-letter short code or its full name.
+      - Countries with spaces in their name must be wrapped in quotation marks.
+      For example: * <code>country:de</code> finds all events that occurred in
+      Germany. * <code>country:Mexico</code> finds all events that occurred in
+      Mexico. * <code>country:"United States"</code> all finds events that
+      occurred in the United States.
+    </p>
+    <h3 id="search-based-on-the-time-of-action">
+      Search based on the time of action
+    </h3>
+    <p>
+      The <code>created</code> qualifier filters actions by the time they
+      occurred. - Define dates using the format of
+      <code>YYYY-MM-DD</code>–that’s year, followed by month, followed by day. -
+      Dates support
+      <a
+        href="/enterprise/%7B%7B%20currentVersion%20%7D%7D/user/articles/search-syntax"
+        >greater than, less than, and range qualifiers</a
+      >. For example: * <code>created:2014-07-08</code> finds all events that
+      occurred on July 8th, 2014. * <code>created:&gt;=2014-07-01</code> finds
+      all events that occurred on or after July 8th, 2014. *
+      <code>created:&lt;=2014-07-01</code> finds all events that occurred on or
+      before July 8th, 2014. * <code>created:2014-07-01..2014-07-31</code> finds
+      all events that occurred in the month of July 2014.
+    </p>
+  </body>
+</html>
