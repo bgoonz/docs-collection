@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>extending-workbench</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="extending-workbench">Extending Workbench</h1>
+    <p>
+      “Workbench” refers to the overall Visual Studio Code UI that encompasses the following
+      UI components:
+    </p>
+    <ul>
+      <li>Title Bar</li>
+      <li>Activity Bar</li>
+      <li>Side Bar</li>
+      <li>Panel</li>
+      <li>Editor Group</li>
+      <li>Status Bar</li>
+    </ul>
+    <p>
+      VS Code provides various APIs that allow you to add your own components to the
+      Workbench. For example, in the image below:
+    </p>
+    <figure>
+      <img
+        src="images/extending-workbench/workbench-contribution.png"
+        alt="workbench-contribution"
+      />
+      <figcaption>workbench-contribution</figcaption>
+    </figure>
+    <ul>
+      <li>
+        Activity Bar: The
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice"
+          >Azure App Service extension</a
+        >
+        adds a <a href="#view-container">View Container</a>
+      </li>
+      <li>
+        Side Bar: The built-in
+        <a href="https://github.com/microsoft/vscode/tree/main/extensions/npm"
+          >NPM extension</a
+        >
+        adds a <a href="#tree-view">Tree View</a> to the Explorer View
+      </li>
+      <li>
+        Editor Group: The built-in
+        <a
+          href="https://github.com/microsoft/vscode/tree/main/extensions/markdown-language-features"
+          >Markdown extension</a
+        >
+        adds a <a href="#webview">Webview</a> next to other editors in the Editor Group
+      </li>
+      <li>
+        Status Bar: The
+        <a href="https://marketplace.visualstudio.com/items?itemName=vscodevim.vim"
+          >VSCodeVim extension</a
+        >
+        adds a <a href="#status-bar-item">Status Bar Item</a> in the Status Bar
+      </li>
+    </ul>
+    <h2 id="views-container">Views Container</h2>
+    <p>
+      With the
+      <a href="/api/references/contribution-points#contributes.viewsContainers"
+        ><code>contributes.viewsContainers</code></a
+      >
+      Contribution Point, you can add new Views Containers that display next to the five
+      built-in Views Containers. Learn more at the
+      <a href="/api/extension-guides/tree-view">Tree View</a> topic.
+    </p>
+    <h2 id="tree-view">Tree View</h2>
+    <p>
+      With the
+      <a href="/api/references/contribution-points#contributes.views"
+        ><code>contributes.views</code></a
+      >
+      Contribution Point, you can add new Views that display in any of the View Containers.
+      Learn more at the <a href="/api/extension-guides/tree-view">Tree View</a> topic.
+    </p>
+    <h2 id="webview">Webview</h2>
+    <p>
+      Webviews are highly customizable views built with HTML/CSS/JavaScript. They display
+      next to text editors in the Editor Group areas. Read more about Webview in the
+      <a href="/api/extension-guides/webview">Webview Guide</a>.
+    </p>
+    <h2 id="status-bar-item">Status Bar Item</h2>
+    <p>
+      Extensions can create custom
+      <a href="/api/references/vscode-api#StatusBarItem"><code>StatusBarItem</code></a> that
+      display in the Status Bar. Status Bar Items can show text and icons and run commands
+      on click events.
+    </p>
+    <ul>
+      <li>Show text and icons</li>
+      <li>Run a command on click</li>
+    </ul>
+    <p>
+      A Status Bar extension sample can be found
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/statusbar-sample"
+        >here</a
+      >.
+    </p>
+  </body>
+</html>

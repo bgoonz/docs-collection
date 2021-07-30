@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>task-provider</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="task-provider">Task Provider</h1>
+    <p>
+      Users normally define <a href="/docs/editor/tasks">tasks</a> in Visual Studio Code in
+      a <code>tasks.json</code> file. However, there are some tasks during software
+      development that can be automatically detected by a VS Code extension with a Task
+      Provider. When the <strong>Tasks: Run Task</strong> command is run from VS Code, all
+      active Task Providers contribute tasks that the user can run. While the
+      <code>tasks.json</code> file lets the user manually define a task for a specific
+      folder or workspace, a Task Provider can detect details about a workspace and then
+      automatically create a corresponding VS Code Task. For example, a Task Provider could
+      check if there is a specific build file, such as <code>make</code> or
+      <code>Rakefile</code>, and create a build task. This topic describes how extensions
+      can auto-detect and provide tasks to end-users.
+    </p>
+    <p>
+      This guide teaches you how to build a Task Provider that auto-detects tasks defined in
+      <a href="https://ruby.github.io/rake/">Rakefiles</a>. The complete source code is at:
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/task-provider-sample"
+        >https://github.com/microsoft/vscode-extension-samples/tree/main/task-provider-sample</a
+      >.
+    </p>
+    <h2 id="task-definition">Task Definition</h2>
+    <p>
+      To uniquely identify a task in the system, an extension contributing a task needs to
+      define the properties that identify a task. In the Rake example, the task definition
+      looks like this:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">&quot;taskDefinitions&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;rake&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">        <span class="dt">&quot;required&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-5" title="5">            <span class="st">&quot;task&quot;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-8" title="8">            <span class="dt">&quot;task&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;string&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">                <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;The Rake task to customize&quot;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">            <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-12" title="12">            <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-13" title="13">                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;string&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-14" title="14">                <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;The Rake file that provides the task. Can be omitted.&quot;</span></a>
+<a class="sourceLine" id="cb1-15" title="15">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-16" title="16">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-17" title="17">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="ot">]</span></a></code></pre>
+    </div>
+    <p>
+      This contributes a task definition for <code>rake</code> tasks. The task definition
+      has two attributes <code>task</code> and <code>file</code>. <code>task</code> is the
+      name of the Rake task and <code>file</code> points to the <code>Rakefile</code> that
+      contains the task. The <code>task</code> property is required, the
+      <code>file</code> property is optional. If the <code>file</code> attribute is omitted,
+      the <code>Rakefile</code> in the root of the workspace folder is used.
+    </p>
+    <p>
+      A task definition may optional have a <code>when</code> property. The
+      <code>when</code> property specifies the condition under which task of this type will
+      be available. The <code>when</code> property functions in the same way
+      <a href="/api/references/when-clause-contexts">as other places in VS Code</a>, where
+      there is a <code>when</code> property.
+    </p>
+    <h2 id="task-provider-1">Task provider</h2>
+    <p>
+      Analogous to language providers that let extensions support code completion, an
+      extension can register a task provider to compute all available tasks. This is done
+      using the <code>vscode.tasks</code> namespace as shown in the following code snippet:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">let</span> rakePromise<span class="op">:</span> Thenable<span class="op">&lt;</span><span class="va">vscode</span><span class="op">.</span><span class="at">Task</span><span class="op">[]&gt;</span> <span class="op">|</span> <span class="dt">undefined</span> <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">const</span> taskProvider <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">tasks</span><span class="op">.</span><span class="fu">registerTaskProvider</span>(<span class="st">&#39;rake&#39;</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  provideTasks<span class="op">:</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="fu">if</span> (<span class="op">!</span>rakePromise) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      rakePromise <span class="op">=</span> <span class="fu">getRakeTasks</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="cf">return</span> rakePromise<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="fu">resolveTask</span>(_task<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">Task</span>)<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">Task</span> <span class="op">|</span> <span class="dt">undefined</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-12" title="12">        <span class="kw">const</span> task <span class="op">=</span> <span class="va">_task</span><span class="op">.</span><span class="va">definition</span><span class="op">.</span><span class="at">task</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">        <span class="co">// A Rake task consists of a task and an optional file as specified in RakeTaskDefinition</span></a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="co">// Make sure that this looks like a Rake task by checking that there is a task.</span></a>
+<a class="sourceLine" id="cb2-15" title="15">        <span class="fu">if</span> (task) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-16" title="16">            <span class="co">// resolveTask requires that the same definition object be used.</span></a>
+<a class="sourceLine" id="cb2-17" title="17">            <span class="kw">const</span> definition<span class="op">:</span> RakeTaskDefinition <span class="op">=</span> <span class="op">&lt;</span><span class="dt">any</span><span class="op">&gt;</span><span class="va">_task</span><span class="op">.</span><span class="at">definition</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-18" title="18">            <span class="cf">return</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">Task</span>(definition<span class="op">,</span> <span class="va">_task</span><span class="op">.</span><span class="at">scope</span> <span class="op">??</span> <span class="va">vscode</span><span class="op">.</span><span class="va">TaskScope</span><span class="op">.</span><span class="at">Workspace</span><span class="op">,</span> <span class="va">definition</span><span class="op">.</span><span class="at">task</span><span class="op">,</span> <span class="st">&#39;rake&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">ShellExecution</span>(<span class="vs">`rake </span><span class="sc">${</span><span class="va">definition</span><span class="op">.</span><span class="at">task</span><span class="sc">}</span><span class="vs">`</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-19" title="19">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-20" title="20">        <span class="cf">return</span> <span class="kw">undefined</span><span class="op">;</span>  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Like <code>provideTasks</code>, the <code>resolveTask</code> method is called by VS
+      Code to get tasks from the extension. <code>resolveTask</code> can be called instead
+      of <code>provideTasks</code>, and is intended to provide an optional performance
+      increase for providers that implement it. For example, if a user has a keybinding that
+      runs an extension provided task, it would be be better to for VS Code to call
+      <code>resolveTask</code> for that task provider and just get the one task quickly
+      instead of having to call <code>provideTasks</code> and wait for the extension to
+      provide all of its tasks. It is good practice to have a setting that allows users to
+      turn off individual task providers, so this is common. A user might notice that tasks
+      from a specific provider are slower to get and turn off the provider. In this case,
+      the user might still reference some of the tasks from this provider in their
+      <code>tasks.json</code>. If <code>resolveTask</code> is not implemented, then there
+      will be a warning that the task in their <code>tasks.json</code> was not created. With
+      <code>resolveTask</code> an extension can still provide a task for the task defined in
+      <code>tasks.json</code>.
+    </p>
+    <p>The <code>getRakeTasks</code> implementation does the following:</p>
+    <ul>
+      <li>
+        Lists all rake tasks defined in a <code>Rakefile</code> using the
+        <code>rake -AT -f Rakefile</code> command for each workspace folder.
+      </li>
+      <li>Parses the stdio output.</li>
+      <li>For every listed task, creates a <code>vscode.Task</code> implementation.</li>
+    </ul>
+    <p>
+      Since a Rake task instantiation needs a task definition as defined in the
+      <code>package.json</code> file, VS Code also defines the structure using a TypeScript
+      interface like this:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">interface</span> RakeTaskDefinition <span class="kw">extends</span> <span class="va">vscode</span><span class="op">.</span><span class="at">TaskDefinition</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">   * The task name</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  task<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">   * The rake file containing the task</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  file<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Assuming that the output comes from a task called <code>compile</code> in the first
+      workspace folder, the corresponding task creation then looks like this:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">let</span> task <span class="op">=</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">Task</span>(</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="op">{</span> type<span class="op">:</span> <span class="st">&#39;rake&#39;</span><span class="op">,</span> task<span class="op">:</span> <span class="st">&#39;compile&#39;</span> <span class="op">},</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="at">workspaceFolders</span><span class="op">[</span><span class="dv">0</span><span class="op">],</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="st">&#39;compile&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="st">&#39;rake&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">ShellExecution</span>(<span class="st">&#39;rake compile&#39;</span>)</a>
+<a class="sourceLine" id="cb4-7" title="7">)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      For every task listed in the output, a corresponding VS Code task is created using the
+      above pattern and then returns the array of all tasks from the
+      <code>getRakeTasks</code> call.
+    </p>
+    <p>
+      The <code>ShellExecution</code> executes the <code>rake compile</code> command in the
+      shell that is specific for the OS (for example under Windows the command would be
+      executed in PowerShell, under Ubuntu it’d be executed in bash). If the task should
+      directly execute a process (without spawning a shell),
+      <code>vscode.ProcessExecution</code> can be used. <code>ProcessExecution</code> has
+      the advantage that the extension has full control over the arguments passed to the
+      process. Using <code>ShellExecution</code> makes use of the shell command
+      interpretation (like wildcard expansion under bash). If the
+      <code>ShellExecution</code> is created with a single command line, then the extension
+      needs to ensure proper quoting and escaping (for example to handle whitespace) inside
+      the command.
+    </p>
+    <h2 id="customexecution">CustomExecution</h2>
+    <p>
+      In general, it is best to use a <code>ShellExecution</code> or
+      <code>ProcessExecution</code> because they are simple. However, if your task requires
+      a lot of saved state between runs, doesn’t work well as a separate script or process,
+      or requires extensive handling of output a <code>CustomExecution</code> might be a
+      good fit. Existing uses of <code>CustomExecution</code> are usually for complex build
+      systems. A <code>CustomExecution</code> has only a callback which is executed at the
+      time that the task is run. This allows for greater flexibility in what the task can
+      do, but it also means that the task provider is responsible for any process management
+      and output parsing that needs to happen. The task provider is also responsible for
+      implementing <code>Pseudoterminal</code> and returning it from the
+      <code>CustomExecution</code> callback.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">return</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">Task</span>(definition<span class="op">,</span> <span class="va">vscode</span><span class="op">.</span><span class="va">TaskScope</span><span class="op">.</span><span class="at">Workspace</span><span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>flavor<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span><span class="va">flags</span><span class="op">.</span><span class="fu">join</span>(<span class="st">&#39; &#39;</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="va">CustomBuildTaskProvider</span><span class="op">.</span><span class="at">CustomBuildScriptType</span><span class="op">,</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">CustomExecution</span>(<span class="fu">async</span> ()<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="va">vscode</span><span class="op">.</span><span class="at">Pseudoterminal</span><span class="op">&gt;</span> <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="co">// When the task is executed, this callback will run. Here, we setup for running the task.</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">CustomBuildTaskTerminal</span>(<span class="va">this</span><span class="op">.</span><span class="at">workspaceRoot</span><span class="op">,</span> flavor<span class="op">,</span> flags<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="va">this</span><span class="op">.</span><span class="at">sharedState</span><span class="op">,</span> (state<span class="op">:</span> <span class="dt">string</span>) <span class="kw">=&gt;</span> <span class="va">this</span><span class="op">.</span><span class="at">sharedState</span> <span class="op">=</span> state)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="op">}</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The full example, including the implementation of <code>Pseudoterminal</code> is at
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/task-provider-sample/src/customTaskProvider.ts"
+        >https://github.com/microsoft/vscode-extension-samples/tree/main/task-provider-sample/src/customTaskProvider.ts</a
+      >.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>remote-extensions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="supporting-remote-development-and-github-codespaces">
+      Supporting Remote Development and GitHub Codespaces
+    </h1>
+    <p>
+      <strong
+        ><a href="/docs/remote/remote-overview"
+          >Visual Studio Code Remote Development</a
+        ></strong
+      >
+      allows you to transparently interact with source code and runtime environments sitting
+      on other machines (whether virtual or physical).
+      <strong
+        ><a href="https://github.com/features/codespaces">GitHub Codespaces</a></strong
+      >
+      is a service that expands these capabilities with managed cloud-hosted environments
+      that are accessible from both VS Code and a browser-based editor.
+    </p>
+    <p>
+      To ensure performance, Remote Development and GitHub Codespaces both transparently run
+      certain VS Code extensions remotely. However, this can have subtle impacts on how
+      extensions need to work. While many extensions will work without any modifications,
+      you may need to make changes so that your extension works properly in all
+      environments, although these changes are often fairly minor.
+    </p>
+    <p>
+      This article summarizes what extension authors need to know about Remote Development
+      and Codespaces including the extension
+      <a href="#architecture-and-extension-kinds">architecture</a>, how to
+      <a href="#debugging-extensions">debug your extension</a> in remote workspaces or
+      Codespaces, and recommendations on
+      <a href="#common-problems">what to do if your extension does not work properly</a>.
+    </p>
+    <h2 id="architecture-and-extension-kinds">Architecture and extension kinds</h2>
+    <p>
+      In order to make working with Remote Development or Codespaces as transparent as
+      possible to users, VS Code distinguishes two kinds of extensions:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <strong>UI Extensions</strong>: These extensions contribute to the VS Code user
+          interface and are always run on the user’s local machine. UI Extensions cannot
+          directly access files in the remote workspace, or run scripts/tools installed in
+          that workspace or on the machine. Example UI Extensions include: themes, snippets,
+          language grammars, and keymaps.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Workspace Extensions</strong>: These extensions are run on the same
+          machine as where the workspace is located. When in a local workspace, Workspace
+          Extensions run on the local machine. When in a remote workspace or when using
+          Codespaces, Workspace Extensions run on the remote machine / environment.
+          Workspace Extensions can access files in the workspace to provide rich, multi-file
+          language services, debugger support, or perform complex operations on multiple
+          files in the workspace (either directly or by invoking scripts/tools). While
+          Workspace Extensions do not focus on modifying the UI, they can contribute
+          explorers, views, and other UI elements as well.
+        </p>
+      </li>
+    </ul>
+    <p>
+      When a user installs an extension, VS Code automatically installs it to the correct
+      location based on its kind. If an extension can run as either kind, VS Code will
+      attempt to choose the optimal one for the situation. UI Extensions are run in VS
+      Code’s <a href="/api/advanced-topics/extension-host">local Extension Host</a>, while
+      Workspace Extensions are run in a <strong>Remote Extension Host</strong> that sits in
+      a small <strong>VS Code Server</strong>. To ensure the latest VS Code client features
+      are available, the server needs to match the VS Code client version exactly.
+      Therefore, the server is automatically installed (or updated) by the Remote
+      Development or GitHub Codespaces extensions when you open a folder in a container, on
+      a remote SSH host, using Codespaces, or in the Windows Subsystem for Linux (WSL). (VS
+      Code also automatically manages starting and stopping the server, so users aren’t
+      aware of its presence.)
+    </p>
+    <figure>
+      <img src="images/remote-extensions/architecture.png" alt="Architecture diagram" />
+      <figcaption>Architecture diagram</figcaption>
+    </figure>
+    <p>
+      The VS Code APIs are designed to automatically run on the correct machine (either
+      local or remote) when called from both UI or Workspace Extensions. However, if your
+      extension uses APIs not provided by VS Code — such using Node APIs or running shell
+      scripts — it may not work properly when run remotely. We recommend that you test that
+      all features of your extension work properly in both local and remote workspaces.
+    </p>
+    <h2 id="debugging-extensions">Debugging Extensions</h2>
+    <p>
+      While you
+      <a href="#installing-a-development-version-of-your-extension"
+        >can install a development version of your extension</a
+      >
+      in a remote environment for testing, if you encounter issues, you will likely want to
+      debug your extension directly in a remote environment. In this section, we will cover
+      how to edit, launch, and debug your extension in
+      <a href="#debugging-with-visual-studio-codespaces">GitHub Codespaces</a>, a
+      <a href="#debugging-in-a-custom-development-container">local container</a>, an
+      <a href="#debugging-using-ssh">SSH host</a>, or in
+      <a href="#debugging-using-wsl">WSL</a>.
+    </p>
+    <p>
+      Typically, your best starting point for testing is to use a remote environment that
+      restricts port access (for example Codespaces, a container, or remote SSH hosts with a
+      restrictive firewall) since extensions that work in these environments tend to work in
+      less restrictive ones like WSL.
+    </p>
+    <h3 id="debugging-with-github-codespaces">Debugging with GitHub Codespaces</h3>
+    <p>
+      Debugging your extension in
+      <a href="https://docs.github.com/github/developing-online-with-codespaces"
+        >GitHub Codespaces</a
+      >
+      preview can be a great starting point since you can use both VS Code and the
+      Codespaces browser-based editor for testing and troubleshooting. You can also use a
+      <a href="#debugging-in-a-custom-development-container"
+        >custom development container</a
+      >
+      if preferred.
+    </p>
+    <p>Follow these steps:</p>
+    <ol type="1">
+      <li>
+        <p>
+          Navigate to the repository that contains your extension on GitHub and
+          <a
+            href="https://docs.github.com/github/developing-online-with-codespaces/creating-a-codespace"
+            >open it in a codespace</a
+          >
+          to work with it in a browser-based editor. You can also
+          <a
+            href="https://docs.github.com/en/github/developing-online-with-codespaces/using-codespaces-in-visual-studio-code"
+            >open the codespace in VS Code</a
+          >
+          if you prefer.
+        </p>
+      </li>
+      <li>
+        <p>
+          While the default image for GitHub Codespaces should have all the needed
+          prerequisites for most extensions, you can install any other required dependencies
+          (for example, using <code>yarn install</code> or <code>sudo apt-get</code>) in a
+          new VS Code terminal window (<code>kb(workbench.action.terminal.new)</code>).
+        </p>
+      </li>
+      <li>
+        <p>
+          Finally, press <code>kb(workbench.action.debug.start)</code> or use the
+          <strong>Run view</strong> to launch the extension inside in the codespace.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Note:</strong> You will not be able to open the extension source code
+            folder in the window that appears, but you can open a sub-folder or somewhere
+            else in the codespace.
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <p>
+      The extension development host window that appears will include your extension running
+      in a codespace with the debugger attached to it.
+    </p>
+    <h3 id="debugging-in-a-custom-development-container">
+      Debugging in a custom development container
+    </h3>
+    <p>Follow these steps:</p>
+    <ol type="1">
+      <li>
+        <p>
+          To use a development container locally,
+          <a href="/docs/remote/containers#_getting-started"
+            >install and configure the Remote - Containers extension</a
+          >, and use <strong>File &gt; Open… / Open Folder…</strong> to open your source
+          code locally in VS Code. To use Codespaces instead, navigate to the repository
+          that contains your extension on GitHub and
+          <a
+            href="https://docs.github.com/github/developing-online-with-codespaces/creating-a-codespace"
+            >open it in a codespace</a
+          >
+          to work with it in a browser-based editor. You can also
+          <a
+            href="https://docs.github.com/en/github/developing-online-with-codespaces/using-codespaces-in-visual-studio-code"
+            >open the codespace in VS Code</a
+          >
+          if you prefer.
+        </p>
+      </li>
+      <li>
+        <p>
+          Select
+          <strong>Remote-Containers: Add Development Container Configuration Files…</strong>
+          or
+          <strong>Codespaces: Add Development Container Configuration Files…</strong> from
+          the Command Palette (<code>kbstyle(F1)</code>), and pick
+          <strong>Node.js &amp; TypeScript</strong> (or Node.js if you are not using
+          TypeScript) to add the needed container configuration files.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>[Optional]</strong> After this command runs, you can modify the contents
+          of the <code>.devcontainer</code> folder to include additional build or runtime
+          requirements. See the in-depth
+          <a href="/docs/remote/create-dev-container#_set-up-a-folder-to-run-in-a-container"
+            >Remote - Containers</a
+          >
+          documentation for details.
+        </p>
+      </li>
+      <li>
+        <p>
+          Run <strong>Remote-Containers: Reopen Folder in Container</strong> or
+          <strong>Codespaces: Add Development Container Configuration Files..</strong> and
+          in a moment, VS Code will set up the container and connect. You will now be able
+          to develop your source code from inside the container just as you would in the
+          local case.
+        </p>
+      </li>
+      <li>
+        <p>
+          Run <code>yarn install</code> or <code>npm install</code> in a new VS Code
+          terminal window (<code>kb(workbench.action.terminal.new)</code>) to ensure the
+          Linux versions Node.js native dependencies are installed. You can also install
+          other OS or runtime dependencies, but you may want to add these to
+          <code>.devcontainer/Dockerfile</code> as well so they are available if you rebuild
+          the container.
+        </p>
+      </li>
+      <li>
+        <p>
+          Finally, press <code>kb(workbench.action.debug.start)</code> or use the
+          <strong>Run view</strong> to launch the extension inside this same container and
+          attach the debugger.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Note:</strong> You will not be able to open the extension source code
+            folder in the window that appears, but you can open a sub-folder or somewhere
+            else in the container.
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <p>
+      The extension development host window that appears will include your extension running
+      in the container you defined in step 2 with the debugger attached to it.
+    </p>
+    <h3 id="debugging-using-ssh">Debugging using SSH</h3>
+    <p>Follow steps:</p>
+    <ol type="1">
+      <li>
+        <p>
+          After
+          <a href="/docs/remote/ssh#_getting-started"
+            >installing and configuring the Remote - SSH extension</a
+          >, select <strong>Remote-SSH: Connect to Host…</strong> from the Command Palette
+          (<code>kbstyle(F1)</code>) in VS Code to connect to a host.
+        </p>
+      </li>
+      <li>
+        <p>
+          Once connected, either use <strong>File &gt; Open… / Open Folder…</strong> to
+          select the remote folder with your extension source code in it or select
+          <strong>Git: Clone</strong> from the Command Palette (<code>kbstyle(F1)</code>) to
+          clone it and open it on the remote host.
+        </p>
+      </li>
+      <li>
+        <p>
+          Install any required dependencies that might be missing (for example using
+          <code>yarn install</code> or <code>apt-get</code>) in a new VS Code terminal
+          window (<code>kb(workbench.action.terminal.new)</code>).
+        </p>
+      </li>
+      <li>
+        <p>
+          Finally, press <code>kb(workbench.action.debug.start)</code> or use the
+          <strong>Run view</strong> to launch the extension inside on the remote host and
+          attach the debugger.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Note:</strong> You will not be able to open the extension source code
+            folder in the window that appears, but you can open a sub-folder or somewhere
+            else on the SSH host.
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <p>
+      The extension development host window that appears will include your extension running
+      on the SSH host with the debugger attached to it.
+    </p>
+    <h3 id="debugging-using-wsl">Debugging using WSL</h3>
+    <p>Follow these steps:</p>
+    <ol type="1">
+      <li>
+        <p>
+          After
+          <a href="/docs/remote/wsl"
+            >installing and configuring the Remote - WSL extension</a
+          >, select <strong>Remote-WSL: New Window</strong> from the Command Palette
+          (<code>kbstyle(F1)</code>) in VS Code.
+        </p>
+      </li>
+      <li>
+        <p>
+          In the new window that appears, either use
+          <strong>File &gt; Open… / Open Folder…</strong> to select the remote folder with
+          your extension source code in it or select <strong>Git: Clone</strong> from the
+          Command Palette (<code>kbstyle(F1)</code>) to clone it and open it in WSL.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Tip:</strong> You can select the <code>/mnt/c</code> folder to access
+            any cloned source code you have on the Windows side.
+          </p>
+        </blockquote>
+      </li>
+      <li>
+        <p>
+          Install any required dependencies that might be missing (for example using
+          <code>apt-get</code>) in a new VS Code terminal window
+          (<code>kb(workbench.action.terminal.new)</code>). You will at least want to run
+          <code>yarn install</code> or <code>npm install</code> to ensure Linux versions of
+          native Node.js dependencies are available.
+        </p>
+      </li>
+      <li>
+        <p>
+          Finally, press <code>kb(workbench.action.debug.start)</code> or use the
+          <strong>Run view</strong> to launch the extension and attach the debugger as you
+          would locally.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Note:</strong> You will not be able to open the extension source code
+            folder in the window that appears, but you can open a sub-folder or somewhere
+            else in WSL.
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <p>
+      The extension development host window that appears will include your extension running
+      in WSL with the debugger attached to it.
+    </p>
+    <h2 id="installing-a-development-version-of-your-extension">
+      Installing a development version of your extension
+    </h2>
+    <p>
+      Anytime VS Code automatically installs an extension on an SSH host, inside a container
+      or WSL, or through GitHub Codespaces, the Marketplace version is used (and not the
+      version already installed on your local machine).
+    </p>
+    <p>
+      While this makes sense in most situations, you may want to use (or share) an
+      unpublished version of your extension for testing without having to set up a debugging
+      environment. To install an unpublished version of your extension, you can package the
+      extension as a <code>VSIX</code> and manually install it into a VS Code window that is
+      already connected to a running remote environment.
+    </p>
+    <p>Follow these steps:</p>
+    <ol type="1">
+      <li>
+        If this is a published extension, you may want to add
+        <code>"extensions.autoUpdate": false</code> to <code>settings.json</code> to prevent
+        it from auto-updating to the latest Marketplace version.
+      </li>
+      <li>Next, use <code>vsce package</code> to package your extension as a VSIX.</li>
+      <li>
+        Connect to a
+        <a href="https://docs.github.com/github/developing-online-with-codespaces"
+          >codespace</a
+        >, <a href="/docs/remote/containers">development container</a>,
+        <a href="/docs/remote/ssh">SSH host</a>, or
+        <a href="/docs/remote/wsl">WSL environment</a>.
+      </li>
+      <li>
+        Use the <strong>Install from VSIX…</strong> command available in the Extensions view
+        <strong>More Actions</strong> (<code>...</code>) menu to install the extension in
+        this specific window (not a local one).
+      </li>
+      <li>Reload when prompted.</li>
+    </ol>
+    <blockquote>
+      <p>
+        <strong>Tip:</strong> Once installed, you can use the
+        <strong>Developer: Show Running Extensions</strong> command to see whether VS Code
+        is running the extension locally or remotely.
+      </p>
+    </blockquote>
+    <h2 id="handling-dependencies-with-remote-extensions">
+      Handling dependencies with remote extensions
+    </h2>
+    <p>Extensions can take dependencies on other extensions for APIs. For example:</p>
+    <ul>
+      <li>An extension can export an API from their <code>activate</code> function.</li>
+      <li>
+        This API will become available to all extensions running in the same extension host.
+      </li>
+      <li>
+        Consumer extensions declare in their <code>package.json</code> that they depend on
+        the providing extension using the <code>extensionDependencies</code> property.
+      </li>
+    </ul>
+    <p>
+      Extension dependencies work fine when all the extensions are running locally and share
+      the same extension host.
+    </p>
+    <p>
+      When dealing with remote scenarios, it is possible that an extension running remotely
+      has an extension dependency on an extension running locally. For example, the local
+      extension exposes a command that is critical to the functioning of the remote
+      extension. In this case, we recommend that the remote extension declares the local
+      extension as an <code>extensionDependency</code>, but the problem is that the
+      extensions run on two different extension hosts, which means that the API from the
+      provider is not available to the consumer. It is therefore required that the providing
+      extension give up entirely the ability to export any APIs by using
+      <code>"api": "none"</code> in their extension’s <code>package.json</code>. The
+      extensions can still communicate using VS Code commands (which are asynchronous).
+    </p>
+    <p>
+      This may seem an unnecessarily strict constraint on the providing extension, but an
+      extension that uses <code>"api": "none"</code> only gives up the ability to return
+      APIs from its <code>activate</code> method. Consumer extensions that execute on other
+      extension hosts can still take a dependency on them and will be activated.
+    </p>
+    <h2 id="common-problems">Common problems</h2>
+    <p>
+      VS Code’s APIs are designed to automatically run in the right location regardless of
+      where your extension happens to be located. With this in mind, there are a few APIs
+      that will help you avoid unexpected behaviors.
+    </p>
+    <h3 id="incorrect-execution-location">Incorrect execution location</h3>
+    <p>
+      If your extension is not functioning as expected, it may be running in the wrong
+      location. Most commonly, this shows up as an extension running remotely when you
+      expect it to only be run locally. You can use the
+      <strong>Developer: Show Running Extensions</strong> command from the Command Palette
+      (<code>kbstyle(F1)</code>) to see where an extension is running.
+    </p>
+    <p>
+      If the <strong>Developer: Show Running Extensions</strong> command shows that a UI
+      extension is incorrectly being treated as a workspace extension or vice versa, try
+      setting the <code>extensionKind</code> property in your extension’s
+      <a href="/api/get-started/extension-anatomy#extension-manifest">package.json</a>:
+    </p>
+    <p>
+      As of VS Code 1.40, this value is an array, which means extensions can specify more
+      than one kind. For example:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="dt">&quot;extensionKind&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;ui&quot;</span><span class="ot">,</span> <span class="st">&quot;workspace&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      <strong>Note:</strong> Prior releases allowed an extension to specify single location
+      as a string and it is deprecated in favor of multiple location support (array).
+    </p>
+    <p>Following combination of locations are supported:</p>
+    <ul>
+      <li>
+        <code>"extensionKind": ["workspace"]</code> — Indicates the extension requires
+        access to workspace contents and therefore will run in VS Code Server when connected
+        to a remote workspace or codespace. Most extensions fall into this category.
+      </li>
+      <li>
+        <code>"extensionKind": ["ui", "workspace"]</code> — Indicates the extension
+        <strong>prefers</strong> to run as a UI extension, but does not have any hard
+        requirements on local assets, devices, or capabilities. When using VS Code, the
+        extension will run in VS Code’s local extension host if it exists locally and means
+        the user does not have to install the extension on the remote. Otherwise, the
+        extension will run in VS Code’s workspace extension host if it exists there. When
+        using the Codespaces browser-based editor, it will run in the remote extension host
+        always (as no local extension host is available). The old <code>"ui"</code> value
+        (as a string) maps to this type for backwards compatibility, but is considered
+        deprecated.
+      </li>
+      <li>
+        <code>"extensionKind": ["workspace", "ui"]</code> — Indicates the extension
+        <strong>prefers</strong> to run as a workspace extension, but does not have any hard
+        requirements on accessing workspace contents. When using VS Code, the extension will
+        run in VS Code’s workspace extension host if it exists in remote workspace,
+        otherwise will run in VS Code’s local extension host if it exists locally. When
+        using the Codespaces browser-based editor, it will run in the remote extension host
+        always (as no local extension host is available).
+      </li>
+      <li>
+        <code>"extensionKind": ["ui"]</code> — Indicates the extension
+        <strong>must</strong> run as a UI extension because it requires access to local
+        assets, devices, or capabilities. Therefore, it can only run in VS Code’s local
+        extension host and will not work in the Codespaces browser-based editor (as there is
+        no local extension host available). <strong>Note</strong> Do not use this
+        <code>extensionKind</code> if you want the extension to be used without having to
+        install it on the remote, to support this case, use
+        <code>"extensionKind": ["ui", "workspace"]</code>.
+      </li>
+    </ul>
+    <p>
+      You can also quickly <strong>test</strong> the effect of changing an extension’s kind
+      with the <code>remote.extensionKind</code>
+      <a href="/docs/getstarted/settings">setting</a>. This setting is a map of extension
+      IDs to extension kinds. For example, if you want to force the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-cosmosdb"
+        >Azure Databases</a
+      >
+      extension to be a UI extension (instead of its Workspace default) and the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-edge"
+        >Debugger for Edge</a
+      >
+      to be a workspace extension (instead of its UI default), you would set:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;remote.extensionKind&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">      <span class="dt">&quot;ms-azuretools.vscode-cosmosdb&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;ui&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">      <span class="dt">&quot;msjsdiag.debugger-for-edge&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;workspace&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Using <code>remote.extensionKind</code> allows you to quickly test published versions
+      of extensions without having to modify their <code>package.json</code> and rebuild
+      them.
+    </p>
+    <h3 id="persisting-extension-data-or-state">Persisting extension data or state</h3>
+    <p>
+      In some cases, your extension may need to persist state information that does not
+      belong in <code>settings.json</code> or a separate workspace configuration file (for
+      example <code>.eslintrc</code>). To solve this problem, VS Code provides a set of
+      helpful storage properties on the <code>vscode.ExtensionContext</code> object passed
+      to your extension during activation. If your extension already takes advantage of
+      these properties, it should continue to function regardless of where it runs.
+    </p>
+    <p>
+      However, if your extension relies on current VS Code pathing conventions (for example
+      <code>~/.vscode</code>) or the presence of certain OS folders (for example
+      <code>~/.config/Code</code> on Linux) to persist data, you may run into problems.
+      Fortunately, it should be simple to update your extension and avoid these challenges.
+    </p>
+    <p>
+      If you are persisting simple key-value pairs, you can store workspace specific or
+      global state information using <code>vscode.ExtensionContext.workspaceState</code> or
+      <code>vscode.ExtensionContext.globalState</code> respectively. If your data is more
+      complicated than key-value pairs, the <code>globalStoragePath</code> and
+      <code>storagePath</code> properties provide “safe” paths that you can use to
+      read/write global workspace-specific information in a file.
+    </p>
+    <p>To use the APIs:</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> fs <span class="im">from</span> <span class="st">&#39;fs&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb3-7" title="7">        <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;myAmazingExtension.persistWorkspaceData&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9">        <span class="co">// Create the extension&#39;s workspace storage folder if it doesn&#39;t already exist</span></a>
+<a class="sourceLine" id="cb3-10" title="10">        <span class="fu">if</span> (<span class="op">!</span><span class="va">fs</span><span class="op">.</span><span class="fu">existsSync</span>(<span class="va">context</span><span class="op">.</span><span class="at">storagePath</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-11" title="11">            <span class="va">fs</span><span class="op">.</span><span class="fu">mkdirSync</span>(<span class="va">context</span><span class="op">.</span><span class="at">storagePath</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-12" title="12">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14">        <span class="co">// Write a file to the workspace storage folder</span></a>
+<a class="sourceLine" id="cb3-15" title="15">        <span class="va">fs</span><span class="op">.</span><span class="fu">writeFileSync</span>(</a>
+<a class="sourceLine" id="cb3-16" title="16">            <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">storagePath</span><span class="op">,</span> <span class="st">&#39;workspace-data.json&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-17" title="17">            <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(<span class="op">{</span> now<span class="op">:</span> <span class="bu">Date</span>.<span class="fu">now</span>() <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-18" title="18">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-19" title="19"></a>
+<a class="sourceLine" id="cb3-20" title="20">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb3-21" title="21">        <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;myAmazingExtension.persistGlobalData&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-22" title="22"></a>
+<a class="sourceLine" id="cb3-23" title="23">        <span class="co">// Create the extension&#39;s global (cross-workspace) folder if it doesn&#39;t already exist</span></a>
+<a class="sourceLine" id="cb3-24" title="24">        <span class="fu">if</span> (<span class="op">!</span><span class="va">fs</span><span class="op">.</span><span class="fu">existsSync</span>(<span class="va">context</span><span class="op">.</span><span class="at">globalStoragePath</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-25" title="25">            <span class="va">fs</span><span class="op">.</span><span class="fu">mkdirSync</span>(<span class="va">context</span><span class="op">.</span><span class="at">globalStoragePath</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-26" title="26">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-27" title="27"></a>
+<a class="sourceLine" id="cb3-28" title="28">        <span class="co">// Write a file to the global storage folder for the extension</span></a>
+<a class="sourceLine" id="cb3-29" title="29">        <span class="va">fs</span><span class="op">.</span><span class="fu">writeFileSync</span>(</a>
+<a class="sourceLine" id="cb3-30" title="30">            <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">globalStoragePath</span><span class="op">,</span> <span class="st">&#39;global-data.json&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb3-31" title="31">            <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(<span class="op">{</span> now<span class="op">:</span> <span class="bu">Date</span>.<span class="fu">now</span>() <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-32" title="32">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-33" title="33"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="persisting-secrets">Persisting secrets</h3>
+    <p>
+      If your extension needs to persist passwords or other secrets, you may want to use
+      your local operating system’s secret store (Windows Cert Store, the macOS KeyChain, a
+      <code>libsecret</code>-based keyring on Linux, or a browser-based equivalent) rather
+      than the one on the remote machine environment. Further, on Linux you may be relying
+      on <code>libsecret</code> and by extension <code>gnome-keyring</code> to store your
+      secrets, and this does not typically work well on server distros or in a container.
+    </p>
+    <p>
+      Visual Studio Code does not provide a secret persistence mechanism itself, but many
+      extension authors have opted to use the
+      <a href="https://www.npmjs.com/package/keytar">keytar node module</a> for this
+      purpose. For this reason, VS Code includes <code>keytar</code> and will
+      <strong>automatically and transparently</strong> run it locally if referenced in a
+      Workspace Extension. That way you can always take advantage of the local OS keychain /
+      keyring / cert store and avoid the problems mentioned above.
+    </p>
+    <p>For example:</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">import</span> <span class="op">{</span> env <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> keytarType <span class="im">from</span> <span class="st">&#39;keytar&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">declare</span> <span class="kw">const</span> __webpack_require__<span class="op">:</span> <span class="kw">typeof</span> <span class="fu">require</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">declare</span> <span class="kw">const</span> __non_webpack_require__<span class="op">:</span> <span class="kw">typeof</span> <span class="fu">require</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">function</span> <span class="fu">getNodeModule</span><span class="op">&lt;</span>T<span class="op">&gt;</span>(moduleName<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> T <span class="op">|</span> <span class="dt">undefined</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="kw">const</span> r <span class="op">=</span> <span class="kw">typeof</span> __webpack_require__ <span class="op">===</span> <span class="st">&quot;function&quot;</span> <span class="op">?</span> __non_webpack_require__ <span class="op">:</span> <span class="fu">require</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-9" title="9">        <span class="cf">return</span> <span class="fu">r</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">env</span><span class="op">.</span><span class="at">appRoot</span><span class="sc">}</span><span class="vs">/node_modules.asar/</span><span class="sc">${</span>moduleName<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="op">}</span> <span class="fu">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">        <span class="co">// Not in ASAR.</span></a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-14" title="14">        <span class="cf">return</span> <span class="fu">r</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">env</span><span class="op">.</span><span class="at">appRoot</span><span class="sc">}</span><span class="vs">/node_modules/</span><span class="sc">${</span>moduleName<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="op">}</span> <span class="fu">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-16" title="16">        <span class="co">// Not available.</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-18" title="18">    <span class="cf">return</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="op">}</span></a>
+<a class="sourceLine" id="cb4-20" title="20"></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">// Use it</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="kw">const</span> keytar <span class="op">=</span> <span class="fu">getNodeModule</span><span class="op">&lt;</span><span class="kw">typeof</span> keytarType<span class="op">&gt;</span>(<span class="st">&#39;keytar&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="cf">await</span> <span class="va">keytar</span><span class="op">.</span><span class="fu">setPassword</span>(<span class="st">&#39;my-service-name&#39;</span><span class="op">,</span><span class="st">&#39;my-account&#39;</span><span class="op">,</span><span class="st">&#39;iamal337d00d&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="kw">const</span> password <span class="op">=</span> <span class="cf">await</span> <span class="va">keytar</span><span class="op">.</span><span class="fu">getPassword</span>(<span class="st">&#39;my-service-name&#39;</span><span class="op">,</span><span class="st">&#39;my-account&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="using-the-clipboard">Using the clipboard</h3>
+    <p>
+      Historically, extension authors have used Node.js modules such as
+      <code>clipboardy</code> to interact with the clipboard. Unfortunately, if you use
+      these modules in a Workspace Extension, they will use the remote clipboard instead of
+      the user’s local one. The VS Code clipboard API solves this problem. It is always run
+      locally, regardless of the type of extension that calls it.
+    </p>
+    <p>To use the VS Code clipboard API in an extension:</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;myAmazingExtension.clipboardIt&#39;</span><span class="op">,</span> <span class="fu">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">        <span class="co">// Read from clipboard</span></a>
+<a class="sourceLine" id="cb5-6" title="6">        <span class="kw">const</span> text <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="va">clipboard</span><span class="op">.</span><span class="fu">readText</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8">        <span class="co">// Write to clipboard</span></a>
+<a class="sourceLine" id="cb5-9" title="9">        <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="va">clipboard</span><span class="op">.</span><span class="fu">writeText</span>(<span class="vs">`It looks like you&#39;re copying &quot;</span><span class="sc">${</span>text<span class="sc">}</span><span class="vs">&quot;. Would you like help?`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="opening-something-in-a-local-browser-or-application">
+      Opening something in a local browser or application
+    </h3>
+    <p>
+      Spawning a process or using a module like <code>opn</code> to launch a browser or
+      other application for particular URI can work well for local scenarios, but Workspace
+      Extensions run remotely, which can cause the application to launch on the wrong side.
+      VS Code Remote Development <strong>partially</strong> shims the <code>opn</code> node
+      module to allow existing extensions to function. You can call the module with a URI
+      and VS Code will cause the default application for the URI to appear on the client
+      side. However, this is not a complete implementation, as options are not support and a
+      <code>child_process</code> object is not returned.
+    </p>
+    <p>
+      Instead of relying on a third-party node module, we recommend extensions take
+      advantage of the <code>vscode.env.openExternal</code> method to launch the default
+      registered application on your local operating system for given URI. Even better,
+      <code>vscode.env.openExternal</code>
+      <strong>does automatic localhost port forwarding!</strong> You can use it to point to
+      a local web server on a remote machine or codespace and serve up content even if that
+      port is blocked externally.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> Currently the forwarding mechanism in the Codespaces
+        browser-based editor only supports <strong>http and https requests</strong>.
+        However, you can interact with any TCP connection when connecting to a codespace
+        from VS Code.
+      </p>
+    </blockquote>
+    <p>To use the <code>vscode.env.openExternal</code> API:</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb6-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;myAmazingExtension.openExternal&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="co">// Example 1 - Open the VS Code homepage in the default browser.</span></a>
+<a class="sourceLine" id="cb6-7" title="7">        <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">openExternal</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="st">&#39;https://code.visualstudio.com&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9">        <span class="co">// Example 2 - Open an auto-forwarded localhost HTTP server.</span></a>
+<a class="sourceLine" id="cb6-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">openExternal</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="st">&#39;http://localhost:3000&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-11" title="11"></a>
+<a class="sourceLine" id="cb6-12" title="12">        <span class="co">// Example 3 - Open the default email application.</span></a>
+<a class="sourceLine" id="cb6-13" title="13">        <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">openExternal</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="st">&#39;mailto:vscode@microsoft.com&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="forwarding-localhost">Forwarding localhost</h3>
+    <p>
+      While the
+      <a href="#opening-something-in-a-local-browser-or-application"
+        >localhost forwarding mechanism in <code>vscode.env.openExternal</code> is useful</a
+      >, there may also be situations where you want to forward something without actually
+      launching a new browser window or application. This is where the
+      <code>vscode.env.asExternalUri</code> API comes in.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> Currently the forwarding mechanism in the Codespaces
+        browser-based editor only supports <strong>http and https requests</strong>.
+        However, you can interact with any TCP connection when connecting to a codespace
+        from VS Code.
+      </p>
+    </blockquote>
+    <p>To use the <code>vscode.env.asExternalUri</code> API:</p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="im">import</span> <span class="op">{</span> getExpressServerPort <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;./server&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="kw">const</span> dynamicServerPort <span class="op">=</span> <span class="cf">await</span> <span class="fu">getWebServerPort</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"></a>
+<a class="sourceLine" id="cb7-8" title="8">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;myAmazingExtension.forwardLocalhost&#39;</span><span class="op">,</span> <span class="fu">async</span> () <span class="kw">=&gt;</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10">        <span class="co">// Make the port available locally and get the full URI</span></a>
+<a class="sourceLine" id="cb7-11" title="11">        <span class="kw">const</span> fullUri <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">asExternalUri</span>(</a>
+<a class="sourceLine" id="cb7-12" title="12">            <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="vs">`http://localhost:</span><span class="sc">${</span>dynamicServerPort<span class="sc">}</span><span class="vs">`</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-13" title="13"></a>
+<a class="sourceLine" id="cb7-14" title="14">        <span class="co">// ... do something with the fullUri ...</span></a>
+<a class="sourceLine" id="cb7-15" title="15"></a>
+<a class="sourceLine" id="cb7-16" title="16">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-17" title="17">}</a></code></pre>
+    </div>
+    <p>
+      It is important to note that the URI that is passed back by the API
+      <strong>may not reference localhost at all</strong>, so you should use it in its
+      entirety. This is particularly important for the Codespaces browser-based editor,
+      where localhost cannot be used.
+    </p>
+    <h3 id="callbacks-and-uri-handlers">Callbacks and URI handlers</h3>
+    <p>
+      The <code>vscode.window.registerUriHandler</code> API allows your extension to
+      register a custom URI that, if opened in a browser, will fire a callback function in
+      your extension. A common use case for registering a URI handler is when implementing a
+      service sign in with an <a href="https://oauth.net/2/">OAuth 2.0</a> authentication
+      provider (for example, Azure AD). However, it can be used for any scenario where you
+      want an external application or the browser to send information to your extension.
+    </p>
+    <p>
+      The Remote Development and Codespaces extensions in VS Code will transparently handle
+      passing the URI to your extension regardless of where it is actually running (local or
+      remote). However, <code>vscode://</code> URIs will not work with the Codespaces
+      browser-based editor since opening these URIs in something like a browser would
+      attempt to pass them to the local VS Code client rather than the browser-based editor.
+      Fortunately, this can be easily remedied by using the
+      <code>vscode.env.asExternalUri</code> API.
+    </p>
+    <p>
+      Let’s use a combination of <code>vscode.window.registerUriHandler</code> and
+      <code>vscode.env.asExternalUri</code> to wire up an example OAuth authentication
+      callback:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">// This is ${publisher}.${name} from package.json</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="kw">const</span> extensionId <span class="op">=</span> <span class="st">&#39;my.amazing-extension&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="co">// Register a URI handler for the authentication callback</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">registerUriHandler</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="fu">handleUri</span>(uri<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">Uri</span>)<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ProviderResult</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11"></a>
+<a class="sourceLine" id="cb8-12" title="12">            <span class="co">// Add your code for what to do when the authentication completes here.</span></a>
+<a class="sourceLine" id="cb8-13" title="13">            <span class="fu">if</span> (<span class="va">uri</span><span class="op">.</span><span class="at">path</span> <span class="op">===</span> <span class="st">&#39;/auth-complete&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-14" title="14">                <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;Sign in successful!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-15" title="15">            <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-16" title="16"></a>
+<a class="sourceLine" id="cb8-17" title="17">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-18" title="18">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-19" title="19"></a>
+<a class="sourceLine" id="cb8-20" title="20">    <span class="co">// Register a sign in command</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="vs">`</span><span class="sc">${</span>extensionId<span class="sc">}</span><span class="vs">.signin`</span><span class="op">,</span> <span class="fu">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-22" title="22"></a>
+<a class="sourceLine" id="cb8-23" title="23">        <span class="co">// Get an externally addressable callback URI for the handler that the authentication provider can use</span></a>
+<a class="sourceLine" id="cb8-24" title="24">        <span class="kw">const</span> callbackUri <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">asExternalUri</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="vs">`</span><span class="sc">${</span><span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="at">uriScheme</span><span class="sc">}</span><span class="vs">://</span><span class="sc">${</span>extensionId<span class="sc">}</span><span class="vs">/auth-complete`</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-25" title="25"></a>
+<a class="sourceLine" id="cb8-26" title="26">        <span class="co">// Add your code to integrate with an authentication provider here - we&#39;ll fake it.</span></a>
+<a class="sourceLine" id="cb8-27" title="27">        <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="va">clipboard</span><span class="op">.</span><span class="fu">writeText</span>(<span class="va">callbackUri</span><span class="op">.</span><span class="fu">toString</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-28" title="28">        <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;Open the URI copied to the clipboard in a browser window to authorize.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-29" title="29">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-30" title="30"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      When running this sample in VS Code, it wires up a <code>vscode://</code> or
+      <code>vscode-insiders://</code> URI that can be used as a callback for an
+      authentication provider. When running in the Codespaces browser-based editor, it wires
+      up a <code>https://*.github.dev</code> URI without any code changes or special
+      conditions.
+    </p>
+    <p>
+      While OAuth is outside the scope of this document, note that if you adapted this
+      sample to a real authentication provider, you may need to build a proxy service in
+      front of the provider. This is because not all providers allow
+      <code>vscode://</code> callback URIs and others do not allow wildcard host names for
+      callbacks over HTTPS. We also recommend using an
+      <a href="https://oauth.net/2/pkce/">OAuth 2.0 Authorization Code with PKCE flow</a>
+      wherever possible (e.g Azure AD supports PKCE) to improve the security of the
+      callback.
+    </p>
+    <h3 id="varying-behaviors-when-running-remotely-or-in-the-codespaces-browser-editor">
+      Varying behaviors when running remotely or in the Codespaces browser editor
+    </h3>
+    <p>
+      In some cases, your Workspace Extension may need to vary the behavior when running
+      remotely. In others, you might want to vary its behavior when running in the
+      Codespaces browser-based editor. VS Code provides three APIs to detect these
+      situations: <code>vscode.env.uiKind</code>, <code>extension.extensionKind</code>, and
+      <code>vscode.env.remoteName</code>.
+    </p>
+    <p>Next, you can use the three APIs as follows:</p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4"></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="co">// extensionKind returns ExtensionKind.UI when running locally, so use this to detect remote</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="kw">const</span> extension <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">extensions</span><span class="op">.</span><span class="fu">getExtension</span>(<span class="st">&#39;your.extensionId&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="fu">if</span> (<span class="va">extension</span><span class="op">.</span><span class="at">extensionKind</span> <span class="op">===</span> <span class="va">vscode</span><span class="op">.</span><span class="va">ExtensionKind</span><span class="op">.</span><span class="at">Workspace</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-8" title="8">        <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;I am running remotely!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-10" title="10"></a>
+<a class="sourceLine" id="cb9-11" title="11">    <span class="co">// Codespaces browser-based editor will return UIKind.Web for uiKind</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="fu">if</span> (<span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="at">uiKind</span> <span class="op">===</span> <span class="va">vscode</span><span class="op">.</span><span class="va">UIKind</span><span class="op">.</span><span class="at">Web</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-13" title="13">        <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;I am running in the Codespaces browser editor!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-14" title="14">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-15" title="15"></a>
+<a class="sourceLine" id="cb9-16" title="16">    <span class="co">// VS Code will return undefined for remoteName if working with a local workspace</span></a>
+<a class="sourceLine" id="cb9-17" title="17">    <span class="fu">if</span> (<span class="fu">typeof</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="at">remoteName</span>) <span class="op">===</span> <span class="st">&#39;undefined&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-18" title="18">        <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;Not currently connected to a remote workspace.&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-19" title="19">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-20" title="20"></a>
+<a class="sourceLine" id="cb9-21" title="21"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="communicating-between-extensions-using-commands">
+      Communicating between extensions using commands
+    </h3>
+    <p>
+      Some extensions return APIs as a part of their activation that are intended for use by
+      other extensions (via
+      <code>vscode.extension.getExtension(extensionName).exports</code>). While these will
+      work if all extensions involved are on the same side (either all UI Extensions or all
+      Workspace Extensions), these will not work between UI and Workspace Extensions.
+    </p>
+    <p>
+      Fortunately, VS Code automatically routes any executed commands to the correct
+      extension regardless of its location. You can freely invoke any command (including
+      those provided by other extensions) without worrying about impacts.
+    </p>
+    <p>
+      If you have a set of extensions that need to interact with one another, exposing
+      functionality using a private command can help you avoid unexpected impacts. However,
+      any objects you pass in as parameters will be “stringified”
+      (<code>JSON.stringify</code>) before being transmitted, so the object cannot have
+      cyclic references and will end up as a “plain old JavaScript object” on the other
+      side.
+    </p>
+    <p>For example:</p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb10-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="co">// Register the private echo command</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="kw">const</span> echoCommand <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;_private.command.called.echo&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">        (value<span class="op">:</span> <span class="dt">string</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-7" title="7">            <span class="cf">return</span> value<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-8" title="8">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb10-9" title="9">    )<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-10" title="10">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(echoCommand)<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      See the <a href="/api/extension-guides/command">command API guide</a> for details on
+      working with commands.
+    </p>
+    <h2 id="using-the-webview-api">Using the Webview API</h2>
+    <p>
+      Like the clipboard API, the <a href="/api/extension-guides/webview">Webview API</a> is
+      always run on the user’s local machine or in the browser, even when used from a
+      Workspace Extension. This means that many webview-based extensions should just work,
+      even when used in remote workspaces or Codespaces. However, there are some
+      considerations to be aware of so that your webview extension works properly when run
+      remotely.
+    </p>
+    <h3 id="always-use-aswebviewuri">Always use asWebviewUri</h3>
+    <p>
+      You should use the <code>asWebviewUri</code> API to manage extension resources. Using
+      this API instead of hard coding <code>vscode-resource://</code> URIs is required to
+      ensure the Codespaces browser-based editor works with your extension. See the
+      <a href="/api/extension-guides/webview">Webview API</a> guide for details, but here is
+      a quick example.
+    </p>
+    <p>You can use the API in your content as follows:</p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb11-1" title="1"><span class="co">// Create the webview</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="st">&#39;catWebview&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="st">&#39;Cat Webview&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">// Get the content Uri</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">const</span> catGifUri <span class="op">=</span> <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="fu">asWebviewUri</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(</a>
+<a class="sourceLine" id="cb11-9" title="9">        <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">extensionPath</span><span class="op">,</span> <span class="st">&#39;media&#39;</span><span class="op">,</span> <span class="st">&#39;cat.gif&#39;</span>)))<span class="op">;;</span></a>
+<a class="sourceLine" id="cb11-10" title="10"></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">// Reference it in your content</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="vs">&lt;html&gt;</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="vs">    &lt;img src=&quot;</span><span class="sc">${</span>catGifUri<span class="sc">}</span><span class="vs">&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="use-the-message-passing-api-for-dynamic-webview-content">
+      Use the message passing API for dynamic webview content
+    </h3>
+    <p>
+      The VS Code webview includes a
+      <a href="/api/extension-guides/webview#scripts-and-message-passing"
+        >message passing</a
+      >
+      API that allows you to dynamically update your webview content without the use of a
+      local web server. Even if your extension is running some local web services that you
+      want to interact with to update webview content, you can do this from the extension
+      itself rather than directly from your HTML content.
+    </p>
+    <p>
+      This is an important pattern for Remote Development and GitHub Codespaces to ensure
+      your webview code works in both VS Code and the Codespaces browser-based editor.
+    </p>
+    <p><strong>Why message passing instead of a localhost web server?</strong></p>
+    <p>
+      The alternate pattern is to serve up web content in an <code>iframe</code> or have
+      webview content directly interact with a localhost server. Unfortunately, by default,
+      <code>localhost</code> inside a webview will resolve to a developer’s local machine.
+      This means that for a remotely running workspace extension, the webviews it creates
+      would not be able to access local servers spawned by the extension. Even if you use
+      the IP of the machine, the ports you are connecting to will typically be blocked by
+      default in a cloud VM or a container. Even if this worked in VS Code, it would not
+      work in the Codespaces browser-based editor.
+    </p>
+    <p>
+      Here’s an illustration of the problem when using the Remote - SSH extension, but the
+      problem also exists for Remote - Containers and GitHub Codespaces:
+    </p>
+    <figure>
+      <img src="images/remote-extensions/webview-problem.png" alt="Webview problem" />
+      <figcaption>Webview problem</figcaption>
+    </figure>
+    <p>
+      If possible, <strong>you should avoid doing this</strong> since it complicates your
+      extension significantly.
+      <a href="/api/extension-guides/webview#scripts-and-message-passing"
+        >Message passing</a
+      >
+      API can enable the same type of user experience without these types of headaches. The
+      extension itself will be running in VS Code Server on the remote side, so it can
+      transparently interact with any web servers your extension starts up as a result of
+      any messages passed to it from the webview.
+    </p>
+    <h3 id="workarounds-for-using-localhost-from-a-webview">
+      Workarounds for using localhost from a webview
+    </h3>
+    <p>
+      If you can’t use the
+      <a href="/api/extension-guides/webview#scripts-and-message-passing"
+        >message passing</a
+      >
+      API for some reason, there are two options that will work with the Remote Development
+      and GitHub Codespaces extensions in VS Code.
+    </p>
+    <p>
+      Each option allows webview content to route through the same channel VS Code uses to
+      talk to VS Code Server. For example, if we update the illustration in the previous
+      section for Remote - SSH, you would have this:
+    </p>
+    <figure>
+      <img src="images/remote-extensions/webview-solution.png" alt="Webview Solution" />
+      <figcaption>Webview Solution</figcaption>
+    </figure>
+    <h3 id="option-1---use-asexternaluri">Option 1 - Use asExternalUri</h3>
+    <p>
+      VS Code 1.40 introduced the <code>vscode.env.asExternalUri</code> API to allow
+      extensions to forward local <code>http</code> and <code>https</code> requests remotely
+      in a programmatic way. You can use this same API to forward requests to
+      <code>localhost</code> web servers from the webview when your extension is running in
+      VS Code.
+    </p>
+    <p>
+      Use the API to get a full URI for the iframe and add it to your HTML. You will also
+      need to enable scripts in your webview and add a CSP to your HTML content.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb12-1" title="1"><span class="co">// Use asExternalUri to get the URI for the web server</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">const</span> dynamicWebServerPort <span class="op">=</span> <span class="cf">await</span> <span class="fu">getWebServerPort</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">const</span> fullWebServerUri <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">env</span><span class="op">.</span><span class="fu">asExternalUri</span>(</a>
+<a class="sourceLine" id="cb12-4" title="4">        <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="vs">`http://localhost:</span><span class="sc">${</span>dynamicWebServerPort<span class="sc">}</span><span class="vs">`</span>)</a>
+<a class="sourceLine" id="cb12-5" title="5">    )<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">// Create the webview</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb12-9" title="9">    <span class="st">&#39;asExternalUriWebview&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-10" title="10">    <span class="st">&#39;asExternalUri Example&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb12-11" title="11">    <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-12" title="12">        enableScripts<span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb12-13" title="13">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb12-14" title="14"></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="kw">const</span> cspSource <span class="op">=</span> <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">cspSource</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="vs">        &lt;head&gt;</span></a>
+<a class="sourceLine" id="cb12-18" title="18"><span class="vs">            &lt;meta</span></a>
+<a class="sourceLine" id="cb12-19" title="19"><span class="vs">                http-equiv=&quot;Content-Security-Policy&quot;</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="vs">                content=&quot;default-src &#39;none&#39;; frame-src </span><span class="sc">${</span>fullWebServerUri<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>cspSource<span class="sc">}</span><span class="vs"> https:; img-src </span><span class="sc">${</span>cspSource<span class="sc">}</span><span class="vs"> https:; script-src </span><span class="sc">${</span>cspSource<span class="sc">}</span><span class="vs">; style-src </span><span class="sc">${</span>cspSource<span class="sc">}</span><span class="vs">;&quot;</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="vs">            /&gt;</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="vs">        &lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb12-23" title="23"><span class="vs">        &lt;body&gt;</span></a>
+<a class="sourceLine" id="cb12-24" title="24"><span class="vs">        &lt;!-- All content from the web server must be in an iframe --&gt;</span></a>
+<a class="sourceLine" id="cb12-25" title="25"><span class="vs">        &lt;iframe src=&quot;</span><span class="sc">${</span>fullWebServerUri<span class="sc">}</span><span class="vs">&quot;&gt;</span></a>
+<a class="sourceLine" id="cb12-26" title="26"><span class="vs">    &lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb12-27" title="27"><span class="vs">    &lt;/html&gt;`</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Note that any HTML content served up in the <code>iframe</code> in the example above
+      <strong>needs to use relative pathing</strong> rather than hard coding
+      <code>localhost</code>.
+    </p>
+    <h3 id="option-2---use-a-port-mapping">Option 2 - Use a port mapping</h3>
+    <p>
+      If you do <strong>not intend to support the Codespaces browser-based editor</strong>,
+      you can use the <code>portMapping</code> option available in the webview API. (This
+      approach will also work with Codespaces from the VS Code client, but not in the
+      browser).
+    </p>
+    <p>
+      To use a port mapping, pass in a <code>portMapping</code> object when you create your
+      webview:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">const</span> LOCAL_STATIC_PORT <span class="op">=</span> <span class="dv">3000</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">const</span> dynamicServerPort <span class="op">=</span> <span class="cf">await</span> <span class="fu">getWebServerPort</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">// Create webview and pass portMapping in</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="st">&#39;remoteMappingExample&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-7" title="7">    <span class="st">&#39;Remote Mapping Example&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb13-8" title="8">    <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-9" title="9">        portMapping<span class="op">:</span> <span class="op">[</span></a>
+<a class="sourceLine" id="cb13-10" title="10">            <span class="co">// This maps localhost:3000 in the webview to the web server port on the remote host.</span></a>
+<a class="sourceLine" id="cb13-11" title="11">            <span class="op">{</span> webviewPort<span class="op">:</span> LOCAL_STATIC_PORT<span class="op">,</span> extensionHostPort<span class="op">:</span> dynamicServerPort <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-12" title="12">        <span class="op">]</span></a>
+<a class="sourceLine" id="cb13-13" title="13">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-14" title="14"></a>
+<a class="sourceLine" id="cb13-15" title="15"><span class="co">// Reference the port in any full URIs you reference in your HTML.</span></a>
+<a class="sourceLine" id="cb13-16" title="16"><span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb13-17" title="17"><span class="vs">    &lt;body&gt;</span></a>
+<a class="sourceLine" id="cb13-18" title="18"><span class="vs">        &lt;!-- This will resolve to the dynamic server port on the remote machine --&gt;</span></a>
+<a class="sourceLine" id="cb13-19" title="19"><span class="vs">        &lt;img src=&quot;http://localhost:</span><span class="sc">${</span>LOCAL_STATIC_PORT<span class="sc">}</span><span class="vs">/canvas.png&quot;&gt;</span></a>
+<a class="sourceLine" id="cb13-20" title="20"><span class="vs">    &lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb13-21" title="21"><span class="vs">    &lt;/html&gt;`</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      In this example, in both the remote and local cases, any requests made to
+      <code>http://localhost:3000</code> will automatically be mapped to the dynamic port an
+      Express.js web server is running on.
+    </p>
+    <h2 id="using-native-node.js-modules">Using native Node.js modules</h2>
+    <p>
+      Native modules bundled with (or dynamically acquired for) a VS Code extension must be
+      recompiled
+      <a href="https://electronjs.org/docs/tutorial/using-native-node-modules"
+        >using Electron’s <code>electron-rebuild</code></a
+      >. However, VS Code Server runs a standard (non-Electron) version of Node.js, which
+      can cause binaries to fail when used remotely.
+    </p>
+    <p>To solve this problem:</p>
+    <ol type="1">
+      <li>
+        Include (or dynamically acquire) both sets of binaries (Electron and standard
+        Node.js) for the “modules” version in Node.js that VS Code ships.
+      </li>
+      <li>
+        Check to see if
+        <code
+          >vscode.extensions.getExtension('your.extensionId').extensionKind ===
+          vscode.ExtensionKind.Workspace</code
+        >
+        to set up the correct binaries based on whether the extension is running remotely or
+        locally.
+      </li>
+      <li>
+        You may also want to add support for non-x86_64 targets and Alpine Linux at the same
+        time by
+        <a href="#supporting-nonx8664-hosts-or-alpine-linux-containers"
+          >following similar logic</a
+        >.
+      </li>
+    </ol>
+    <p>
+      You can find the “modules” version VS Code uses by going to
+      <strong>Help &gt; Developer Tools</strong> and typing
+      <code>process.versions.modules</code> in the console. However, to make sure native
+      modules work seamlessly in different Node.js environments, you may want to compile the
+      native modules against all possible Node.js “modules” versions and platforms you want
+      support (Electron Node.js, official Node.js Windows/Darwin/Linux, all versions). The
+      <a href="https://github.com/tree-sitter/node-tree-sitter/releases/tag/v0.14.0"
+        >node-tree-sitter</a
+      >
+      module is a good example of a module that does this well.
+    </p>
+    <h2 id="supporting-non-x86_64-hosts-or-alpine-linux-containers">
+      Supporting non-x86_64 hosts or Alpine Linux containers
+    </h2>
+    <p>
+      If your extension is purely written in JavaScript/TypeScript, you may not need to do
+      anything to add support for other processor architectures or the
+      <code>musl</code> based Alpine Linux to your extension.
+    </p>
+    <p>
+      However, if your extension works on Debian 9+, Ubuntu 16.04+, or RHEL / CentOS 7+
+      remote SSH hosts, containers, or WSL, but fails on supported non-x86_64 hosts (for
+      example ARMv7l) or Alpine Linux containers, the extension may include x86_64
+      <code>glibc</code> specific native code or runtimes that will fail on these
+      architectures/operating systems.
+    </p>
+    <p>
+      For example, your extension may only include x86_64 compiled versions of native
+      modules or runtimes. For Alpine Linux, the included native code or runtimes may not
+      work due to
+      <a href="https://wiki.musl-libc.org/functional-differences-from-glibc.html"
+        >fundamental differences</a
+      >
+      between how <code>libc</code> is implemented in Alpine Linux (<code>musl</code>) and
+      other distributions (<code>glibc</code>).
+    </p>
+    <p>To resolve this problem:</p>
+    <ol type="1">
+      <li>
+        <p>
+          If you are dynamically acquiring compiled code, you can add support by detecting
+          non-x86_64 targets using <code>process.arch</code> and downloading versions
+          compiled for the right architecture. If you are including binaries for all
+          supported architectures inside your extension instead, you can use this logic to
+          use the correct one.
+        </p>
+      </li>
+      <li>
+        <p>
+          For Alpine Linux, you can detect the operating system using
+          <code>await fs.exists('/etc/alpine-release')</code> and once again download or use
+          the correct binaries for a <code>musl</code> based operating system.
+        </p>
+      </li>
+      <li>
+        <p>
+          If you’d prefer not to support these platforms, you can use the same logic to
+          provide a good error message instead.
+        </p>
+      </li>
+    </ol>
+    <p>
+      It is important to note that some third-party npm modules include native code that can
+      cause this problem. So, in some cases you may need to work with the npm module author
+      to add additional compilation targets.
+    </p>
+    <h2 id="avoid-using-electron-modules">Avoid using Electron modules</h2>
+    <p>
+      While it can be convenient to rely on built-in Electron or VS Code modules not exposed
+      by the extension API, it’s important to note that VS Code Server runs a standard
+      (non-Electron) version of Node.js. These modules will be missing when running
+      remotely. There are a few exceptions,
+      <a href="#persisting-secrets">like <code>keytar</code></a
+      >, where there is specific code in place to make them work.
+    </p>
+    <p>
+      Use base Node.js modules or modules in your extension VSIX to avoid these problems. If
+      you absolutely have to use an Electron module, be sure to have a fallback if the
+      module is missing.
+    </p>
+    <p>
+      The example below will use the Electron <code>original-fs</code> node module if found,
+      and fall back to the base Node.js <code>fs</code> module if not.
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">function</span> <span class="fu">requireWithFallback</span>(electronModule<span class="op">:</span> <span class="dt">string</span><span class="op">,</span> nodeModule<span class="op">:</span> <span class="dt">string</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">    <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">        <span class="cf">return</span> <span class="fu">require</span>(electronModule)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="fu">catch</span> (err) <span class="op">{</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="cf">return</span> <span class="fu">require</span>(nodeModule)<span class="op">;</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="kw">const</span> fs <span class="op">=</span> <span class="fu">requireWithFallback</span>(<span class="st">&#39;original-fs&#39;</span><span class="op">,</span> <span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>Try to avoid these situations whenever possible.</p>
+    <h2 id="known-issues">Known issues</h2>
+    <p>
+      There are a few extension problems that could be resolved with some added
+      functionality for Workspace Extensions. The following table is a list of known issues
+      under consideration:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 40%" />
+        <col style="width: 59%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Problem</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><strong>Cannot access attached devices from Workspace extension</strong></td>
+          <td>
+            Extensions that access locally attached devices will be unable to connect to
+            them when running remotely. We are investigating the best approach to solve this
+            problem.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="questions-and-feedback">Questions and feedback</h2>
+    <ul>
+      <li>
+        See <a href="/docs/remote/troubleshooting">Tips and Tricks</a> or the
+        <a href="/docs/remote/faq">FAQ</a>.
+      </li>
+      <li>
+        Search for answers on
+        <a href="https://stackoverflow.com/questions/tagged/vscode-remote">Stack Overflow</a
+        >.
+      </li>
+      <li>
+        <a href="https://aka.ms/vscode-remote/feature-requests"
+          >Upvote a feature or request a new one</a
+        >, search <a href="https://aka.ms/vscode-remote/issues">existing issues</a>, or
+        <a href="https://aka.ms/vscode-remote/issues/new">report a problem</a>.
+      </li>
+      <li>
+        Contribute a
+        <a href="https://aka.ms/vscode-dev-containers">development container definition</a>
+        for others to use.
+      </li>
+      <li>
+        Contribute to
+        <a href="https://github.com/microsoft/vscode-docs">our documentation</a> or
+        <a href="https://github.com/microsoft/vscode">VS Code</a>.
+      </li>
+      <li>
+        See our <a href="https://aka.ms/vscode-remote/contributing">CONTRIBUTING</a> guide
+        for details.
+      </li>
+    </ul>
+  </body>
+</html>

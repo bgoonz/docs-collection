@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>commands</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="built-in-commands">Built-in Commands</h1>
+    <p>
+      This document lists a subset of Visual Studio Code commands that you might use with
+      <code>vscode.commands.executeCommand</code> API.
+    </p>
+    <p>
+      Read the <a href="/api/extension-guides/command">Commands Guide</a> for how to use the
+      commands API.
+    </p>
+    <p>The following is a sample of how to open a new folder in VS Code:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">let</span> uri <span class="op">=</span> <span class="va">Uri</span>.<span class="at">file</span>(<span class="st">&#39;/some/path/to/folder&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">let</span> success <span class="op">=</span> <span class="cf">await</span> <span class="va">commands</span>.<span class="at">executeCommand</span>(<span class="st">&#39;vscode.openFolder&#39;</span><span class="op">,</span> uri)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="commands">Commands</h2>
+    <p>
+      <code>vscode.executeDocumentHighlights</code> - Execute document highlight provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of SymbolInformation and
+        DocumentSymbol instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeDocumentSymbolProvider</code> - Execute document symbol provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of
+        DocumentHighlight-instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeFormatDocumentProvider</code> - Execute document format provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>options</em> - Formatting options</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of TextEdits.</li>
+    </ul>
+    <p><code>vscode.executeFormatRangeProvider</code> - Execute range format provider.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>range</em> - A range in a text document</li>
+      <li><em>options</em> - Formatting options</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of TextEdits.</li>
+    </ul>
+    <p>
+      <code>vscode.executeFormatOnTypeProvider</code> - Execute format on type provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li><em>ch</em> - Trigger character</li>
+      <li><em>options</em> - Formatting options</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of TextEdits.</li>
+    </ul>
+    <p><code>vscode.executeDefinitionProvider</code> - Execute all definition providers.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Location or LocationLink
+        instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeTypeDefinitionProvider</code> - Execute all type definition
+      providers.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Location or LocationLink
+        instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeDeclarationProvider</code> - Execute all declaration providers.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Location or LocationLink
+        instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeImplementationProvider</code> - Execute all implementation
+      providers.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Location or LocationLink
+        instances.
+      </li>
+    </ul>
+    <p><code>vscode.executeReferenceProvider</code> - Execute all reference providers.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Location-instances.
+      </li>
+    </ul>
+    <p><code>vscode.executeHoverProvider</code> - Execute all hover providers.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of Hover-instances.</li>
+    </ul>
+    <p>
+      <code>vscode.executeSelectionRangeProvider</code> - Execute selection range provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - Position in a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of ranges.</li>
+    </ul>
+    <p>
+      <code>vscode.executeWorkspaceSymbolProvider</code> - Execute all workspace symbol
+      providers.
+    </p>
+    <ul>
+      <li><em>query</em> - Search string</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of
+        SymbolInformation-instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.prepareCallHierarchy</code> - Prepare call hierarchy at a position inside
+      a document
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li><em>(returns)</em> - A CallHierarchyItem or undefined</li>
+    </ul>
+    <p><code>vscode.provideIncomingCalls</code> - Compute incoming calls for an item</p>
+    <ul>
+      <li><em>item</em> - A call hierarchy item</li>
+      <li><em>(returns)</em> - A CallHierarchyItem or undefined</li>
+    </ul>
+    <p><code>vscode.provideOutgoingCalls</code> - Compute outgoing calls for an item</p>
+    <ul>
+      <li><em>item</em> - A call hierarchy item</li>
+      <li><em>(returns)</em> - A CallHierarchyItem or undefined</li>
+    </ul>
+    <p><code>vscode.executeDocumentRenameProvider</code> - Execute rename provider.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li><em>newName</em> - The new symbol name</li>
+      <li><em>(returns)</em> - A promise that resolves to a WorkspaceEdit.</li>
+    </ul>
+    <p><code>vscode.executeLinkProvider</code> - Execute document link provider.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>linkResolveCount</em> - (optional) Number of links that should be resolved, only
+        when links are unresolved.
+      </li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of DocumentLink-instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.provideDocumentSemanticTokensLegend</code> - Provide semantic tokens
+      legend for a document
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to SemanticTokensLegend.</li>
+    </ul>
+    <p>
+      <code>vscode.provideDocumentSemanticTokens</code> - Provide semantic tokens for a
+      document
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to SemanticTokens.</li>
+    </ul>
+    <p>
+      <code>vscode.provideDocumentRangeSemanticTokensLegend</code> - Provide semantic tokens
+      legend for a document range
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to SemanticTokensLegend.</li>
+    </ul>
+    <p>
+      <code>vscode.provideDocumentRangeSemanticTokens</code> - Provide semantic tokens for a
+      document range
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>range</em> - A range in a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to SemanticTokens.</li>
+    </ul>
+    <p>
+      <code>vscode.executeCompletionItemProvider</code> - Execute completion item provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>triggerCharacter</em> - (optional) Trigger completion when the user types the
+        character, like <code>,</code> or <code>(</code>
+      </li>
+      <li>
+        <em>itemResolveCount</em> - (optional) Number of completions to resolve (too large
+        numbers slow down completions)
+      </li>
+      <li><em>(returns)</em> - A promise that resolves to a CompletionList-instance.</li>
+    </ul>
+    <p>
+      <code>vscode.executeSignatureHelpProvider</code> - Execute signature help provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>position</em> - A position in a text document</li>
+      <li>
+        <em>triggerCharacter</em> - (optional) Trigger signature help when the user types
+        the character, like <code>,</code> or <code>(</code>
+      </li>
+      <li><em>(returns)</em> - A promise that resolves to SignatureHelp.</li>
+    </ul>
+    <p><code>vscode.executeCodeLensProvider</code> - Execute code lens provider.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>itemResolveCount</em> - (optional) Number of lenses that should be resolved and
+        returned. Will only return resolved lenses, will impact performance)
+      </li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of CodeLens-instances.
+      </li>
+    </ul>
+    <p><code>vscode.executeCodeActionProvider</code> - Execute code action provider.</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>rangeOrSelection</em> - Range in a text document. Some refactoring provider
+        requires Selection object.
+      </li>
+      <li><em>kind</em> - (optional) Code action kind to return code actions for</li>
+      <li>
+        <em>itemResolveCount</em> - (optional) Number of code actions to resolve (too large
+        numbers slow down code actions)
+      </li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of Command-instances.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeDocumentColorProvider</code> - Execute document color provider.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of ColorInformation
+        objects.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.executeColorPresentationProvider</code> - Execute color presentation
+      provider.
+    </p>
+    <ul>
+      <li><em>color</em> - The color to show and insert</li>
+      <li><em>context</em> - Context object with uri and range</li>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of ColorPresentation
+        objects.
+      </li>
+    </ul>
+    <p><code>vscode.executeInlayHintProvider</code> - Execute inlay hints provider</p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li><em>range</em> - A range in a text document</li>
+      <li><em>(returns)</em> - A promise that resolves to an array of Inlay objects</li>
+    </ul>
+    <p>
+      <code>vscode.resolveNotebookContentProviders</code> - Resolve Notebook Content
+      Providers
+    </p>
+    <ul>
+      <li>
+        <em>(returns)</em> - A promise that resolves to an array of NotebookContentProvider
+        static info objects.
+      </li>
+    </ul>
+    <p>
+      <code>vscode.open</code> - Opens the provided resource in the editor. Can be a text or
+      binary file, or an http(s) URL. If you need more control over the options for opening
+      a text file, use vscode.window.showTextDocument instead.
+    </p>
+    <ul>
+      <li><em>uri</em> - Uri of a text document</li>
+      <li>
+        <em>columnOrOptions</em> - (optional) Either the column in which to open or editor
+        options, see vscode.TextDocumentShowOptions
+      </li>
+      <li><em>label</em> - (optional)</li>
+      <li><em>(returns)</em> - no result</li>
+    </ul>
+    <p>
+      <code>vscode.openWith</code> - Opens the provided resource with a specific editor.
+    </p>
+    <ul>
+      <li><em>resource</em> - Resource to open</li>
+      <li>
+        <em>viewId</em> - Custom editor view id or ‘default’ to use VS Code’s default editor
+      </li>
+      <li>
+        <em>columnOrOptions</em> - (optional) Either the column in which to open or editor
+        options, see vscode.TextDocumentShowOptions
+      </li>
+      <li><em>(returns)</em> - no result</li>
+    </ul>
+    <p>
+      <code>vscode.diff</code> - Opens the provided resources in the diff editor to compare
+      their contents.
+    </p>
+    <ul>
+      <li><em>left</em> - Left-hand side resource of the diff editor</li>
+      <li><em>right</em> - Right-hand side resource of the diff editor</li>
+      <li><em>title</em> - (optional) Human readable title for the diff editor</li>
+      <li>
+        <em>columnOrOptions</em> - (optional) Either the column in which to open or editor
+        options, see vscode.TextDocumentShowOptions
+      </li>
+      <li><em>(returns)</em> - no result</li>
+    </ul>
+    <p>
+      <code>vscode.removeFromRecentlyOpened</code> - Removes an entry with the given path
+      from the recently opened list.
+    </p>
+    <ul>
+      <li><em>path</em> - Path to remove from recently opened.</li>
+    </ul>
+    <p>
+      <code>vscode.openIssueReporter</code> - Opens the issue reporter with the provided
+      extension id as the selected source
+    </p>
+    <ul>
+      <li><em>extensionId</em> - extensionId to report an issue on</li>
+    </ul>
+    <p><code>cursorMove</code> - Move cursor to a logical position in the view</p>
+    <ul>
+      <li>
+        <em>Cursor move argument object</em> - Property-value pairs that can be passed
+        through this argument:
+        <ul>
+          <li>
+            <p>
+              ‘to’: A mandatory logical position value providing where to move the cursor.
+            </p>
+            <pre><code>&#39;left&#39;, &#39;right&#39;, &#39;up&#39;, &#39;down&#39;, &#39;prevBlankLine&#39;, &#39;nextBlankLine&#39;,
+&#39;wrappedLineStart&#39;, &#39;wrappedLineEnd&#39;, &#39;wrappedLineColumnCenter&#39;
+&#39;wrappedLineFirstNonWhitespaceCharacter&#39;, &#39;wrappedLineLastNonWhitespaceCharacter&#39;
+&#39;viewPortTop&#39;, &#39;viewPortCenter&#39;, &#39;viewPortBottom&#39;, &#39;viewPortIfOutside&#39;</code></pre>
+          </li>
+          <li>
+            <p>‘by’: Unit to move. Default is computed based on ‘to’ value.</p>
+            <pre><code>&#39;line&#39;, &#39;wrappedLine&#39;, &#39;character&#39;, &#39;halfLine&#39;</code></pre>
+          </li>
+          <li>‘value’: Number of units to move. Default is ‘1’.</li>
+          <li><p>‘select’: If ‘true’ makes the selection. Default is ‘false’.</p></li>
+        </ul>
+      </li>
+    </ul>
+    <p><code>editorScroll</code> - Scroll editor in the given direction</p>
+    <ul>
+      <li>
+        <em>Editor scroll argument object</em> - Property-value pairs that can be passed
+        through this argument:
+        <ul>
+          <li>
+            <p>‘to’: A mandatory direction value.</p>
+            <pre><code>&#39;up&#39;, &#39;down&#39;</code></pre>
+          </li>
+          <li>
+            <p>‘by’: Unit to move. Default is computed based on ‘to’ value.</p>
+            <pre><code>&#39;line&#39;, &#39;wrappedLine&#39;, &#39;page&#39;, &#39;halfPage&#39;</code></pre>
+          </li>
+          <li>‘value’: Number of units to move. Default is ‘1’.</li>
+          <li>
+            <p>‘revealCursor’: If ‘true’ reveals the cursor if it is outside view port.</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p><code>revealLine</code> - Reveal the given line at the given logical position</p>
+    <ul>
+      <li>
+        <em>Reveal line argument object</em> - Property-value pairs that can be passed
+        through this argument:
+        <ul>
+          <li>‘lineNumber’: A mandatory line number value.</li>
+          <li>
+            <p>‘at’: Logical position at which line has to be revealed.</p>
+            <pre><code>&#39;top&#39;, &#39;center&#39;, &#39;bottom&#39;</code></pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p><code>editor.unfold</code> - Unfold the content in the editor</p>
+    <ul>
+      <li>
+        <em>Unfold editor argument</em> - Property-value pairs that can be passed through
+        this argument:
+        <ul>
+          <li>‘levels’: Number of levels to unfold. If not set, defaults to 1.</li>
+          <li>
+            ‘direction’: If ‘up’, unfold given number of levels up otherwise unfolds down.
+          </li>
+          <li>
+            ‘selectionLines’: The start lines (0-based) of the editor selections to apply
+            the unfold action to. If not set, the active selection(s) will be used.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p><code>editor.fold</code> - Fold the content in the editor</p>
+    <ul>
+      <li>
+        <em>Fold editor argument</em> - Property-value pairs that can be passed through this
+        argument:
+        <ul>
+          <li>‘levels’: Number of levels to fold.</li>
+          <li>
+            ‘direction’: If ‘up’, folds given number of levels up otherwise folds down.
+          </li>
+          <li>
+            ‘selectionLines’: The start lines (0-based) of the editor selections to apply
+            the fold action to. If not set, the active selection(s) will be used. If no
+            levels or direction is set, folds the region at the locations or if already
+            collapsed, the first uncollapsed parent instead.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      <code>editor.action.goToLocations</code> - Go to locations from a position in a file
+    </p>
+    <ul>
+      <li><em>uri</em> - The text document in which to start</li>
+      <li><em>position</em> - The position at which to start</li>
+      <li><em>locations</em> - An array of locations.</li>
+      <li>
+        <em>multiple</em> - Define what to do when having multiple results, either
+        <code>peek</code>, <code>gotoAndPeek</code>, or `goto
+      </li>
+      <li>
+        <em>noResultsMessage</em> - Human readable message that shows when locations is
+        empty.
+      </li>
+    </ul>
+    <p>
+      <code>editor.action.peekLocations</code> - Peek locations from a position in a file
+    </p>
+    <ul>
+      <li><em>uri</em> - The text document in which to start</li>
+      <li><em>position</em> - The position at which to start</li>
+      <li><em>locations</em> - An array of locations.</li>
+      <li>
+        <em>multiple</em> - Define what to do when having multiple results, either
+        <code>peek</code>, <code>gotoAndPeek</code>, or `goto
+      </li>
+    </ul>
+    <p><code>workbench.action.quickOpen</code> - Quick access</p>
+    <ul>
+      <li><em>prefix</em> -</li>
+    </ul>
+    <p><code>moveActiveEditor</code> - Move the active editor by tabs or groups</p>
+    <ul>
+      <li>
+        <em>Active editor move argument</em> - Argument Properties:
+        <ul>
+          <li>‘to’: String value providing where to move.</li>
+          <li>‘by’: String value providing the unit for move (by tab or by group).</li>
+          <li>
+            ‘value’: Number value providing how many positions or an absolute position to
+            move.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p><code>vscode.setEditorLayout</code> - Sets the editor layout.</p>
+    <ul>
+      <li><em>layout</em> - The editor layout to set.</li>
+    </ul>
+    <p>
+      The layout is described as object with an initial (optional) orientation (0 =
+      horizontal, 1 = vertical) and an array of editor groups within. Each editor group can
+      have a size and another array of editor groups that will be laid out orthogonal to the
+      orientation. If editor group sizes are provided, their sum must be 1 to be applied per
+      row or column. Example for a 2x2 grid:
+      <code
+        >{ orientation: 0, groups: [{ groups: [{}, {}], size: 0.5 }, { groups: [{}, {}],
+        size: 0.5 }] }</code
+      >
+    </p>
+    <p><code>notebook.cell.execute</code> - Execute Cell</p>
+    <ul>
+      <li><em>range</em> - The cell range</li>
+      <li><em>uri</em> - The document uri</li>
+    </ul>
+    <p><code>notebook.cell.cancelExecution</code> - Stop Cell Execution</p>
+    <ul>
+      <li><em>range</em> - The cell range</li>
+      <li><em>uri</em> - The document uri</li>
+    </ul>
+    <p><code>notebook.execute</code> - Execute Notebook</p>
+    <ul>
+      <li><em>uri</em> - The document uri</li>
+    </ul>
+    <p><code>notebook.cancelExecution</code> - Cancel Notebook Execution</p>
+    <ul>
+      <li><em>uri</em> - The document uri</li>
+    </ul>
+    <p><code>notebook.fold</code> - Fold Cell</p>
+    <ul>
+      <li><em>index</em> - The cell index</li>
+    </ul>
+    <p><code>notebook.unfold</code> - Unfold Cell</p>
+    <ul>
+      <li><em>index</em> - The cell index</li>
+    </ul>
+    <p><code>notebook.selectKernel</code> - Notebook Kernel Args</p>
+    <ul>
+      <li><em>kernelInfo</em> - The kernel info</li>
+    </ul>
+    <p>
+      <code>search.action.openNewEditor</code> - Open a new search editor. Arguments passed
+      can include variables like ${relativeFileDirname}.
+    </p>
+    <ul>
+      <li><em>Open new Search Editor args</em> -</li>
+    </ul>
+    <p>
+      <code>search.action.openEditor</code> - Open a new search editor. Arguments passed can
+      include variables like ${relativeFileDirname}.
+    </p>
+    <ul>
+      <li><em>Open new Search Editor args</em> -</li>
+    </ul>
+    <p>
+      <code>search.action.openNewEditorToSide</code> - Open a new search editor. Arguments
+      passed can include variables like ${relativeFileDirname}.
+    </p>
+    <ul>
+      <li><em>Open new Search Editor args</em> -</li>
+    </ul>
+    <p>
+      <code>vscode.openFolder</code> - Open a folder or workspace in the current window or
+      new window depending on the newWindow argument. Note that opening in the same window
+      will shutdown the current extension host process and start a new one on the given
+      folder/workspace unless the newWindow parameter is set to true.
+    </p>
+    <ul>
+      <li>
+        <em>uri</em> - (optional) Uri of the folder or workspace file to open. If not
+        provided, a native dialog will ask the user for the folder
+      </li>
+      <li>
+        <em>options</em> - (optional) Options. Object with the following properties:
+        <code>forceNewWindow</code>: Whether to open the folder/workspace in a new window or
+        the same. Defaults to opening in the same window. <code>noRecentEntry</code>:
+        Whether the opened URI will appear in the ‘Open Recent’ list. Defaults to true.
+        Note, for backward compatibility, options can also be of type boolean, representing
+        the <code>forceNewWindow</code> setting.
+      </li>
+    </ul>
+    <p><code>workbench.extensions.installExtension</code> - Install the given extension</p>
+    <ul>
+      <li><em>Extension id or VSIX resource uri</em> -</li>
+    </ul>
+    <p>
+      <code>workbench.extensions.uninstallExtension</code> - Uninstall the given extension
+    </p>
+    <ul>
+      <li><em>Id of the extension to uninstall</em> -</li>
+    </ul>
+    <p><code>workbench.extensions.search</code> - Search for a specific extension</p>
+    <ul>
+      <li><em>Query to use in search</em> -</li>
+    </ul>
+    <p><code>workbench.action.files.newUntitledFile</code> - New Untitled File</p>
+    <ul>
+      <li><em>viewType</em> - The editor view type</li>
+    </ul>
+    <p><code>workbench.action.findInFiles</code> - Open the search viewlet</p>
+    <ul>
+      <li><em>A set of options for the search viewlet</em> -</li>
+    </ul>
+    <h2 id="simple-commands">Simple commands</h2>
+    <p>
+      Simple commands that do not require parameters can be found in the Keyboard Shortcuts
+      list in the default <code>keybindings.json</code> file. The unbound commands are
+      listed in a comment block at the bottom of the file.
+    </p>
+    <p>To review <code>keybindings.json</code>:</p>
+    <p>
+      Windows, Linux: <strong>File</strong> &gt; <strong>Preferences</strong> &gt;
+      <strong>Keyboard Shortcuts</strong> &gt; <code>keybindings.json</code> link
+    </p>
+    <p>
+      macOS: <strong>Code</strong> &gt; <strong>Preferences</strong> &gt;
+      <strong>Keyboard Shortcuts</strong> &gt; <code>keybindings.json</code> link
+    </p>
+  </body>
+</html>

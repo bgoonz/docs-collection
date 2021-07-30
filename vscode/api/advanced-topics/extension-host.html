@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>extension-host</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="extension-host">Extension Host</h1>
+    <p>
+      As you learned in the
+      <a href="/api/get-started/extension-anatomy">Extension Anatomy</a> topic, an extension
+      exposes the <code>activate</code> and <code>deactivate</code> methods and Visual
+      Studio Code will manage its lifecycle. This topic provides more details on the
+      <strong>Extension Host</strong> that manages all running extensions.
+    </p>
+    <p>
+      <strong>Extension host</strong> is a Node.js process in VS Code responsible for
+      loading and running extensions. Although you don’t need to worry about the Extension
+      Host when you are writing extensions, it is still useful to know what the Extension
+      Host does to your extension.
+    </p>
+    <h2 id="stability-and-performance">Stability and Performance</h2>
+    <p>
+      VS Code aims to deliver a stable and performant editor to users, and misbehaving
+      extensions should not impact the user experience. The Extension Host in VS Code
+      prevents extensions from:
+    </p>
+    <ul>
+      <li>Impacting startup performance</li>
+      <li>Slowing down UI operations</li>
+      <li>Modifying the UI</li>
+    </ul>
+    <p>
+      Additionally, VS Code lets extensions declare their
+      <a href="/api/references/activation-events">Activation Events</a> and loads them
+      lazily. For example, the Markdown extension should only be loaded when a user opens a
+      Markdown file. This makes sure that extensions do not consume unnecessary CPU and
+      memory.
+    </p>
+  </body>
+</html>

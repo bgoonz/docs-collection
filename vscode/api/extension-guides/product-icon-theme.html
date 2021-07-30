@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>product-icon-theme</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="product-icon-theme">Product Icon Theme</h1>
+    <p>
+      Visual Studio Code contains a set of built-in icons that are used in views and the
+      editor, but can also be referenced in hovers, the status bar, and even by extensions.
+      Examples are the icons in filter action buttons and view icons, in the status bar,
+      breakpoints, and the folding icons in trees and the editor.
+    </p>
+    <p>
+      A product icon theme allows an extension to redefine these icons to give VS Code a
+      custom appearance. Not covered by product icon themes are the file icons (covered by
+      file icon themes) and icons contributed by extensions.
+    </p>
+    <p>
+      VS Code requires the icons to be defined as glyph in an icon font and (currently)
+      limits product icons to consist of a single color. The color used for an icon is
+      specific to the place where it is shown and is defined by the active color theme.
+    </p>
+    <h2 id="adding-a-new-product-icon-theme">Adding a new product icon theme</h2>
+    <p>
+      To define your own product icon theme, start by creating a VS Code extension and add
+      the <code>productIconThemes</code> contribution point to the extension’s
+      <code>package.json</code>.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;productIconThemes&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;aliensAreBack&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Aliens Are Back&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./producticons/aliens-product-icon-theme.json&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>id</code> is the identifier for the product icon theme. It is used in the
+      settings, so make it unique but also readable. <code>label</code> is shown in the
+      product icon theme picker dropdown. The <code>path</code> points to a file in the
+      extension that defines the icon set. If your file name follows the
+      <code>*product-icon-theme.json</code> name scheme, you will get completion support and
+      hovers when editing the product icon theme file in VS Code.
+    </p>
+    <h2 id="product-icon-definition-file">Product icon definition file</h2>
+    <p>
+      The product icon definition file is a JSON file defining one or more icon fonts and a
+      set of icon definitions.
+    </p>
+    <h3 id="font-definitions">Font definitions</h3>
+    <p>
+      The <code>fonts</code> section lets you declare any number of glyph fonts that you
+      want to use, but must define at least one font definition.
+    </p>
+    <p>
+      These fonts can later be referenced in the icon definitions. The font declared first
+      will be used as the default if an icon definition does not specify a font ID.
+    </p>
+    <p>Copy the font file into your extension and set the path accordingly.</p>
+    <p>
+      It is recommended that you use
+      <a href="https://developer.mozilla.org/docs/Web/Guide/WOFF">WOFF</a> fonts.
+    </p>
+    <ul>
+      <li>Set ‘woff’ as the format.</li>
+      <li>
+        The weight property values are defined
+        <a href="https://developer.mozilla.org/docs/Web/CSS/font-weight#Values">here</a>.
+      </li>
+      <li>
+        The style property values are defined
+        <a href="https://developer.mozilla.org/docs/Web/CSS/@font-face/font-style#Values"
+          >here</a
+        >.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;fonts&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;alien-font&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="dt">&quot;src&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb2-6" title="6">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">          <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./alien.woff&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">          <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;woff&quot;</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-11" title="11">      <span class="dt">&quot;weight&quot;</span><span class="fu">:</span> <span class="st">&quot;normal&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      <span class="dt">&quot;style&quot;</span><span class="fu">:</span> <span class="st">&quot;normal&quot;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-14" title="14">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="icon-definitions">Icon definitions</h3>
+    <p>
+      VS Code defines a list of icon IDs through which the icons are referenced by the
+      views. The product icon’s <code>iconDefinitions</code> section assigns new icons to
+      these IDs.
+    </p>
+    <p>
+      Each definition uses <code>fontId</code> to reference one of the fonts defined in the
+      <code>fonts</code> section. If <code>fontId</code> is omitted, the first font listed
+      in the font definitions is taken.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;iconDefinitions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;dialog-close&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="dt">&quot;fontCharacter&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">43&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="dt">&quot;fontId&quot;</span><span class="fu">:</span> <span class="st">&quot;alien-font&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      A list of all icon identifiers can be found in the
+      <a href="/api/references/icons-in-labels#icon-listing">icon reference</a>.
+    </p>
+    <h2 id="develop-and-test">Develop and test</h2>
+    <p>
+      VS Code has built-in editing support for the <code>package.json</code> file as well as
+      for product icon theme files. To get that, your theme file name needs to end with
+      <code>product-icon-theme.json</code>. This enables code completion on all properties
+      including the known icon IDs as well as hovers and validation.
+    </p>
+    <p>
+      To try out a product icon theme, open the extension folder in VS Code and press
+      <code>kb(workbench.action.debug.start)</code>. This will run the extension in an
+      extension development host window. The window has your extension enabled and the
+      extension will automatically switch to the first product icon theme.
+    </p>
+    <p>
+      Also, the theme file is watched for changes and updates to the icons will be applied
+      automatically whenever the theme file is modified. As you work on the product icon
+      definition file, you will see the changes live on save.
+    </p>
+    <p>
+      To switch between product icon themes, use the command
+      <strong>Preferences: Product Icon Theme</strong>.
+    </p>
+    <p>
+      To find out which icon is used at a certain location in the VS Code UI, open Developer
+      Tools by running <strong>Help &gt; Toggle Developer Tools</strong> and then:
+    </p>
+    <ul>
+      <li>Click on the Developer Tools inspect tool in the upper left.</li>
+      <li>Move the mouse over the icon to inspect.</li>
+      <li>
+        If the icon’s class name is <code>codicon.codicon-remote</code>, then the icon ID is
+        <code>remote</code>.
+      </li>
+    </ul>
+    <figure>
+      <img
+        src="images/product-icon-theme/dev-tool-select-tool.png"
+        alt="dev tools inspect tool"
+      />
+      <figcaption>dev tools inspect tool</figcaption>
+    </figure>
+    <h2 id="sample">Sample</h2>
+    <p>
+      The
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/product-icon-theme-sample"
+        >Product Color Theme Sample</a
+      >
+      can be used as a playground.
+    </p>
+  </body>
+</html>

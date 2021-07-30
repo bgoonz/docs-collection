@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>remote-repositories</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="remote-repositories">Remote Repositories</h1>
+    <p>
+      June 10, 2021 by Brigit Murtaugh,
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh), Eric Amodio,
+      <span class="citation" data-cites="eamodio">[@eamodio]</span
+      >(https://twitter.com/eamodio)
+    </p>
+    <p>
+      We’re excited to present the new
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=github.remotehub"
+        >Remote Repositories</a
+      >
+      extension for Visual Studio Code! This is a new experience that we’ve been
+      building in partnership with our friends at GitHub to enable working with
+      source code repositories quickly and safely inside VS Code.
+    </p>
+    <p>
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=github.remotehub"
+        ><img
+          src="remote-repositories-banner.png"
+          alt="Remote Repositories extension"
+      /></a>
+    </p>
+    <h2 id="a-quicker-way-to-open-source-code-repositories">
+      A quicker way to open source code repositories
+    </h2>
+    <p>
+      In VS Code, we’ve offered integrated support for Git from the very
+      beginning, and we’ve been supporting many other source control management
+      (SCM) providers through extensions. This has allowed developers to clone
+      and work with repositories directly within VS Code.
+    </p>
+    <p>
+      However, a large part of what developers do every day involves reading
+      other people’s code: reviewing pull requests, browsing open-source
+      repositories, experimenting with new technologies or projects, inspecting
+      upstream dependencies to debug applications, etc. What all of these have
+      in common is that as a first step, you usually clone the repository
+      locally and then open the code in your favorite code editor (which we hope
+      is VS Code!). Yet, cloning a repository takes time, may lead you to review
+      an outdated version of the repo if you forget to pull, and can sometimes
+      be a security risk if you’re unfamiliar with the code.
+    </p>
+    <p>
+      The new
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=github.remotehub"
+        >Remote Repositories</a
+      >
+      extension, published by GitHub, makes the experience of opening source
+      code repositories in VS Code instant and safe. With this, you can quickly
+      browse, search, edit, and commit to any remote GitHub repository (and
+      soon, Azure Repos) directly from within VS Code, no clone necessary!
+    </p>
+    <p>
+      You can work on as many repos as you like without having to save any
+      source code on your machine. Remote Repositories saves you time and local
+      disk space and empowers you to stay entirely within VS Code for all your
+      source control tasks.
+    </p>
+    <p>
+      In this blog post, we’ll explore just how easy it is to get started with
+      Remote Repositories, what you can do after opening your first remote repo,
+      technical details supporting this virtual environment, and how you can
+      provide us with feedback today.
+    </p>
+    <h2 id="open-your-first-remote-repo-in-vs-code">
+      Open your first remote repo in VS Code
+    </h2>
+    <p>
+      Let’s open a remote repo in VS Code. First, make sure you have installed
+      the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=github.remotehub"
+        >Remote Repositories</a
+      >
+      extension.
+    </p>
+    <p>
+      Currently, Remote Repositories supports GitHub repos, with support for
+      Azure Repos coming soon. In this blog post, we’ll start by opening the VS
+      Code repository
+      <a href="https://github.com/microsoft/vscode">(microsoft/vscode)</a>.
+    </p>
+    <p>
+      After installing the Remote Repositories extension, we get instant access
+      to its <strong>Open Remote Repository</strong> command by clicking on the
+      remote indicator in the lower left of VS Code (along with commands from
+      any other
+      <a href="https://code.visualstudio.com/docs/remote/remote-overview"
+        >Remote Development extensions</a
+      >
+      you have installed):
+    </p>
+    <figure>
+      <img src="remote-indicator.png" alt="Remote indicator in VS Code" />
+      <figcaption>Remote indicator in VS Code</figcaption>
+    </figure>
+    <p>
+      If you haven’t logged into GitHub from VS Code before, you’ll be prompted
+      to authenticate your GitHub account. Once logged in, search for a repo or
+      PR, select the one you want, and you’ll be ready to go.
+    </p>
+    <p>
+      In the short video below, we search for and select the VS Code repo, VS
+      Code reloads, and the repo’s contents loads as if we cloned it locally:
+    </p>
+    <figure>
+      <img
+        src="remote-repositories1.gif"
+        alt="Gif of using Open Remote Repository command, search for “microsoft/vscode,” repo loads, open readme"
+      />
+      <figcaption>
+        Gif of using Open Remote Repository command, search for
+        “microsoft/vscode,” repo loads, open readme
+      </figcaption>
+    </figure>
+    <p>
+      You’re able to explore and contribute to the repo without ever having to
+      leave VS Code. You feel like you’re working on local code, using the
+      familiar VS Code interface, and can use features like the VS Code
+      Explorer, search, timeline view, quick open, and of course source control.
+    </p>
+    <p>
+      You’re now connected to what’s known as a virtual workspace (more
+      information on virtual workspaces
+      <a href="#virtual-file-systems-and-workspaces">below</a>); the remote
+      indicator reads “GitHub.” When you hover over the remote indicator, you
+      are notified that some features are not available while in a virtual
+      workspace:
+    </p>
+    <figure>
+      <img
+        src="remote-indicator-hover.png"
+        alt="Hover over remote indicator for limited virtual workspace message"
+      />
+      <figcaption>
+        Hover over remote indicator for limited virtual workspace message
+      </figcaption>
+    </figure>
+    <p>
+      A virtual workspace is a special setup, and some features, like
+      extensions, are disabled or have limited functionality. You can easily
+      find out which extensions are disabled by clicking on the
+      <strong>Some features</strong> link shown when hovering over the remote
+      indicator.
+    </p>
+    <p>
+      Clicking the link shows which extensions are disabled and which ones have
+      limited functionality. The limited functionality can be seen when hovering
+      over the extension.
+    </p>
+    <figure>
+      <img
+        src="extension-limits.png"
+        alt="VS Code Extensions view with limited and disabled extensions"
+      />
+      <figcaption>
+        VS Code Extensions view with limited and disabled extensions
+      </figcaption>
+    </figure>
+    <p>
+      If you would like to manually enable an extension in a virtual workspace,
+      you can use the <code>extensions.supportVirtualWorkspaces</code> setting
+      in your user <code>settings.json</code> file.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1">    <span class="er">&quot;extensions.supportVirtualWorkspaces&quot;:</span> <span class="fu">{</span> <span class="dt">&quot;&lt;extensionID&gt;&quot;</span><span class="fu">:</span> <span class="kw">true</span> <span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Keep in mind that an extension might not be implemented to handle a
+      virtual workspace without access to the local file system, and so the
+      extension might not work as expected.
+    </p>
+    <h2 id="you-opened-a-repo-whats-next">You opened a repo, what’s next?</h2>
+    <p>
+      With your repo open, Remote Repositories makes it easy to contribute to
+      your project.
+    </p>
+    <h3 id="simplified-git-workflow-that-keeps-your-project-up-to-date">
+      Simplified Git workflow that keeps your project up to date
+    </h3>
+    <p>
+      Remote Repositories helps you stay on the latest version of your repos
+      every time, without any complex Git commands.
+    </p>
+    <p>
+      Any time you open a new repo, you open the latest version. And whenever
+      Remote Repositories detects there are new changes from GitHub, it will
+      list how many commits you need to pull down in the Status bar:
+    </p>
+    <figure>
+      <img
+        src="one-change-status-bar.png"
+        alt="VS Code Status bar showing “GitHub” in remote indicator and 1 pending change"
+      />
+      <figcaption>
+        VS Code Status bar showing “GitHub” in remote indicator and 1 pending
+        change
+      </figcaption>
+    </figure>
+    <p>and highlights the modified files in the Explorer:</p>
+    <figure>
+      <img
+        src="readme-one-change-explorer.png"
+        alt="VS Code Explorer listing files and README has 1 change"
+      />
+      <figcaption>
+        VS Code Explorer listing files and README has 1 change
+      </figcaption>
+    </figure>
+    <p>
+      When you commit changes, they’ll automatically show up on GitHub – you
+      don’t need to push your changes or publish any new branches you create.
+    </p>
+    <h3 id="create-or-check-out-pull-requests">
+      Create or check out pull requests
+    </h3>
+    <p>
+      Remote Repositories works well with the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github"
+        >GitHub Pull Requests and Issues extension</a
+      >, which allows you to review and manage pull requests and issues from
+      GitHub directly in VS Code. Use the two extensions in parallel to quickly
+      check out PRs and work on issues without ever having to clone code locally
+      or leave VS Code.
+    </p>
+    <p>
+      You can make a change to your code, create a new branch and a pull request
+      (PR) based on that change, and then check out the PR, all in a few clicks.
+    </p>
+    <figure>
+      <img
+        src="remote-repositories3.gif"
+        alt="Gif using GitHub Pull Request extension to create branch and PR, and check out that PR"
+      />
+      <figcaption>
+        Gif using GitHub Pull Request extension to create branch and PR, and
+        check out that PR
+      </figcaption>
+    </figure>
+    <p>
+      You can learn more about the GitHub Pull Requests and Issues extension in
+      our
+      <a href="https://code.visualstudio.com/docs/editor/github"
+        >Working with GitHub</a
+      >
+      article.
+    </p>
+    <h3 id="keep-changes-isolated-to-branches">
+      Keep changes isolated to branches
+    </h3>
+    <p>
+      You may need to switch between branches as you complete your work. In a
+      typical environment, this can get tricky when you need to decide which
+      changes to stash or commit.
+    </p>
+    <p>
+      Remote Repositories lets you easily work on different branches
+      simultaneously. When you pause work on one branch and switch to a new one,
+      you won’t be asked about stashing changes - they’ll automatically stay on
+      the previous branch. When you go back to a previous branch, your changes
+      will still be there, and you can pick up right where you left off.
+    </p>
+    <p>Let’s explore how to push changes to a branch.</p>
+    <p>
+      In the Status bar, select your current branch to open the list of
+      branches, for example “main”:
+    </p>
+    <figure>
+      <img src="main-branch.png" alt="VS Code Status bar on Main branch" />
+      <figcaption>VS Code Status bar on Main branch</figcaption>
+    </figure>
+    <p>
+      Select <strong>+ Create New Branch…</strong> and type a name for your
+      branch:
+    </p>
+    <figure>
+      <img
+        src="remote-branch.png"
+        alt="VS Code Command Palette with options to create new branch"
+      />
+      <figcaption>
+        VS Code Command Palette with options to create new branch
+      </figcaption>
+    </figure>
+    <p>You can then switch to that new branch:</p>
+    <figure>
+      <img
+        src="switch-branch.png"
+        alt="Remote Repositories prompt to switch to new branch"
+      />
+      <figcaption>
+        Remote Repositories prompt to switch to new branch
+      </figcaption>
+    </figure>
+    <p>
+      The new branch will not include any changes from your previous branch.
+    </p>
+    <h2 id="limitations">Limitations</h2>
+    <p>There are certain limitations while working with Remote Repositories:</p>
+    <ul>
+      <li>
+        Debugging, terminals, and tasks - Not currently supported. Terminals
+        open on your local file system and don’t have access to the virtual file
+        system of the remote repository.
+      </li>
+      <li>
+        Limited language intelligence - Features like IntelliSense and
+        <strong>Go to Definition</strong> may be impacted as many languages
+        don’t yet understand the virtualized environment of Remote Repositories.
+      </li>
+      <li>
+        Search - GitHub search itself has limitations, such as not indexing
+        branches. Remote Repositories can avoid this limitation and perform a
+        full-text search by enabling indexing. Indexing pulls a shallow clone of
+        the repository from GitHub and performs a full search locally, providing
+        greater power than GitHub’s fuzzy default-branch native search. You can
+        enable indexing in Remote Repositories from the Search view.
+      </li>
+      <li>
+        Extension limitations - Not all extensions can support running in a
+        virtual workspace, but more extensions will support it over time.
+        Extensions that depend heavily on access to local files cannot support
+        this setup. See the virtual workspace section
+        <a href="#virtual-file-systems-and-workspaces">below</a> for more
+        details.
+      </li>
+    </ul>
+    <p>
+      We are just getting started on this journey, so expect the feature set to
+      grow and the limitations to shrink as we continue development.
+    </p>
+    <h2 id="continue-working-in-a-more-powerful-environment">
+      Continue working in a more powerful environment
+    </h2>
+    <p>
+      Using Remote Repositories, VS Code operates in an environment where not
+      all features are available because there is no physical file system. This
+      is great to quickly get started browsing a repository, but what about when
+      you’re ready to do some more “advanced” work, such as:
+    </p>
+    <ul>
+      <li>
+        You want to actively <strong>work on</strong> the repository and get the
+        full power of VS Code.
+      </li>
+      <li>
+        You need to actively track the changes of the repository by
+        <strong>pulling from the remote</strong> regularly.
+      </li>
+    </ul>
+    <p>
+      To move to more advanced workflows, Remote Repositories provides a way for
+      you to “upgrade” your environment and continue your work there, picking up
+      from wherever you currently are.
+    </p>
+    <p>
+      Click the remote indicator in the lower left, then select
+      <strong>Continue Working on…</strong>.
+    </p>
+    <figure>
+      <img
+        src="continue-working.png"
+        alt="VS Code Command Palette with “Continue Working on…” command"
+      />
+      <figcaption>
+        VS Code Command Palette with “Continue Working on…” command
+      </figcaption>
+    </figure>
+    <p>You’ll be presented with three options:</p>
+    <ul>
+      <li>
+        <strong>Clone Repository Locally</strong>: Clone the current repo to
+        your local machine. A local file explorer will pop up, allowing you to
+        select a location on disk to clone the remote repo.
+      </li>
+      <li>
+        <strong>Clone Repository in Container Volume</strong>: Clone the current
+        repo in a Docker
+        <a
+          href="https://code.visualstudio.com/docs/remote/containers#_quick-start-open-a-git-repository-or-github-pr-in-an-isolated-container-volume"
+          >container volume</a
+        >
+        using the Remote – Containers extension (you’ll need the
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"
+          >Remote – Containers</a
+        >
+        extension and Docker installed). VS Code will reload and connect using
+        Remote – Containers, and the remote indicator will now read
+        <strong>Dev Container: {image name}</strong>.
+      </li>
+      <li>
+        <strong>Open in Codespaces</strong>: Continue your work in a
+        <a href="https://github.com/features/codespaces">GitHub Codespace</a>.
+        When you select this option, a browser will open and direct you to your
+        list of Codespaces for this repository.
+      </li>
+    </ul>
+    <figure>
+      <img
+        src="continue-options.png"
+        alt="VS Code Command Palette with options to continue locally, in a volume, or in Codespaces"
+      />
+      <figcaption>
+        VS Code Command Palette with options to continue locally, in a volume,
+        or in Codespaces
+      </figcaption>
+    </figure>
+    <p>
+      Now that we’ve explored how to use Remote Repositories in VS Code, we’d
+      like to describe some of the technical details powering the experience,
+      and how you can ensure your extension will work in a Remote Repository
+      session.
+    </p>
+    <h2 id="virtual-file-systems-and-workspaces">
+      Virtual file systems and workspaces
+    </h2>
+    <p>
+      The core concepts powering this remote work are virtual file systems and
+      virtual workspaces.
+    </p>
+    <p>
+      As an end user, all you need to know is which repo or PR you want to work
+      on – VS Code will take care of the virtual file system and manage your
+      workspace for you. As an extension developer, you’ll want to adopt the
+      virtual file system API to ensure your extension behaves as expected.
+    </p>
+    <h3 id="how-virtual-file-systems-work">How virtual file systems work</h3>
+    <p>
+      When you work in a traditional git workflow, you “git clone” a repo, and a
+      copy is saved to your computer’s local file system. But when working with
+      Remote Repositories, the code doesn’t live on your local computer; it’s
+      still just on GitHub.
+    </p>
+    <p>
+      You work with the code through a virtual file system, which is an
+      abstraction away from files that exist physically on disk. Virtual file
+      systems can serve content from code hosts like GitHub, from cloud storage,
+      or from databases and seamlessly provide these as files to the user in VS
+      Code.
+    </p>
+    <p>
+      When you open a workspace on a virtual file system, it’s known as a
+      virtual workspace. While working in a virtual workspace, you still get
+      access to VS Code features, including extensions.
+    </p>
+    <h3 id="ensuring-your-extension-works-in-a-virtual-workspace">
+      Ensuring your extension works in a virtual workspace
+    </h3>
+    <p>
+      For extensions to behave properly, they must support a virtual file
+      system.
+    </p>
+    <p>
+      When an extension has no code but is a pure color theme, keybinding,
+      snippets, or grammar extension, then it can run in a virtual workspace and
+      no adoption is necessary.
+    </p>
+    <p>
+      Extensions that run actual code, meaning it defines a main entry point,
+      require inspection and possibly adoption.
+    </p>
+    <p>
+      The
+      <a
+        href="https://github.com/microsoft/vscode/blob/dc8bd9cd7e5231745549ac6218266c63271f48cd/src/vs/vscode.d.ts#L7038"
+        >API support</a
+      >
+      for virtual file systems is through the
+      <code>FileSystemProvider</code> interface. A file system provider is
+      registered for a new URI scheme (for example, <code>vscode-vfs</code>),
+      and resources on that file system will be represented by URIs using that
+      schema (<code>vscode-vfs://github/microsoft/vscode/package.json</code>).
+    </p>
+    <p>
+      There is a <code>capabilities</code> property in the extension’s
+      <code>package.json</code>, and the
+      <code>virtualWorkspaces</code> sub-property is used to signal whether an
+      extension works with virtual workspaces or not.
+    </p>
+    <p>
+      You can learn more about virtual file systems, workspaces, and how to
+      implement them for extensions in the
+      <a href="https://github.com/microsoft/vscode/wiki/Virtual-Workspaces"
+        >virtual workspaces extension authors guide</a
+      >.
+    </p>
+    <h2 id="feedback-further-reading">Feedback &amp; further reading</h2>
+    <p>
+      We are very excited for you to try out Remote Repositories and can’t wait
+      for your feedback.
+    </p>
+    <p>
+      Please install the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=github.remotehub"
+        >Remote Repositories</a
+      >
+      extension. You can file any
+      <a href="https://github.com/microsoft/vscode-remote-repositories-github"
+        >issues or feature requests</a
+      >
+      or Tweet us your thoughts
+      <span class="citation" data-cites="code">[@code]</span
+      >(https://twitter.com/code).
+    </p>
+    <p>
+      You can also check out our new
+      <a href="https://www.youtube.com/watch?v=wHsmaXoGIXI">YouTube video</a>
+      about how to use the Remote Repositories extension.
+    </p>
+    <p>
+      If you’re an extension author, check out the
+      <a href="https://github.com/microsoft/vscode/wiki/Virtual-Workspaces"
+        >Virtual Workspace Support for Extension Authors guide</a
+      >
+      and share any questions or feedback in our
+      <a href="https://github.com/microsoft/vscode/issues/123115"
+        >tracking issue</a
+      >. You can also join the Extension Authors community
+      <a
+        href="https://vscode-dev-community.slack.com/join/shared_invite/zt-ggynfxra-KAozfLTWe03w_PwRxwtfvA#/shared-invite/email"
+        >Slack group</a
+      >.
+    </p>
+    <p>Happy Coding!</p>
+    <p>
+      Brigit Murtaugh, VS Code Program Manager
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh)<br />
+      Eric Amodio, VS Code Principal Software Engineer
+      <span class="citation" data-cites="eamodio">[@eamodio]</span
+      >(https://twitter.com/eamodio)
+    </p>
+  </body>
+</html>

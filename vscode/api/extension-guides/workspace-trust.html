@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>workspace-trust</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="workspace-trust-extension-guide">Workspace Trust Extension Guide</h1>
+    <h2 id="what-is-workspace-trust">What is Workspace Trust?</h2>
+    <p>
+      <a href="/docs/editor/workspace-trust">Workspace Trust</a> is a feature driven by the
+      security risks associated with unintended code execution when a user opens a workspace
+      in VS Code. For example, consider that a language extension, in order to provide
+      functionality, may execute code from the currently loaded workspace. In this scenario,
+      the user should trust that the contents of the workspace are not malicious. Workspace
+      Trust centralizes this decision within VS Code and supports a
+      <a href="/docs/editor/workspace-trust#_restricted-mode">Restricted Mode</a> to protect
+      against automatic code execution so that extension authors do not have to handle this
+      infrastructure themselves. VS Code offers static declaration and API support to
+      onboard extensions quickly without the need to duplicate code across extensions.
+    </p>
+    <h2 id="onboarding">Onboarding</h2>
+    <h3 id="static-declarations">Static declarations</h3>
+    <p>
+      In your extension’s <code>package.json</code>, VS Code supports the following new
+      <code>capabilities</code> property <code>untrustedWorkspaces</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb1-1" title="1">capabilities<span class="op">:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  untrustedWorkspaces<span class="op">:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="op">{</span> supported<span class="op">:</span> <span class="kw">true</span> <span class="op">}</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="op">{</span> supported<span class="op">:</span> <span class="kw">false</span><span class="op">,</span> description<span class="op">:</span> <span class="dt">string</span> <span class="op">}</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="op">{</span> supported<span class="op">:</span> <span class="st">&#39;limited&#39;</span><span class="op">,</span> description<span class="op">:</span> <span class="dt">string</span><span class="op">,</span> restrictedConfigurations<span class="op">?:</span> <span class="dt">string</span><span class="op">[]</span> <span class="op">}</span></a></code></pre>
+    </div>
+    <p>For the <code>supported</code> property, the following values are accepted:</p>
+    <ul>
+      <li>
+        <code>true</code> - The extension is fully supported in Restricted Mode as it does
+        not need Workspace Trust to perform any functionality. It will be enabled exactly as
+        before.
+      </li>
+      <li>
+        <code>false</code> - The extension is not supported in Restricted Mode as it cannot
+        function without Workspace Trust. It will remain disabled until Workspace Trust is
+        granted.
+      </li>
+      <li>
+        <code>'limited'</code> - Some features of the extension are supported in Restricted
+        Mode. Trust-sensitive features should be disabled until Workspace Trust is granted.
+        The extension can use the VS Code API to hide or disable these features. Workspace
+        settings can be gated by trust automatically using the
+        <code>restrictedConfigurations</code> property.
+      </li>
+    </ul>
+    <p>
+      For the <code>description</code> property, a description of why trust is needed must
+      be provided to help the user understand what features will be disabled or what they
+      should review before granting or denying Workspace Trust. If <code>supported</code> is
+      set to <code>true</code>, this property is ignored.
+    </p>
+    <p>
+      The value for the <code>description</code> property should be added to
+      <code>package.nls.json</code> and then referenced in the
+      <code>package.json</code> file for localization support.
+    </p>
+    <p>
+      The <code>restrictedConfigurations</code> property takes an array of configuration
+      setting IDs. For the settings listed, the extension will not be given
+      workspace-defined values when in Restricted Mode for an untrusted workspace.
+    </p>
+    <h2 id="how-to-support-restricted-mode">How to support Restricted Mode?</h2>
+    <p>
+      To help extension authors understand what is in scope for Workspace Trust and what
+      types of features are safe in Restricted Mode, here are a list of questions to
+      consider.
+    </p>
+    <h3 id="does-my-extension-have-a-main-entry-point">
+      Does my extension have a main entry point?
+    </h3>
+    <p>
+      If an extension does not have a <code>main</code> entry point (for example themes and
+      language grammars), the extension does not require Workspace Trust. Extension authors
+      do not need to take any action for such extensions as they will continue to function
+      independent whether the workspace is trusted or not.
+    </p>
+    <h3 id="does-my-extension-rely-on-files-in-the-opened-workspace-to-provide-features">
+      Does my extension rely on files in the opened workspace to provide features?
+    </h3>
+    <p>
+      This can mean things like settings that can be set by the workspace or actual code in
+      the workspace. If the extension never uses any of the contents of the workspace, it
+      probably doesn’t require trust. Otherwise, take a look at the other questions.
+    </p>
+    <h3 id="does-my-extension-treat-any-contents-of-the-workspace-as-code">
+      Does my extension treat any contents of the workspace as code?
+    </h3>
+    <p>
+      The most common example of this is using a project’s workspace dependencies, such as
+      the Node.js modules stored in the local workspace. A malicious workspace might check
+      in a compromised version of the module. Thus, this is a security risk for the user and
+      extension. In addition, an extension may rely on JavaScript or other configuration
+      files that control the extension or other modules’ behavior. There are many other
+      examples, such as executing an opened code file to determine its output for error
+      reporting.
+    </p>
+    <h3
+      id="does-my-extension-use-settings-that-determine-code-execution-that-can-be-defined-in-the-workspace"
+    >
+      Does my extension use settings that determine code execution that can be defined in
+      the workspace?
+    </h3>
+    <p>
+      Your extension might use settings values as flags to a CLI that your extension
+      executes. If these settings are overridden by a malicious workspace, they could be
+      used as an attack vector against your extension. On the other hand, if the settings’
+      values are only used to detect certain conditions, then it may not be a security risk
+      and does not require Workspace Trust. For example, an extension might check whether
+      the value of a preferred shell setting is <code>bash</code> or <code>pwsh</code> to
+      determine what documentation to show. The
+      <a href="#configurations-settings">Configurations (settings)</a> section below has
+      guidance on settings to help you find the optimal configuration for your extension.
+    </p>
+    <p>
+      This is not an exhaustive list of cases that might require Workspace Trust. As we
+      review more extensions, we will update this list. Use this list to think of similar
+      behavior your extension might be doing when considering Workspace Trust.
+    </p>
+    <h3 id="what-if-i-dont-make-changes-to-my-extension">
+      What if I don’t make changes to my extension?
+    </h3>
+    <p>
+      As mentioned above, an extension that does not contribute anything to their
+      <code>package.json</code> will be treated as not supporting Workspace Trust. It will
+      be disabled when a workspace is in Restricted Mode and the user will be notified that
+      some extensions are not working due to Workspace Trust. This measure is the most
+      security-conscious approach for the user. Even though this is the default, it is a
+      best practice to set the appropriate value indicating that as an extension author, you
+      have made the effort to protect the user and your extension from malicious workspace
+      content.
+    </p>
+    <h2 id="workspace-trust-api">Workspace Trust API</h2>
+    <p>
+      As described above, the first step to using the API is adding the static declarations
+      to your <code>package.json</code>. The easiest method of onboarding would be to use a
+      <code>false</code> value for the <code>supported</code> property. Once again, this is
+      the default behavior even if you do nothing, but it’s a good signal to the user that
+      you have made a deliberate choice. In this case, your extension does not need to do
+      anything else. It will not be activated until trust is given and then your extension
+      will know that it is executing with the consent of the user. However, if your
+      extension only requires trust for part of its functionality, this is likely not the
+      best option.
+    </p>
+    <p>
+      For extensions that wish to gate their features on Workspace Trust, they should use
+      the <code>'limited'</code> value for the <code>supported</code> property, and VS Code
+      provides the following API:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode typescript"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">export</span> <span class="im">namespace</span> <span class="dt">workspace</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co">    * When true, the user has explicitly trusted the contents of the workspace.</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">    */</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="im">export</span> <span class="kw">const</span> isTrusted<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">    * Event that fires when the current workspace has been trusted.</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">    */</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="im">export</span> <span class="kw">const</span> onDidGrantWorkspaceTrust<span class="op">:</span> <span class="bu">Event</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;;</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Use the <code>isTrusted</code> property to determine if the current workspace is
+      trusted and the <code>onDidGrantWorkspaceTrust</code> event to listen for when trust
+      has been granted to the workspace. You can use this API to block specific code paths
+      and perform any necessary registrations once the workspace has been trusted.
+    </p>
+    <p>
+      VS Code also exposes a context key <code>isWorkspaceTrusted</code> for use in
+      <code>when</code> clauses as described below.
+    </p>
+    <h2 id="contribution-points">Contribution points</h2>
+    <h3 id="commands-views-or-other-ui">Commands, views, or other UI</h3>
+    <p>
+      When the user has not trusted the workspace, they will be operating in Restricted Mode
+      with limited functionality geared towards browsing code. Any features that you disable
+      in Restricted Mode should be hidden from the user. This can be done via
+      <a href="/api/references/when-clause-contexts">when clause contexts</a> and the
+      context key <code>isWorkspaceTrusted</code>. A command can still be called even if it
+      is not presented in the UI, so you should block execution or not register a command
+      based on the API above in your extension code.
+    </p>
+    <h3 id="configurations-settings">Configurations (settings)</h3>
+    <p>
+      First, you should review your settings to determine if they need to take trust into
+      account. As described above, a workspace may define a value for a setting that your
+      extension consumes that is malicious to the use. If you identify settings that are
+      vulnerable, you should use <code>'limited'</code> for the
+      <code>supported</code> property and list the setting ID in the
+      <code>restrictedConfigurations</code> array.
+    </p>
+    <p>
+      When you add a setting ID to the <code>restrictedConfigurations</code> array, VS Code
+      will only return the user-defined value of the setting in Restricted Mode. Your
+      extension then doesn’t need to make any additional code changes to handle the setting.
+      When trust is granted, a configuration change event will fire in addition to the
+      Workspace Trust event.
+    </p>
+    <h3 id="debug-extensions">Debug extensions</h3>
+    <p>
+      VS Code will prevent debugging in Restricted Mode. For this reason, debugging
+      extensions generally do not need to require trust and should select
+      <code>true</code> for the <code>supported</code> property. However, if your extension
+      provides additional functionality, commands, or settings that are not part of the
+      built-in debugging flow, you should use <code>'limited'</code> and follow the above
+      guidance.
+    </p>
+    <h3 id="task-providers">Task providers</h3>
+    <p>
+      Similar to debugging, VS Code prevents running tasks in Restricted Mode. If your
+      extension provides additional functionality, commands, or settings that are not part
+      of the built-in tasks flow, you should use <code>'limited'</code> and follow the above
+      guidance. Otherwise, you can specify <code>supported: true</code>.
+    </p>
+    <h2 id="testing-workspace-trust">Testing Workspace Trust</h2>
+    <p>
+      See the <a href="/docs/editor/workspace-trust">Workspace Trust user guide</a> for
+      details on enabling and configuring Workspace Trust.
+    </p>
+  </body>
+</html>

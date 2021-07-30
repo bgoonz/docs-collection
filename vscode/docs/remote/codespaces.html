@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>codespaces</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="github-codespaces">GitHub Codespaces</h1>
+<p><a href="https://github.com/features/codespaces">GitHub Codespaces</a> provides cloud-powered development environments for any activity - whether it’s a long-term project, or a short-term task like reviewing a pull request. You can work with these environments from Visual Studio Code or in a browser-based editor.</p>
+<figure>
+<img src="images/codespaces/github-codespaces-extension.png" alt="GitHub Codespaces extension" /><figcaption>GitHub Codespaces extension</figcaption>
+</figure>
+<h2 id="environments">Environments</h2>
+<p>An environment is the “backend” half of GitHub Codespaces. It’s where all of the compute associated with software development happens: compiling, debugging, restoring, etc. When you need to work on a new project, pick up a new task, or review a PR, you can simply spin up a Cloud-hosted environment, and GitHub Codespaces takes care of configuring it correctly. It automatically configures everything you need to work on your project: the source code, runtime, compiler, debugger, editor, custom dotfile configurations, relevant editor extensions and more.</p>
+<h2 id="customization">Customization</h2>
+<p>GitHub Codespaces are fully customizable on a per project basis. This is accomplished by including a <code>devcontainer.json</code> file in the project’s repository, similar to VS Code <a href="/docs/remote/containers.md">Remote Container</a> development.</p>
+<p>Example customizations include:</p>
+<ul>
+<li>Setting the Linux-based operating system to use.</li>
+<li>Automatically installing various tools, runtimes, and frameworks.</li>
+<li>Forwarding commonly used ports.</li>
+<li>Setting environment variables.</li>
+<li>Configuring editor settings and installing preferred extensions.</li>
+</ul>
+<p>See the <a href="https://docs.github.com/github/developing-online-with-codespaces/configuring-codespaces-for-your-project">Configuring Codespaces</a> documentation for codespace-specific <code>devcontainer.json</code> settings.</p>
+<h2 id="dotfile-per-user-configuration">Dotfile per user configuration</h2>
+<p>Dotfiles are files whose filename begins with a dot (.). They typically contain configuration information for applications and can control how terminals, editors, source control, and various other tools behave. <code>.bashrc</code>, <code>.gitignore</code>, and <code>.editorconfig</code> are examples of dotfiles commonly used by developers.</p>
+<p>You can specify a GitHub repo containing your dotfiles, a target location for the files, as well as install commands when creating a codespace.</p>
+<p>See the <a href="https://docs.github.com/github/developing-online-with-codespaces/personalizing-codespaces-for-your-account">Personalizing Codespaces</a> documentation to learn how to add your dotfile configurations to a codespace.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>There are getting started topics for both GitHub Codespaces clients. These will fast-track you through signing in to GitHub Codespaces, creating your first codespace, and connecting to it with your preferred client:</p>
+<ul>
+<li><a href="https://docs.github.com/github/developing-online-with-codespaces/using-codespaces-in-visual-studio-code">Codespaces in VS Code</a> - Use the <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces">GitHub Codespaces</a> extension to connect and work in your environment.</li>
+<li><a href="https://docs.github.com/github/developing-online-with-codespaces/creating-a-codespace">Codespaces in the browser</a> - Connect to your codespace through a browser-based editor.</li>
+</ul>
+<h2 id="extension-authors">Extension authors</h2>
+<p>The VS Code extension API hides most of the implementation details of running remotely so many extensions will just work in GitHub Codespaces environments without any modification. However, we recommend that you test your extension in a codespace to be sure that all of its functionality works as expected. See the article on <a href="/api/advanced-topics/remote-extensions.md">Supporting Remote Development and GitHub Codespaces</a> for details.</p>
+<h2 id="known-limitations-and-adaptations">Known limitations and adaptations</h2>
+<p>While working with Codespaces and specifically VS Code in the web, there are certain limitations to keep in mind. Some of these limitations have workarounds or adaptations in place to provide a consistent development experience.</p>
+<p>For several issues (especially keybindings or those listed with a workaround for the desktop), you can install and use a Codespace as a <a href="https://docs.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/#pwas-on-microsoft-edge-chromium">progressive web application</a> (PWA).</p>
+<figure>
+<img src="images/codespaces/PWA-edge-install.png" alt="Installing Codespaces as PWA in Microsoft Edge" /><figcaption>Installing Codespaces as PWA in Microsoft Edge</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Issue</th>
+<th>Reason</th>
+<th>Workaround</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>kbstyle(Ctrl+Shift+P)</code> won’t launch the Command Palette in Firefox.</td>
+<td><code>kbstyle(Ctrl+Shift+P)</code> is reserved in Firefox.</td>
+<td>Use <code>kbstyle(F1)</code> to launch the Command Palette.</td>
+</tr>
+</tbody>
+</table>
+| Certain default keybindings (for debugging) are different in the web. | Since the browser may already have an action registered for those keybindings, we adjust the default for VS Code in the web. | Use the adjusted defaults. They appear on tooltip hovers over the debug actions.
+<ul>
+<li>
+Step over is <code>kbstyle(Alt+F10)</code> (instead of <code>kbstyle(F10)</code>) on all browsers.
+</li>
+<li>
+Step into in the web is <code>kbstyle(Alt+F11)</code> (instead of <code>kbstyle(F11)</code>) on Windows browsers.
+</li>
+</ul>
+| | <code>kbstyle(F11)</code> for debugging does not work on macOS in web or desktop. | This is a known, non-browser specific limitation. More information can be found in <a href="https://github.com/microsoft/vscode/issues/5102">issue #5102</a>. | Disable <code>kbstyle(F11)</code> to show desktop on macOS.
+<ul>
+<li>
+Go to: <strong>System Preferences</strong> &gt; <strong>Keyboard</strong> &gt; <strong>Shortcuts</strong>
+</li>
+<li>
+Uncheck the <strong>Show Desktop F11</strong> option
+</li>
+</ul>
+| | <code>kbstyle(Ctrl+N)</code> for new file doesn’t work in web. | <code>kbstyle(Ctrl+N)</code> opens a new window instead. | <code>kbstyle(Ctrl+N)</code> for new file works in the desktop. | | <code>kbstyle(Ctrl+W)</code> for closing an editor doesn’t work in web. | <code>kbstyle(Ctrl+W)</code> closes the current tab in browsers. | <code>kbstyle(Ctrl+W)</code> works in the desktop. | | <code>kbstyle(Ctrl+Shift+B)</code> will not toggle the favorites bar in the browser. | Codespaces overrides this and redirects to the “Build” menu in the Command Palette. | No current workarounds. | | Dragging and dropping files from VS Code to a Codespace (and vice versa) does not work. | You can see more context in <a href="https://github.com/microsoft/vscode/issues/115535">issue #115535</a>. | There are a couple of options:
+<ul>
+<li>
+You can right-click the file in your Codespace to download it to your local machine.
+</li>
+<li>
+You can drag files to your Codespace from the File Explorer.
+</li>
+</ul>
+| | Angular app debugging isn’t supported in the web. | Code running in a browser cannot launch another browser instance in debug mode for security reasons. | You have a few options:
+<ul>
+<li>
+Debug Node.js/service-side js normally.
+</li>
+<li>
+Open the Codespace in desktop, in which case the <a href="https://github.com/microsoft/vscode-js-debug-companion">companion</a> will be used to launch your local Edge or Chrome install.
+</li>
+<ul>
+<div class="line-block"><br />
+Downloading a file with no extension from the browser automatically adds “.txt” | This is how Chrome and Edge behave. | Context and potential future solutions in <a href="https://github.com/microsoft/vscode/issues/118436">issue #118436</a>. |<br />
+When you download a file from a remote (including Codespaces), attributes such as the executable bit are removed. | Context and potential future solutions can be found in <a href="https://github.com/microsoft/vscode/issues/112099">issue #112099</a>. | No current workarounds. |<br />
+You may see the prompt, “<code>Your_codespace_name</code> can’t open this folder because it contains system files” when trying to download certain folders from a Codespace. | A user agent is free to impose the level of restrictions on sensitive directories. More information in <a href="https://wicg.github.io/file-system-access/#privacy-wide-access">this spec</a> and <a href="https://source.chromium.org/chromium/chromium/src/+/master:chrome/browser/file_system_access/chrome_file_system_access_permission_context.cc;l=140-208">Chromium’s blocklist</a>. | No additional workarounds beyond the spec and blocklist. |<br />
+Manually visiting <code>http://localhost:forwarded_port</code> won’t work to access a forwarded port from a Codespace in the web. | This is based on how Codespaces handles port forwarding and generates the correct URL for the web. | Click the link from the port forwarding notification to open your app, or the globe icon in the <a href="/docs/remote/containers.md#forwarding-or-publishing-a-port">Ports view</a>, both of which will provide the properly generated link. More information in the <a href="https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace">Codespaces docs</a>. |</div>
+<h3 id="some-extensions-behave-differently-in-the-web">Some extensions behave differently in the web</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Extension</th>
+<th>Issue / Reason</th>
+<th>Workaround</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Extensions with keyboard shortcuts that overlap with browser shortcuts, for example <a href="https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph">Git Graph</a>, which uses <code>kbstyle(Ctrl+R)</code> to refresh.</td>
+<td>The keyboard shortcut may overlap with an existing browser shortcut, for example <code>kbstyle(Ctrl+R)</code> refreshes the window in Safari.</td>
+<td>You can use a desktop-based, rather than web-based, Codespace to fully leverage your keyboard shortcuts. Different browsers may also behave differently (you can refresh Git Graph in Chrome).</td>
+</tr>
+<tr class="even">
+<td>Language packs, for example the <a href="https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja">Japanese Language Pack for Visual Studio Code</a></td>
+<td>Language pack extensions are currently not supported in web-based Codespaces.</td>
+<td>You can use a desktop-based Codespace to use language packs and configure the display language.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2">Bracket Pair Colorizer 2</a></td>
+<td>It will not work in the browser as it introduces an install location dependency that is not easily fixable.</td>
+<td>Use <a href="https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer">Bracket Pair Colorizer</a>.</td>
+</tr>
+<tr class="even">
+<td>Browser Debuggers, such as <a href="https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome">Debugger for Chrome</a>, <a href="https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug">Debugger for Firefox</a>, <a href="https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-edge">Debugger for Edge</a>.</td>
+<td>Extensions that require a UI/Desktop extension host do not load in the browser.</td>
+<td>You can use these extensions in local VS Code (not connected to Codespaces). Or, while your app is running from a Codespace, you can use an alternative, like Chrome DevTools to inspect elements and set breakpoints.</td>
+</tr>
+<tr class="odd">
+<td>Extensions to open a browser, for example <a href="https://marketplace.visualstudio.com/items?itemName=techer.open-in-browser">open in browser</a>.</td>
+<td>Extensions that require a UI/Desktop extension host do not load in the browser.</td>
+<td>Use a substitute extension if possible, like <a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer">Live Server</a>.</td>
+</tr>
+<tr class="even">
+<td><a href="https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager">Project Manager</a></td>
+<td>Project Manager relies on syncing a custom <code>projects.json</code> file, which <a href="https://github.com/microsoft/vscode/issues/113774">isn’t currently supported</a>.</td>
+<td>You can use the extension in desktop Codespaces or local VS Code to save and manage your projects, as these options won’t require syncing a custom file.</td>
+</tr>
+<tr class="odd">
+<td>Extensions that rely on Chrome, such as <a href="https://marketplace.visualstudio.com/items?itemName=luciannaie.protractor-test-runner#:~:text=Protractor%20Test%20Runner%20is%20a,that%20has%20protractor%20test%20files.">Protractor Test Runner</a> and <a href="https://marketplace.visualstudio.com/items?itemName=auchenberg.vscode-browser-preview">Browser Preview</a>.</td>
+<td>Chrome is not included in a Codespace.</td>
+<td>Try to find alternative experiences, or you can use these extensions on your project in local VS Code (not connected to Codespaces).</td>
+</tr>
+</tbody>
+</table>
+| <a href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">Flutter</a> (and Flutter development overall) | Several aspects of the Flutter workflow are limited due to the nature of Docker containers and Codespaces.
+<ul>
+<li>
+Flutter recommends installation from snap, but snap cannot be installed within the Codespaces container.
+</li>
+<li>
+Android Emulation does not work within a container.
+</li>
+<li>
+Codespaces cannot detect USB devices plugged into your machine, which makes development on a physical device impossible.
+</li>
+<li>
+Codespaces, like other Linux environments, doesn’t support iOS development.
+</li>
+</ul>
+| You can use local VS Code for Flutter development. | | <a href="https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop">LaTeX Workshop</a> | The extension provides three kinds of features to help with LaTeX authoring: 1) a set of views that surface common commands, 2) a PDF previewer, and 3) language features like snippets and IntelliSense. The extension can be used fairly fully featured, but there are some web or security limitations. | The following workarounds address limitations in the view and previewer feature areas:
+<ul>
+<li>
+The views themselves work without issue, but a few of the commands try to launch native applications, like revealing the output folder in the OS file explorer. These do nothing in the web, so using the desktop is an alternative.
+</li>
+<li>
+<code>"latex-workshop.view.pdf.viewer"</code> - This setting provides a PDF previewer similar to the <a href="/docs/languages/markdown.md#markdown-preview">Markdown preview</a>. You can preview in a browser tab, in a separate PDF viewer, or in a VS Code tab.<br>Only the browser tab is usable in web-based Codespaces. The separate PDF viewer fails silently, and the VS Code tab hits the <a href="/api/extension-guides/webview.md#content-security-policy">Content Security Policy</a> issue. The VS Code Tab viewer has other features that aren’t available due to this limitation.
+</li>
+</ul>
+<p>| | <a href="https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph">Git Graph</a> | Some Git Graph webview functionality may be limited in Codespaces. For instance, switching between a file from a commit and the Git Graph webview may blank out the webview. | You can use Git Graph fully within VS Code desktop. | | Other <a href="/docs/remote/remote-overview">Remote Development extensions</a> (Remote - WSL, Remote - Containers, Remote - SSH) cannot be installed in a Codespace. | The Codespace is already a remote context. | If you’d like to run in another remote context (for example WSL or a remote SSH computer), open VS Code desktop (not connected to a Codespace) and launch one of the other remote extensions. If you’d like to use a <a href="/docs/remote/create-dev-container.md">custom dev container</a>, you can use the same <code>.devcontainer</code> in both Codespaces and Remote - Containers. | | <strong>My_Favorite_Extension</strong> doesn’t work and isn’t listed above. | There are a few other issues that can prevent features from working as expected in remote contexts. | In some cases, you can use another command to work around the issue, but in others, the extension may need to be modified. Check out the <a href="/docs/remote/troubleshooting.md#extension-tips">remote extension tips</a> for common remote issues and tips on resolving them. |</p>
+<h2 id="common-questions">Common questions</h2>
+<h3 id="why-is-an-extension-not-installable-in-the-browser">Why is an extension not installable in the browser</h3>
+<p>There are a small number of extensions that have built-in assumptions or need to run on the desktop. Examples are when an extension accesses files from the VS Code installation on the desktop or when an extension depends on an executable that must run in a desktop environment. When you try to install such an extension in the browser, you will be informed that the extension is not available.</p>
+<p><strong>Notice</strong> such an extension can still be used when connecting to a Codespace from VS Code running on the desktop.</p>
+<h3 id="how-do-i-allow-vs-code-to-access-my-clipboard-for-reading">How do I allow VS Code to access my clipboard for reading?</h3>
+<p>In certain cases, VS Code might ask you for permission to access the clipboard when reading from it. You should be able to grant access to the clipboard from your browser either through settings (search for “site permissions”) or by looking for this option in the address bar on the right:</p>
+<figure>
+<img src="images/codespaces/allow-clipboard-access.png" alt="Allow clipboard access in browser" /><figcaption>Allow clipboard access in browser</figcaption>
+</figure>
+<p>Once you have granted VS Code access to the clipboard, you can retry the operation.</p>
+<h3 id="how-do-i-allow-vs-code-to-always-open-new-tabs-and-windows">How do I allow VS Code to always open new tabs and windows?</h3>
+<p>Sometimes browsers will, as a security precaution, block VS Code from opening new tabs or windows. If this happens, VS Code will detect the blocking action and explicitly prompt the user. However, you can allow VS Code to always open new windows and tabs by opening the site settings via the context menu in the browser navigation bar and by allowing to <strong>Pop-up Windows</strong>.</p>
+<figure>
+<img src="images/codespaces/allow-new-tab.png" alt="Allow pop-up window in browser" /><figcaption>Allow pop-up window in browser</figcaption>
+</figure>
+<h2 id="questions-or-feedback">Questions or feedback</h2>
+<p>If you have questions, you can consult the GitHub Codespaces <a href="https://docs.github.com/github/developing-online-with-codespaces/troubleshooting-your-codespace">Troubleshooting guide</a>. If you’d like to provide feedback, you can enter issues in the GitHub Codespaces <a href="https://github.com/github/feedback/discussions/categories/codespaces-feedback">Discussions</a>.</p>
+</body>
+</html>

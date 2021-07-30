@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>language-configuration-guide</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="language-configuration-guide">Language Configuration Guide</h1>
+    <p>
+      The
+      <a href="/api/references/contribution-points#contributes.languages"
+        ><code>contributes.languages</code></a
+      >
+      Contribution Point allows you to define a language configuration that controls the
+      following Declarative Language Features:
+    </p>
+    <ul>
+      <li>Comment toggling</li>
+      <li>Brackets definition</li>
+      <li>Autoclosing</li>
+      <li>Autosurrounding</li>
+      <li>Folding</li>
+      <li>Word pattern</li>
+      <li>Indentation Rules</li>
+    </ul>
+    <p>
+      Here is a
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/language-configuration-sample"
+        >Language Configuration Sample</a
+      >
+      that configures the editing experience for JavaScript files. This guide explains the
+      content of <code>language-configuration.json</code>:
+    </p>
+    <p>
+      <strong
+        >Note: If your language configuration file name is or ends with
+        <code>language-configuration.json</code>, you will get autocompletion and validation
+        in VS Code.</strong
+      >
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;comments&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;lineComment&quot;</span><span class="fu">:</span> <span class="st">&quot;//&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;blockComment&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;/*&quot;</span><span class="ot">,</span> <span class="st">&quot;*/&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">&quot;brackets&quot;</span><span class="fu">:</span> <span class="ot">[[</span><span class="st">&quot;{&quot;</span><span class="ot">,</span> <span class="st">&quot;}&quot;</span><span class="ot">],</span> <span class="ot">[</span><span class="st">&quot;[&quot;</span><span class="ot">,</span> <span class="st">&quot;]&quot;</span><span class="ot">],</span> <span class="ot">[</span><span class="st">&quot;(&quot;</span><span class="ot">,</span> <span class="st">&quot;)&quot;</span><span class="ot">]]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">&quot;autoClosingPairs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;{&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;}&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;[&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;]&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;(&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;)&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;&#39;&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;&#39;&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">,</span> <span class="st">&quot;comment&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;`&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;`&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">,</span> <span class="st">&quot;comment&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;/**&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot; */&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">]</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="dt">&quot;autoCloseBefore&quot;</span><span class="fu">:</span> <span class="st">&quot;;:.,=}])&gt;` </span><span class="ch">\n\t</span><span class="st">&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-17" title="17">  <span class="dt">&quot;surroundingPairs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-18" title="18">    <span class="ot">[</span><span class="st">&quot;{&quot;</span><span class="ot">,</span> <span class="st">&quot;}&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb1-19" title="19">    <span class="ot">[</span><span class="st">&quot;[&quot;</span><span class="ot">,</span> <span class="st">&quot;]&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb1-20" title="20">    <span class="ot">[</span><span class="st">&quot;(&quot;</span><span class="ot">,</span> <span class="st">&quot;)&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb1-21" title="21">    <span class="ot">[</span><span class="st">&quot;&#39;&quot;</span><span class="ot">,</span> <span class="st">&quot;&#39;&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="ot">[</span><span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="ot">,</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb1-23" title="23">    <span class="ot">[</span><span class="st">&quot;`&quot;</span><span class="ot">,</span> <span class="st">&quot;`&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-25" title="25">  <span class="dt">&quot;folding&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-26" title="26">    <span class="dt">&quot;markers&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-27" title="27">      <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">s*//</span><span class="ch">\\</span><span class="st">s*#?region</span><span class="ch">\\</span><span class="st">b&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-28" title="28">      <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">s*//</span><span class="ch">\\</span><span class="st">s*#?endregion</span><span class="ch">\\</span><span class="st">b&quot;</span></a>
+<a class="sourceLine" id="cb1-29" title="29">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-30" title="30">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-31" title="31">  <span class="dt">&quot;wordPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;(-?</span><span class="ch">\\</span><span class="st">d*</span><span class="ch">\\</span><span class="st">.</span><span class="ch">\\</span><span class="st">d</span><span class="ch">\\</span><span class="st">w*)|([^</span><span class="ch">\\</span><span class="st">`</span><span class="ch">\\</span><span class="st">~</span><span class="ch">\\</span><span class="st">!</span><span class="ch">\\</span><span class="st">@</span><span class="ch">\\</span><span class="st">#</span><span class="ch">\\</span><span class="st">%</span><span class="ch">\\</span><span class="st">^</span><span class="ch">\\</span><span class="st">&amp;</span><span class="ch">\\</span><span class="st">*</span><span class="ch">\\</span><span class="st">(</span><span class="ch">\\</span><span class="st">)</span><span class="ch">\\</span><span class="st">-</span><span class="ch">\\</span><span class="st">=</span><span class="ch">\\</span><span class="st">+</span><span class="ch">\\</span><span class="st">[</span><span class="ch">\\</span><span class="st">{</span><span class="ch">\\</span><span class="st">]</span><span class="ch">\\</span><span class="st">}</span><span class="ch">\\\\\\</span><span class="st">|</span><span class="ch">\\</span><span class="st">;</span><span class="ch">\\</span><span class="st">:</span><span class="ch">\\</span><span class="st">&#39;</span><span class="ch">\\\&quot;\\</span><span class="st">,</span><span class="ch">\\</span><span class="st">.</span><span class="ch">\\</span><span class="st">&lt;</span><span class="ch">\\</span><span class="st">&gt;</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">?</span><span class="ch">\\</span><span class="st">s]+)&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-32" title="32">  <span class="dt">&quot;indentationRules&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-33" title="33">    <span class="dt">&quot;increaseIndentPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;^((?!</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">/).)*(</span><span class="ch">\\</span><span class="st">{[^}</span><span class="ch">\&quot;</span><span class="st">&#39;`]*|</span><span class="ch">\\</span><span class="st">([^)</span><span class="ch">\&quot;</span><span class="st">&#39;`]*|</span><span class="ch">\\</span><span class="st">[[^</span><span class="ch">\\</span><span class="st">]</span><span class="ch">\&quot;</span><span class="st">&#39;`]*)$&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-34" title="34">    <span class="dt">&quot;decreaseIndentPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;^((?!.*?</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">*).*</span><span class="ch">\\</span><span class="st">*/)?</span><span class="ch">\\</span><span class="st">s*[</span><span class="ch">\\</span><span class="st">}</span><span class="ch">\\</span><span class="st">]].*$&quot;</span></a>
+<a class="sourceLine" id="cb1-35" title="35">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-36" title="36"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="comment-toggling">Comment toggling</h2>
+    <p>
+      VS Code offers two commands for comment toggling.
+      <strong>Toggle Line Comment</strong> and <strong>Toggle Block Comment</strong>. You
+      can specify <code>comments.blockComment</code> and
+      <code>comments.lineComment</code> to control how VS Code should comment out lines /
+      blocks.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;comments&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;lineComment&quot;</span><span class="fu">:</span> <span class="st">&quot;//&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">&quot;blockComment&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;/*&quot;</span><span class="ot">,</span> <span class="st">&quot;*/&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="brackets-definition">Brackets definition</h2>
+    <p>
+      When you move the cursor to a bracket defined here, VS Code will highlight that
+      bracket together with its matching pair.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;brackets&quot;</span><span class="fu">:</span> <span class="ot">[[</span><span class="st">&quot;{&quot;</span><span class="ot">,</span> <span class="st">&quot;}&quot;</span><span class="ot">],</span> <span class="ot">[</span><span class="st">&quot;[&quot;</span><span class="ot">,</span> <span class="st">&quot;]&quot;</span><span class="ot">],</span> <span class="ot">[</span><span class="st">&quot;(&quot;</span><span class="ot">,</span> <span class="st">&quot;)&quot;</span><span class="ot">]]</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Moreover, when you run <strong>Go to Bracket</strong> or
+      <strong>Select to Bracket</strong>, VS Code will use the definition above to find the
+      nearest bracket and its matching pair.
+    </p>
+    <h2 id="autoclosing">Autoclosing</h2>
+    <p>
+      When you type <code>'</code>, VS Code creates a pair of single quotes and puts your
+      cursor in the middle: <code>'|'</code>. This section defines such pairs.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;autoClosingPairs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;{&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;}&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;[&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;]&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;(&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;)&quot;</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;&#39;&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;&#39;&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">,</span> <span class="st">&quot;comment&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;`&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot;`&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">,</span> <span class="st">&quot;comment&quot;</span><span class="ot">]</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    <span class="fu">{</span> <span class="dt">&quot;open&quot;</span><span class="fu">:</span> <span class="st">&quot;/**&quot;</span><span class="fu">,</span> <span class="dt">&quot;close&quot;</span><span class="fu">:</span> <span class="st">&quot; */&quot;</span><span class="fu">,</span> <span class="dt">&quot;notIn&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;string&quot;</span><span class="ot">]</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>notIn</code> key disables this feature in certain code ranges. For example,
+      when you are writing the following code:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// ES6&#39;s Template String</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="vs">`ES6&#39;s Template String`</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>The single quote will not be autoclosed.</p>
+    <p>
+      Pairs that do not require a <code>notIn</code> property can also use a simpler syntax:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;autoClosingPairs&quot;</span><span class="fu">:</span> <span class="ot">[</span> <span class="ot">[</span><span class="st">&quot;{&quot;</span><span class="ot">,</span> <span class="st">&quot;}&quot;</span><span class="ot">],</span> <span class="ot">[</span><span class="st">&quot;[&quot;</span><span class="ot">,</span> <span class="st">&quot;]&quot;</span><span class="ot">]</span> <span class="ot">]</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Users can tweak the autoclosing behavior with the
+      <code>editor.autoClosingQuotes</code> and
+      <code>editor.autoClosingBrackets</code> settings.
+    </p>
+    <h3 id="autoclosing-before">Autoclosing before</h3>
+    <p>
+      By default, VS Code only autocloses pairs if there is whitespace right after the
+      cursor. So when you type <code>{</code> in the following JSX code, you would not get
+      autoclose:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> Component <span class="op">=</span> () <span class="kw">=&gt;</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="op">&lt;</span>div className<span class="op">={&gt;</span></a>
+<a class="sourceLine" id="cb7-3" title="3">                  <span class="op">^</span> Does not get autoclosed by <span class="im">default</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  &lt;/div<span class="op">&gt;</span></a></code></pre>
+    </div>
+    <p>However, this definition overrides that behavior:</p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;autoCloseBefore&quot;</span><span class="fu">:</span> <span class="st">&quot;;:.,=}])&gt;` </span><span class="ch">\n\t</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Now when you enter <code>{</code> right before <code>&gt;</code>, VS Code autocloses
+      it with <code>}</code>.
+    </p>
+    <h2 id="autosurrounding">Autosurrounding</h2>
+    <p>
+      When you select a range in VS Code and enter an opening bracket, VS Code surrounds the
+      selected content with a pair of brackets. This feature is called Autosurrounding, and
+      here you can define the autosurrounding pairs for a specific language:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">&quot;surroundingPairs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="ot">[</span><span class="st">&quot;{&quot;</span><span class="ot">,</span> <span class="st">&quot;}&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="ot">[</span><span class="st">&quot;[&quot;</span><span class="ot">,</span> <span class="st">&quot;]&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="ot">[</span><span class="st">&quot;(&quot;</span><span class="ot">,</span> <span class="st">&quot;)&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="ot">[</span><span class="st">&quot;&#39;&quot;</span><span class="ot">,</span> <span class="st">&quot;&#39;&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="ot">[</span><span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="ot">,</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span><span class="ot">],</span></a>
+<a class="sourceLine" id="cb9-8" title="8">    <span class="ot">[</span><span class="st">&quot;`&quot;</span><span class="ot">,</span> <span class="st">&quot;`&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Users can tweak the autosurrounding behavior with the
+      <code>editor.autoSurround</code> setting.
+    </p>
+    <h2 id="folding">Folding</h2>
+    <p>
+      In VS Code, folding is defined either indentation-based, or defined by contributed
+      folding range providers:
+    </p>
+    <ul>
+      <li>
+        Indentation-based folding with markers: If no folding range provider is available
+        for the given language or if the user has set <code>editor.foldingStrategy</code> to
+        <code>indentation</code>, indentation-based folding is used. A folding region starts
+        when a line has a smaller indent than one or more following lines, and ends when
+        there is a line with the same or smaller indent. Empty lines are ignored.
+        Additionally, the language configuration can define start and end markers. These are
+        defined as <code>start</code> and <code>end</code> regexes in
+        <code>folding.markers</code>. When matching lines are found, a folding range inside
+        the pair is created. Folding markers must be non-empty and typically look like
+        <code>//#region</code> and <code>//#endregion</code>.
+      </li>
+    </ul>
+    <p>
+      The following JSON creates folding markers for <code>//#region</code> and
+      <code>//#endregion</code>.
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;folding&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">&quot;markers&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-4" title="4">      <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">s*//</span><span class="ch">\\</span><span class="st">s*#?region</span><span class="ch">\\</span><span class="st">b&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">      <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">s*//</span><span class="ch">\\</span><span class="st">s*#?endregion</span><span class="ch">\\</span><span class="st">b&quot;</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ul>
+      <li>
+        Language server folding: The Language Server responds to the
+        <a
+          href="https://microsoft.github.io/language-server-protocol/specification#textDocument_foldingRange"
+          ><code>textDocument/foldingRange</code></a
+        >
+        request with a list of folding ranges, and VS Code would render the ranges as
+        folding markers. Learn more about the folding support in Language Server Protocol at
+        the
+        <a href="/api/language-extensions/programmatic-language-features"
+          >Programmatic Language Feature</a
+        >
+        topic.
+      </li>
+    </ul>
+    <h2 id="word-pattern">Word Pattern</h2>
+    <p>
+      <code>wordPattern</code> defines what’s considered as a word in the programming
+      language. Code suggestion features will use this setting to determine word boundaries
+      if <code>wordPattern</code> is set. Note this setting won’t affect word-related editor
+      commands, which are controlled by the editor setting
+      <code>editor.wordSeparators</code>.
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">&quot;wordPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;(-?</span><span class="ch">\\</span><span class="st">d*</span><span class="ch">\\</span><span class="st">.</span><span class="ch">\\</span><span class="st">d</span><span class="ch">\\</span><span class="st">w*)|([^</span><span class="ch">\\</span><span class="st">`</span><span class="ch">\\</span><span class="st">~</span><span class="ch">\\</span><span class="st">!</span><span class="ch">\\</span><span class="st">@</span><span class="ch">\\</span><span class="st">#</span><span class="ch">\\</span><span class="st">%</span><span class="ch">\\</span><span class="st">^</span><span class="ch">\\</span><span class="st">&amp;</span><span class="ch">\\</span><span class="st">*</span><span class="ch">\\</span><span class="st">(</span><span class="ch">\\</span><span class="st">)</span><span class="ch">\\</span><span class="st">-</span><span class="ch">\\</span><span class="st">=</span><span class="ch">\\</span><span class="st">+</span><span class="ch">\\</span><span class="st">[</span><span class="ch">\\</span><span class="st">{</span><span class="ch">\\</span><span class="st">]</span><span class="ch">\\</span><span class="st">}</span><span class="ch">\\\\\\</span><span class="st">|</span><span class="ch">\\</span><span class="st">;</span><span class="ch">\\</span><span class="st">:</span><span class="ch">\\</span><span class="st">&#39;</span><span class="ch">\\\&quot;\\</span><span class="st">,</span><span class="ch">\\</span><span class="st">.</span><span class="ch">\\</span><span class="st">&lt;</span><span class="ch">\\</span><span class="st">&gt;</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">?</span><span class="ch">\\</span><span class="st">s]+)&quot;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="indentation-rules">Indentation Rules</h2>
+    <p>
+      <code>indentationRules</code> defines how the editor should adjust the indentation of
+      current line or next line when you type, paste, and move lines.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="dt">&quot;indentationRules&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-3" title="3">    <span class="dt">&quot;increaseIndentPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;^((?!</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">/).)*(</span><span class="ch">\\</span><span class="st">{[^}</span><span class="ch">\&quot;</span><span class="st">&#39;`]*|</span><span class="ch">\\</span><span class="st">([^)</span><span class="ch">\&quot;</span><span class="st">&#39;`]*|</span><span class="ch">\\</span><span class="st">[[^</span><span class="ch">\\</span><span class="st">]</span><span class="ch">\&quot;</span><span class="st">&#39;`]*)$&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    <span class="dt">&quot;decreaseIndentPattern&quot;</span><span class="fu">:</span> <span class="st">&quot;^((?!.*?</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">*).*</span><span class="ch">\\</span><span class="st">*/)?</span><span class="ch">\\</span><span class="st">s*[</span><span class="ch">\\</span><span class="st">)</span><span class="ch">\\</span><span class="st">}</span><span class="ch">\\</span><span class="st">]].*$&quot;</span></a>
+<a class="sourceLine" id="cb12-5" title="5">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      For example, <code>if (true) {</code> matches <code>increaseIndentPattern</code>, then
+      if you press <code>kbstyle(Enter)</code> after the open bracket <code>{</code>, the
+      editor will automatically indent once, and your code will end up as:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode javascript"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb13-1" title="1"><span class="cf">if</span> (<span class="kw">true</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="va">console</span>.<span class="at">log</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      In addition to <code>increaseIndentPattern</code> and
+      <code>decreaseIndentPatter</code>, there are two other indentation rules:
+    </p>
+    <ul>
+      <li>
+        <code>indentNextLinePattern</code> - If a line matches this pattern, then
+        <strong>only the next line</strong> after it should be indented once.
+      </li>
+      <li>
+        <code>unIndentedLinePattern</code> - If a line matches this pattern, then its
+        indentation should not be changed and it should not be evaluated against the other
+        rules.
+      </li>
+    </ul>
+    <p>
+      If there is no indentation rule set for the programming language, the editor will
+      indent when the line ends with an open bracket and outdent when you type a closing
+      bracket. The bracket here is defined by <code>brackets</code>.
+    </p>
+    <p>
+      Notice that <code>editor.formatOnPaste</code> setting is controlled by the
+      <a href="/api/references/vscode-api#DocumentRangeFormattingEditProvider"
+        ><code>DocumentRangeFormattingEditProvider</code></a
+      >
+      and not affected by auto indentation.
+    </p>
+    <h2 id="on-enter-rules">On Enter Rules</h2>
+    <p>
+      <code>onEnterRules</code> defines a list of rules that will be evaluated when
+      <code>kbstyle(Enter)</code> is pressed in the editor.
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">&quot;onEnterRules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="dt">&quot;beforeText&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">s*(?:def|class|for|if|elif|else|while|try|with|finally|except|async).*?:</span><span class="ch">\\</span><span class="st">s*$&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="dt">&quot;action&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;indent&quot;</span><span class="fu">:</span> <span class="st">&quot;indent&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      When pressing <code>kbstyle(Enter)</code>, the text before, after, or one line above
+      the cursor is checked against the following properties:
+    </p>
+    <ul>
+      <li>
+        <code>beforeText</code> (mandatory). A regular expression that matches the text
+        before the cursor (limited to the current line).
+      </li>
+      <li>
+        <code>afterText</code>. A regular expression that matches the text after the cursor
+        (limited to the current line).
+      </li>
+      <li>
+        <code>previousLineText</code>. A regular expression that matches the text one line
+        above the cursor.
+      </li>
+    </ul>
+    <p>
+      If all the specified properties match, the rule is considered to match and no further
+      <code>onEnterRules</code> will be evaluated. An <code>onEnterRule</code> can specify
+      the following actions:
+    </p>
+    <ul>
+      <li>
+        <code>indent</code> (mandatory). One of
+        <code>none, indent, outdent, indentOutdent</code>.
+        <ul>
+          <li>
+            <code>none</code> means that the new line will inherit the indentation of the
+            current line.
+          </li>
+          <li>
+            <code>indent</code> means that the new line will be indented relative to the
+            current line.
+          </li>
+          <li>
+            <code>outdent</code> means that the new line will be unindented relative to the
+            current line.
+          </li>
+          <li>
+            <code>indentOutdent</code> means that two new lines will be inserted, one
+            indented and the second one outdented.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>appendText</code>. A string that will be appended after the new line and after
+        the indentation.
+      </li>
+      <li>
+        <code>removeText</code>. The number of characters to remove from the new line’s
+        indentation.
+      </li>
+    </ul>
+  </body>
+</html>

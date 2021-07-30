@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>overview</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="extensions-capabilities-overview">Extensions Capabilities Overview</h1>
+    <p>
+      Visual Studio Code offers many ways for extensions to extend its capabilities. It can
+      sometimes be hard to find the right
+      <a href="/api/references/contribution-points">Contribution Points</a> and
+      <a href="/api/references/vscode-api">VS Code API</a> to use. This topic splits
+      extension capabilities into a few categories. Each category describes:
+    </p>
+    <ul>
+      <li>Some functionalities your extension could use</li>
+      <li>Links to more detailed topics for using these functionalities</li>
+      <li>A few extension ideas</li>
+    </ul>
+    <p>
+      However, we also impose <a href="#restrictions">restrictions</a> upon extensions to
+      ensure the stability and performance of VS Code. For example, extensions cannot access
+      the DOM of VS Code UI.
+    </p>
+    <h2 id="common-capabilities">Common Capabilities</h2>
+    <p>
+      <a href="./common-capabilities">Common Capabilities</a> are core pieces of
+      functionality that you can use in any extension.
+    </p>
+    <p>Some of these capabilities include:</p>
+    <ul>
+      <li>Registering commands, configurations, keybindings, or context menu items.</li>
+      <li>Storing workspace or global data.</li>
+      <li>Displaying notification messages.</li>
+      <li>Using Quick Pick to collect user input.</li>
+      <li>Open the system file picker to let users select files or folders.</li>
+      <li>Use the Progress API to indicate long-running operations.</li>
+    </ul>
+    <h2 id="theming">Theming</h2>
+    <p>
+      <a href="./theming">Theming</a> controls the look of VS Code, both the colors of
+      source code in the editor and the colors of the VS Code UI. If you’ve ever wanted to
+      make it look like you’re coding the Matrix by making VS Code different shades of
+      green, or just wanted to create the ultimate, minimalist grayscale workspace, then
+      themes are for you.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>Change colors of your source code.</li>
+      <li>Change colors of the VS Code UI.</li>
+      <li>Port an existing TextMate theme to VS Code.</li>
+      <li>Add custom file icons.</li>
+    </ul>
+    <h2 id="declarative-language-features">Declarative Language Features</h2>
+    <p>
+      <a href="/api/language-extensions/overview#declarative-language-features"
+        >Declarative Language Features</a
+      >
+      adds basic text editing support for a programming language such as bracket matching,
+      auto-indentation and syntax highlighting. This is done declaratively, without writing
+      any code. For more advanced language features, like IntelliSense or debugging, see
+      <a href="#programmatic-language-features">Programmatic Language Features</a>.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>Bundle common JavaScript snippets into an extension.</li>
+      <li>Tell VS Code about a new programming language.</li>
+      <li>Add or replace the grammar for a programming language.</li>
+      <li>Extend an existing grammar with grammar injections.</li>
+      <li>Port an existing TextMate grammar to VS Code.</li>
+    </ul>
+    <h2 id="programmatic-language-features">Programmatic Language Features</h2>
+    <p>
+      <a href="/api/language-extensions/overview#programmatic-language-features"
+        >Programmatic Language Features</a
+      >
+      add rich programming language support such as Hovers, Go to Definition, diagnostic
+      errors, IntelliSense and CodeLens. These language features are exposed through the
+      <a href="/api/references/vscode-api#languages"><code>vscode.languages.*</code></a>
+      API. An extension can either use these API directly, or write a Language Server and
+      adapt it to VS Code using the VS Code
+      <a href="https://github.com/microsoft/vscode-languageserver-node"
+        >Language Server library</a
+      >.
+    </p>
+    <p>
+      Although we provide a listing of
+      <a href="/api/language-extensions/programmatic-language-features"
+        >language features</a
+      >
+      and their intended usage, nothing prevents you from using these API creatively. For
+      example, CodeLens and Hovers are a great way to present additional information inline,
+      while diagnostic errors can be used to highlight spelling or code style errors.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>Add hovers that show sample usage of an API.</li>
+      <li>Report spelling or linter errors in source code using diagnostics.</li>
+      <li>Register a new code formatter for HTML.</li>
+      <li>Provide rich, context-aware IntelliSense.</li>
+      <li>Add folding, breadcrumbs and outline support for a language.</li>
+    </ul>
+    <h2 id="workbench-extensions">Workbench Extensions</h2>
+    <p>
+      <a href="./extending-workbench">Workbench Extensions</a> extend the VS Code Workbench
+      UI. Add new right-click actions to the File Explorer, or even build a custom explorer
+      using VS Code’s <a href="/api/extension-guides/tree-view">TreeView</a> API. And if
+      your extension needs a fully customized user interface, use the
+      <a href="/api/extension-guides/webview">Webview API</a> to build your own document
+      preview or UI using standard HTML, CSS, and JavaScript.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>Add custom context menu actions to the File Explorer.</li>
+      <li>Create a new, interactive TreeView in the Side Bar.</li>
+      <li>Define a new Activity Bar view.</li>
+      <li>Show new information in the Status Bar.</li>
+      <li>Render custom content using the <code>WebView</code> API.</li>
+      <li>Contribute Source Control providers.</li>
+    </ul>
+    <h2 id="debugging">Debugging</h2>
+    <p>
+      You can take advantage of VS Code’s
+      <a href="/docs/editor/debugging">Debugging</a> functionality by writing
+      <a href="/api/extension-guides/debugger-extension">Debugger Extensions</a> that
+      connect VS Code’s debugging UI to a specific debugger or runtime.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>
+        Connect VS Code’s debugging UI to a debugger or runtime by contributing a
+        <a href="https://microsoft.github.io/debug-adapter-protocol/implementors/adapters/"
+          >Debug Adapter implementation</a
+        >.
+      </li>
+      <li>Specify the languages supported by a debugger extension.</li>
+      <li>
+        Provide rich IntelliSense and hover information for the debug configuration
+        attributes used by the debugger.
+      </li>
+      <li>Provide debug configuration snippets.</li>
+    </ul>
+    <p>
+      On the other hand, VS Code also offers a set of
+      <a href="/api/references/vscode-api#debug">Debug Extension API</a>, with which you can
+      implement debug-related functionality on top of any VS Code debugger, in order to
+      automate users’ debugging experience.
+    </p>
+    <p><strong>Extension Ideas</strong></p>
+    <ul>
+      <li>Start debug sessions based on dynamically created debug configurations.</li>
+      <li>Track the lifecycle of debug sessions.</li>
+      <li>Create and manage breakpoints programmatically.</li>
+    </ul>
+    <!-- Add below content back after writing ./extending-core-functionalities.md  -->
+    <!-- ## Core Extensions
+
+[Core Extensions](extending-core-functionalities) are for very advanced users. These let you build a custom back end for many of VS Code's low-level functionality. For example, the `FileSystem` API can be used to support working with files over FTP or other protocols. Core extensions typically work transparently from a user's point of view.
+
+**Extension Ideas**
+
+- Add support for working with remote files over FTP or SFTP.
+- Register new source control provider, such as Mercurial.
+- Implement a custom file search provider. -->
+    <h2 id="extension-guidelines">Extension Guidelines</h2>
+    <p>
+      To help make your extension fit seemlessly into the VS Code user interface, refer to
+      the <a href="/api/references/extension-guidelines">Extension Guidelines</a>, where
+      you’ll learn the best practices for creating extension UI and conventions for
+      following the preferred VS Code workflows.
+    </p>
+    <h2 id="restrictions">Restrictions</h2>
+    <p>
+      There are certain restrictions we impose upon extensions. Here are the restrictions
+      and their purposes.
+    </p>
+    <h3 id="no-dom-access">No DOM Access</h3>
+    <p>
+      Extensions have no access to the DOM of VS Code UI. You <strong>cannot</strong> write
+      an extension that applies custom CSS to VS Code or adds an HTML element to VS Code UI.
+    </p>
+    <p>
+      At VS Code, we’re continually trying to optimize use of the underlying web
+      technologies to deliver an always available, highly responsive editor and we will
+      continue to tune our use of the DOM as these technologies and our product evolve. To
+      ensure that extensions cannot interfere with the stability and performance of VS Code,
+      and that we can continue to improve the DOM of VS Code without breaking existing
+      extensions, we run extensions in an
+      <a href="/api/advanced-topics/extension-host">Extension Host</a> process and prevent
+      direct access to the DOM.
+    </p>
+  </body>
+</html>

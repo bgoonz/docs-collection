@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>workspace-trust</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="workspace-trust">Workspace Trust</h1>
+<p>Visual Studio Code takes security seriously and wants to help you safely browse and edit code no matter the source or original authors. The Workspace Trust feature lets you decide whether your project folders should allow or restrict automatic code execution.</p>
+<figure>
+<img src="images/workspace-trust/workspace-trust-dialog.png" alt="Trust this folder dialog" /><figcaption>Trust this folder dialog</figcaption>
+</figure>
+<blockquote>
+<p><strong>Note</strong>: When in doubt, leave a folder in <a href="#restricted-mode">Restricted Mode</a>. You can always <a href="#trusting-a-workspace">enable trust</a> later.</p>
+</blockquote>
+<h2 id="safe-code-browsing">Safe code browsing</h2>
+<p>It’s great that there is so much source code available on public repositories and file shares. No matter the coding task or problem, there is probably already a good solution available somewhere. It is also great that there are so many powerful coding tools available to help you understand, debug, and optimize your code. However, using open-source code and tools does have risks, and you can leave yourself open to malicious code execution and exploits.</p>
+<p>Workspace Trust provides an extra layer of security when working with unfamiliar code, by preventing automatic code execution when a workspace is open in “Restricted Mode”.</p>
+<blockquote>
+<p><strong>Note</strong>: The terms “workspace” and “folder” are used widely in the VS Code UI and documentation. You can think of a <a href="/docs/editor/workspaces.md">“workspace”</a> as a folder with extra metadata created and used by VS Code.</p>
+</blockquote>
+<h2 id="restricted-mode">Restricted Mode</h2>
+<p>When prompted by the Workspace Trust dialog, if you choose <strong>No, I don’t trust the authors</strong>, VS Code will go into Restricted Mode to prevent code execution. The workbench will display a banner at the top with links to <strong>Manage</strong> your folder via the Workspace Trust editor, and <strong>Learn More</strong> about Workspace Trust (which takes you to back to this documentation).</p>
+<figure>
+<img src="images/workspace-trust/restricted-mode-banner.png" alt="Workspace Trust Restricted Mode banner" /><figcaption>Workspace Trust Restricted Mode banner</figcaption>
+</figure>
+<p>You will also see a Restricted Mode badge in the Status bar.</p>
+<figure>
+<img src="images/workspace-trust/restricted-mode-status-bar.png" alt="Workspace Trust Restricted Mode Status bar badge" /><figcaption>Workspace Trust Restricted Mode Status bar badge</figcaption>
+</figure>
+<p>Restricted Mode tries to prevent automatic code execution by disabling or limiting the operation of several VS Code features: tasks, debugging, workspace settings, and extensions.</p>
+<p>To see the full list of features disabled in Restricted Mode, you can open the Workspace Trust editor via the <strong>Manage</strong> link in the banner, or by clicking the Restricted Mode badge in the Status bar.</p>
+<figure>
+<img src="images/workspace-trust/workspace-trust-editor.png" alt="Workspace Trust editor" /><figcaption>Workspace Trust editor</figcaption>
+</figure>
+<h3 id="tasks">Tasks</h3>
+<p><a href="/docs/editor/tasks.md">Tasks</a> can run scripts and tool binaries, and because task definitions are defined in the workspace <code>.vscode</code> folder, they are part of the committed source code for a repo, and shared to every user of that repo. Were someone to create a malicious task, it could be unknowningly run by anyone who cloned that repository.</p>
+<p>If you try to run or even enumerate tasks (<strong>Terminal</strong> &gt; <strong>Run Task…</strong>) while in Restricted Mode, VS Code will display a prompt to trust the folder and continue executing the task. Cancelling the dialog leaves VS Code in Restricted Mode.</p>
+<figure>
+<img src="images/workspace-trust/restricted-mode-tasks-dialog.png" alt="Workspace Trust Restricted Mode tasks dialog" /><figcaption>Workspace Trust Restricted Mode tasks dialog</figcaption>
+</figure>
+<h3 id="debugging">Debugging</h3>
+<p>Similar to running a VS Code task, debug extensions can run debugger binaries when launching a debug session. For that reason, <a href="/docs/editor/debugging.md">debugging</a> is also disabled when a folder is open in Restricted Mode.</p>
+<p>If you try to start a debug session (<strong>Run</strong> &gt; <strong>Start Debugging</strong>) while in Restricted Mode, VS Code will display a prompt to trust the folder and continue launching the debugger. Cancelling the dialog leaves VS Code in Restricted Mode, and does not start the debug session.</p>
+<figure>
+<img src="images/workspace-trust/restricted-mode-debugging-dialog.png" alt="Workspace Trust Restricted Mode debugging dialog" /><figcaption>Workspace Trust Restricted Mode debugging dialog</figcaption>
+</figure>
+<h3 id="workspace-settings">Workspace settings</h3>
+<p>Workspace <a href="/docs/getstarted/settings.md">settings</a> are stored in the <code>.vscode</code> folder at the root of your workspace, and are therefore shared by anyone who clones the workspace repository. Some settings contain paths to executables (for example, linter binaries), which if set to point to malicious code, could do damage. For this reason, there is a set of workspace settings that are disabled when running in Restricted Mode.</p>
+<figure>
+<img src="images/workspace-trust/workspace-settings-link.png" alt="Workspace Trust editor workspace settings link" /><figcaption>Workspace Trust editor workspace settings link</figcaption>
+</figure>
+<p>In the Workspace Trust editor, there is a link to display the workspace settings that aren’t being applied. Clicking the link brings up the Settings editor scoped by the <code>@tag:requireTrustedWorkspace</code> tag.</p>
+<figure>
+<img src="images/workspace-trust/requireTrustedWorkspace-settings.png" alt="Settings editor scoped by the requireTrustedWorkspace tag" /><figcaption>Settings editor scoped by the requireTrustedWorkspace tag</figcaption>
+</figure>
+<h3 id="extensions">Extensions</h3>
+<p>The VS Code <a href="/docs/editor/extension-marketplace.md">extensions</a> ecosystem is incredibly rich and diverse. People have created extensions to help with just about any programming task or editor customization. Some extensions provide full programming language support (IntelliSense, debugging, code analysis), and others let you play music or have virtual <a href="https://marketplace.visualstudio.com/items?itemName=tonybaloney.vscode-pets">pets</a>.</p>
+<p>Most extensions run code on your behalf and could potentially do harm. Some extensions have settings that could cause them to act maliciously if configured to run an unexpected executable. For this reason, extensions that have not explicitly opted into Workspace Trust are disabled by default in Restricted Mode.</p>
+<figure>
+<img src="images/workspace-trust/disabled-extensions-link.png" alt="Workspace Trust disabled extensions link" /><figcaption>Workspace Trust disabled extensions link</figcaption>
+</figure>
+<p>You can review an installed extension’s status by clicking the <strong>extensions are disabled or have limited functionality</strong> link in the Workspace Trust editor, which displays the Extensions view scoped with the <code>@workspaceUnsupported</code> filter.</p>
+<figure>
+<img src="images/workspace-trust/workspaceUnsupported-extensions-view.png" alt="Extensions view filtered by workspaceUnsupported showing disabled and limited extensions" /><figcaption>Extensions view filtered by workspaceUnsupported showing disabled and limited extensions</figcaption>
+</figure>
+<p><strong>Disabled in Restricted Mode</strong></p>
+<p>Extensions that have either not explicitly indicated that they support running in Restricted Mode are shown in the <strong>Disabled in Restricted Mode</strong> section. An extension author can also indicate that they never want to be enabled in Restricted Mode if they determine that their extension could be misused by modifications (settings or files) in a workspace.</p>
+<p><strong>Limited in Restricted Mode</strong></p>
+<p>Extension authors can also evaluate their extensions for possible security vulnerabilities and declare that they have <strong>limited</strong> support when running in Restricted Mode. This mode means the extension may disable some features or functionality to prevent a possible exploit.</p>
+<p>Extensions can add custom text to the Extensions view Workspace Trust badge explaining the limitation when running in an untrusted folder.</p>
+<p>For example, the VS Code built-in PHP extension limits the use of the <code>php.validate.executablePath</code> setting to trusted folders since overriding this setting could run a malicious program.</p>
+<figure>
+<img src="images/workspace-trust/php-limited-hover.png" alt="PHP extension limited in Restricted Mode hover" /><figcaption>PHP extension limited in Restricted Mode hover</figcaption>
+</figure>
+<p>You can override an extension’s Workspace Trust support level using the <code>extensions.supportUntrustedWorkspaces</code> setting described in the <a href="#enabling-extensions">Enabling extensions</a> section below.</p>
+<p>If you try to install an extension in Restricted Mode, you will be prompted to either trust the workspace or just install the extension. If the extension doesn’t support Workspace Trust, it will be installed, but be disabled or running with limited functionality.</p>
+<figure>
+<img src="images/workspace-trust/workspace-trust-install-extension.png" alt="Workspace Trust install an extension in Restricted Mode dialog" /><figcaption>Workspace Trust install an extension in Restricted Mode dialog</figcaption>
+</figure>
+<blockquote>
+<p><strong>Note</strong>: Extension authors can learn how to update their extensions to support Workspace Trust by reading the <a href="/api/extension-guides/workspace-trust.md">Workspace Trust Extension Guide</a>.</p>
+</blockquote>
+<h2 id="trusting-a-workspace">Trusting a workspace</h2>
+<p>If you trust the authors and maintainers of a project, you can trust the project’s folder on your local machine. For example, it is usually safe to trust repositories from well-known GitHub organizations such as github.com/microsoft or github.com/docker.</p>
+<p>The initial Workspace Trust prompt when you open a new folder allows you to trust that folder and its subfolders.</p>
+<figure>
+<img src="images/workspace-trust/workspace-trust-dialog.png" alt="Trust this folder dialog" /><figcaption>Trust this folder dialog</figcaption>
+</figure>
+<p>You can also bring up the Workspace Editor and quickly toggle a folder’s trusted state.</p>
+<p>There are several ways to bring up the Workspace Editor dialog.</p>
+<p>When in Restricted Mode:</p>
+<ul>
+<li>Restricted Mode banner <strong>Manage</strong> link</li>
+<li>Restricted Mode Status bar item</li>
+</ul>
+<p>You can also at any time use:</p>
+<ul>
+<li><strong>Workspaces: Manage Workspace Trust</strong> command from the Command Palette (<code>kb(workbench.action.showCommands)</code>)</li>
+<li><strong>Manage Workspace Trust</strong> from the <strong>Manage</strong> gear in the Activity bar</li>
+</ul>
+<figure>
+<img src="images/workspace-trust/gear-manage-workspace-trust.png" alt="Manage Workspace Trust command in the Manage gear context menu" /><figcaption>Manage Workspace Trust command in the Manage gear context menu</figcaption>
+</figure>
+<h2 id="selecting-folders">Selecting folders</h2>
+<p>When you trust a folder, it is added to the <strong>Trusted Folders &amp; Workspaces</strong> list displayed in the Workspace Trust editor.</p>
+<figure>
+<img src="images/workspace-trust/trusted-folders-workspaces-list.png" alt="Workspace Trust editor Trusted Folders and Workspaces list" /><figcaption>Workspace Trust editor Trusted Folders and Workspaces list</figcaption>
+</figure>
+<p>You can manually add, edit, and remove folders from this list and the active folder enabling trust is highlighted in bold.</p>
+<h3 id="selecting-a-parent-folder">Selecting a parent folder</h3>
+<p>When you trust a folder via the Workspace Trust editor, you have the option to trust the parent folder. This will apply trust to the parent folder and all subfolders.</p>
+<figure>
+<img src="images/workspace-trust/trust-parent-folder.png" alt="Workspace Trust button dropdown showing Trust All in Parent Folder" /><figcaption>Workspace Trust button dropdown showing Trust All in Parent Folder</figcaption>
+</figure>
+<p>This can be helpful if you have many folders with trusted content co-located under one folder.</p>
+<p>When opening a subfolder under a trusted parent, you won’t see the usual <strong>Don’t Trust</strong> button to put you back in Restricted Mode, instead there is text mentioning that your folder is trusted due to another folder.</p>
+<p>You can add, modify, and remove a parent folder entry from the <strong>Trusted Folders &amp; Workspaces</strong> list.</p>
+<h3 id="folder-configurations">Folder configurations</h3>
+<p>As mentioned above, you can trust a parent folder and all subfolders will be trusted. This allows you to control Workspace Trust via a repository’s location on disk.</p>
+<p>For example, you could put all trusted repos under a “TrustedRepos” parent folder, and unfamiliar repos under another parent folder such as “ForEvaluation”. You would trust the “TrustedRepos” folder, and selectively trust folders under “ForEvaluation”.</p>
+<pre><code>├── TrustedRepos - Clone trusted repositories under this parent folder
+└── ForEvaluation - Clone experimental or unfamiliar repositories under this parent folder</code></pre>
+<p>You also group and set trust on your repositories by grouping them under organization-base parent folders.</p>
+<pre><code>├── github/microsoft - Clone a specific organization&#39;s repositories under this parent folder
+├── github/{myforks} - Place your forked repositories under this parent folder
+└── local - Local un-published repositories</code></pre>
+<h2 id="enabling-extensions">Enabling extensions</h2>
+<p>What happens if you want to use Restricted Mode but your favorite extension doesn’t support Workspace Trust? This can happen if an extension, while useful and functional, isn’t being actively maintained and hasn’t declared their Workspace Trust support. To handle this scenario, you can override the extension’s trust state with the <code>extensions.supportUntrustedWorkspaces</code> setting.</p>
+<blockquote>
+<p><strong>Note</strong>: Be careful overriding an extension’s Workspace Trust support. It may be that the extension author has a good reason for disabling their extension in Restricted Mode. If in doubt, reach out to the extension author or review recent changelogs to get more context.</p>
+</blockquote>
+<p>If you open the Settings editor (<code>kb(workbench.action.openSettings)</code>) and search for “trust extensions”, you can find the <strong>Extensions: Support Untrusted Workspaces</strong> setting, which has an <strong>Edit in settings.json</strong> link.</p>
+<figure>
+<img src="images/workspace-trust/extensions-support-untrusted.png" alt="Extension support" /><figcaption>Extension support</figcaption>
+</figure>
+<p>Select that link and you will go to your user <code>settings.json</code> file with a new entry for <code>extensions.supportUntrustedWorkspaces</code>. This setting takes an object that has a list of extension IDs and their support status and version. You can select any of your installed extensions via IntelliSense suggestions.</p>
+<p>Below you can see a <code>settings.json</code> entry for the Prettier extension.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1">  <span class="er">&quot;extensions.supportUntrustedWorkspaces&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">    <span class="dt">&quot;esbenp.prettier-vscode&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">      <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;6.4.0&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="fu">}</span><span class="er">,</span></a></code></pre></div>
+<p>You can either enable or disable Workspace Trust support with the <code>supported</code> attribute. The <code>version</code> attribute specifies the exact extension version applicable and you can remove the version field if you want to set the state for all versions.</p>
+<p>If you’d like to learn more about how extension authors evaluate and determine which features to limit in Restricted Mode, you can read the <a href="/api/extension-guides/workspace-trust.md">Workspace Trust Extension Guide</a>.</p>
+<h2 id="opening-untrusted-files">Opening untrusted files</h2>
+<p>If you open a file that is located outside of a trusted folder, VS Code will detect that the file comes from somewhere outside the folder root and prompt you with the option to continue to open the file or open the file in a new window in Restricted Mode. Opening in Restricted Mode is the safest option and you can always reopen the file in your original VS Code window once you determine the file is trustworthy.</p>
+<figure>
+<img src="images/workspace-trust/untrusted-file-dialog.png" alt="Untrusted files dialog" /><figcaption>Untrusted files dialog</figcaption>
+</figure>
+<p>If you would prefer to not be prompted when opening files from outside trusted workspaces, you can set <code>security.workspace.trust.untrustedFiles</code> to <code>open</code>. You can also set <code>security.workspace.trust.untrustedFiles</code> to <code>newWindow</code> to always create a new window in Restricted Mode. Checking the <strong>Remember my decision for all workspaces</strong> option in the untrusted files dialog applies your choice to the <code>security.workspace.trust.untrustedFiles</code> user setting.</p>
+<h3 id="opening-untrusted-folders">Opening untrusted folders</h3>
+<p>When working with <a href="/docs/editor/multi-root-workspaces.md">multi-root workspaces</a> with multiple folders, if you try to add a new folder to a trusted multi-root workspace, you will be prompted to decide if you trust the files in that folder or if not, the entire workspace will switch to Restricted Mode.</p>
+<figure>
+<img src="images/workspace-trust/untrusted-folder-dialog.png" alt="Untrusted folder dialog" /><figcaption>Untrusted folder dialog</figcaption>
+</figure>
+<h3 id="empty-windows-no-open-folder">Empty windows (no open folder)</h3>
+<p>By default, if you open a new VS Code window (instance) without opening a folder or workspace, VS Code runs the window with full trust. All installed extensions are enabled and you can use the empty window without restrictions.</p>
+<p>When you open a file, you will be prompted whether you want to open an <a href="#opening-untrusted-files">untrusted file</a> since there is no folder to parent it.</p>
+<p>You can switch an empty window to Restricted Mode using the Workspace Trust editor (select <strong>Manage Workspace Trust</strong> from the <strong>Manage</strong> gear button or the Command Palette) and selecting <strong>Don’t Trust</strong>. The empty window will remain in Restricted Mode for your current session but will go back to trusted if you restart or create a new window.</p>
+<p>If you want all empty windows to be in Restricted Mode, you can set <code>security.workspace.trust.emptyWindow</code> to <code>false</code>.</p>
+<h2 id="settings">Settings</h2>
+<p>Below are the available Workspace Trust settings:</p>
+<ul>
+<li><code>security.workspace.trust.enabled</code> - Enable Workspace Trust feature. Default is true.</li>
+<li><code>security.workspace.trust.startupPrompt</code> - Whether to show the Workspace Trust dialog on startup. Default is to only show once per distinct folder or workspace.</li>
+<li><code>security.workspace.trust.emptyWindow</code> - Whether to always trust an empty window (no open folder). Default is true.</li>
+<li><code>security.workspace.trust.untrustedFiles</code> - Controls how to handle loose files in a workspace. Default is to prompt.</li>
+<li><code>extensions.supportUntrustedWorkspaces</code> - Override extension Workspace Trust declarations. Either true or false.</li>
+<li><code>security.workspace.trust.banner</code> - Controls when the Restricted Mode banner is displayed. Default is <code>untilDismissed</code>.</li>
+</ul>
+<h2 id="command-line-switch">Command-line switch</h2>
+<p>You can disable Workspace Trust via the VS Code command line by passing <code>--disable-workspace-trust</code>. This switch only affects the current session.</p>
+<!-- ## Special configurations
+
+### Remote extensions
+
+SSH - paths are relative to the remote machine
+
+WSL - paths are relative to WSL instance (/mnt/) (might map to already trusted local path)
+
+Containers
+
+### Codespaces (move to docs/remote/codespaces?)
+
+Paths a little weird
+
+-->
+<h2 id="next-steps">Next steps</h2>
+<p>Learn more at:</p>
+<ul>
+<li><a href="/api/extension-guides/workspace-trust.md">Workspace Trust Extension Guide</a> - Learn how extension authors can support Workspace Trust.</li>
+<li><a href="/docs/editor/workspaces.md">What is a VS Code “workspace”?</a> - Find out more details about the VS Code “workspace” concept.</li>
+<li><a href="/docs/editor/github.md#remote-repositories-extension">Remote Repositories extension</a> - Work directly on a repository without cloning the source code to your local machine.</li>
+</ul>
+<h2 id="common-questions">Common questions</h2>
+<h3 id="can-i-still-edit-my-source-code-in-restricted-mode">Can I still edit my source code in Restricted Mode?</h3>
+<p>Yes, you can still browse and edit source code in Restricted Mode. Some language features may be disabled, but text editing is always supported.</p>
+<h3 id="where-did-my-installed-extensions-go">Where did my installed extensions go?</h3>
+<p>In Restricted Mode, any extension that doesn’t support Workspace Trust will be disabled, and all UI elements such as Activity bar icons and commands will not be displayed.</p>
+<p>You can override an extension’s Workspace Trust support level with the <code>extensions.supportUntrustedWorkspaces</code> setting but do so with care. <a href="#enabling-extensions">Enabling extensions</a> has more details.</p>
+<!-- List of popular extensions that currently need this override. -->
+<h3 id="can-i-disable-the-workspace-trust-feature">Can I disable the Workspace Trust feature?</h3>
+<p>You can but it is not recommended. If you don’t want VS Code to check for Workspace Trust when opening a new folder or repository, you can set <code>security.workspace.trust.enabled</code> to false. VS Code will then behave as it did before the 1.57 release.</p>
+<h3 id="how-do-i-untrust-a-folderworkspace">How do I untrust a folder/workspace?</h3>
+<p>Bring up Workspace Trust editor (<strong>Workspaces: Manage Workspace Trust</strong> from the Command Palette) and select the <strong>Don’t Trust</strong> button. You can also remove the folder from the <strong>Trusted Folders &amp; Workspaces</strong> list.</p>
+<h3 id="why-dont-i-see-the-dont-trust-button">Why don’t I see the “Don’t Trust” button?</h3>
+<p>If you don’t see the <strong>Don’t Trust</strong> button in the Workspace Trust dialog, the folder’s trust level may be inherited from a parent folder. Review the <strong>Trusted Folders &amp; Workspaces</strong> list to check if a parent folder has enabled Workspace Trust.</p>
+<p>Some workflows such as connecting to a <a href="/docs/remote/codespaces.md">GitHub Codespace</a> or <a href="/docs/remote/attach-container.md">attaching to a running Docker container</a> are automatically trusted since these are managed environments to which you should already have a high level of trust.</p>
+<h3 id="what-does-workspace-trust-protect-against">What does Workspace Trust protect against?</h3>
+<p>Many features of VS Code allow third-party tools and extensions to run automatically, such as linting or format on save, or when you do certain operations like compiling code or debugging. An unethical person could craft an innocent looking project that would run malicious code without your knowledge and harm your local machine. Workspace Trust provides an extra layer of security by trying to prevent code execution while you are evaluating the safety and integrity of unfamiliar source code.</p>
+</body>
+</html>

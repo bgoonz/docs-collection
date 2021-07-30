@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>extension-anatomy</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="extension-anatomy">Extension Anatomy</h1>
+    <p>
+      In the last topic, you were able to get a basic extension running. How does it work
+      under the hood?
+    </p>
+    <p>The <code>Hello World</code> extension does 3 things:</p>
+    <ul>
+      <li>
+        Registers the
+        <a href="/api/references/activation-events#onCommand"><code>onCommand</code></a>
+        <a href="/api/references/activation-events"><strong>Activation Event</strong></a
+        >: <code>onCommand:extension.helloWorld</code>, so the extension becomes activated
+        when user runs the <code>Hello World</code> command.
+      </li>
+      <li>
+        Uses the
+        <a href="/api/references/contribution-points#contributes.commands"
+          ><code>contributes.commands</code></a
+        >
+        <a href="/api/references/contribution-points"
+          ><strong>Contribution Point</strong></a
+        >
+        to make the command <code>Hello World</code> available in the Command Palette, and
+        bind it to a command ID <code>extension.helloWorld</code>.
+      </li>
+      <li>
+        Uses the
+        <a href="/api/references/vscode-api#commands.registerCommand"
+          ><code>commands.registerCommand</code></a
+        >
+        <a href="/api/references/vscode-api"><strong>VS Code API</strong></a> to bind a
+        function to the registered command ID <code>extension.helloWorld</code>.
+      </li>
+    </ul>
+    <p>Understanding these three concepts is crucial to writing extensions in VS Code:</p>
+    <ul>
+      <li>
+        <a href="/api/references/activation-events"><strong>Activation Events</strong></a
+        >: events upon which your extension becomes active.
+      </li>
+      <li>
+        <a href="/api/references/contribution-points"
+          ><strong>Contribution Points</strong></a
+        >: static declarations that you make in the <code>package.json</code>
+        <a href="#extension-manifest">Extension Manifest</a> to extend VS Code.
+      </li>
+      <li>
+        <a href="/api/references/vscode-api"><strong>VS Code API</strong></a
+        >: a set of JavaScript APIs that you can invoke in your extension code.
+      </li>
+    </ul>
+    <p>
+      In general, your extension would use a combination of Contribution Points and VS Code
+      API to extend VS Code’s functionality. The
+      <a href="/api/extension-capabilities/overview">Extension Capabilities Overview</a>
+      topic helps you find the right Contribution Point and VS Code API for your extension.
+    </p>
+    <p>
+      Let’s take a closer look at <code>Hello World</code> sample’s source code and see how
+      these concepts apply to it.
+    </p>
+    <h2 id="extension-file-structure">Extension File Structure</h2>
+    <pre><code>.
+├── .vscode
+│   ├── launch.json     // Config for launching and debugging the extension
+│   └── tasks.json      // Config for build task that compiles TypeScript
+├── .gitignore          // Ignore build output and node_modules
+├── README.md           // Readable description of your extension&#39;s functionality
+├── src
+│   └── extension.ts    // Extension source code
+├── package.json        // Extension manifest
+├── tsconfig.json       // TypeScript configuration</code></pre>
+    <p>You can read more about the configuration files:</p>
+    <ul>
+      <li>
+        <code>launch.json</code> used to configure VS Code
+        <a href="/docs/editor/debugging">Debugging</a>
+      </li>
+      <li>
+        <code>tasks.json</code> for defining VS Code <a href="/docs/editor/tasks">Tasks</a>
+      </li>
+      <li>
+        <code>tsconfig.json</code> consult the TypeScript
+        <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html"
+          >Handbook</a
+        >
+      </li>
+    </ul>
+    <p>
+      However, let’s focus on <code>package.json</code> and <code>extension.ts</code>, which
+      are essential to understanding the <code>Hello World</code> extension.
+    </p>
+    <h3 id="extension-manifest">Extension Manifest</h3>
+    <p>
+      Each VS Code extension must have a <code>package.json</code> as its
+      <a href="/api/references/extension-manifest">Extension Manifest</a>. The
+      <code>package.json</code> contains a mix of Node.js fields such as
+      <code>scripts</code> and <code>devDependencies</code> and VS Code specific fields such
+      as <code>publisher</code>, <code>activationEvents</code> and <code>contributes</code>.
+      You can find description of all VS Code specific fields in
+      <a href="/api/references/extension-manifest">Extension Manifest Reference</a>. Here
+      are some most important fields:
+    </p>
+    <ul>
+      <li>
+        <code>name</code> and <code>publisher</code>: VS Code uses
+        <code>&lt;publisher&gt;.&lt;name&gt;</code> as a unique ID for the extension. For
+        example, the Hello World sample has the ID
+        <code>vscode-samples.helloworld-sample</code>. VS Code uses the ID to uniquely
+        identify your extension
+      </li>
+      <li><code>main</code>: The extension entry point.</li>
+      <li>
+        <code>activationEvents</code> and <code>contributes</code>:
+        <a href="/api/references/activation-events">Activation Events</a> and
+        <a href="/api/references/contribution-points">Contribution Points</a>.
+      </li>
+      <li>
+        <code>engines.vscode</code>: This specifies the minimum version of VS Code API that
+        the extension depends on.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;helloworld-sample&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;helloworld-sample&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;HelloWorld example for VS Code&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">&quot;publisher&quot;</span><span class="fu">:</span> <span class="st">&quot;vscode-samples&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="dt">&quot;repository&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/microsoft/vscode-extension-samples/helloworld-sample&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="dt">&quot;engines&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.51.0&quot;</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="dt">&quot;categories&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Other&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;onCommand:extension.helloWorld&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-13" title="13">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./out/extension.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-14" title="14">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="dt">&quot;commands&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-17" title="17">        <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;extension.helloWorld&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-18" title="18">        <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello World&quot;</span></a>
+<a class="sourceLine" id="cb2-19" title="19">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-20" title="20">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-21" title="21">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-22" title="22">  <span class="dt">&quot;scripts&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-23" title="23">    <span class="dt">&quot;vscode:prepublish&quot;</span><span class="fu">:</span> <span class="st">&quot;npm run compile&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-24" title="24">    <span class="dt">&quot;compile&quot;</span><span class="fu">:</span> <span class="st">&quot;tsc -p ./&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-25" title="25">    <span class="dt">&quot;watch&quot;</span><span class="fu">:</span> <span class="st">&quot;tsc -watch -p ./&quot;</span></a>
+<a class="sourceLine" id="cb2-26" title="26">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-27" title="27">  <span class="dt">&quot;devDependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-28" title="28">    <span class="dt">&quot;@types/node&quot;</span><span class="fu">:</span> <span class="st">&quot;^8.10.25&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-29" title="29">    <span class="dt">&quot;@types/vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.51.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-30" title="30">    <span class="dt">&quot;tslint&quot;</span><span class="fu">:</span> <span class="st">&quot;^5.16.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-31" title="31">    <span class="dt">&quot;typescript&quot;</span><span class="fu">:</span> <span class="st">&quot;^3.4.5&quot;</span></a>
+<a class="sourceLine" id="cb2-32" title="32">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-33" title="33"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="extension-entry-file">Extension Entry File</h2>
+    <p>
+      The extension entry file exports two functions, <code>activate</code> and
+      <code>deactivate</code>. <code>activate</code> is executed when your registered
+      <strong>Activation Event</strong> happens. <code>deactivate</code> gives you a chance
+      to clean up before your extension becomes deactivated. For many extensions, explicit
+      cleanup may not be required, and the <code>deactivate</code> method can be removed.
+      However, if an extension needs to perform an operation when VS Code is shutting down
+      or the extension is disabled or uninstalled, this is the method to do so.
+    </p>
+    <p>
+      The VS Code extension API is declared in the
+      <span class="citation" data-cites="types/vscode">[@types/vscode]</span
+      >(https://www.npmjs.com/package/<span class="citation" data-cites="types/vscode"
+        >@types/vscode</span
+      >) type definitions. The version of the <code>vscode</code> type definitions is
+      controlled by the value in the <code>engines.vscode</code> field in
+      <code>package.json</code>. The <code>vscode</code> types give you IntelliSense, Go to
+      Definition, and other TypeScript language features in your code.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// The module &#39;vscode&#39; contains the VS Code extensibility API</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">// Import the module and reference it with the alias vscode in your code below</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">// this method is called when your extension is activated</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">// your extension is activated the very first time the command is executed</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="co">// Use the console to output diagnostic information (console.log) and errors (console.error)</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="co">// This line of code will only be executed once when your extension is activated</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;Congratulations, your extension &quot;helloworld-sample&quot; is now active!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="co">// The command has been defined in the package.json file</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  <span class="co">// Now provide the implementation of the command with registerCommand</span></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="co">// The commandId parameter must match the command field in package.json</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="kw">let</span> disposable <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;extension.helloWorld&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-16" title="16">    <span class="co">// The code you place here will be executed every time your command is executed</span></a>
+<a class="sourceLine" id="cb3-17" title="17"></a>
+<a class="sourceLine" id="cb3-18" title="18">    <span class="co">// Display a message box to the user</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;Hello World!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-20" title="20">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-21" title="21"></a>
+<a class="sourceLine" id="cb3-22" title="22">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(disposable)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="co">// this method is called when your extension is deactivated</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="im">export</span> <span class="kw">function</span> <span class="fu">deactivate</span>() <span class="op">{}</span></a></code></pre>
+    </div>
+  </body>
+</html>

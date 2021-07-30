@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>parallel-services</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="debug-multiple-services">Debug multiple services</h1>
+    <p>
+      Bridge to Kubernetes provides the ability to debug your Kubernetes
+      services in a local environment, as described in
+      <a href="/docs/containers/bridge-to-kubernetes.md"
+        >Use Bridge to Kubernetes</a
+      >. With Bridge to Kubernetes, you redirect traffic to a locally running
+      instance of a service and can debug using VS Code’s debugger. However, in
+      some scenarios, you want to work with more than one service and debug into
+      them all at the same time. You can debug multiple services in parallel by
+      following these steps.
+    </p>
+    <h2 id="to-debug-multiple-services-at-the-same-time">
+      To debug multiple services at the same time
+    </h2>
+    <ol type="1">
+      <li>
+        <p>
+          Make sure that your services listen on different ports locally. The
+          port numbers are service-specific, so look to the service code to
+          determine what ports it listens on. If multiple services you want to
+          debug listen on the same ports, you won’t be able to debug them at the
+          same time.
+        </p>
+      </li>
+      <li>
+        <p>Open the folder corresponding to your first service in VS Code.</p>
+      </li>
+      <li>
+        <p>
+          In VS Code, select <strong>File</strong> &gt;
+          <strong>Add Folder to Workspace…</strong>, and pick the folder
+          corresponding to your other service.
+        </p>
+      </li>
+      <li>
+        <p>
+          Open the Command Palette
+          (<code>kb(workbench.action.showCommands)</code>), and run the command
+          <strong>Bridge to Kubernetes: Configure</strong> and, for each of your
+          services, go through the configuration steps.
+        </p>
+        <blockquote>
+          <p>
+            <strong>Warning</strong>: If you configured your services to run
+            isolated, make sure that they’re using the same
+            <strong>isolateAs</strong> value in their
+            <code>.vscode/tasks.json</code> files. This value is the prefix that
+            Bridge to Kubernetes uses to direct traffic for an isolated service.
+            By default, when configuring them, they will have different values.
+            You can choose one of the values and hand-edit the
+            <code>tasks.json</code> files for the other services to give them
+            all the same value.
+          </p>
+          <div class="sourceCode" id="cb1">
+            <pre
+              class="sourceCode json"
+            ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">&quot;tasks&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-2" title="2">   <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">       <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;bridge-to-kubernetes.service&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">       <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bridge-to-kubernetes.service&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">       <span class="dt">&quot;service&quot;</span><span class="fu">:</span> <span class="st">&quot;service-name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">       <span class="dt">&quot;ports&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-7" title="7">           <span class="dv">3000</span></a>
+<a class="sourceLine" id="cb1-8" title="8">       <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">       <span class="dt">&quot;isolateAs&quot;</span><span class="fu">:</span> <span class="st">&quot;&lt;copy-same-value-for-all-debugged-services&gt;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">       <span class="dt">&quot;useKubernetesServiceEnvironmentVariables&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb1-11" title="11">   <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="ot">]</span></a></code></pre>
+          </div>
+        </blockquote>
+      </li>
+      <li><p>Set up any breakpoints that you need in each service.</p></li>
+      <li>
+        <p>
+          Start debugging (<code>kb(workbench.action.debug.start)</code>) with
+          Bridge for each of the services by launching the debugger in each
+          service’s folder. The previous step created launch configurations for
+          each service, which VS Code’s debugger uses when you start the VS Code
+          debugger from that workspace.
+        </p>
+      </li>
+    </ol>
+    <h2 id="next-steps">Next steps</h2>
+    <p>
+      Learn more about how Bridge to Kubernetes works at
+      <a
+        href="https://docs.microsoft.com/visualstudio/containers/overview-bridge-to-kubernetes"
+        >How Bridge to Kubernetes works</a
+      >.
+    </p>
+  </body>
+</html>

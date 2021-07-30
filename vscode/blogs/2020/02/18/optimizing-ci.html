@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>optimizing-ci</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="improving-ci-build-times">Improving CI Build Times</h1>
+    <p>
+      February 18, 2020 by Ethan Dennis,
+      <span class="citation" data-cites="erdennis13">[@erdennis13]</span
+      >(https://twitter.com/erdennis13) and João Moreno,
+      <span class="citation" data-cites="joaomoreno">[@joaomoreno]</span
+      >(https://twitter.com/joaomoreno)
+    </p>
+    <p>
+      Visual Studio Code is a large project with lots of moving parts and an
+      active participant list. We have
+      <a
+        href="https://code.visualstudio.com/blogs/2018/09/12/engineering-with-azure-pipelines"
+        >shown</a
+      >
+      how we actively use Azure Pipelines to keep up with good engineering
+      practices by maintaining our build and continuous integration
+      infrastructure. In this blog post, we’ll talk about how we used the
+      <a
+        href="https://github.com/microsoft/azure-pipelines-artifact-caching-tasks"
+        >Azure Pipelines Artifact Caching Tasks</a
+      >
+      to dramatically reduce our CI build times.
+    </p>
+    <p>
+      We described in an
+      <a
+        href="https://medium.com/crawl-walk-sprint/reducing-vs-code-ci-build-times-by-33-dbb1715b5028"
+        >earlier blog post</a
+      >
+      how we reduced CI build times by 33%. This was accomplished by using
+      custom build tasks that cache the node modules that VS Code consumes
+      instead of resolving the packages at build time. While we were happy with
+      this performance boost, we wanted to see how much further we could push
+      the caching tasks that we built.
+    </p>
+    <p>
+      When we last talked about our CI engineering, our target platforms spanned
+      Windows, macOS, and Linux. As of today, VS Code targets a much more
+      diverse set of platforms, such as ARM64 and Alpine Linux for its remote
+      server components. In total, we have eight different targets that all
+      share common build steps. This post outlines how we leveraged the caching
+      tasks to reduce CI duplication and further improve our build times.
+    </p>
+    <h2 id="room-for-improvement">Room for improvement</h2>
+    <p>
+      So, what exactly were the common steps across all build jobs? Each build
+      target has a job that follows a similar set of steps. At a very high
+      level, each job must:
+    </p>
+    <ol type="1">
+      <li>Restore dependencies</li>
+      <li>Lint TypeScript and JavaScript</li>
+      <li>Compile TypeScript to JavaScript</li>
+      <li>Run unit test suites</li>
+      <li>Run integration test suites</li>
+      <li>Package VS Code</li>
+    </ol>
+    <p>
+      Our caching tasks were an obvious choice to speed up the
+      <strong>Restore dependencies</strong> step. For example, why run an
+      expensive <code>npm install</code> step, when you could cache the results
+      from a previous run, given that the <code>package-lock.json</code> file
+      rarely changes? Since we’ve discussed caching packages previously, what
+      makes this post interesting is how we applied caching to the other steps.
+    </p>
+    <p>
+      Since linting and compilation are platform-independent, those steps could
+      easily be run by a single build agent that would share its results with
+      other platform-dependent agents, instead of having all agents perform this
+      work repeatedly. We created a Linux build agent whose sole responsibility
+      was exactly this: restore packages, lint, and compile the source code. All
+      we had to do was to share the results with other agents.
+    </p>
+    <h2 id="cache-everything">Cache everything</h2>
+    <p>
+      In order to share cache results across build agents, we needed
+      platform-independent caches, which were initially unsupported by the
+      caching tasks. So an optional <code>platformIndependent</code> parameter
+      was added to the Azure Pipelines Artifact Caching Tasks.
+    </p>
+    <p>
+      Here’s how VS Code uses the <code>platformIndependent</code> parameter:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">-</span> <span class="fu">task:</span><span class="at"> 1ESLighthouseEng.PipelineArtifactCaching.RestoreCacheV1.RestoreCache@1</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">keyfile:</span><span class="at"> keyfile</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="fu">targetfolder:</span><span class="at"> target</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="fu">vstsFeed:</span><span class="at"> $(ArtifactFeed)</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">platformIndependent:</span><span class="at"> </span><span class="ch">true</span></a></code></pre>
+    </div>
+    <p>
+      When caching node modules, it’s logical to use
+      <code>package-lock.json</code> files as a cache key. When this file
+      changes, we must invalidate the cache. When caching compilation outputs,
+      the entire code base must act as a cache key. To simplify things, we
+      decided to use the HEAD commit as the cache key since a new commit will
+      inevitably create a new cache entry. This works fine for our purposes
+      since a single build, despite running across build agents, always runs
+      over a single commit.
+    </p>
+    <p>
+      Another missing feature was the ability to create multiple caches per
+      build job. We now found ourselves juggling two caches (node modules,
+      compilation) with no way to address each cache individually. The caching
+      tasks output an environment variable called
+      <code>CacheRestored</code> that can be used to optimistically skip build
+      tasks. This environment variable works great in builds that interact with
+      a single cache, but not so great with multiple caches—leaving us to wonder
+      which cache <code>CacheRestored</code> is referring to. Once again,
+      another optional <code>alias</code> parameter was added to the Azure
+      Pipelines Artifact Caching Tasks.
+    </p>
+    <p>And here’s how we use the <code>alias</code> parameter:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode yml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">-</span> <span class="fu">task:</span><span class="at"> 1ESLighthouseEng.PipelineArtifactCaching.RestoreCacheV1.RestoreCache@1</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="fu">keyfile:</span><span class="at"> </span><span class="st">&quot;yarn.lock&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="fu">targetfolder:</span><span class="at"> </span><span class="st">&quot;node_modules&quot;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="fu">vstsFeed:</span><span class="at"> </span><span class="st">&quot;$(ArtifactFeed)&quot;</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="fu">alias:</span><span class="at"> </span><span class="st">&quot;Packages&quot;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">- </span><span class="fu">script:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    yarn install</a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="fu">displayName:</span><span class="at"> Install Dependencies</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="fu">condition:</span><span class="at"> ne(variables[&#39;CacheRestored-Packages&#39;], &#39;true&#39;)</span></a></code></pre>
+    </div>
+    <p>
+      Here, an alias of <code>Packages</code> is appended to the environment
+      variable output, allowing us to cache NPM packages and compilation output
+      in a single build job. We were finally deduplicating a lot of the CI work
+      that could now be executed only once and shared across platform-specific
+      agents.
+    </p>
+    <p>
+      There was still room for one final optimization, given a specific use
+      case: build resubmissions. We sometimes must retrigger VS Code builds on
+      previously built commits since tests might be flaky or some agents might
+      randomly fail. Ideally, the shared agent would not restore or recompile
+      the common code but defer to the platform-dependent agents to perform
+      their work. The issue we noticed was that the compilation cache packages
+      were massive and restoring them would take around 8 minutes—all for
+      nothing since the shared agent would simply yield control if that cache
+      existed. So a new optional <code>dryRun</code> parameter was once again
+      added to the Azure Pipelines Artifact Caching Tasks, which allows us to
+      check for a cache package’s existence without restoring it—effectively
+      cutting 8 minutes off our build resubmissions.
+    </p>
+    <p>Using the <code>dryRun</code> parameter in our build looks like this:</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">-</span> <span class="fu">task:</span><span class="at"> 1ESLighthouseEng.PipelineArtifactCaching.RestoreCacheV1.RestoreCache@1</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">keyfile:</span><span class="at"> commit</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="fu">targetfolder:</span><span class="at"> output</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">vstsFeed:</span><span class="at"> </span><span class="st">&quot;$(ArtifactFeed)&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">dryRun:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="kw">- </span><span class="fu">script:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    npm run compile install</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="fu">displayName:</span><span class="at"> Install Dependencies</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="fu">condition:</span><span class="at"> ne(variables[&#39;CacheExists&#39;], &#39;true&#39;)</span></a></code></pre>
+    </div>
+    <p>
+      Notice this also introduced a new <code>CacheExists</code> variable, which
+      works together with the <code>dryRun</code> parameter.
+    </p>
+    <h2 id="results">Results</h2>
+    <p>
+      Once these changes were implemented, we saw drastic reductions in total
+      build time. The following table shows the change in total build times for
+      each platform that VS Code targets:
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Platform</th>
+          <th>Before</th>
+          <th>After</th>
+          <th>Time Savings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Windows</td>
+          <td>58 min</td>
+          <td>44 min</td>
+          <td>24%</td>
+        </tr>
+        <tr class="even">
+          <td>Windows 32</td>
+          <td>59 min</td>
+          <td>46 min</td>
+          <td>22%</td>
+        </tr>
+        <tr class="odd">
+          <td>Linux</td>
+          <td>38 min</td>
+          <td>23 min</td>
+          <td>39%</td>
+        </tr>
+        <tr class="even">
+          <td>macOS</td>
+          <td>68 min</td>
+          <td>42 min</td>
+          <td>38%</td>
+        </tr>
+        <tr class="odd">
+          <td>Linux ARM</td>
+          <td>22 min</td>
+          <td>21 min</td>
+          <td>5%</td>
+        </tr>
+        <tr class="even">
+          <td>Linux Alpine</td>
+          <td>23 min</td>
+          <td>26 min</td>
+          <td>-13%</td>
+        </tr>
+      </tbody>
+    </table>
+    <figure>
+      <img src="chart.png" alt="VS Code before and after build times" />
+      <figcaption>VS Code before and after build times</figcaption>
+    </figure>
+    <p>
+      The Linux ARM and Linux Alpine targets only build the
+      <a href="https://code.visualstudio.com/docs/remote/remote-overview"
+        >VS Code remote server components</a
+      >, so their original build times were good enough. But since they share
+      some common tasks with the standard VS Code client platforms, we decided
+      to have them depend on the common build agent. This resulted in slightly
+      increased build times due to the increased overhead in one case.
+    </p>
+    <p>
+      Build resubmissions saw a drastic improvement, since the shared agent
+      tasks can be skipped altogether. Here are some numbers for macOS, for
+      example:
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Platform</th>
+          <th>Before</th>
+          <th>After</th>
+          <th>Time Savings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>macOS</td>
+          <td>68s</td>
+          <td>34s</td>
+          <td>50%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      In total, we were thrilled to see a combined ~50% reduction in VS Code’s
+      CI build times! The best news is that you can draw inspiration from
+      <a
+        href="https://github.com/microsoft/vscode/tree/main/build/azure-pipelines"
+        >our build definitions</a
+      >
+      to realize build time improvements of your own.
+    </p>
+    <p>Happy Caching,</p>
+    <p>
+      Ethan Dennis, Developer Services Senior Software Engineer
+      <span class="citation" data-cites="erdennis13">[@erdennis13]</span
+      >(https://twitter.com/erdennis13)
+    </p>
+    <p>
+      João Moreno, VS Code Senior Software Engineer
+      <span class="citation" data-cites="joaomoreno">[@joaomoreno]</span
+      >(https://twitter.com/joaomoreno)
+    </p>
+  </body>
+</html>

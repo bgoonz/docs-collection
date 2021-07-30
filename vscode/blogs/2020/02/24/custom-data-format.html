@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>custom-data-format</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="custom-data-format-evolving-html-and-css-language-features">
+      Custom Data Format: Evolving HTML and CSS language features
+    </h1>
+    <p>
+      February 24, 2020 by Pine Wu,
+      <span class="citation" data-cites="octref">[@octref]</span
+      >(https://github.com/octref)
+    </p>
+    <p>
+      The web evolves and so do its languages. New entities continue to land in
+      HTML and CSS specifications.
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements"
+        >Custom Elements</a
+      >
+      and
+      <a href="https://developer.mozilla.org/en-US/docs/Web/Houdini">Houdini</a>
+      allow users to extend HTML and CSS semantics. Many developers today use
+      programming languages that embed HTML and CSS. Although HTML and CSS see
+      increasingly flexible usage, editor support for new features often lags
+      behind.
+    </p>
+    <p>
+      To modernize the HTML and CSS language support in Visual Studio Code, we
+      designed the
+      <a href="https://github.com/microsoft/vscode-custom-data"
+        >Custom Data Format</a
+      >, a declarative JSON format for describing HTML and CSS entities. VS
+      Code’s HTML and CSS language servers can read data defined in this format
+      and provide language support for the newly defined HTML and CSS entities.
+    </p>
+    <p>
+      In this blog post, we explain the data format and how users and extension
+      authors can take advantage of it.
+    </p>
+    <h2 id="using-custom-data-format">Using Custom Data Format</h2>
+    <p>
+      VS Code provides information about HTML/CSS entities in auto-completion
+      and hovers information:
+    </p>
+    <figure>
+      <img
+        src="html-css-language-features.png"
+        alt="HTML and CSS Language Features"
+      />
+      <figcaption>HTML and CSS Language Features</figcaption>
+    </figure>
+    <p>
+      With the Custom Data Format, users can easily define new HTML/CSS entities
+      and get auto-completions, hover information, and other language features.
+    </p>
+    <p>
+      To get started, users can write a JSON file
+      <code>html.html-data.json</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="fl">1.1</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">&quot;tags&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;my-button&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">      <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;My button. You should use it as in `&lt;my-button type=&#39;alert&#39;&gt;&lt;/mybutton&gt;`.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="dt">&quot;references&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-8" title="8">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">          <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bootstrap buttons&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">          <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://getbootstrap.com/docs/4.0/components/buttons/&quot;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Then define a <code>html.customData</code> value in your user or workspace
+      <a href="/docs/getstarted/settings.md">settings</a> pointing to that data
+      file:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;html.customData&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;./html.html-data.json&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>You then get language features for the defined entities:</p>
+    <figure>
+      <img src="custom-data-helloworld.png" alt="Custom Data helloworld" />
+      <figcaption>Custom Data helloworld</figcaption>
+    </figure>
+    <p>
+      You can try this feature by opening the preconfigured
+      <a
+        href="https://github.com/microsoft/vscode-custom-data/tree/main/samples/helloworld"
+        >Custom Data hello world sample</a
+      >
+      with VS Code. You can edit the HTML/CSS custom data files in order to add,
+      remove, or refine the definitions of custom entities and fine-tune the
+      language features.
+    </p>
+    <p>
+      The <code>html.customData</code> and <code>css.customData</code> settings
+      serve as a good starting point for using Custom Data. However, there are
+      other ways to take advantage of Custom Data as well. In the following
+      sections, we describe how extension authors can share curated sets of
+      Custom Data or leverage Custom Data to build language support.
+    </p>
+    <h2 id="sharing-custom-data-through-extensions">
+      Sharing Custom Data through extensions
+    </h2>
+    <p>
+      Today, many web frameworks are built on top of HTML. For example, the
+      <a href="https://mavo.io">Mavo</a> project extends HTML syntax with
+      various <code>mv-</code> attributes. Custom Data makes it easy to support
+      such web frameworks:
+    </p>
+    <ul>
+      <li>
+        Generate
+        <a
+          href="https://github.com/octref/vscode-mavo/blob/master/data/mavo.json"
+          >Custom Data for all Mavo attributes</a
+        >.
+      </li>
+      <li>
+        Point to the Custom Data file in the
+        <code>contributes.html.customData</code> extension
+        <a
+          href="https://code.visualstudio.com/api/references/contribution-points"
+          >Contribution Point</a
+        >.
+      </li>
+      <li>
+        Publish the
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=octref.vscode-mavo"
+          >extension</a
+        >
+        to help others use the Mavo framework in VS Code.
+      </li>
+    </ul>
+    <p>
+      By downloading the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=octref.vscode-mavo"
+        >Mavo extension</a
+      >, users get auto-completion and hover information for all Mavo attributes
+      in HTML files:
+    </p>
+    <figure>
+      <img src="mavo-demo.gif" alt="Mavo demo" />
+      <figcaption>Mavo demo</figcaption>
+    </figure>
+    <p>
+      The extension’s source code is at the
+      <a href="https://github.com/octref/vscode-mavo">vscode-mavo</a>
+      repository. We hope the project serves as a starting point for
+      implementing web framework or language support in VS Code. You can find
+      more information about the <code>contributes.html.customData</code> and
+      <code>contributes.css.customData</code> Contribution Points at
+      <a href="https://github.com/microsoft/vscode-custom-data"
+        >vscode-custom-data</a
+      >.
+    </p>
+    <h2 id="using-custom-data-for-language-servers">
+      Using Custom Data for language servers
+    </h2>
+    <p>
+      The
+      <a href="https://github.com/microsoft/vscode-html-languageservice"
+        >vscode-html-languageservice</a
+      >
+      and
+      <a href="https://github.com/microsoft/vscode-css-languageservice"
+        >vscode-css-languageservice</a
+      >
+      libraries allow extension authors to easily implement language servers for
+      languages that extend or embed HTML and CSS. Recently, we added an API for
+      loading custom data:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> <span class="op">{</span> getLanguageService <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;vscode-html-languageservice&#39;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="fu">getLanguageService</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  customDataProviders<span class="op">:</span> <span class="op">[...]</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="op">}</span>)</a></code></pre>
+    </div>
+    <p>
+      Our built-in
+      <a
+        href="https://github.com/microsoft/vscode/tree/main/extensions/html-language-features"
+        >HTML language server</a
+      >
+      utilizes this API to load a curated set of Custom Data that we have
+      collected from various sources:
+    </p>
+    <ul>
+      <li>W3C specifications of HTML, CSS, and WAI-ARIA</li>
+      <li>Mozilla Developer Network</li>
+      <li>
+        Mozilla’s <a href="https://github.com/mdn/data">mdn-data</a> and
+        <a href="https://github.com/mdn/browser-compat-data"
+          >mdn-browser-compat-data</a
+        >
+        packages
+      </li>
+      <li>Chrome’s ranking of CSS properties usage</li>
+    </ul>
+    <p>
+      We have published this set of data to
+      <a href="https://www.npmjs.com/package/vscode-web-custom-data">NPM</a>.
+      You can find the data
+      <a
+        href="https://github.com/microsoft/vscode-custom-data/tree/main/web-data"
+        >on GitHub</a
+      >
+      as well. Language server authors might use this dataset in combination
+      with our HTML/CSS language services to implement support for their
+      languages that extend or embed HTML/CSS, or they could use this data to
+      implement support for languages that transpile to HTML/CSS, such as Pug or
+      Stylus. Finally, we will continue to curate this dataset to provide
+      up-to-date language support for HTML/CSS in VS Code.
+    </p>
+    <h2 id="summary">Summary</h2>
+    <p>
+      The VS Code team is committed to providing a good editing experience for
+      web languages. Through the Custom Data Format, we stay close to the latest
+      HTML and CSS language features and offer a simple interface for users and
+      extension authors to customize their HTML and CSS editing experience.
+    </p>
+    <figure>
+      <img src="simple-interface.png" alt="Simple interface" />
+      <figcaption>Simple interface</figcaption>
+    </figure>
+    <p>
+      You can read more about the Custom Data Format in the
+      <a href="https://github.com/microsoft/vscode-custom-data"
+        >vscode-custom-data</a
+      >
+      repository, where you can open issues and feature requests.
+    </p>
+    <p>Happy Coding!</p>
+    <p>
+      Pine Wu, VS Code Team member
+      <span class="citation" data-cites="octref">[@octref]</span
+      >(https://github.com/octref)
+    </p>
+  </body>
+</html>

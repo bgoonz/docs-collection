@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>file-icon-theme</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="file-icon-theme">File Icon Theme</h1>
+    <p>
+      Visual Studio Code displays icons next to filenames throughout its UI, and extensions
+      can contribute new sets of file icons that users can choose from.
+    </p>
+    <h2 id="adding-a-new-file-icon-theme">Adding a new File Icon Theme</h2>
+    <p>
+      You can create your own file icon theme from icons (preferably SVG) and from icon
+      fonts. As example, check out the two built-in themes:
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/theme-defaults"
+        >Minimal</a
+      >
+      and
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/theme-seti">Seti</a
+      >.
+    </p>
+    <p>
+      To begin, create a VS Code extension and add the <code>iconTheme</code> contribution
+      point.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;iconThemes&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;turtles&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Turtles&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./fileicons/turtles-icon-theme.json&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>id</code> is the identifier for the icon theme. It is used as an identifier
+      in the settings, so make it unique but also readable. <code>label</code> is shown in
+      the file icon theme picker dropdown. The <code>path</code> points to a file in the
+      extension that defines the icon set. If your icon set name follows the
+      <code>*icon-theme.json</code> name scheme, you will get completion support and hovers
+      in VS Code.
+    </p>
+    <h3 id="file-icon-set-file">File Icon Set File</h3>
+    <p>
+      The file icon set file is a JSON file consisting of file icon associations and icon
+      definitions.
+    </p>
+    <p>
+      An icon association maps a file type (‘file’, ‘folder’, ‘json-file’…) to an icon
+      definition. Icon definitions define where the icon is located: That can be an image
+      file or also glyph in a font.
+    </p>
+    <h3 id="icon-definitions">Icon definitions</h3>
+    <p>
+      The <code>iconDefinitions</code> section contains all definitions. Each definition has
+      an id, which will be used to reference the definition. A definition can be referenced
+      also by more than one file association.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;iconDefinitions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;_folder_dark&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">      <span class="dt">&quot;iconPath&quot;</span><span class="fu">:</span> <span class="st">&quot;./images/Folder_16x_inverse.svg&quot;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      This icon definition above contains a definition with the identifier
+      <code>_folder_dark</code>.
+    </p>
+    <p>The following properties are supported:</p>
+    <ul>
+      <li><code>iconPath</code>: When using a svg/png: the path to the image.</li>
+      <li>
+        <code>fontCharacter</code>: When using a glyph font: The character in the font to
+        use.
+      </li>
+      <li>
+        <code>fontColor</code>: When using a glyph font: The color to use for the glyph.
+      </li>
+      <li>
+        <code>fontSize</code>: When using a font: The font size. By default, the size
+        specified in the font specification is used. Should be a relative size (e.g. 150%)
+        to the parent font size.
+      </li>
+      <li>
+        <code>fontId</code>: When using a font: The id of the font. If not specified, the
+        first font specified in font specification section will be picked.
+      </li>
+    </ul>
+    <h3 id="file-association">File association</h3>
+    <p>
+      Icons can be associated to folders, folder names, files, file extensions, file names
+      and
+      <a href="/api/references/contribution-points#contributes.languages">language ids</a>.
+    </p>
+    <p>
+      Additionally each of these associations can be refined for ‘light’ and ‘highContrast’
+      color themes.
+    </p>
+    <p>Each file association points to an icon definition.</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;_file_dark&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">&quot;folder&quot;</span><span class="fu">:</span> <span class="st">&quot;_folder_dark&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">&quot;folderExpanded&quot;</span><span class="fu">:</span> <span class="st">&quot;_folder_open_dark&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">&quot;folderNames&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="dt">&quot;.vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;_vscode_folder&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="dt">&quot;fileExtensions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="dt">&quot;ini&quot;</span><span class="fu">:</span> <span class="st">&quot;_ini_file&quot;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="dt">&quot;fileNames&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="dt">&quot;win.ini&quot;</span><span class="fu">:</span> <span class="st">&quot;_win_ini_file&quot;</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="dt">&quot;languageIds&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-15" title="15">    <span class="dt">&quot;ini&quot;</span><span class="fu">:</span> <span class="st">&quot;_ini_file&quot;</span></a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-17" title="17">  <span class="dt">&quot;light&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-18" title="18">    <span class="dt">&quot;folderExpanded&quot;</span><span class="fu">:</span> <span class="st">&quot;_folder_open_light&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="dt">&quot;folder&quot;</span><span class="fu">:</span> <span class="st">&quot;_folder_light&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-20" title="20">    <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;_file_light&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-21" title="21">    <span class="dt">&quot;fileExtensions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-22" title="22">      <span class="dt">&quot;ini&quot;</span><span class="fu">:</span> <span class="st">&quot;_ini_file_light&quot;</span></a>
+<a class="sourceLine" id="cb3-23" title="23">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-24" title="24">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-25" title="25">  <span class="dt">&quot;highContrast&quot;</span><span class="fu">:</span> <span class="fu">{}</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ul>
+      <li>
+        <code>file</code> is the default file icon, shown for all files that don’t match any
+        extension, filename or language id. Currently all properties defined by the
+        definition of the file icon will be inherited (only relevant for font glyphs, useful
+        for the fontSize).
+      </li>
+      <li>
+        <code>folder</code> is the folder icon for collapsed folders, and if
+        <code>folderExpanded</code> is not set, also for expanded folders. Icons for
+        specific folder names can be associated using the <code>folderNames</code> property.
+        The folder icon is optional. If not set, no icon will be shown for folder.
+      </li>
+      <li>
+        <code>folderExpanded</code> is the folder icon for expanded folders. The expanded
+        folder icon is optional. If not set, the icon defined for <code>folder</code> will
+        be shown.
+      </li>
+      <li>
+        <code>folderNames</code> associates folder names to icons. The key of the set is the
+        folder name, not including any path segments. Patterns or wildcards are not
+        supported. Folder name matching is case insensitive.
+      </li>
+      <li>
+        <code>folderNamesExpanded</code> associates folder names to icons for expanded
+        folder. The key of the set is the folder name, not including any path segments.
+        Patterns or wildcards are not supported. Folder name matching is case insensitive.
+      </li>
+      <li>
+        <code>rootFolder</code> is the folder icon for collapsed workspace root folders ,
+        and if <code>rootFolderExpanded</code> is not set, also for expanded workspace root
+        folders. If not set, the icon defined for <code>folder</code> will be shown for
+        workspace root folders.
+      </li>
+      <li>
+        <code>rootFolderExpanded</code> is the folder icon for expanded workspace root
+        folders. If not set, the icon defined for <code>rootFolder</code> will be shown for
+        exanded workspace root folders.
+      </li>
+      <li>
+        <code>languageIds</code> associates languages to icons. The key in the set is the
+        language id as defined in the
+        <a href="/api/references/contribution-points#contributes.languages"
+          >language contribution point</a
+        >. The language of a file is evaluated based on the file extensions and file names
+        as defined in the language contribution. Note that the ‘first line match’ of the
+        language contribution is not considered.
+      </li>
+      <li>
+        <code>fileExtensions</code> associates file extensions to icons. The key in the set
+        is the file extension name. The extension name is a file name segment after a dot
+        (not including the dot). File names with multiple dots such as
+        <code>lib.d.ts</code> can match multiple extensions; ‘d.ts’ and ‘ts’. Extensions are
+        compared case insensitive.
+      </li>
+      <li>
+        <code>fileNames</code> associates file names to icons. The key in the set is the
+        full file name, not including any path segments. Patterns or wildcards are not
+        supported. File name matching is case insensitive. A ‘fileName’ match is the
+        strongest match, and the icon associated to the file name will be preferred over an
+        icon of a matching fileExtension and also of a matching language Id.
+      </li>
+    </ul>
+    <p>
+      A file extension match is preferred over a language match, but is weaker than a file
+      name match.
+    </p>
+    <p>
+      The <code>light</code> and the <code>highContrast</code> section have the same file
+      association properties as just listed. They allow to override icons for the
+      corresponding themes.
+    </p>
+    <h3 id="font-definitions">Font definitions</h3>
+    <p>
+      The <code>fonts</code> section lets you declare any number of glyph fonts that you
+      want to use. You can later reference these fonts in the icon definitions. The font
+      declared first will be used as the default if an icon definition does not specify a
+      font id.
+    </p>
+    <p>
+      Copy the font file into your extension and set the path accordingly. It is recommended
+      to use <a href="https://developer.mozilla.org/docs/Web/Guide/WOFF">WOFF</a> fonts.
+    </p>
+    <ul>
+      <li>Set ‘woff’ as the format.</li>
+      <li>
+        the weight property values are defined
+        <a href="https://developer.mozilla.org/docs/Web/CSS/font-weight#Values">here</a>.
+      </li>
+      <li>
+        the style property values are defined
+        <a href="https://developer.mozilla.org/docs/Web/CSS/@font-face/font-style#Values"
+          >here</a
+        >.
+      </li>
+      <li>
+        the size should be relative to the font size where the icon is used. Therefore,
+        always use percentage.
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;fonts&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;turtles-font&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">      <span class="dt">&quot;src&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-6" title="6">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">          <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./turtles.woff&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">          <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;woff&quot;</span></a>
+<a class="sourceLine" id="cb4-9" title="9">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-10" title="10">      <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-11" title="11">      <span class="dt">&quot;weight&quot;</span><span class="fu">:</span> <span class="st">&quot;normal&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-12" title="12">      <span class="dt">&quot;style&quot;</span><span class="fu">:</span> <span class="st">&quot;normal&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-13" title="13">      <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="st">&quot;150%&quot;</span></a>
+<a class="sourceLine" id="cb4-14" title="14">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-15" title="15">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-16" title="16">  <span class="dt">&quot;iconDefinitions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="dt">&quot;_file&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-18" title="18">      <span class="dt">&quot;fontCharacter&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">E002&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-19" title="19">      <span class="dt">&quot;fontColor&quot;</span><span class="fu">:</span> <span class="st">&quot;#5f8b3b&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-20" title="20">      <span class="dt">&quot;fontId&quot;</span><span class="fu">:</span> <span class="st">&quot;turtles-font&quot;</span></a>
+<a class="sourceLine" id="cb4-21" title="21">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-22" title="22">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="folder-icons-in-file-icon-themes">Folder icons in File Icon Themes</h3>
+    <p>
+      File Icon themes can instruct the File Explorer not to show the default folder icon
+      (the rotating triangles or “twisties”) when the folder icons are good enough to
+      indicate the expansion state of a folder. This mode is enabled by setting
+      <code>"hidesExplorerArrows":true</code> in the File Icon theme definition file.
+    </p>
+  </body>
+</html>

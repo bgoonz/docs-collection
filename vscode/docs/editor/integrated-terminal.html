@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>integrated-terminal</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="integrated-terminal">Integrated Terminal</h1>
+<p>Visual Studio Code includes a fully featured integrated terminal that conveniently starts at the root of your workspace. It provides integration with the editor to support features like <a href="#links">links</a> and <a href="/docs/editor/tasks.md">error detection</a>.</p>
+<p>To open the terminal:</p>
+<ul>
+<li>Use the <code>kb(workbench.action.terminal.toggleTerminal)</code> keyboard shortcut with the backtick character.</li>
+<li>Use the <strong>View</strong> &gt; <strong>Terminal</strong> menu command.</li>
+<li>From the <strong>Command Palette</strong> (<code>kb(workbench.action.showCommands)</code>), use the <strong>View: Toggle Integrated Terminal</strong> command.</li>
+</ul>
+<figure>
+<img src="images/integrated-terminal/integrated-terminal.png" alt="Terminal" /><figcaption>Terminal</figcaption>
+</figure>
+<blockquote>
+<p><strong>Note:</strong> Open an external terminal with the <code>kb(workbench.action.terminal.openNativeConsole)</code> keyboard shortcut if you prefer to work outside VS Code.</p>
+</blockquote>
+<h2 id="managing-terminals">Managing terminals</h2>
+<p>The terminal tabs view is on the right side of the terminal view. Each terminal has an entry with its name, icon, color, and group decoration (if any).</p>
+<figure>
+<img src="images/integrated-terminal/tabs.png" alt="Terminal tabs" /><figcaption>Terminal tabs</figcaption>
+</figure>
+<blockquote>
+<p><strong>Tip:</strong> Change the tabs location using the <code>terminal.integrated.tabs.location</code> setting.</p>
+</blockquote>
+<p>Terminal instances can be added by clicking the <strong>+</strong> icon on the top-right of the <strong>TERMINAL</strong> panel, selecting a profile from the terminal dropdown, or by triggering the <code>kb(workbench.action.terminal.new)</code> command. This action creates another entry in the tab list associated with that terminal.</p>
+<p>Remove terminal instances by hovering a tab and selecting the <strong>Trash Can</strong> button, selecting a tab item and pressing <code>kbstyle(Delete)</code>, by using <strong>Terminal: Kill Active the Active Terminal Instance</strong> command, or via the right-click context menu.</p>
+<p>Navigate between terminal groups using focus next <code>kb(workbench.action.terminal.focusNext)</code> and focus previous <code>kb(workbench.action.terminal.focusPrevious)</code>.</p>
+<p>Icons may appear to the right of the terminal title on the tab label when a terminal’s status changes. Some examples are on bell (macOS) and for tasks, displaying a check mark when there are no errors and an X otherwise. Hover the icon to read status information, which may contain actions.</p>
+<h3 id="grouping">Grouping</h3>
+<p>Split the terminal by:</p>
+<ul>
+<li>On hover, selecting the inline split button.</li>
+<li>Right-clicking the context menu and selecting the <strong>Split</strong> menu option.</li>
+<li><code>kbstyle(Alt)</code> click on a tab, the <strong>+</strong> button, or the single tab on the terminal panel.</li>
+<li>Triggering the <code>kb(workbench.action.terminal.split)</code> command.</li>
+</ul>
+<p>Navigate between terminals in a group by focusing the previous pane, <code>kb(workbench.action.terminal.focusPreviousPane)</code>, and focusing the next pane, <code>kb(workbench.action.terminal.focusNextPane)</code>.</p>
+<p>Tabs support drag and drop to allow rearranging, dragging an entry in a terminal group into the empty will remove it from the group (for example, unsplit), dragging a tab into the main terminal area allows joining a group.</p>
+<p>Unsplit a split terminal by triggering the <strong>Terminal: Unsplit Terminal</strong> command.</p>
+<h3 id="customizing-tabs">Customizing Tabs</h3>
+<p>Change the terminal’s name, icon, and tab color via the right-click context menu or by triggering the following commands:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Command ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Terminal: Rename</td>
+<td><code>workbench.action.terminal.rename</code></td>
+</tr>
+<tr class="even">
+<td>Terminal: Change Icon</td>
+<td><code>workbench.action.terminal.changeIcon</code></td>
+</tr>
+<tr class="odd">
+<td>Terminal: Change Color</td>
+<td><code>workbench.action.terminal.changeColor</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tip:</strong> Go back to the old version by setting <code>terminal.integrated.tabs.enabled:false</code></p>
+</blockquote>
+<figure>
+<img src="images/integrated-terminal/terminal-multiple-instances.png" alt="Multiple Terminals" /><figcaption>Multiple Terminals</figcaption>
+</figure>
+<h2 id="terminal-profiles">Terminal profiles</h2>
+<p>Terminal profiles are platform-specific shell configurations comprised of an executable path, arguments, and other customizations.</p>
+<p>Configure your default integrated terminal by running the <strong>Terminal: Select Default Profile</strong> command, which is also accessible via the terminal dropdown.</p>
+<figure>
+<img src="images/integrated-terminal/terminal-dropdown.png" alt="Integrated terminal dropdown" /><figcaption>Integrated terminal dropdown</figcaption>
+</figure>
+<p>The terminal’s shell defaults to <code>$SHELL</code> on Linux and macOS and PowerShell on Windows. VS Code will automatically detect most standard shells that can then be configured as the default.</p>
+<h3 id="configuring-profiles">Configuring profiles</h3>
+<p>To create a new profile, run the <strong>Terminal: Select Default Profile</strong> command and activate the configure button on the right side of the shell to base it on. This will add a new entry to your settings that can be tweaked manually in your <code>settings.json</code> file.</p>
+<p>Profiles can be created using either a <code>path</code> or a <code>source</code>, as well as a set of optional arguments. A <code>source</code> is available only on Windows and can be used to let VS Code detect the install of either <code>PowerShell</code> or <code>Git Bash</code>. Alternatively a <code>path</code> pointing directly to the shell executable can be used. Here are some example profile configurations:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;terminal.integrated.profiles.windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;PowerShell -NoProfile&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="dt">&quot;source&quot;</span><span class="fu">:</span> <span class="st">&quot;PowerShell&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;-NoProfile&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">&quot;terminal.integrated.profiles.linux&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">&quot;zsh (login)&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;zsh&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;-l&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="fu">}</span></a></code></pre></div>
+<p>Other arguments supported in profiles include:</p>
+<ul>
+<li><code>overrideName</code>: A boolean indicating whether or not to replace the dynamic terminal title that detects what program is running with the static profile name.</li>
+<li><code>env</code>: A map defining environment variables and their values, set the variable to <code>null</code> to delete it from the environment. This can be configured for all profiles using the <code>terminal.integrated.env.&lt;platform&gt;</code> setting.</li>
+<li><code>icon</code>: An icon ID to use for the profile.</li>
+<li><code>color</code>: A theme color ID to style the icon.</li>
+</ul>
+<blockquote>
+<p><strong>Tip:</strong> Path, args, and env all support <a href="https://code.visualstudio.com/docs/editor/variables-reference">resolving variables</a></p>
+</blockquote>
+<p>The <strong>default profile</strong> can be defined manually with the <code>terminal.integrated.defaultProfile.*</code> settings. This should be set to the name of an existing profile:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;terminal.integrated.profiles.windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;my-pwsh&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">      <span class="dt">&quot;source&quot;</span><span class="fu">:</span> <span class="st">&quot;PowerShell&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;-NoProfile&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="dt">&quot;terminal.integrated.defaultProfile.windows&quot;</span><span class="fu">:</span> <span class="st">&quot;my-pwsh&quot;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="fu">}</span></a></code></pre></div>
+<blockquote>
+<p><strong>Tip:</strong> The integrated terminal shell is running with the permissions of VS Code. If you need to run a shell command with elevated (administrator) or different permissions, use platform utilities such as <code>runas.exe</code> within a terminal.</p>
+</blockquote>
+<p>The <em>default profile</em> can be defined manually with the <code>terminal.integrated.defaultProfile.*</code> settings. This should be set to the <em>name</em> of an existing profile:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;terminal.integrated.profiles.windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;PowerShell -NoProfile&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="dt">&quot;source&quot;</span><span class="fu">:</span> <span class="st">&quot;PowerShell&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;-NoProfile&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="dt">&quot;terminal.integrated.defaultProfile.windows&quot;</span><span class="fu">:</span> <span class="st">&quot;PowerShell -NoProfile&quot;</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="fu">}</span></a></code></pre></div>
+<h3 id="removing-built-in-profiles">Removing built-in profiles</h3>
+<p>To remove entries from the terminal dropdown, set the name of the profile to <code>null</code>. For example, to remove the <code>Git Bash</code> profile on Windows, use this setting:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;terminal.integrated.profiles.windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;Git Bash&quot;</span><span class="fu">:</span> <span class="kw">null</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<h3 id="configuring-the-taskdebug-profile">Configuring the task/debug profile</h3>
+<p>By default, the task/debug features will use the default profile. To override that, use the <code>terminal.integrated.automationShell.&lt;platform&gt;</code> setting:</p>
+<pre class="jsonc"><code>{
+    &quot;terminal.integrated.defaultProfile.osx&quot;: &quot;fish&quot;,
+    // Use a fully POSIX-compatible shell and avoid running a complex ~/.config/fish/config.fish
+    // for tasks and debug
+    &quot;terminal.integrated.automationShell.osx&quot;: &quot;/bin/sh&quot;
+}</code></pre>
+<h2 id="working-directory">Working directory</h2>
+<p>By default, the terminal will open at the folder that is opened in the Explorer. The <code>terminal.integrated.cwd</code> setting allows specifying a custom path to open instead:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="dt">&quot;terminal.integrated.cwd&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/user&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<p>Split terminals on Windows will start in the directory that the parent terminal started with. On macOS and Linux, split terminals will inherit the current working directory of the parent terminal. This behavior can be changed using the <code>terminal.integrated.splitCwd</code> setting:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">    <span class="dt">&quot;terminal.integrated.splitCwd&quot;</span><span class="fu">:</span> <span class="st">&quot;workspaceRoot&quot;</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<p>There are also extensions available that give more options such as <a href="https://marketplace.visualstudio.com/items?itemName=Tyriar.vscode-terminal-here">Terminal Here</a>.</p>
+<h2 id="terminal-process-reconnection">Terminal process reconnection</h2>
+<p>Local and remote terminal processes are restored on window reload, such as when an extension install requires a reload. The terminal will be reconnected and the UI state of the terminals will be restored, including the active tab and split terminal relative dimensions.</p>
+<h2 id="links">Links</h2>
+<p>The terminal features link detection, showing an underline when files or URLs are hovered with the mouse that will go to the target when <code>kbstyle(Ctrl)</code>/<code>kbstyle(Cmd)</code> is held. If a file or URL cannot be detected, they are still surfaced as “low confidence” links, which only show an underline when is held. These low confidence links will search the workspace for the term, opening the match if one is found.</p>
+<p>Clicking a file link will either open that document in an editor or produce a Quick Pick with all matches.</p>
+<p>Extensions make use of links in the terminal, such as GitLens, to identify branches.</p>
+<figure>
+<img src="images/integrated-terminal/gitlens-link.png" alt="A branch link is hovered in the terminal" /><figcaption>A branch link is hovered in the terminal</figcaption>
+</figure>
+<h2 id="local-echo">Local echo</h2>
+<p>On some remote connections, there’s a delay between typing and seeing the characters on the terminal, as a result of the round trip the data has to make from VS code to the process. Local echo attempts to predict modifications and cursor movements made locally in the terminal in order to decrease this lag.</p>
+<p>When enabled, dimmed characters appear as you type. The dimmed style can be changed using the setting <code>terminal.integrated.localEchoStyle</code>.</p>
+<p>To disable the feature, set <code>terminal.integrated.localEchoLatencyThreshold</code> to <code>-1</code>. To enable it all of the time, set it to <code>0</code>.</p>
+<h2 id="terminal-appearance">Terminal appearance</h2>
+<p>Customize the terminal’s appearance using the following <a href="https://code.visualstudio.com/docs/getstarted/settings">settings</a>:</p>
+<ul>
+<li>Font: family, size, and weight</li>
+<li>Spacing: line height and letter spacing</li>
+<li>Cursor: style, width, and blinking</li>
+</ul>
+<h2 id="copy-paste">Copy &amp; Paste</h2>
+<p>The keybindings for copy and paste follow platform standards:</p>
+<ul>
+<li>Linux: <code>kbstyle(Ctrl+Shift+C)</code> and <code>kbstyle(Ctrl+Shift+V)</code>, selection paste is available with <code>kbstyle(Shift+Insert)</code></li>
+<li>macOS: <code>kbstyle(Cmd+C)</code> and <code>kbstyle(Cmd+V)</code></li>
+<li>Windows: <code>kbstyle(Ctrl+C)</code> and <code>kbstyle(Ctrl+V)</code></li>
+</ul>
+<h2 id="using-the-mouse">Using the mouse</h2>
+<h3 id="right-click-behavior">Right-click behavior</h3>
+<p>The right-click behavior differs based on the platform:</p>
+<ul>
+<li>Linux: Show the context menu.</li>
+<li>macOS: Select the word under the cursor and show the context menu.</li>
+<li>Windows: Copy and drop selection if there is a selection, otherwise paste.</li>
+</ul>
+<p>This can be configured using the <code>terminal.integrated.rightClickBehavior</code> setting.</p>
+<h3 id="alt-click">Alt click</h3>
+<p><code>kbstyle(Alt)</code> left click will reposition the cursor to underneath the mouse. This works by simulating arrow key strokes, which may fail for some shells or programs. This feature can be disabled.</p>
+<h2 id="keybindings-and-the-shell">Keybindings and the shell</h2>
+<p>While focus is in the integrated terminal, many key bindings will not work as the keystrokes are passed to and consumed by the terminal itself. There is a hardcoded list of commands, which skip being processed by the shell and instead get sent to the VS Code keybinding system. Customize this list with the <code>terminal.integrated.commandsToSkipShell</code> setting. Commands can be added to this list by adding the command name to the list, and removed by adding the command name to the list prefixed with a <code>-</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;terminal.integrated.commandsToSkipShell&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="er">//</span> <span class="er">Ensure</span> <span class="er">the</span> <span class="er">toggle</span> <span class="er">sidebar</span> <span class="er">visibility</span> <span class="er">keybinding</span> <span class="er">skips</span> <span class="er">the</span> <span class="er">shell</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="st">&quot;workbench.action.toggleSidebarVisibility&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="er">//</span> <span class="er">Send</span> <span class="er">quick</span> <span class="er">open&#39;s</span> <span class="er">keybinding</span> <span class="er">to</span> <span class="er">the</span> <span class="er">shell</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="st">&quot;-workbench.action.quickOpen&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="fu">}</span></a></code></pre></div>
+<p>Look at the setting details to see the complete list of default commands. &gt;<strong>Tip:</strong> To override <code>terminal.integrated.commandsToSkipShell</code> and send keybindings to the shell instead of the workbench, set <code>terminal.integrated.sendKeybindingsToShell</code>.</p>
+<h3 id="chord-keybindings-in-the-terminal">Chord keybindings in the terminal</h3>
+<p>By default, when a chord keybinding is the highest priority keybinding, it will always skip the terminal shell (bypassing <code>terminal.integrated.commandsToSkipShell</code>) and be evaluated by VS Code instead of the terminal. This is typically the desired behavior unless you’re on Windows/Linux and want your shell to use ctrl+k (for bash this cuts the line after the cursor). This can be disabled with the following setting:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">&quot;terminal.integrated.allowChords&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<h3 id="send-text-via-a-keybinding">Send text via a keybinding</h3>
+<p>The <code>workbench.action.terminal.sendSequence</code> command can be used to send a specific sequence of text to the terminal, including escape sequences. This enables things like sending arrow keys, enter, cursor moves, etc. For example, the below sequence jumps over the word to the left of the cursor (<code>kbstyle(Ctrl+Left)</code>) and presses backspace:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+u&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;workbench.action.terminal.sendSequence&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\u001b</span><span class="st">[1;5D</span><span class="ch">\u007f</span><span class="st">&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<p>This feature supports <a href="/docs/editor/variables-reference.md">variable substitution</a>.</p>
+<p>Note that the command only works with the <code>\u0000</code> format for using characters via their character code (not <code>\x00</code>). Read more about these hex code and the sequences terminals work with on the following resources:</p>
+<ul>
+<li><a href="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html">XTerm Control Sequences</a></li>
+<li><a href="https://github.com/xtermjs/xterm.js/blob/0e45909c7e79c83452493d2cd46d99c0a0bb585f/src/common/data/EscapeSequences.ts">List of C0 and C1 control codes</a></li>
+</ul>
+<h2 id="find">Find</h2>
+<p>The integrated terminal has find functionality that can be triggered with <code>kb(workbench.action.terminal.focusFind)</code>.</p>
+<p>If you want <code>kbstyle(Ctrl+F)</code> to go to the shell instead of launching the Find control on Linux and Windows, you will need to add the following to your settings.json which will tell the terminal not to skip the shell for keybindings matching the <code>workbench.action.terminal.focusFind</code> command:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">&quot;terminal.integrated.commandsToSkipShell&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="st">&quot;-workbench.action.terminal.focusFind&quot;</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<h2 id="run-selected-text">Run selected text</h2>
+<p>To use the <code>runSelectedText</code> command, select text in an editor and run the command <strong>Terminal: Run Selected Text in Active Terminal</strong> via the <strong>Command Palette</strong> (<code>kb(workbench.action.showCommands)</code>):</p>
+<figure>
+<img src="images/integrated-terminal/terminal_run_selected.png" alt="Run selected text" /><figcaption>Run selected text</figcaption>
+</figure>
+<p>The terminal will attempt to run the selected text.</p>
+<figure>
+<img src="images/integrated-terminal/terminal_run_selected_result.png" alt="Run selected text result" /><figcaption>Run selected text result</figcaption>
+</figure>
+<p>If no text is selected in the active editor, the line that the cursor is on is run in the terminal.</p>
+<blockquote>
+<p><strong>Tip:</strong> Also run the active file using the command <code>workbench.action.terminal.runActiveFile</code>.</p>
+</blockquote>
+<h2 id="automating-launching-of-terminals">Automating launching of terminals</h2>
+<p>The <a href="/docs/editor/tasks.md">Tasks</a> feature can be used to automate the launching of terminals, for example the following <code>.vscode/tasks.json</code> file will launch a Command Prompt and PowerShell terminal in a single terminal group when the window starts:</p>
+<pre class="jsonc"><code>{
+  &quot;version&quot;: &quot;2.0.0&quot;,
+  &quot;presentation&quot;: {
+    &quot;echo&quot;: false,
+    &quot;reveal&quot;: &quot;always&quot;,
+    &quot;focus&quot;: false,
+    &quot;panel&quot;: &quot;dedicated&quot;,
+    &quot;showReuseMessage&quot;: true
+  },
+  &quot;tasks&quot;: [
+    {
+      &quot;label&quot;: &quot;Create terminals&quot;,
+      &quot;dependsOn&quot;: [
+        &quot;First&quot;,
+        &quot;Second&quot;
+      ],
+      // Mark as the default build task so cmd/ctrl+shift+b will create them
+      &quot;group&quot;: {
+        &quot;kind&quot;: &quot;build&quot;,
+        &quot;isDefault&quot;: true
+      },
+      // Try start the task on folder open
+      &quot;runOptions&quot;: {
+        &quot;runOn&quot;: &quot;folderOpen&quot;
+      }
+    },
+    {
+      // The name that shows up in terminal tab
+      &quot;label&quot;: &quot;First&quot;,
+      // The task will launch a shell
+      &quot;type&quot;: &quot;shell&quot;,
+      &quot;command&quot;: &quot;&quot;,
+      // Set the shell type
+      &quot;options&quot;: {
+        &quot;shell&quot;: {
+          &quot;executable&quot;: &quot;cmd.exe&quot;,
+          &quot;args&quot;: []
+        }
+      },
+      // Mark as a background task to avoid the spinner animation on the terminal tab
+      &quot;isBackground&quot;: true,
+      &quot;problemMatcher&quot;: [],
+      // Create the tasks in a terminal group
+      &quot;presentation&quot;: {
+        &quot;group&quot;: &quot;my-group&quot;
+      }
+    },
+    {
+      &quot;label&quot;: &quot;Second&quot;,
+      &quot;type&quot;: &quot;shell&quot;,
+      &quot;command&quot;: &quot;&quot;,
+      &quot;options&quot;: {
+        &quot;shell&quot;: {
+          &quot;executable&quot;: &quot;pwsh.exe&quot;,
+          &quot;args&quot;: []
+        }
+      },
+      &quot;isBackground&quot;: true,
+      &quot;problemMatcher&quot;: [],
+      &quot;presentation&quot;: {
+        &quot;group&quot;: &quot;my-group&quot;
+      }
+    }
+  ]
+}</code></pre>
+<p>This file could be committed to the repository to share it with other developers or alternatively created as a user task via the <code>workbench.action.tasks.openUserTasks</code> command.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>The basics of the terminal have been covered in this document, read on to find out more about:</p>
+<ul>
+<li><a href="/docs/editor/tasks.md">Tasks</a> - Tasks let you integrate with external tools and leverage the terminal heavily.</li>
+<li><a href="https://www.growingwiththeweb.com/2017/03/mastering-vscodes-terminal.html">Mastering VS Code’s Terminal</a> - An external blog with plenty of power user tips for the terminal.</li>
+<li>Explore the rest of the terminal commands by browsing your keybindings.json file within VS Code.</li>
+</ul>
+<h2 id="common-questions">Common questions</h2>
+<h3 id="im-having-problems-launching-the-terminal">I’m having problems launching the terminal</h3>
+<p>There’s a <a href="/docs/supporting/troubleshoot-terminal-launch.md">dedicated troubleshooting guide</a> for these sorts of problems.</p>
+<h3 id="can-i-use-the-integrated-terminal-with-the-windows-subsystem-for-linux">Can I use the integrated terminal with the Windows Subsystem for Linux?</h3>
+<p>Yes. Select the <a href="https://docs.microsoft.com/windows/wsl/install-win10">Windows Subsystem for Linux</a> (WSL) bash shell as your terminal default. If you have WSL enabled (through Windows Features), select <strong>WSL Bash</strong> from the terminal <strong>Select Default Shell</strong> dropdown. See <a href="/docs/remote/wsl.md">Developing in WSL</a> for details on working in WSL and the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">Remote - WSL</a> extension.</p>
+<h3 id="why-is-vs-code-shortcut-x-not-working-when-the-terminal-has-focus">Why is VS Code shortcut X not working when the terminal has focus?</h3>
+<p>Currently the terminal consumes many key bindings, preventing Visual Studio Code from reacting to them. An example of this is <code>kbstyle(Ctrl+B)</code> to open the Side Bar on Linux and Windows. This is necessary as various terminal programs and/or shells may respond to these key bindings themselves. Use the <code>terminal.integrated.commandsToSkipShell</code> setting to prevent specific key bindings from being handled by the terminal.</p>
+<h3 id="can-i-use-cmders-shell-with-the-terminal-on-windows">Can I use Cmder’s shell with the terminal on Windows?</h3>
+<p>Yes, to use the <a href="https://cmder.net/">Cmder</a> shell in VS Code, you need to add the following settings to your <code>settings.json</code> file:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">&quot;terminal.integrated.profiles.windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="dt">&quot;cmder&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-4" title="4">      <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;C:</span><span class="ch">\\</span><span class="st">WINDOWS</span><span class="ch">\\</span><span class="st">System32</span><span class="ch">\\</span><span class="st">cmd.exe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-5" title="5">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;/K&quot;</span><span class="ot">,</span> <span class="st">&quot;C:</span><span class="ch">\\</span><span class="st">cmder</span><span class="ch">\\</span><span class="st">vendor</span><span class="ch">\\</span><span class="st">bin</span><span class="ch">\\</span><span class="st">vscode_init.cmd&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb13-8" title="8">  <span class="dt">&quot;terminal.integrated.defaultProfile.windows&quot;</span><span class="fu">:</span> <span class="st">&quot;cmder&quot;</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="fu">}</span></a></code></pre></div>
+<p>You may refer to <a href="https://github.com/cmderdev/cmder/wiki/Seamless-VS-Code-Integration">Cmder’s wiki</a> for more information.</p>
+<h3 id="why-is-cmdkctrlk-not-clearing-the-terminal">Why is Cmd+k/Ctrl+k not clearing the terminal?</h3>
+<p>Normally <code>kbstyle(Cmd+k)</code>/<code>kbstyle(Ctrl+k)</code> clears the terminal on macOS/Windows, but this can stop working when chord keybindings are added either by the user or extensions. The <code>kbstyle(Cmd+k)</code>/<code>kbstyle(Ctrl+k)</code> keybindings rely on the VS Code keybinding priority system that defines which keybinding is active at any given time (user &gt; extension &gt; default). In order to fix this, you need to redefine your user keybinding that will have priority, preferably at the bottom of your user <code>keybindings.json</code> file:</p>
+<p>macOS:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">{</span> <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;cmd+k&quot;</span><span class="fu">,</span>                 <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;workbench.action.terminal.clear&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-2" title="2">                                     <span class="dt">&quot;when&quot;</span><span class="fu">:</span> <span class="st">&quot;terminalFocus&quot;</span> <span class="fu">}</span><span class="er">,</span></a></code></pre></div>
+<p>Windows:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">{</span> <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+k&quot;</span><span class="fu">,</span>                <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;workbench.action.terminal.clear&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb15-2" title="2">                                     <span class="dt">&quot;when&quot;</span><span class="fu">:</span> <span class="st">&quot;terminalFocus&quot;</span> <span class="fu">}</span><span class="er">,</span></a></code></pre></div>
+<h3 id="why-is-nvm-complaining-about-a-prefix-option-when-the-integrated-terminal-is-launched">Why is nvm complaining about a prefix option when the integrated terminal is launched?</h3>
+<p>nvm (Node Version Manager) users often see this error for the first time inside VS Code’s integrated terminal:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="ex">nvm</span> is not compatible with the npm config <span class="st">&quot;prefix&quot;</span> option: currently set to <span class="st">&quot;/usr/local&quot;</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="ex">Run</span> <span class="kw">`</span><span class="ex">npm</span> config delete prefix<span class="kw">`</span> or <span class="kw">`</span><span class="ex">nvm</span> use --delete-prefix v8.9.1 --silent<span class="kw">`</span> to unset it</a></code></pre></div>
+<p>This is mostly a macOS problem and does not happen in external terminals. The typical reasons for this are the following:</p>
+<ul>
+<li><code>npm</code> was globally installed using another instance of <code>node</code> that is somewhere in your path (such as <code>/usr/local/bin/npm</code>).</li>
+<li>In order to get the development tools on the <code>$PATH</code>, VS Code will launch a bash login shell on start up. This means that your <code>~/.bash_profile</code> has already run and when an integrated terminal launches, it will run <strong>another</strong> login shell, reordering the <code>$PATH</code> potentially in unexpected ways.</li>
+</ul>
+<p>To resolve this issue, you need to track down where the old <code>npm</code> is installed and remove both it and its out of date node_modules. Find the <code>nvm</code> initialization script and running <code>which npm</code> before it runs, which should print the path when you launch a new terminal.</p>
+<p>Once you have the path to npm, find the old node_modules by resolving the symlink by running a command something like this:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">ls</span> -la /usr/local/bin <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;np[mx]&quot;</span></a></code></pre></div>
+<p>This will give you the resolved path at the end:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1"><span class="ex">...</span> npm -<span class="op">&gt;</span> ../lib/node_modules/npm/bin/npm-cli.js</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="ex">...</span> npx -<span class="op">&gt;</span> ../lib/node_modules/npm/bin/npx-cli.js</a></code></pre></div>
+<p>From there, removing the files and relaunching VS Code should fix the issue:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1"><span class="fu">rm</span> /usr/local/bin/npm /usr/local/lib/node_modules/npm/bin/npm-cli.js</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="fu">rm</span> /usr/local/bin/npx /usr/local/lib/node_modules/npm/bin/npx-cli.js</a></code></pre></div>
+<h3 id="can-i-use-powerline-fonts-in-the-integrated-terminal">Can I use Powerline fonts in the integrated terminal?</h3>
+<p>Yes. Specify <a href="https://powerline.readthedocs.io">Powerline</a> fonts with the <code>terminal.integrated.fontFamily</code> <a href="/docs/getstarted/settings.md">setting</a>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">&quot;terminal.integrated.fontFamily&quot;</span><span class="fu">:</span> <span class="st">&quot;Meslo LG M DZ for Powerline&quot;</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<p>Note that you want to specify the font family, not an individual font like <strong>Meslo LG M DZ Regular for Powerline</strong> where <strong>Regular</strong> is the specific font name.</p>
+<h3 id="how-do-i-configure-zsh-on-macos-to-jump-words-with-ctrlleftright-arrow">How do I configure zsh on macOS to jump words with Ctrl+Left/Right arrow?</h3>
+<p>By default, <code>kbstyle(Ctrl+Left/Right)</code> arrow will jump words in bash. Configure the same for zsh by adding these keybindings:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+left&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;workbench.action.terminal.sendSequence&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-5" title="5">    <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\u001b</span><span class="st">b&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb21-7" title="7">  <span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;ctrl+right&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-9" title="9">    <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;workbench.action.terminal.sendSequence&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb21-10" title="10">    <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\u001b</span><span class="st">f&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb21-11" title="11">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb21-12" title="12"><span class="ot">]</span></a></code></pre></div>
+<h3 id="why-does-macos-make-a-ding-sound-when-i-resize-terminal-split-panes">Why does macOS make a ding sound when I resize terminal split panes?</h3>
+<p>The keybindings ⌃⌘← and ⌃⌘→ are the defaults for resizing individual split panes in the terminal, while they work they also cause a system “invalid key” sound to play due to an issue in Chromium. The <a href="https://github.com/microsoft/vscode/issues/44070#issuecomment-799716362">recommended workaround</a> is to tell macOS to no-op for these keybindings by running this in your terminal:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="fu">mkdir</span> -p ~/Library/KeyBindings</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="fu">cat</span> <span class="op">&gt;</span> ~/Library/KeyBindings/DefaultKeyBinding.dict <span class="op">&lt;&lt;EOF</span></a>
+<a class="sourceLine" id="cb22-3" title="3">{</a>
+<a class="sourceLine" id="cb22-4" title="4">  &quot;^@\UF701&quot; = &quot;noop&quot;;</a>
+<a class="sourceLine" id="cb22-5" title="5">  &quot;^@\UF702&quot; = &quot;noop&quot;;</a>
+<a class="sourceLine" id="cb22-6" title="6">  &quot;^@\UF703&quot; = &quot;noop&quot;;</a>
+<a class="sourceLine" id="cb22-7" title="7">}</a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="op">EOF</span></a></code></pre></div>
+<h3 id="why-is-my-terminal-showing-a-multi-colored-triangle-or-a-completely-black-rectangle">Why is my terminal showing a multi-colored triangle or a completely black rectangle?</h3>
+<p>The terminal can have problems rendering in some environments, for example you might see a big multi-colored triangle instead of text. This is typically caused by driver/VM graphics issues and the same also happens in Chromium. Work around these issues by launching <code>code</code> with the <code>--disable-gpu</code> flag or by using the setting <code>"terminal.integrated.gpuAcceleration": "off"</code> to avoid using the canvas in the terminal.</p>
+<h3 id="why-are-there-duplicate-paths-in-the-terminals-path-environment-variable-andor-why-are-they-reversed">Why are there duplicate paths in the terminal’s <code>$PATH</code> environment variable and/or why are they reversed?</h3>
+<p>This can happen on macOS because of how the terminal launches using VS Code’s environment. When VS Code launches for the first time, in order to source your “development environment”, it launches your configured shell as a <strong>login shell</strong>, which runs your <code>~/.profile</code>/<code>~/.bash_profile</code>/<code>~/.zprofile</code> scripts. Now when the terminal launches, it also runs as a login shell, which will put the standard paths to the front (for example, <code>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</code>) and reinitialize your shell environment.</p>
+<p>To get a better understanding, you can simulate what is happening by launching an inner login shell within your operating system’s built-in terminal:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># Add /test to the beginning of $PATH</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="bu">export</span> <span class="va">PATH=</span>/test:<span class="va">$PATH</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co"># Echo $PATH, /test should be at the beginning</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="bu">echo</span> <span class="va">$PATH</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co"># Run bash as a login shell</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="fu">bash</span> -l</a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="co"># Echo $PATH, the values should be jumbled</span></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="bu">echo</span> <span class="va">$PATH</span></a></code></pre></div>
+<p>Unfortunately, unlike in Linux, standalone macOS terminals all run as login shells by default, since macOS does not run a login shell when the user logs into the system. This encourages “bad behavior”, like initializing aliases in your profile script when they should live in your <code>rc</code> script as that runs on non-login shells.</p>
+<p>There are two direct fixes for this. The first is to set <code>"terminal.integrated.inheritEnv": false</code>, which will strip most environment variables from the terminal’s environment, except for some important ones (like <code>HOME</code>, <code>SHELL</code>, <code>TMPDIR</code>, etc.).</p>
+<p>The other fix is to no longer run a login shell in the terminal by creating a terminal profile and setting its <code>args</code> to <code>[]</code>. If you go with this fix, you will want to make sure any aliases in your profile scripts are moved over to your <code>~/.bashrc</code>/<code>~/.zshrc</code> file since aliases only apply to the shell they’re set in.</p>
+<h3 id="im-having-problems-with-the-terminal-rendering-what-can-i-do">I’m having problems with the terminal rendering, what can I do?</h3>
+<p>By default, the integrated terminal will render using GPU acceleration on most machines. It does this using multiple <code>&lt;canvas&gt;</code> elements, which are better tuned than the DOM for rendering interactive text that change often. The terminal actually features 3 renderers which fallback if they are detected to perform poorly in this order:</p>
+<ol type="1">
+<li>WebGL - This is the fastest renderer that truly unlocks the GPU’s power to render the terminal quickly.</li>
+<li>Canvas - This will be used if the WebGL context fails to load (for example, hardware/environment incapabilities), its performance may vary depending on your environment but in general it’s much faster than the DOM renderer.</li>
+<li>DOM - This is the slowest by quite a bit but arguably the most reliable since it just uses the DOM. If the canvas renderer is detected to run slowly the DOM renderer will be activated.</li>
+</ol>
+<p>Unfortunately some issues cannot be automatically detected, if you experience issues with the GPU acceleration you can disable it <code>terminal.integrated.gpuAcceleration</code> in your user or workspace <a href="/docs/getstarted/settings.md">settings</a>, which will use the DOM renderer. This can be driven by the follow setting:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb24-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb24-2" title="2">    <span class="dt">&quot;terminal.integrated.gpuAcceleration&quot;</span><span class="fu">:</span> <span class="st">&quot;off&quot;</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="fu">}</span></a></code></pre></div>
+</body>
+</html>

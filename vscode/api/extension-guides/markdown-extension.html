@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>markdown-extension</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="markdown-extension">Markdown Extension</h1>
+    <p>
+      Markdown extensions allow you to extend and enhance Visual Studio Code’s built-in
+      Markdown preview. This includes changing the look of the preview or adding support for
+      new Markdown syntax.
+    </p>
+    <h2 id="changing-the-look-of-the-markdown-preview-with-css">
+      Changing the look of the Markdown preview with CSS
+    </h2>
+    <p>
+      Extensions can contribute CSS to change the look or layout of the Markdown preview.
+      Stylesheets are registered using the <code>markdown.previewStyles</code>
+      <a href="/api/references/contribution-points">Contribution Point</a> in the
+      extension’s <code>package.json</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">&quot;contributes&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="dt">&quot;markdown.previewStyles&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-3" title="3">        <span class="st">&quot;./style.css&quot;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      <code>"markdown.previewStyles"</code> is a list of files relative to the extension’s
+      root folder.
+    </p>
+    <p>
+      Contributed styles are added after the built-in Markdown preview styles but before a
+      user’s <code>"markdown.styles"</code>.
+    </p>
+    <p>
+      The
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=bierner.markdown-preview-github-styles"
+        >Markdown Preview GitHub Styling</a
+      >
+      extension is a good example that demonstrates using a stylesheet to make the Markdown
+      preview look like GitHub’s rendered Markdown. You can review the extension’s source
+      code on
+      <a href="https://github.com/mjbvz/vscode-github-markdown-preview-style">GitHub</a>.
+    </p>
+    <h2 id="adding-support-for-new-syntax-with-markdown-it-plugins">
+      Adding support for new syntax with markdown-it plugins
+    </h2>
+    <p>
+      The VS Code Markdown preview supports the
+      <a href="https://spec.commonmark.org">CommonMark specification</a>. Extensions can add
+      support for additional Markdown syntax by contributing a
+      <a href="https://github.com/markdown-it/markdown-it#syntax-extensions"
+        >markdown-it plugin.</a
+      >
+    </p>
+    <p>
+      To contribute a markdown-it plugin, first add a
+      <code>"markdown.markdownItPlugins"</code> contribution in your extension’s
+      <code>package.json</code>:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="er">&quot;contributes&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="dt">&quot;markdown.markdownItPlugins&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Then, in the extension’s main <code>activation</code> function, return an object with
+      a function named <code>extendMarkdownIt</code>. This function takes the current
+      markdown-it instance and must return a new markdown-it instance:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="cf">return</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="fu">extendMarkdownIt</span>(md<span class="op">:</span> <span class="dt">any</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="cf">return</span> <span class="va">md</span><span class="op">.</span><span class="fu">use</span>(<span class="fu">require</span>(<span class="st">&#39;markdown-it-emoji&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      To contribute multiple markdown-it plugins, return multiple
+      <code>use</code> statements chained together:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">return</span> <span class="va">md</span><span class="op">.</span><span class="fu">use</span>(<span class="fu">require</span>(<span class="st">&#39;markdown-it-emoji&#39;</span>)).<span class="fu">use</span>(<span class="fu">require</span>(<span class="st">&#39;markdown-it-hashtag&#39;</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Extensions that contribute markdown-it plugins are activated lazily, when a Markdown
+      preview is shown for the first time.
+    </p>
+    <p>
+      The
+      <a href="https://marketplace.visualstudio.com/items?itemName=bierner.markdown-emoji"
+        >markdown-emoji</a
+      >
+      extension demonstrates using a markdown-it plugin to add emoji support to the markdown
+      preview. You can review the Emoji extension’s source code on
+      <a href="https://github.com/mjbvz/vscode-markdown-emoji">GitHub</a>.
+    </p>
+    <p>You may also want to review:</p>
+    <ul>
+      <li>
+        <a href="https://github.com/markdown-it/markdown-it/blob/master/docs/development.md"
+          >Guidelines</a
+        >
+        for markdown-it plugin developers
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin"
+          >Existing markdown-it plugins</a
+        >
+      </li>
+    </ul>
+    <h2 id="adding-advanced-functionality-with-scripts">
+      Adding advanced functionality with scripts
+    </h2>
+    <p>
+      For advanced functionality, extensions may contribute scripts that are executed inside
+      of the Markdown preview.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="er">&quot;contributes&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="dt">&quot;markdown.previewScripts&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb5-3" title="3">        <span class="st">&quot;./main.js&quot;</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Contributed scripts are loaded asynchronously and reloaded on every content change.
+    </p>
+    <p>
+      The
+      <a href="https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid"
+        >Markdown Preview Mermaid Support</a
+      >
+      extension demonstrates using scripts to add
+      <a href="https://knsv.github.io/mermaid/index.html">mermaid</a> diagrams and flowchart
+      support to the markdown preview. You can review the Mermaid extension’s source code on
+      <a href="https://github.com/mjbvz/vscode-markdown-mermaid">GitHub</a>.
+    </p>
+  </body>
+</html>

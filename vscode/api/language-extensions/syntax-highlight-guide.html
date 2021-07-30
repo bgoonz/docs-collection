@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>syntax-highlight-guide</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="syntax-highlight-guide">Syntax Highlight Guide</h1>
+    <p>
+      Syntax highlighting determines the color and style of source code displayed in the
+      Visual Studio Code editor. It is responsible for colorizing keywords like
+      <code>if</code> or <code>for</code> in JavaScript differently than strings and
+      comments and variable names.
+    </p>
+    <p>There are two components to syntax highlighting:</p>
+    <ul>
+      <li><a href="#tokenization">Tokenization</a>: Breaking text into a list of tokens</li>
+      <li>
+        <a href="#theming">Theming</a>: Using themes or user settings to map the tokens to
+        specific colors and styles
+      </li>
+    </ul>
+    <p>
+      Before diving into the details, a good start is to play with the
+      <a href="#scope-inspector">scope inspector</a> tool and explore what tokens are
+      present in a source file and what theme rules they match to. To see both semantic and
+      syntax token, use a built-in theme (for example, Dark+) on a TypeScript file.
+    </p>
+    <h2 id="tokenization">Tokenization</h2>
+    <p>
+      The tokenization of text is about breaking the text into segments and to classify each
+      segment with a token type.
+    </p>
+    <p>
+      VS Code’s tokenization engine is powered by
+      <a href="https://macromates.com/manual/en/language_grammars">TextMate grammars</a>.
+      TextMate grammars are a structured collection of regular expressions and are written
+      as a plist (XML) or JSON files. VS Code extensions can contribute grammars through the
+      <code>grammar</code> contribution point.
+    </p>
+    <p>
+      The TextMate tokenization engine runs in the same process as the renderer and tokens
+      are updated as the user types. Tokens are used for syntax highlighting, but also to
+      classify the source code into areas of comments, strings, regex.
+    </p>
+    <p>
+      Starting with release 1.43, VS Code also allows extensions to provide tokenization
+      through a
+      <a href="/api/references/vscode-api#DocumentSemanticTokensProvider"
+        >Semantic Token Provider</a
+      >. Semantic providers are typically implemented by language servers that have a deeper
+      understanding of the source file and can resolve symbols in the context of the
+      project. For example, a constant variable name can be rendered using constant
+      highlighting throughout the project, not just at the place of its declaration.
+    </p>
+    <p>
+      Highlighting based on semantic tokens is considered an addition to the TextMate-based
+      syntax highlighting. Semantic highlighting goes on top of the syntax highlighting. And
+      as language servers can take a while to load and analyze a project, semantic token
+      highlighting may appear after a short delay.
+    </p>
+    <p>
+      This article focuses on the TextMate-based tokenization. Semantic tokenization and
+      theming are explained in the
+      <a href="semantic-highlight-guide">Semantic Highlighting Guide</a>.
+    </p>
+    <h3 id="textmate-grammars">TextMate grammars</h3>
+    <p>
+      VS Code uses
+      <a href="https://macromates.com/manual/en/language_grammars">TextMate grammars</a> as
+      the syntax tokenization engine. Invented for the TextMate editor, they have been
+      adopted by many other editors and IDEs due to large number of language bundles created
+      and maintained by the Open Source community.
+    </p>
+    <p>
+      TextMate grammars rely on
+      <a href="https://macromates.com/manual/en/regular_expressions"
+        >Oniguruma regular expressions</a
+      >
+      and are typically written as a plist or JSON. You can find a good introduction to
+      TextMate grammars
+      <a href="https://www.apeth.com/nonblog/stories/textmatebundle.html">here</a>, and you
+      can take a look at existing TextMate grammars to learn more about how they work.
+    </p>
+    <h3 id="textmate-tokens-and-scopes">TextMate tokens and scopes</h3>
+    <p>
+      Tokens are one or more characters that are part of the same program element. Example
+      tokens include operators such as <code>+</code> and <code>*</code>, variable names
+      such as <code>myVar</code>, or strings such as <code>"my string"</code>.
+    </p>
+    <p>
+      Each token is associated with a scope that defines the context of the token. A scope
+      is a dot separated list of identifiers that specify the context of the current token.
+      The <code>+</code> operation in JavaScript, for example, has the scope
+      <code>keyword.operator.arithmetic.js</code>.
+    </p>
+    <p>
+      Themes map scopes to colors and styles to provide syntax highlighting. TextMate
+      provides
+      <a href="https://macromates.com/manual/en/language_grammars">list of common scopes</a>
+      that many themes target. In order to have your grammar as broadly supported as
+      possible, try to build on existing scopes rather than defining new ones.
+    </p>
+    <p>
+      Scopes nest so that each token is also associated with a list of parent scopes. The
+      example below uses the <a href="#scope-inspector">scope inspector</a> to show the
+      scope hierarchy for the <code>+</code> operator in a simple JavaScript function. The
+      most specific scope is listed at the top, with more general parent scopes listed
+      below:
+    </p>
+    <figure>
+      <img src="images/syntax-highlighting/scopes.png" alt="syntax highlighting scopes" />
+      <figcaption>syntax highlighting scopes</figcaption>
+    </figure>
+    <p>
+      Parent scope information is also used for theming. When a theme targets a scope, all
+      tokens with that parent scope will be colorized unless the theme also provides a more
+      specific colorization for their individual scopes.
+    </p>
+    <h3 id="contributing-a-basic-grammar">Contributing a basic grammar</h3>
+    <p>
+      VS Code supports json TextMate grammars. These are contributed through the
+      <code>grammars</code>
+      <a href="/api/references/contribution-points">contribution point</a>.
+    </p>
+    <p>
+      Each grammar contribution specifies: the identifier of the language the grammar
+      applies to, the top-level scope name for the tokens of the grammar, and the relative
+      path to a grammar file. The example below shows a grammar contribution for a fictional
+      <code>abc</code> language:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;languages&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;abc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="dt">&quot;extensions&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;.abc&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="dt">&quot;grammars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">        <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;abc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-12" title="12">        <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;source.abc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-13" title="13">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./syntaxes/abc.tmGrammar.json&quot;</span></a>
+<a class="sourceLine" id="cb1-14" title="14">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The grammar file itself consists of a top-level rule. This is typically split into a
+      <code>patterns</code> section that lists the top-level elements of the program and a
+      <code>repository</code> that defines each of the elements. Other rules in the grammar
+      can reference elements from the <code>repository</code> using
+      <code>{ "include": "#id" }</code>.
+    </p>
+    <p>
+      The example <code>abc</code> grammar marks the letters <code>a</code>, <code>b</code>,
+      and <code>c</code> as keywords, and nestings of parens as expressions.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;source.abc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">&quot;patterns&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span> <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="st">&quot;#expression&quot;</span> <span class="fu">}</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="dt">&quot;repository&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">&quot;expression&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="dt">&quot;patterns&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span> <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="st">&quot;#letter&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span> <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="st">&quot;#paren-expression&quot;</span> <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="dt">&quot;letter&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="dt">&quot;match&quot;</span><span class="fu">:</span> <span class="st">&quot;a|b|c&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;keyword.letter&quot;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="dt">&quot;paren-expression&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-13" title="13">      <span class="dt">&quot;begin&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-14" title="14">      <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">)&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="dt">&quot;beginCaptures&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-16" title="16">        <span class="dt">&quot;0&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;punctuation.paren.open&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-17" title="17">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-18" title="18">      <span class="dt">&quot;endCaptures&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-19" title="19">        <span class="dt">&quot;0&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;punctuation.paren.close&quot;</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-20" title="20">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb2-21" title="21">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;expression.group&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-22" title="22">      <span class="dt">&quot;patterns&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span> <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="st">&quot;#expression&quot;</span> <span class="fu">}</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-23" title="23">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-24" title="24">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The grammar engine will try to successively apply the <code>expression</code> rule to
+      all text in the document. For a simple program such as:
+    </p>
+    <pre><code>a
+(
+    b
+)
+x
+(
+    (
+        c
+        xyz
+    )
+)
+(
+a</code></pre>
+    <p>
+      The example grammar produces the following scopes (listed left-to-right from most
+      specific to least specific scope):
+    </p>
+    <pre><code>a               keyword.letter, source.abc
+(               punctuation.paren.open, expression.group, source.abc
+    b           keyword.letter, expression.group, source.abc
+)               punctuation.paren.close, expression.group, source.abc
+x               source.abc
+(               punctuation.paren.open, expression.group, source.abc
+    (           punctuation.paren.open, expression.group, expression.group, source.abc
+        c       keyword.letter, expression.group, expression.group, source.abc
+        xyz     expression.group, expression.group, source.abc
+    )           punctuation.paren.close, expression.group, expression.group, source.abc
+)               punctuation.paren.close, expression.group, source.abc
+(               punctuation.paren.open, expression.group, source.abc
+a               keyword.letter, source.abc</code></pre>
+    <p>
+      Note that text that is not matched by one of the rules, such as the string
+      <code>xyz</code>, is included in the current scope. The last parenthesis at the end of
+      the file is not part of the <code>expression.group</code> since the
+      <code>end</code> rule is not matched.
+    </p>
+    <h3 id="embedded-languages">Embedded languages</h3>
+    <p>
+      If your grammar includes embedded languages within the parent language, such as CSS
+      style blocks in HTML, you can use the <code>embeddedLanguages</code> contribution
+      point to tell VS Code to treat the embedded language as distinct from the parent
+      language. This ensures that bracket matching, commenting, and other basic language
+      features work as expected in the embedded language.
+    </p>
+    <p>
+      The <code>embeddedLanguages</code> contribution point maps a scope in the embedded
+      language to a top-level language scope. In the example below, any tokens in the
+      <code>meta.embedded.block.javascript</code> scope will be treated as JavaScript
+      content:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">&quot;grammars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb5-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./syntaxes/abc.tmLanguage.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">        <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;source.abc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="dt">&quot;embeddedLanguages&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-8" title="8">          <span class="dt">&quot;meta.embedded.block.javascript&quot;</span><span class="fu">:</span> <span class="st">&quot;javascript&quot;</span></a>
+<a class="sourceLine" id="cb5-9" title="9">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-10" title="10">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Now if you try to comment code or trigger snippets inside a set of tokens marked
+      <code>meta.embedded.block.javascript</code>, they will get the correct
+      <code>//</code> JavaScript style comment and the correct JavaScript snippets.
+    </p>
+    <h3 id="developing-a-new-grammar-extension">Developing a new grammar extension</h3>
+    <p>
+      To quickly create a new grammar extension, use
+      <a href="/api/get-started/your-first-extension">VS Code’s Yeoman templates</a> to run
+      <code>yo code</code> and select the <code>New Language</code> option:
+    </p>
+    <figure>
+      <img
+        src="images/syntax-highlighting/yo-new-language.png"
+        alt="Selecting the ‘new language’ template in ‘yo code’"
+      />
+      <figcaption>Selecting the ‘new language’ template in ‘yo code’</figcaption>
+    </figure>
+    <p>
+      Yeoman will walk you through some basic questions to scaffold the new extension. The
+      important questions for creating a new grammar are:
+    </p>
+    <ul>
+      <li><code>Language Id</code> - A unique identifier for your language.</li>
+      <li><code>Language Name</code> - A human readable name for your language.</li>
+      <li><code>Scope names</code> - Root TextMate scope name for your grammar</li>
+    </ul>
+    <figure>
+      <img
+        src="images/syntax-highlighting/yo-new-language-questions.png"
+        alt="Filling in the ‘new language’ questions"
+      />
+      <figcaption>Filling in the ‘new language’ questions</figcaption>
+    </figure>
+    <p>
+      The generator assumes that you want to define both a new language and a new grammar
+      for that language. If you are creating a grammar for an existing language, just fill
+      these in with your target language’s information and be sure to delete the
+      <code>languages</code> contribution point in the generated <code>package.json</code>.
+    </p>
+    <p>
+      After answering all the questions, Yeoman will create a new extension with the
+      structure:
+    </p>
+    <figure>
+      <img
+        src="images/syntax-highlighting/generated-new-language-extension.png"
+        alt="A new language extension"
+      />
+      <figcaption>A new language extension</figcaption>
+    </figure>
+    <p>
+      Remember, if you are contributing a grammar to a language that VS Code already knows
+      about, be sure to delete the <code>languages</code> contribution point in the
+      generated <code>package.json</code>.
+    </p>
+    <h4 id="converting-an-existing-textmate-grammar">
+      Converting an existing TextMate grammar
+    </h4>
+    <p>
+      <code>yo code</code> can also help convert an existing TextMate grammar to a VS Code
+      extension. Again, start by running <code>yo code</code> and selecting
+      <code>Language extension</code>. When asked for an existing grammar file, give it the
+      full path to either a <code>.tmLanguage</code> or <code>.json</code> TextMate grammar
+      file:
+    </p>
+    <figure>
+      <img
+        src="images/syntax-highlighting/yo-convert.png"
+        alt="Converting an existing TextMate grammar"
+      />
+      <figcaption>Converting an existing TextMate grammar</figcaption>
+    </figure>
+    <h4 id="using-yaml-to-write-a-grammar">Using YAML to write a grammar</h4>
+    <p>
+      As a grammar grows more complex, it can become difficult to understand and maintain it
+      as json. If you find yourself writing complex regular expressions or needing to add
+      comments to explain aspects of the grammar, consider using yaml to define your grammar
+      instead.
+    </p>
+    <p>
+      Yaml grammars have the exact same structure as a json based grammar but allow you to
+      use yaml’s more concise syntax, along with features such as multi-line strings and
+      comments.
+    </p>
+    <figure>
+      <img
+        src="images/syntax-highlighting/yaml-grammar.png"
+        alt="A yaml grammar using multiline strings and comments"
+      />
+      <figcaption>A yaml grammar using multiline strings and comments</figcaption>
+    </figure>
+    <p>
+      VS Code can only load json grammars, so yaml based grammars must be converted to json.
+      The
+      <a href="https://www.npmjs.com/package/js-yaml"><code>js-yaml</code> package</a> and
+      command-line tool makes this easy.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Install js-yaml as a development only dependency in your extension</span></a>
+<a class="sourceLine" id="cb6-2" title="2">$ <span class="ex">npm</span> install js-yaml --save-dev</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># Use the command-line tool to convert the yaml grammar to json</span></a>
+<a class="sourceLine" id="cb6-5" title="5">$ <span class="ex">npx</span> js-yaml syntaxes/abc.tmLanguage.yaml <span class="op">&gt;</span> syntaxes/abc.tmLanguage.json</a></code></pre>
+    </div>
+    <h3 id="injection-grammars">Injection grammars</h3>
+    <p>
+      Injection grammars let you extend an existing grammar. An injection grammar is a
+      regular TextMate grammar that is injected into a specific scope within an existing
+      grammar. Example applications of injection grammars:
+    </p>
+    <ul>
+      <li>Highlighting keywords such as <code>TODO</code> in comments.</li>
+      <li>Add more specific scope information to an existing grammar.</li>
+      <li>Adding highlighting for a new language to Markdown fenced code blocks.</li>
+    </ul>
+    <h4 id="creating-a-basic-injection-grammar">Creating a basic injection grammar</h4>
+    <p>
+      Injection grammars are contributed though the <code>package.json</code> just like
+      regular grammars. However, instead of specifying a <code>language</code>, an injection
+      grammar uses <code>injectTo</code> to specify a list of target language scopes to
+      inject the grammar into.
+    </p>
+    <p>
+      For this example, we’ll create a simple injection grammar that highlights
+      <code>TODO</code> as a keyword in JavaScript comments. To apply our injection grammar
+      in JavaScript files, we use the <code>source.js</code> target language scope in
+      <code>injectTo</code>:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="dt">&quot;grammars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb7-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./syntaxes/injection.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">        <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;todo-comment.injection&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">        <span class="dt">&quot;injectTo&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;source.js&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb7-8" title="8">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb7-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The grammar itself is a standard TextMate grammar except for the top level
+      <code>injectionSelector</code> entry. The <code>injectionSelector</code> is a scope
+      selector that specifies which scopes the injected grammar should be applied in. For
+      our example, we want to highlight the word <code>TODO</code> in all
+      <code>//</code> comments. Using the <a href="#scope-inspector">scope inspector</a>, we
+      find that JavaScript’s double slash comments have the scope
+      <code>comment.line.double-slash</code>, so our injection selector is
+      <code>L:comment.line.double-slash</code>:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;todo-comment.injection&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">&quot;injectionSelector&quot;</span><span class="fu">:</span> <span class="st">&quot;L:comment.line.double-slash&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">&quot;patterns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-6" title="6">      <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="st">&quot;#todo-keyword&quot;</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="dt">&quot;repository&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">    <span class="dt">&quot;todo-keyword&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">      <span class="dt">&quot;match&quot;</span><span class="fu">:</span> <span class="st">&quot;TODO&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;keyword.todo&quot;</span></a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>L:</code> in the injection selector means that the injection is added to the
+      left of existing grammar rules. This basically means that our injected grammar’s rules
+      will be applied before any existing grammar rules.
+    </p>
+    <h4 id="embedded-languages-1">Embedded languages</h4>
+    <p>
+      Injection grammars can also contribute embedded languages to their parent grammar.
+      Just like with a normal grammar, an injection grammar can use
+      <code>embeddedLanguages</code> to map scopes from the embedded language to a top-level
+      language scope.
+    </p>
+    <p>
+      An extension that highlights SQL queries in JavaScript strings, for example, may use
+      <code>embeddedLanguages</code> to make sure all token inside the string marked
+      <code>meta.embedded.inline.sql</code> are treated as SQL for basic language features
+      such as bracket matching and snippet selection.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="dt">&quot;grammars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./syntaxes/injection.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">        <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;sql-string.injection&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-7" title="7">        <span class="dt">&quot;injectTo&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;source.js&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-8" title="8">        <span class="dt">&quot;embeddedLanguages&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-9" title="9">          <span class="dt">&quot;meta.embedded.inline.sql&quot;</span><span class="fu">:</span> <span class="st">&quot;sql&quot;</span></a>
+<a class="sourceLine" id="cb9-10" title="10">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-11" title="11">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb9-13" title="13">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h4 id="token-types-and-embedded-languages">Token types and embedded languages</h4>
+    <p>
+      There is one additional complication for injection languages embedded languages: by
+      default, VS Code treats all tokens within a string as string contents and all tokens
+      with a comment as token content. Since features such as bracket matching and auto
+      closing pairs are disabled inside of strings and comments, if the embedded language
+      appears inside a string or comment, these features will also be disabled in the
+      embedded language.
+    </p>
+    <p>
+      To override this behavior, you can use a <code>meta.embedded.*</code> scope to reset
+      VS Code’s marking of tokens as string or comment content. It is a good idea to always
+      wrap embedded language in a <code>meta.embedded.*</code> scope to make sure VS Code
+      treats the embedded language properly.
+    </p>
+    <p>
+      If you can’t add a <code>meta.embedded.*</code> scope to your grammar, you can
+      alternatively use <code>tokenTypes</code> in the grammar’s contribution point to map
+      specific scopes to content mode. The <code>tokenTypes</code> section below ensures
+      that any content in the <code>my.sql.template.string</code> scope is treated as source
+      code:
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">&quot;grammars&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb10-4" title="4">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-5" title="5">        <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;./syntaxes/injection.json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-6" title="6">        <span class="dt">&quot;scopeName&quot;</span><span class="fu">:</span> <span class="st">&quot;sql-string.injection&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-7" title="7">        <span class="dt">&quot;injectTo&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;source.js&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-8" title="8">        <span class="dt">&quot;embeddedLanguages&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-9" title="9">          <span class="dt">&quot;my.sql.template.string&quot;</span><span class="fu">:</span> <span class="st">&quot;sql&quot;</span></a>
+<a class="sourceLine" id="cb10-10" title="10">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb10-11" title="11">        <span class="dt">&quot;tokenTypes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-12" title="12">          <span class="dt">&quot;my.sql.template.string&quot;</span><span class="fu">:</span> <span class="st">&quot;other&quot;</span></a>
+<a class="sourceLine" id="cb10-13" title="13">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-14" title="14">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-15" title="15">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb10-16" title="16">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-17" title="17"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="theming">Theming</h2>
+    <p>
+      Theming is about assigning colors and styles to tokens. Theming rules are specified in
+      color themes, but users can customize the theming rules in the user settings.
+    </p>
+    <p>
+      TextMate theme rules are defined in <code>tokenColors</code> and have the same syntax
+      as regular TextMate themes. Each rule defines a TextMate scope selector and a
+      resulting color and style.
+    </p>
+    <p>
+      When evaluating the color and style of a token, the current token’s scope is matched
+      against the rule’s selector to find the most specific rule for each style property
+      (foreground, bold, italic, underline)
+    </p>
+    <p>
+      The
+      <a href="/api/extension-guides/color-theme#syntax-colors">Color Theme Guide</a>
+      describes how to create a color theme. Theming for semantic tokens is explained in the
+      <a href="semantic-highlight-guide#theming">Semantic Highlighting Guide</a>.
+    </p>
+    <h2 id="scope-inspector">Scope inspector</h2>
+    <p>
+      VS Code’s built-in scope inspector tool helps debug grammars and semantic tokens. It
+      displays the scopes for the token and the semantic tokens at the current position in a
+      file, along with metadata about which theme rules apply to that token.
+    </p>
+    <p>
+      Trigger the scope inspector from the Command Palette with the
+      <code>Developer: Inspect Editor Tokens and Scopes</code> command or
+      <a href="/docs/getstarted/keybindings">create a keybinding</a> for it:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;cmd+alt+shift+i&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;editor.action.inspectTMScopes&quot;</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="fu">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img src="images/syntax-highlighting/scope-inspector.png" alt="scope inspector" />
+      <figcaption>scope inspector</figcaption>
+    </figure>
+    <p>The scope inspector displays the following information:</p>
+    <ol type="1">
+      <li>The current token.</li>
+      <li>
+        Metadata about the token and information about its computed appearance. If you are
+        working with embedded languages, the important entries here
+        <code>language</code> and <code>token type</code>.
+      </li>
+      <li>
+        The semantic token section is shown when a semantic token provider is available for
+        the current language and when the current theme supports semantic highlighting. It
+        shows the current semantic token type and modifiers along with the theme rules that
+        match the semantic token type and modifiers.
+      </li>
+      <li>
+        The TextMate section shows the scope list for the current TextMate token, with the
+        most specific scope at the top. It also shows the most specific theme rules that
+        match the scopes. This only shows the theme rules that are responsible for the
+        token’s current style, it does not show overridden rules. If semantic tokens are
+        present, the theme rules are only shown when they differ from the rule matching the
+        semantic token.
+      </li>
+    </ol>
+  </body>
+</html>

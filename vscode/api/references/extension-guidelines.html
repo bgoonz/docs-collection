@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>extension-guidelines</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="extension-guidelines">Extension Guidelines</h1>
+    <p>
+      These guidelines cover the best practices for creating Visual Studio Code extensions.
+    </p>
+    <h2 id="architecture">Architecture</h2>
+    <p>
+      The VS Code UI has two types of elements: containers and items. Containers refer to
+      the outer layers, which include:
+    </p>
+    <p>
+      <a href="/assets/api/references/guidelines/architecture-groups.png"
+        ><img
+          src="images/guidelines/architecture-groups.png"
+          alt="Overview of Visual Studio Code containers elements"
+      /></a>
+    </p>
+    <ol type="1">
+      <li><a href="#view-containers">Activity Bar</a></li>
+      <li>Sidebar</li>
+      <li>Editor</li>
+      <li>Panel</li>
+      <li>Status Bar</li>
+    </ol>
+    <p>Items are placed inside of various containers and include:</p>
+    <p>
+      <a href="/assets/api/references/guidelines/architecture-sections.png"
+        ><img
+          src="images/guidelines/architecture-sections.png"
+          alt="Overview of Visual Studio Code item elements"
+      /></a>
+    </p>
+    <ol start="6" type="1">
+      <li>View Container</li>
+      <li><a href="#views">View</a></li>
+      <li>View Toolbar</li>
+      <li>Sidebar Toolbar</li>
+      <li><a href="#editor-actions">Editor Toolbar</a></li>
+      <li>View Container</li>
+      <li>Panel Toolbar</li>
+      <li>View</li>
+      <li><a href="#status-bar">Status Bar Item</a>:</li>
+    </ol>
+    <h2 id="notifications">Notifications</h2>
+    <p>
+      <a href="/api/extension-capabilities/common-capabilities#display-notifications"
+        >Notifications</a
+      >
+      display brief information that is surfaced from the bottom right of VS Code. You can
+      send three types of notifications:
+    </p>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#window.showInformationMessage">Information</a>
+      </li>
+      <li><a href="/api/references/vscode-api#window.showWarningMessage">Warning</a></li>
+      <li><a href="/api/references/vscode-api#window.showErrorMessage">Error</a></li>
+    </ul>
+    <p>
+      It’s important to limit the number of notifications sent in order to respect the
+      user’s attention. To help guide your decision on whether or not you should show a
+      notification, please follow our notification decision tree:
+    </p>
+    <p>
+      <a href="/assets/api/references/guidelines/notification-decision-tree.png"
+        ><img
+          src="images/guidelines/notification-decision-tree.png"
+          alt="Notification decision tree for showing notifications"
+      /></a>
+    </p>
+    <h3 id="notification-examples">Notification examples</h3>
+    <figure>
+      <img src="images/guidelines/notification-info.png" alt="Information notification" />
+      <figcaption>Information notification</figcaption>
+    </figure>
+    <p>
+      <em
+        >This notification appears after the user runs an
+        <strong>Update version</strong> command. Notice that there are no additional actions
+        and is purely informational.</em
+      >
+    </p>
+    <figure>
+      <img src="images/guidelines/notification-warning.png" alt="Warning notification" />
+      <figcaption>Warning notification</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example highlights a blocking error with a feature that requires user input
+        and shows actions to resolve the issue.</em
+      >
+    </p>
+    <figure>
+      <img src="images/guidelines/notification-error.png" alt="Error notification" />
+      <figcaption>Error notification</figcaption>
+    </figure>
+    <p><em>This example shows a failure notification with no actions.</em></p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>
+        Respect the user’s attention by only sending notifications when absolutely necessary
+      </li>
+      <li>Add a <strong>Do not show again</strong> option for every notification</li>
+      <li>Show one notification at a time</li>
+    </ul>
+    <p><strong>❌ Don’t</strong></p>
+    <ul>
+      <li>Send repeated notifications</li>
+      <li>Use for promotion</li>
+      <li>Ask for feedback on the first install</li>
+      <li>Show actions if there aren’t any</li>
+    </ul>
+    <h3 id="progress-notification">Progress notification</h3>
+    <p>
+      When needing to display progress for an undetermined timeframe (for example, setting
+      up an environment), you can use the progress notification. This type of global
+      progress notification should be used as a last resort as progress is best kept within
+      context (within a view or editor).
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Show a link to see more details (like logs)</li>
+      <li>Show information as setup progresses (initializing, building, etc.)</li>
+      <li>Provide an action to cancel the operation (if applicable)</li>
+      <li>Add timers for timed out scenarios</li>
+    </ul>
+    <p><strong>❌ Don’t</strong></p>
+    <ul>
+      <li>Leave a notification running in progress</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/notification-progress.png" alt="Progress notification" />
+      <figcaption>Progress notification</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example uses the progress notification to show the setup involved for a remote
+        connection, while also providing a link to the output logs
+        (<strong>details</strong>).</em
+      >
+    </p>
+    <h2 id="views">Views</h2>
+    <p>
+      <a href="/api/references/contribution-points#contributes.views">Views</a> are
+      containers of content that can appear in the sidebar or panel. Views can contain tree
+      views or custom views and can also display view actions. Views can also be rearranged
+      by the user into other views, Activity Bar items, and panels. Limit the number of
+      views created as other extensions can contribute in the same view.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Use existing icons when possible</li>
+      <li>Use file icons for language files</li>
+      <li>Use a tree view for displaying data</li>
+      <li>Add an Activity Bar icon to every view</li>
+      <li>Keep the number of views to a minimum</li>
+      <li>Keep the length of names to a minimum</li>
+      <li>Limit the use of custom webview views</li>
+    </ul>
+    <p><strong>❌ Don’t</strong></p>
+    <ul>
+      <li>Repeat existing functionality</li>
+      <li>Use tree items as single action items (for example, search bar)</li>
+      <li>Use custom webview views if not necessary</li>
+      <li>Use a view container to launch a webview in the editor</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/views-example.png" alt="Views example" />
+      <figcaption>Views example</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example uses the tree view to display a list of tests and the state for each
+        one. Each test type has a unique icon.</em
+      >
+    </p>
+    <h3 id="view-locations">View locations</h3>
+    <p>
+      Views can be placed in
+      <a href="/api/references/contribution-points#contributes.views"
+        >existing view containers</a
+      >, such as the File Explorer and Source Control (SCM) and Debug view containers. They
+      can also be added to a custom view container via the Activity Bar. In addition, views
+      can be added to any view container in the panel or in their own custom view container.
+    </p>
+    <figure>
+      <img src="images/guidelines/views-locations.png" alt="View locations" />
+      <figcaption>View locations</figcaption>
+    </figure>
+    <h3 id="view-containers">View Containers</h3>
+    <p>
+      <a href="/api/references/contribution-points#contributes.viewsContainers"
+        >View Containers</a
+      >
+      are part of the Activity Bar. Each container has a unique icon that matches the rest
+      of the iconography (outline) style.
+    </p>
+    <figure>
+      <img src="images/guidelines/view-container.png" alt="View Container" />
+      <figcaption>View Container</figcaption>
+    </figure>
+    <p><em>This example shows an outline icon used for a custom view container.</em></p>
+    <h3 id="views-with-progress">Views with progress</h3>
+    <p>
+      You can also
+      <a href="/api/references/vscode-api#ProgressLocation"
+        >show progress in the Source Control view</a
+      >
+      if your view is inside of the SCM view container.
+    </p>
+    <figure>
+      <img src="images/guidelines/scm-progress.png" alt="SCM Progress" />
+      <figcaption>SCM Progress</figcaption>
+    </figure>
+    <h3 id="welcome-views">Welcome views</h3>
+    <p>
+      When a view is empty, you can
+      <a href="/api/references/contribution-points#contributes.viewsWelcome"
+        >add content to guide users</a
+      >
+      on how to use your extension or get started. Links and icons are supported in Welcome
+      views.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Use Welcome views only when necessary</li>
+      <li>Use links instead of buttons when possible</li>
+      <li>Use buttons only for primary actions</li>
+      <li>Use clear link text to indicate the link destination</li>
+      <li>Limit the length of the content</li>
+      <li>Limit the number of Welcome views</li>
+      <li>Limit the number of buttons in views</li>
+    </ul>
+    <p><strong>❌ Don’t</strong></p>
+    <ul>
+      <li>Use buttons if not necessary</li>
+      <li>Use Welcome views for promotions</li>
+      <li>Use generic “read more” as link text</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/welcome-views.png" alt="Welcome Views" />
+      <figcaption>Welcome Views</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example shows one primary action for the extension and the additional views
+        have context about what to expect with links to documentation.</em
+      >
+    </p>
+    <h2 id="webviews">Webviews</h2>
+    <p>
+      If you need to display custom functionality that is beyond what the VS Code API
+      supports, you can use <a href="/api/extension-guides/webview">webviews</a>, which are
+      fully customizable. It’s important to understand that webviews should only be used if
+      you absolutely need them.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Only use webviews when absolutely necessary</li>
+      <li>Activate your extension only when contextually appropriate</li>
+      <li>Open webviews only for the active window</li>
+      <li>
+        Ensure all elements in the view are themeable (see the
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/webview-view-sample/media/main.css"
+          >webview-view-sample</a
+        >
+        and <a href="/api/references/theme-color">color tokens</a> documentation)
+      </li>
+      <li>
+        Ensure your views follow
+        <a href="/docs/editor/accessibility">accessibility guidance</a> (color contrast,
+        ARIA labels, keyboard navigation)
+      </li>
+      <li>Use command actions in the toolbar and in the view</li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Use for promotions (upgrades, sponsors, etc.)</li>
+      <li>Use for wizards</li>
+      <li>Open on every window</li>
+      <li>Open on extension updates (ask via a Notification instead)</li>
+      <li>Add functionality that is unrelated to the editor or workspace</li>
+      <li>Repeat existing functionality (Welcome page, Settings, configuration, etc.)</li>
+    </ul>
+    <h3 id="webview-examples">Webview examples</h3>
+    <p><strong>Browser preview</strong></p>
+    <p>This extension opens a browser preview for the editor to the side.</p>
+    <figure>
+      <img src="images/guidelines/webview-browser.png" alt="Weview Sample - Browser" />
+      <figcaption>Weview Sample - Browser</figcaption>
+    </figure>
+    <p><strong>Pull request</strong></p>
+    <p>
+      This extension shows pull requests for the repository of the workspace in a custom
+      tree view and then uses a webview for a detail view of the pull request.
+    </p>
+    <figure>
+      <img
+        src="images/guidelines/webview-pullrequest.png"
+        alt="Webview Sample - Pull Request"
+      />
+      <figcaption>Webview Sample - Pull Request</figcaption>
+    </figure>
+    <p><strong>Onboarding</strong></p>
+    <p>
+      This extension opens a quickstart webview with helpful actions and links for more
+      information. The webview only appears the first time a user opens a certain file and
+      checks if certain steps have already been completed (for example, install or create a
+      file).
+    </p>
+    <figure>
+      <img
+        src="images/guidelines/webview-onboarding.png"
+        alt="Webview Sample - Onboarding"
+      />
+      <figcaption>Webview Sample - Onboarding</figcaption>
+    </figure>
+    <h3 id="webview-views">Webview views</h3>
+    <p>
+      You can also place webviews into any view container (sidebar or panel) and these
+      elements are called
+      <a href="/api/references/vscode-api#WebviewView">webview views</a>. The same webview
+      guidance applies to webview views.
+    </p>
+    <figure>
+      <img src="images/guidelines/webview-view.png" alt="Webview View" />
+      <figcaption>Webview View</figcaption>
+    </figure>
+    <p>
+      <em
+        >This webview view shows content for creating a pull request that uses dropdowns,
+        inputs, and buttons.</em
+      >
+    </p>
+    <h2 id="status-bar">Status Bar</h2>
+    <p>
+      The
+      <a href="/api/extension-capabilities/extending-workbench#status-bar-item"
+        >Status Bar</a
+      >
+      sits at the bottom of the VS Code workbench and displays information and actions that
+      relate to your workspace. Items are placed into two groups: Primary (left) and
+      Secondary (right). Items that relate to the entire workspace (status,
+      problems/warnings, sync) go on the left and items that are secondary or contextual
+      (language, spacing, feedback) go on the right. Limit the number of items added, as
+      other extensions contribute to the same area.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Use short text labels</li>
+      <li>Use icons only when necessary</li>
+      <li>Use icons only for clear metaphors</li>
+      <li>Place primary (global) items on the left</li>
+      <li>Place secondary (contextual) items on the right</li>
+    </ul>
+    <p><strong>❌ Don’t</strong></p>
+    <ul>
+      <li>Add custom colors</li>
+      <li>Add more than one icon (unless necessary)</li>
+      <li>Add more than one item (unless necessary)</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/statusbar-item.png" alt="Status Bar Item" />
+      <figcaption>Status Bar Item</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example shows an item that relates to the entire workspace, so it is on the
+        left.</em
+      >
+    </p>
+    <h3 id="progress-status-bar-item">Progress Status Bar item</h3>
+    <p>
+      When needing to show discreet progress (progress happening in the background), it’s
+      recommended to show a Status Bar item with the loading icon (you can also add spin
+      animation). If progress needs to be elevated for user attention, we recommend moving
+      to a progress notification.
+    </p>
+    <figure>
+      <img src="images/guidelines/status-bar-progress.png" alt="Status Bar Progress" />
+      <figcaption>Status Bar Progress</figcaption>
+    </figure>
+    <p><em>This example shows a progress Status Bar item that is discreet.</em></p>
+    <h3 id="error-status-bar-item">Error Status Bar item</h3>
+    <p>
+      If you need to show an item that is highly visible for error purposes, you can use the
+      error Status Bar item. Only use error Status Bar items as a last resort and only for
+      special cases.
+    </p>
+    <figure>
+      <img src="images/guidelines/status-bar-error.png" alt="Status Bar Error" />
+      <figcaption>Status Bar Error</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example uses the error Status Bar item for showing a blocking error in the
+        file.</em
+      >
+    </p>
+    <h2 id="quick-picks">Quick Picks</h2>
+    <p>
+      <a href="/api/extension-capabilities/common-capabilities#quick-pick">Quick Picks</a>
+      are an easy way to perform actions and receive input from the user. This is helpful
+      when selecting a configuration option, needing to filter content, or picking from a
+      list of items.
+    </p>
+    <figure>
+      <img src="images/guidelines/quickpick.png" alt="Quick Pick" />
+      <figcaption>Quick Pick</figcaption>
+    </figure>
+    <p>
+      <em
+        >This made-up example shows all of the variations that a Quick Pick can contain. It
+        can have items with icons, detail lines, and labels for indicating a default or
+        current item. At the top, it shows the multi-step pattern with back, undo, and
+        forward actions.</em
+      >
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Use icons for clear metaphors</li>
+      <li>Use the description for displaying the current items (if applicable)</li>
+      <li>Use the detail for providing (brief) additional context</li>
+      <li>Use the multi-step pattern for a series of inputs (like a wizard)</li>
+      <li>
+        Provide an option to create a new item when picking from a list (if applicable)
+      </li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Repeat existing functionality</li>
+      <li>Use the same icon for multiple items</li>
+      <li>Use more than six icons in a list</li>
+    </ul>
+    <h2 id="editor-actions">Editor Actions</h2>
+    <p>
+      <a href="/api/references/contribution-points#contributes.commands">Editor actions</a>
+      can appear in the editor toolbar. You can either add an icon as a quick action or add
+      menu item under the overflow menu (<strong>…</strong>).
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Show only when contextually appropriate</li>
+      <li>Use icons from the icon library</li>
+      <li>Use the overflow menu for secondary actions</li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Add more than one icon</li>
+      <li>Add custom colors</li>
+      <li>Use emojis</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/editor-actions.png" alt="Editor Actions" />
+      <figcaption>Editor Actions</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example only uses a single icon that only appears on HTML pages to launch a
+        preview.</em
+      >
+    </p>
+    <h2 id="context-menus">Context Menus</h2>
+    <p>
+      <a href="/api/references/contribution-points#contributes.menus">Menu items</a> appear
+      in views, actions, and right-click menus. It’s important that the grouping of menus
+      remain consistent. If your extension has actions that relate to files, place your
+      actions in the File Explorer context menu (when appropriate). If an extension has
+      actions for certain file types, only display it for those items.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Show actions when contextually appropriate</li>
+      <li>Group similar actions together</li>
+      <li>Place large groups of actions into a submenu</li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Show actions for every file without context</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/context-menu.png" alt="Context Menu" />
+      <figcaption>Context Menu</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example places a <strong>Copy GitHub Link</strong> next to the other copy
+        commands. This action only appears on files that are from a GitHub repository.</em
+      >
+    </p>
+    <h2 id="settings">Settings</h2>
+    <p>
+      <a href="/api/references/contribution-points#contributes.configuration">Settings</a>
+      are how a user can configure your extension. Settings can be inputs boxes, booleans,
+      dropdowns, lists, key/value pairs. If your extension requires the user to configure
+      specific settings, you can open the Settings UI and query your extension setting via
+      the setting ID.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Add default values to each setting</li>
+      <li>Add clear descriptions to each setting</li>
+      <li>Link to documentation for complicated settings</li>
+      <li>Link to additional settings that are related</li>
+      <li>Link to setting IDs when needing the user to configure specific settings</li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Create your own settings page/webview</li>
+      <li>Create long descriptions</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/settings.png" alt="Settings" />
+      <figcaption>Settings</figcaption>
+    </figure>
+    <p><em>This example links to a specific setting using the setting ID.</em></p>
+    <h2 id="command-palette">Command Palette</h2>
+    <p>
+      The
+      <a href="/api/references/contribution-points#contributes.commands">Command Palette</a>
+      is where all commands are found. It’s important that your command names are labeled
+      appropriately so users can easily find them.
+    </p>
+    <p><strong>✔️ Do</strong></p>
+    <ul>
+      <li>Add keyboard shortcuts where appropriate</li>
+      <li>Use clear names for commands</li>
+      <li>Group commands together in the same category</li>
+    </ul>
+    <p>❌ Don’t</p>
+    <ul>
+      <li>Overwrite existing keyboard shortcuts</li>
+      <li>Use emojis in command names</li>
+    </ul>
+    <figure>
+      <img src="images/guidelines/command-palette.png" alt="Command Palette" />
+      <figcaption>Command Palette</figcaption>
+    </figure>
+    <p>
+      <em
+        >This example has commands that are grouped together in the “Debug” category and
+        have clear labels and only a few commands have shortcuts.</em
+      >
+    </p>
+  </body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>containers-edu</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="development-containers-in-education-a-guide-for-instructors">
+      Development Containers in Education: A Guide for Instructors
+    </h1>
+    <p>
+      July 27, 2020 by Brigit Murtaugh,
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh)
+    </p>
+    <p>
+      We’ve heard from many educators that the first days or weeks of the
+      semester can be lost to configuring the correct environment for students.
+      Even so, students may still end up with a low-quality development
+      experience or insufficient grading of their assignments:
+    </p>
+    <p>
+      <strong
+        ><em
+          >“Set up for my students normally takes five class periods. There are
+          version of Python to deal with. There’s a lot of complexity. Sadly
+          that complexity takes a lot of time and money to sort out.”</em
+        ></strong
+      >
+      -[Community College US Professor CS 101]
+    </p>
+    <p>
+      <strong
+        ><em
+          >“I would prefer a version of VS Code, specifically set up for a
+          Python installation…”</em
+        ></strong
+      >
+      -[Assistant Professor, Liberal Arts College]
+    </p>
+    <p>
+      Development containers with Visual Studio Code can serve as a fantastic
+      tool in education to ensure students have a consistent coding environment.
+      They take care of setup so that students and instructors can quickly move
+      past configuration, and instead focus on what’s truly important: learning
+      and coding something great!
+    </p>
+    <h2 id="development-containers">Development containers</h2>
+    <p>
+      So, what are development containers?
+      <a href="https://www.docker.com/resources/what-container">Containers</a>
+      are pieces of software that package code and all of the dependencies that
+      code needs to run, including the runtime, tools, libraries, and settings.
+      Containers were initially created as a way to deploy and manage apps in a
+      consistent environment and make more efficient use of hardware. They later
+      evolved to help in providing a consistent build environment, and more
+      recently, development environment. That’s where the name dev container
+      comes from.
+    </p>
+    <p>
+      When you create a container, its initial contents come from what’s known
+      as an “image.” An image can be thought of as a mini-disk drive with things
+      like the operating system and other tools pre-installed. You describe what
+      goes into the image using a Dockerfile, and once you run the image, it
+      becomes a container.
+    </p>
+    <p>
+      Dev containers provide a separate coding environment from your computer.
+      For example, if you download a specific version of a dependency, that
+      version will be unique to the container. In the diagram below, notice how
+      the container includes the app and its necessary dependencies, keeping the
+      computer (Host OS and Infrastructure) free and clean of any dependencies:
+    </p>
+    <figure>
+      <img src="1-containers-abc.png" alt="Containers diagram" />
+      <figcaption>Containers diagram</figcaption>
+    </figure>
+    <p>
+      As an instructor, you can create a specific image for an assignment. Each
+      student will get the exact same version of dependencies, such as the same
+      version of Python or a C++ compiler, regardless of their operating system
+      or any other files already installed on their computer.
+    </p>
+    <h2 id="remote-containers-in-vs-code">Remote – Containers in VS Code</h2>
+    <p>
+      The Visual Studio Code
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"
+        >Remote - Containers</a
+      >
+      extension lets you use a container as your main coding environment. In the
+      classroom, an instructor can take an
+      <a
+        href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers"
+        >existing dev container</a
+      >, or create their own, and share it with the class. Each student can open
+      the container in VS Code and automatically have the tools and runtimes
+      they need to develop their applications. Students will also have access to
+      VS Code’s full feature set, including IntelliSense and debugging, while
+      coding.
+    </p>
+    <p>
+      The Remote – Containers extension works solely with Linux-based
+      containers, so although students may have different operating systems on
+      their computers, the coding environment will be consistent across all of
+      them.
+    </p>
+    <p>
+      We’ve already seen instructors using Remote – Containers in their
+      classrooms with success. You can check out
+      <a href="https://dl.acm.org/doi/pdf/10.1145/3341525.3387424"
+        >Using DevContainers to Standardize Student Development Environments: An
+        Experience Report</a
+      >
+      to learn more about the experiences of three researchers who used dev
+      containers in a course at UC San Diego.
+    </p>
+    <p>
+      This post will serve as a guide to instructors looking to implement
+      development containers in the classroom to create a smoother, more
+      consistent environment for their students.
+    </p>
+    <p>
+      To witness dev containers in action and how students can get started in
+      just 5 minutes, check out our
+      <a href="https://youtu.be/Uvf2FVS1F8k">introductory student video</a>.
+    </p>
+    <h2 id="guide-for-instructors">Guide for Instructors</h2>
+    <p>
+      With traditional set up approaches, students can run into a wide variety
+      of issues while setting up their environment. Some examples include
+      differences in their unique OS, where project files are stored, or small
+      differences in runtimes or tools they’ve installed. Instructors need to be
+      well versed in all these subtleties to be able to help students solve
+      these issues.
+    </p>
+    <p>
+      A common issue is managing different versions of a tool. Let’s take Python
+      as an example: there’s Python 2 and Python 3, along with different minor
+      versions. Having multiple versions of Python, and then multiple
+      accompanying tools such as linters, can be confusing and lead to errors.
+    </p>
+    <p>
+      To save tremendous time and confusion, we can use dev containers to create
+      a standardized Python development environment across our class. Students
+      will all get the same version of Python, avoiding the need to install a
+      new version or uninstall any old ones, and everyone running the same
+      container and source code will get the same exact results.
+    </p>
+    <h3 id="prerequisites">Prerequisites</h3>
+    <ul>
+      <li>
+        Install
+        <a href="https://code.visualstudio.com/download">Visual Studio Code</a>.
+      </li>
+      <li>
+        Install Docker Desktop.
+        <ul>
+          <li>
+            Docker is the industry standard for building and sharing containers.
+            We recommend Docker Desktop Stable 2.3.0.3 as it is the most recent
+            and performant version of Docker Desktop.
+          </li>
+          <li>
+            There is newly introduced
+            <a
+              href="https://docs.docker.com/docker-for-windows/install-windows-home/"
+              >Docker Desktop support on Windows Home</a
+            >. It requires Windows 10, version 2004 and enabling the Windows
+            Subsystem for Linux 2 (WSL 2) backend. Enable WSL 2 by following the
+            <a href="https://docs.microsoft.com/windows/wsl/wsl2-install"
+              >WSL 2 installation guide</a
+            >.
+          </li>
+          <li>
+            For students who would prefer to not configure the WSL 2 backend,
+            <a
+              href="https://docs.docker.com/docker-for-windows/install/#:~:text=System%20Requirements,Hyper%2DV%20on%20Windows%2010%3A&amp;text=4GB%20system%20RAM"
+              >Docker Desktop for Windows</a
+            >
+            can alternatively be used on Windows 10 Pro, Enterprise, or
+            Education (Build 16299 or later), and Hyper-V and Containers Windows
+            features must be enabled.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Let’s start off by launching VS Code, which we can do by typing
+      <code>code</code> in the command prompt or terminal (or just by selecting
+      VS Code on your computer):
+    </p>
+    <figure>
+      <img
+        src="2-code-ps-cropped.png"
+        alt="Launch VS Code from command prompt"
+      />
+      <figcaption>Launch VS Code from command prompt</figcaption>
+    </figure>
+    <p>
+      Once VS Code launches, ensure you’ve installed the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"
+        >Remote - Containers</a
+      >
+      extension:
+    </p>
+    <figure>
+      <img src="3-extension.png" alt="Remote containers extension" />
+      <figcaption>Remote containers extension</figcaption>
+    </figure>
+    <p>
+      When we install any of the Remote extensions, the green Remote indicator
+      is added to the bottom left of the Status bar:
+    </p>
+    <figure>
+      <img src="4-remote-indicator.png" alt="Remote indicator in VS Code" />
+      <figcaption>Remote indicator in VS Code</figcaption>
+    </figure>
+    <p>
+      You can click on it to open the Command Palette and verify the
+      Remote-Containers commands are listed:
+    </p>
+    <figure>
+      <img
+        src="5-commands-list.png"
+        alt="List of remote commands in Command Palette"
+      />
+      <figcaption>List of remote commands in Command Palette</figcaption>
+    </figure>
+    <h3 id="accessing-a-container-for-your-class">
+      Accessing a container for your class
+    </h3>
+    <p>
+      Let’s walk through an example dev container to help students get a
+      consistent coding environment. In our classroom, we could create a single
+      GitHub repository to store exercises that share the same tech stack. For
+      instance, all the Python assignments can use the same container and be
+      stored in the same repo.
+    </p>
+    <p>
+      We have an example
+      <a href="https://github.com/microsoft/vscode-course-sample"
+        >vscode-course-sample GitHub repo</a
+      >
+      with a Python dev container and two Python intro assignments. Let’s open
+      it in VS Code.
+    </p>
+    <p>
+      You can select the Remote indicator in the bottom left, or use the Command
+      Palette, to bring up the Remote-Containers commands.
+    </p>
+    <p>Let’s call <strong>Clone Repository in Container Volume…</strong></p>
+    <figure>
+      <img
+        src="6-clone-repo-command.png"
+        alt="Clone Repository in Container Volume"
+      />
+      <figcaption>Clone Repository in Container Volume</figcaption>
+    </figure>
+    <p>
+      We need to enter the URL to the GitHub repo where our container is stored,
+      which in our case is microsoft/vscode-course-sample:
+    </p>
+    <figure>
+      <img
+        src="7-paste-repo-command.png"
+        alt="Paste GitHub URL in Command Palette"
+      />
+      <figcaption>Paste GitHub URL in Command Palette</figcaption>
+    </figure>
+    <p>
+      You can <strong>Create a unique volume.</strong> A volume is where files
+      will be stored in our container:
+    </p>
+    <figure>
+      <img src="8-volume-command.png" alt="Volume options in Command Palette" />
+      <figcaption>Volume options in Command Palette</figcaption>
+    </figure>
+    <p>
+      Now that we’ve chosen our container repo, VS Code reloads to build the
+      image and start the container:
+    </p>
+    <figure>
+      <img
+        src="10-starting-container.png"
+        alt="Close-up on starting container notification"
+      />
+      <figcaption>Close-up on starting container notification</figcaption>
+    </figure>
+    <p>
+      Once the container is built and running, our files are loaded and we can
+      start coding within our Python environment!
+    </p>
+    <p>
+      Click on <code>sort.py</code> in the Explorer to open it, and press
+      <strong>F5</strong> (or the green Run icon in the top right) to run it:
+    </p>
+    <figure>
+      <img src="11-sortpy-cropped.png" alt="Run sort.py program" />
+      <figcaption>Run sort.py program</figcaption>
+    </figure>
+    <p>
+      Our Python code ran successfully without ever having to set up Python on
+      our local computer.
+    </p>
+    <p>
+      We also have access to all the benefits of VS Code, such as setting
+      breakpoints to pause our program and help us debug. Let’s set a breakpoint
+      when we sort our list of words.
+    </p>
+    <figure>
+      <img src="12-breakpoint-cropped.png" alt="Setting a breakpoint" />
+      <figcaption>Setting a breakpoint</figcaption>
+    </figure>
+    <p>
+      We can run our program with <strong>F5</strong>. Notice that the program
+      stops once it hits the breakpoint:
+    </p>
+    <figure>
+      <img src="13-debug-cropped.png" alt="Program stops at breakpoint" />
+      <figcaption>Program stops at breakpoint</figcaption>
+    </figure>
+    <h3 id="creating-a-container-for-your-class">
+      Creating a container for your class
+    </h3>
+    <p>
+      Now that we’ve seen a fantastic example of a container, let’s set up our
+      first container ourselves using the Remote – Containers extension. Let’s
+      start off in a “Hello World” Python application:
+    </p>
+    <figure>
+      <img src="14-helloworld-cropped.png" alt="Hello world Python app" />
+      <figcaption>Hello world Python app</figcaption>
+    </figure>
+    <p>
+      We’ll select
+      <strong
+        >Remote-Containers: Add Development Container Configuration
+        Files…</strong
+      >
+      to begin setting up the files necessary for a development container:
+    </p>
+    <figure>
+      <img
+        src="15-add-config.png"
+        alt="Add Development Container Configuration Files command"
+      />
+      <figcaption>
+        Add Development Container Configuration Files command
+      </figcaption>
+    </figure>
+    <p>
+      Container configuration files are what’s needed to create and customize a
+      development container. The list of
+      <a
+        href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers/python-3"
+        >container definitions</a
+      >
+      that appears is filtered based on the contents of your application, which
+      in our case is a Python file. Let’s select <strong>Python 3</strong>:
+    </p>
+    <figure>
+      <img
+        src="16-python-config.png"
+        alt="Select Python 3 config file in Command Palette"
+      />
+      <figcaption>Select Python 3 config file in Command Palette</figcaption>
+    </figure>
+    <p>
+      The Remote - Containers extension automatically adds a
+      <code>.devcontainer</code> folder and two configuration files within it:
+      <code>devcontainer.json</code> and a Dockerfile. Let’s take a closer look
+      at both files.
+    </p>
+    <h4 id="devcontainer.json">devcontainer.json</h4>
+    <p>
+      <a
+        href="https://code.visualstudio.com/docs/remote/containers#_creating-a-devcontainerjson-file"
+        ><code>devcontainer.json</code></a
+      >
+      describes how VS Code should start our container and what to do after it
+      connects. This file can be located under
+      <code>.devcontainer/devcontainer.json</code> or stored directly as
+      <code>devcontainer.json</code> in the root of a project.
+    </p>
+    <p>
+      Here is a simple example of a <code>devcontainer.json</code>. It pulls a
+      preconfigured Node image, automatically sets up port forwarding for port
+      3000, and will install the eslint extension when the container is created:
+    </p>
+    <figure>
+      <img src="17-node-devcontainer.png" alt="Simple Node devcontainer.json" />
+      <figcaption>Simple Node devcontainer.json</figcaption>
+    </figure>
+    <p>
+      Here is an example of what a slightly more elaborate
+      <code>devcontainer.json</code> looks like for our Python project. It
+      references a Dockerfile rather than an image directly using the
+      <code>dockerfile</code> property. It also installs the Python extension
+      automatically, and establishes a set of container-specific settings once
+      the container is created, such as linting:
+    </p>
+    <figure>
+      <img
+        src="18-python-devcontainer.png"
+        alt="More detailed Python devcontainer.json"
+      />
+      <figcaption>More detailed Python devcontainer.json</figcaption>
+    </figure>
+    <p>
+      <code>devcontainer.json</code> is a great opportunity to create a
+      customized coding environment to fit the specific needs of your students.
+      You can specify a few variables to create a unique environment for each
+      class or assignment.
+    </p>
+    <p>
+      Variables we’d recommend starting off with in a
+      <code>devcontainer.json</code> for education are:
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 34%" />
+        <col style="width: 20%" />
+        <col style="width: 44%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>image</code></td>
+          <td>string</td>
+          <td>
+            The name of an image in a container registry (i.e. <a
+              href="https://hub.docker.com"
+              >DockerHub</a
+            >) that VS Code should use to create the dev container.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>dockerFile</code></td>
+          <td>string</td>
+          <td>
+            The location of a
+            <a href="https://docs.docker.com/engine/reference/builder/"
+              >Dockerfile</a
+            >
+            that defines the contents of the container. The path is relative to
+            the <code>devcontainer.json</code> file. You can find a number of
+            sample Dockerfiles for different runtimes in the
+            <a
+              href="https://github.com/microsoft/vscode-dev-containers/tree/main/containers"
+              >vscode-dev-containers repository</a
+            >.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>name</code></td>
+          <td>string</td>
+          <td>A display name for the container.</td>
+        </tr>
+        <tr class="even">
+          <td><code>extensions</code></td>
+          <td>array</td>
+          <td>
+            An array of extension IDs that specify the extensions that should be
+            installed inside the container when it is created. Defaults to
+            <code>[]</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>settings</code></td>
+          <td>object</td>
+          <td>
+            Adds default <code>settings.json</code> values into a
+            container/machine specific settings file.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Setting up a handful of variables in this file will save your class time
+      in the long run. For example, you can use the
+      <code>extensions</code> variable to ensure all your students automatically
+      get the same set of extensions installed. Setting paths can also be
+      challenging or lead to issues on students’ computers, but by specifying
+      path information via the <code>settings</code> variable, you’ll save your
+      class time and ensure their computers’ path variables aren’t harmed in the
+      process.
+    </p>
+    <p>
+      There is a table in the
+      <a
+        href="https://code.visualstudio.com/docs/remote/devcontainerjson-reference"
+        >devcontainer.json reference</a
+      >
+      of all available properties you can include in this configuration file.
+    </p>
+    <h4 id="dockerfile">Dockerfile</h4>
+    <p>
+      Docker can build images automatically by reading the instructions from
+      your
+      <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a
+      >. This file will at the very least have a base image specified using
+      <code>FROM</code>, and it can include command-line instructions as well.
+    </p>
+    <p>Here’s what the Dockerfile looks like in our Python app:</p>
+    <figure>
+      <img src="19-dockerfile-crop.png" alt="Python dockerfile in app" />
+      <figcaption>Python dockerfile in app</figcaption>
+    </figure>
+    <h3 id="opening-the-container">Opening the container</h3>
+    <p>
+      Once our container configuration files were added, we got a notification
+      that our folder now has a <code>devcontainer.json</code> file. Let’s
+      select <strong>Reopen in Container</strong>:
+    </p>
+    <figure>
+      <img src="21-reopen-notif.png" alt="Reopen in container notification" />
+      <figcaption>Reopen in container notification</figcaption>
+    </figure>
+    <p>
+      A new instance of VS Code launches, where our image is being built and our
+      app is starting in our dev container:
+    </p>
+    <figure>
+      <img
+        src="22-reload-starting.png"
+        alt="Relaunch VS Code to start dev container"
+      />
+      <figcaption>Relaunch VS Code to start dev container</figcaption>
+    </figure>
+    <p>
+      Once our container is built, we have all the same files, but now the
+      bottom-left indicator reads, “Dev Container: Python 3,” signifying we’re
+      inside our container. We can run our code with ease, regardless of which
+      version of Python (if any) we have installed on our local machine!
+    </p>
+    <figure>
+      <img
+        src="24-run-code-cropped.png"
+        alt="Run Python code in dev container"
+      />
+      <figcaption>Run Python code in dev container</figcaption>
+    </figure>
+    <h3 id="creating-and-sharing-assignments">
+      Creating and sharing assignments
+    </h3>
+    <p>
+      Now that you have a dev container, you can upload it to a repository so
+      that your students can access it for their assignments. You can include
+      assignment instructions in a <code>README</code>, as well as any base or
+      template code needed for the assignment, and a
+      <code>.devcontainer</code> folder so that they all have a consistent
+      development experience. All of these files can be uploaded as a single
+      repo.
+    </p>
+    <p>
+      Make sure you have
+      <a href="https://git-scm.com/downloads">Git installed</a>. You can
+      <a
+        href="https://code.visualstudio.com/docs/editor/versioncontrol#_initialize-a-repository"
+        >initialize a new Git repository</a
+      >
+      from your container project in VS Code. Alternatively, you can use
+      <code>git init</code> from your project’s directory in the command line.
+    </p>
+    <p>
+      The next step is to connect your local repository to a
+      <a href="https://github.com/new">new repo</a> from GitHub in your browser:
+    </p>
+    <figure>
+      <img src="25-create-repo.png" alt="Create a new GitHub repo online" />
+      <figcaption>Create a new GitHub repo online</figcaption>
+    </figure>
+    <p>
+      Then, we’ll connect our local Git repo (the container project on our
+      computer) to the remote repo (the GitHub repo we created in the browser):
+    </p>
+    <figure>
+      <img
+        src="26-git-setup-cropped.png"
+        alt="Connect Git repos in command prompt"
+      />
+      <figcaption>Connect Git repos in command prompt</figcaption>
+    </figure>
+    <p>
+      You may be prompted to log into GitHub. Once you sign in, your files can
+      be added to your remote Git repository:
+    </p>
+    <figure>
+      <img src="27-git-push.png" alt="Push remote files in command prompt" />
+      <figcaption>Push remote files in command prompt</figcaption>
+    </figure>
+    <p>Now when I refresh GitHub in the browser, I can view my files!</p>
+    <figure>
+      <img
+        src="28-github-browser.png"
+        alt="View files in GitHub repo in browser online"
+      />
+      <figcaption>View files in GitHub repo in browser online</figcaption>
+    </figure>
+    <p>
+      For more information on how to upload your repository to GitHub, check out
+      <a
+        href="https://docs.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line"
+        >this Adding an existing project to GitHub guide</a
+      >.
+    </p>
+    <h3 id="accessing-assignments">Accessing assignments</h3>
+    <p>
+      To see how students can access the dev container from GitHub and begin
+      programming with ease, check out our
+      <a href="https://youtu.be/Uvf2FVS1F8k">quick 5-minute video</a>.
+    </p>
+    <h2 id="feedback-further-resources">Feedback &amp; further resources</h2>
+    <p>
+      To help set up VS Code with containers, we have detailed articles on the
+      VS Code
+      <a href="https://code.visualstudio.com/docs/remote/containers"
+        >Remote Development documentation</a
+      >. If you have any questions or feedback for our team, please feel free to
+      open an issue on the VS Code
+      <a href="https://github.com/microsoft/vscode-remote-release/issues"
+        >Remote Development GitHub Repository</a
+      >
+      or Tweet us
+      <span class="citation" data-cites="code">[@code]</span
+      >(https://twitter.com/code).
+    </p>
+    <p>Happy Coding!</p>
+    <p>
+      Brigit Murtaugh, VS Code Program Manager
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh)
+    </p>
+  </body>
+</html>

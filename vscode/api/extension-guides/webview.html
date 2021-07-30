@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>webview</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="webview-api">Webview API</h1>
+    <p>
+      The webview API allows extensions to create fully customizable views within Visual
+      Studio Code. For example, the built-in Markdown extension uses webviews to render
+      Markdown previews. Webviews can also be used to build complex user interfaces beyond
+      what VS Code’s native APIs support.
+    </p>
+    <p>
+      Think of a webview as an <code>iframe</code> within VS Code that your extension
+      controls. A webview can render almost any HTML content in this frame, and it
+      communicates with extensions using message passing. This freedom makes webviews
+      incredibly powerful, and opens up a whole new range of extension possibilities.
+    </p>
+    <p>Webviews are used in several VS Code APIs:</p>
+    <ul>
+      <li>
+        With Webview Panels created using <code>createWebviewPanel</code>. In this case,
+        Webview panels are shown in VS Code as distinct editors. This makes them useful for
+        displaying custom UI and custom visualizations.
+      </li>
+      <li>
+        As the view for a <a href="/api/extension-guides/custom-editors">custom editor</a>.
+        Custom editors allow extensions to provide a custom UI for editing any file in the
+        workspace. The custom editor API also lets your extension hook into editor events
+        such as undo and redo, as well as file events such as save.
+      </li>
+      <li>
+        In <a href="/api/references/vscode-api#WebviewView">Webview views</a> that are
+        rendered in the sidebar or panel areas. See the
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/tree/main/webview-view-sample"
+          >webview view sample extension</a
+        >
+        for more details.
+      </li>
+    </ul>
+    <p>
+      This page focuses on the basic webview panel API, although almost everything covered
+      here applies to the webviews used in custom editors and webview views as well. Even if
+      you are more interested in those APIs, we recommend reading through this page first to
+      familiarize yourself with the webview basics.
+    </p>
+    <h2 id="links">Links</h2>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/webview-sample/README.md"
+          >Webview Sample</a
+        >
+      </li>
+      <li>
+        <a href="/api/extension-guides/custom-editors">Custom Editors Documentation</a>
+      </li>
+      <li>
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/tree/main/webview-view-sample"
+          >Webview View Sample</a
+        >
+      </li>
+    </ul>
+    <h3 id="vs-code-api-usage">VS Code API Usage</h3>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#window.createWebviewPanel"
+          ><code>window.createWebviewPanel</code></a
+        >
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#window.registerWebviewPanelSerializer"
+          ><code>window.registerWebviewPanelSerializer</code></a
+        >
+      </li>
+    </ul>
+    <h2 id="should-i-use-a-webview">Should I use a webview?</h2>
+    <p>
+      Webviews are pretty amazing, but they should also be used sparingly and only when VS
+      Code’s native API is inadequate. Webviews are resource heavy and run in a separate
+      context from normal extensions. A poorly designed webview can also easily feel out of
+      place within VS Code.
+    </p>
+    <p>Before using a webview, please consider the following:</p>
+    <ul>
+      <li>
+        <p>
+          Does this functionality really need to live within VS Code? Would it be better as
+          a separate application or website?
+        </p>
+      </li>
+      <li>
+        <p>
+          Is a webview the only way to implement your feature? Can you use the regular VS
+          Code APIs instead?
+        </p>
+      </li>
+      <li>
+        <p>Will your webview add enough user value to justify its high resource cost?</p>
+      </li>
+    </ul>
+    <p>
+      Remember: Just because you can do something with webviews, doesn’t mean you should.
+      However, if you are confident that you need to use webviews, then this document is
+      here to help. Let’s get started.
+    </p>
+    <h2 id="webviews-api-basics">Webviews API basics</h2>
+    <p>
+      To explain the webview API, we are going to build a simple extension called
+      <strong>Cat Coding</strong>. This extension will use a webview to show a gif of a cat
+      writing some code (presumably in VS Code). As we work through the API, we’ll continue
+      adding functionality to the extension, including a counter that keeps track of how
+      many lines of source code our cat has written and notifications that inform the user
+      when the cat introduces a bug.
+    </p>
+    <p>
+      Here’s the <code>package.json</code> for the first version of the
+      <strong>Cat Coding</strong> extension. You can find the complete code for the example
+      app
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/webview-sample/README.md"
+        >here</a
+      >. The first version of our extension
+      <a href="/api/references/contribution-points#contributes.commands"
+        >contributes a command</a
+      >
+      called <code>catCoding.start</code>. When a user invokes this command, we will show a
+      simple webview with our cat in it. Users will be able to invoke this command from the
+      <strong>Command Palette</strong> as
+      <strong>Cat Coding: Start new cat coding session</strong> or even create a keybinding
+      for it if they are so inclined.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;cat-coding&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Cat Coding&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">&quot;publisher&quot;</span><span class="fu">:</span> <span class="st">&quot;bierner&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">&quot;engines&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.23.0&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;onCommand:catCoding.start&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;./out/src/extension&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="dt">&quot;commands&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-13" title="13">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-14" title="14">        <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;catCoding.start&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-15" title="15">        <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Start new cat coding session&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-16" title="16">        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Cat Coding&quot;</span></a>
+<a class="sourceLine" id="cb1-17" title="17">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-18" title="18">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-19" title="19">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-20" title="20">  <span class="dt">&quot;scripts&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-21" title="21">    <span class="dt">&quot;vscode:prepublish&quot;</span><span class="fu">:</span> <span class="st">&quot;tsc -p ./&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="dt">&quot;compile&quot;</span><span class="fu">:</span> <span class="st">&quot;tsc -watch -p ./&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-23" title="23">    <span class="dt">&quot;postinstall&quot;</span><span class="fu">:</span> <span class="st">&quot;node ./node_modules/vscode/bin/install&quot;</span></a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-25" title="25">  <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-26" title="26">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span></a>
+<a class="sourceLine" id="cb1-27" title="27">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-28" title="28">  <span class="dt">&quot;devDependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-29" title="29">    <span class="dt">&quot;@types/node&quot;</span><span class="fu">:</span> <span class="st">&quot;^9.4.6&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-30" title="30">    <span class="dt">&quot;typescript&quot;</span><span class="fu">:</span> <span class="st">&quot;^2.8.3&quot;</span></a>
+<a class="sourceLine" id="cb1-31" title="31">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-32" title="32"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Now let’s implement the <code>catCoding.start</code> command. In our extension’s main
+      file, we register the <code>catCoding.start</code> command and use it to show a basic
+      webview:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="co">// Create and show a new webview</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb2-8" title="8">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span> <span class="co">// Identifies the type of the webview. Used internally</span></a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span> <span class="co">// Title of the panel displayed to the user</span></a>
+<a class="sourceLine" id="cb2-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span> <span class="co">// Editor column to show the new webview panel in.</span></a>
+<a class="sourceLine" id="cb2-11" title="11">        <span class="op">{}</span> <span class="co">// Webview options. More on these later.</span></a>
+<a class="sourceLine" id="cb2-12" title="12">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb2-14" title="14">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>vscode.window.createWebviewPanel</code> function creates and shows a webview
+      in the editor. Here is what you see if you try running the
+      <code>catCoding.start</code> command in its current state:
+    </p>
+    <figure>
+      <img src="images/webview/basics-no_content.png" alt="An empty webview" />
+      <figcaption>An empty webview</figcaption>
+    </figure>
+    <p>
+      Our command opens a new webview panel with the correct title, but with no content! To
+      add our cat to new panel, we also need to set the HTML content of the webview using
+      <code>webview.html</code>:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">      <span class="co">// Create and show panel</span></a>
+<a class="sourceLine" id="cb3-7" title="7">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb3-8" title="8">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-9" title="9">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-11" title="11">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb3-12" title="12">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14">      <span class="co">// And set its HTML content</span></a>
+<a class="sourceLine" id="cb3-15" title="15">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-16" title="16">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb3-17" title="17">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-19" title="19"></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="kw">function</span> <span class="fu">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-21" title="21">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb3-22" title="22"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb3-24" title="24"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb3-27" title="27"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb3-28" title="28"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb3-29" title="29"><span class="vs">    &lt;img src=&quot;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb3-30" title="30"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb3-31" title="31"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-32" title="32"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>If you run the command again, now the webview looks like this:</p>
+    <figure>
+      <img src="images/webview/basics-html.png" alt="A webview with some HTML" />
+      <figcaption>A webview with some HTML</figcaption>
+    </figure>
+    <p>Progress!</p>
+    <p>
+      <code>webview.html</code> should always be a complete HTML document. HTML fragments or
+      malformed HTML may cause unexpected behavior.
+    </p>
+    <h3 id="updating-webview-content">Updating webview content</h3>
+    <p>
+      <code>webview.html</code> can also update a webview’s content after it has been
+      created. Let’s use this to make <strong>Cat Coding</strong> more dynamic by
+      introducing a rotation of cats:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">const</span> cats <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="st">&#39;Coding Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="st">&#39;Compiling Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif&#39;</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">};</span></a>
+<a class="sourceLine" id="cb4-7" title="7"></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb4-12" title="12">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-13" title="13">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-14" title="14">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb4-15" title="15">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb4-16" title="16">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-17" title="17"></a>
+<a class="sourceLine" id="cb4-18" title="18">      <span class="kw">let</span> iteration <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-19" title="19">      <span class="kw">const</span> updateWebview <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-20" title="20">        <span class="kw">const</span> cat <span class="op">=</span> iteration<span class="op">++</span> <span class="op">%</span> <span class="dv">2</span> <span class="op">?</span> <span class="st">&#39;Compiling Cat&#39;</span> <span class="op">:</span> <span class="st">&#39;Coding Cat&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-21" title="21">        <span class="va">panel</span><span class="op">.</span><span class="at">title</span> <span class="op">=</span> cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-22" title="22">        <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(cat)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-23" title="23">      <span class="op">};</span></a>
+<a class="sourceLine" id="cb4-24" title="24"></a>
+<a class="sourceLine" id="cb4-25" title="25">      <span class="co">// Set initial content</span></a>
+<a class="sourceLine" id="cb4-26" title="26">      <span class="fu">updateWebview</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-27" title="27"></a>
+<a class="sourceLine" id="cb4-28" title="28">      <span class="co">// And schedule updates to the content every second</span></a>
+<a class="sourceLine" id="cb4-29" title="29">      <span class="fu">setInterval</span>(updateWebview<span class="op">,</span> <span class="dv">1000</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-30" title="30">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb4-31" title="31">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="op">}</span></a>
+<a class="sourceLine" id="cb4-33" title="33"></a>
+<a class="sourceLine" id="cb4-34" title="34"><span class="kw">function</span> <span class="fu">getWebviewContent</span>(cat<span class="op">:</span> <span class="kw">keyof</span> <span class="kw">typeof</span> cats) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-35" title="35">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb4-36" title="36"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb4-37" title="37"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb4-38" title="38"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb4-39" title="39"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb4-40" title="40"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb4-41" title="41"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb4-42" title="42"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb4-43" title="43"><span class="vs">    &lt;img src=&quot;</span><span class="sc">${</span>cats<span class="op">[</span>cat<span class="op">]</span><span class="sc">}</span><span class="vs">&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb4-44" title="44"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb4-45" title="45"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-46" title="46"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img src="images/webview/basics-update.gif" alt="Updating the webview content" />
+      <figcaption>Updating the webview content</figcaption>
+    </figure>
+    <p>
+      Setting <code>webview.html</code> replaces the entire webview content, similar to
+      reloading an iframe. This is important to remember once you start using scripts in a
+      webview, since it means that setting <code>webview.html</code> also resets the
+      script’s state.
+    </p>
+    <p>
+      The example above also uses <code>webview.title</code> to change the title of the
+      document displayed in the editor. Setting the title does not cause the webview to be
+      reloaded.
+    </p>
+    <h3 id="lifecycle">Lifecycle</h3>
+    <p>
+      Webview panels are owned by the extension that creates them. The extension must hold
+      onto the webview returned from <code>createWebviewPanel</code>. If your extension
+      loses this reference, it cannot regain access to that webview again, even though the
+      webview will continue to show in VS Code.
+    </p>
+    <p>
+      As with text editors, a user can also close a webview panel at any time. When a
+      webview panel is closed by the user, the webview itself is destroyed. Attempting to
+      use a destroyed webview throws an exception. This means that the example above using
+      <code>setInterval</code> actually has an important bug: if the user closes the panel,
+      <code>setInterval</code> will continue to fire, which will try to update
+      <code>panel.webview.html</code>, which of course will throw an exception. Cats hate
+      exceptions. Let’s fix this!
+    </p>
+    <p>
+      The <code>onDidDispose</code> event is fired when a webview is destroyed. We can use
+      this event to cancel further updates and clean up the webview’s resources:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">const</span> cats <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="st">&#39;Coding Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="st">&#39;Compiling Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif&#39;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="op">};</span></a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-11" title="11">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb5-12" title="12">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-13" title="13">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-14" title="14">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-15" title="15">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb5-16" title="16">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-17" title="17"></a>
+<a class="sourceLine" id="cb5-18" title="18">      <span class="kw">let</span> iteration <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-19" title="19">      <span class="kw">const</span> updateWebview <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-20" title="20">        <span class="kw">const</span> cat <span class="op">=</span> iteration<span class="op">++</span> <span class="op">%</span> <span class="dv">2</span> <span class="op">?</span> <span class="st">&#39;Compiling Cat&#39;</span> <span class="op">:</span> <span class="st">&#39;Coding Cat&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-21" title="21">        <span class="va">panel</span><span class="op">.</span><span class="at">title</span> <span class="op">=</span> cat<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-22" title="22">        <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(cat)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-23" title="23">      <span class="op">};</span></a>
+<a class="sourceLine" id="cb5-24" title="24"></a>
+<a class="sourceLine" id="cb5-25" title="25">      <span class="fu">updateWebview</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-26" title="26">      <span class="kw">const</span> interval <span class="op">=</span> <span class="fu">setInterval</span>(updateWebview<span class="op">,</span> <span class="dv">1000</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-27" title="27"></a>
+<a class="sourceLine" id="cb5-28" title="28">      <span class="va">panel</span><span class="op">.</span><span class="fu">onDidDispose</span>(</a>
+<a class="sourceLine" id="cb5-29" title="29">        () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-30" title="30">          <span class="co">// When the panel is closed, cancel any future updates to the webview content</span></a>
+<a class="sourceLine" id="cb5-31" title="31">          <span class="fu">clearInterval</span>(interval)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-32" title="32">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb5-33" title="33">        <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb5-34" title="34">        <span class="va">context</span><span class="op">.</span><span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb5-35" title="35">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-36" title="36">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-37" title="37">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Extensions can also programmatically close webviews by calling
+      <code>dispose()</code> on them. If, for example, we wanted to restrict our cat’s
+      workday to five seconds:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb6-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb6-5" title="5">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-7" title="7">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-8" title="8">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb6-9" title="9">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-10" title="10"></a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(cats<span class="op">[</span><span class="st">&#39;Coding Cat&#39;</span><span class="op">]</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-12" title="12"></a>
+<a class="sourceLine" id="cb6-13" title="13">      <span class="co">// After 5sec, programmatically close the webview panel</span></a>
+<a class="sourceLine" id="cb6-14" title="14">      <span class="kw">const</span> timeout <span class="op">=</span> <span class="fu">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="va">panel</span><span class="op">.</span><span class="fu">dispose</span>()<span class="op">,</span> <span class="dv">5000</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-15" title="15"></a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="va">panel</span><span class="op">.</span><span class="fu">onDidDispose</span>(</a>
+<a class="sourceLine" id="cb6-17" title="17">        () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-18" title="18">          <span class="co">// Handle user closing panel before the 5sec have passed</span></a>
+<a class="sourceLine" id="cb6-19" title="19">          <span class="fu">clearTimeout</span>(timeout)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb6-21" title="21">        <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-22" title="22">        <span class="va">context</span><span class="op">.</span><span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb6-23" title="23">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-24" title="24">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb6-25" title="25">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="visibility-and-moving">Visibility and Moving</h3>
+    <p>
+      When a webview panel is moved into a background tab, it becomes hidden. It is not
+      destroyed however. VS Code will automatically restore the webview’s content from
+      <code>webview.html</code> when the panel is brought to the foreground again:
+    </p>
+    <figure>
+      <img
+        src="images/webview/basics-restore.gif"
+        alt="Webview content is automatically restored when the webview becomes visible again"
+      />
+      <figcaption>
+        Webview content is automatically restored when the webview becomes visible again
+      </figcaption>
+    </figure>
+    <p>
+      The <code>.visible</code> property tells you if the webview panel is currently visible
+      or not.
+    </p>
+    <p>
+      Extensions can programmatically bring a webview panel to the foreground by calling
+      <code>reveal()</code>. This method takes an optional target view column to show the
+      panel in. A webview panel may only show in a single editor column at a time. Calling
+      <code>reveal()</code> or dragging a webview panel to a new editor column moves the
+      webview into that new column.
+    </p>
+    <figure>
+      <img
+        src="images/webview/basics-drag.gif"
+        alt="Webviews are moved when you drag them between tabs"
+      />
+      <figcaption>Webviews are moved when you drag them between tabs</figcaption>
+    </figure>
+    <p>
+      Let’s update our extension to only allow a single webview to exist at a time. If the
+      panel is in the background, then the <code>catCoding.start</code> command will bring
+      it to the foreground:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="co">// Track currently webview panel</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="kw">let</span> currentPanel<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">WebviewPanel</span> <span class="op">|</span> <span class="dt">undefined</span> <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="kw">const</span> columnToShowIn <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="at">activeTextEditor</span></a>
+<a class="sourceLine" id="cb7-8" title="8">        <span class="op">?</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="va">activeTextEditor</span><span class="op">.</span><span class="at">viewColumn</span></a>
+<a class="sourceLine" id="cb7-9" title="9">        <span class="op">:</span> <span class="dt">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-10" title="10"></a>
+<a class="sourceLine" id="cb7-11" title="11">      <span class="fu">if</span> (currentPanel) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-12" title="12">        <span class="co">// If we already have a panel, show it in the target column</span></a>
+<a class="sourceLine" id="cb7-13" title="13">        <span class="va">currentPanel</span><span class="op">.</span><span class="fu">reveal</span>(columnToShowIn)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-14" title="14">      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-15" title="15">        <span class="co">// Otherwise, create a new panel</span></a>
+<a class="sourceLine" id="cb7-16" title="16">        currentPanel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb7-17" title="17">          <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-18" title="18">          <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-19" title="19">          columnToShowIn<span class="op">,</span></a>
+<a class="sourceLine" id="cb7-20" title="20">          <span class="op">{}</span></a>
+<a class="sourceLine" id="cb7-21" title="21">        )<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-22" title="22">        <span class="va">currentPanel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(<span class="st">&#39;Coding Cat&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-23" title="23"></a>
+<a class="sourceLine" id="cb7-24" title="24">        <span class="co">// Reset when the current panel is closed</span></a>
+<a class="sourceLine" id="cb7-25" title="25">        <span class="va">currentPanel</span><span class="op">.</span><span class="fu">onDidDispose</span>(</a>
+<a class="sourceLine" id="cb7-26" title="26">          () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-27" title="27">            currentPanel <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-28" title="28">          <span class="op">},</span></a>
+<a class="sourceLine" id="cb7-29" title="29">          <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb7-30" title="30">          <span class="va">context</span><span class="op">.</span><span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb7-31" title="31">        )<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-32" title="32">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-33" title="33">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb7-34" title="34">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-35" title="35"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>Here’s the new extension in action:</p>
+    <figure>
+      <img
+        src="images/webview/basics-single_panel.gif"
+        alt="Using a single panel and reveal"
+      />
+      <figcaption>Using a single panel and reveal</figcaption>
+    </figure>
+    <p>
+      Whenever a webview’s visibility changes, or when a webview is moved into a new column,
+      the <code>onDidChangeViewState</code> event is fired. Our extension can use this event
+      to change cats based on which column the webview is showing in:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> cats <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="st">&#39;Coding Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="st">&#39;Compiling Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="st">&#39;Testing Cat&#39;</span><span class="op">:</span> <span class="st">&#39;https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif&#39;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="op">};</span></a>
+<a class="sourceLine" id="cb8-6" title="6"></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-12" title="12">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-13" title="13">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-14" title="14">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb8-15" title="15">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-16" title="16">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(<span class="st">&#39;Coding Cat&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-17" title="17"></a>
+<a class="sourceLine" id="cb8-18" title="18">      <span class="co">// Update contents based on view state changes</span></a>
+<a class="sourceLine" id="cb8-19" title="19">      <span class="va">panel</span><span class="op">.</span><span class="fu">onDidChangeViewState</span>(</a>
+<a class="sourceLine" id="cb8-20" title="20">        e <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-21" title="21">          <span class="kw">const</span> panel <span class="op">=</span> <span class="va">e</span><span class="op">.</span><span class="at">webviewPanel</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-22" title="22">          <span class="fu">switch</span> (<span class="va">panel</span><span class="op">.</span><span class="at">viewColumn</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-23" title="23">            <span class="cf">case</span> <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb8-24" title="24">              <span class="fu">updateWebviewForCat</span>(panel<span class="op">,</span> <span class="st">&#39;Coding Cat&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-25" title="25">              <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-26" title="26"></a>
+<a class="sourceLine" id="cb8-27" title="27">            <span class="cf">case</span> <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">Two</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb8-28" title="28">              <span class="fu">updateWebviewForCat</span>(panel<span class="op">,</span> <span class="st">&#39;Compiling Cat&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-29" title="29">              <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-30" title="30"></a>
+<a class="sourceLine" id="cb8-31" title="31">            <span class="cf">case</span> <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">Three</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb8-32" title="32">              <span class="fu">updateWebviewForCat</span>(panel<span class="op">,</span> <span class="st">&#39;Testing Cat&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-33" title="33">              <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-34" title="34">          <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-35" title="35">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb8-36" title="36">        <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-37" title="37">        <span class="va">context</span><span class="op">.</span><span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb8-38" title="38">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-39" title="39">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb8-40" title="40">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-41" title="41"><span class="op">}</span></a>
+<a class="sourceLine" id="cb8-42" title="42"></a>
+<a class="sourceLine" id="cb8-43" title="43"><span class="kw">function</span> <span class="fu">updateWebviewForCat</span>(panel<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">WebviewPanel</span><span class="op">,</span> catName<span class="op">:</span> <span class="kw">keyof</span> <span class="kw">typeof</span> cats) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-44" title="44">  <span class="va">panel</span><span class="op">.</span><span class="at">title</span> <span class="op">=</span> catName<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-45" title="45">  <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(catName)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-46" title="46"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="images/webview/basics-ondidchangeviewstate.gif"
+        alt="Responding to onDidChangeViewState events"
+      />
+      <figcaption>Responding to onDidChangeViewState events</figcaption>
+    </figure>
+    <h3 id="inspecting-and-debugging-webviews">Inspecting and debugging webviews</h3>
+    <p>
+      The <strong>Developer: Toggle Developer Tools</strong> command opens a
+      <a href="https://developer.chrome.com/docs/devtools/">Developer Tools</a> window that
+      you can use debug and inspect your webviews.
+    </p>
+    <figure>
+      <img src="images/webview/developer-overview.png" alt="The developer tools" />
+      <figcaption>The developer tools</figcaption>
+    </figure>
+    <p>
+      Note that if you are using a version of VS Code older than 1.56, or if you are trying
+      to debug a webview that sets <code>enableFindWidget</code>, you must instead use the
+      <strong>Developer: Open Webview Developer Tools</strong> command. This command opens a
+      dedicated Developer Tools page for each webview instead of using a Developer Tools
+      page that is shared by all webviews and the editor itself.
+    </p>
+    <p>
+      From the Developer Tools, you can start inspecting the contents of your webview using
+      the inspect tool located in the top left corner of the Developer Tools window:
+    </p>
+    <figure>
+      <img
+        src="images/webview/developer-inspect.png"
+        alt="Inspecting a webview using the developer tools"
+      />
+      <figcaption>Inspecting a webview using the developer tools</figcaption>
+    </figure>
+    <p>
+      You can also view all of the errors and logs from your webview in the developer tools
+      console:
+    </p>
+    <figure>
+      <img src="images/webview/developer-console.png" alt="The developer tools console" />
+      <figcaption>The developer tools console</figcaption>
+    </figure>
+    <p>
+      To evaluate an expression in the context of your webview, make sure to select the
+      <strong>active frame</strong> environment from the dropdown in the top left corner of
+      the Developer tools console panel:
+    </p>
+    <figure>
+      <img
+        src="images/webview/developer-active-frame.png"
+        alt="Selecting the active frame"
+      />
+      <figcaption>Selecting the active frame</figcaption>
+    </figure>
+    <p>
+      The <strong>active frame</strong> environment is where the webview scripts themselves
+      are executed.
+    </p>
+    <p>
+      In addition, the <strong>Developer: Reload Webview</strong> command reloads all active
+      webviews. This can be helpful if you need to reset a webview’s state, or if some
+      webview content on disk has changed and you want the new content to be loaded.
+    </p>
+    <h2 id="loading-local-content">Loading local content</h2>
+    <p>
+      Webviews run in isolated contexts that cannot directly access local resources. This is
+      done for security reasons. This means that in order to load images, stylesheets, and
+      other resources from your extension, or to load any content from the user’s current
+      workspace, you must use the <code>Webview.asWebviewUri</code> function to convert a
+      local <code>file:</code> URI into a special URI that VS Code can use to load a subset
+      of local resources.
+    </p>
+    <p>
+      Imagine that we want to start bundling the cat gifs into our extension rather pulling
+      them from Giphy. To do this, we first create a URI to the file on disk and then pass
+      these URIs through the <code>asWebviewUri</code> function:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-7" title="7">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb9-8" title="8">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-9" title="9">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-11" title="11">        <span class="op">{}</span></a>
+<a class="sourceLine" id="cb9-12" title="12">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14">      <span class="co">// Get path to resource on disk</span></a>
+<a class="sourceLine" id="cb9-15" title="15">      <span class="kw">const</span> onDiskPath <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(</a>
+<a class="sourceLine" id="cb9-16" title="16">        <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">extensionPath</span><span class="op">,</span> <span class="st">&#39;media&#39;</span><span class="op">,</span> <span class="st">&#39;cat.gif&#39;</span>)</a>
+<a class="sourceLine" id="cb9-17" title="17">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-18" title="18"></a>
+<a class="sourceLine" id="cb9-19" title="19">      <span class="co">// And get the special URI to use with the webview</span></a>
+<a class="sourceLine" id="cb9-20" title="20">      <span class="kw">const</span> catGifSrc <span class="op">=</span> <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="fu">asWebviewUri</span>(onDiskPath)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-21" title="21"></a>
+<a class="sourceLine" id="cb9-22" title="22">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(catGifSrc)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-23" title="23">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb9-24" title="24">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-25" title="25"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      If we debug this code, we’d see that the actual value for <code>catGifSrc</code> is
+      something like:
+    </p>
+    <pre><code>vscode-resource:/Users/toonces/projects/vscode-cat-coding/media/cat.gif</code></pre>
+    <p>
+      VS Code understands this special URI and will use it to load our gif from the disk!
+    </p>
+    <p>By default, webviews can only access resources in the following locations:</p>
+    <ul>
+      <li>Within your extension’s install directory.</li>
+      <li>Within the user’s currently active workspace.</li>
+    </ul>
+    <p>
+      Use the <code>WebviewOptions.localResourceRoots</code> to allow access to additional
+      local resources.
+    </p>
+    <p>You can also always use data URIs to embed resources directly within the webview.</p>
+    <h3 id="controlling-access-to-local-resources">
+      Controlling access to local resources
+    </h3>
+    <p>
+      Webviews can control which resources can be loaded from the user’s machine with
+      <code>localResourceRoots</code> option. <code>localResourceRoots</code> defines a set
+      of root URIs from which local content may be loaded.
+    </p>
+    <p>
+      We can use <code>localResourceRoots</code> to restrict
+      <strong>Cat Coding</strong> webviews to only load resources from a
+      <code>media</code> directory in our extension:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb11-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb11-8" title="8">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-9" title="9">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb11-11" title="11">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-12" title="12">          <span class="co">// Only allow the webview to access resources in our extension&#39;s media directory</span></a>
+<a class="sourceLine" id="cb11-13" title="13">          localResourceRoots<span class="op">:</span> <span class="op">[</span></a>
+<a class="sourceLine" id="cb11-14" title="14">            <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(<span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">extensionPath</span><span class="op">,</span> <span class="st">&#39;media&#39;</span>))</a>
+<a class="sourceLine" id="cb11-15" title="15">          <span class="op">]</span></a>
+<a class="sourceLine" id="cb11-16" title="16">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-17" title="17">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-18" title="18"></a>
+<a class="sourceLine" id="cb11-19" title="19">      <span class="kw">const</span> onDiskPath <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(</a>
+<a class="sourceLine" id="cb11-20" title="20">        <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">context</span><span class="op">.</span><span class="at">extensionPath</span><span class="op">,</span> <span class="st">&#39;media&#39;</span><span class="op">,</span> <span class="st">&#39;cat.gif&#39;</span>)</a>
+<a class="sourceLine" id="cb11-21" title="21">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-22" title="22">      <span class="kw">const</span> catGifSrc <span class="op">=</span> <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="fu">asWebviewUri</span>(onDiskPath)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-23" title="23"></a>
+<a class="sourceLine" id="cb11-24" title="24">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>(catGifSrc)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-25" title="25">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb11-26" title="26">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-27" title="27"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      To disallow all local resources, just set <code>localResourceRoots</code> to
+      <code>[]</code>.
+    </p>
+    <p>
+      In general, webviews should be as restrictive as possible in loading local resources.
+      However, keep in mind that <code>localResourceRoots</code> does not offer complete
+      security protection on its own. Make sure your webview also follows
+      <a href="#security">security best practices</a>, and add a
+      <a href="#content-security-policy">content security policy</a> to further restrict the
+      content that can be loaded.
+    </p>
+    <h3 id="theming-webview-content">Theming webview content</h3>
+    <p>
+      Webview can use CSS to change their appearance based on VS Code’s current theme. VS
+      Code groups themes into three categories, and adds a special class to the
+      <code>body</code> element to indicate the current theme:
+    </p>
+    <ul>
+      <li><code>vscode-light</code> - Light themes.</li>
+      <li><code>vscode-dark</code> - Dark themes.</li>
+      <li><code>vscode-high-contrast</code> - High contrast themes.</li>
+    </ul>
+    <p>
+      The following CSS changes the text color of the webview based on the user’s current
+      theme:
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode css"
+      ><code class="sourceCode css"><a class="sourceLine" id="cb12-1" title="1">body<span class="fu">.vscode-light</span> {</a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="kw">color</span>: <span class="cn">black</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-3" title="3">}</a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5">body<span class="fu">.vscode-dark</span> {</a>
+<a class="sourceLine" id="cb12-6" title="6">  <span class="kw">color</span>: <span class="cn">white</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-7" title="7">}</a>
+<a class="sourceLine" id="cb12-8" title="8"></a>
+<a class="sourceLine" id="cb12-9" title="9">body<span class="fu">.vscode-high-contrast</span> {</a>
+<a class="sourceLine" id="cb12-10" title="10">  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb12-11" title="11">}</a></code></pre>
+    </div>
+    <p>
+      When developing a webview application, make sure that it works for the three types of
+      themes. And always test your webview in high-contrast mode to make sure it will be
+      usable by people with visual disabilities.
+    </p>
+    <p>
+      Webviews can also access VS Code theme colors using
+      <a href="https://developer.mozilla.org/docs/Web/CSS/Using_CSS_variables"
+        >CSS variables</a
+      >. These variable names are prefixed with <code>vscode</code> and replace the
+      <code>.</code> with <code>-</code>. For example <code>editor.foreground</code> becomes
+      <code>var(--vscode-editor-foreground)</code>:
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode css"
+      ><code class="sourceCode css"><a class="sourceLine" id="cb13-1" title="1">code {</a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="kw">color</span>: <span class="fu">var(</span><span class="va">--vscode-editor-foreground</span><span class="fu">)</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb13-3" title="3">}</a></code></pre>
+    </div>
+    <p>
+      Review the <a href="/api/references/theme-color">Theme Color Reference</a> for the
+      available theme variables.
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=connor4312.css-theme-completions"
+        >An extension</a
+      >
+      is available which provides IntelliSense suggestions for the variables.
+    </p>
+    <p>The following font related variables are also defined:</p>
+    <ul>
+      <li>
+        <code>--vscode-editor-font-family</code> - Editor font family (from the
+        <code>editor.fontFamily</code> setting).
+      </li>
+      <li>
+        <code>--vscode-editor-font-weight</code> - Editor font weight (from the
+        <code>editor.fontWeight</code> setting).
+      </li>
+      <li>
+        <code>--vscode-editor-font-size</code> - Editor font size (from the
+        <code>editor.fontSize</code> setting).
+      </li>
+    </ul>
+    <p>
+      Finally, for special cases where you need to write CSS that targets a single theme,
+      the body element of webviews has a new data attribute called
+      <code>vscode-theme-name</code> that stores the full name of the currently active
+      theme. This lets you write theme-specific CSS for webviews:
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode css"
+      ><code class="sourceCode css"><a class="sourceLine" id="cb14-1" title="1">body<span class="ex">[data-vscode-theme-name</span><span class="op">=</span><span class="st">&quot;One Dark Pro&quot;</span><span class="ex">]</span> {</a>
+<a class="sourceLine" id="cb14-2" title="2">    <span class="kw">background</span>: <span class="cn">hotpink</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb14-3" title="3">}</a></code></pre>
+    </div>
+    <h2 id="scripts-and-message-passing">Scripts and message passing</h2>
+    <p>
+      Webviews are just like iframes, which means that they can also run scripts. JavaScript
+      is disabled in webviews by default, but it can easily re-enable by passing in the
+      <code>enableScripts: true</code> option.
+    </p>
+    <p>
+      Let’s use a script to add a counter tracking the lines of source code our cat has
+      written. Running a basic script is pretty simple, but note that this example is only
+      for demonstration purposes. In practice, your webview should always disable inline
+      scripts using a <a href="#content-security-policy">content security policy</a>:
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb15-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-5" title="5">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb15-6" title="6">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-7" title="7">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb15-8" title="8">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-9" title="9">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-10" title="10">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb15-11" title="11">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-12" title="12">          <span class="co">// Enable scripts in the webview</span></a>
+<a class="sourceLine" id="cb15-13" title="13">          enableScripts<span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb15-14" title="14">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-15" title="15">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-16" title="16"></a>
+<a class="sourceLine" id="cb15-17" title="17">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-18" title="18">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb15-19" title="19">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="op">}</span></a>
+<a class="sourceLine" id="cb15-21" title="21"></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="kw">function</span> <span class="fu">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-23" title="23">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb15-26" title="26"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb15-27" title="27"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb15-28" title="28"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb15-29" title="29"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb15-30" title="30"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb15-31" title="31"><span class="vs">    &lt;img src=&quot;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb15-32" title="32"><span class="vs">    &lt;h1 id=&quot;lines-of-code-counter&quot;&gt;0&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb15-33" title="33"></a>
+<a class="sourceLine" id="cb15-34" title="34"><span class="vs">    &lt;script&gt;</span></a>
+<a class="sourceLine" id="cb15-35" title="35"><span class="vs">        const counter = document.getElementById(&#39;lines-of-code-counter&#39;);</span></a>
+<a class="sourceLine" id="cb15-36" title="36"></a>
+<a class="sourceLine" id="cb15-37" title="37"><span class="vs">        let count = 0;</span></a>
+<a class="sourceLine" id="cb15-38" title="38"><span class="vs">        setInterval(() =&gt; {</span></a>
+<a class="sourceLine" id="cb15-39" title="39"><span class="vs">            counter.textContent = count++;</span></a>
+<a class="sourceLine" id="cb15-40" title="40"><span class="vs">        }, 100);</span></a>
+<a class="sourceLine" id="cb15-41" title="41"><span class="vs">    &lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb15-42" title="42"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb15-43" title="43"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-44" title="44"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img src="images/webview/scripts-basic.gif" alt="A script running in a webview" />
+      <figcaption>A script running in a webview</figcaption>
+    </figure>
+    <p>Wow! that’s one productive cat.</p>
+    <p>
+      Webview scripts can do just about anything that a script on a normal webpage can. Keep
+      in mind though that webviews exist in their own context, so scripts in a webview do
+      not have access to the VS Code API. That’s where message passing comes in!
+    </p>
+    <h3 id="passing-messages-from-an-extension-to-a-webview">
+      Passing messages from an extension to a webview
+    </h3>
+    <p>
+      An extension can send data to its webviews using <code>webview.postMessage()</code>.
+      This method sends any JSON serializable data to the webview. The message is received
+      inside the webview through the standard <code>message</code> event.
+    </p>
+    <p>
+      To demonstrate this, let’s add a new command to <strong>Cat Coding</strong> that
+      instructs the currently coding cat to refactor their code (thereby reducing the total
+      number of lines). The new <code>catCoding.doRefactor</code> command use
+      <code>postMessage</code> to send the instruction to the current webview, and
+      <code>window.addEventListener('message', event =&gt; { ... })</code> inside the
+      webview itself to handle the message:
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb16-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="co">// Only allow a single Cat Coder</span></a>
+<a class="sourceLine" id="cb16-3" title="3">  <span class="kw">let</span> currentPanel<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">WebviewPanel</span> <span class="op">|</span> <span class="dt">undefined</span> <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb16-6" title="6">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-7" title="7">      <span class="fu">if</span> (currentPanel) <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-8" title="8">        <span class="va">currentPanel</span><span class="op">.</span><span class="fu">reveal</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-9" title="9">      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-10" title="10">        currentPanel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb16-11" title="11">          <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-12" title="12">          <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-13" title="13">          <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-14" title="14">          <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-15" title="15">            enableScripts<span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb16-16" title="16">          <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-17" title="17">        )<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-18" title="18">        <span class="va">currentPanel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-19" title="19">        <span class="va">currentPanel</span><span class="op">.</span><span class="fu">onDidDispose</span>(</a>
+<a class="sourceLine" id="cb16-20" title="20">          () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-21" title="21">            currentPanel <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-22" title="22">          <span class="op">},</span></a>
+<a class="sourceLine" id="cb16-23" title="23">          <span class="kw">undefined</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb16-24" title="24">          <span class="va">context</span><span class="op">.</span><span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb16-25" title="25">        )<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-26" title="26">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-27" title="27">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb16-28" title="28">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-29" title="29"></a>
+<a class="sourceLine" id="cb16-30" title="30">  <span class="co">// Our new command</span></a>
+<a class="sourceLine" id="cb16-31" title="31">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb16-32" title="32">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.doRefactor&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-33" title="33">      <span class="fu">if</span> (<span class="op">!</span>currentPanel) <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-34" title="34">        <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-35" title="35">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb16-36" title="36"></a>
+<a class="sourceLine" id="cb16-37" title="37">      <span class="co">// Send a message to our webview.</span></a>
+<a class="sourceLine" id="cb16-38" title="38">      <span class="co">// You can send any JSON serializable data.</span></a>
+<a class="sourceLine" id="cb16-39" title="39">      <span class="va">currentPanel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="fu">postMessage</span>(<span class="op">{</span> command<span class="op">:</span> <span class="st">&#39;refactor&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-40" title="40">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb16-41" title="41">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb16-42" title="42"><span class="op">}</span></a>
+<a class="sourceLine" id="cb16-43" title="43"></a>
+<a class="sourceLine" id="cb16-44" title="44"><span class="kw">function</span> <span class="fu">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-45" title="45">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb16-46" title="46"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb16-47" title="47"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb16-48" title="48"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb16-49" title="49"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb16-50" title="50"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb16-51" title="51"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb16-52" title="52"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb16-53" title="53"><span class="vs">    &lt;img src=&quot;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb16-54" title="54"><span class="vs">    &lt;h1 id=&quot;lines-of-code-counter&quot;&gt;0&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb16-55" title="55"></a>
+<a class="sourceLine" id="cb16-56" title="56"><span class="vs">    &lt;script&gt;</span></a>
+<a class="sourceLine" id="cb16-57" title="57"><span class="vs">        const counter = document.getElementById(&#39;lines-of-code-counter&#39;);</span></a>
+<a class="sourceLine" id="cb16-58" title="58"></a>
+<a class="sourceLine" id="cb16-59" title="59"><span class="vs">        let count = 0;</span></a>
+<a class="sourceLine" id="cb16-60" title="60"><span class="vs">        setInterval(() =&gt; {</span></a>
+<a class="sourceLine" id="cb16-61" title="61"><span class="vs">            counter.textContent = count++;</span></a>
+<a class="sourceLine" id="cb16-62" title="62"><span class="vs">        }, 100);</span></a>
+<a class="sourceLine" id="cb16-63" title="63"></a>
+<a class="sourceLine" id="cb16-64" title="64"><span class="vs">        // Handle the message inside the webview</span></a>
+<a class="sourceLine" id="cb16-65" title="65"><span class="vs">        window.addEventListener(&#39;message&#39;, event =&gt; {</span></a>
+<a class="sourceLine" id="cb16-66" title="66"></a>
+<a class="sourceLine" id="cb16-67" title="67"><span class="vs">            const message = event.data; // The JSON data our extension sent</span></a>
+<a class="sourceLine" id="cb16-68" title="68"></a>
+<a class="sourceLine" id="cb16-69" title="69"><span class="vs">            switch (message.command) {</span></a>
+<a class="sourceLine" id="cb16-70" title="70"><span class="vs">                case &#39;refactor&#39;:</span></a>
+<a class="sourceLine" id="cb16-71" title="71"><span class="vs">                    count = Math.ceil(count * 0.5);</span></a>
+<a class="sourceLine" id="cb16-72" title="72"><span class="vs">                    counter.textContent = count;</span></a>
+<a class="sourceLine" id="cb16-73" title="73"><span class="vs">                    break;</span></a>
+<a class="sourceLine" id="cb16-74" title="74"><span class="vs">            }</span></a>
+<a class="sourceLine" id="cb16-75" title="75"><span class="vs">        });</span></a>
+<a class="sourceLine" id="cb16-76" title="76"><span class="vs">    &lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb16-77" title="77"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb16-78" title="78"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb16-79" title="79"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="images/webview/scripts-extension_to_webview.gif"
+        alt="Passing messages to a webview"
+      />
+      <figcaption>Passing messages to a webview</figcaption>
+    </figure>
+    <h3 id="passing-messages-from-a-webview-to-an-extension">
+      Passing messages from a webview to an extension
+    </h3>
+    <p>
+      Webviews can also pass messages back to their extension. This is accomplished using a
+      <code>postMessage</code> function on a special VS Code API object inside the webview.
+      To access the VS Code API object, call <code>acquireVsCodeApi</code> inside the
+      webview. This function can only be invoked once per session. You must hang onto the
+      instance of the VS Code API returned by this method, and hand it out to any other
+      functions that need to use it.
+    </p>
+    <p>
+      We can use the VS Code API and <code>postMessage</code> in our
+      <strong>Cat Coding</strong> webview to alert the extension when our cat introduces a
+      bug in their code:
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb17-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="at">activate</span>(context<span class="op">:</span> <span class="va">vscode</span>.<span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="va">context</span>.<span class="va">subscriptions</span>.<span class="at">push</span>(</a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="va">vscode</span>.<span class="va">commands</span>.<span class="at">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-4" title="4">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span>.<span class="va">window</span>.<span class="at">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb17-5" title="5">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-6" title="6">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-7" title="7">        <span class="va">vscode</span>.<span class="va">ViewColumn</span>.<span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-8" title="8">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-9" title="9">          <span class="dt">enableScripts</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb17-10" title="10">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-11" title="11">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-12" title="12"></a>
+<a class="sourceLine" id="cb17-13" title="13">      <span class="va">panel</span>.<span class="va">webview</span>.<span class="at">html</span> <span class="op">=</span> <span class="at">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-14" title="14"></a>
+<a class="sourceLine" id="cb17-15" title="15">      <span class="co">// Handle messages from the webview</span></a>
+<a class="sourceLine" id="cb17-16" title="16">      <span class="va">panel</span>.<span class="va">webview</span>.<span class="at">onDidReceiveMessage</span>(</a>
+<a class="sourceLine" id="cb17-17" title="17">        message <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-18" title="18">          <span class="cf">switch</span> (<span class="va">message</span>.<span class="at">command</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-19" title="19">            <span class="cf">case</span> <span class="st">&#39;alert&#39;</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb17-20" title="20">              <span class="va">vscode</span>.<span class="va">window</span>.<span class="at">showErrorMessage</span>(<span class="va">message</span>.<span class="at">text</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-21" title="21">              <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb17-22" title="22">          <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-23" title="23">        <span class="op">},</span></a>
+<a class="sourceLine" id="cb17-24" title="24">        <span class="kw">undefined</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-25" title="25">        <span class="va">context</span>.<span class="at">subscriptions</span></a>
+<a class="sourceLine" id="cb17-26" title="26">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-27" title="27">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb17-28" title="28">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-29" title="29"><span class="op">}</span></a>
+<a class="sourceLine" id="cb17-30" title="30"></a>
+<a class="sourceLine" id="cb17-31" title="31"><span class="kw">function</span> <span class="at">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-32" title="32">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb17-33" title="33"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb17-34" title="34"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb17-35" title="35"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb17-36" title="36"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb17-37" title="37"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb17-38" title="38"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb17-39" title="39"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb17-40" title="40"><span class="vs">    &lt;img src=&quot;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb17-41" title="41"><span class="vs">    &lt;h1 id=&quot;lines-of-code-counter&quot;&gt;0&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb17-42" title="42"></a>
+<a class="sourceLine" id="cb17-43" title="43"><span class="vs">    &lt;script&gt;</span></a>
+<a class="sourceLine" id="cb17-44" title="44"><span class="vs">        (function() {</span></a>
+<a class="sourceLine" id="cb17-45" title="45"><span class="vs">            const vscode = acquireVsCodeApi();</span></a>
+<a class="sourceLine" id="cb17-46" title="46"><span class="vs">            const counter = document.getElementById(&#39;lines-of-code-counter&#39;);</span></a>
+<a class="sourceLine" id="cb17-47" title="47"></a>
+<a class="sourceLine" id="cb17-48" title="48"><span class="vs">            let count = 0;</span></a>
+<a class="sourceLine" id="cb17-49" title="49"><span class="vs">            setInterval(() =&gt; {</span></a>
+<a class="sourceLine" id="cb17-50" title="50"><span class="vs">                counter.textContent = count++;</span></a>
+<a class="sourceLine" id="cb17-51" title="51"></a>
+<a class="sourceLine" id="cb17-52" title="52"><span class="vs">                // Alert the extension when our cat introduces a bug</span></a>
+<a class="sourceLine" id="cb17-53" title="53"><span class="vs">                if (Math.random() &lt; 0.001 * count) {</span></a>
+<a class="sourceLine" id="cb17-54" title="54"><span class="vs">                    vscode.postMessage({</span></a>
+<a class="sourceLine" id="cb17-55" title="55"><span class="vs">                        command: &#39;alert&#39;,</span></a>
+<a class="sourceLine" id="cb17-56" title="56"><span class="vs">                        text: &#39;🐛  on line &#39; + count</span></a>
+<a class="sourceLine" id="cb17-57" title="57"><span class="vs">                    })</span></a>
+<a class="sourceLine" id="cb17-58" title="58"><span class="vs">                }</span></a>
+<a class="sourceLine" id="cb17-59" title="59"><span class="vs">            }, 100);</span></a>
+<a class="sourceLine" id="cb17-60" title="60"><span class="vs">        }())</span></a>
+<a class="sourceLine" id="cb17-61" title="61"><span class="vs">    &lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb17-62" title="62"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb17-63" title="63"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb17-64" title="64"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="images/webview/scripts-webview_to_extension.gif"
+        alt="Passing messages from the webview to the main extension"
+      />
+      <figcaption>Passing messages from the webview to the main extension</figcaption>
+    </figure>
+    <p>
+      For security reasons, you must keep the VS Code API object private and make sure it is
+      never leaked into the global scope.
+    </p>
+    <h2 id="security">Security</h2>
+    <p>
+      As with any webpage, when creating a webview you must follow some basic security best
+      practices.
+    </p>
+    <h3 id="limit-capabilities">Limit capabilities</h3>
+    <p>
+      A webview should have the minimum set of capabilities that it needs. For example, if
+      your webview does not need to run scripts, do not set the
+      <code>enableScripts: true</code>. If your webview does not need to load resources from
+      the user’s workspace, set <code>localResourceRoots</code> to
+      <code>[vscode.Uri.file(extensionContext.extensionPath)]</code> or even
+      <code>[]</code> to disallow access to all local resources.
+    </p>
+    <h3 id="content-security-policy">Content security policy</h3>
+    <p>
+      <a href="https://developers.google.com/web/fundamentals/security/csp/"
+        >Content security policies</a
+      >
+      further restrict the content that can be loaded and executed in webviews. For example,
+      a content security policy can make sure that only a list of allowed scripts can be run
+      in the webview, or even tell the webview to only load images over <code>https</code>.
+    </p>
+    <p>
+      To add a content security policy, put a
+      <code>&lt;meta http-equiv="Content-Security-Policy"&gt;</code> directive at the top of
+      the webview’s <code>&lt;head&gt;</code>
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">function</span> <span class="fu">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb18-6" title="6"></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="vs">    &lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;;&quot;&gt;</span></a>
+<a class="sourceLine" id="cb18-8" title="8"></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb18-10" title="10"></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb18-14" title="14"><span class="vs">    ...</span></a>
+<a class="sourceLine" id="cb18-15" title="15"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb18-16" title="16"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb18-17" title="17"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The policy <code>default-src 'none';</code> disallows all content. We can then turn
+      back on the minimal amount of content that our extension needs to function. Here’s a
+      content security policy that allows loading local scripts and stylesheets, and loading
+      images over <code>https</code>:
+    </p>
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">&lt;meta</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="ot">  http-equiv=</span><span class="st">&quot;Content-Security-Policy&quot;</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="ot">  content=</span><span class="st">&quot;default-src &#39;none&#39;; img-src ${webview.cspSource} https:; script-src ${webview.cspSource}; style-src ${webview.cspSource};&quot;</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="kw">/&gt;</span></a></code></pre>
+    </div>
+    <p>
+      The <code>${webview.cspSource}</code> value is a placeholder for a value that comes
+      from the webview object itself. See the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/webview-sample"
+        >webview sample</a
+      >
+      for a complete example of how to use this value.
+    </p>
+    <p>
+      This content security policy also implicitly disables inline scripts and styles. It is
+      a best practice to extract all inline styles and scripts to external files so that
+      they can be properly loaded without relaxing the content security policy.
+    </p>
+    <h3 id="only-load-content-over-https">Only load content over https</h3>
+    <p>
+      If your webview allows loading external resources, it is strongly recommended that you
+      only allow these resources to be loaded over <code>https</code> and not over http. The
+      example content security policy above already does this by only allowing images to be
+      loaded over <code>https:</code>.
+    </p>
+    <h3 id="sanitize-all-user-input">Sanitize all user input</h3>
+    <p>
+      Just as you would for a normal webpage, when constructing the HTML for a webview, you
+      must sanitize all user input. Failing to properly sanitize input can allow content
+      injections, which may open your users up to a security risk.
+    </p>
+    <p>Example values that must be sanitized:</p>
+    <ul>
+      <li>File contents.</li>
+      <li>File and folder paths.</li>
+      <li>User and workspace settings.</li>
+    </ul>
+    <p>
+      Consider using a helper library to construct your HTML strings, or at least ensure
+      that all content from the user’s workspace is properly sanitized.
+    </p>
+    <p>
+      Never rely on sanitization alone for security. Make sure to follow the other security
+      best practices, such as having a
+      <a href="#content-security-policy">content security policy</a> to minimize the impact
+      of any potential content injections.
+    </p>
+    <h2 id="persistence">Persistence</h2>
+    <p>
+      In the standard webview <a href="#lifecycle">lifecycle</a>, webviews are created by
+      <code>createWebviewPanel</code> and destroyed when the user closes them or when
+      <code>.dispose()</code> is called. The contents of webviews however are created when
+      the webview becomes visible and destroyed when the webview is moved into the
+      background. Any state inside the webview will be lost when the webview is moved to a
+      background tab.
+    </p>
+    <p>
+      The best way to solve this is to make your webview stateless. Use
+      <a href="#passing-messages-from-a-webview-to-an-extension">message passing</a> to save
+      off the webview’s state and then restore the state when the webview becomes visible
+      again.
+    </p>
+    <h3 id="getstate-and-setstate">getState and setState</h3>
+    <p>
+      Scripts running inside a webview can use the <code>getState</code> and
+      <code>setState</code> methods to save off and restore a JSON serializable state
+      object. This state is persisted even after the webview content itself is destroyed
+      when a webview panel becomes hidden. The state is destroyed when the webview panel is
+      destroyed.
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb20-1" title="1"><span class="co">// Inside a webview script</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">const</span> vscode <span class="op">=</span> <span class="at">acquireVsCodeApi</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-3" title="3"></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="kw">const</span> counter <span class="op">=</span> <span class="va">document</span>.<span class="at">getElementById</span>(<span class="st">&#39;lines-of-code-counter&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-5" title="5"></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">// Check if we have an old state to restore from</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="kw">const</span> previousState <span class="op">=</span> <span class="va">vscode</span>.<span class="at">getState</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="kw">let</span> count <span class="op">=</span> previousState <span class="op">?</span> <span class="va">previousState</span>.<span class="at">count</span> : <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="va">counter</span>.<span class="at">textContent</span> <span class="op">=</span> count<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-10" title="10"></a>
+<a class="sourceLine" id="cb20-11" title="11"><span class="at">setInterval</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-12" title="12">  <span class="va">counter</span>.<span class="at">textContent</span> <span class="op">=</span> count<span class="op">++;</span></a>
+<a class="sourceLine" id="cb20-13" title="13">  <span class="co">// Update the saved state</span></a>
+<a class="sourceLine" id="cb20-14" title="14">  <span class="va">vscode</span>.<span class="at">setState</span>(<span class="op">{</span> count <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb20-15" title="15"><span class="op">},</span> <span class="dv">100</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      <code>getState</code> and <code>setState</code> are the preferred way to persist
+      state, as they have much lower performance overhead than
+      <code>retainContextWhenHidden</code>.
+    </p>
+    <h3 id="serialization">Serialization</h3>
+    <p>
+      By implementing a <code>WebviewPanelSerializer</code>, your webviews can be
+      automatically restored when VS Code restarts. Serialization builds on
+      <code>getState</code> and <code>setState</code>, and is only enabled if your extension
+      registers a <code>WebviewPanelSerializer</code> for your webviews.
+    </p>
+    <p>
+      To make our coding cats persist across VS Code restarts, first add a
+      <code>onWebviewPanel</code> activation event to the extension’s
+      <code>package.json</code>:
+    </p>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="er">&quot;activationEvents&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb21-2" title="2">    <span class="er">...</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="st">&quot;onWebviewPanel:catCoding&quot;</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="ot">]</span></a></code></pre>
+    </div>
+    <p>
+      This activation event ensures that our extension will be activated whenever VS Code
+      needs to restore a webview with the viewType: <code>catCoding</code>.
+    </p>
+    <p>
+      Then, in our extension’s <code>activate</code> method, call
+      <code>registerWebviewPanelSerializer</code> to register a new
+      <code>WebviewPanelSerializer</code>. The <code>WebviewPanelSerializer</code> is
+      responsible for restoring the contents of the webview from its persisted state. This
+      state is the JSON blob that the webview contents set using <code>setState</code>.
+    </p>
+    <div class="sourceCode" id="cb22">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb22-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-2" title="2">  <span class="co">// Normal setup...</span></a>
+<a class="sourceLine" id="cb22-3" title="3"></a>
+<a class="sourceLine" id="cb22-4" title="4">  <span class="co">// And make sure we register a serializer for our webview type</span></a>
+<a class="sourceLine" id="cb22-5" title="5">  <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">registerWebviewPanelSerializer</span>(<span class="st">&#39;catCoding&#39;</span><span class="op">,</span> <span class="kw">new</span> <span class="fu">CatCodingSerializer</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="op">}</span></a>
+<a class="sourceLine" id="cb22-7" title="7"></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="kw">class</span> CatCodingSerializer <span class="kw">implements</span> <span class="va">vscode</span><span class="op">.</span><span class="at">WebviewPanelSerializer</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-9" title="9">  <span class="kw">async</span> <span class="fu">deserializeWebviewPanel</span>(webviewPanel<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">WebviewPanel</span><span class="op">,</span> state<span class="op">:</span> <span class="dt">any</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb22-10" title="10">    <span class="co">// `state` is the state persisted using `setState` inside the webview</span></a>
+<a class="sourceLine" id="cb22-11" title="11">    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`Got state: </span><span class="sc">${</span>state<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-12" title="12"></a>
+<a class="sourceLine" id="cb22-13" title="13">    <span class="co">// Restore the content of our webview.</span></a>
+<a class="sourceLine" id="cb22-14" title="14">    <span class="co">//</span></a>
+<a class="sourceLine" id="cb22-15" title="15">    <span class="co">// Make sure we hold on to the `webviewPanel` passed in here and</span></a>
+<a class="sourceLine" id="cb22-16" title="16">    <span class="co">// also restore any event listeners we need on it.</span></a>
+<a class="sourceLine" id="cb22-17" title="17">    <span class="va">webviewPanel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb22-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb22-19" title="19"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Now if you restart VS Code with a cat coding panel open, the panel will be
+      automatically restored in the same editor position.
+    </p>
+    <h3 id="retaincontextwhenhidden">retainContextWhenHidden</h3>
+    <p>
+      For webviews with very complex UI or state that cannot be quickly saved and restored,
+      you can instead use the <code>retainContextWhenHidden</code> option. This option makes
+      a webview keep its content around but in a hidden state, even when the webview itself
+      is no longer in the foreground.
+    </p>
+    <p>
+      Although <strong>Cat Coding</strong> can hardly be said to have complex state, let’s
+      try enabling <code>retainContextWhenHidden</code> to see how the option changes a
+      webview’s behavior:
+    </p>
+    <div class="sourceCode" id="cb23">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb23-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb23-5" title="5">    <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;catCoding.start&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-6" title="6">      <span class="kw">const</span> panel <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">createWebviewPanel</span>(</a>
+<a class="sourceLine" id="cb23-7" title="7">        <span class="st">&#39;catCoding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-8" title="8">        <span class="st">&#39;Cat Coding&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-9" title="9">        <span class="va">vscode</span><span class="op">.</span><span class="va">ViewColumn</span><span class="op">.</span><span class="at">One</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-10" title="10">        <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-11" title="11">          enableScripts<span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb23-12" title="12">          retainContextWhenHidden<span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb23-13" title="13">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb23-14" title="14">      )<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-15" title="15">      <span class="va">panel</span><span class="op">.</span><span class="va">webview</span><span class="op">.</span><span class="at">html</span> <span class="op">=</span> <span class="fu">getWebviewContent</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-16" title="16">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb23-17" title="17">  )<span class="op">;</span></a>
+<a class="sourceLine" id="cb23-18" title="18"><span class="op">}</span></a>
+<a class="sourceLine" id="cb23-19" title="19"></a>
+<a class="sourceLine" id="cb23-20" title="20"><span class="kw">function</span> <span class="fu">getWebviewContent</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-21" title="21">  <span class="cf">return</span> <span class="vs">`&lt;!DOCTYPE html&gt;</span></a>
+<a class="sourceLine" id="cb23-22" title="22"><span class="vs">&lt;html lang=&quot;en&quot;&gt;</span></a>
+<a class="sourceLine" id="cb23-23" title="23"><span class="vs">&lt;head&gt;</span></a>
+<a class="sourceLine" id="cb23-24" title="24"><span class="vs">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span></a>
+<a class="sourceLine" id="cb23-25" title="25"><span class="vs">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></a>
+<a class="sourceLine" id="cb23-26" title="26"><span class="vs">    &lt;title&gt;Cat Coding&lt;/title&gt;</span></a>
+<a class="sourceLine" id="cb23-27" title="27"><span class="vs">&lt;/head&gt;</span></a>
+<a class="sourceLine" id="cb23-28" title="28"><span class="vs">&lt;body&gt;</span></a>
+<a class="sourceLine" id="cb23-29" title="29"><span class="vs">    &lt;img src=&quot;https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif&quot; width=&quot;300&quot; /&gt;</span></a>
+<a class="sourceLine" id="cb23-30" title="30"><span class="vs">    &lt;h1 id=&quot;lines-of-code-counter&quot;&gt;0&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb23-31" title="31"></a>
+<a class="sourceLine" id="cb23-32" title="32"><span class="vs">    &lt;script&gt;</span></a>
+<a class="sourceLine" id="cb23-33" title="33"><span class="vs">        const counter = document.getElementById(&#39;lines-of-code-counter&#39;);</span></a>
+<a class="sourceLine" id="cb23-34" title="34"></a>
+<a class="sourceLine" id="cb23-35" title="35"><span class="vs">        let count = 0;</span></a>
+<a class="sourceLine" id="cb23-36" title="36"><span class="vs">        setInterval(() =&gt; {</span></a>
+<a class="sourceLine" id="cb23-37" title="37"><span class="vs">            counter.textContent = count++;</span></a>
+<a class="sourceLine" id="cb23-38" title="38"><span class="vs">        }, 100);</span></a>
+<a class="sourceLine" id="cb23-39" title="39"><span class="vs">    &lt;/script&gt;</span></a>
+<a class="sourceLine" id="cb23-40" title="40"><span class="vs">&lt;/body&gt;</span></a>
+<a class="sourceLine" id="cb23-41" title="41"><span class="vs">&lt;/html&gt;`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb23-42" title="42"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img src="images/webview/persistence-retrain.gif" alt="persistence retrain" />
+      <figcaption>persistence retrain</figcaption>
+    </figure>
+    <p>
+      Notice how the counter does not reset now when the webview is hidden and then
+      restored. No extra code required! With <code>retainContextWhenHidden</code>, the
+      webview acts similarly to a background tab in a web browser. Scripts and other dynamic
+      content are suspended, but immediately resumed once the webview becomes visible again.
+      You cannot send messages to a hidden webview, even when
+      <code>retainContextWhenHidden</code> is enabled.
+    </p>
+    <p>
+      Although <code>retainContextWhenHidden</code> may be appealing, keep in mind that this
+      has high memory overhead and should only be used when other persistence techniques
+      will not work.
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>If you’d like to learn more about VS Code extensibility, try these topics:</p>
+    <ul>
+      <li>
+        <a href="/api">Extension API</a> - Learn about the full VS Code Extension API.
+      </li>
+      <li>
+        <a href="/api/extension-capabilities/overview">Extension Capabilities</a> - Take a
+        look at other ways to extend VS Code.
+      </li>
+    </ul>
+  </body>
+</html>

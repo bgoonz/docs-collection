@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>overview</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="language-extensions-overview">Language Extensions Overview</h1>
+    <p>
+      Visual Studio Code provides smart editing features for different programming languages
+      through Language Extensions. VS Code doesn’t provide built-in language support but
+      offers a set of APIs that enable rich language features. For example, it has a bundled
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/html">HTML</a>
+      extension that allows VS Code to show syntax highlighting for HTML files. Similarly,
+      when you type <code>console.</code> and <code>log</code> shows up in IntelliSense, it
+      is the
+      <a
+        href="https://github.com/microsoft/vscode/tree/main/extensions/typescript-language-features"
+        >Typescript Language Features</a
+      >
+      extension at work.
+    </p>
+    <p>Language features can be roughly put into two categories:</p>
+    <h2 id="declarative-language-features">Declarative language features</h2>
+    <p>
+      Declarative language features are defined in configuration files. Examples include
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/html">html</a>,
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/css">css</a> and
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/typescript-basics"
+        >typescript-basic</a
+      >
+      extensions bundled with VS Code, which offer a subset of the following Declarative
+      Language Features:
+    </p>
+    <ul>
+      <li>Syntax highlighting</li>
+      <li>Snippet completion</li>
+      <li>Bracket matching</li>
+      <li>Bracket autoclosing</li>
+      <li>Bracket autosurrounding</li>
+      <li>Comment toggling</li>
+      <li>Auto indentation</li>
+      <li>Folding (by markers)</li>
+    </ul>
+    <p>
+      We have three guides for writing Language Extensions that provide Declarative Language
+      Features.
+    </p>
+    <ul>
+      <li>
+        <a href="/api/language-extensions/syntax-highlight-guide">Syntax Highlight Guide</a
+        >: VS Code uses TextMate grammar for syntax highlighting. This guide will walk you
+        through writing a simple TextMate grammar and converting it into a VS Code
+        extension.
+      </li>
+      <li>
+        <a href="/api/language-extensions/snippet-guide">Snippet Completion Guide</a>: This
+        guide explains how to bundle a set of snippets into an extension.
+      </li>
+      <li>
+        <a href="/api/language-extensions/language-configuration-guide"
+          >Language Configuration Guide</a
+        >: VS Code allows extensions to define a <strong>language configuration</strong> for
+        any programming language. This file controls basic editing features such as comment
+        toggling, bracket matching/surrounding and region folding (legacy).
+      </li>
+    </ul>
+    <h2 id="programmatic-language-features">Programmatic language features</h2>
+    <p>
+      Programmatic Language Features include auto completion, error checking, and jump to
+      definition. These features are often powered by a Language Server, a program that
+      analyzes your project to provide the dynamic features. One example is the
+      <a
+        href="https://github.com/microsoft/vscode/tree/main/extensions/typescript-language-features"
+        ><code>typescript-language-features</code></a
+      >
+      extension bundled in VS Code. It utilizes the
+      <a href="https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API"
+        >TypeScript Language Service</a
+      >
+      to offer Programmatic Language Features such as:
+    </p>
+    <ul>
+      <li>
+        Hover information (<a
+          href="/api/references/vscode-api#languages.registerHoverProvider"
+          ><code>vscode.languages.registerHoverProvider</code></a
+        >)
+      </li>
+      <li>
+        Auto completion (<a
+          href="/api/references/vscode-api#languages.registerCompletionItemProvider"
+          ><code>vscode.languages.registerCompletionItemProvider</code></a
+        >)
+      </li>
+      <li>
+        Jump to definition (<a
+          href="/api/references/vscode-api#languages.registerDefinitionProvider"
+          ><code>vscode.languages.registerDefinitionProvider</code></a
+        >)
+      </li>
+      <li>Error checking</li>
+      <li>Formatting</li>
+      <li>Refactoring</li>
+      <li>Folding</li>
+    </ul>
+    <p>
+      Here is a complete list of
+      <a href="/api/language-extensions/programmatic-language-features"
+        >Programmatic Language Features</a
+      >.
+    </p>
+    <figure>
+      <img src="images/overview/multi-ls.png" alt="multi-ls" />
+      <figcaption>multi-ls</figcaption>
+    </figure>
+    <h2 id="language-server-protocol">Language Server Protocol</h2>
+    <p>
+      By standardizing the communication between a Language Server (a static code analysis
+      tool) and a Language Client (usually a source code editor), the
+      <a href="https://microsoft.github.io/language-server-protocol/"
+        >Language Server Protocol</a
+      >
+      allows extension authors to write one code analysis program and reuse it in multiple
+      editors.
+    </p>
+    <p>
+      In the
+      <a href="/api/language-extensions/programmatic-language-features"
+        >Programmatic Language Features</a
+      >
+      listing, you can find a listing of all VS Code language features and how they map to
+      the
+      <a href="https://microsoft.github.io/language-server-protocol/specification"
+        >Language Server Protocol Specification</a
+      >.
+    </p>
+    <p>
+      We offer an in-depth guide that explains how to implement a Language Server extension
+      in VS Code:
+    </p>
+    <ul>
+      <li>
+        <a href="/api/language-extensions/language-server-extension-guide"
+          >Language Server Extension Guide</a
+        >
+      </li>
+    </ul>
+    <figure>
+      <img src="images/overview/multi-editor.png" alt="multi-editor" />
+      <figcaption>multi-editor</figcaption>
+    </figure>
+    <h2 id="special-cases">Special cases</h2>
+    <h3 id="multi-root-workspace-support">Multi-root workspace support</h3>
+    <p>
+      When the user opens a
+      <a href="/docs/editor/multi-root-workspaces">multi-root workspace</a>, you might need
+      to adapt your Language Server extensions accordingly. This topic discusses multiple
+      approaches to supporting multi-root workspaces.
+    </p>
+    <h3 id="embedded-languages">Embedded languages</h3>
+    <p>
+      Embedded languages are common in web development. For example, CSS/JS inside HTML, and
+      GraphQL inside JavaScript/TypeScript. This topic discusses how you can make language
+      features available to embedded languages.
+    </p>
+  </body>
+</html>

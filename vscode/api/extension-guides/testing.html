@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>testing</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="testing-api">Testing API</h1>
+    <p>
+      The Testing API allows Visual Studio Code extensions to discover tests in the
+      workspace and publish results. Users can execute tests in the Test Explorer view, from
+      decorations, and inside commands. With these new APIs, Visual Studio Code supports
+      richer displays of outputs and diffs than was previously possible.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note</strong>: The Testing API is still proposed and under development,
+        which means it is only available on VS Code <a href="/insiders">Insiders</a> and
+        requires adding <code>vscode.proposed.d.ts</code> to your extension project. You can
+        learn more in
+        <a href="/api/advanced-topics/using-proposed-api">Using Proposed APIs</a>.
+      </p>
+    </blockquote>
+    <h2 id="examples">Examples</h2>
+    <p>There are two test providers maintained by the VS Code team:</p>
+    <ul>
+      <li>
+        The
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/tree/main/test-provider-sample"
+          >sample test provider</a
+        >
+        that provides tests in Markdown files.
+      </li>
+      <li>
+        The
+        <a href="https://github.com/microsoft/vscode-selfhost-test-provider"
+          >selfhost test provider</a
+        >
+        that we use for running tests in VS Code itself.
+      </li>
+    </ul>
+    <h2 id="discovering-tests">Discovering Tests</h2>
+    <p>
+      The foundation of the test API is the <code>TestItem</code> interface. This interface
+      describes a test case, suite, or tree item as it exists in code. It must have a unique
+      <code>id</code> and can have <code>children</code>, descriptive information, and
+      indicate whether it’s <code>runnable</code> or <code>debuggable</code>.
+    </p>
+    <p>
+      <code>TestItem</code>s are provided by <code>TestProviders</code>, either for a
+      workspace or document. Providing happens lazily: VS Code will request tests for a
+      document when it becomes visible, and may eventually request workspace tests if the
+      user opens the test explorer, for example.
+    </p>
+    <p>
+      The provider’s methods return a <code>TestHierarchy</code> of these test items.
+      There’s a <code>root</code>, and a change event to tell VS Code when items update.
+      Additionally, a promise can be returned to indicate when all the tests have been
+      discovered, and you can emit events to indicate when results for existing tests might
+      need to be invalidated. The invalidation logic drives the autorun scenario (to rerun
+      tests that change) and also has a small UI effect.
+    </p>
+    <h2 id="test-results">Test Results</h2>
+    <p>
+      As you implement a <code>TestProvider</code>, you will notice the
+      <code>runTests</code> method. This method is called to execute tests, and takes the
+      list of tests to run, exclude, and a flag indicating whether the run should be
+      debugged. To update the state of a <code>TestItem</code>, you can call the
+      <code>setState</code> method on the <code>TestRun</code> option passed into the
+      method.
+    </p>
+    <p>
+      The state of tests is stored separately from the <code>TestItem</code>s, and
+      correlated by their <code>id</code>. This separation provides several advantages that
+      a closer coupling would lose:
+    </p>
+    <ul>
+      <li>There can be multiple independent test runs happening at a time.</li>
+      <li>
+        Users can open and inspect past test results, even if the tests on disk might have
+        moved or no longer exist.
+      </li>
+    </ul>
+    <p>
+      The state displayed for any <code>TestItem</code> in the explorer or decorations is
+      its state in the most recent test run in which it was involved.
+    </p>
+    <h3 id="publishing-test-results">Publishing Test Results</h3>
+    <p>
+      <strong>If you implement a TestProvider</strong>, you should use the
+      <code>setState</code> method on the <code>TestRun</code> object to update the state of
+      tests in that specific run.
+    </p>
+    <p>
+      In other scenarios, extensions may be able to detect if the user runs tests outside of
+      VS Code. For example, you might intercept output from the terminal, or notice that a
+      new <code>TestResults</code> file appeared on disk. When this happens, you can use the
+      <code>vscode.test.publishTestResults</code> method to add new test results into VS
+      Code.
+    </p>
+  </body>
+</html>

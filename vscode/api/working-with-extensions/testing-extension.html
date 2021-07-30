@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>testing-extension</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="testing-extensions">Testing Extensions</h1>
+    <p>
+      Visual Studio Code supports running and debugging tests for your extension. These
+      tests will run inside a special instance of VS Code named the
+      <strong>Extension Development Host</strong>, and have full access to the VS Code API.
+      We refer to these tests as integration tests, because they go beyond unit tests that
+      can run without a VS Code instance. This documentation focuses on VS Code integration
+      tests.
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>
+      <em
+        >If you are migrating from <code>vscode</code>, see
+        <a href="#migrating-from-vscode">migrating from <code>vscode</code></a></em
+      >.
+    </p>
+    <p>
+      If you are using the
+      <a href="https://code.visualstudio.com/api/get-started/your-first-extension"
+        >Yeoman Generator</a
+      >
+      to scaffold an extension, integration tests are already created for you.
+    </p>
+    <p>
+      In the generated extension, you can use <code>npm run test</code> or
+      <code>yarn test</code> to run the integration tests that:
+    </p>
+    <ul>
+      <li>Downloads and unzips latest version of VS Code.</li>
+      <li>
+        Runs the <a href="https://mochajs.org">Mocha</a> tests specified by the extension
+        test runner script.
+      </li>
+    </ul>
+    <p>
+      Alternatively, you can find the configuration for this guide in the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/helloworld-test-sample"
+        >helloworld-test-sample</a
+      >. The rest of this document explains these files in the context of the sample:
+    </p>
+    <ul>
+      <li>
+        The <strong>test script</strong> (<a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/runTest.ts"
+          ><code>src/test/runTest.ts</code></a
+        >)
+      </li>
+      <li>
+        The <strong>test runner script</strong> (<a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/suite/index.ts"
+          ><code>src/test/suite/index.ts</code></a
+        >)
+      </li>
+    </ul>
+    <h2 id="the-test-script">The test script</h2>
+    <p>
+      VS Code provides two CLI parameters for running extension tests,
+      <code>--extensionDevelopmentPath</code> and <code>--extensionTestsPath</code>.
+    </p>
+    <p>For example:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># - Launches VS Code Extension Host</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># - Loads the extension at &lt;EXTENSION-ROOT-PATH&gt;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># - Executes the test runner script at &lt;</span><span class="al">TEST</span><span class="co">-RUNNER-SCRIPT-PATH&gt;</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="ex">code</span> \</a>
+<a class="sourceLine" id="cb1-5" title="5">--extensionDevelopmentPath=<span class="op">&lt;</span>EXTENSION-ROOT-PATH<span class="op">&gt;</span> \</a>
+<a class="sourceLine" id="cb1-6" title="6">--extensionTestsPath=<span class="op">&lt;</span>TEST-RUNNER-SCRIPT-PATH<span class="op">&gt;</span></a></code></pre>
+    </div>
+    <p>
+      The <strong>test script</strong> (<a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/runTest.ts"
+        ><code>src/test/runTest.ts</code></a
+      >) uses the <code>vscode-test</code> API to simplify the process of downloading,
+      unzipping, and launching VS Code with extension test parameters:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="im">import</span> <span class="op">{</span> runTests <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;vscode-test&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw">async</span> <span class="kw">function</span> <span class="fu">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    <span class="co">// The folder containing the Extension Manifest package.json</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="co">// Passed to `--extensionDevelopmentPath`</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    <span class="kw">const</span> extensionDevelopmentPath <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;../../&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="co">// The path to the extension test runner script</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="co">// Passed to --extensionTestsPath</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    <span class="kw">const</span> extensionTestsPath <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;./suite/index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-14" title="14"></a>
+<a class="sourceLine" id="cb2-15" title="15">    <span class="co">// Download VS Code, unzip it and run the integration test</span></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="cf">await</span> <span class="fu">runTests</span>(<span class="op">{</span> extensionDevelopmentPath<span class="op">,</span> extensionTestsPath <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="op">}</span> <span class="fu">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-18" title="18">    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-19" title="19">    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">&#39;Failed to run tests&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-20" title="20">    <span class="bu">process</span><span class="op">.</span><span class="fu">exit</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-21" title="21">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-23" title="23"></a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="fu">main</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>The <code>vscode-test</code> API also allows:</p>
+    <ul>
+      <li>Launching VS Code with a specific workspace.</li>
+      <li>
+        Downloading a different version of VS Code rather than the latest stable release.
+      </li>
+      <li>Launching VS Code with additional CLI parameters.</li>
+    </ul>
+    <p>
+      You can find more API usage examples at
+      <a href="https://github.com/microsoft/vscode-test">microsoft/vscode-test</a>.
+    </p>
+    <h2 id="the-test-runner-script">The test runner script</h2>
+    <p>
+      When running the extension integration test, <code>--extensionTestsPath</code> points
+      to the <strong>test runner script</strong> (<a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/suite/index.ts"
+        ><code>src/test/suite/index.ts</code></a
+      >) that programmatically runs the test suite. Below is the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/suite/index.ts"
+        >test runner script</a
+      >
+      of <code>helloworld-test-sample</code> that uses Mocha to run the test suite. You can
+      use this as a starting point and customize your setup with
+      <a href="https://mochajs.org/api/mocha">Mocha’s API</a>. You can also replace Mocha
+      with any other test framework that can be run programmatically.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> Mocha <span class="im">from</span> <span class="st">&#39;mocha&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> glob <span class="im">from</span> <span class="st">&#39;glob&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="im">export</span> <span class="kw">function</span> <span class="fu">run</span>()<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="co">// Create the mocha test</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">const</span> mocha <span class="op">=</span> <span class="kw">new</span> <span class="fu">Mocha</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    ui<span class="op">:</span> <span class="st">&#39;tdd&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    color<span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="kw">const</span> testsRoot <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;..&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="cf">return</span> <span class="kw">new</span> <span class="bu">Promise</span>((c<span class="op">,</span> e) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-15" title="15">    <span class="fu">glob</span>(<span class="st">&#39;**/**.test.js&#39;</span><span class="op">,</span> <span class="op">{</span> cwd<span class="op">:</span> testsRoot <span class="op">},</span> (err<span class="op">,</span> files) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-16" title="16">      <span class="fu">if</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-17" title="17">        <span class="cf">return</span> <span class="fu">e</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-18" title="18">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-19" title="19"></a>
+<a class="sourceLine" id="cb3-20" title="20">      <span class="co">// Add files to the test suite</span></a>
+<a class="sourceLine" id="cb3-21" title="21">      <span class="va">files</span><span class="op">.</span><span class="fu">forEach</span>(f <span class="kw">=&gt;</span> <span class="va">mocha</span><span class="op">.</span><span class="fu">addFile</span>(<span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(testsRoot<span class="op">,</span> f)))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-22" title="22"></a>
+<a class="sourceLine" id="cb3-23" title="23">      <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-24" title="24">        <span class="co">// Run the mocha test</span></a>
+<a class="sourceLine" id="cb3-25" title="25">        <span class="va">mocha</span><span class="op">.</span><span class="fu">run</span>(failures <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-26" title="26">          <span class="fu">if</span> (failures <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-27" title="27">            <span class="fu">e</span>(<span class="kw">new</span> <span class="bu">Error</span>(<span class="vs">`</span><span class="sc">${</span>failures<span class="sc">}</span><span class="vs"> tests failed.`</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-28" title="28">          <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-29" title="29">            <span class="fu">c</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-30" title="30">          <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-31" title="31">        <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-32" title="32">      <span class="op">}</span> <span class="fu">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-33" title="33">        <span class="fu">e</span>(err)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-34" title="34">      <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-35" title="35">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-36" title="36">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-37" title="37"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Both the test runner script and the <code>*.test.js</code> files have access to the VS
+      Code API.
+    </p>
+    <p>
+      Here is a sample test (<a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/suite/extension.test.ts"
+        >src/test/suite/extension.test.ts</a
+      >):
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> assert <span class="im">from</span> <span class="st">&#39;assert&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="im">import</span> <span class="op">{</span> after <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;mocha&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">// You can import and use all API from the &#39;vscode&#39; module</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">// as well as import your extension to test it</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">// import * as myExtension from &#39;../extension&#39;;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="fu">suite</span>(<span class="st">&#39;Extension Test Suite&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="fu">after</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInformationMessage</span>(<span class="st">&#39;All tests done!&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-13" title="13"></a>
+<a class="sourceLine" id="cb4-14" title="14">  <span class="fu">test</span>(<span class="st">&#39;Sample test&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="va">assert</span><span class="op">.</span><span class="fu">strictEqual</span>(<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">[</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">]</span>.<span class="fu">indexOf</span>(<span class="dv">5</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="va">assert</span><span class="op">.</span><span class="fu">strictEqual</span>(<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">[</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">]</span>.<span class="fu">indexOf</span>(<span class="dv">0</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-17" title="17">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="debugging-the-tests">Debugging the tests</h2>
+    <p>Debugging the tests is similar to debugging the extension.</p>
+    <p>Here is a sample <code>launch.json</code> debugger configuration:</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.2.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">&quot;configurations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Extension Tests&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-6" title="6">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;extensionHost&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-7" title="7">      <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-8" title="8">      <span class="dt">&quot;runtimeExecutable&quot;</span><span class="fu">:</span> <span class="st">&quot;${execPath}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-9" title="9">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb5-10" title="10">        <span class="st">&quot;--extensionDevelopmentPath=${workspaceFolder}&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb5-11" title="11">        <span class="st">&quot;--extensionTestsPath=${workspaceFolder}/out/test/suite/index&quot;</span></a>
+<a class="sourceLine" id="cb5-12" title="12">      <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-13" title="13">      <span class="dt">&quot;outFiles&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;${workspaceFolder}/out/test/**/*.js&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-15" title="15">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="fu">}</span></a></code></pre>
+    </div>
+    <video autoplay loop muted playsinline controls>
+      <source
+        src="/api/working-with-extensions/testing-extension/debug.mp4"
+        type="video/mp4"
+      />
+    </video>
+    <h2 id="tips">Tips</h2>
+    <h3 id="using-insiders-version-for-extension-development">
+      Using Insiders version for extension development
+    </h3>
+    <p>
+      Because of VS Code’s limitation, if you are using VS Code stable release and try to
+      run the integration test <strong>on CLI</strong>, it will throw an error:
+    </p>
+    <pre><code>Running extension tests from the command line is currently only supported if no other instance of Code is running.</code></pre>
+    <p>
+      In general if you run extension tests from CLI, the version the tests run with cannot
+      be running already. As a workaround, you can run the tests in VS Code Stable and use
+      <a href="https://code.visualstudio.com/insiders/">VS Code Insiders</a> for
+      development. As long as you are not running the tests from CLI in VS Code Insiders but
+      in VS Code Stable, this setup will work fine.
+    </p>
+    <p>
+      An alternative is to run the extension tests from the debug launch configuration from
+      within VS Code itself. This has the additional advantage that you can even debug the
+      tests.
+    </p>
+    <h3 id="disabling-other-extensions-while-debugging">
+      Disabling other extensions while debugging
+    </h3>
+    <p>
+      When you debug an extension test in VS Code, VS Code uses the globally installed
+      instance of VS Code and will load all installed extensions. You can add
+      <code>--disable-extensions</code> configuration to the <code>launch.json</code> or the
+      <code>launchArgs</code> option of <code>vscode-test</code>’s
+      <code>runTests</code> API.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.2.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">&quot;configurations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-5" title="5">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Extension Tests&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-6" title="6">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;extensionHost&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-7" title="7">      <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-8" title="8">      <span class="dt">&quot;runtimeExecutable&quot;</span><span class="fu">:</span> <span class="st">&quot;${execPath}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-9" title="9">      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb7-10" title="10">        <span class="st">&quot;--disable-extensions&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb7-11" title="11">        <span class="st">&quot;--extensionDevelopmentPath=${workspaceFolder}&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb7-12" title="12">        <span class="st">&quot;--extensionTestsPath=${workspaceFolder}/out/test/suite/index&quot;</span></a>
+<a class="sourceLine" id="cb7-13" title="13">      <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb7-14" title="14">      <span class="dt">&quot;outFiles&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;${workspaceFolder}/out/test/**/*.js&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb7-15" title="15">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb7-16" title="16">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="fu">}</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="cf">await</span> <span class="fu">runTests</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  extensionDevelopmentPath<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  extensionTestsPath<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">   * A list of launch arguments passed to VS Code executable, in addition to `--extensionDevelopmentPath`</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">   * and `--extensionTestsPath` which are provided by `extensionDevelopmentPath` and `extensionTestsPath`</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">   * options.</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">   *</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">   * If the first argument is a path to a file/folder/workspace, the launched VS Code instance</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">   * will open it.</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">   *</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">   * See `code --help` for possible arguments.</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb8-14" title="14">  launchArgs<span class="op">:</span> <span class="op">[</span><span class="st">&#39;--disable-extensions&#39;</span><span class="op">]</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="custom-setup-with-vscode-test">Custom setup with <code>vscode-test</code></h3>
+    <p>
+      Sometimes you might want to run custom setups, such as running
+      <code>code --install-extension</code> to install another extension before starting
+      your test. <code>vscode-test</code> has a more granular API to accommodate that case:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> cp <span class="im">from</span> <span class="st">&#39;child_process&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> path <span class="im">from</span> <span class="st">&#39;path&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="im">import</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  downloadAndUnzipVSCode<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  resolveCliPathFromVSCodeExecutablePath<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  runTests</a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="op">}</span> <span class="im">from</span> <span class="st">&#39;vscode-test&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-8" title="8"></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="kw">async</span> <span class="kw">function</span> <span class="fu">main</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-10" title="10">  <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-11" title="11">    <span class="kw">const</span> extensionDevelopmentPath <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;../../../&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="kw">const</span> extensionTestsPath <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;./suite/index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-13" title="13">    <span class="kw">const</span> vscodeExecutablePath <span class="op">=</span> <span class="cf">await</span> <span class="fu">downloadAndUnzipVSCode</span>(<span class="st">&#39;1.40.1&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-14" title="14">    <span class="kw">const</span> cliPath <span class="op">=</span> <span class="fu">resolveCliPathFromVSCodeExecutablePath</span>(vscodeExecutablePath)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-15" title="15"></a>
+<a class="sourceLine" id="cb9-16" title="16">    <span class="co">// Use cp.spawn / cp.exec for custom setup</span></a>
+<a class="sourceLine" id="cb9-17" title="17">    <span class="va">cp</span><span class="op">.</span><span class="fu">spawnSync</span>(cliPath<span class="op">,</span> <span class="op">[</span><span class="st">&#39;--install-extension&#39;</span><span class="op">,</span> <span class="st">&#39;&lt;EXTENSION-ID-OR-PATH-TO-VSIX&gt;&#39;</span><span class="op">],</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-18" title="18">      encoding<span class="op">:</span> <span class="st">&#39;utf-8&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-19" title="19">      stdio<span class="op">:</span> <span class="st">&#39;inherit&#39;</span></a>
+<a class="sourceLine" id="cb9-20" title="20">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-21" title="21"></a>
+<a class="sourceLine" id="cb9-22" title="22">    <span class="co">// Run the extension test</span></a>
+<a class="sourceLine" id="cb9-23" title="23">    <span class="cf">await</span> <span class="fu">runTests</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-24" title="24">      <span class="co">// Use the specified `code` executable</span></a>
+<a class="sourceLine" id="cb9-25" title="25">      vscodeExecutablePath<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-26" title="26">      extensionDevelopmentPath<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-27" title="27">      extensionTestsPath</a>
+<a class="sourceLine" id="cb9-28" title="28">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-29" title="29">  <span class="op">}</span> <span class="fu">catch</span> (err) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-30" title="30">    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">&#39;Failed to run tests&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-31" title="31">    <span class="bu">process</span><span class="op">.</span><span class="fu">exit</span>(<span class="dv">1</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-32" title="32">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-33" title="33"><span class="op">}</span></a>
+<a class="sourceLine" id="cb9-34" title="34"></a>
+<a class="sourceLine" id="cb9-35" title="35"><span class="fu">main</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="migrating-from-vscode">Migrating from <code>vscode</code></h3>
+    <p>
+      The
+      <a href="https://github.com/microsoft/vscode-extension-vscode"><code>vscode</code></a>
+      module had been the default way of running extension integration tests and is being
+      superseded by
+      <a href="https://github.com/microsoft/vscode-test"><code>vscode-test</code></a
+      >. Here’s how you can migrate from it:
+    </p>
+    <ul>
+      <li>Remove <code>vscode</code> dependency.</li>
+      <li>Add <code>vscode-test</code> dependency.</li>
+      <li>
+        As the old <code>vscode</code> module was also used for downloading VS Code type
+        definition, you need to
+        <ul>
+          <li>
+            Manually install <code>@types/vscode</code> that follows your
+            <code>engine.vscode</code> in <code>package.json</code>. For example, if your
+            <code>engine.vscode</code> is <code>1.30</code>, install
+            <code>"@types/vscode": "^1.30.0"</code>.
+          </li>
+          <li>
+            Remove <code>"postinstall": "node ./node_modules/vscode/bin/install"</code> from
+            <code>package.json</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Add a <a href="#the-test-script">test script</a>. You can use
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/runTest.ts"
+          ><code>runTest.ts</code></a
+        >
+        in the sample as a starting point.
+      </li>
+      <li>
+        Point the <code>test</code> script in <code>package.json</code> to run the compiled
+        output of <code>runTest.ts</code>.
+      </li>
+      <li>
+        Add a <a href="#the-test-runner-script">test runner script</a>. You can use the
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/blob/main/helloworld-test-sample/src/test/suite/index.ts"
+          >sample test runner script</a
+        >
+        as a starting point. Notice that <code>vscode</code> used to depend on
+        <code>mocha@4</code> and <code>glob</code>, and now you need to install them as part
+        of your <code>devDependencies</code>.
+      </li>
+    </ul>
+    <h2 id="next-steps">Next steps</h2>
+    <ul>
+      <li>
+        <a href="/api/working-with-extensions/continuous-integration"
+          >Continuous Integration</a
+        >
+        - Run your extension tests in a Continuous Integration service such as Azure DevOps.
+      </li>
+    </ul>
+  </body>
+</html>

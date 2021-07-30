@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>tslint-eslint-migration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="migrate-from-tslint-to-eslint">Migrate from TSLint to ESLint</h1>
+    <p>
+      <a href="https://palantir.github.io/tslint/">TSLint</a> has been the recommended
+      linter in the past but now TSLint is deprecated and
+      <a href="https://eslint.org/">ESLint</a> is taking over its duties. This article will
+      help you migrate from TSLint to ESLint.
+    </p>
+    <h2 id="eslint-installation">ESLint: Installation</h2>
+    <p>
+      You need to install ESLint. ESLint doesn’t natively support TypeScript, so you will
+      also need to install eslint-typescript-support:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">npm</span> install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin</a></code></pre>
+    </div>
+    <p>
+      The command above adds ESLint, adds a parser that makes ESLint understand TypeScript,
+      and adds some TypeScript-specific rules.
+    </p>
+    <p>
+      Now, to make the actual migration simpler, run the
+      <a href="https://github.com/typescript-eslint/tslint-to-eslint-config"
+        >tslint-to-eslint-config</a
+      >
+      utility. This tool will take your TSLint configuration and create the “closest” ESLint
+      configuration from it.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">npx</span> tslint-to-eslint-config</a></code></pre>
+    </div>
+    <p>
+      This command
+      <a href="https://www.npmjs.com/package/npx">downloads and executes</a> the utility to
+      perform the migration. For further options, check the utility’s
+      <a href="https://github.com/typescript-eslint/tslint-to-eslint-config#usage"
+        >usage guide</a
+      >.
+    </p>
+    <p>
+      There should now be a new <code>.eslintrc.js</code> file, a log file
+      (<code>tslint-to-eslint-config.log</code>), and likely changes to other files, like
+      <code>.vscode/settings.json</code>. Carefully review the changes, especially those
+      made to existing files, and check the log file.
+    </p>
+    <h2 id="eslint-configure">ESLint: Configure</h2>
+    <p>
+      The <code>.eslintrc.js</code> file is usually sufficient to get started but it’s
+      likely that the <code>parserOptions.project</code> property is still set to your
+      <code>tsconfig.json</code> file. That means that ESLint rules can use semantic
+      information, for example, is this variable a string or a number-array? This
+      configuration enables some powerful rules but means that ESLint takes much longer to
+      compute. The default rules for extensions do not require semantic information and
+      unless you have added rules that do, we recommend you remove the
+      <code>parserOptions.project</code> property.
+    </p>
+    <h2 id="eslint-run">ESLint: Run</h2>
+    <p>
+      You are now ready to run ESLint, but before doing that, we recommend you disable
+      TSLint. To do so, open the Extensions view and select <strong>Disable</strong> in the
+      context menu of the TSLint extension.
+    </p>
+    <p>
+      It is time to lint! Use this command:
+      <code>eslint -c .eslintrc.js --ext .ts &lt;mySrcFolder&gt;</code> (notice the
+      <code>--ext .ts</code> option which tells ESLint to look at TypeScript files). We
+      recommend putting the command in the <code>scripts</code> section of your
+      <code>package.json</code>-file, like so:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="er">&quot;lint&quot;:</span> <span class="er">&quot;eslint</span> <span class="er">-c</span> <span class="er">.eslintrc.js</span> <span class="er">--ext</span> <span class="er">.ts</span> <span class="er">&lt;mySrcFolder&gt;&quot;</span></a></code></pre>
+    </div>
+    <p>To integrate ESLint with Visual Studio Code, do the following:</p>
+    <ul>
+      <li>
+        Install the
+        <a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint"
+          >ESLint</a
+        >
+        extension.
+      </li>
+      <li>
+        Create a task via the <strong>Tasks: Configure Task</strong> command and select
+        <strong>npm: lint</strong>.
+      </li>
+      <li>
+        In the resulting <code>tasks.json</code> file, configure the problem matcher to be
+        <code>$eslint-stylish</code>.
+      </li>
+    </ul>
+    <p>
+      <strong>Hint</strong>: ESLint is sometimes “more correct” in how it does things and
+      you may see warnings that you didn’t have before, for example calling out missing
+      semicolons. Try the <code>--fix</code> option to let ESLint clean up things up for
+      you.
+    </p>
+    <h2 id="tslint-removal">TSLint: Removal</h2>
+    <p>
+      Congratulations. You should now have a working ESLint setup and it’s time to clean up.
+    </p>
+    <p>The removal of TSLint depends on your project, but usually these are the steps:</p>
+    <ul>
+      <li>
+        <p>
+          Update <code>.vscode/extensions.json</code> to recommend the ESLint extension and
+          not TSLint anymore:
+        </p>
+        <div class="sourceCode" id="cb4">
+          <pre
+            class="sourceCode json"
+          ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="er">&quot;recommendations&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="st">&quot;dbaeumer.vscode-eslint&quot;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="ot">]</span></a></code></pre>
+        </div>
+      </li>
+      <li>Remove the <code>tslint.json</code> file.</li>
+      <li>
+        Remove the dependency on <code>tslint</code> in the <code>package.json</code> file.
+      </li>
+      <li>
+        <p>Uninstall TSLint with <code>npm uninstall tslint</code>.</p>
+      </li>
+    </ul>
+  </body>
+</html>

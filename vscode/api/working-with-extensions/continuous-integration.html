@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>continuous-integration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="continuous-integration">Continuous Integration</h1>
+    <p>
+      Extension integration tests can be run on CI services. The
+      <a href="https://github.com/microsoft/vscode-test"><code>vscode-test</code></a>
+      library helps you set up extension tests on CI providers and contains a
+      <a href="https://github.com/microsoft/vscode-test/tree/main/sample"
+        >sample extension</a
+      >
+      setup on Azure Pipelines. You can check out the
+      <a href="https://dev.azure.com/vscode/vscode-test/_build?definitionId=15"
+        >build pipeline</a
+      >
+      or jump directly to the
+      <a
+        href="https://github.com/microsoft/vscode-test/blob/main/sample/azure-pipelines.yml"
+        ><code>azure-pipelines.yml</code> file</a
+      >.
+    </p>
+    <h2 id="automated-publishing">Automated publishing</h2>
+    <p>
+      You can also configure the CI to publish a new version of the extension automatically.
+    </p>
+    <p>
+      The publish command is similar to publishing from a local environment using
+      <a href="https://github.com/microsoft/vsce"><code>vsce</code></a
+      >, but you must somehow provide the Personal Access Token (PAT) in a secure way. By
+      storing the PAT as a <code>VSCE_PAT</code> <strong>secret variable</strong>,
+      <code>vsce</code> will be able to use it. Secret variables are never exposed, so they
+      are safe to use in a CI pipeline.
+    </p>
+    <h2 id="azure-pipelines">Azure Pipelines</h2>
+    <p>
+      <a href="https://azure.microsoft.com/services/devops/"
+        ><img
+          alt="Azure Pipelines"
+          src="/assets/api/working-with-extensions/continuous-integration/pipelines-logo.png"
+          width="318"
+      /></a>
+    </p>
+    <p>
+      <a href="https://azure.microsoft.com/services/devops/pipelines/">Azure Pipelines</a>
+      is great for running VS Code extension tests as it supports running the tests on
+      Windows, macOS, and Linux. For Open Source projects, you get unlimited minutes and 10
+      free parallel jobs. This section explains how to set up an Azure Pipelines for running
+      your extension tests.
+    </p>
+    <p>
+      First, create a free account on
+      <a href="https://azure.microsoft.com/services/devops/">Azure DevOps</a> and create an
+      <a href="https://azure.microsoft.com/features/devops-projects/"
+        >Azure DevOps project</a
+      >
+      for your extension.
+    </p>
+    <p>
+      Then, add the following <code>azure-pipelines.yml</code> file to the root of your
+      extension’s repository. Other than the <code>xvfb</code> setup script for Linux that
+      is necessary to run VS Code in headless Linux CI machines, the definition is
+      straight-forward:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">trigger:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">branches:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">include:</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="kw">-</span> master</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="fu">tags:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="fu">include:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="kw">-</span> v*</a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="fu">linux:</span></a>
+<a class="sourceLine" id="cb1-12" title="12">      <span class="fu">imageName:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">mac:</span></a>
+<a class="sourceLine" id="cb1-14" title="14">      <span class="fu">imageName:</span><span class="at"> </span><span class="st">&#39;macos-latest&#39;</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    <span class="fu">windows:</span></a>
+<a class="sourceLine" id="cb1-16" title="16">      <span class="fu">imageName:</span><span class="at"> </span><span class="st">&#39;windows-latest&#39;</span></a>
+<a class="sourceLine" id="cb1-17" title="17"></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="fu">pool:</span></a>
+<a class="sourceLine" id="cb1-19" title="19">  <span class="fu">vmImage:</span><span class="at"> $(imageName)</span></a>
+<a class="sourceLine" id="cb1-20" title="20"></a>
+<a class="sourceLine" id="cb1-21" title="21"><span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb1-22" title="22"></a>
+<a class="sourceLine" id="cb1-23" title="23"><span class="kw">-</span> <span class="fu">task:</span><span class="at"> NodeTool@0</span></a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="fu">inputs:</span></a>
+<a class="sourceLine" id="cb1-25" title="25">    <span class="fu">versionSpec:</span><span class="at"> </span><span class="st">&#39;10.x&#39;</span></a>
+<a class="sourceLine" id="cb1-26" title="26">  <span class="fu">displayName:</span><span class="at"> </span><span class="st">&#39;Install Node.js&#39;</span></a>
+<a class="sourceLine" id="cb1-27" title="27"></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="kw">- </span><span class="fu">bash:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb1-29" title="29">    /usr/bin/Xvfb :99 -screen 0 1024x768x24 &gt; /dev/null 2&gt;&amp;1 &amp;</a>
+<a class="sourceLine" id="cb1-30" title="30">    echo &quot;&gt;&gt;&gt; Started xvfb&quot;</a>
+<a class="sourceLine" id="cb1-31" title="31">  <span class="fu">displayName:</span><span class="at"> Start xvfb</span></a>
+<a class="sourceLine" id="cb1-32" title="32">  <span class="fu">condition:</span><span class="at"> and(succeeded(), eq(variables[&#39;Agent.OS&#39;], &#39;Linux&#39;))</span></a>
+<a class="sourceLine" id="cb1-33" title="33"></a>
+<a class="sourceLine" id="cb1-34" title="34"><span class="kw">- </span><span class="fu">bash:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb1-35" title="35">    echo &quot;&gt;&gt;&gt; Compile vscode-test&quot;</a>
+<a class="sourceLine" id="cb1-36" title="36">    yarn &amp;&amp; yarn compile</a>
+<a class="sourceLine" id="cb1-37" title="37">    echo &quot;&gt;&gt;&gt; Compiled vscode-test&quot;</a>
+<a class="sourceLine" id="cb1-38" title="38">    cd sample</a>
+<a class="sourceLine" id="cb1-39" title="39">    echo &quot;&gt;&gt;&gt; Run sample integration test&quot;</a>
+<a class="sourceLine" id="cb1-40" title="40">    yarn &amp;&amp; yarn compile &amp;&amp; yarn test</a>
+<a class="sourceLine" id="cb1-41" title="41">  <span class="fu">displayName:</span><span class="at"> Run Tests</span></a>
+<a class="sourceLine" id="cb1-42" title="42">  <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb1-43" title="43">    <span class="fu">DISPLAY:</span><span class="at"> </span><span class="st">&#39;:99.0&#39;</span></a></code></pre>
+    </div>
+    <p>
+      Finally,
+      <a
+        href="https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=vsts#get-your-first-build"
+        >create a new pipeline</a
+      >
+      in your DevOps project and point it to the <code>azure-pipelines.yml</code> file.
+      Trigger a build and voilà:
+    </p>
+    <figure>
+      <img src="images/continuous-integration/pipelines.png" alt="pipelines" />
+      <figcaption>pipelines</figcaption>
+    </figure>
+    <p>
+      You can enable the build to run continuously when pushing to a branch and even on pull
+      requests. See
+      <a href="https://docs.microsoft.com/azure/devops/pipelines/build/triggers"
+        >Build pipeline triggers</a
+      >
+      to learn more.
+    </p>
+    <h3 id="azure-pipelines-automated-publishing">Azure Pipelines automated publishing</h3>
+    <ol type="1">
+      <li>
+        Set up <code>VSCE_PAT</code> as a secret variable using the
+        <a
+          href="https://docs.microsoft.com/azure/devops/pipelines/process/variables?tabs=classic%2Cbatch#secret-variables"
+          >Azure DevOps secrets instructions</a
+        >.
+      </li>
+      <li>
+        Install <code>vsce</code> as a <code>devDependencies</code> (<code
+          >npm install vsce --save-dev</code
+        >
+        or <code>yarn add vsce --dev</code>).
+      </li>
+      <li>
+        Declare a <code>deploy</code> script in <code>package.json</code> without the PAT
+        (by default, <code>vsce</code> will use the <code>VSCE_PAT</code> environment
+        variable as the Personal Access Token).
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;deploy&quot;</span><span class="fu">:</span> <span class="st">&quot;vsce publish --yarn&quot;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ol start="4" type="1">
+      <li>Configure the CI so the build will also run when tags are created:</li>
+    </ol>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">trigger:</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="fu">branches:</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">include:</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="kw">-</span> master</a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="fu">tags:</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="fu">include:</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="kw">-</span> refs/tags/v*</a></code></pre>
+    </div>
+    <ol start="5" type="1">
+      <li>
+        Add a <code>publish</code> step in <code>azure-pipelines.yml</code> that calls
+        <code>yarn deploy</code> with the secret variable.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">- </span><span class="fu">bash:</span><span class="at"> </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    echo &quot;&gt;&gt;&gt; Publish&quot;</a>
+<a class="sourceLine" id="cb4-3" title="3">    yarn deploy</a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="fu">displayName:</span><span class="at"> Publish</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="fu">condition:</span><span class="at"> and(succeeded(), startsWith(variables[&#39;Build.SourceBranch&#39;], &#39;refs/tags/&#39;), eq(variables[&#39;Agent.OS&#39;], &#39;Linux&#39;))</span></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="fu">VSCE_PAT:</span><span class="at"> $(VSCE_PAT)</span></a></code></pre>
+    </div>
+    <p>
+      The
+      <a href="https://docs.microsoft.com/azure/devops/pipelines/process/conditions"
+        >condition</a
+      >
+      property tells the CI to run the publish step only in certain cases.
+    </p>
+    <p>In our example, the condition has three checks:</p>
+    <ul>
+      <li><code>succeeded()</code> - Publish only if the tests pass.</li>
+      <li>
+        <code>startsWith(variables['Build.SourceBranch'], 'refs/tags/')</code> - Publish
+        only if a tagged (release) build.
+      </li>
+      <li>
+        <code>eq(variables['Agent.OS'], 'Linux')</code> - Include if your build runs on
+        multiple agents (Windows, Linux, etc.). If not, remove that part of the condition.
+      </li>
+    </ul>
+    <p>
+      Since <code>VSCE_PAT</code> is a secret variable, it is not immediately usable as an
+      environment variable. Thus, we need to explicitly map the environment variable
+      <code>VSCE_PAT</code> to the secret variable.
+    </p>
+    <h2 id="github-actions">GitHub Actions</h2>
+    <p>
+      You can also configure GitHub Actions to run your extension CI. In headless Linux CI
+      machines <code>xvfb</code> is required to run VS Code, so if Linux is the current OS
+      run the tests in an Xvfb enabled environment:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">branches:</span></a>
+<a class="sourceLine" id="cb5-4" title="4">      <span class="kw">-</span> master</a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="fu">jobs:</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="fu">build:</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="fu">strategy:</span></a>
+<a class="sourceLine" id="cb5-9" title="9">      <span class="fu">matrix:</span></a>
+<a class="sourceLine" id="cb5-10" title="10">        <span class="fu">os:</span><span class="at"> </span><span class="kw">[</span>macos-latest<span class="kw">,</span> ubuntu-latest<span class="kw">,</span> windows-latest<span class="kw">]</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="fu">runs-on:</span><span class="at"> $\{{ matrix.os }}</span></a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="fu">steps:</span></a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Checkout</span></a>
+<a class="sourceLine" id="cb5-14" title="14">      <span class="fu">uses:</span><span class="at"> actions/checkout@v2</span></a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> Install Node.js</span></a>
+<a class="sourceLine" id="cb5-16" title="16">      <span class="fu">uses:</span><span class="at"> actions/setup-node@v1</span></a>
+<a class="sourceLine" id="cb5-17" title="17">      <span class="fu">with:</span></a>
+<a class="sourceLine" id="cb5-18" title="18">        <span class="fu">node-version:</span><span class="at"> 10.x</span></a>
+<a class="sourceLine" id="cb5-19" title="19">    <span class="kw">-</span> <span class="fu">run:</span><span class="at"> npm install</span></a>
+<a class="sourceLine" id="cb5-20" title="20">    <span class="kw">-</span> <span class="fu">run:</span><span class="at"> xvfb-run -a npm test</span></a>
+<a class="sourceLine" id="cb5-21" title="21">      <span class="fu">if:</span><span class="at"> runner.os == &#39;Linux&#39;</span></a>
+<a class="sourceLine" id="cb5-22" title="22">    <span class="kw">-</span> <span class="fu">run:</span><span class="at"> npm test</span></a>
+<a class="sourceLine" id="cb5-23" title="23">      <span class="fu">if:</span><span class="at"> runner.os != &#39;Linux&#39;</span></a></code></pre>
+    </div>
+    <h3 id="github-actions-automated-publishing">GitHub Actions automated publishing</h3>
+    <ol type="1">
+      <li>
+        Set up <code>VSCE_PAT</code> as an encrypted secret using the
+        <a
+          href="https://help.github.com/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository"
+          >GitHub Actions secrets instructions</a
+        >.
+      </li>
+      <li>
+        Install <code>vsce</code> as a <code>devDependencies</code> (<code
+          >npm install vsce --save-dev</code
+        >
+        or <code>yarn add vsce --dev</code>).
+      </li>
+      <li>
+        Declare a <code>deploy</code> script in <code>package.json</code> without the PAT.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;deploy&quot;</span><span class="fu">:</span> <span class="st">&quot;vsce publish --yarn&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ol start="4" type="1">
+      <li>Configure the CI so the build will also run when tags are created:</li>
+    </ol>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">on:</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="fu">push:</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="fu">branches:</span></a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="kw">-</span> master</a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="fu">release:</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="fu">types:</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="kw">-</span> created</a></code></pre>
+    </div>
+    <ol start="5" type="1">
+      <li>
+        Add a <code>publish</code> job to the pipeline that calls
+        <code>npm run deploy</code> with the secret variable.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Publish</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="fu">if:</span><span class="at"> success() &amp;&amp; startsWith( github.ref, &#39;refs/tags/releases/&#39;) &amp;&amp; matrix.os == &#39;ubuntu-latest&#39;</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="fu">run:</span><span class="at"> npm run deploy</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="fu">env:</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="fu">VSCE_PAT:</span><span class="at"> $\{{ secrets.VSCE_PAT }}</span></a></code></pre>
+    </div>
+    <p>
+      The
+      <a
+        href="https://help.github.com/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif"
+        >if</a
+      >
+      property tells the CI to run the publish step only in certain cases.
+    </p>
+    <p>In our example, the condition has three checks:</p>
+    <ul>
+      <li><code>success()</code> - Publish only if the tests pass.</li>
+      <li>
+        <code>startsWith( github.ref, 'refs/tags/releases/')</code> - Publish only if a
+        tagged (release) build.
+      </li>
+      <li>
+        <code>matrix.os == 'ubuntu-latest'</code> - Include if your build runs on multiple
+        agents (Windows, Linux, etc.). If not, remove that part of the condition.
+      </li>
+    </ul>
+    <h2 id="gitlab-ci">GitLab CI</h2>
+    <p>
+      GitLab CI can be used to test and publish the extension in headless Docker containers.
+      This can be done by pulling a preconfigured Docker image, or installing
+      <code>xvfb</code> and the libraries required to run Visual Studio Code during the
+      pipeline.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode yml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">image:</span><span class="at"> node:12-buster</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="fu">before_script:</span></a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="kw">-</span> npm install</a>
+<a class="sourceLine" id="cb9-5" title="5"></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="fu">test:</span></a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="fu">script:</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="kw">    - </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb9-9" title="9">      apt update</a>
+<a class="sourceLine" id="cb9-10" title="10">      apt install -y libasound2 libgbm1 libgtk-3-0 libnss3 xvfb</a>
+<a class="sourceLine" id="cb9-11" title="11">      xvfb-run -a npm run test</a></code></pre>
+    </div>
+    <h3 id="gitlab-ci-automated-publishing">GitLab CI automated publishing</h3>
+    <ol type="1">
+      <li>
+        Set up <code>VSCE_PAT</code> as a masked variable using the
+        <a href="https://docs.gitlab.com/ee/ci/variables/README.html#mask-a-cicd-variable"
+          >GitLab CI documentation</a
+        >.
+      </li>
+      <li>
+        Install <code>vsce</code> as a <code>devDependencies</code> (<code
+          >npm install vsce --save-dev</code
+        >
+        or <code>yarn add vsce --dev</code>).
+      </li>
+      <li>
+        Declare a <code>deploy</code> script in <code>package.json</code> without the PAT.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;deploy&quot;</span><span class="fu">:</span> <span class="st">&quot;vsce publish --yarn&quot;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ol start="4" type="1">
+      <li>
+        Add a <code>deploy</code> job that calls <code>npm run deploy</code> with the masked
+        variable which will only trigger on tags.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">deploy:</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">only:</span></a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="kw">-</span> tags</a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="fu">script:</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="kw">-</span> npm run deploy</a></code></pre>
+    </div>
+    <h2 id="travis-ci">Travis CI</h2>
+    <p>
+      <a href="https://github.com/microsoft/vscode-test">vscode-test</a> also includes a
+      <a href="https://github.com/microsoft/vscode-test/blob/main/.travis.yml"
+        >Travis CI build definition</a
+      >. The way to define environment variables in Travis CI is different from other CI
+      frameworks, so the <code>xvfb</code> script is also different:
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">language:</span><span class="at"> node_js</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="fu">os:</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">-</span> osx</a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="kw">-</span> linux</a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="fu">node_js:</span><span class="at"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb12-6" title="6"></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="fu">install:</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="kw">- </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb12-9" title="9">  if [ $TRAVIS_OS_NAME == &quot;linux&quot; ]; then</a>
+<a class="sourceLine" id="cb12-10" title="10">    export DISPLAY=&#39;:99.0&#39;</a>
+<a class="sourceLine" id="cb12-11" title="11">    /usr/bin/Xvfb :99 -screen 0 1024x768x24 &gt; /dev/null 2&gt;&amp;1 &amp;</a>
+<a class="sourceLine" id="cb12-12" title="12">  fi</a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="fu">script:</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="kw">- </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb12-15" title="15">  echo &quot;&gt;&gt;&gt; Compile vscode-test&quot;</a>
+<a class="sourceLine" id="cb12-16" title="16">  yarn &amp;&amp; yarn compile</a>
+<a class="sourceLine" id="cb12-17" title="17">  echo &quot;&gt;&gt;&gt; Compiled vscode-test&quot;</a>
+<a class="sourceLine" id="cb12-18" title="18">  cd sample</a>
+<a class="sourceLine" id="cb12-19" title="19">  echo &quot;&gt;&gt;&gt; Run sample integration test&quot;</a>
+<a class="sourceLine" id="cb12-20" title="20">  yarn &amp;&amp; yarn compile &amp;&amp; yarn test</a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="fu">cache:</span><span class="at"> yarn</span></a></code></pre>
+    </div>
+    <h3 id="travis-ci-automated-publishing">Travis CI automated publishing</h3>
+    <ol type="1">
+      <li>
+        Set up <code>VSCE_PAT</code> as an encrypted secret using the
+        <a href="https://docs.travis-ci.com/user/encryption-keys/#usage"
+          >Travis CI encryption key usage instructions</a
+        >.
+      </li>
+      <li>
+        Install <code>vsce</code> as a <code>devDependencies</code> (<code
+          >npm install vsce --save-dev</code
+        >
+        or <code>yarn add vsce --dev</code>).
+      </li>
+      <li>
+        Declare a <code>deploy</code> script in <code>package.json</code> without the PAT.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">  <span class="dt">&quot;deploy&quot;</span><span class="fu">:</span> <span class="st">&quot;vsce publish --yarn&quot;</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <ol start="4" type="1">
+      <li>
+        Add an <code>after_script</code> stage to the job that calls
+        <code>npm run deploy</code> with the secret variable.
+      </li>
+    </ol>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode yaml"
+      ><code class="sourceCode yaml"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">after_script:</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">- </span><span class="st">|</span></a>
+<a class="sourceLine" id="cb14-3" title="3">  echo &quot;&gt;&gt;&gt; Publish&quot;</a>
+<a class="sourceLine" id="cb14-4" title="4">  yarn deploy</a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="fu">stages:</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> after_script</span></a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="fu">if:</span><span class="at"> env(TRAVIS_TAG) =~ ^v</span></a></code></pre>
+    </div>
+    <p>
+      The
+      <a
+        href="https://docs.travis-ci.com/user/conditional-builds-stages-jobs#conditional-stages"
+        >stages</a
+      >
+      property tells the CI to include stages when certain conditions are met.
+    </p>
+    <p>In our example, the condition has one check:</p>
+    <ul>
+      <li>
+        <code>env(TRAVIS_TAG) =~ ^v</code> - Publish only if a tagged (release) build that
+        starts with the letter <code>v</code>.
+      </li>
+    </ul>
+    <h2 id="common-questions">Common questions</h2>
+    <h3 id="do-i-need-to-use-yarn-for-continuous-integration">
+      Do I need to use Yarn for continuous integration?
+    </h3>
+    <p>
+      All of the above examples refer to a hypothetical project built with
+      <a href="https://yarnpkg.com/">Yarn</a>, but can be adapted to use
+      <a href="https://www.npmjs.com/">npm</a>, <a href="https://gruntjs.com/">Grunt</a>,
+      <a href="https://gulpjs.com/">Gulp</a>, or any other JavaScript build tool.
+    </p>
+  </body>
+</html>

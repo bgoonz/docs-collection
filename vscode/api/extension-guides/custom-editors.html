@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>custom-editors</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="custom-editor-api">Custom Editor API</h1>
+    <p>
+      Custom editors allow extensions to create fully customizable read/write editors that
+      are used in place of VS Code’s standard text editor for specific types of resources.
+      They have a wide variety of use cases, such as:
+    </p>
+    <ul>
+      <li>Previewing assets, such as shaders or 3D models, directly in VS Code.</li>
+      <li>Creating WYSIWYG editors for languages such as Markdown or XAML.</li>
+      <li>
+        Offering alternative visual renderings for data files such as CSV or JSON or XML.
+      </li>
+      <li>Building fully customizable editing experiences for binary or text files.</li>
+    </ul>
+    <p>
+      This document provides an overview of the custom editor API and the basics of
+      implementing a custom editor. We’ll take a look at the two types of custom editors and
+      how they differ, as well as which one is right for your use case. Then for each of
+      these custom editor types, we’ll cover the basics of building a well behaved custom
+      editor.
+    </p>
+    <p>
+      Although custom editors are a powerful new extension point, implementing a basic
+      custom editor is not actually that difficult! Still, if you are working on your first
+      VS Code extension, you may want to consider holding off on diving into custom editors
+      until you are more familiar with the basics of the VS Code API. Custom editors build
+      on a lot of VS Code concepts—such as
+      <a href="/api/extension-guides/webview">webviews</a> and text documents—so it may be a
+      bit overwhelming if you are learning all of these new ideas at the same time.
+    </p>
+    <p>
+      But if you’re feeling ready and are thinking about all the cool custom editors you are
+      going to build, then let’s get started! Be sure to download the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >
+      so you can follow along with the documentation and see how the custom editor API comes
+      together.
+    </p>
+    <h2 id="links">Links</h2>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+          >Custom Editor Sample</a
+        >
+      </li>
+    </ul>
+    <h3 id="vs-code-api-usage">VS Code API Usage</h3>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#window.registerCustomEditorProvider"
+          ><code>window.registerCustomEditorProvider</code></a
+        >
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#CustomTextEditorProvider"
+          ><code>CustomTextEditorProvider</code></a
+        >
+      </li>
+    </ul>
+    <h2 id="custom-editor-api-basics">Custom Editor API basics</h2>
+    <p>
+      A custom editor is an alternative view that is shown in place of VS Code’s standard
+      text editor for specific resources. There are two parts to a custom editor: the view
+      that users interact with and the document model that your extension uses to interact
+      with the underlying resource.
+    </p>
+    <p>
+      The view side of a custom editor is implemented using a
+      <a href="/api/extension-guides/webview">webview</a>. This lets you build the user
+      interface of your custom editor using standard HTML, CSS, and JavaScript. Webviews
+      cannot access the VS Code API directly but they can talk with extensions by passing
+      messages back and forth. Check out our
+      <a href="/api/extension-guides/webview">webview documentation</a> for more information
+      on webviews and best practices for working with them.
+    </p>
+    <p>
+      The other part of a custom editor is the document model. This model is how your
+      extension understands the resource (file) it is working with. A
+      <code>CustomTextEditorProvider</code> uses VS Code’s standard
+      <a href="/api/references/vscode-api#TextDocument">TextDocument</a> as its document
+      model and all changes to the file are expressed using VS Code’s standard text editing
+      APIs. <code>CustomReadonlyEditorProvider</code> and
+      <code>CustomEditorProvider</code> on the other hand let you provide your own document
+      model, which lets them be used for non-text file formats.
+    </p>
+    <p>
+      Custom editors have a single document model per resource but there may be multiple
+      editor instances (views) of this document. For example, imagine that you open a file
+      that has a <code>CustomTextEditorProvider</code> and then run the
+      <strong>View: Split editor</strong> command. In this case, there is still just a
+      single <code>TextDocument</code> since there is still just a single copy of the
+      resource in the workspace, but there are now two webviews for that resource.
+    </p>
+    <h3 id="customeditor-vs-customtexteditor">
+      <code>CustomEditor</code> vs <code>CustomTextEditor</code>
+    </h3>
+    <p>
+      There are two classes of custom editors: custom text editors and custom editors. The
+      main difference between these is how they define their document model.
+    </p>
+    <p>
+      A <code>CustomTextEditorProvider</code> uses VS Code’s standard
+      <a href="https://code.visualstudio.com/api/references/vscode-api#TextDocument"
+        ><code>TextDocument</code></a
+      >
+      as its data model. You can use a <code>CustomTextEditor</code> for any text based file
+      types. <code>CustomTextEditor</code> are considerably easier to implement because VS
+      Code already know about how to work with text files and can therefore implement
+      operations such as save and backing up files for hot exit.
+    </p>
+    <p>
+      With a <code>CustomEditorProvider</code> on the other hand, your extension brings its
+      own document model. This means that you can use a <code>CustomEditor</code> for binary
+      formats such as images, but it also means that your extension is responsible for a lot
+      more, including implementing save and backing. You can skip over much of this
+      complexity if your custom editor is readonly, such as custom editors for previews.
+    </p>
+    <p>
+      When trying to decide which type of custom editor to use, the decision is usually
+      simple: if you are working with a text based file format use
+      <code>CustomTextEditorProvider</code>, for binary file formats use
+      <code>CustomEditorProvider</code>.
+    </p>
+    <h3 id="contribution-point">Contribution point</h3>
+    <p>
+      The <code>customEditors</code>
+      <a href="/api/references/contribution-points">contribution point</a> is how your
+      extension tells VS Code about the custom editors that it provides. For example, VS
+      Code needs to know what types of files your custom editor works with as well as how to
+      identify your custom editor in any UI.
+    </p>
+    <p>
+      Here’s a basic <code>customEditor</code> contribution for the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">&quot;contributes&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;customEditors&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="dt">&quot;viewType&quot;</span><span class="fu">:</span> <span class="st">&quot;catEdit.catScratch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;Cat Scratch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">      <span class="dt">&quot;selector&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-8" title="8">          <span class="dt">&quot;filenamePattern&quot;</span><span class="fu">:</span> <span class="st">&quot;*.cscratch&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="dt">&quot;priority&quot;</span><span class="fu">:</span> <span class="st">&quot;default&quot;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      <code>customEditors</code> is an array, so your extension can contribute multiple
+      custom editors. Let’s break down the custom editor entry itself:
+    </p>
+    <ul>
+      <li>
+        <p><code>viewType</code> - Unique identifier for your custom editor.</p>
+        <p>
+          This is how VS Code ties a custom editor contribution in the
+          <code>package.json</code> to your custom editor implementation in code. This must
+          be unique across all extensions, so instead of a generic
+          <code>viewType</code> such as <code>"preview"</code> make sure to use one that is
+          unique to your extension, for example
+          <code>"viewType": "myAmazingExtension.svgPreview"</code>
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>displayName</code> - Name that identifies the custom editor in VS Code’s UI.
+        </p>
+        <p>
+          The display name is shown to the user in VS Code UI such as the
+          <strong>View: Reopen with</strong> dropdown.
+        </p>
+      </li>
+      <li>
+        <p><code>selector</code> - Specifies which files a custom editor is active for.</p>
+        <p>
+          The <code>selector</code> is an array of one or more glob patterns. These glob
+          patterns are matched against file names to determine if the custom editor can be
+          used for them. A <code>filenamePattern</code> such as <code>*.png</code> will
+          enable the custom editor for all PNG files.
+        </p>
+        <p>
+          You can also create more specific patterns that match on file or directory names,
+          for example <code>**/translations/*.json</code>.
+        </p>
+      </li>
+      <li>
+        <p><code>priority</code> - (optional) Specifies when the custom editor is used.</p>
+        <p>
+          <code>priority</code> controls when a custom editor is used when a resource is
+          open. Possible values are:
+        </p>
+        <ul>
+          <li>
+            <code>"default"</code> - Try to use the custom editor for every file that
+            matches the custom editor’s <code>selector</code>. If there are multiple custom
+            editors for a given file, the user will have to select which custom editor they
+            want to use.
+          </li>
+          <li>
+            <code>"option"</code> - Do not use the custom editor by default but allow users
+            to switch to it or configure it as their default.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="custom-editor-activation">Custom editor activation</h3>
+    <p>
+      When a user opens one of your custom editors, VS Code fires an
+      <code>onCustomEditor:VIEW_TYPE</code> activation event. During activation, your
+      extension must call <code>registerCustomEditorProvider</code> to register a custom
+      editor with the expected <code>viewType</code>.
+    </p>
+    <p>
+      It’s important to note that <code>onCustomEditor</code> is only called when VS Code
+      needs to create an instance of your custom editor. If VS Code is merely showing the
+      user some information about an available custom editor—such as with the
+      <strong>View: Reopen with</strong> command—your extension will not be activated.
+    </p>
+    <h2 id="custom-text-editor">Custom Text Editor</h2>
+    <p>
+      Custom text editors let you create custom editors for text files. This can be anything
+      from plain unstructured text to
+      <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> to JSON or XML.
+      Custom text editors use VS Code’s standard
+      <a href="/api/references/vscode-api#TextDocument">TextDocument</a> as their document
+      model.
+    </p>
+    <p>
+      The
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >
+      includes a simple example custom text editor for cat scratch files (which are just
+      JSON files that end with a <code>.cscratch</code> file extension). Let’s take a look
+      at some of the important bits of implementing a custom text editor.
+    </p>
+    <h3 id="custom-text-editor-lifecycle">Custom Text Editor lifecycle</h3>
+    <p>
+      VS Code handles the lifecycle of both the view component of custom text editors (the
+      webviews) and the model component (<code>TextDocument</code>). VS Code calls out to
+      your extension when it needs to create a new custom editor instance and cleans up the
+      editor instances and document model when the user closes their tabs.
+    </p>
+    <p>
+      To understand how this all works in practice, let’s work through what happens from an
+      extension’s point of view when a user opens a custom text editor and then when a user
+      closes a custom text editor.
+    </p>
+    <p><strong>Opening a custom text editor</strong></p>
+    <p>
+      Using the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >, here’s what happens when the user first opens a <code>.cscratch</code> file:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          VS Code fires an <code>onCustomEditor:catCustoms.catScratch</code> activation
+          event.
+        </p>
+        <p>
+          This activates our extension if it has not already been activated. During
+          activation, our extension must ensure the extension registers a
+          <code>CustomTextEditorProvider</code> for <code>catCustoms.catScratch</code> by
+          calling <code>registerCustomEditorProvider</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          VS Code then invokes <code>resolveCustomTextEditor</code> on the registered
+          <code>CustomTextEditorProvider</code> for <code>catCustoms.catScratch</code>.
+        </p>
+        <p>
+          This method takes the <code>TextDocument</code> for the resource that is being
+          opened and a <code>WebviewPanel</code>. The extension must fill in the initial
+          HTML contents for this webview panel.
+        </p>
+      </li>
+    </ol>
+    <p>
+      Once <code>resolveCustomTextEditor</code> returns, our custom editor is displayed to
+      the user. What is drawn inside the webview is entirely up to our extension.
+    </p>
+    <p>
+      This same flow happens every time a custom editor is opened, even when you split a
+      custom editor. Every instance of a custom editor has its own
+      <code>WebviewPanel</code>, although multiple custom text editors will share the same
+      <code>TextDocument</code> if they are for the same resource. Remember: think of the
+      <code>TextDocument</code> as being the model for the resource while the webview panels
+      are views of that model.
+    </p>
+    <p><strong>Closing custom text editors</strong></p>
+    <p>
+      When a user closes a custom text editor, VS Code fires the
+      <code>WebviewPanel.onDidDispose</code> event on the <code>WebviewPanel</code>. At this
+      point, your extension should clean up any resources associated with that editor (event
+      subscriptions, file watchers, etc.)
+    </p>
+    <p>
+      When the last custom editor for a given resource is closed, the
+      <code>TextDocument</code> for that resource will also be disposed provided there are
+      no other editors using it and no other extensions are holding onto it. You can check
+      the <code>TextDocument.isClosed</code> property to see if the
+      <code>TextDocument</code> has been closed. Once a <code>TextDocument</code> is closed,
+      opening the same resource using a custom editor will cause a new
+      <code>TextDocument</code> to be opened.
+    </p>
+    <h3 id="synchronizing-changes-with-the-textdocument">
+      Synchronizing changes with the TextDocument
+    </h3>
+    <p>
+      Since custom text editors use a <code>TextDocument</code> as their document model,
+      they are responsible for updating the <code>TextDocument</code> whenever an edit
+      occurs in a custom editor as well as updating themselves whenever the
+      <code>TextDocument</code> changes.
+    </p>
+    <p>
+      <strong>From webview to <code>TextDocument</code></strong>
+    </p>
+    <p>
+      Edits in custom text editors can take many different forms—clicking a button, changing
+      some text, dragging some items around. Whenever a user edits the file itself inside
+      the custom text editor, the extension must update the <code>TextDocument</code>.
+      Here’s how the cat scratch extension implements this:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          User clicks the <strong>Add scratch</strong> button in the webview. This
+          <a href="/api/extension-guides/webview#scripts-and-message-passing"
+            >posts a message</a
+          >
+          from the webview back to the extension.
+        </p>
+      </li>
+      <li>
+        <p>
+          The extension receives the message. It then updates its internal model of the
+          document (which in the cat scratch example just consists of adding a new entry to
+          the JSON).
+        </p>
+      </li>
+      <li>
+        <p>
+          The extension creates a <code>WorkspaceEdit</code> that writes the updated JSON to
+          the document. This edit is applied using <code>vscode.workspace.applyEdit</code>.
+        </p>
+      </li>
+    </ol>
+    <p>
+      Try to keep your workspace edit to the minimal change required to update the document.
+      Also keep in mind that if you are working with a language such as JSON, your extension
+      should try to observe the user’s existing formatting conventions (spaces vs tabs,
+      indent size, etc.).
+    </p>
+    <p>
+      <strong>From <code>TextDocument</code> to webviews</strong>
+    </p>
+    <p>
+      When a <code>TextDocument</code> changes, your extension also needs to make sure its
+      webviews reflect the documents new state. TextDocuments can be changed by user actions
+      such as undo, redo, or revert file; by other extensions using a
+      <code>WorkspaceEdit</code>; or by a user who opens the file in VS Code’s default text
+      editor. Here’s how the cat scratch extension implements this:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          In the extension, we subscribe to the
+          <code>vscode.workspace.onDidChangeTextDocument</code> event. This event is fired
+          for every change to the <code>TextDocument</code> (including changes that our
+          custom editor makes!)
+        </p>
+      </li>
+      <li>
+        <p>
+          When a change comes in for a document that we have an editor for, we post a
+          message to the webview with its new document state. This webview then updates
+          itself to render the updated document.
+        </p>
+      </li>
+    </ol>
+    <p>
+      It’s important to remember that any file edits that a custom editor triggers will
+      cause <code>onDidChangeTextDocument</code> to fire. Make sure your extension does not
+      get into an update loop where the user makes an edit in the webview, which fires
+      onDidChangeTextDocument, which causes the webview to update, which causes the webview
+      to trigger another update on your extension, which fires
+      <code>onDidChangeTextDocument</code>, and so on.
+    </p>
+    <p>
+      Also remember that if you are working with a structured language such as JSON or XML,
+      the document may not always be in a valid state. Your extension must either be able
+      gracefully handle errors or display an error message to the user so that they
+      understand what is wrong and how to fix it.
+    </p>
+    <p>
+      Finally, if updating your webviews is expensive, consider
+      <a href="https://davidwalsh.name/javascript-debounce-function">debouncing</a> the
+      updates to your webview.
+    </p>
+    <h2 id="custom-editor">Custom Editor</h2>
+    <p>
+      <code>CustomEditorProvider</code> and <code>CustomReadonlyEditorProvider</code> let
+      you create custom editors for binary file formats. This API gives your full control
+      over the file is displayed to users, how edits are made to it, and lets your extension
+      hook into <code>save</code> and other file operations. Again, if you are building an
+      editor for a text based file format, strongly consider using a
+      <a href="#custom-text-editor"><code>CustomTextEditor</code></a> instead as they are
+      far simpler to implement.
+    </p>
+    <p>
+      The
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >
+      includes a simple example custom binary editor for paw draw files (which are just jpeg
+      files that end with a <code>.pawdraw</code> file extension). Let’s take a look at what
+      goes into building a custom editor for binary files.
+    </p>
+    <h3 id="customdocument">CustomDocument</h3>
+    <p>
+      With custom editors, your extension is responsible for implementing its own document
+      model with the <code>CustomDocument</code> interface. This leaves your extension free
+      to store whatever data it needs on a <code>CustomDocument</code> in order to your
+      custom editor, but it also means that your extension must implement basic document
+      operations such as saving and backing up file data for hot exit.
+    </p>
+    <p>
+      There is one <code>CustomDocument</code> per opened file. Users can open multiple
+      editors for a single resource—such as by splitting the current custom editor—but all
+      those editors will be backed by the same <code>CustomDocument</code>.
+    </p>
+    <h3 id="custom-editor-lifecycle">Custom Editor lifecycle</h3>
+    <p><strong>supportsMultipleEditorsPerDocument</strong></p>
+    <p>
+      By default, VS Code only allows there to be one editor for each custom document. This
+      limitation makes it easier to correctly implement a custom editor as you do not have
+      to worry about synchronizing multiple custom editor instances with each other.
+    </p>
+    <p>
+      If your extension can support it however, we recommend setting
+      <code>supportsMultipleEditorsPerDocument: true</code> when registering your custom
+      editor so that multiple editor instances can be opened for the same document. This
+      will make your custom editors behave more like VS Code’s normal text editors.
+    </p>
+    <p>
+      <strong>Opening Custom Editors</strong> When the user opens a file that matches the
+      <code>customEditor</code> contribution point, VS Code fires an
+      <code>onCustomEditor</code>
+      <a href="/api/references/activation-events">activation event</a> and then invokes the
+      provider registered for the provided view type. A
+      <code>CustomEditorProvider</code> has two roles: providing the document for the custom
+      editor and then providing the editor itself. Here’s a ordered list of what happens for
+      the <code>catCustoms.pawDraw</code> editor from the
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/custom-editor-sample"
+        >custom editor extension sample</a
+      >:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          VS Code fires an <code>onCustomEditor:catCustoms.pawDraw</code> activation event.
+        </p>
+        <p>
+          This activates our extension if it has not already been activated. We must also
+          make sure our extension registers a <code>CustomReadonlyEditorProvider</code> or
+          <code>CustomEditorProvider</code> for <code>catCustoms.pawDraw</code> during
+          activation.
+        </p>
+      </li>
+      <li>
+        <p>
+          VS Code calls <code>openCustomDocument</code> on our
+          <code>CustomReadonlyEditorProvider</code> or
+          <code>CustomEditorProvider</code> registered for
+          <code>catCustoms.pawDraw</code> editors.
+        </p>
+        <p>
+          Here our extension is given a resource uri and must return a new
+          <code>CustomDocument</code> for that resource. This is the point at which our
+          extension should create its document internal model for that resource. This may
+          involve reading and parsing the initial resource state from disk or initializing
+          our new <code>CustomDocument</code>.
+        </p>
+        <p>
+          Our extension can define this model by creating a new class that implements
+          <code>CustomDocument</code>. Remember that this initialization stage is entirely
+          up to extensions; VS Code does not care about any additional information
+          extensions store on a <code>CustomDocument</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          VS Code calls <code>resolveCustomEditor</code> with the
+          <code>CustomDocument</code> from step 2 and a new <code>WebviewPanel</code>.
+        </p>
+        <p>
+          Here our extension must fill in the initial html for the custom editor. If we
+          need, we can also hold onto a reference to the <code>WebviewPanel</code> so that
+          we can reference it later, for example inside commands.
+        </p>
+      </li>
+    </ol>
+    <p>
+      Once <code>resolveCustomEditor</code> returns, our custom editor is displayed to the
+      user.
+    </p>
+    <p>
+      If the user opens the same resource in another editor group using our custom
+      editor—for example by splitting the first editor—the extension’s job is simplified. In
+      this case, VS Code just calls <code>resolveCustomEditor</code> with the same
+      <code>CustomDocument</code> we created when the first editor was opened.
+    </p>
+    <p><strong>Closing Custom Editors</strong></p>
+    <p>
+      Say we have two instance of our custom editors open for the same resource. When the
+      user closes these editors, VS Code signals our extension so that it can clean up any
+      resources associated with the editor.
+    </p>
+    <p>
+      When the first editor instance is closed, VS Code fires the
+      <code>WebviewPanel.onDidDispose</code> event on the <code>WebviewPanel</code> from the
+      closed editor. At this point, our extension must clean up any resources associated
+      with that specific editor instance.
+    </p>
+    <p>
+      When the second editor is closed, VS Code again fires
+      <code>WebviewPanel.onDidDispose</code>. However now we’ve also closed all the editors
+      associated with the <code>CustomDocument</code>. When there are no more editors for a
+      <code>CustomDocument</code>, VS Code calls the <code>CustomDocument.dispose</code> on
+      it. Our extension’s implementation of <code>dispose</code> must clean up any resources
+      associated with the document.
+    </p>
+    <p>
+      If the user then reopens the same resource using our custom editor, we will go back
+      through the whole <code>openCustomDocument</code>,
+      <code>resolveCustomEditor</code> flow with a new <code>CustomDocument</code>.
+    </p>
+    <h3 id="readonly-custom-editors">Readonly Custom editors</h3>
+    <p>
+      Many of the following sections only apply to custom editors that support editing and,
+      while it may sound paradoxical, many custom editors don’t require editing capabilities
+      at all. Consider a image preview for example. Or a visual rendering of a memory dump.
+      Both can be implemented using custom editors but neither need to be editable. That’s
+      where <code>CustomReadonlyEditorProvider</code> comes in.
+    </p>
+    <p>
+      A <code>CustomReadonlyEditorProvider</code> lets you create custom editors that do not
+      support editing. They can still be interactive but don’t support operations such as
+      undo and save. It is also much simpler to implement a readonly custom editor compared
+      to a fully editable one.
+    </p>
+    <h3 id="editable-custom-editor-basics">Editable Custom Editor Basics</h3>
+    <p>
+      Editable custom editors let you hook in to standard VS Code operations such as undo
+      and redo, save, and hot exit. This makes editable custom editors very powerful, but
+      also means that properly implementing is much more complex than implementing an
+      editable custom text editor or a readonly custom editor.
+    </p>
+    <p>
+      Editable custom editors are implemented by <code>CustomEditorProvider</code>. This
+      interface extends <code>CustomReadonlyEditorProvider</code>, so you’ll have to
+      implement basic operations such as <code>openCustomDocument</code> and
+      <code>resolveCustomEditor</code>, along with a set of editing specific operations.
+      Let’s take a look at the editing specific parts of <code>CustomEditorProvider</code>.
+    </p>
+    <p><strong>Edits</strong></p>
+    <p>
+      Changes to a editable custom document are expressed through edits. An edit can be
+      anything from a text change, to an image rotation, to reordering a list. VS Code
+      leaves the specifics of what an edit does entirely up to your extension, but VS Code
+      does need to know when an edit takes places. Editing is how VS Code marks documents as
+      dirty, which in turn enables auto save and back ups.
+    </p>
+    <p>
+      Whenever a user makes an edit in any of the webviews for your custom editor, your
+      extension must fire a <code>onDidChangeCustomDocument</code> event from its
+      <code>CustomEditorProvider</code>. The <code>onDidChangeCustomDocument</code> event
+      can fired two event types depending on your custom editor implementation:
+      <code>CustomDocumentContentChangeEvent</code> and
+      <code>CustomDocumentEditEvent</code>.
+    </p>
+    <p><strong>CustomDocumentContentChangeEvent</strong></p>
+    <p>
+      A <code>CustomDocumentContentChangeEvent</code> is a bare-bones edit. It’s only
+      function is to tell VS Code that a document has been edited.
+    </p>
+    <p>
+      When an extension fires a <code>CustomDocumentContentChangeEvent</code> from
+      <code>onDidChangeCustomDocument</code>, VS Code will mark the associated document as
+      being dirty. At this point, the only way for the document to become non-dirty is for
+      the user to either save or revert it. Custom editors that use
+      <code>CustomDocumentContentChangeEvent</code> do not support undo/redo.
+    </p>
+    <p><strong>CustomDocumentEditEvent</strong></p>
+    <p>
+      A <code>CustomDocumentEditEvent</code> is a more complex edit that allows for
+      undo/redo. You should always try to implement your custom editor using
+      <code>CustomDocumentEditEvent</code> and only fallback to using
+      <code>CustomDocumentContentChangeEvent</code> if implementing undo/redo is not
+      possible.
+    </p>
+    <p>A <code>CustomDocumentEditEvent</code> has the following fields:</p>
+    <ul>
+      <li><code>document</code> — The <code>CustomDocument</code> the edit was for.</li>
+      <li>
+        <code>label</code> — Optional text that that describes what type of edit was made
+        (for example: “Crop”, “Insert”, …)
+      </li>
+      <li>
+        <code>undo</code> — Function invoked by VS Code when the edit needs to be undone.
+      </li>
+      <li>
+        <code>redo</code> — Function invoked by VS Code when the edits needs to be redone.
+      </li>
+    </ul>
+    <p>
+      When an extension fires a <code>CustomDocumentEditEvent</code> from
+      <code>onDidChangeCustomDocument</code>, VS Code marks the associated document as being
+      dirty. To make the document no longer dirty, a user can then either save or revert the
+      document, or undo/redo back to the document’s last saved state.
+    </p>
+    <p>
+      The <code>undo</code> and <code>redo</code> methods on an editor are called by VS Code
+      when that specific edits needs to be undone or reapplied. VS Code maintains an
+      internal stack of edits, so if your extension fires
+      <code>onDidChangeCustomDocument</code> with three edits, let’s call them
+      <code>a</code>, <code>b</code>, <code>c</code>:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">onDidChangeCustomDocument</span>(a)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="fu">onDidChangeCustomDocument</span>(b)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="fu">onDidChangeCustomDocument</span>(c)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>The following sequence of user actions results in these calls:</p>
+    <pre><code>undo — c.undo()
+undo — b.undo()
+redo — b.redo()
+redo — c.redo()
+redo — no op, no more edits</code></pre>
+    <p>
+      To implement undo/redo, your extension must update it’s associated custom document’s
+      internal state, as well as updating all associated webviews for the document so that
+      they reflect the document’s new state. Keep in mind that there may be multiple
+      webviews for a single resource. These must always show the same document data.
+      Multiple instances of an image editor for example must always show the same pixel data
+      but may allow each editor instance to have its own zoom level and UI state.
+    </p>
+    <h3 id="saving">Saving</h3>
+    <p>
+      When a user saves a custom editor, your extension is responsible for writing the saved
+      resource in its current state to disk. How your custom editor does this depends
+      largely on your extension’s <code>CustomDocument</code> type and how your extension
+      tracks edits internally.
+    </p>
+    <p>
+      The first step to saving is getting the data stream to write to disk. Common
+      approaches to this include:
+    </p>
+    <ul>
+      <li>
+        <p>Track the resource’s state so that it can be quickly serialized.</p>
+        <p>A basic image editor for example may maintain a buffer of pixel data.</p>
+      </li>
+      <li>
+        <p>Replay edit since the last save to generate the new file.</p>
+        <p>
+          A more efficient image editor for example might track the edits since the last
+          save, such as <code>crop</code>, <code>rotate</code>, <code>scale</code>. On save,
+          it would then apply these edits to file’s last saved state to generate the new
+          file.
+        </p>
+      </li>
+      <li>
+        <p>Ask a <code>WebviewPanel</code> for the custom editor for file data to save.</p>
+        <p>
+          Keep in mind though that custom editors can be saved even when they are not
+          visible. For this reason, it is recommended that that your extension’s
+          implementation of <code>save</code> does not depend on a
+          <code>WebviewPanel</code>. If this is not possible, you can use the
+          <code>WebviewPanelOptions.retainContextWhenHidden</code> setting so that the
+          webview stays alive even when it is hidden.
+          <code>retainContextWhenHidden</code> does have significant memory overhead so be
+          conservative about using it.
+        </p>
+      </li>
+    </ul>
+    <p>
+      After getting the data for the resource, you generally should use the
+      <a href="https://code.visualstudio.com/api/references/vscode-api#FileSystem"
+        >workspace FS api</a
+      >
+      to write it to disk. The FS APIs take a <code>UInt8Array</code> of data and can write
+      out both binary and text based files. For binary file data, simply put the binary data
+      into the <code>UInt8Array</code>. For text file data, use <code>Buffer</code> to
+      convert a string into a <code>UInt8Array</code>:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> writeData <span class="op">=</span> <span class="bu">Buffer</span><span class="op">.</span><span class="fu">from</span>(<span class="st">&quot;my text data&quot;</span><span class="op">,</span> <span class="st">&#39;utf8&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="va">fs</span><span class="op">.</span><span class="fu">writeFile</span>(fileUri<span class="op">,</span> writeData)<span class="op">;</span></a></code></pre>
+    </div>
+    <h2 id="next-steps">Next steps</h2>
+    <p>If you’d like to learn more about VS Code extensibility, try these topics:</p>
+    <ul>
+      <li>
+        <a href="/api">Extension API</a> - Learn about the full VS Code Extension API.
+      </li>
+      <li>
+        <a href="/api/extension-capabilities/overview">Extension Capabilities</a> - Take a
+        look at other ways to extend VS Code.
+      </li>
+    </ul>
+  </body>
+</html>

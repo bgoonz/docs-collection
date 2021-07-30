@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>virtual-documents</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="virtual-documents">Virtual Documents</h1>
+    <p>
+      The text document content provider API allows you to create readonly documents in
+      Visual Studio Code from arbitrary sources. You can find a sample extension with source
+      code at:
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/virtual-document-sample/README.md"
+        >https://github.com/microsoft/vscode-extension-samples/blob/main/virtual-document-sample/README.md</a
+      >.
+    </p>
+    <h2 id="textdocumentcontentprovider">TextDocumentContentProvider</h2>
+    <p>
+      The API works by claiming an uri-scheme for which your provider then returns text
+      contents. The scheme must be provided when registering a provider and cannot change
+      afterwards. The same provider can be used for multiple schemes and multiple providers
+      can be registered for a single scheme.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="fu">registerTextDocumentContentProvider</span>(myScheme<span class="op">,</span> myProvider)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Calling <code>registerTextDocumentContentProvider</code> returns a disposable with
+      which the registration can be undone. A provider must only implement the
+      <code>provideTextDocumentContent</code>-function which is called with an uri and
+      cancellation token.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">const</span> myProvider <span class="op">=</span> <span class="kw">new</span> <span class="kw">class</span> <span class="kw">implements</span> <span class="va">vscode</span><span class="op">.</span><span class="at">TextDocumentContentProvider</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">provideTextDocumentContent</span>(uri<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">Uri</span>)<span class="op">:</span> <span class="dt">string</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="co">// invoke cowsay, use uri-path as text</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="cf">return</span> <span class="va">cowsay</span><span class="op">.</span><span class="fu">say</span>(<span class="op">{</span> text<span class="op">:</span> <span class="va">uri</span><span class="op">.</span><span class="at">path</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      Note how the provider doesn’t create uris for virtual documents - its role is to
+      <strong>provide</strong> contents given such an uri. In return, content providers are
+      wired into the open document logic so that providers are always considered.
+    </p>
+    <p>
+      This sample uses a ‘cowsay’-command that crafts an uri which the editor should then
+      show:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;cowsay.say&#39;</span><span class="op">,</span> <span class="fu">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">let</span> what <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInputBox</span>(<span class="op">{</span> placeHolder<span class="op">:</span> <span class="st">&#39;cow say?&#39;</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="fu">if</span> (what) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="kw">let</span> uri <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">parse</span>(<span class="st">&#39;cowsay:&#39;</span> <span class="op">+</span> what)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="kw">let</span> doc <span class="op">=</span> <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="fu">openTextDocument</span>(uri)<span class="op">;</span> <span class="co">// calls back into the provider</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showTextDocument</span>(doc<span class="op">,</span> <span class="op">{</span> preview<span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The command prompts for input, creates an uri of the <code>cowsay</code>-scheme, opens
+      a document for the uri, and finally opens an editor for that document. In step 3,
+      opening the document, the provider is being asked to provide contents for that uri.
+    </p>
+    <p>
+      With this we have a fully functional text document content provider. The next sections
+      describe how virtual documents can be updated and how UI commands can be registered
+      for virtual documents.
+    </p>
+    <h3 id="update-virtual-documents">Update Virtual Documents</h3>
+    <p>
+      Depending on the scenario virtual documents might change. To support that, providers
+      can implement a <code>onDidChange</code>-event.
+    </p>
+    <p>
+      The <code>vscode.Event</code>-type defines the contract for eventing in VS Code. The
+      easiest way to implement an event is <code>vscode.EventEmitter</code>, like so:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">const</span> myProvider <span class="op">=</span> <span class="kw">new</span> <span class="kw">class</span> <span class="kw">implements</span> <span class="va">vscode</span><span class="op">.</span><span class="at">TextDocumentContentProvider</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="co">// emitter and its event</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  onDidChangeEmitter <span class="op">=</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">EventEmitter</span><span class="op">&lt;</span><span class="va">vscode</span><span class="op">.</span><span class="at">Uri</span><span class="op">&gt;</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-4" title="4">  onDidChange <span class="op">=</span> <span class="va">this</span><span class="op">.</span><span class="va">onDidChangeEmitter</span><span class="op">.</span><span class="at">event</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"></a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="co">//...</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      The event emitter has a <code>fire</code> method which is can be used to notify VS
+      Code when a change has happened in a document. The document which has changed is
+      identified by its uri given as argument to the <code>fire</code> method. The provider
+      will then be called again to provide the updated content, assuming the document is
+      still open.
+    </p>
+    <p>
+      That’s all what’s needed to make VS Code listen for changes of virtual document. To
+      see a more complex example making use of this feature, look at:
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/blob/main/contentprovider-sample/README.md"
+        >https://github.com/microsoft/vscode-extension-samples/blob/main/contentprovider-sample/README.md</a
+      >.
+    </p>
+    <h3 id="add-editor-commands">Add Editor Commands</h3>
+    <p>
+      Editor actions can be added which only interact with documents provided by an
+      associated content provider. This is a sample command that reverses what the cow just
+      said:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// register a command that updates the current cowsay</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;cowsay.backwards&#39;</span><span class="op">,</span> <span class="fu">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="fu">if</span> (<span class="op">!</span><span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="at">activeTextEditor</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="cf">return</span><span class="op">;</span> <span class="co">// no editor</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="kw">let</span> <span class="op">{</span> <span class="bu">document</span> <span class="op">}</span> <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="at">activeTextEditor</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="fu">if</span> (<span class="bu">document</span><span class="op">.</span><span class="va">uri</span><span class="op">.</span><span class="at">scheme</span> <span class="op">!==</span> myScheme) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-9" title="9">      <span class="cf">return</span><span class="op">;</span> <span class="co">// not my scheme</span></a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="co">// get path-components, reverse it, and create a new uri</span></a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="kw">let</span> say <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="va">uri</span><span class="op">.</span><span class="at">path</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="kw">let</span> newSay <span class="op">=</span> say</a>
+<a class="sourceLine" id="cb5-14" title="14">      .<span class="fu">split</span>(<span class="st">&#39;&#39;</span>)</a>
+<a class="sourceLine" id="cb5-15" title="15">      .<span class="fu">reverse</span>()</a>
+<a class="sourceLine" id="cb5-16" title="16">      .<span class="fu">join</span>(<span class="st">&#39;&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="kw">let</span> newUri <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="va">uri</span><span class="op">.</span><span class="fu">with</span>(<span class="op">{</span> path<span class="op">:</span> newSay <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-18" title="18">    <span class="cf">await</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showTextDocument</span>(newUri<span class="op">,</span> <span class="op">{</span> preview<span class="op">:</span> <span class="kw">false</span> <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-19" title="19">  <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-20" title="20">)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The snippet above checks that we have an active editor and that its document is one of
+      our scheme. These checks are needed because commands are available (and executable) to
+      everyone. Then the path-component of the uri is reversed and a new uri is created from
+      it, last an editor is opened.
+    </p>
+    <p>
+      To top things with an editor command a declarative part in
+      <code>package.json</code> is needed. In the <code>contributes</code>-section add this
+      config:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="er">&quot;menus&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;editor/title&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-4" title="4">      <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;cowsay.backwards&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-5" title="5">      <span class="dt">&quot;group&quot;</span><span class="fu">:</span> <span class="st">&quot;navigation&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="dt">&quot;when&quot;</span><span class="fu">:</span> <span class="st">&quot;resourceScheme == cowsay&quot;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      This references the <code>cowsay.backwards</code>-command that defined in the
+      <code>contributes/commands</code>-section and says it should appear in the editor
+      title menu (the toolbar in the upper right corner). Now, just that would mean the
+      command always shows, for every editor. That’s what the <code>when</code>-clause is
+      used for - it describes what condition must be true to show the action. In this sample
+      it states that the scheme of the document in the editor must be the
+      <code>cowsay</code>-scheme. The configuration is then repeated for the
+      <code>commandPalette</code>-menu - it shows all commands by default.
+    </p>
+    <figure>
+      <img src="images/virtual-documents/cowsay-bwd.png" alt="cowsay-bwd" />
+      <figcaption>cowsay-bwd</figcaption>
+    </figure>
+    <h3 id="events-and-visibility">Events and Visibility</h3>
+    <p>
+      Document providers are first class citizens in VS Code, their contents appears in
+      regular text documents, they use the same infrastructure as files etc. However, that
+      also means that “your” documents cannot hide, they will appear in
+      <code>onDidOpenTextDocument</code> and <code>onDidCloseTextDocument</code>-events,
+      they are part of <code>vscode.workspace.textDocuments</code> and more. The rule for
+      everyone is check the <code>scheme</code> of documents and then decide if you want to
+      do something with/for the document.
+    </p>
+    <h3 id="file-system-api">File System API</h3>
+    <p>
+      If you need more flexibility and power take a look at the
+      <a href="/api/references/vscode-api#FileSystemProvider"
+        ><code>FileSystemProvider</code></a
+      >
+      API. It allows to implement a full file system, having files, folders, binary data,
+      file-deletion, creation and more.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>github-issues-integration</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="introducing-github-issues-integration">
+      Introducing GitHub Issues Integration
+    </h1>
+    <p>
+      May 6, 2020 by Alex Ross,
+      <span class="citation" data-cites="alexr00">[@alexr00]</span
+      >(https://github.com/alexr00/)
+    </p>
+    <p>
+      On the Visual Studio Code team, we use GitHub
+      <a href="https://github.com/microsoft/vscode/issues">issues</a> to track
+      all of our work. From our detailed
+      <a
+        href="https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Aiteration-plan"
+        >iteration plans</a
+      >
+      to individual bugs, we track everything as GitHub issues. Given how
+      important issues are to our team and other GitHub projects, we wanted to
+      add GitHub issues integration to VS Code. This addition complemented the
+      GitHub Pull Request work we
+      <a
+        href="https://code.visualstudio.com/blogs/2018/09/10/introducing-github-pullrequests"
+        >announced</a
+      >
+      over a year ago. Starting with VS Code version 1.45, this new support to
+      move the issues and source code closer together will be available in the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github"
+        >GitHub Pull Requests and Issues</a
+      >
+      extension (formerly named GitHub Pull Requests).
+    </p>
+    <h2 id="our-integration-approach">Our integration approach</h2>
+    <p>
+      Issues and pull requests often go hand in hand, so including them in the
+      same
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github"
+        >GitHub Pull Requests and Issues</a
+      >
+      extension was a logical step as much of the same
+      <a href="https://developer.github.com/v4/">GitHub API</a> is needed for
+      both issues and pull requests. We did not want to add GitHub functionality
+      directly to the core VS Code editor because there are many source control
+      options. Instead, we will recommend the extension when we detect that a
+      user’s open repository uses GitHub. By working with our own
+      <a href="https://code.visualstudio.com/api/references/vscode-api"
+        >extension API</a
+      >, we ensure the API has the features that extension authors need, and
+      other repository providers can implement similar integration.
+    </p>
+    <p>
+      It was important that we not prescribe overly specific workflows. Instead,
+      our goal was to bring issues into the inner development loop in a flexible
+      way. For example, giving more context for an issue in a code comment is
+      part of that goal, but adding full issue management into VS Code doesn’t
+      fit as well. We don’t want to reinvent UI that GitHub already does well.
+      We <strong>do</strong> want to make connections that aren’t already there.
+    </p>
+    <h2 id="issues-in-the-code-context">Issues in the code context</h2>
+    <p>
+      Linking to issues in source code is a normal part of our workflow,
+      especially when there’s some logic that’s difficult to understand or when
+      there’s a //TODO comment that needs action. If you do a
+      <a
+        href="https://github.com/microsoft/vscode/search?q=%22Microsoft%2Fvscode%2Fissues%22"
+        >search for issue references</a
+      >
+      in the VS Code repo, you’ll see plenty of issues mentioned. While linking
+      gives a pointer to more information, to actually learn more you need to
+      leave the editor. Now, by gaining this issue context through hovers, you
+      don’t need to break your flow to learn more.
+    </p>
+    <figure>
+      <img src="issue-hover.png" alt="Issue Hover" />
+      <figcaption>Issue Hover</figcaption>
+    </figure>
+    <p>
+      Issue hovers work on full issue URLs, issue comment URLs, issues
+      referenced by number (<code>#1234</code>), and issues referenced by
+      <code>owner/repository#1234</code> (for example
+      <code>Microsoft/vscode#1234</code>). We also often reference users in our
+      codebase. The VS Code
+      <a
+        href="https://github.com/microsoft/vscode/blob/d8317abc50e347d76fd471f5a070996cc7f73e20/src/vs/vscode.proposed.d.ts"
+        >proposed API</a
+      >
+      has many developer references to make it obvious who’s responsible for the
+      proposals.
+    </p>
+    <figure>
+      <img src="user-hover.png" alt="User Hover" />
+      <figcaption>User Hover</figcaption>
+    </figure>
+    <p>
+      Issue context is typically needed in commit messages to reference an issue
+      the commit resolves, within source code files, and in Markdown (such as a
+      changelog). To easily add this context, we have added completion
+      suggestions for issues and users. In the Git commit textbox, you can
+      format your issue completion with the
+      <code>githubIssues.issueCompletionFormatScm</code> setting. In Markdown
+      files, issues complete as a Markdown link, and in other files, issues
+      complete as a simple issue number (<code>#1234</code>).
+    </p>
+    <figure>
+      <img src="completion-suggestions.gif" alt="Completion Suggestions" />
+      <figcaption>Completion Suggestions</figcaption>
+    </figure>
+    <p>
+      The list of possible issues is configurable with the setting
+      <code>githubIssues.queries</code>, so if you work across multiple
+      repositories, you can include queries for those issues. The queries use
+      the
+      <a href="https://help.github.com/articles/understanding-the-search-syntax"
+        >GitHub search syntax</a
+      >. The list of users includes the collaborators in the currently open
+      repository.
+    </p>
+    <figure>
+      <img src="issue-queries.png" alt="Issue Queries" />
+      <figcaption>Issue Queries</figcaption>
+    </figure>
+    <h2 id="creating-an-issue-from-anywhere">
+      Creating an issue from anywhere
+    </h2>
+    <p>
+      When we find a bug in VS Code while working on some source code, we create
+      an issue and assign it to whoever owns that area. Or, if the finder of the
+      bug is also the owner, we’ll often leave a //TODO comment as a reminder to
+      come back to it. Having //TODOs scattered throughout the codebase is hard
+      to keep track of when you have many contributors (though it’s safe to say
+      that we’ve all done it), but creating an issue and referencing it in the
+      //TODO is trackable. To reduce the barrier and context loss when creating
+      an issue while you’re deep in the source, there are a few new ways to
+      create issues:
+    </p>
+    <p>
+      From a //TODO comment (configurable with
+      <code>githubIssues.createIssueTriggers</code>), you can create and assign
+      an issue without leaving VS Code.
+    </p>
+    <figure>
+      <img src="create-from-todo.gif" alt="Create Issue from TODO" />
+      <figcaption>Create Issue from TODO</figcaption>
+    </figure>
+    <p>
+      And from a selection, you can quickly create an issue with a permalink
+      back to the source code where it originated, using the
+      <strong>GitHub Issues: Create Issue from Selection</strong> command. If
+      you just need a pointer to some code, you can also use the
+      <strong>GitHub Issues: Copy GitHub Permalink</strong> command. Finally, if
+      there is failure information in the terminal, you can just copy the output
+      to the clipboard and create an issue using
+      <strong>GitHub Issues: Create Issue from Clipboard</strong>.
+    </p>
+    <h2 id="working-on-issues">Working on issues</h2>
+    <p>
+      A common workflow is to look at your issues, pick one to work on, create a
+      branch to work in, make some commits, then merge your changes back into
+      main with a pull request. From the new <strong>Issues</strong> view, you
+      can do exactly that.
+    </p>
+    <figure>
+      <img src="work-on-issue.gif" alt="Work on an Issue" />
+      <figcaption>Work on an Issue</figcaption>
+    </figure>
+    <p>
+      To fit more workflows, there are several options you can configure. If
+      your flow doesn’t involve creating a topic branch, you can disable the
+      branch creation with <code>githubIssues.useBranchForIssues</code>. If you
+      have a different naming scheme for your branches, you can use the
+      <code>githubIssues.issueBranchTitle</code> setting. The issues listed in
+      the <strong>Issues</strong> view can be configured to use a custom query
+      with <code>githubIssues.queries</code>.
+    </p>
+    <h2 id="want-to-learn-more">Want to learn more?</h2>
+    <p>
+      You can watch this
+      <strong>What every GitHub user should know about VS Code</strong> talk
+      from <a href="https://githubsatellite.com">GitHub Satellite</a> by Sana
+      Ajani,
+      <span class="citation" data-cites="sana_ajani">[@sana_ajani]</span
+      >(https://twitter.com/sana_ajani), and Burke Holland,
+      <span class="citation" data-cites="burkeholland">[@burkeholland]</span
+      >(https://twitter.com/burkeholland).
+    </p>
+    <iframe
+      src="https://www.youtube.com/embed/T6sW1Dk9B4E?rel=0&amp;disablekb=0&amp;modestbranding=1&amp;showinfo=0"
+      frameborder="0"
+      allowfullscreen
+    >
+    </iframe>
+    <hr />
+    <p>
+      You can also read the
+      <a href="/docs/editor/github.md">Working with GitHub</a> topic, which
+      describes VS Code’s GitHub integration in more detail.
+    </p>
+    <h2 id="going-forward">Going forward</h2>
+    <p>
+      Currently, most of these features are only supported in repository clones
+      (not forks), so there is more work to be done to support that and other
+      use cases. We would love to see your feedback for this extension, so feel
+      free to leave us a suggestion in the issues in the extension
+      <a href="https://github.com/microsoft/vscode-pull-request-github/issues"
+        >repo</a
+      >!
+    </p>
+    <p>Happy Coding!</p>
+    <p>
+      Alex Ross, VS Code developer
+      <span class="citation" data-cites="alexr00">[@alexr00]</span
+      >(https://github.com/alexr00)
+    </p>
+  </body>
+</html>

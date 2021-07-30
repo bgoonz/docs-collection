@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>notebook</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="notebook-api">Notebook API</h1>
+    <p>
+      The Notebook API allows Visual Studio Code extensions to open files as notebooks,
+      execute notebook code cells, and render notebook outputs in a variety of rich and
+      interactive formats. You may know of popular notebook interfaces like Jupyter Notebook
+      or Google Colab – the Notebook API allows for similar experiences inside Visual Studio
+      Code.
+    </p>
+    <h2 id="parts-of-a-notebook">Parts of a Notebook</h2>
+    <p>
+      A notebook consists of a sequence of cells and their outputs. The cells of a notebook
+      can be either <strong>Markdown cells</strong> or <strong>code cells</strong>, and are
+      rendered within the core of VS Code. The outputs can be of various formats. Some
+      output formats, such as plain text, JSON, images, and HTML are rendered by VS Code
+      core. Others, such as application-specific data or interactive applets, are rendered
+      by extensions.
+    </p>
+    <p>
+      Cells in a notebook are read and written to the file system by a
+      <code>NotebookSerializer</code>, which handles reading data from the file system and
+      converting it into a description of cells, as well as persisting modifications to the
+      notebook back to the file system. The <strong>code cells</strong> of a notebook can be
+      executed by a <code>NotebookController</code>, which takes the contents of a cell and
+      from it produces zero or more outputs in a variety of formats ranging from plain text
+      to formatted documents or interactive applets. Application-specific output formats and
+      interactive applet outputs are rendered by a <code>NotebookRenderer</code>.
+    </p>
+    <p>Visually:</p>
+    <figure>
+      <img
+        src="images/notebook/architecture-overview.png"
+        alt="Overview of 3 components of notebooks: NotebookSerializer, NotebookController, and NotebookRenderer, and how they interact. Described textually above and in following sections."
+      />
+      <figcaption>
+        Overview of 3 components of notebooks: NotebookSerializer, NotebookController, and
+        NotebookRenderer, and how they interact. Described textually above and in following
+        sections.
+      </figcaption>
+    </figure>
+    <h2 id="serializer">Serializer</h2>
+    <p>
+      <a
+        href="https://github.com/microsoft/vscode/blob/e1a8566a298dcced016d8e16db95c33c270274b4/src/vs/vscode.d.ts#L11865-L11884"
+        >NotebookSerializer API Reference</a
+      >
+    </p>
+    <p>
+      A <code>NotebookSerializer</code> is responsible for taking the serialized bytes of a
+      notebook and deserializing those bytes into <code>NotebookData</code>, which contains
+      list of Markdown and code cells. It is responsible for the opposite conversion as
+      well: taking <code>NotebookData</code> and converting the data into serialized bytes
+      to be saved.
+    </p>
+    <p>Samples:</p>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/microsoft/notebook-extension-samples/tree/main/notebook-serializer"
+          >JSON Notebook Serializer</a
+        >: Simple example notebook that takes JSON input and outputs prettified JSON in a
+        custom <code>NotebookRenderer</code>.
+      </li>
+      <li>
+        <a href="https://github.com/microsoft/vscode-markdown-notebook"
+          >Markdown Serializer</a
+        >: Open and edit Markdown files as a notebook.
+      </li>
+    </ul>
+    <h3 id="example">Example</h3>
+    <p>
+      In this example, we build a simplified notebook provider extension for viewing files
+      in the
+      <a href="https://nbformat.readthedocs.io/en/latest/format_description.html"
+        >Jupyter Notebook format</a
+      >
+      with a <code>.notebook</code> extension.
+    </p>
+    <p>
+      A notebook serializer is declared in <code>package.json</code> under the
+      <code>contributes.notebooks</code> section as follows:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="er">...</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;onNotebook:my-notebook-provider&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">        <span class="er">...</span></a>
+<a class="sourceLine" id="cb1-6" title="6">        <span class="dt">&quot;notebooks&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-7" title="7">            <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-8" title="8">                <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;my-notebook&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;my-notebook&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">                <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;My Notebook&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-11" title="11">                <span class="dt">&quot;selector&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-12" title="12">                    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-13" title="13">                        <span class="dt">&quot;filenamePattern&quot;</span><span class="fu">:</span> <span class="st">&quot;*.notebook&quot;</span></a>
+<a class="sourceLine" id="cb1-14" title="14">                    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-15" title="15">                <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-16" title="16">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-17" title="17">        <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-18" title="18">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>The notebook serializer is then registered in the extension’s activation event:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> <span class="op">*</span> <span class="im">as</span> vscode <span class="im">from</span> <span class="st">&#39;vscode&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(</a>
+<a class="sourceLine" id="cb2-5" title="5">        <span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="fu">registerNotebookSerializer</span>(</a>
+<a class="sourceLine" id="cb2-6" title="6">            <span class="st">&quot;my-notebook&quot;</span><span class="op">,</span> <span class="kw">new</span> <span class="fu">SampleSerializer</span>()</a>
+<a class="sourceLine" id="cb2-7" title="7">        )</a>
+<a class="sourceLine" id="cb2-8" title="8">    )<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="kw">interface</span> RawNotebookCell <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    language<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    value<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">    kind<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookCellKind</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-16" title="16"></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="kw">class</span> SampleSerializer <span class="kw">implements</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookSerializer</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-18" title="18">    <span class="kw">async</span> <span class="fu">deserializeNotebook</span>(content<span class="op">:</span> <span class="bu">Uint8Array</span><span class="op">,</span> _token<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">CancellationToken</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="va">vscode</span><span class="op">.</span><span class="at">NotebookData</span><span class="op">&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-19" title="19">        <span class="kw">var</span> contents <span class="op">=</span> <span class="kw">new</span> <span class="fu">TextDecoder</span>().<span class="fu">decode</span>(content)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-20" title="20"></a>
+<a class="sourceLine" id="cb2-21" title="21">        <span class="kw">let</span> raw<span class="op">:</span> RawNotebookCell<span class="op">[];</span></a>
+<a class="sourceLine" id="cb2-22" title="22">        <span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-23" title="23">            raw <span class="op">=</span> <span class="op">&lt;</span>RawNotebookCell<span class="op">[]&gt;</span><span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(contents)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-24" title="24">        <span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-25" title="25">            raw <span class="op">=</span> <span class="op">[];</span></a>
+<a class="sourceLine" id="cb2-26" title="26">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-27" title="27"></a>
+<a class="sourceLine" id="cb2-28" title="28">        <span class="kw">const</span> cells <span class="op">=</span> <span class="va">raw</span><span class="op">.</span><span class="fu">map</span>(item <span class="kw">=&gt;</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">NotebookCellData</span>(</a>
+<a class="sourceLine" id="cb2-29" title="29">            <span class="va">item</span><span class="op">.</span><span class="at">kind</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-30" title="30">            <span class="va">item</span><span class="op">.</span><span class="at">value</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-31" title="31">            <span class="va">item</span><span class="op">.</span><span class="at">language</span></a>
+<a class="sourceLine" id="cb2-32" title="32">        ))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-33" title="33"></a>
+<a class="sourceLine" id="cb2-34" title="34">        <span class="cf">return</span> <span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">NotebookData</span>(cells)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-35" title="35">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-36" title="36"></a>
+<a class="sourceLine" id="cb2-37" title="37">    <span class="kw">async</span> <span class="fu">serializeNotebook</span>(data<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookData</span><span class="op">,</span> _token<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">CancellationToken</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="bu">Uint8Array</span><span class="op">&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-38" title="38">        <span class="kw">let</span> contents<span class="op">:</span> RawNotebookCell<span class="op">[]</span> <span class="op">=</span> <span class="op">[];</span></a>
+<a class="sourceLine" id="cb2-39" title="39"></a>
+<a class="sourceLine" id="cb2-40" title="40">        <span class="fu">for</span> (<span class="kw">const</span> cell <span class="kw">of</span> <span class="va">data</span><span class="op">.</span><span class="at">cells</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-41" title="41">            <span class="va">contents</span><span class="op">.</span><span class="fu">push</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-42" title="42">                kind<span class="op">:</span> <span class="va">cell</span><span class="op">.</span><span class="at">kind</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-43" title="43">                language<span class="op">:</span> <span class="va">cell</span><span class="op">.</span><span class="at">languageId</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb2-44" title="44">                value<span class="op">:</span> <span class="va">cell</span><span class="op">.</span><span class="at">value</span></a>
+<a class="sourceLine" id="cb2-45" title="45">            <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-46" title="46">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-47" title="47"></a>
+<a class="sourceLine" id="cb2-48" title="48">        <span class="cf">return</span> <span class="kw">new</span> <span class="fu">TextEncoder</span>().<span class="fu">encode</span>(<span class="fu">stringify</span>(contents))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-49" title="49">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-50" title="50"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Now try running your extension and opening a Jupyter Notebook formatted file saved
+      with the <code>.notebook</code> extension:
+    </p>
+    <figure>
+      <img
+        src="images/notebook/ipynb-simple-provider.png"
+        alt="Notebook showing contents of a Jupyter Notebook formatted file"
+      />
+      <figcaption>
+        Notebook showing contents of a Jupyter Notebook formatted file
+      </figcaption>
+    </figure>
+    <p>
+      You should be able to open Jupyter-formatted notebooks and view their cells as both
+      plain text and rendered Markdown, as well as edit the cells. However, outputs will not
+      be persisted to disk; to save outputs you would need to also serialize and deserialize
+      the outputs of cells from <code>NotebookData</code>.
+    </p>
+    <p>To run a cell, you will need to implement a <code>NotebookController</code>.</p>
+    <h2 id="controller">Controller</h2>
+    <p>
+      <a
+        href="https://github.com/microsoft/vscode/blob/e1a8566a298dcced016d8e16db95c33c270274b4/src/vs/vscode.d.ts#L11941"
+        >NotebookController API Reference</a
+      >
+    </p>
+    <p>
+      A <code>NotebookController</code> is responsible for taking a
+      <strong>code cell</strong> and executing the code to produce some or no outputs.
+    </p>
+    <p>
+      A controller is directly associated with a notebook serializer and a type of notebook
+      by setting the <code>NotebookController#notebookType</code> property on creation of
+      the controller. Then the controller is registered globally by pushing the controller
+      onto the extension subscriptions on activate of the extension.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">export</span> <span class="kw">function</span> <span class="fu">activate</span>(context<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">ExtensionContext</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">    <span class="va">context</span><span class="op">.</span><span class="va">subscriptions</span><span class="op">.</span><span class="fu">push</span>(<span class="kw">new</span> <span class="fu">Controller</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">class</span> Controller <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="kw">readonly</span> controllerId <span class="op">=</span> <span class="st">&#39;my-notebook-controller-id&#39;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="kw">readonly</span> notebookType <span class="op">=</span> <span class="st">&#39;my-notebook&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="kw">readonly</span> label <span class="op">=</span> <span class="st">&#39;My Notebook&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="kw">readonly</span> supportedLanguages <span class="op">=</span> <span class="op">[</span><span class="st">&#39;python&#39;</span><span class="op">];</span></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">    <span class="kw">private</span> <span class="kw">readonly</span> _controller<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookController</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="kw">private</span> _executionOrder <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14">    <span class="kw">constructor</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-15" title="15">        <span class="va">this</span><span class="op">.</span><span class="at">_controller</span> <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">notebooks</span><span class="op">.</span><span class="fu">createNotebookController</span>(<span class="va">this</span><span class="op">.</span><span class="at">controllerId</span><span class="op">,</span> <span class="va">this</span><span class="op">.</span><span class="at">notebookType</span><span class="op">,</span> <span class="va">this</span><span class="op">.</span><span class="at">label</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-16" title="16"></a>
+<a class="sourceLine" id="cb3-17" title="17">        <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="at">supportedLanguages</span> <span class="op">=</span> <span class="va">this</span><span class="op">.</span><span class="at">supportedLanguages</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-18" title="18">        <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="at">supportsExecutionOrder</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-19" title="19">        <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="at">executeHandler</span> <span class="op">=</span> <span class="va">this</span><span class="op">.</span><span class="va">_execute</span><span class="op">.</span><span class="fu">bind</span>(<span class="kw">this</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-20" title="20">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-21" title="21"></a>
+<a class="sourceLine" id="cb3-22" title="22">    <span class="kw">private</span> <span class="fu">_execute</span>(cells<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookCell</span><span class="op">[],</span> _notebook<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookDocument</span><span class="op">,</span> _controller<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookController</span>)<span class="op">:</span> <span class="dt">void</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-23" title="23">        <span class="fu">for</span> (<span class="kw">let</span> cell <span class="kw">of</span> cells) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-24" title="24">            <span class="va">this</span><span class="op">.</span><span class="fu">_doExecution</span>(cell)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-25" title="25">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-26" title="26">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-27" title="27"></a>
+<a class="sourceLine" id="cb3-28" title="28">    <span class="kw">private</span> <span class="kw">async</span> <span class="fu">_doExecution</span>(cell<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">NotebookCell</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-29" title="29">        <span class="kw">const</span> execution <span class="op">=</span> <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="fu">createNotebookCellExecution</span>(cell)<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-30" title="30">        <span class="va">execution</span><span class="op">.</span><span class="at">executionOrder</span> <span class="op">=</span> <span class="op">++</span><span class="va">this</span><span class="op">.</span><span class="at">_executionOrder</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-31" title="31">        <span class="va">execution</span><span class="op">.</span><span class="fu">start</span>(<span class="bu">Date</span>.<span class="fu">now</span>())<span class="op">;</span> <span class="co">// Keep track of elapsed time to execute cell.</span></a>
+<a class="sourceLine" id="cb3-32" title="32"></a>
+<a class="sourceLine" id="cb3-33" title="33">        <span class="co">/* Do some execution here; not implemented */</span></a>
+<a class="sourceLine" id="cb3-34" title="34"></a>
+<a class="sourceLine" id="cb3-35" title="35">        <span class="va">execution</span><span class="op">.</span><span class="fu">replaceOutput</span>(<span class="op">[</span><span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">NotebookCellOutput</span>(<span class="op">[</span><span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">text</span>(<span class="st">&#39;Dummy output text!&#39;</span>)<span class="op">]</span>)<span class="op">]</span>)</a>
+<a class="sourceLine" id="cb3-36" title="36">        <span class="va">execution</span><span class="op">.</span><span class="fu">end</span>(<span class="kw">true</span><span class="op">,</span> <span class="bu">Date</span>.<span class="fu">now</span>())<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-37" title="37">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb3-38" title="38"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>Samples:</p>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/microsoft/vscode-github-issue-notebooks/blob/93359d842cd01dfaef0a78b620c5a3b4cf5c2e38/src/extension/notebookProvider.ts#L29"
+          >GitHub Issues Notebook</a
+        >: Controller to execute queries for GitHub Issues
+      </li>
+      <li>
+        <a
+          href="https://github.com/tanhakabir/rest-book/blob/main/src/extension/notebookKernel.ts"
+          >REST Book</a
+        >: Controller to run REST queries.
+      </li>
+      <li>
+        <a
+          href="https://github.com/jrieken/vscode-regex-notebook/blob/master/src/extension/extension.ts#L56"
+          >Regexper notebooks</a
+        >: Controller to visualize regular expressions.
+      </li>
+    </ul>
+    <h2 id="output-types">Output types</h2>
+    <p>
+      Outputs must be in one of three formats: Text Output, Error Output, or Rich Output. A
+      kernel may provide multiple outputs for a single execution of a cell, in which case
+      they will be displayed as a list.
+    </p>
+    <p>
+      Simple formats like Text Output, Error Output, or “simple” variants of Rich Output
+      (HTML, Markdown, JSON, etc.) are rendered by VS Code core, whereas application
+      specific Rich Output types are rendered by a
+      <a href="#notebook-renderer">NotebookRenderer</a>. An extension may optionally choose
+      to render “simple” Rich Outputs itself, for instance to add LaTeX support to Markdown
+      outputs.
+    </p>
+    <figure>
+      <img
+        src="images/notebook/kernel.png"
+        alt="Diagram of the different output types described above"
+      />
+      <figcaption>Diagram of the different output types described above</figcaption>
+    </figure>
+    <h3 id="text-output">Text Output</h3>
+    <p>
+      Text outputs are the most simple output format, and work much like many REPLs you may
+      be familiar with. They consist only of a <code>text</code> field, which is rendered as
+      plain text in the cell’s output element:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">text</span>(<span class="st">&#39;This is the output...&#39;</span>)</a></code></pre>
+    </div>
+    <figure>
+      <img src="images/notebook/text-output.png" alt="Cell with simple text output" />
+      <figcaption>Cell with simple text output</figcaption>
+    </figure>
+    <h3 id="error-output">Error Output</h3>
+    <p>
+      Error outputs are helpful for displaying runtime errors in a consistent and
+      understandable manner. They support standard <code>Error</code> objects.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="co">/* Some code */</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span> <span class="fu">catch</span> (error) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">error</span>(error)</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="images/notebook/error-output.png"
+        alt="Cell with error output showing error name and message, as well as a stack trace with magenta text"
+      />
+      <figcaption>
+        Cell with error output showing error name and message, as well as a stack trace with
+        magenta text
+      </figcaption>
+    </figure>
+    <h3 id="rich-output">Rich Output</h3>
+    <p>
+      Rich outputs are the most advanced form of displaying cell outputs. They allow for
+      providing many different representations of the output data, keyed by mimetype. For
+      example, if a cell output was to represent a GitHub Issue, the kernel might produce a
+      rich output with several properties on its <code>data</code> field:
+    </p>
+    <ul>
+      <li>A <code>text/html</code> field containing a formatted view of the issue.</li>
+      <li>An <code>application/json</code> field containing a machine readable view.</li>
+      <li>
+        An <code>application/github-issue</code> field that a
+        <code>NotebookRenderer</code> could use to create a fully interactive view of the
+        issue.
+      </li>
+    </ul>
+    <p>
+      In this case, the <code>text/html</code> and <code>application/json</code> views will
+      be rendered by VS Code natively, but the <code>application/github-issue</code> view
+      will display an error if no <code>NotebookRenderer</code> was registered to that
+      mimetype.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">execution</span><span class="op">.</span><span class="fu">replaceOutput</span>(<span class="op">[</span><span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">NotebookCellOutput</span>(<span class="op">[</span></a>
+<a class="sourceLine" id="cb6-2" title="2">                            <span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">text</span>(<span class="st">&#39;&lt;b&gt;Hello&lt;/b&gt; World&#39;</span><span class="op">,</span> <span class="st">&#39;text/html&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">                            <span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">json</span>(<span class="op">{</span> hello<span class="op">:</span> <span class="st">&#39;world&#39;</span> <span class="op">}</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">                            <span class="va">vscode</span><span class="op">.</span><span class="va">NotebookCellOutputItem</span><span class="op">.</span><span class="fu">json</span>(<span class="op">{</span> custom<span class="op">-</span>data<span class="op">-</span><span class="cf">for</span><span class="op">-</span>custom<span class="op">-</span>renderer<span class="op">:</span> <span class="st">&#39;data&#39;</span> <span class="op">},</span> <span class="st">&#39;application/custom&#39;</span>)<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-5" title="5">                        <span class="op">]</span>)<span class="op">]</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <figure>
+      <img
+        src="images/notebook/rich-output.gif"
+        alt="Cell with rich output showing switching between formatted HTML, a JSON editor, and an error message showing no renderer is available (application/hello-world)"
+      />
+      <figcaption>
+        Cell with rich output showing switching between formatted HTML, a JSON editor, and
+        an error message showing no renderer is available (application/hello-world)
+      </figcaption>
+    </figure>
+    <p>By default, VS Code can render the following mimetypes:</p>
+    <ul>
+      <li>application/javascript</li>
+      <li>text/html</li>
+      <li>image/svg+xml</li>
+      <li>text/markdown</li>
+      <li>image/png</li>
+      <li>image/jpeg</li>
+      <li>text/plain</li>
+    </ul>
+    <p>VS Code will render these mimetypes as code in a built-in editor:</p>
+    <ul>
+      <li>application/json</li>
+      <li>text/x-javascript</li>
+      <li>text/x-html</li>
+      <li>text/x-rust</li>
+      <li>… text/x-LANGUAGE_ID for any other built-in or installed languages.</li>
+    </ul>
+    <p>
+      This notebook is using the built-in editor to display some Rust code:
+      <img
+        src="images/notebook/rust-output.png"
+        alt="Notebook displaying Rust code in a built in Monaco editor"
+      />
+    </p>
+    <p>
+      To render an alternative mimetype, a <code>NotebookRenderer</code> must be registered
+      for that mimetype.
+    </p>
+    <h2 id="notebook-renderer">Notebook Renderer</h2>
+    <p>
+      A notebook renderer is responsible for taking output data of a specific mimetype and
+      providing a rendered view of that data. A renderer shared by output cells can maintain
+      global state between these cells. The complexity of the rendered view can range from
+      simple static HTML to dynamic fully interactive applets. In this section, we’ll
+      explore various techniques for rendering an output representing a GitHub Issue.
+    </p>
+    <p>
+      You can get started quickly using boilerplate from our Yeoman generators. To do so,
+      first install Yeoman and the VS Code Generators using:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">npm</span> install -g yo generator-code</a></code></pre>
+    </div>
+    <p>
+      Then, run <code>yo code</code> and choose
+      <code>New Notebook Renderer (TypeScript)</code>.
+    </p>
+    <h3 id="a-simple-non-interactive-renderer">A Simple, Non-Interactive Renderer</h3>
+    <p>
+      Renderers are declared for a set of mimetypes by contributing to the
+      <code>contributes.notebookRenderer</code> property of an extension’s
+      <code>package.json</code>. This renderer will work with input in the
+      <code>ms-vscode.github-issue-notebook/github-issue</code> format, which we will assume
+      some installed controller is able to provide:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;....&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="er">...</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="dt">&quot;notebookRenderer&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-6" title="6">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;github-issue-renderer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">        <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;GitHub Issue Renderer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">        <span class="dt">&quot;entrypoint&quot;</span><span class="fu">:</span> <span class="st">&quot;./out/renderer.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="dt">&quot;mimeTypes&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb8-11" title="11">          <span class="st">&quot;ms-vscode.github-issue-notebook/github-issue&quot;</span></a>
+<a class="sourceLine" id="cb8-12" title="12">        <span class="ot">]</span></a>
+<a class="sourceLine" id="cb8-13" title="13">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb8-15" title="15">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Output renderers are always rendered in a single <code>iframe</code>, separate from
+      the rest of VS Code’s UI, to ensure they don’t accidentally interfere or cause
+      slowdowns in VS Code. The contribution refers to an “entrypoint” script, which is
+      loaded into the notebook’s <code>iframe</code> right before any output needs to be
+      rendered. Your entrypoint needs to be a single file, which you can write yourself, or
+      use a bundler like Webpack, Rollup, or Parcel to create.
+    </p>
+    <p>
+      When it’s loaded, your entrypoint script should export
+      <code>ActivationFunction</code> from <code>vscode-notebook-renderer</code> to render
+      your UI once VS Code is ready to render your renderer. For example, this will put all
+      your GitHub issue data as JSON into the cell output:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> type <span class="op">{</span> ActivationFunction <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;vscode-notebook-renderer&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="im">export</span> <span class="kw">const</span> activate<span class="op">:</span> ActivationFunction <span class="op">=</span> (context) <span class="kw">=&gt;</span> (<span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    <span class="at">renderOutputItem</span>(data<span class="op">,</span> element) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">        <span class="va">element</span>.<span class="at">innerText</span> <span class="op">=</span> <span class="va">JSON</span>.<span class="at">stringify</span>(<span class="va">data</span>.<span class="at">json</span>())</a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="op">}</span>)</a></code></pre>
+    </div>
+    <p>
+      You can
+      <a
+        href="https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/vscode-notebook-renderer/index.d.ts"
+        >refer to the complete API definition here</a
+      >. If you’re using TypeScript, you can install
+      <code>@types/vscode-notebook-renderer</code> and then add
+      <code>vscode-notebook-renderer</code> to the <code>types</code> array in your
+      <code>tsconfig.json</code> to make these types available in your code.
+    </p>
+    <p>
+      To create richer content, you could manually create DOM elements, or use a framework
+      like Preact and render it into the output element, for example:
+    </p>
+    <pre
+      class="jsx"
+    ><code>import type { ActivationFunction } from &#39;vscode-notebook-renderer&#39;;
+import { h, render } from &#39;preact&#39;;
+
+const Issue: FunctionComponent&lt;{ issue: GithubIssue }&gt; = ({ issue }) =&gt; (
+  &lt;div key={issue.number}&gt;
+    &lt;h2&gt;
+      {issue.title}
+      (&lt;a href={`https://github.com/${issue.repo}/issues/${issue.number}`}&gt;#{issue.number}&lt;/a&gt;)
+    &lt;/h2&gt;
+    &lt;img src={issue.user.avatar_url} style={{ float: &#39;left&#39;, width: 32, borderRadius: &#39;50%&#39;, marginRight: 20 }} /&gt;
+    &lt;i&gt;@{issue.user.login}&lt;/i&gt; Opened: &lt;div style=&quot;margin-top: 10px&quot;&gt;{issue.body}&lt;/div&gt;
+  &lt;/div&gt;
+);
+
+const GithubIssues: FunctionComponent&lt;{ issues: GithubIssue[]; }&gt; = ({ issues }) =&gt; (
+  &lt;div&gt;{issues.map(issue =&gt; &lt;Issue key={issue.number} issue={issue} /&gt;)}&lt;/div&gt;
+);
+
+export const activate: ActivationFunction = (context) =&gt; ({
+    renderOutputItem(data, element) {
+        render(&lt;GithubIssues issues={data.json()} /&gt;, element);
+    }
+});</code></pre>
+    <p>
+      Running this renderer on an output cell with a
+      <code>ms-vscode.github-issue-notebook/github-issue</code> data field gives us the
+      following static HTML view:
+    </p>
+    <figure>
+      <img
+        src="images/notebook/static-renderer-sample.png"
+        alt="Cell output showing rendered HTML view of issue"
+      />
+      <figcaption>Cell output showing rendered HTML view of issue</figcaption>
+    </figure>
+    <p>
+      If you have elements outside of the container or other asynchronous processes, you can
+      use <code>disposeOutputItem</code> to tear them down. This event will fire when output
+      is cleared, a cell is deleted, and before new output is rendered for an existing cell.
+      For example:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">const</span> intervals <span class="op">=</span> <span class="kw">new</span> <span class="at">Map</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="im">export</span> <span class="kw">const</span> activate<span class="op">:</span> ActivationFunction <span class="op">=</span> (context) <span class="kw">=&gt;</span> (<span class="op">{</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="at">renderOutputItem</span>(data<span class="op">,</span> element) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">        <span class="at">render</span>(<span class="op">&lt;</span>GithubIssues issues<span class="op">={</span><span class="va">data</span>.<span class="at">json</span>()<span class="op">}</span> /&gt;<span class="op">,</span> element)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7">        <span class="va">intervals</span>.<span class="at">set</span>(<span class="va">data</span>.<span class="at">mime</span><span class="op">,</span> <span class="at">setInterval</span>(() <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-8" title="8">            <span class="cf">if</span>(<span class="va">element</span>.<span class="at">querySelector</span>(<span class="st">&#39;h2&#39;</span>)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-9" title="9">                <span class="va">element</span>.<span class="at">querySelector</span>(<span class="st">&#39;h2&#39;</span>)<span class="op">!</span>.<span class="va">style</span>.<span class="at">color</span> <span class="op">=</span> <span class="vs">`hsl(</span><span class="sc">${</span><span class="va">Math</span>.<span class="at">random</span>() <span class="op">*</span> <span class="dv">360</span><span class="sc">}</span><span class="vs">, 100%, 50%)`</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb11-10" title="10">            <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-11" title="11">        <span class="op">},</span> <span class="dv">1000</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-12" title="12">    <span class="op">},</span></a>
+<a class="sourceLine" id="cb11-13" title="13">    <span class="at">disposeOutputItem</span>(id) <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-14" title="14">        <span class="at">clearInterval</span>(<span class="va">intervals</span>.<span class="at">get</span>(id))<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-15" title="15">        <span class="va">intervals</span>.<span class="at">delete</span>(id)<span class="op">;</span></a>
+<a class="sourceLine" id="cb11-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      It’s important to bear in mind that all outputs for a notebook are rendered in
+      different elements in the same iframe. If you use functions like
+      <code>document.querySelector</code>, make sure to scope it to the specific output
+      you’re interested in to avoid conflicting with other outputs. In this example, we use
+      <code>element.querySelector</code> to avoid that issue.
+    </p>
+    <h3 id="interactive-notebooks">Interactive Notebooks</h3>
+    <p>
+      Imagine we want to add the ability to view an issue’s comments after clicking a button
+      in the rendered output. Assuming a controller can provide issue data with comments
+      under the
+      <code>ms-vscode.github-issue-notebook/github-issue-with-comments</code> mimetype, we
+      might try to retrieve all the comments up front and implement it as follows:
+    </p>
+    <pre
+      class="jsx"
+    ><code>const Issue: FunctionComponent&lt;{ issue: GithubIssueWithComments }&gt; = ({ issue }) =&gt; {
+  const [showComments, setShowComments] = useState(false);
+
+  return (
+    &lt;div key={issue.number}&gt;
+      &lt;h2&gt;
+        {issue.title}
+        (&lt;a href={`https://github.com/${issue.repo}/issues/${issue.number}`}&gt;#{issue.number}&lt;/a&gt;)
+      &lt;/h2&gt;
+      &lt;img src={issue.user.avatar_url} style={{ float: &#39;left&#39;, width: 32, borderRadius: &#39;50%&#39;, marginRight: 20 }} /&gt;
+      &lt;i&gt;@{issue.user.login}&lt;/i&gt; Opened: &lt;div style=&quot;margin-top: 10px&quot;&gt;{issue.body}&lt;/div&gt;
+      &lt;button onClick={() =&gt; setShowComments(true)}&gt;Show Comments&lt;/button&gt;
+      {showComments &amp;&amp; issue.comments.map(comment =&gt; &lt;div&gt;{comment.text}&lt;/div&gt;)}
+    &lt;/div&gt;
+  );
+};</code></pre>
+    <p>
+      This immediately raises some flags. For one, we’re loading full comment data for all
+      issues, even before we’ve clicked the button. Additionally, we require controller
+      support for a whole different mimetype even though we just want to show a bit more
+      data.
+    </p>
+    <p>
+      Instead, the controller can provide additional functionality to the renderer by
+      including a preload script which VS Code will load in the iframe as well. This script
+      has access global functions <code>postKernelMessage</code> and
+      <code>onDidReceiveKernelMessage</code> that can be used to communicate with the
+      controller.
+    </p>
+    <figure>
+      <img
+        src="images/notebook/kernel-communication.png"
+        alt="Diagram showing how controllers interact with renderers through the NotebookRendererScript"
+      />
+      <figcaption>
+        Diagram showing how controllers interact with renderers through the
+        NotebookRendererScript
+      </figcaption>
+    </figure>
+    <p>
+      For example, you might modify your controller <code>rendererScripts</code> to
+      reference a new file where you create a connection back to the Extension Host, and
+      expose a global communication script for the renderer to use.
+    </p>
+    <p>In your controller:</p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">class</span> Controller <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-2" title="2">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="kw">readonly</span> rendererScriptId <span class="op">=</span> <span class="st">&#39;my-renderer-script&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="kw">constructor</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb13-7" title="7">        <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb13-8" title="8"></a>
+<a class="sourceLine" id="cb13-9" title="9">        <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="va">rendererScripts</span><span class="op">.</span><span class="fu">push</span>(<span class="kw">new</span> <span class="va">vscode</span><span class="op">.</span><span class="fu">NotebookRendererScript</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(<span class="co">/* path to script */</span>)<span class="op">,</span> rendererScriptId))<span class="op">;</span></a>
+<a class="sourceLine" id="cb13-10" title="10">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      In your <code>package.json</code> specify your script as a dependency of your
+      renderer:
+    </p>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;....&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-4" title="4">    <span class="er">...</span></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="dt">&quot;notebookRenderer&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb14-6" title="6">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;github-issue-renderer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-8" title="8">        <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;GitHub Issue Renderer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-9" title="9">        <span class="dt">&quot;entrypoint&quot;</span><span class="fu">:</span> <span class="st">&quot;./out/renderer.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-10" title="10">        <span class="dt">&quot;mimeTypes&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="er">...</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-11" title="11">        <span class="dt">&quot;dependencies&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb14-12" title="12">            <span class="st">&quot;my-renderer-script&quot;</span></a>
+<a class="sourceLine" id="cb14-13" title="13">        <span class="ot">]</span></a>
+<a class="sourceLine" id="cb14-14" title="14">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-15" title="15">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb14-16" title="16">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      In your script file you can declare communication functions to communicate with the
+      controller:
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb15-1" title="1"><span class="im">import</span> <span class="st">&quot;vscode-notebook-renderer/preload&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="va">globalThis</span>.<span class="at">githubIssueCommentProvider</span> <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="at">loadComments</span>(<span class="dt">issueId</span><span class="op">:</span> string<span class="op">,</span> <span class="dt">callback</span><span class="op">:</span> (<span class="dt">comments</span><span class="op">:</span> GithubComment[]) <span class="kw">=&gt;</span> <span class="kw">void</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-5" title="5">    <span class="at">postKernelMessage</span>(<span class="op">{</span> <span class="dt">command</span><span class="op">:</span> <span class="st">&#39;comments&#39;</span><span class="op">,</span> issueId <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7">    <span class="at">onDidReceiveKernelMessage</span>(event <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-8" title="8">        <span class="cf">if</span> (<span class="va">event</span>.<span class="va">data</span>.<span class="at">type</span> <span class="op">===</span> <span class="st">&#39;comments&#39;</span> <span class="op">&amp;&amp;</span> <span class="va">event</span>.<span class="va">data</span>.<span class="at">issueId</span> <span class="op">===</span> issueId) <span class="op">{</span></a>
+<a class="sourceLine" id="cb15-9" title="9">            <span class="at">callback</span>(<span class="va">event</span>.<span class="va">data</span>.<span class="at">comments</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb15-10" title="10">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-11" title="11">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb15-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      And then you can consume that in the renderer. You want to make sure that you check
+      whether the global exposed by the controller’s render scripts is available, since
+      other developers might create github issue output in other notebooks and controllers
+      that don’t implement the <code>githubIssueCommentProvider</code>. In this case, we’ll
+      only show the <strong>Load Comments</strong> button if the global is available:
+    </p>
+    <pre
+      class="jsx"
+    ><code>const canLoadComments = globalThis.githubIssueCommentProvider !== undefined;
+const Issue: FunctionComponent&lt;{ issue: GithubIssue }&gt; = ({ issue }) =&gt; {
+  const [comments, setComments] = useState([]);
+  const loadComments = () =&gt;
+    globalThis.githubIssueCommentProvider.loadComments(issue.id, setComments);
+
+  return (
+    &lt;div key={issue.number}&gt;
+      &lt;h2&gt;
+        {issue.title}
+        (&lt;a href={`https://github.com/${issue.repo}/issues/${issue.number}`}&gt;#{issue.number}&lt;/a&gt;)
+      &lt;/h2&gt;
+      &lt;img src={issue.user.avatar_url} style={{ float: &#39;left&#39;, width: 32, borderRadius: &#39;50%&#39;, marginRight: 20 }} /&gt;
+      &lt;i&gt;@{issue.user.login}&lt;/i&gt; Opened: &lt;div style=&quot;margin-top: 10px&quot;&gt;{issue.body}&lt;/div&gt;
+      {canLoadComments &amp;&amp; &lt;button onClick={loadComments}&gt;Load Comments&lt;/button&gt;}
+      {comments.map(comment =&gt; &lt;div&gt;{comment.text}&lt;/div&gt;)}
+    &lt;/div&gt;
+  );
+};</code></pre>
+    <p>
+      Finally, we want to set up communication to the controller.
+      <code>NotebookController.onDidReceiveMessage</code> method is called when a renderer
+      posts a message using the global <code>postKernelMessage</code> function. To implement
+      this method, attach to <code>onDidReceiveMessage</code> to listen for messages:
+    </p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">class</span> Controller <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-2" title="2">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb17-3" title="3"></a>
+<a class="sourceLine" id="cb17-4" title="4">    <span class="kw">constructor</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-5" title="5">        <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb17-6" title="6"></a>
+<a class="sourceLine" id="cb17-7" title="7">        <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="fu">onDidReceiveMessage</span>(<span class="bu">event</span> <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-8" title="8">            <span class="fu">if</span> (<span class="bu">event</span><span class="op">.</span><span class="va">message</span><span class="op">.</span><span class="at">command</span> <span class="op">===</span> <span class="st">&#39;comments&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-9" title="9">                <span class="fu">_getCommentsForIssue</span>(<span class="bu">event</span><span class="op">.</span><span class="va">message</span><span class="op">.</span><span class="at">issueId</span>).<span class="fu">then</span>(comments <span class="kw">=&gt;</span> <span class="va">this</span><span class="op">.</span><span class="va">_controller</span><span class="op">.</span><span class="fu">postMessage</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb17-10" title="10">                    type<span class="op">:</span> <span class="st">&#39;comments&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-11" title="11">                    issueId<span class="op">:</span> <span class="bu">event</span><span class="op">.</span><span class="va">message</span><span class="op">.</span><span class="at">issueId</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb17-12" title="12">                    comments<span class="op">,</span></a>
+<a class="sourceLine" id="cb17-13" title="13">                <span class="op">}</span>)<span class="op">,</span> <span class="bu">event</span><span class="op">.</span><span class="at">editor</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb17-14" title="14">            <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-15" title="15">        <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb17-16" title="16">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-17" title="17"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="supporting-debugging">Supporting debugging</h2>
+    <p>
+      For some controllers, such as those that implement a programming language, it can be
+      desirable to allow debugging a cell’s execution. To add debugging support, a notebook
+      kernel can implement a
+      <a href="/api/extension-guides/debugger-extension">debug adapter</a>, either by
+      directly implementing the
+      <a href="https://microsoft.github.io/debug-adapter-protocol/"
+        >debug adapter protocol</a
+      >
+      (DAP), or by delegating and transforming the protocol to an existing notebook debugger
+      (as done in the ‘vscode-simple-jupyter-notebook’ sample). A much simpler approach is
+      to use an existing unmodified debug extension and transform the DAP for notebook needs
+      on the fly (as done in ‘vscode-nodebook’).
+    </p>
+    <p>Samples:</p>
+    <ul>
+      <li>
+        <a href="https://github.com/microsoft/vscode-nodebook">vscode-nodebook</a>: Node.js
+        notebook with debugging support provided by VS Code’s built-in JavaScript debugger
+        and some simple protocol transformations
+      </li>
+      <li>
+        <a href="https://github.com/microsoft/vscode-simple-jupyter-notebook"
+          >vscode-simple-jupyter-notebook</a
+        >: Jupyter notebook with debugging support provided by the existing Xeus debugger
+      </li>
+    </ul>
+  </body>
+</html>

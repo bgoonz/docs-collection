@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>scm-provider</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="source-control-api">Source Control API</h1>
+    <p>
+      The Source Control API allows extension authors to define Source Control Management
+      (SCM) features. There is a slim, yet powerful API surface which allows many different
+      SCM systems to be integrated in Visual Studio Code, while having a common user
+      interface with all of them.
+    </p>
+    <figure>
+      <img src="images/scm-provider/main.png" alt="VS Code SCM" />
+      <figcaption>VS Code SCM</figcaption>
+    </figure>
+    <p>
+      VS Code itself ships with one Source Control provider, the Git extension, which is the
+      best reference for this API and is
+      <a
+        href="https://github.com/microsoft/vscode/blob/main/extensions/git/src/repository.ts"
+        >a great starting point</a
+      >
+      if you’d like to contribute your very own SCM provider. There are other great examples
+      in the Marketplace such as the
+      <a href="https://marketplace.visualstudio.com/items?itemName=johnstoncode.svn-scm"
+        >SVN extension</a
+      >.
+    </p>
+    <p>
+      This documentation will help you build an extension which can make any SCM system work
+      with VS Code.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> that you can always refer to the
+        <a href="/api/references/vscode-api#scm"
+          ><code>vscode</code> namespace API reference</a
+        >
+        in our documentation.
+      </p>
+    </blockquote>
+    <h2 id="source-control-model">Source Control Model</h2>
+    <p>
+      A <code>SourceControl</code> is the entity responsible for populating the Source
+      Control model with <strong>resource states</strong>, instances of
+      <code>SourceControlResourceState</code>. Resource states are themselves organized in
+      <strong>groups</strong>, instances of <code>SourceControlResourceGroup</code>.
+    </p>
+    <p>
+      You can create a new SourceControl with <code>vscode.scm.createSourceControl</code>.
+    </p>
+    <p>
+      In order to better understand how these three entities correlate with each other,
+      let’s take
+      <a href="https://github.com/microsoft/vscode/tree/main/extensions/git">Git</a> as an
+      example. Consider the following output of <code>git status</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">vsce</span> main* → git status</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ex">On</span> branch main</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ex">Your</span> branch is up-to-date with <span class="st">&#39;origin/main&#39;</span>.</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="ex">Changes</span> to be committed:</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git reset HEAD &lt;file&gt;...&quot;</span> to unstage<span class="kw">)</span></a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7">        <span class="ex">modified</span>:   README.md</a>
+<a class="sourceLine" id="cb1-8" title="8">        <span class="ex">renamed</span>:    src/api.ts -<span class="op">&gt;</span> src/test/api.ts</a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="ex">Changes</span> not staged for commit:</a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git add/rm &lt;file&gt;...&quot;</span> to update what will be committed<span class="kw">)</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git checkout -- &lt;file&gt;...&quot;</span> to discard changes in working directory<span class="kw">)</span></a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14">        <span class="ex">deleted</span>:    .travis.yml</a>
+<a class="sourceLine" id="cb1-15" title="15">        <span class="ex">modified</span>:   README.md</a></code></pre>
+    </div>
+    <p>
+      There are many things going on in this workspace. First, the
+      <code>README.md</code> file has been modified, staged and then modified once again.
+      Second, the <code>src/api.ts</code> file has been moved to
+      <code>src/test/api.ts</code> and that move was staged. Finally, the
+      <code>.travis.yml</code> file has been deleted.
+    </p>
+    <p>
+      For this workspace, Git defines two resource groups: the
+      <strong>working tree</strong> and the <strong>index</strong>. Each
+      <strong>file change</strong> within that group is <strong>resource state</strong>:
+    </p>
+    <ul>
+      <li>
+        <strong>Index</strong> - resource group
+        <ul>
+          <li><code>README.md</code>, modified - resource state</li>
+          <li>
+            <code>src/test/api.ts</code>, renamed from <code>src/api.ts</code> - resource
+            state
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Working Tree</strong> - resource group
+        <ul>
+          <li><code>.travis.yml</code>, deleted - resource state</li>
+          <li><code>README.md</code>, modified - resource state</li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Note how the same file, <code>README.md</code>, is part of two distinct resource
+      states.
+    </p>
+    <p>Here’s how Git creates this model:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">function</span> <span class="fu">createResourceUri</span>(relativePath<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> <span class="va">vscode</span><span class="op">.</span><span class="at">Uri</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">const</span> absolutePath <span class="op">=</span> <span class="va">path</span><span class="op">.</span><span class="fu">join</span>(<span class="va">vscode</span><span class="op">.</span><span class="va">workspace</span><span class="op">.</span><span class="at">rootPath</span><span class="op">,</span> relativePath)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="cf">return</span> <span class="va">vscode</span><span class="op">.</span><span class="va">Uri</span><span class="op">.</span><span class="fu">file</span>(absolutePath)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">const</span> gitSCM <span class="op">=</span> <span class="va">vscode</span><span class="op">.</span><span class="va">scm</span><span class="op">.</span><span class="fu">createSourceControl</span>(<span class="st">&#39;git&#39;</span><span class="op">,</span> <span class="st">&#39;Git&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">const</span> index <span class="op">=</span> <span class="va">gitSCM</span><span class="op">.</span><span class="fu">createResourceGroup</span>(<span class="st">&#39;index&#39;</span><span class="op">,</span> <span class="st">&#39;Index&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="va">index</span><span class="op">.</span><span class="at">resourceStates</span> <span class="op">=</span> <span class="op">[</span></a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="op">{</span> resourceUri<span class="op">:</span> <span class="fu">createResourceUri</span>(<span class="st">&#39;README.md&#39;</span>) <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="op">{</span> resourceUri<span class="op">:</span> <span class="fu">createResourceUri</span>(<span class="st">&#39;src/test/api.ts&#39;</span>) <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="op">];</span></a>
+<a class="sourceLine" id="cb2-13" title="13"></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="kw">const</span> workingTree <span class="op">=</span> <span class="va">gitSCM</span><span class="op">.</span><span class="fu">createResourceGroup</span>(<span class="st">&#39;workingTree&#39;</span><span class="op">,</span> <span class="st">&#39;Changes&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="va">workingTree</span><span class="op">.</span><span class="at">resourceStates</span> <span class="op">=</span> <span class="op">[</span></a>
+<a class="sourceLine" id="cb2-16" title="16">  <span class="op">{</span> resourceUri<span class="op">:</span> <span class="fu">createResourceUri</span>(<span class="st">&#39;.travis.yml&#39;</span>) <span class="op">},</span></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="op">{</span> resourceUri<span class="op">:</span> <span class="fu">createResourceUri</span>(<span class="st">&#39;README.md&#39;</span>) <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="op">];</span></a></code></pre>
+    </div>
+    <p>
+      Changes made to the source control and resource groups will be propagated to the
+      Source Control view.
+    </p>
+    <h2 id="source-control-view">Source Control View</h2>
+    <p>
+      VS Code is able to populate the Source Control view, as the Source Control model
+      changes. Resource states are customizable using
+      <code>SourceControlResourceDecorations</code>:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">export</span> <span class="kw">interface</span> SourceControlResourceState <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">readonly</span> decorations<span class="op">?:</span> SourceControlResourceDecorations<span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The previous example would be sufficient to populate a simple list in the Source
+      Control view, but there are many user interactions that the user might want to perform
+      with each resource. For instance, what happens when the user clicks a resource state?
+      The resource state can optionally provide a command to handle this action:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">export</span> <span class="kw">interface</span> SourceControlResourceState <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">readonly</span> command<span class="op">?:</span> Command<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="menus">Menus</h3>
+    <p>
+      There are six Source Control menu ids where you can place menu items, in order to
+      provide the user with a much richer user interface.
+    </p>
+    <p>
+      The <code>scm/title</code> menu is located to the right of the SCM view title. The
+      menu items in the <code>navigation</code> group will be inline, while all the others
+      will be within the <code>…</code> dropdown menu.
+    </p>
+    <p>These three are similar:</p>
+    <ul>
+      <li>
+        <code>scm/resourceGroup/context</code> adds commands to
+        <a href="/api/references/contribution-points#SourceControlResourceGroup"
+          ><code>SourceControlResourceGroup</code></a
+        >
+        items.
+      </li>
+      <li>
+        <code>scm/resourceState/context</code> adds commands to
+        <a href="/api/references/contribution-points#SourceControlResourceState"
+          ><code>SourceControlResourceState</code></a
+        >
+        items.
+      </li>
+      <li>
+        <code>scm/resourceFolder/context</code> add commands to the intermediate folders
+        that appear when a
+        <a href="/api/references/contribution-points#SourceControlResourceState"
+          ><code>SourceControlResourceState</code></a
+        >’s resourceUri path includes folders and the user has opted for tree-view rather
+        than list-view mode.
+      </li>
+    </ul>
+    <p>
+      Place menu items in the <code>inline</code> group to have them inline. All other menu
+      item groups will be represented in a context menu usually accessible using the mouse
+      right-click.
+    </p>
+    <p>
+      Note that the SCM view supports multiple selection, so a command receives as its
+      argument an array of one or more resources.
+    </p>
+    <p>
+      For example, Git supports staging multiple files by adding the
+      <code>git.stage</code> command to the <code>scm/resourceState/context</code> menu and
+      using such a method declaration:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">stage</span>(<span class="op">...</span>resourceStates<span class="op">:</span> SourceControlResourceState<span class="op">[]</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;;</span></a></code></pre>
+    </div>
+    <p>
+      When creating them, <code>SourceControl</code> and
+      <code>SourceControlResourceGroup</code> instances require you to provide an
+      <code>id</code> string. These values will be populated in the
+      <code>scmProvider</code> and <code>scmResourceGroup</code> context keys, respectively.
+      You can rely on these
+      <a href="/api/references/when-clause-contexts">context keys</a> in the
+      <code>when</code> clauses of your menu items. Here’s how Git is able to show an inline
+      menu item for its <code>git.stage</code> command:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;git.stage&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">&quot;when&quot;</span><span class="fu">:</span> <span class="st">&quot;scmProvider == git &amp;&amp; scmResourceGroup == merge&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">&quot;group&quot;</span><span class="fu">:</span> <span class="st">&quot;inline&quot;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The <code>scm/sourceControl</code> menu is located contextually near SourceControl
+      instances:
+    </p>
+    <figure>
+      <img src="images/scm-provider/sourcecontrol-menu.png" alt="source control menu" />
+      <figcaption>source control menu</figcaption>
+    </figure>
+    <p>
+      The <code>scm/change/title</code> allows you to contribute commands to the title bar
+      of the
+      <a href="/api/references/contribution-points#QuickDiffProvider">Quick Diff</a> inline
+      diff editor, described <a href="#quick-diff">further ahead</a>. The command will be
+      passed as arguments the URI of the document, the array of changes within it, and the
+      index of the change which the inline change diff editor is currently focused on. For
+      example, here’s the declaration of the <code>stageChange</code> Git command which is
+      contributed to this menu with a <code>when</code> clause testing that the
+      <code>originalResourceScheme</code>
+      <a href="/api/references/when-clause-contexts">context key</a> equals
+      <code>git</code>:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">async</span> <span class="fu">stageChange</span>(uri<span class="op">:</span> Uri<span class="op">,</span> changes<span class="op">:</span> LineChange<span class="op">[],</span> index<span class="op">:</span> <span class="dt">number</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;;</span></a></code></pre>
+    </div>
+    <h3 id="scm-input-box">SCM Input Box</h3>
+    <p>
+      The Source Control Input Box, located atop of each Source Control view, allows the
+      user to input a message. You can get (and set) this message in order to perform
+      operations. In Git, for example, this is used as the commit box, in which users type
+      in commit messages and <code>git commit</code> commands pick them up.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="im">export</span> <span class="kw">interface</span> SourceControlInputBox <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  value<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="im">export</span> <span class="kw">interface</span> SourceControl <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="kw">readonly</span> inputBox<span class="op">:</span> SourceControlInputBox<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The user can type <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on macOS) to accept
+      any message. You can handle this event by providing a
+      <code>acceptInputCommand</code> to your <code>SourceControl</code> instance.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb9-1" title="1"><span class="im">export</span> <span class="kw">interface</span> SourceControl <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="kw">readonly</span> acceptInputCommand<span class="op">?:</span> Command<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">}</span></a></code></pre>
+    </div>
+    <h2 id="quick-diff">Quick Diff</h2>
+    <p>
+      VS Code also supports displaying <strong>quick diff</strong> editor gutter
+      decorations. Clicking those decorations will reveal an inline diff experience, to
+      which you can contribute contextual commands:
+    </p>
+    <figure>
+      <img src="images/scm-provider/quickdiff.png" alt="SCM quick diff" />
+      <figcaption>SCM quick diff</figcaption>
+    </figure>
+    <p>
+      These decorations are computed by VS Code itself. All you need to do is provide VS
+      Code with the original contents of any given file.
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb10-1" title="1"><span class="im">export</span> <span class="kw">interface</span> SourceControl <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  quickDiffProvider<span class="op">?:</span> QuickDiffProvider<span class="op">;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      Using a <code>QuickDiffProvider</code>’s <code>provideOriginalResource</code> method,
+      your implementation is able to tell VS Code the <code>Uri</code> of the original
+      resource that matches the resource whose <code>Uri</code> is provided as an argument
+      to the method.
+    </p>
+    <p>
+      Combine this API with the
+      <a href="/api/references/vscode-api#workspace"
+        ><code>registerTextDocumentContentProvider</code> method in the
+        <code>workspace</code> namespace</a
+      >, which lets you provide contents for arbitrary resources, given a
+      <a href="/api/references/vscode-api#Uri"><code>Uri</code></a> matching the custom
+      <code>scheme</code> that it registered for.
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <p>To learn more about VS Code extensibility model, try these topics:</p>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#scm">SCM API Reference</a> - Read the full SCM
+        API documentation
+      </li>
+      <li>
+        <a href="https://github.com/microsoft/vscode/tree/main/extensions/git"
+          >Git Extension</a
+        >
+        - Learn by reading the Git extension implementation
+      </li>
+      <li>
+        <a href="/api">Extension API Overview</a> - Learn about the full VS Code
+        extensibility model.
+      </li>
+      <li>
+        <a href="/api/references/extension-manifest">Extension Manifest File</a> - VS Code
+        package.json extension manifest file reference
+      </li>
+      <li>
+        <a href="/api/references/contribution-points">Contribution Points</a> - VS Code
+        contribution points reference
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>debugger-extension</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="debugger-extension">Debugger Extension</h1>
+    <p>
+      Visual Studio Code’s debugging architecture allows extension authors to easily
+      integrate existing debuggers into VS Code, while having a common user interface with
+      all of them.
+    </p>
+    <p>
+      VS Code ships with one built-in debugger extension, the
+      <a href="https://nodejs.org">Node.js</a> debugger extension, which is an excellent
+      showcase for the many debugger features supported by VS Code:
+    </p>
+    <figure>
+      <img
+        src="images/debugger-extension/debug-features.png"
+        alt="VS Code Debug Features"
+      />
+      <figcaption>VS Code Debug Features</figcaption>
+    </figure>
+    <p>This screenshot shows the following debugging features:</p>
+    <ol type="1">
+      <li>Debug configuration management.</li>
+      <li>Debug actions for starting/stopping and stepping.</li>
+      <li>Source-, function-, conditional-, inline breakpoints, and log points.</li>
+      <li>Stack traces, including multi-thread and multi-process support.</li>
+      <li>Navigating through complex data structures in views and hovers.</li>
+      <li>Variable values shown in hovers or inlined in the source.</li>
+      <li>Managing watch expressions.</li>
+      <li>Debug console for interactive evaluation with autocomplete.</li>
+    </ol>
+    <p>
+      This documentation will help you create a debugger extension which can make any
+      debugger work with VS Code.
+    </p>
+    <h2 id="debugging-architecture-of-vs-code">Debugging Architecture of VS Code</h2>
+    <p>
+      VS Code implements a generic (language-agnostic) debugger UI based on an abstract
+      protocol that we’ve introduced to communicate with debugger backends. Because
+      debuggers typically do not implement this protocol, some intermediary is needed to
+      “adapt” the debugger to the protocol. This intermediary is typically a standalone
+      process that communicates with the debugger.
+    </p>
+    <figure>
+      <img
+        src="images/debugger-extension/debug-arch1.png"
+        alt="VS Code Debug Architecture"
+      />
+      <figcaption>VS Code Debug Architecture</figcaption>
+    </figure>
+    <p>
+      We call this intermediary the <strong>Debug Adapter</strong> (or
+      <strong>DA</strong> for short) and the abstract protocol that is used between the DA
+      and VS Code is the <strong>Debug Adapter Protocol</strong> (<strong>DAP</strong> for
+      short). Since the Debug Adapter Protocol is independent from VS Code, it has its own
+      <a href="https://microsoft.github.io/debug-adapter-protocol/">web site</a> where you
+      can find an
+      <a href="https://microsoft.github.io/debug-adapter-protocol/overview"
+        >introduction and overview</a
+      >, the detailed
+      <a href="https://microsoft.github.io/debug-adapter-protocol/specification"
+        >specification</a
+      >, and some lists with
+      <a href="https://microsoft.github.io/debug-adapter-protocol/implementors/adapters/"
+        >known implementations and supporting tools</a
+      >. The history of and motivation behind DAP is explained in this
+      <a
+        href="https://code.visualstudio.com/blogs/2018/08/07/debug-adapter-protocol-website#_why-the-need-for-decoupling-with-protocols"
+        >blog post</a
+      >.
+    </p>
+    <p>
+      Since debug adapters are independent from VS Code and can be used in
+      <a href="https://microsoft.github.io/debug-adapter-protocol/implementors/tools/"
+        >other developments tools</a
+      >, they do not match VS Code’s extensibility architecture which is based on extensions
+      and contribution points.
+    </p>
+    <p>
+      For this reason VS Code provides a contribution point, <code>debuggers</code>, where a
+      debug adapter can be contributed under a specific debug type (e.g. <code>node</code>
+      for the Node.js debugger). VS Code launches the registered DA whenever the user starts
+      a debug session of that type.
+    </p>
+    <p>
+      So in its most minimal form, a debugger extension is just a declarative contribution
+      of a debug adapter implementation and the extension is basically a packaging container
+      for the debug adapter without any additional code.
+    </p>
+    <figure>
+      <img
+        src="images/debugger-extension/debug-arch2.png"
+        alt="VS Code Debug Architecture 2"
+      />
+      <figcaption>VS Code Debug Architecture 2</figcaption>
+    </figure>
+    <p>
+      A more realistic debugger extension contributes many or all of the following
+      declarative items to VS Code:
+    </p>
+    <ul>
+      <li>
+        List of languages supported by the debugger. VS Code enables the UI to set
+        breakpoints for those languages. mention- JSON schema for the debug configuration
+        attributes introduced by the debugger. VS Code uses this schema to verify the
+        configuration in the launch.json editor and provides IntelliSense. Please note that
+        the JSON schema constructs <code>$ref</code> and <code>definition</code> are not
+        supported.
+      </li>
+      <li>Default debug configurations for the initial launch.json created by VS Code.</li>
+      <li>Debug configuration snippets that a user can add to a launch.json file.</li>
+      <li>Declaration of variables that can be used in debug configurations.</li>
+    </ul>
+    <p>
+      You can find more information in
+      <a href="/api/references/contribution-points#contributes.breakpoints"
+        ><code>contributes.breakpoints</code></a
+      >
+      and
+      <a href="/api/references/contribution-points#contributes.debuggers"
+        ><code>contributes.debuggers</code></a
+      >
+      references.
+    </p>
+    <p>
+      In addition to the purely declarative contributions from above, the Debug Extension
+      API enables this code-based functionality:
+    </p>
+    <ul>
+      <li>
+        Dynamically generated default debug configurations for the initial launch.json
+        created by VS Code.
+      </li>
+      <li>Determine the debug adapter to use dynamically.</li>
+      <li>
+        Verify or modify debug configurations before they are passed to the debug adapter.
+      </li>
+      <li>Communicate with the debug adapter.</li>
+      <li>Send messages to the debug console.</li>
+    </ul>
+    <p>In the rest of this document we show how to develop a debugger extension.</p>
+    <h2 id="the-mock-debug-extension">The Mock Debug Extension</h2>
+    <p>
+      Since creating a debug adapter from scratch is a bit heavy for this tutorial, we will
+      start with a simple DA which we have created as an educational “debug adapter starter
+      kit”. It is called <em>Mock Debug</em> because it does not talk to a real debugger,
+      but mocks one. Mock Debug simulates a debugger and supports step, continue,
+      breakpoints, exceptions, and variable access, but it is not connected to any real
+      debugger.
+    </p>
+    <p>
+      Before delving into the development setup for mock-debug, let’s first install a
+      <a href="https://marketplace.visualstudio.com/items/andreweinand.mock-debug"
+        >pre-built version</a
+      >
+      from the VS Code Marketplace and play with it:
+    </p>
+    <ul>
+      <li>
+        Switch to the Extensions viewlet and type “mock” to search for the Mock Debug
+        extension,
+      </li>
+      <li>“Install” and “Reload” the extension.</li>
+    </ul>
+    <p>To try Mock Debug:</p>
+    <ul>
+      <li>Create a new empty folder <code>mock test</code> and open it in VS Code.</li>
+      <li>
+        Create a file <code>readme.md</code> and enter several lines of arbitrary text.
+      </li>
+      <li>Switch to the Run view and press the gear icon.</li>
+      <li>
+        VS Code will let you select an “environment” in order to create a default launch
+        configuration. Pick “Mock Debug”.
+      </li>
+      <li>
+        Press the green Start button and then Enter to confirm the suggested file
+        <code>readme.md</code>.
+      </li>
+    </ul>
+    <p>
+      A debug session starts and you can “step” through the readme file, set and hit
+      breakpoints, and run into exceptions (if the word <code>exception</code> appears in a
+      line).
+    </p>
+    <figure>
+      <img src="images/debugger-extension/mock-debug.gif" alt="Mock Debugger running" />
+      <figcaption>Mock Debugger running</figcaption>
+    </figure>
+    <p>
+      Before using Mock Debug as a starting point for your own development, we recommend to
+      uninstall the pre-built version first:
+    </p>
+    <ul>
+      <li>
+        Switch to the Extensions viewlet and click on the gear icon of the Mock Debug
+        extension.
+      </li>
+      <li>Run the “Uninstall” action and then “Reload” the window.</li>
+    </ul>
+    <h2 id="development-setup-for-mock-debug">Development Setup for Mock Debug</h2>
+    <p>
+      Now let’s get the source for Mock Debug and start development on it within VS Code:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">git</span> clone https://github.com/microsoft/vscode-mock-debug.git</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="bu">cd</span> vscode-mock-debug</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ex">yarn</span></a></code></pre>
+    </div>
+    <p>Open the project folder <code>vscode-mock-debug</code> in VS Code.</p>
+    <p>What’s in the package?</p>
+    <ul>
+      <li>
+        <code>package.json</code> is the manifest for the mock-debug extension:
+        <ul>
+          <li>It lists the contributions of the mock-debug extension.</li>
+          <li>
+            The <code>compile</code> and <code>watch</code> scripts are used to transpile
+            the TypeScript source into the <code>out</code> folder and watch for subsequent
+            source modifications.
+          </li>
+          <li>
+            The dependencies <code>vscode-debugprotocol</code>,
+            <code>vscode-debugadapter</code>, and
+            <code>vscode-debugadapter-testsupport</code> are NPM modules that simplify the
+            development of node-based debug adapters.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>src/mockRuntime.ts</code> is a <em>mock</em> runtime with a simple debug API.
+      </li>
+      <li>
+        The code that <em>adapts</em> the runtime to the Debug Adapter Protocol lives in
+        <code>src/mockDebug.ts</code>. Here you find the handlers for the various requests
+        of the DAP.
+      </li>
+      <li>
+        Since the implementation of debugger extension lives in the debug adapter, there is
+        no need to have extension code at all (i.e. code that runs in the extension host
+        process). However, Mock Debug has a small <code>src/extension.ts</code> because it
+        illustrates what can be done in the extension code of a debugger extension.
+      </li>
+    </ul>
+    <p>
+      Now build and launch the Mock Debug extension by selecting the
+      <strong>Extension</strong> launch configuration and hitting <code>F5</code>.
+      Initially, this will do a full transpile of the TypeScript sources into the
+      <code>out</code> folder. After the full build, a <em>watcher task</em> is started that
+      transpiles any changes you make.
+    </p>
+    <p>
+      After transpiling the source, a new VS Code window labelled “[Extension Development
+      Host]” appears with the Mock Debug extension now running in debug mode. From that
+      window open your <code>mock test</code> project with the <code>readme.md</code> file,
+      start a debug session with ‘F5’, and then step through it:
+    </p>
+    <figure>
+      <img
+        src="images/debugger-extension/debug-mock-session.png"
+        alt="Debugging Extension and Server"
+      />
+      <figcaption>Debugging Extension and Server</figcaption>
+    </figure>
+    <p>
+      Since you are running the extension in debug mode, you could now set and hit
+      breakpoints in <code>src/extension.ts</code> but as I’ve mentioned above, there is not
+      much interesting code executing in the extension. The interesting code runs in the
+      debug adapter which is a separate process.
+    </p>
+    <p>
+      In order to debug the debug adapter itself, we have to run it in debug mode. This is
+      most easily achieved by running the debug adapter in <em>server mode</em> and
+      configure VS Code to connect to it. In your VS Code vscode-mock-debug project select
+      the launch configuration <strong>Server</strong> from the dropdown menu and press the
+      green start button.
+    </p>
+    <p>
+      Since we already had an active debug session for the extension the VS Code debugger UI
+      now enters <em>multi session</em> mode which is indicated by seeing the names of the
+      two debug sessions <strong>Extension</strong> and <strong>Server</strong> showing up
+      in the CALL STACK view:
+    </p>
+    <figure>
+      <img
+        src="images/debugger-extension/debugger-extension-server.png"
+        alt="Debugging Extension and Server"
+      />
+      <figcaption>Debugging Extension and Server</figcaption>
+    </figure>
+    <p>
+      Now we are able to debug both the extension and the DA simultaneously. A faster way to
+      arrive here is by using the <strong>Extension + Server</strong> launch configuration
+      which launches both sessions automatically.
+    </p>
+    <p>
+      An alternative, even simpler approach for debugging the extension and the DA can be
+      found <a href="#alternative-approach-to-develop-a-debugger-extension">below</a>.
+    </p>
+    <p>
+      Set a breakpoint at the beginning of method <code>launchRequest(...)</code> in file
+      <code>src/mockDebug.ts</code> and as a last step configure the mock debugger to
+      connect to the DA server by adding a <code>debugServer</code> attribute for port
+      <code>4711</code> to your mock test launch config:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.2.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">&quot;configurations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;mock&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-7" title="7">      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;mock test&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;${workspaceFolder}/readme.md&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="dt">&quot;stopOnEntry&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb2-10" title="10">      <span class="dt">&quot;debugServer&quot;</span><span class="fu">:</span> <span class="dv">4711</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      If you now launch this debug configuration, VS Code does not start the mock debug
+      adapter as a separate process, but directly connects to local port 4711 of the already
+      running server, and you should hit the breakpoint in <code>launchRequest</code>.
+    </p>
+    <p>With this setup, you can now easily edit, transpile, and debug Mock Debug.</p>
+    <p>
+      But now the real work begins: you will have to replace the mock implementation of the
+      debug adapter in <code>src/mockDebug.ts</code> and <code>src/mockRuntime.ts</code> by
+      some code that talks to a “real” debugger or runtime. This involves understanding and
+      implementing the Debug Adapter Protocol. More details about this can be found
+      <a href="https://microsoft.github.io/debug-adapter-protocol/overview#How_it_works"
+        >here</a
+      >.
+    </p>
+    <h2 id="anatomy-of-the-package.json-of-a-debugger-extension">
+      Anatomy of the package.json of a Debugger Extension
+    </h2>
+    <p>
+      Besides providing a debugger-specific implementation of the debug adapter a debugger
+      extension needs a <code>package.json</code> that contributes to the various
+      debug-related contributions points.
+    </p>
+    <p>So let’s have a closer look at the <code>package.json</code> of Mock Debug.</p>
+    <p>
+      Like every VS Code extension, the <code>package.json</code> declares the fundamental
+      properties <strong>name</strong>, <strong>publisher</strong>, and
+      <strong>version</strong> of the extension. Use the <strong>categories</strong> field
+      to make the extension easier to find in the VS Code Extension Marketplace.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;mock-debug&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">&quot;displayName&quot;</span><span class="fu">:</span> <span class="st">&quot;Mock Debug&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.24.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">&quot;publisher&quot;</span><span class="fu">:</span> <span class="st">&quot;...&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Starter extension for developing debug adapters for VS Code.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="dt">&quot;author&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;...&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="dt">&quot;email&quot;</span><span class="fu">:</span> <span class="st">&quot;...&quot;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="dt">&quot;engines&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.17.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-13" title="13">    <span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;^7.9.0&quot;</span></a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="dt">&quot;icon&quot;</span><span class="fu">:</span> <span class="st">&quot;images/mock-debug-icon.png&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-16" title="16">  <span class="dt">&quot;categories&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Debuggers&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-17" title="17"></a>
+<a class="sourceLine" id="cb3-18" title="18">  <span class="dt">&quot;contributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-19" title="19">    <span class="dt">&quot;breakpoints&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span> <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;markdown&quot;</span> <span class="fu">}</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-20" title="20">    <span class="dt">&quot;debuggers&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb3-21" title="21">      <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-22" title="22">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;mock&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-23" title="23">        <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Mock Debug&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25">        <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;./out/mockDebug.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-26" title="26">        <span class="dt">&quot;runtime&quot;</span><span class="fu">:</span> <span class="st">&quot;node&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-27" title="27"></a>
+<a class="sourceLine" id="cb3-28" title="28">        <span class="dt">&quot;configurationAttributes&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-29" title="29">          <span class="dt">&quot;launch&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-30" title="30">            <span class="dt">&quot;required&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;program&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-31" title="31">            <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-32" title="32">              <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-33" title="33">                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;string&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-34" title="34">                <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Absolute path to a text file.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-35" title="35">                <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="st">&quot;${workspaceFolder}/${command:AskForProgramName}&quot;</span></a>
+<a class="sourceLine" id="cb3-36" title="36">              <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-37" title="37">              <span class="dt">&quot;stopOnEntry&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-38" title="38">                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;boolean&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-39" title="39">                <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Automatically stop after launch.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-40" title="40">                <span class="dt">&quot;default&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb3-41" title="41">              <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-42" title="42">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-43" title="43">          <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-44" title="44">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-45" title="45"></a>
+<a class="sourceLine" id="cb3-46" title="46">        <span class="dt">&quot;initialConfigurations&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb3-47" title="47">          <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-48" title="48">            <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;mock&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-49" title="49">            <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-50" title="50">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ask for file name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-51" title="51">            <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;${workspaceFolder}/${command:AskForProgramName}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-52" title="52">            <span class="dt">&quot;stopOnEntry&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb3-53" title="53">          <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-54" title="54">        <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-55" title="55"></a>
+<a class="sourceLine" id="cb3-56" title="56">        <span class="dt">&quot;configurationSnippets&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb3-57" title="57">          <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-58" title="58">            <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Mock Debug: Launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-59" title="59">            <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;A new configuration for launching a mock debug program&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-60" title="60">            <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-61" title="61">              <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;mock&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-62" title="62">              <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;launch&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-63" title="63">              <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;${2:Launch Program}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-64" title="64">              <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;^</span><span class="ch">\&quot;\\</span><span class="st">${workspaceFolder}/${1:Program}</span><span class="ch">\&quot;</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb3-65" title="65">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-66" title="66">          <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-67" title="67">        <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-68" title="68"></a>
+<a class="sourceLine" id="cb3-69" title="69">        <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-70" title="70">          <span class="dt">&quot;AskForProgramName&quot;</span><span class="fu">:</span> <span class="st">&quot;extension.mock-debug.getProgramName&quot;</span></a>
+<a class="sourceLine" id="cb3-71" title="71">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-72" title="72">      <span class="fu">}</span></a>
+<a class="sourceLine" id="cb3-73" title="73">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb3-74" title="74">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb3-75" title="75"></a>
+<a class="sourceLine" id="cb3-76" title="76">  <span class="dt">&quot;activationEvents&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;onDebug&quot;</span><span class="ot">,</span> <span class="st">&quot;onCommand:extension.mock-debug.getProgramName&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb3-77" title="77"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      Now take a look at the <strong>contributes</strong> section which contains the
+      contributions specific to debug extensions.
+    </p>
+    <p>
+      First, we use the <strong>breakpoints</strong> contribution point to list the
+      languages for which setting breakpoints will be enabled. Without this, it would not be
+      possible to set breakpoints in Markdown files.
+    </p>
+    <p>
+      Next is the <strong>debuggers</strong> section. Here, one debugger is introduced under
+      a debug <strong>type</strong> <code>mock</code>. The user can reference this type in
+      launch configurations. The optional attribute <strong>label</strong> can be used to
+      give the debug type a nice name when showing it in the UI.
+    </p>
+    <p>
+      Since the debug extension uses a debug adapter, a relative path to its code is given
+      as the <strong>program</strong> attribute. In order to make the extension
+      self-contained the application must live inside the extension folder. By convention,
+      we keep this applications inside a folder named <code>out</code> or <code>bin</code>,
+      but you are free to use a different name.
+    </p>
+    <p>
+      Since VS Code runs on different platforms, we have to make sure that the DA program
+      supports the different platforms as well. For this we have the following options:
+    </p>
+    <ol type="1">
+      <li>
+        <p>
+          If the program is implemented in a platform independent way, e.g. as program that
+          runs on a runtime that is available on all supported platforms, you can specify
+          this runtime via the <strong>runtime</strong> attribute. As of today, VS Code
+          supports <code>node</code> and <code>mono</code> runtimes. Our Mock debug adapter
+          from above uses this approach.
+        </p>
+      </li>
+      <li>
+        <p>
+          If your DA implementation needs different executables on different platforms, the
+          <strong>program</strong> attribute can be qualified for specific platforms like
+          this:
+        </p>
+        <div class="sourceCode" id="cb4">
+          <pre
+            class="sourceCode json"
+          ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="er">&quot;debuggers&quot;:</span> <span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;gdb&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;windows&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">        <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;./bin/gdbDebug.exe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="dt">&quot;osx&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">        <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;./bin/gdbDebug.sh&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    <span class="dt">&quot;linux&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-10" title="10">        <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;./bin/gdbDebug.sh&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="fu">}</span><span class="ot">]</span></a></code></pre>
+        </div>
+      </li>
+      <li>
+        <p>
+          A combination of both approaches is possible too. The following example is from
+          the Mono DA which is implemented as a mono application that needs a runtime on
+          macOS and Linux but not on Windows:
+        </p>
+        <div class="sourceCode" id="cb5">
+          <pre
+            class="sourceCode json"
+          ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="er">&quot;debuggers&quot;:</span> <span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;mono&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">&quot;program&quot;</span><span class="fu">:</span> <span class="st">&quot;./bin/monoDebug.exe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="dt">&quot;osx&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-5" title="5">        <span class="dt">&quot;runtime&quot;</span><span class="fu">:</span> <span class="st">&quot;mono&quot;</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="dt">&quot;linux&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-8" title="8">        <span class="dt">&quot;runtime&quot;</span><span class="fu">:</span> <span class="st">&quot;mono&quot;</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="fu">}</span><span class="ot">]</span></a></code></pre>
+        </div>
+      </li>
+    </ol>
+    <p>
+      <strong>configurationAttributes</strong> declares the schema for the
+      <code>launch.json</code> attributes that are available for this debugger. This schema
+      is used for validating the <code>launch.json</code> and supporting IntelliSense and
+      hover help when editing the launch configuration.
+    </p>
+    <p>
+      The <strong>initialConfigurations</strong> define the initial content of the default
+      <code>launch.json</code> for this debugger. This information is used when a project
+      does not have a <code>launch.json</code> and a user starts a debug session or clicks
+      on the gear icon in the Run view. In this case VS Code lets the user pick a debug
+      environment and then creates the corresponding <code>launch.json</code>:
+    </p>
+    <figure>
+      <img src="images/debugger-extension/debug-init-config.png" alt="Debugger Quickpick" />
+      <figcaption>Debugger Quickpick</figcaption>
+    </figure>
+    <p>
+      Instead of defining the initial content of the <code>launch.json</code> statically in
+      the <code>package.json</code>, it is possible to compute the initial configurations
+      dynamically by implementing a <code>DebugConfigurationProvider</code> (for details see
+      the section
+      <a href="#using-a-debugconfigurationprovider"
+        >Using a DebugConfigurationProvider below</a
+      >).
+    </p>
+    <p>
+      <strong>configurationSnippets</strong> define launch configuration snippets that get
+      surfaced in IntelliSense when editing the <code>launch.json</code>. As a convention,
+      prefix the <code>label</code> attribute of a snippet by the debug environment name so
+      that it can be clearly identified when presented in a list of many snippet proposals.
+    </p>
+    <p>
+      The <strong>variables</strong> contribution binds “variables” to “commands”. These
+      variables can be used in the launch configuration using the
+      <strong>${command:xyz}</strong> syntax and the variables are substituted by the value
+      returned from the bound command when a debug session is started.
+    </p>
+    <p>
+      The implementation of a command lives in the extension and it can range from a simple
+      expression with no UI, to sophisticated functionality based on the UI features
+      available in the extension API. Mock Debug binds a variable
+      <code>AskForProgramName</code> to the command
+      <code>extension.mock-debug.getProgramName</code>. The
+      <a
+        href="https://github.com/microsoft/vscode-mock-debug/blob/606454ff3bd669867a38d9b2dc7b348d324a3f6b/src/extension.ts#L21-L26"
+        >implementation</a
+      >
+      of this command in <code>src/extension.ts</code> uses the <code>showInputBox</code> to
+      let the user enter a program name:
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">vscode</span><span class="op">.</span><span class="va">commands</span><span class="op">.</span><span class="fu">registerCommand</span>(<span class="st">&#39;extension.mock-debug.getProgramName&#39;</span><span class="op">,</span> config <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="cf">return</span> <span class="va">vscode</span><span class="op">.</span><span class="va">window</span><span class="op">.</span><span class="fu">showInputBox</span>(<span class="op">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    placeHolder<span class="op">:</span> <span class="st">&#39;Please enter the name of a markdown file in the workspace folder&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    value<span class="op">:</span> <span class="st">&#39;readme.md&#39;</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="op">}</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      The variable can now be used in any string typed value of a launch configuration as
+      <strong>${command:AskForProgramName}</strong>.
+    </p>
+    <h2 id="using-a-debugconfigurationprovider">Using a DebugConfigurationProvider</h2>
+    <p>
+      If the static nature of debug contributions in the <code>package.json</code> is not
+      sufficient, a <code>DebugConfigurationProvider</code> can be used to dynamically
+      control the following aspects of a debug extension:
+    </p>
+    <ul>
+      <li>
+        The initial debug configurations for a newly created launch.json can be generated
+        dynamically, e.g. based on some contextual information available in the workspace.
+      </li>
+      <li>
+        A launch configuration can be <em>resolved</em> (or modified) before it is used to
+        start a new debug session. This allows for filling in default values based on
+        information available in the workspace. Two <em>resolve</em> methods exist:
+        <code>resolveDebugConfiguration</code> is called before variables are substituted in
+        the launch configuration,
+        <code>resolveDebugConfigurationWithSubstitutedVariables</code> is called after all
+        variables have been substituted. The former must be used if the validation logic
+        inserts additional variables into the debug configuration. The latter must be used
+        if the validation logic needs access to the final values of all debug configuration
+        attributes.
+      </li>
+    </ul>
+    <p>
+      The <code>MockConfigurationProvider</code> in <code>src/extension.ts</code> implements
+      <code>resolveDebugConfiguration</code> to detect the case where a debug session is
+      started when no launch.json exists, but a Markdown file is open in the active editor.
+      This is a typical scenario where the user has a file open in the editor and just wants
+      to debug it without creating a launch.json.
+    </p>
+    <p>
+      A debug configuration provider is registered for a specific debug type via
+      <code>vscode.debug.registerDebugConfigurationProvider</code>, typically in the
+      extension’s <code>activate</code> function. To ensure that the
+      <code>DebugConfigurationProvider</code> is registered early enough, the extension must
+      be activated as soon as the debug functionality is used. This can be easily achieved
+      by configuring extension activation for the <code>onDebug</code> event in the
+      <code>package.json</code>:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="er">&quot;activationEvents&quot;:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb7-2" title="2">    <span class="st">&quot;onDebug&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="er">//</span> <span class="er">...</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="ot">]</span><span class="er">,</span></a></code></pre>
+    </div>
+    <p>
+      This catch-all <code>onDebug</code> is triggered as soon as any debug functionality is
+      used. This works fine as long as the extension has cheap startup costs (i.e. does not
+      spend a lot of time in its startup sequence). If a debug extension has an expensive
+      startup (for instance because of starting a language server), the
+      <code>onDebug</code> activation event could negatively affect other debug extensions,
+      because it is triggered rather early and does not take a specific debug type into
+      account.
+    </p>
+    <p>
+      A better approach for expensive debug extensions is to use more fine-grained
+      activation events:
+    </p>
+    <ul>
+      <li>
+        <code>onDebugInitialConfigurations</code> is fired just before the
+        <code>provideDebugConfigurations</code> method of the
+        <code>DebugConfigurationProvider</code> is called.
+      </li>
+      <li>
+        <code>onDebugResolve:type</code> is fired just before the
+        <code>resolveDebugConfiguration</code> or
+        <code>resolveDebugConfigurationWithSubstitutedVariables</code> methods of the
+        <code>DebugConfigurationProvider</code> for the specified type is called.
+      </li>
+    </ul>
+    <p>
+      <strong>Rule of thumb:</strong> If activation of a debug extensions is cheap, use
+      <code>onDebug</code>. If it is expensive, use
+      <code>onDebugInitialConfigurations</code> and/or <code>onDebugResolve</code> depending
+      on whether the <code>DebugConfigurationProvider</code> implements the corresponding
+      methods <code>provideDebugConfigurations</code> and/or
+      <code>resolveDebugConfiguration</code>.
+    </p>
+    <h2 id="publishing-your-debugger-extension">Publishing your debugger extension</h2>
+    <p>
+      Once you have created your debugger extension you can publish it to the Marketplace:
+    </p>
+    <ul>
+      <li>
+        Update the attributes in the <code>package.json</code> to reflect the naming and
+        purpose of your debugger extension.
+      </li>
+      <li>
+        Upload to the Marketplace as described in
+        <a href="/api/working-with-extensions/publishing-extension">Publishing Extension</a
+        >.
+      </li>
+    </ul>
+    <h2 id="alternative-approach-to-develop-a-debugger-extension">
+      Alternative approach to develop a debugger extension
+    </h2>
+    <p>
+      As we have seen, developing a debugger extension typically involves debugging both the
+      extension and the debug adapter in two parallel sessions. As explained above VS Code
+      supports this nicely but development could be easier if both the extension and the
+      debug adapter would be one program that could be debugged in one debug session.
+    </p>
+    <p>
+      This approach is in fact easily doable as long as your debug adapter is implemented in
+      TypeScript/JavaScript. The basic idea is to run the debug adapter directly inside the
+      extension and to make VS Code to connect to it instead of launching a new external
+      debug adapter per session.
+    </p>
+    <p>
+      For this VS Code provides extension API to control how a debug adapter is created and
+      run. A <code>DebugAdapterDescriptorFactory</code> has a method
+      <code>createDebugAdapterDescriptor</code> that is called by VS Code when a debug
+      session starts and a debug adapter is needed. This method must return a descriptor
+      object (<code>DebugAdapterDescriptor</code>) that describes how the debug adapter is
+      run.
+    </p>
+    <p>
+      Today VS Code supports three different ways for running a debug adapter and
+      consequently offers three different descriptor types:
+    </p>
+    <ul>
+      <li>
+        <code>DebugAdapterExecutable</code>: this object describes a debug adapter as an
+        external executable with a path and optional arguments and runtime. The executable
+        must implement the Debug Adapter Protocol and communicate via stdin/stdout. This is
+        VS Code’s default mode of operation and VS Code uses this descriptor automatically
+        with the corresponding values from the package.json if no
+        <code>DebugAdapterDescriptorFactory</code> is explicitly registered.
+      </li>
+      <li>
+        <code>DebugAdapterServer</code>: this object describes a debug adapter running as a
+        server that communicates via a specific local or remote port. A debug adapter
+        implementation based on the
+        <a href="https://www.npmjs.com/package/vscode-debugadapter"
+          ><code>vscode-debugadapter</code></a
+        >
+        npm module supports this server mode automatically.
+      </li>
+      <li>
+        <code>DebugAdapterInlineImplementation</code>: this object describes a debug adapter
+        as a JavaScript or Typescript object that implements the
+        <code>vscode.DebugAdapter</code> interface. A debug adapter implementation based on
+        version 1.38-pre.4 or later of the
+        <a href="https://www.npmjs.com/package/vscode-debugadapter"
+          ><code>vscode-debugadapter</code></a
+        >
+        npm module implements the interface automatically.
+      </li>
+    </ul>
+    <p>
+      Mock Debug shows examples for the
+      <a
+        href="https://github.com/microsoft/vscode-mock-debug/blob/668fa6f5db95dbb76825d4eb670ab0d305050c3b/src/extension.ts#L91-L150"
+        >three types of DebugAdapterDescriptorFactories</a
+      >
+      and how they are
+      <a
+        href="https://github.com/microsoft/vscode-mock-debug/blob/668fa6f5db95dbb76825d4eb670ab0d305050c3b/src/extension.ts#L50"
+        >registered for the ‘mock’ debug type</a
+      >. The run mode to use can be selected by
+      <a
+        href="https://github.com/microsoft/vscode-mock-debug/blob/668fa6f5db95dbb76825d4eb670ab0d305050c3b/src/extension.ts#L16"
+        >setting the global variable <code>runMode</code></a
+      >
+      to one of the possible values <code>external</code>, <code>server</code>, or
+      <code>inline</code>.
+    </p>
+    <p>
+      For development, the <code>inline</code> and <code>server</code> modes are
+      particularly useful because they allow for debugging extension and debug adapter
+      within a single process.
+    </p>
+  </body>
+</html>

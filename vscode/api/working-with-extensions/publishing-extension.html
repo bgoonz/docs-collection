@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>publishing-extension</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="publishing-extensions">Publishing Extensions</h1>
+    <p>
+      Once you have made a high-quality extension, you can publish it to the
+      <a href="https://marketplace.visualstudio.com/vscode"
+        >VS Code Extension Marketplace</a
+      >
+      so others can find, download, and use your extension. Alternatively, you can
+      <a href="#packaging-extensions">package</a> an extension into the installable VSIX
+      format and share it with other users.
+    </p>
+    <p>This topics covers:</p>
+    <ul>
+      <li>Using <a href="#vsce">vsce</a>, the CLI tool for managing VS Code extensions</li>
+      <li>
+        <a href="#packaging-extensions">Packaging</a>,
+        <a href="#publishing-extensions">publishing</a> and
+        <a href="#unpublishing-extensions">unpublishing</a> extensions
+      </li>
+      <li>
+        <a href="#create-a-publisher">Registering a <code>publisherId</code></a> necessary
+        for publishing extensions
+      </li>
+    </ul>
+    <h2 id="vsce">vsce</h2>
+    <p>
+      <a href="https://github.com/microsoft/vsce">vsce</a>, short for “Visual Studio Code
+      Extensions”, is a command-line tool for packaging, publishing and managing VS Code
+      extensions.
+    </p>
+    <h3 id="installation">Installation</h3>
+    <p>Make sure you have <a href="https://nodejs.org/">Node.js</a> installed. Then run:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">npm</span> install -g vsce</a></code></pre>
+    </div>
+    <h3 id="usage">Usage</h3>
+    <p>
+      You can use <code>vsce</code> to easily
+      <a href="#packaging-extensions">package</a> and
+      <a href="#publishing-extensions">publish</a> your extensions:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="bu">cd</span> myExtension</a>
+<a class="sourceLine" id="cb2-2" title="2">$ <span class="ex">vsce</span> package</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># myExtension.vsix generated</span></a>
+<a class="sourceLine" id="cb2-4" title="4">$ <span class="ex">vsce</span> publish</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># &lt;publisherID&gt;.myExtension published to VS Code Marketplace</span></a></code></pre>
+    </div>
+    <p>
+      <code>vsce</code> can also search, retrieve metadata, and unpublish extensions. For a
+      reference on all the available <code>vsce</code> commands, run
+      <code>vsce --help</code>.
+    </p>
+    <h2 id="publishing-extensions-1">Publishing extensions</h2>
+    <hr />
+    <p>
+      <strong>Note:</strong> Due to security concerns, <code>vsce</code> will not publish
+      extensions that contain user-provided SVG images.
+    </p>
+    <p>The publishing tool checks the following constraints:</p>
+    <ul>
+      <li>The icon provided in <code>package.json</code> may not be an SVG.</li>
+      <li>
+        The badges provided in the <code>package.json</code> may not be SVGs unless they are
+        from
+        <a href="/api/references/extension-manifest#approved-badges"
+          >trusted badge providers</a
+        >.
+      </li>
+      <li>
+        Image URLs in <code>README.md</code> and <code>CHANGELOG.md</code> need to resolve
+        to <code>https</code> URLs.
+      </li>
+      <li>
+        Images in <code>README.md</code> and <code>CHANGELOG.md</code> may not be SVGs
+        unless they are from
+        <a href="/api/references/extension-manifest#approved-badges"
+          >trusted badge providers</a
+        >.
+      </li>
+    </ul>
+    <hr />
+    <p>
+      Visual Studio Code uses
+      <a href="https://azure.microsoft.com/services/devops/">Azure DevOps</a> for its
+      Marketplace services. This means that authentication, hosting, and management of
+      extensions are provided through Azure DevOps.
+    </p>
+    <p>
+      <code>vsce</code> can only publish extensions using
+      <a
+        href="https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats"
+        >Personal Access Tokens</a
+      >. You need to create at least one in order to publish an extension.
+    </p>
+    <h3 id="get-a-personal-access-token">Get a Personal Access Token</h3>
+    <p>
+      First off, follow the documentation to
+      <a
+        href="https://docs.microsoft.com/azure/devops/organizations/accounts/create-organization"
+        >create your own organization</a
+      >
+      in Azure DevOps. In the following examples, the organization’s name is
+      <code>vscode</code>, you should use your new organization name as appropriate. Note
+      that the organization’s name doesn’t necessarily have to be same as your publisher
+      name.
+    </p>
+    <p>
+      From your organization’s home page (for example:
+      <code>https://dev.azure.com/vscode</code>), open the User settings dropdown menu next
+      to your profile image and select <strong>Personal access tokens</strong>:
+    </p>
+    <figure>
+      <img src="images/publishing-extension/token1.png" alt="Personal settings menu" />
+      <figcaption>Personal settings menu</figcaption>
+    </figure>
+    <p>
+      On the <strong>Personal Access Tokens</strong> page, select
+      <strong>New Token</strong> to create a new Personal Access Token and set the following
+      details:
+    </p>
+    <ul>
+      <li>Give it a Name</li>
+      <li>Set Organization to <strong>All accessible organizations</strong></li>
+      <li>Optionally extend its expiration date</li>
+      <li>
+        Set Scopes to <strong>Custom defined</strong> and choose the
+        <strong>Marketplace &gt; Manage</strong> scope
+      </li>
+    </ul>
+    <figure>
+      <img
+        src="images/publishing-extension/token2.png"
+        alt="Create personal access token"
+      />
+      <figcaption>Create personal access token</figcaption>
+    </figure>
+    <p>
+      Select <strong>Create</strong> and you’ll be presented with your newly created
+      Personal Access Token. <strong>Copy</strong> it, you’ll need it to create a publisher.
+    </p>
+    <h3 id="create-a-publisher">Create a publisher</h3>
+    <p>
+      A <strong>publisher</strong> is an identity who can publish extensions to the Visual
+      Studio Code Marketplace. Every extension needs to include a
+      <code>publisher</code> name in its
+      <a href="/api/references/extension-manifest"><code>package.json</code> file</a>.
+    </p>
+    <p>
+      You can create a new publisher through the Visual Studio Marketplace publisher
+      <a href="https://marketplace.visualstudio.com/manage">management page</a>. You need to
+      login in with the same Microsoft account you used to create the
+      <a
+        href="/api/working-with-extensions/publishing-extension#get-a-personal-access-token"
+        >Personal Access Token</a
+      >
+      in the previous section.
+    </p>
+    <p>
+      Test your publisher’s personal access token using <a href="#vsce"><code>vsce</code></a
+      >, while at the same time storing it for later usage:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">vsce</span> login <span class="op">&lt;</span>publisher name<span class="op">&gt;</span></a></code></pre>
+    </div>
+    <h3 id="publish-an-extension">Publish an extension</h3>
+    <p>
+      You can publish an extension using <a href="#vsce"><code>vsce</code></a> with the
+      <code>publish</code> command:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">vsce</span> publish</a></code></pre>
+    </div>
+    <p>
+      This command will ask for the personal access token, if you haven’t already provided
+      it with the <code>vsce login</code> command above.
+    </p>
+    <p>
+      Alternatively, you can
+      <a href="#packaging-extensions">package the extension</a> (<code>vsce package</code>)
+      and manually upload it to the
+      <a href="https://marketplace.visualstudio.com/manage"
+        >Visual Studio Marketplace publisher management page</a
+      >.
+    </p>
+    <figure>
+      <img
+        src="images/publishing-extension/add-extension.png"
+        alt="Add an extension through management page"
+      />
+      <figcaption>Add an extension through management page</figcaption>
+    </figure>
+    <h2 id="review-extension-installs-and-ratings">
+      Review extension installs and ratings
+    </h2>
+    <p>
+      The same
+      <a href="https://marketplace.visualstudio.com/manage"
+        >Visual Studio Marketplace publisher management page</a
+      >
+      gives you access to each extension’s Acquisition Trend over time, as well as Total
+      Acquisition counts and Ratings &amp; Reviews. Right-click an extension and choose
+      <strong>Reports</strong>.
+    </p>
+    <figure>
+      <img
+        src="images/publishing-extension/extension-report.png"
+        alt="Marketplace extension report"
+      />
+      <figcaption>Marketplace extension report</figcaption>
+    </figure>
+    <h2 id="auto-incrementing-the-extension-version">
+      Auto-incrementing the extension version
+    </h2>
+    <p>
+      You can auto-increment an extension’s version number when you publish by specifying
+      the <a href="https://semver.org/">SemVer</a> compatible number to increment:
+      <code>major</code>, <code>minor</code>, or <code>patch</code>.
+    </p>
+    <p>
+      For example, if you want to update an extension’s version from 1.0.0 to 1.1.0, you
+      would specify <code>minor</code>:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">vsce</span> publish minor</a></code></pre>
+    </div>
+    <p>
+      This will modify the extension’s <code>package.json</code>
+      <a href="/api/references/extension-manifest#fields">version</a> attribute before
+      publishing the extension.
+    </p>
+    <p>You can also specify a complete SemVer compatible version on the command line:</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">vsce</span> publish 2.0.1</a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> If <code>vsce publish</code> is run in a git repo, it will
+        also create a version commit and tag via
+        <a href="https://docs.npmjs.com/cli/version#description">npm-version</a>. The
+        default commit message will be extension’s version, but you can supply a custom
+        commit message using the <code>-m</code> flag. (The current version can be
+        referenced from the commit message with <code>%s</code>.)
+      </p>
+    </blockquote>
+    <h2 id="unpublishing-extensions">Unpublishing extensions</h2>
+    <p>
+      You can unpublish an extension with the vsce tool by specifying the extension ID
+      <code>publisher.extension</code>.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">vsce</span> unpublish (publisher name)<span class="ex">.</span>(extension name)</a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> When you unpublish an extension, the Marketplace will remove
+        any extension statistics it has collected. You may want to update your extension
+        rather than unpublish it.
+      </p>
+    </blockquote>
+    <h2 id="packaging-extensions">Packaging extensions</h2>
+    <p>
+      If you want to test an extension on your local install of VS Code or distribute an
+      extension without publishing it to VS Code Marketplace, you can choose to package your
+      extension. <code>vsce</code> can package your extension into a <code>VSIX</code> file,
+      from which users can easily install. Some extensions publish VSIX files to each GitHub
+      release.
+    </p>
+    <p>
+      For extension authors, they can run <code>vsce package</code> in extension root folder
+      to create such VSIX files.
+    </p>
+    <p>
+      For users who receive such a VSIX file, they can install the extension with
+      <code>code --install-extension my-extension-0.0.1.vsix</code>.
+    </p>
+    <h3 id="sharing-privately-with-others">Sharing privately with others</h3>
+    <p>
+      If you want to share your extension with others privately, you can send them your
+      packaged extension <code>.vsix</code> file.
+    </p>
+    <h2 id="your-extension-folder">Your extension folder</h2>
+    <p>
+      To load an extension, you need to copy the files to your VS Code extensions folder
+      <code>.vscode/extensions</code>. Depending on your platform, it is located in the
+      following folders:
+    </p>
+    <ul>
+      <li><strong>Windows</strong> <code>%USERPROFILE%\.vscode\extensions</code></li>
+      <li><strong>macOS</strong> <code>~/.vscode/extensions</code></li>
+      <li><strong>Linux</strong> <code>~/.vscode/extensions</code></li>
+    </ul>
+    <h2 id="visual-studio-code-compatibility">Visual Studio Code compatibility</h2>
+    <p>
+      When authoring an extension, you will need to describe what is the extension’s
+      compatibility to Visual Studio Code itself. This can be done via the
+      <code>engines.vscode</code> field inside <code>package.json</code>:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">  <span class="dt">&quot;engines&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;^1.8.0&quot;</span></a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      A value of <code>1.8.0</code> means that your extension is compatible only with VS
+      Code <code>1.8.0</code>. A value of <code>^1.8.0</code> means that your extension is
+      compatible with VS Code <code>1.8.0</code> and onwards, including <code>1.8.1</code>,
+      <code>1.9.0</code>, etc.
+    </p>
+    <p>
+      You can use the <code>engines.vscode</code> field to make sure the extension only gets
+      installed for clients that contain the API you depend on. This mechanism plays well
+      with the Stable release as well as the Insiders one.
+    </p>
+    <p>
+      For example, imagine that the latest Stable version of VS Code is
+      <code>1.8.0</code> and that during <code>1.9.0</code>’s development a new API is
+      introduced and thus made available in the Insider release through version
+      <code>1.9.0-insider</code>. If you want to publish an extension version that benefits
+      from this API, you should indicate a version dependency of <code>^1.9.0</code>. Your
+      new extension version will be installed only on VS Code <code>&gt;=1.9.0</code>, which
+      means all current Insider customers will get it, while the Stable ones will only get
+      the update when Stable reaches <code>1.9.0</code>.
+    </p>
+    <h2 id="advanced-usage">Advanced usage</h2>
+    <h3 id="marketplace-integration">Marketplace integration</h3>
+    <p>
+      You can customize how your extension looks in the Visual Studio Marketplace. See the
+      <a href="https://marketplace.visualstudio.com/items/golang.go">Go extension</a> for an
+      example.
+    </p>
+    <p>Here are some tips for making your extension look great on the Marketplace:</p>
+    <ul>
+      <li>
+        A <code>README.md</code> file at the root of your extension will be used to populate
+        the extension’s Marketplace page’s contents. <code>vsce</code> will modify README
+        links for you in two different ways:
+        <ul>
+          <li>
+            If you add a <code>repository</code> field to your <code>package.json</code> and
+            it is a public GitHub repository, <code>vsce</code> will automatically detect it
+            and adjust relative links accordingly, using the <code>master</code> branch by
+            default. You can override the GitHub branch with the
+            <code>--githubBranch</code> flag when running <code>vsce package</code> or
+            <code>vsce publish</code>.
+          </li>
+          <li>
+            For more fine-grained control, you can set the <code>--baseContentUrl</code> and
+            <code>--baseImagesUrl</code> flags to set the base URLs for relative links.
+          </li>
+        </ul>
+      </li>
+      <li>
+        A <code>LICENSE</code> file at the root of your extension will be used as the
+        contents for the extension’s license.
+      </li>
+      <li>
+        A <code>CHANGELOG.md</code> file at the root of your extension will be used as the
+        contents for the extension’s change log.
+      </li>
+      <li>
+        You can set the banner background color by setting
+        <code>galleryBanner.color</code> to the intended hex value in
+        <code>package.json</code>.
+      </li>
+      <li>
+        You can set an icon by setting <code>icon</code> to a relative path to a squared
+        <code>128px</code> PNG file included in your extension, in
+        <code>package.json</code>.
+      </li>
+    </ul>
+    <p>
+      Also see
+      <a href="/api/references/extension-manifest#marketplace-presentation-tips"
+        >Marketplace Presentation Tips</a
+      >.
+    </p>
+    <h3 id="vscodeignore"><code>.vscodeignore</code></h3>
+    <p>
+      You can create a <code>.vscodeignore</code> file to exclude some files from being
+      included in your extension’s package. This file is a collection of
+      <a href="https://github.com/isaacs/minimatch">glob</a> patterns, one per line.
+    </p>
+    <p>For example:</p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">**/*.ts</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">**/tsconfig.json</span></a>
+<a class="sourceLine" id="cb9-3" title="3">!<span class="ex">file.ts</span></a></code></pre>
+    </div>
+    <p>
+      You should ignore all files not needed at runtime. For example, if your extension is
+      written in TypeScript, you should ignore all <code>**/*.ts</code> files, like in the
+      previous example.
+    </p>
+    <p>
+      <strong>Note:</strong> Development dependencies listed in
+      <code>devDependencies</code> will be automatically ignored, you don’t need to add them
+      to the <code>.vscodeignore</code> file.
+    </p>
+    <h3 id="pre-publish-step">Pre-publish step</h3>
+    <p>
+      It’s possible to add a pre-publish step to your manifest file. The command will be
+      called every time the extension is packaged.
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;uuid&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.0.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">&quot;publisher&quot;</span><span class="fu">:</span> <span class="st">&quot;someone&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="dt">&quot;engines&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="dt">&quot;vscode&quot;</span><span class="fu">:</span> <span class="st">&quot;0.10.x&quot;</span></a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="dt">&quot;scripts&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-9" title="9">    <span class="dt">&quot;vscode:prepublish&quot;</span><span class="fu">:</span> <span class="st">&quot;tsc&quot;</span></a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      This will always invoke the
+      <a href="https://www.typescriptlang.org/">TypeScript</a> compiler whenever the
+      extension is packaged.
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <ul>
+      <li>
+        <a href="/docs/editor/extension-marketplace">Extension Marketplace</a> - Learn more
+        about VS Code’s public Extension Marketplace.
+      </li>
+      <li>
+        <a href="/api/working-with-extensions/testing-extension">Testing Extensions</a> -
+        Add tests to your extension project to ensure high quality.
+      </li>
+      <li>
+        <a href="/api/working-with-extensions/bundling-extension">Bundling Extensions</a> -
+        Improve load times by bundling your extension files with webpack.
+      </li>
+    </ul>
+    <h2 id="common-questions">Common questions</h2>
+    <h3
+      id="i-get-403-forbidden-or-401-unauthorized-error-when-i-try-to-publish-my-extension"
+    >
+      I get 403 Forbidden (or 401 Unauthorized) error when I try to publish my extension?
+    </h3>
+    <p>
+      One easy mistake to make when creating the PAT (Personal Access Token) is to not
+      select <strong>All accessible organizations</strong> in the
+      <strong>Organizations</strong> field dropdown (instead selecting a specific
+      organization). You should also set the Authorized Scopes to
+      <code>Marketplace (Manage)</code> for the publish to work.
+    </p>
+    <h3 id="i-cant-unpublish-my-extension-through-the-vsce-tool">
+      I can’t unpublish my extension through the <code>vsce</code> tool?
+    </h3>
+    <p>
+      You may have changed your extension ID or publisher name. You can also manage your
+      extensions directly on the Marketplace by going to the
+      <a href="https://marketplace.visualstudio.com/manage">manage page</a>. You can update
+      or unpublish your extension from your publisher manage page.
+    </p>
+    <h3 id="why-does-vsce-not-preserve-file-attributes">
+      Why does vsce not preserve file attributes?
+    </h3>
+    <p>
+      Note that when building and publishing your extension from Windows, all the files
+      included in the extension package will lack POSIX file attributes, namely the
+      executable bit. Some <code>node_modules</code> dependencies rely on those attributes
+      to properly function. Publishing from Linux and macOS works as expected.
+    </p>
+    <h3 id="can-i-publish-from-a-continuous-integration-ci-build">
+      Can I publish from a continuous integration (CI) build?
+    </h3>
+    <p>
+      Yes, see the
+      <a href="/api/working-with-extensions/continuous-integration#automated-publishing"
+        >Automated publishing</a
+      >
+      section of the
+      <a href="/api/working-with-extensions/continuous-integration"
+        >Continuous Integration</a
+      >
+      topic to learn how to configure Azure DevOps, GitHub Actions, and Travis CI to
+      automatically publish your extension to the Marketplace.
+    </p>
+  </body>
+</html>

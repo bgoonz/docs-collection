@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>extension-bisect</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="resolving-extension-issues-with-bisect">
+      Resolving extension issues with bisect
+    </h1>
+    <p>
+      February 16, 2021 by Johannes Rieken,
+      <span class="citation" data-cites="johannesrieken">[@johannesrieken]</span
+      >(https://twitter.com/johannesrieken)
+    </p>
+    <blockquote>
+      <p>“Just like git-bisect, but for VS Code extensions.”</p>
+    </blockquote>
+    <p>
+      The true power of Visual Studio Code is its extensions: theme extensions
+      add colors and icons, language extensions enable smart code completion
+      (IntelliSense) and navigation, debugger extensions enable you to run your
+      code and easily find bugs. There are extensions that play music, some that
+      show stock tickers, and there are extensions that enable collaborative
+      work across locations and time zones. The VS Code
+      <a href="https://marketplace.visualstudio.com/vscode">Marketplace</a>
+      hosts more than 28,000 extensions and it is not uncommon that users have
+      50 or more extensions installed. With so many extensions out there, bugs
+      are inevitable. Instead of denial, we want to make troubleshooting easy.
+    </p>
+    <h2 id="bad-extensions">“Bad” extensions</h2>
+    <p>
+      We love extensions and don’t really think there are any “bad” extensions.
+      However, like all software, extensions have bugs and feature gaps. So, for
+      reading ease and artificial drama, let’s use the term “bad extensions”,
+      which is an extension that might crash or simply show unwanted behavior.
+      Fortunately, we designed VS Code with “bad” extensions in mind and
+      therefore run them in a separate
+      <a href="https://code.visualstudio.com/api/advanced-topics/extension-host"
+        >process</a
+      >. This isolation guarantees that VS Code keeps running, the cursor always
+      blinks, and that you can always save your work.
+    </p>
+    <p>
+      For fun, and to make it easier to demonstrate extension bisect, we have
+      created and published the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=jrieken.bisectdemo"
+        >Extension Bisect Demo</a
+      >
+      extension. When installed, it will annoyingly reset your cursor whenever
+      you reach the word “bisect”. You can use this extension to follow along in
+      this blog post.
+    </p>
+    <h2 id="finding-a-bad-extension-the-hard-way">
+      Finding a “bad” extension the hard way
+    </h2>
+    <p>
+      Today, finding a “bad” extension can be easy or hard. Open the Extensions
+      view (<code>kb(workbench.view.extensions)</code>),
+      <a href="/docs/editor/extension-marketplace.md#disable-an-extension"
+        >disable an extension</a
+      >, reload the window (<strong>Developer: Reload Window</strong>), and
+      check to see if the problem still exists. If the problem is gone, that
+      extension is “bad” and you are done. Otherwise, re-enable the extension
+      and repeat the process with the next extension.
+    </p>
+    <figure>
+      <img
+        src="./disable_manually.png"
+        alt="Disabling an extension step by step"
+      />
+      <figcaption>Disabling an extension step by step</figcaption>
+    </figure>
+    <p>
+      If you are lucky, the first extension is the “bad” one; if you are
+      unlucky, it’s the last extension. Using computer science language, this
+      means with <code>N</code> extensions, you have a worst-case of repeating
+      the process <code>O(N)</code> (order N), and an average-case of
+      <code>O(N/2)</code>. Because this algorithm is operated by a human (you),
+      even small values of <code>N</code> are laborious. This is where the
+      <strong>extension bisect</strong> utility comes in handy. It is much
+      better in the worst and average cases because it disables extensions by
+      halves.
+    </p>
+    <h2 id="welcome-extension-bisect">Welcome extension bisect</h2>
+    <p>
+      The Extension bisect utility in VS Code was inspired by the
+      <a href="https://git-scm.com/docs/git-bisect">git bisect</a> command. For
+      those familiar with Git, this command is helpful for finding out which
+      commit in the repository introduced an issue.
+    </p>
+    <p>
+      Let’s use a sample: I have 24 extensions installed and the 8th extension
+      is “bad”. We know that the iterative approach requires 8 steps. What about
+      bisect?
+    </p>
+    <p>
+      The video below shows starting extension bisect via the
+      <strong>Help: Start Extension Bisect</strong> command and then selecting
+      either <strong>Good now</strong> or <strong>This is bad</strong> until the
+      “bad” extension is identified. Once identified, you have the option to
+      report an issue for that extension.
+    </p>
+    <figure>
+      <img src="bisect.gif" alt="The extension bisect process" />
+      <figcaption>The extension bisect process</figcaption>
+    </figure>
+    <p>Here’s step by step how the “bad” extension was found:</p>
+    <ol type="1">
+      <li>
+        Bisect divides 24 extensions into two halves of 12 extensions each, and
+        it disables all 12 extensions of the second half.
+      </li>
+      <li>
+        In this sample, the 8th extension is the “bad” one, so it is the first
+        half and not disabled. Things are still not working as we’d expect.
+        Because there is still an issue, extension bisect repeats the process,
+        dividing the first 12 extensions into two parts: 6 are enabled and 6 are
+        disabled. All other extensions are also re-enabled.
+      </li>
+      <li>
+        The 8th extension is now disabled. Things are good now. That means
+        bisect can proceed on the second half (extensions 6-11), and divides
+        them into 3 enabled and 3 disabled extensions.
+      </li>
+      <li>
+        Now, the 8th extension is re-enabled, and the issue has reappeared. This
+        means bisect proceeds on the first half. It divides them into 1 enabled
+        and 2 disabled extensions.
+      </li>
+      <li>
+        The 8th extension is now disabled, things are good again and bisect
+        proceeds on the second half, dividing it into 1 enabled and 1 disabled
+        extension.
+      </li>
+      <li>
+        The 8th extension is the only disabled extension, and the issue is gone.
+        This means we have found the “bad” extension and that we are done.
+      </li>
+    </ol>
+    <h2 id="troubleshoot-faster">Troubleshoot faster</h2>
+    <p>
+      We see that in each step, bisect reduces the search space by half. The
+      steps now it runs in logarithmic time, resulting in average and worst case
+      performance of <code>O(log N)</code>. That’s pretty good because it scales
+      well. With 24 extensions, you have 4 to 5 steps to find a “bad” extension,
+      with 38 extensions, it only takes 1 more step. However, best-case is worse
+      because with the iterative approach, you can get lucky and find the “bad”
+      in the first round.
+    </p>
+    <p>
+      Keep in mind that extension bisect relies on you giving correct feedback.
+      You can easily fool it, and yourself, by always answering
+      <strong>Good now</strong> (blames the last extension) or
+      <strong>This is bad</strong> (won’t find an extension).
+    </p>
+    <p>
+      Another useful insight is that extension bisect starts off considering the
+      full list of enabled extensions. That means you can exclude a known “good”
+      extension from bisect by disabling it before starting and by re-enabling
+      it after. However, only do that when you are certain that extension isn’t
+      the “bad” one.
+    </p>
+    <p>
+      Lastly, you might notice that bisect is taking one extra step (<code
+        >log2(N) + 1</code
+      >). That’s because it starts the first round by disabling all extensions.
+      This first step is done because you might be seeing an issue that’s caused
+      by VS Code itself, not by an extension, and we don’t want to send you down
+      the rabbit hole unnecessarily.
+    </p>
+    <p>
+      That’s it. We hope that you never need to use extension bisect. However,
+      if you do encounter an issue possibly related to an extension, then we
+      hope we can make troubleshooting easier, faster, and more pleasant.
+    </p>
+    <p>Happy Coding,</p>
+    <p>
+      Johannes Rieken, VS Code Principal Software Engineer
+      <span class="citation" data-cites="johannesrieken">[@johannesrieken]</span
+      >(https://twitter.com/johannesrieken)
+    </p>
+  </body>
+</html>

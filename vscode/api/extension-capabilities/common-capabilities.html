@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>common-capabilities</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="common-capabilities">Common Capabilities</h1>
+    <p>
+      Common Capabilities are important building blocks for your extensions. Almost all
+      extensions use some of these functionalities. Here is how you can take advantage of
+      them.
+    </p>
+    <h2 id="command">Command</h2>
+    <p>
+      Command is central to how VS Code works. You open the Command Palette to execute
+      commands, bind custom keybindings to commands, and right-click to invoke commands in
+      Context Menus.
+    </p>
+    <p>An extension could:</p>
+    <ul>
+      <li>
+        Register and execute commands with the
+        <a href="/api/references/vscode-api#commands"><code>vscode.commands</code></a> API.
+      </li>
+      <li>
+        Make commands available in the Command Palette with the
+        <a href="/api/references/contribution-points#contributes.commands"
+          ><code>contributes.commands</code></a
+        >
+        Contribution Point.
+      </li>
+    </ul>
+    <p>
+      Learn more about commands at the
+      <a href="/api/extension-guides/command">Extension Guides / Command</a> topic.
+    </p>
+    <h2 id="configuration">Configuration</h2>
+    <p>
+      An extension can contribute extension-specific settings with the
+      <a href="/api/references/contribution-points#contributes.configuration"
+        ><code>contributes.configuration</code></a
+      >
+      Contribution Point and read them using the
+      <a href="/api/references/vscode-api#workspace.getConfiguration"
+        ><code>workspace.getConfiguration</code></a
+      >
+      API.
+    </p>
+    <h2 id="keybinding">Keybinding</h2>
+    <p>
+      An extension can add custom keybindings. Read more in the
+      <a href="/api/references/contribution-points#contributes.keybindings"
+        ><code>contributes.keybindings</code></a
+      >
+      and <a href="/docs/getstarted/keybindings">Key Bindings</a> topics.
+    </p>
+    <h2 id="context-menu">Context Menu</h2>
+    <p>
+      An extension can register custom Context Menu items that will be displayed in
+      different parts of the VS Code UI on right-click. Read more at the
+      <a href="/api/references/contribution-points#contributes.menus"
+        ><code>contributes.menus</code></a
+      >
+      Contribution Point.
+    </p>
+    <h2 id="data-storage">Data Storage</h2>
+    <p>There are four options for storing data:</p>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#ExtensionContext.workspaceState"
+          ><code>ExtensionContext.workspaceState</code></a
+        >: A workspace storage where you can write key/value pairs. VS Code manages the
+        storage and will restore it when the same workspace is opened again.
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#ExtensionContext.globalState"
+          ><code>ExtensionContext.globalState</code></a
+        >: A global storage where you can write key/value pairs. VS Code manages the storage
+        and will restore it for each extension activation. You can selectively synchronize
+        key/value pairs in global storage by setting the keys for sync using
+        <code>setKeysForSync</code> method on <code>globalState</code>.
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#ExtensionContext.storagePath"
+          ><code>ExtensionContext.storagePath</code></a
+        >: A workspace specific storage path pointing to a local directory where your
+        extension has read/write access. This is a good option if you need to store large
+        files that are accessible only from the current workspace.
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#ExtensionContext.globalStoragePath"
+          ><code>ExtensionContext.globalStoragePath</code></a
+        >: A global storage path pointing to a local directory where your extension has
+        read/write access. This is a good option if you need to store large files that are
+        accessible from all workspaces.
+      </li>
+    </ul>
+    <p>
+      The extension context is available to the <code>activate</code> function in the
+      <a href="/api/get-started/extension-anatomy#extension-entry-file"
+        >Extension Entry File</a
+      >.
+    </p>
+    <h2 id="display-notifications">Display Notifications</h2>
+    <p>
+      Almost all extensions need to present information to the user at some point. VS Code
+      offers three APIs for displaying notification messages of different severity:
+    </p>
+    <ul>
+      <li>
+        <a href="/api/references/vscode-api#window.showInformationMessage"
+          ><code>window.showInformationMessage</code></a
+        >
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#window.showWarningMessage"
+          ><code>window.showWarningMessage</code></a
+        >
+      </li>
+      <li>
+        <a href="/api/references/vscode-api#window.showErrorMessage"
+          ><code>window.showErrorMessage</code></a
+        >
+      </li>
+    </ul>
+    <h2 id="quick-pick">Quick Pick</h2>
+    <p>
+      With the
+      <a href="/api/references/vscode-api#QuickPick"><code>vscode.QuickPick</code></a> API,
+      you can easily collect user input or let the user make a selection from multiple
+      options. The
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/quickinput-sample"
+        >QuickInput Sample</a
+      >
+      illustrates the API.
+    </p>
+    <h2 id="file-picker">File Picker</h2>
+    <p>
+      Extensions can use the
+      <a href="/api/references/vscode-api#vscode.window.showOpenDialog"
+        ><code>vscode.window.showOpenDialog</code></a
+      >
+      API to open the system file picker and select files or folders.
+    </p>
+    <h2 id="output-channel">Output Channel</h2>
+    <p>
+      The Output Panel displays a collection of
+      <a href="/api/references/vscode-api#OutputChannel"><code>OutputChannel</code></a
+      >, which are great for logging purpose. You can easily take advantage of it with the
+      <a href="/api/references/vscode-api#window.createOutputChannel"
+        ><code>window.createOutputChannel</code></a
+      >
+      API.
+    </p>
+    <h2 id="progress-api">Progress API</h2>
+    <p>
+      You can use the
+      <a href="/api/references/vscode-api#Progress"><code>vscode.Progress</code></a> API for
+      reporting progress updates to the user.
+    </p>
+    <p>
+      Progress can be shown in different locations using the
+      <a href="/api/references/vscode-api#ProgressLocation"
+        ><code>ProgressLocation</code></a
+      >
+      option:
+    </p>
+    <ul>
+      <li>In the Notifications area</li>
+      <li>In the Source Control view</li>
+      <li>General progress in the VS Code window</li>
+    </ul>
+    <p>
+      The
+      <a
+        href="https://github.com/microsoft/vscode-extension-samples/tree/main/progress-sample"
+        >Progress Sample</a
+      >
+      illustrates this API.
+    </p>
+  </body>
+</html>

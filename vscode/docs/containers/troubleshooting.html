@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>troubleshooting</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="docker-tools-tips-and-tricks">Docker Tools Tips and Tricks</h1>
+    <p>
+      This article covers troubleshooting tips and tricks for the Visual Studio
+      Code
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker"
+        >Docker</a
+      >
+      extension. See the <a href="/docs/containers/overview.md">Overview</a> and
+      quickstart articles for
+      <a href="/docs/containers/quickstart-node.md">Node.js</a>,
+      <a href="/docs/containers/python.md">Python</a>, or
+      <a href="/docs/containers/quickstart-aspnet-core.md">ASP.NET</a> for
+      details on setting up and working with Docker.
+    </p>
+    <h2 id="error-connect-eacces-varrundocker.sock-on-linux">
+      Error “connect EACCES /var/run/docker.sock” on Linux
+    </h2>
+    <p>
+      Since VS Code runs as a non-root user, you will need to follow the steps
+      in “Manage Docker as a non-root user” from
+      <a href="https://aka.ms/AA37yk6">Post-installation steps for Linux</a> to
+      access Docker from the extension.
+    </p>
+    <h2 id="docker-containers-and-images-have-disappeared-from-docker-view">
+      Docker containers and images have disappeared from Docker view
+    </h2>
+    <p>
+      This is most likely caused by a conflict with another extension called
+      <code>Docker Explorer</code> (not authored by Microsoft). To resolve this
+      issue, use a workaround described
+      <a
+        href="https://github.com/microsoft/vscode-docker/issues/1609#issuecomment-586331394"
+        >vscode-docker issue #1609</a
+      >.
+    </p>
+    <h2 id="the-extension-does-not-find-docker-on-a-remote-machine">
+      The extension does not find Docker on a remote machine
+    </h2>
+    <p>Error message “Failed to connect. Is Docker installed and running?”</p>
+    <ol type="1">
+      <li>
+        Make sure Docker engine <strong>is installed</strong> on the remote
+        machine and that Docker CLI works (run <code>docker ps</code> from the
+        terminal and ensure it does not return any errors).
+      </li>
+      <li>
+        If you are using a remote development environment (remote machine via
+        SSH, WSL subsystem, GitHub Codespace), make sure the Docker extension is
+        installed remotely as well as locally.
+      </li>
+    </ol>
+    <h2 id="invalid-url-errors">Invalid URL errors</h2>
+    <p>
+      If you have a need to connect to a remote Docker daemon, we recommend
+      using Docker contexts instead of a <code>docker.host</code> attribute in
+      the settings. Check out this guide to learn how to
+      <a href="https://docs.docker.com/engine/context/working-with-contexts/"
+        >create and use a context</a
+      >
+      to communicate with a remote Docker daemon.
+    </p>
+    <p>
+      If you still need to override the Docker context you are currently using,
+      make sure your <code>DOCKER_HOST</code> environment variable or
+      <code>docker.host</code> attribute includes a protocol in the URL (for
+      example, <code>ssh://myuser@mymachine</code> or
+      <code>tcp://1.2.3.4</code>).
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> Keep in mind that your
+        <code>docker.host</code> attribute will override your Docker context and
+        the <code>DOCKER_HOST</code> environment variable will override both the
+        <code>docker.host</code> attribute and your Docker context.
+      </p>
+    </blockquote>
+    <blockquote>
+      <p>
+        <strong>Tip</strong>: In Powershell you can change your Docker
+        environment variable with
+        <code>$ENV:DOCKER_HOST = 'ssh://username@1.2.3.4'</code>
+      </p>
+    </blockquote>
+    <h2 id="questions-and-feedback">Questions and feedback</h2>
+    <p>
+      We love your feedback! If you have any ideas or suggestions,
+      <a href="https://github.com/microsoft/vscode-docker/issues/new"
+        >report an issue</a
+      >.
+    </p>
+  </body>
+</html>

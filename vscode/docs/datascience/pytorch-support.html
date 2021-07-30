@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>pytorch-support</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h1 id="pytorch-support-in-visual-studio-code">PyTorch support in Visual Studio Code</h1>
+<p>Along with support for <a href="/docs/datascience/jupyter-notebooks.md">Jupyter Notebooks</a>, Visual Studio Code offers many features of particular interest for PyTorch developers. This article covers some of those features and illustrates how they can help you in your projects. If you’re unfamiliar with PyTorch development, Microsoft Learn offers a <a href="https://docs.microsoft.com/learn/paths/pytorch-fundamentals">Get started with PyTorch</a> learning path that covers the fundamentals of deep learning with PyTorch.</p>
+<h2 id="data-viewer-support-for-tensors-and-data-slices">Data Viewer support for Tensors and data slices</h2>
+<p>VS Code provides a <a href="/docs/datascience/jupyter-notebooks.md#variable-explorer-and-data-viewer">Data Viewer</a> that allows you to explore the variables within your code and notebooks, including PyTorch and TensorFlow <code>Tensor</code> data types. Along with that the Data Viewer has support for slicing data, allowing you to view any 2D slice of your higher dimensional data.</p>
+<p>To access the Data Viewer, you can either open it from the Notebook Variable Explorer by clicking the Data Viewer icon that shows up beside any Tensor variable. You’ll also notice that the Variable Explorer shows the shape/dimensions of the Tensor as well.</p>
+<figure>
+<img src="images/pytorch-support/variable-explorer-data-viewer.png" alt="Accessing the Data Viewer from the variable explorer" /><figcaption>Accessing the Data Viewer from the variable explorer</figcaption>
+</figure>
+<p>Or you can open it from a Python debugging session by right-clicking any Tensor variable in the debugger and selecting <strong>View Value in Data Viewer</strong>.</p>
+<figure>
+<img src="images/pytorch-support/debugger-data-viewer.png" alt="Accessing the Data Viewer from the Python debugger" /><figcaption>Accessing the Data Viewer from the Python debugger</figcaption>
+</figure>
+<p>If you have 3-dimensional or greater data (numpy <code>ndarray</code>, PyTorch <code>Tensor</code>, or TensorFlow <code>EagerTensor</code> types) a data slicing panel will open in the Data Viewer by default. Using the panel, you can either use the input box to programmatically specify your slice using Python slice syntax or you can use the interactive <strong>Axis</strong> and <strong>Index</strong> dropdowns to slice as well.</p>
+<figure>
+<img src="images/pytorch-support/data-slicing.png" alt="Data Viewer with data slices and tensors" /><figcaption>Data Viewer with data slices and tensors</figcaption>
+</figure>
+<p>Along with slicing, you can search for values of interest such as “inf’s” or “NaN’s” by searching for those keywords in the filter under each column name.</p>
+<h2 id="tensorboard-integration">TensorBoard integration</h2>
+<p><a href="https://www.tensorflow.org/tensorboard">TensorBoard</a> is a data science companion dashboard that helps <a href="https://pytorch.org/">PyTorch</a> and <a href="https://www.tensorflow.org/">TensorFlow</a> developers visualize datasets and model training. With TensorBoard directly integrated in VS Code, you can spot check your models predictions, view the architecture of your model, analyze your model’s loss and accuracy over time, and profile your code to find out where it’s the slowest.</p>
+<figure>
+<img src="images/pytorch-support/tensorboard-integration.png" alt="TensorBoard integration with VS Code" /><figcaption>TensorBoard integration with VS Code</figcaption>
+</figure>
+<p>To start a TensorBoard session, open the <strong>Command Palette</strong> (<code>kb(workbench.action.showCommands)</code>) and search for the command <strong>Python: Launch TensorBoard</strong>. Afterwards, you will be prompted to select the folder where your TensorBoard log files are located. By default, VS Code uses your current working directory and automatically detects your TensorBoard log files within any subdirectories, but you can also specify your own directory. VS Code will then open a new tab with TensorBoard and manage its lifecycle as you work.</p>
+<p>You can also use the setting <code>python.tensorboard.logDirectory</code> to set a default TensorBoard log directory for your folder/workspace.</p>
+<h2 id="pytorch-profiler-integration">PyTorch Profiler integration</h2>
+<p>Along with TensorBoard, VS Code and the Python extension also integrate the PyTorch Profiler, allowing you to better analyze your PyTorch models in one place. For more information about the profiler, see the <a href="https://pytorch.org/blog/introducing-pytorch-profiler-the-new-and-improved-performance-tool/">PyTorch Profiler documentation</a>.</p>
+<figure>
+<img src="images/pytorch-support/pytorch-profiler.png" alt="PyTorch Profiler integration with VS Code" /><figcaption>PyTorch Profiler integration with VS Code</figcaption>
+</figure>
+<h2 id="intellisense-through-the-pylance-language-server">IntelliSense through the Pylance language server</h2>
+<p>The Python editing experience in VS Code, enhanced with the power of Pylance, provides completions and other rich features for PyTorch. For the best experience, update PyTorch to 1.8.1 to get improved completions for submodules, such as nn, cuda, and optim.</p>
+<figure>
+<img src="images/pytorch-support/pytorch-pylance.gif" alt="Pylance support for PyTorch" /><figcaption>Pylance support for PyTorch</figcaption>
+</figure>
+</body>
+</html>

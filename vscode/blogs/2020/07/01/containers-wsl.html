@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>containers-wsl</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="using-remote-containers-in-wsl-2">
+      Using Remote Containers in WSL 2
+    </h1>
+    <p>
+      July 1, 2020 by Brigit Murtaugh,
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh)
+    </p>
+    <p>
+      Leveraging the power of Docker containers and the Windows Subsystem for
+      Linux 2 (WSL 2), you can preserve your Windows environment by developing
+      your applications in the sandboxed familiarity of a container in a deeply
+      integrated Linux kernel.
+    </p>
+    <p>
+      May brought us a couple of exciting announcements in the world of
+      virtualization: the Windows 10 May 2020 update added WSL 2 as a feature
+      out-of-the-box, and
+      <a
+        href="https://docs.docker.com/docker-for-windows/release-notes/#docker-desktop-community-2302"
+        >Docker Desktop Stable 2.3.0.2</a
+      >
+      went GA with WSL 2 backend support.
+    </p>
+    <p>
+      In
+      <a href="https://code.visualstudio.com/blogs/2020/03/02/docker-in-wsl2"
+        >earlier blog posts</a
+      >, we’ve explored how to use Docker in WSL 2. The first requirement was to
+      install Windows Insiders, as WSL 2 support was not yet part of stable
+      Windows releases, and the next was to install a Tech Preview of Docker WSL
+      2. Now, both Windows WSL 2 and Docker support are in stable GA releases!
+    </p>
+    <p>
+      In this post, we’ll take a look at how both of these tools work, and how
+      you can leverage them in Visual Studio Code to productively use remote
+      containers in WSL 2.
+    </p>
+    <h2 id="new-era-of-virtualization">New era of virtualization</h2>
+    <p>
+      Both WSL 2 and the latest version of Docker Desktop change how
+      virtualization works.
+    </p>
+    <h3 id="wsl-2">WSL 2</h3>
+    <p>
+      As discussed in a
+      <a href="https://code.visualstudio.com/blogs/2019/09/03/wsl2"
+        >prior post</a
+      >, WSL 2 takes a new approach on the
+      <a href="https://docs.microsoft.com/windows/wsl/wsl2-about"
+        >Windows Subsystem for Linux</a
+      >
+      by using a real Linux kernel inside a lightweight virtual machine (VM). It
+      has been optimized to feel seamless and deeply integrated into your
+      Windows environment so that you have fast boot times, a small resource
+      footprint, and no VM configuration or management requirements whatsoever.
+    </p>
+    <p>
+      System calls allow you to perform functions such as accessing files,
+      requesting memory, and creating processes. Since WSL 2 includes a complete
+      Linux kernel, it has full system call capacity, meaning your favorite apps
+      such as Docker will work fully and reliably.
+    </p>
+    <h3 id="docker">Docker</h3>
+    <p>
+      In WSL 1, due to fundamental differences between Windows and Linux, the
+      Docker Engine couldn’t run directly inside WSL, and
+      <a href="https://www.docker.com/blog/docker-hearts-wsl-2/"
+        >the Docker team</a
+      >
+      developed an alternative solution using Hyper-V VMs and LinuxKit. However,
+      since WSL 2 now has full system call capacity, Docker can fully run in WSL
+      2, which prompted more investment from the Docker team.
+    </p>
+    <p>
+      The new May 2020 version of Docker Desktop can build containers much
+      faster and consume fewer resources as it leverages WSL 2’s dynamic memory
+      allocation. It can take less than 10 seconds to cold start, as opposed to
+      almost a minute in the previous version. Additionally, Hyper-V isn’t a
+      requirement anymore, so the steps detailed in this post work on Windows 10
+      Home.
+    </p>
+    <p>
+      Since WSL 2 in Windows and Docker Desktop is now GA, you can feel even
+      more confident using your remote containers in WSL 2.
+    </p>
+    <h2 id="getting-started">Getting started</h2>
+    <p>Prerequisites:</p>
+    <ul>
+      <li>
+        Install Windows 10, version 2004.
+        <ul>
+          <li>
+            To find out which version of Windows your device is running, press
+            the <strong>Windows logo</strong> key + <strong>R</strong>, type
+            <strong>winver</strong> in the <strong>Open</strong> box, and then
+            select <strong>OK</strong>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Install
+        <a href="https://code.visualstudio.com/download">Visual Studio Code</a>.
+      </li>
+      <li>
+        Enable WSL 2 by following the
+        <a href="https://docs.microsoft.com/windows/wsl/wsl2-install"
+          >WSL 2 installation guide</a
+        >.
+      </li>
+      <li>
+        Install Ubuntu (or your preferred Linux distribution) from the <a
+          href="https://www.microsoft.com/p/ubuntu/9nblggh4msv6"
+          >Microsoft store</a
+        >.
+      </li>
+      <li>
+        Install <a
+          href="https://docs.docker.com/docker-for-windows/wsl-tech-preview/#download"
+          >Docker Desktop Stable 2.3.0.2</a
+        >.
+      </li>
+    </ul>
+    <p>
+      Once installed, Docker will recognize that you have WSL installed and
+      prompt you to enable WSL integration. Select <strong
+        >Enable WSL integration</strong
+      >
+      from the pop-up window.
+    </p>
+    <figure>
+      <img
+        src="1-docker-desktop-wsl-integration.png"
+        alt="Docker Desktop WSL integration dialog"
+      />
+      <figcaption>Docker Desktop WSL integration dialog</figcaption>
+    </figure>
+    <p>
+      Optional: Install the new
+      <a href="https://docs.microsoft.com/windows/terminal/"
+        >Windows Terminal</a
+      >
+      for the best experience, including the ability to open new PowerShell and
+      Ubuntu terminals in the same interface.
+    </p>
+    <h2 id="open-vs-code-in-wsl-2">Open VS Code in WSL 2</h2>
+    <p>
+      Let’s connect VS Code to our WSL 2 engine. Open an Ubuntu terminal,
+      navigate to the source code folder of your choice, and type
+      <code>code .</code>. This will launch an instance of VS Code that lets you
+      use WSL as your full-time development environment. You can also connect to
+      WSL from the Command Palette. I’m going to open a simple
+      <a href="https://github.com/bamurtaugh/HelloNode">HelloNode</a>
+      application:
+    </p>
+    <figure>
+      <img src="2-ubuntu-launch.png" alt="Launch code . from Ubuntu terminal" />
+      <figcaption>Launch code . from Ubuntu terminal</figcaption>
+    </figure>
+    <p>
+      Once VS Code opens, it recognizes that we have WSL installed, and
+      recommends we install the <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl"
+        >Remote - WSL</a
+      > extension. I’ll select <strong>Install</strong>:
+    </p>
+    <figure>
+      <img
+        src="3-wsl-extension-recommended.png"
+        alt="Remote - WSL extension recommended"
+      />
+      <figcaption>Remote - WSL extension recommended</figcaption>
+    </figure>
+    <p>
+      After installing the extension, we can reload VS Code to connect to WSL 2:
+    </p>
+    <figure>
+      <img
+        src="4-reload-vscode.png"
+        alt="Reload VS Code after installing extension"
+      />
+      <figcaption>Reload VS Code after installing extension</figcaption>
+    </figure>
+    <p>
+      Once we’ve reloaded, we can confirm that we’re connected to Ubuntu by
+      checking the WSL indicator in the bottom-left corner of the window:
+    </p>
+    <figure>
+      <img
+        src="5-wsl-left-indicator.png"
+        alt="WSL: Ubuntu bottom left indicator"
+      />
+      <figcaption>WSL: Ubuntu bottom left indicator</figcaption>
+    </figure>
+    <p>
+      Installing the Remote - WSL extension added the Remote Explorer to VS
+      Code. When we look inside the Explorer, we can see information about our
+      Linux distros:
+    </p>
+    <figure>
+      <img
+        src="6-remote-explorer-wsl-targets.png"
+        alt="Remote Explorer with WSL Targets"
+      />
+      <figcaption>Remote Explorer with WSL Targets</figcaption>
+    </figure>
+    <h2 id="working-with-containers">Working with containers</h2>
+    <p>
+      We can leverage the
+      <a href="https://code.visualstudio.com/docs/remote/containers"
+        >Remote - Containers</a
+      >
+      extension to view and attach to containers, in addition to a variety of
+      other scenarios, such as: *
+      <a href="https://code.visualstudio.com/docs/remote/containers-tutorial"
+        >Developing within a set of sample containers</a
+      >
+      *
+      <a
+        href="https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container"
+        >Opening existing source code in a container</a
+      >
+      *
+      <a
+        href="https://code.visualstudio.com/docs/remote/containers#_quick-start-open-a-git-repository-or-github-pr-in-an-isolated-container-volume"
+        >Working with a GitHub repository</a
+      >
+      in an isolated container volume.
+    </p>
+    <p>
+      These configurations allow you to easily recreate the same development
+      environment across machines, install tools and extensions specific to a
+      project into a DevContainer, and develop in a setup similar to the
+      environment for deployment, leaving the local machine unchanged. We can
+      also view and attach to containers using the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker"
+        >Docker</a
+      >
+      extension.
+    </p>
+    <p>
+      While you can access source code from both Windows and the WSL 2
+      filesystem when using the WSL 2 engine, we recommend using the WSL 2 file
+      system because
+      <a href="https://www.docker.com/blog/docker-desktop-wsl-2-best-practices/"
+        >performance is much better</a
+      >. Since the performance is better when using the filesystem inside WSL 2,
+      let’s walk through how to use it.
+    </p>
+    <p>
+      We need to select the folder we want to open in a container. First, make
+      sure you’ve installed the
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"
+        >Remote - Containers</a
+      >
+      extension. We can then call the <strong
+        >Remote-Containers: Reopen Folder in Container</strong
+      > command from a folder already opened using the Remote - WSL extension.
+    </p>
+    <p>
+      I have an existing HelloNode folder on my WSL 2 filesystem with my Node
+      project in it. I’ll select:
+      <strong>Remote-Containers: Reopen in Container…</strong>:
+    </p>
+    <figure>
+      <img
+        src="7-reopen-container.png"
+        alt="Command Palette: Remote-Containers: Reopen in Container…"
+      />
+      <figcaption>
+        Command Palette: Remote-Containers: Reopen in Container…
+      </figcaption>
+    </figure>
+    <p>
+      A list of container definitions will appear, since there is no
+      DevContainer configuration in the repository yet. The list of container
+      configuration definitions that appears is filtered based on my project
+      type. I’ll select <strong>Node.js 14</strong>:
+    </p>
+    <figure>
+      <img src="8-node-14.png" alt="Command Palette: Node.js 14" />
+      <figcaption>Command Palette: Node.js 14</figcaption>
+    </figure>
+    <p>
+      A new instance of VS Code opens. VS Code starts building the image, and
+      then starts our container:
+    </p>
+    <figure>
+      <img
+        src="9-vscode-starting-with-container.png"
+        alt="VS Code instance starting with Dev Container"
+      />
+      <figcaption>VS Code instance starting with Dev Container</figcaption>
+    </figure>
+    <p>
+      Our application now has a .devcontainer folder in which the container
+      configuration information is stored. To double-check we’re connected to
+      both WSL and within a container, let’s open the integrated terminal and
+      check for the <code>uname</code> and version of Node:
+    </p>
+    <figure>
+      <img src="10-uname-node.png" alt="Check uname and node -v" />
+      <figcaption>Check uname and node -v</figcaption>
+    </figure>
+    <p>
+      As we can see, our <code>uname</code> came back as Linux, so we are still
+      connected to the WSL 2 engine, and <code>node -v</code> returned v14.4.0,
+      so we have successfully configured our Node 14 container.
+    </p>
+    <p>Let’s try running our app with <strong>F5</strong>:</p>
+    <figure>
+      <img
+        src="11-localhost-hello-world.png"
+        alt="Local host running Hello World app"
+      />
+      <figcaption>Local host running Hello World app</figcaption>
+    </figure>
+    <p>Success!</p>
+    <h2 id="feedback-further-reading">Feedback &amp; further reading</h2>
+    <p>
+      To help set up VS Code with WSL and containers, we have detailed articles
+      on the VS Code
+      <a href="https://code.visualstudio.com/docs/remote/remote-overview"
+        >Remote Development documentation</a
+      >. If you have any questions or feedback for our team, please feel free to
+      open an issue on the VS Code
+      <a href="https://github.com/microsoft/vscode-remote-release/issues"
+        >Remote Development GitHub Repository</a
+      >
+      or Tweet us
+      <span class="citation" data-cites="code">[@code]</span
+      >(https://twitter.com/code).
+    </p>
+    <p>Happy Coding!</p>
+    <p>
+      Brigit Murtaugh, VS Code Program Manager
+      <span class="citation" data-cites="BrigitMurtaugh">[@BrigitMurtaugh]</span
+      >(https://twitter.com/BrigitMurtaugh)
+    </p>
+  </body>
+</html>
