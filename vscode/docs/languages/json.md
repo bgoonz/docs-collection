@@ -1,12 +1,10 @@
-Editing JSON with Visual Studio Code
-====================================
+# Editing JSON with Visual Studio Code
 
 JSON is a data format that is common in configuration files like `package.json` or `project.json`. We also use it extensively in Visual Studio Code for our configuration files. When opening a file that ends with `.json`, VS Code provides features to make it simpler to write or modify the file’s content.
 
 ![JSON within VS Code](images/json/json_hero.png)
 
-IntelliSense and validation
----------------------------
+## IntelliSense and validation
 
 For properties and values, both for JSON data with or without a schema, we offer up suggestions as you type with IntelliSense. You can also manually see suggestions with the **Trigger Suggestions** command (`kb(editor.action.triggerSuggest)`). We also perform structural and value verification based on an associated JSON schema giving you red squiggles.
 
@@ -16,37 +14,31 @@ For properties and values, both for JSON data with or without a schema, we offer
 
 We also offer IntelliSense for specific value sets such as package and project dependencies in `package.json`, `project.json`, and `bower.json`.
 
-Quick navigation
-----------------
+## Quick navigation
 
 JSON files can get large and we support quick navigation to properties using the **Go to Symbol** command (`kb(workbench.action.gotoSymbol)`).
 
 ![Goto Symbol](images/json/gotosymbol.png)
 
-Hovers
-------
+## Hovers
 
 When you hover over properties and values for JSON data with or without schema, we will provide additional context.
 
 ![Hover](images/json/hoverandtoggle.png)
 
-Formatting
-----------
+## Formatting
 
 You can format your JSON document using `kb(editor.action.formatDocument)` or **Format Document** from the context menu.
 
-Folding
--------
+## Folding
 
 You can fold regions of source code using the folding icons on the gutter between line numbers and line start. Folding regions are available for all object and array elements.
 
-JSON with Comments
-------------------
+## JSON with Comments
 
 In addition to the default JSON mode following the [JSON specification](https://www.json.org/), VS Code also has a **JSON with Comments** (jsonc) mode. This mode is used for the VS Code configuration files such as `settings.json`, `tasks.json`, or `launch.json`. When in the **JSON with Comments** mode, you can use single line (//) as well as block comments (/\* \*/) as used in JavaScript. The current editor mode is indicated in the editor’s Status Bar. Select the mode indicator to change the mode and to configure how file names and extensions are associated to modes.
 
-JSON schemas and settings
--------------------------
+## JSON schemas and settings
 
 To understand the structure of JSON files, we use [JSON schemas](https://json-schema.org/). JSON schemas describe the shape of the JSON file, as well as value sets, default values, and descriptions. The JSON support shipped with VS Code supports JSON Schema Draft 7.
 
@@ -168,8 +160,8 @@ This is an example in a JSON schema:
 
 Use the property `defaultSnippets` to specify any number of snippets for the given JSON object.
 
--   `label` and `description` will be shown in the completion selection dialog. If no label is provided, a stringified object representation of the snippet will be shown as label instead.
--   `body` is the JSON object that is stringified and inserted when the completion is selected by the user. [Snippet syntax](/docs/editor/userdefinedsnippets.md#snippet-syntax) can be used inside strings literals to define tabstops, placeholders, and variables. If a string starts with `^`, the string content will be inserted as-is, not stringified. You can use this to specify snippets for numbers and booleans.
+- `label` and `description` will be shown in the completion selection dialog. If no label is provided, a stringified object representation of the snippet will be shown as label instead.
+- `body` is the JSON object that is stringified and inserted when the completion is selected by the user. [Snippet syntax](/docs/editor/userdefinedsnippets.md#snippet-syntax) can be used inside strings literals to define tabstops, placeholders, and variables. If a string starts with `^`, the string content will be inserted as-is, not stringified. You can use this to specify snippets for numbers and booleans.
 
 Note that `defaultSnippets` is not part of the JSON schema specification but a VS Code-specific schema extension.
 

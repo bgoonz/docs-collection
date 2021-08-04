@@ -1,8 +1,6 @@
-Programming Languages
-=====================
+# Programming Languages
 
-Hundreds of programming languages supported
--------------------------------------------
+## Hundreds of programming languages supported
 
 In Visual Studio Code, we have support for almost every major programming language. Several ship in the box, for example, JavaScript, TypeScript, CSS, and HTML but more rich language extensions can be found in the [VS Code Marketplace](https://marketplace.visualstudio.com/vscode/Languages).
 
@@ -12,27 +10,24 @@ Go to the [Marketplace](https://marketplace.visualstudio.com/vscode) or use the 
 
 > **Note**: If you want to change the display language of VS Code (for example, to Chinese), see the [Display Language](/docs/getstarted/locales.md) topic.
 
-Language specific documentation
--------------------------------
+## Language specific documentation
 
 Learn about programming languages supported by VS Code. These include: [C++](/docs/languages/cpp.md) - [C\#](/docs/languages/csharp.md) - [CSS](/docs/languages/css.md) - [Dart](https://dart.dev/tools/vs-code) - [Dockerfile](/docs/azure/docker.md) - [F\#](/docs/languages/dotnet.md#create-an-f-hello-world-app) - [Go](/docs/languages/go.md) - [HTML](/docs/languages/html.md) - [Java](/docs/languages/java.md) - [JavaScript](/docs/languages/javascript.md) - [JSON](/docs/languages/json.md) - [Less](/docs/languages/css.md) - [Markdown](/docs/languages/markdown.md) - [PHP](/docs/languages/php.md) - [PowerShell](/docs/languages/powershell.md) - [Python](/docs/languages/python.md) - [SCSS](/docs/languages/css.md) - [T-SQL](/docs/languages/tsql.md) - [TypeScript](/docs/languages/typescript.md).
 
 Click on any linked item to get an overview of how to use VS Code in the context of that language. Most language extensions also contain a summary of their core features in their README.
 
-Language features in VS Code
-----------------------------
+## Language features in VS Code
 
 The richness of support varies across the different languages and their extensions:
 
--   Syntax highlighting and bracket matching
--   Smart completions (IntelliSense)
--   Linting and corrections
--   Code navigation (Go to Definition, Find All References)
--   Debugging
--   Refactoring
+- Syntax highlighting and bracket matching
+- Smart completions (IntelliSense)
+- Linting and corrections
+- Code navigation (Go to Definition, Find All References)
+- Debugging
+- Refactoring
 
-Changing the language for the selected file
--------------------------------------------
+## Changing the language for the selected file
 
 In VS Code, we default the language support for a file based on its filename extension. However, at times you may want to change language modes, to do this click on the language indicator - which is located on the right hand of the Status Bar. This will bring up the **Select Language Mode** dropdown where you can select another language for the current file.
 
@@ -40,8 +35,7 @@ In VS Code, we default the language support for a file based on its filename ext
 
 **Tip**: You can get the same dropdown by running the **Change Language Mode** command (`kb(workbench.action.editor.changeLanguageMode)`).
 
-Language Id
------------
+## Language Id
 
 VS Code associates a language mode with a specific language identifier so that various VS Code features can be enabled based on the current language mode.
 
@@ -53,8 +47,7 @@ You can see the list of currently installed languages and their identifiers in t
 
 You can find a list of known identifiers in the [language identifier reference](/docs/languages/identifiers.md).
 
-Adding a file extension to a language
--------------------------------------
+## Adding a file extension to a language
 
 You can add new file extensions to an existing language with the `files.associations` [setting](/docs/getstarted/settings.md).
 
@@ -68,16 +61,14 @@ IntelliSense (`kb(editor.action.triggerSuggest)`) will show you the available la
 
 ![language id IntelliSense](images/overview/language-id-intellisense.png)
 
-Next steps
-----------
+## Next steps
 
 Now you know that VS Code has support for the languages you care about. Read on…
 
--   [Code Navigation](/docs/editor/editingevolved.md) - Peek and Go to Definition and more
--   [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines
+- [Code Navigation](/docs/editor/editingevolved.md) - Peek and Go to Definition and more
+- [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines
 
-Common questions
-----------------
+## Common questions
 
 ### Can I contribute my own language service?
 

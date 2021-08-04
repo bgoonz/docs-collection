@@ -1,8 +1,6 @@
-jsconfig.json
-=============
+# jsconfig.json
 
-What is jsconfig.json?
-----------------------
+## What is jsconfig.json?
 
 The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript Project. The `jsconfig.json` file specifies the root files and the options for the features provided by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio).
 
@@ -10,14 +8,13 @@ The presence of `jsconfig.json` file in a directory indicates that the directory
 
 > **Tip:** `jsconfig.json` is a descendant of [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html), which is a configuration file for TypeScript. `jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`.
 
-Why do I need a jsconfig.json file?
------------------------------------
+## Why do I need a jsconfig.json file?
 
 Visual Studio Code’s JavaScript support can run in two different modes:
 
--   **File Scope - no jsconfig.json**: In this mode, JavaScript files opened in Visual Studio Code are treated as independent units. As long as a file `a.js` doesn’t reference a file `b.ts` explicitly (either using `import` or **CommonJS** [modules](http://www.commonjs.org/specs/modules/1.0)), there is no common project context between the two files.
+- **File Scope - no jsconfig.json**: In this mode, JavaScript files opened in Visual Studio Code are treated as independent units. As long as a file `a.js` doesn’t reference a file `b.ts` explicitly (either using `import` or **CommonJS** [modules](http://www.commonjs.org/specs/modules/1.0)), there is no common project context between the two files.
 
--   **Explicit Project - with jsconfig.json**: A JavaScript project is defined via a `jsconfig.json` file. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. The file itself can optionally list the files belonging to the project, the files to be excluded from the project, as well as compiler options (see below).
+- **Explicit Project - with jsconfig.json**: A JavaScript project is defined via a `jsconfig.json` file. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. The file itself can optionally list the files belonging to the project, the files to be excluded from the project, as well as compiler options (see below).
 
 The JavaScript experience is improved when you have a `jsconfig.json` file in your workspace that defines the project context. For this reason, we offer a hint to create a `jsconfig.json` file when you open a JavaScript file in a fresh workspace.
 
@@ -31,8 +28,7 @@ In more complex projects, you may have more than one `jsconfig.json` file define
 
 ![multiple jsconfigs](images/javascript/complex_jsconfig_setup.png)
 
-Examples
---------
+## Examples
 
 By default the JavaScript language service will analyze and provide IntelliSense for all files in your JavaScript project. You will want to specify which files to exclude or include in order to provide the proper IntelliSense.
 
@@ -68,8 +64,7 @@ Alternatively, you can explicitly set the files in your project using the `inclu
 
 > **Tip:** The file paths in `exclude` and `include` are relative to the location of `jsconfig.json`.
 
-jsconfig Options
-----------------
+## jsconfig Options
 
 Below are `jsconfig` `"compilerOptions"` to configure the JavaScript language support.
 
@@ -79,8 +74,7 @@ Below are `jsconfig` `"compilerOptions"` to configure the JavaScript language su
 
 You can read more about the available `compilerOptions` in the [TypeScript compilerOptions documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
-Using webpack aliases
----------------------
+## Using webpack aliases
 
 For IntelliSense to work with webpack aliases, you need to specify the `paths` keys with a glob pattern.
 
@@ -99,8 +93,7 @@ and then to use the alias
 
     import Something from 'ClientApp/foo'
 
-Best Practices
---------------
+## Best Practices
 
 Whenever possible, you should exclude folders with JavaScript files that are not part of the source code for your project.
 

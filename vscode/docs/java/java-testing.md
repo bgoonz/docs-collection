@@ -1,21 +1,20 @@
-Testing Java with Visual Studio Code
-====================================
+# Testing Java with Visual Studio Code
 
 Testing Java in Visual Studio Code is enabled by the [Java Test Runner](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) extension. It’s a lightweight extension to run and debug Java test cases. The extension supports the following test frameworks:
 
--   [JUnit 4](https://junit.org/junit4/) (v4.8.0+)
--   [JUnit 5](https://junit.org/junit5/) (v5.1.0+)
--   [TestNG](https://testng.org/doc/) (v6.8.0+)
+- [JUnit 4](https://junit.org/junit4/) (v4.8.0+)
+- [JUnit 5](https://junit.org/junit5/) (v5.1.0+)
+- [TestNG](https://testng.org/doc/) (v6.8.0+)
 
 > **Note**: More information about the test frameworks can be found at [JUnit](https://junit.org/) and [TestNG](https://testng.org/).
 
 The [Java Test Runner](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) works with the [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java) and [Debugger for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-debug) extensions to provide the following features:
 
--   Run/Debug test cases
--   Customize test configurations
--   View test report
--   View tests in Test Explorer
--   Show test logs
+- Run/Debug test cases
+- Customize test configurations
+- View test report
+- View tests in Test Explorer
+- Show test logs
 
 <a href="vscode:extension/vscjava.vscode-java-test" class="tutorial-install-extension-btn">Install the Java Test Runner</a>
 
@@ -23,15 +22,14 @@ If you run into any issues when using the features below, you can contact us by 
 
 <a href="javascript:void(0)" class="tutorial-feedback-btn">Report an issue</a>
 
-Quickstart
-----------
+## Quickstart
 
 Make sure you have the below tools available already
 
--   JDK (version 11 or later)
--   VS Code (version 1.23.0 or later)
--   [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)
--   [Debugger for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-debug)
+- JDK (version 11 or later)
+- VS Code (version 1.23.0 or later)
+- [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)
+- [Debugger for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-debug)
 
 You may refer to [Java Extensions](/docs/java/java-tutorial.md#before-you-begin) to set up the environment.
 
@@ -57,52 +55,47 @@ When you open a project with test cases from supported frameworks, Test Runner w
 
 Here’s a brief session with TestNG:
 
-Run/Debug Test Cases
---------------------
+## Run/Debug Test Cases
 
 ![Run from Codelens](images/java-testing/run_codelens.png)
 
--   The extension will generate **Run Test** and **Debug Test** shortcuts (also known as CodeLens) above the class and method definition. Select them to start running or debugging the target test cases.
+- The extension will generate **Run Test** and **Debug Test** shortcuts (also known as CodeLens) above the class and method definition. Select them to start running or debugging the target test cases.
 
 > Note: If you cannot see the CodeLens in your editor, please refer to this [issue comment](https://github.com/microsoft/vscode-java-test/issues/470#issuecomment-444681714) as a workaround.
 
-Test Explorer
--------------
+## Test Explorer
 
 ![Run from Explorer](images/java-testing/run_explorer.png)
 
--   The Test Explorer is the place to show all the test cases in your project. You can also run/debug your test cases from here.
--   Click the node in the Test Explorer will navigate to the location of the source code.
+- The Test Explorer is the place to show all the test cases in your project. You can also run/debug your test cases from here.
+- Click the node in the Test Explorer will navigate to the location of the source code.
 
 > Note: If the Test Explorer is empty, please refer to this [issue comment](https://github.com/microsoft/vscode-java-test/issues/470#issuecomment-444681714) as a workaround.
 
-Customize Test Configurations
------------------------------
+## Customize Test Configurations
 
 ![Configuration](images/java-testing/configuration.png)
 
--   Sometimes you may want to customize the configuration for running the test cases. To achieve this, you can add it into your workspace settings under the section: `java.test.config`.
+- Sometimes you may want to customize the configuration for running the test cases. To achieve this, you can add it into your workspace settings under the section: `java.test.config`.
 
 > Note: More details can be found in [Run with Configuration](https://github.com/microsoft/vscode-java-test/wiki/Run-with-Configuration).
 
-View Test Report
-----------------
+## View Test Report
 
 ![Status Bar](images/java-testing/status_bar.png)
 
--   After running/debugging the test cases, the test report is opened automatically. You can also see the final results in the status bar, by clicking on it to show the Test Report.
--   You can also click the ✔️ or ❌ mark in the CodeLens to open the Test Report.
+- After running/debugging the test cases, the test report is opened automatically. You can also see the final results in the status bar, by clicking on it to show the Test Report.
+- You can also click the ✔️ or ❌ mark in the CodeLens to open the Test Report.
 
 ![Report Navigation](images/java-testing/report_navigate.png)
 
--   For a quick peek of the test status or results, you can see them in the Test Explorer directly.
+- For a quick peek of the test status or results, you can see them in the Test Explorer directly.
 
 ![Test Status in Explorer](images/java-testing/test-status.png)
 
--   You can navigate to the source location of the target test case by clicking the navigate button.
+- You can navigate to the source location of the target test case by clicking the navigate button.
 
-JUnit5 Support
---------------
+## JUnit5 Support
 
 The JUnit 5 support covers frequently used annotations such as `@DisplayName`, `@ParameterizedTest`, `@TestFactory`, `@TestTemplate`, and `@Nested`. It also supports meta-annotations and composed annotations.
 
@@ -110,20 +103,17 @@ The JUnit 5 support covers frequently used annotations such as `@DisplayName`, `
 
 ![ParameterizedTest annotation](images/java-testing/parameterizedtest.png)
 
-FAQ
----
+## FAQ
 
 If you meet any problem when using the extension, you can refer to the [FAQ](https://github.com/microsoft/vscode-java-test/wiki/FAQ) to check if there is an answer to your problem.
 
-More Information
-----------------
+## More Information
 
 Visit the [GitHub repository](https://github.com/microsoft/vscode-java-test) of the [Java Test Runner](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) for more details on commands and settings.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out about:
 
--   [Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
--   [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.
+- [Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
+- [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.

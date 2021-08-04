@@ -1,17 +1,14 @@
-Markdown and Visual Studio Code
-===============================
+# Markdown and Visual Studio Code
 
 Working with Markdown files in Visual Studio Code is simple, straightforward, and fun. Besides VS Code’s basic editing, there are a number of Markdown specific features that will help you be more productive.
 
-Markdown extensions
--------------------
+## Markdown extensions
 
 In addition to the functionality VS Code provides out of the box, you can install an extension for greater functionality.
 
 > Tip: Click on an extension tile above to read the description and reviews to decide which extension is best for you. See more in the [Marketplace](https://marketplace.visualstudio.com).
 
-Markdown preview
-----------------
+## Markdown preview
 
 VS Code supports Markdown files out of the box. You just start writing Markdown text, save the file with the .md extension and then you can toggle the visualization of the editor between the code and the preview of the Markdown file; obviously, you can also open an existing Markdown file and start working with it. To switch between views, press `kb(markdown.showPreview)` in the editor. You can view the preview side-by-side (`kb(markdown.showPreviewToSide)`) with the file you are editing and see changes reflected in real-time as you edit.
 
@@ -47,8 +44,7 @@ Additionally, double clicking an element in the Markdown preview will automatica
 
 ![Markdown Preview double click switches to editor](images/Markdown/double-click-preview-switch.gif)
 
-Outline view
-------------
+## Outline view
 
 The Outline view is a separate section in the bottom of the File Explorer. When expanded, it will show the symbol tree of the currently active editor. For Markdown files, the symbol tree is the Markdown file’s header hierarchy.
 
@@ -56,8 +52,7 @@ The Outline view is a separate section in the bottom of the File Explorer. When 
 
 The Outline view is a great way to review your document’s header structure and outline.
 
-Extending the Markdown preview
-------------------------------
+## Extending the Markdown preview
 
 Extensions can contribute custom styles and scripts to the Markdown preview to change its appearance and add new functionality. Here’s a set of example extensions that customize the preview:
 
@@ -84,8 +79,7 @@ To create [hard line breaks](https://spec.commonmark.org/0.29/#hard-line-breaks)
       }
     }
 
-Markdown preview security
--------------------------
+## Markdown preview security
 
 For security reasons, VS Code restricts the content displayed in the Markdown preview. This includes disabling script execution and only allowing resources to be loaded over `https`.
 
@@ -115,15 +109,13 @@ Keeps scripts disabled but allows content to be loaded over `http`.
 
 Disables additional security in the preview window. This allows script execution and also allows content to be loaded over `http`.
 
-Snippets for Markdown
----------------------
+## Snippets for Markdown
 
 There are several built-in Markdown snippets included in VS Code - press `kb(editor.action.triggerSuggest)` (Trigger Suggest) and you get a context specific list of suggestions.
 
 > **Tip:** You can add in your own User Defined Snippets for Markdown. Take a look at [User Defined Snippets](/docs/editor/userdefinedsnippets.md) to find out how.
 
-Compiling Markdown into HTML
-----------------------------
+## Compiling Markdown into HTML
 
 VS Code integrates with Markdown compilers through the integrated [task runner](/docs/editor/tasks.md). We can use this to compile `.md` files into `.html` files. Let’s walk through compiling a simple Markdown document.
 
@@ -220,8 +212,7 @@ If you want to make the **Compile Markdown** task the default build task to run 
         ]
     }
 
-Automating Markdown compilation
--------------------------------
+## Automating Markdown compilation
 
 Let’s take things a little further and automate Markdown compilation with VS Code. We can do so with the same task runner integration as before, but with a few modifications.
 
@@ -292,15 +283,13 @@ If you want to make the **gulp: default** task the default build task executed w
 
 The **gulp: default** task runs in the background and watches for file changes to Markdown files. If you want to stop the task, you can use the **Terminate Task** from the global **Terminal** menu.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out about:
 
--   [CSS, SCSS, and Less](/docs/languages/css.md) - Want to edit your CSS? VS Code has great support for CSS, SCSS, and Less editing.
+- [CSS, SCSS, and Less](/docs/languages/css.md) - Want to edit your CSS? VS Code has great support for CSS, SCSS, and Less editing.
 
-Common questions
-----------------
+## Common questions
 
 ### Is there spell checking?
 

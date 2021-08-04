@@ -1,17 +1,14 @@
-Java Web Apps with Visual Studio Code
-=====================================
+# Java Web Apps with Visual Studio Code
 
 This tutorial shows you how to create a Java web application with Visual Studio Code. You’ll learn how to run, debug, and edit the Java web app locally and eventually on the cloud.
 
-Scenario
---------
+## Scenario
 
 A simple Spring Boot Getting Started web app
 
 ![Greeting from Java](images/java-webapp/greeting-from-spring.png)
 
-Before you begin
-----------------
+## Before you begin
 
 Before running and deploying this sample, you must have the Java SE Development Kit (JDK) and Apache Maven build tools on your local development environment. If you don’t have, please install them.
 
@@ -27,8 +24,7 @@ Install Apache Maven for your local development environment:
 
 <a href="https://maven.apache.org/install" class="tutorial-next-btn">Install Apache Maven</a>
 
-Download and test the Spring Boot app
--------------------------------------
+## Download and test the Spring Boot app
 
 Clone the [Spring Boot Getting Started](https://github.com/spring-guides/gs-spring-boot) sample project to your local machine. You can clone a Git repository with the **Git: Clone** command in the **Command Palette** (`kb(workbench.action.showCommands)`). Paste `https://github.com/spring-guides/gs-spring-boot.git` as the URL of the remote repository and then decide the parent directory under which to put the local repository. After that, open the `complete` folder within the cloned repository in VS Code by navigating to the folder and typing `code .`.
 
@@ -52,8 +48,7 @@ Test the web app by browsing to <http://localhost:8080> using a web browser. You
 
 ![Greeting from Spring](images/java-webapp/greeting-from-spring.png)
 
-Make a change
--------------
+## Make a change
 
 Let’s now edit `HelloController.java` to change “Greetings from Spring Boot!” to something else like “Hello World”. VS Code provides a great editing experience for Java, check out [Editing and Navigating Code](/docs/languages/java.md#editing-and-navigating-code) to learn about VS Code’s editing and code navigation features.
 
@@ -61,8 +56,7 @@ Click the **Restart** button on the top of the editor to relaunch the app and se
 
 ![Restart Application](images/java-webapp/restart-application.png)
 
-Debug the application
----------------------
+## Debug the application
 
 Set a breakpoint (`kb(editor.debug.action.toggleBreakpoint)`) in the application source code, and reload your browser to hit the breakpoint.
 
@@ -72,8 +66,7 @@ If you would like to learn more about debugging Java with VS Code, you can read 
 
 Congratulations, you have your first Spring Boot web app running locally! Read on to learn how to host it in the cloud.
 
-Deploy Web Apps to the cloud
-----------------------------
+## Deploy Web Apps to the cloud
 
 We just built a Java web application and ran it locally. Now you will learn how to deploy from Visual Studio Code and run it on [Azure](https://azure.microsoft.com) in the cloud.
 
@@ -83,11 +76,11 @@ If you don’t have an Azure subscription, you can sign up for a [free Azure acc
 
 The [Azure App Service](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice) extension is used to create, manage, and deploy to Azure App Service with key features including:
 
--   Create new Azure Web App/Deployment Slot
--   Deploy to Azure Web App/Deployment Slot
--   Start, stop, and restart the Azure Web App/Deployment Slot
--   View a Web App’s log files
--   Swap Deployment Slots
+- Create new Azure Web App/Deployment Slot
+- Deploy to Azure Web App/Deployment Slot
+- Start, stop, and restart the Azure Web App/Deployment Slot
+- View a Web App’s log files
+- Swap Deployment Slots
 
 To install the Azure App Service extension, open the Extensions view (`kb(workbench.view.extensions)`) and search for `azure app service` to filter the results. Select the Microsoft [Azure App Service](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice) extension. For a more command-line Maven-centric experience, you can also check out the [Maven plugin for Azure App Service Linux tutorial](https://docs.microsoft.com/azure/app-service/containers/quickstart-java).
 
@@ -130,8 +123,7 @@ Open the **Output** window in VS Code to view the deployment logs. Once the depl
 
 > **Note:** For more advanced features of App Service, you can check out the [Azure App Service](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice) extension.
 
-Connect with data services
---------------------------
+## Connect with data services
 
 [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction) is a globally distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
@@ -171,8 +163,7 @@ Alternatively, you can also use Maven to package and run your project as steps b
         mvn package
         java -jar target/azure-documentdb-spring-boot-sample-0.0.1-SNAPSHOT.jar
 
-Next steps
-----------
+## Next steps
 
--   To containerize and deploy a web application, check out the [Docker Container Tutorial](/docs/azure/docker.md).
--   To learn more about Java Debugging features, see the [Java Debugging Tutorial](/docs/java/java-debugging.md).
+- To containerize and deploy a web application, check out the [Docker Container Tutorial](/docs/azure/docker.md).
+- To learn more about Java Debugging features, see the [Java Debugging Tutorial](/docs/java/java-debugging.md).

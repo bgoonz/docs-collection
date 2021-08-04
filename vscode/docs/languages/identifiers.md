@@ -1,5 +1,4 @@
-Language Identifiers
-====================
+# Language Identifiers
 
 In Visual Studio Code, each [language mode](/docs/languages/overview.md#changing-the-language-for-the-selected-file) has a unique specific language identifier. That identifier is rarely seen by the user except in the settings, for example, when associating file extensions to a language:
 
@@ -11,7 +10,7 @@ Note that casing matters for exact identifier matching (‘Markdown’ != ‘mar
 
 The language identifier becomes essential for VS Code extension developers when adding new language capabilities or when replacing a language support.
 
-Every language defines its *id* through the `languages` configuration point in the extension’s `package.json` file:
+Every language defines its _id_ through the `languages` configuration point in the extension’s `package.json` file:
 
         "languages": [{
             "id": "java",
@@ -33,16 +32,14 @@ Language supports are added using the language identifier:
 
     languages.registerCompletionItemProvider('php', new PHPCompletionItemProvider(), '.', '$')
 
-New identifier guidelines
--------------------------
+## New identifier guidelines
 
 When defining a new language identifier, use the following guidelines:
 
--   Use the lowercased programming language name.
--   Search for other extensions in the Marketplace to find out if a language identifier has already been used.
+- Use the lowercased programming language name.
+- Search for other extensions in the Marketplace to find out if a language identifier has already been used.
 
-Known language identifiers
---------------------------
+## Known language identifiers
 
 The following table lists known language identifiers:
 

@@ -1,5 +1,4 @@
-Go in Visual Studio Code
-========================
+# Go in Visual Studio Code
 
 Using the Go extension for Visual Studio Code, you get features like IntelliSense, code navigation, symbol search, testing, debugging, and many more that will help you in [Go](https://golang.org/) development.
 
@@ -11,8 +10,7 @@ Watch [“Getting started with VS Code Go”](https://youtu.be/1MXIGYrMk80) for 
 
 This article describes only a subset of the features the Go extension provides. See the extension’s [documentation](https://github.com/golang/vscode-go/blob/master/docs/features.md) for the full, up-to-date list of supported features.
 
-IntelliSense
-------------
+## IntelliSense
 
 ![IntelliSense](images/go/completion-signature-help.gif)
 
@@ -34,25 +32,23 @@ When you open the `(` while calling a function, a pop-up provides signature help
 
 > **Tip**: Use `kb(editor.action.triggerParameterHints)` to manually trigger the signature help when the cursor is inside the `()` in the function call.
 
-Code navigation
----------------
+## Code navigation
 
 Code navigation features are available in the context menu in the editor.
 
--   **Go To Definition** `kb(editor.action.revealDefinition)` - Go to the source code of the type definition.
--   **Peek Definition** `kb(editor.action.peekDefinition)` - Bring up a Peek window with the type definition.
--   **Go to References** `kb(editor.action.goToReferences)` - Show all references for the type.
--   **Show Call Hierarchy** `kb(editor.showCallHierarchy)` - Show all calls from or to a function.
+- **Go To Definition** `kb(editor.action.revealDefinition)` - Go to the source code of the type definition.
+- **Peek Definition** `kb(editor.action.peekDefinition)` - Bring up a Peek window with the type definition.
+- **Go to References** `kb(editor.action.goToReferences)` - Show all references for the type.
+- **Show Call Hierarchy** `kb(editor.showCallHierarchy)` - Show all calls from or to a function.
 
 You can navigate via symbol search using the **Go to Symbol** commands from the **Command Palette** (`kb(workbench.action.showCommands)`).
 
--   Go to Symbol in File - `kb(workbench.action.gotoSymbol)`
--   Go to Symbol in Workspace - `kb(workbench.action.showAllSymbols)`
+- Go to Symbol in File - `kb(workbench.action.gotoSymbol)`
+- Go to Symbol in Workspace - `kb(workbench.action.showAllSymbols)`
 
 You can also navigate back and forth between a Go file and its test implementation using the **Go: Toggle Test File** command.
 
-Build, test, and diagnose
--------------------------
+## Build, test, and diagnose
 
 The Go language server (`gopls`) detects build and vet errors found on the workspace. The errors and warnings from running any/all of the above will be shown red/green squiggly lines in the editor. These diagnostics also show up in the **Problems** panel (**View** &gt; **Problems**).
 
@@ -60,12 +56,11 @@ You can add additional lint checks using the `go.lintOnSave` setting and configu
 
 You can configure the extension to run tests and compute test coverage using:
 
--   `go.testOnSave`
--   `go.coverOnSave`
--   `go.testFlags`
+- `go.testOnSave`
+- `go.coverOnSave`
+- `go.testFlags`
 
-Formatting
-----------
+## Formatting
 
 You can format your Go file using `kb(editor.action.formatDocument)` or by running the **Format Document** command from the **Command Palette** or the context menu in the editor.
 
@@ -87,8 +82,7 @@ Formatting is provided by `gopls`. If you want `gofumpt`-style formatting, you c
         "formatting.gofumpt": true
     }
 
-Test
-----
+## Test
 
 There are many test-related commands that you can explore by typing **Go: test** in the **Command Palette**.
 
@@ -96,23 +90,19 @@ There are many test-related commands that you can explore by typing **Go: test**
 
 The first three above can be used to generate test skeletons for the functions in the current package, file, or at the cursor using `gotests`. The last few can be used to run tests in the current package, file, or at the cursor using `go test`. There is also a command for getting test coverage.
 
-Import packages
----------------
+## Import packages
 
 Run the command **Go: Add Import** to get a list of packages that can be imported to your Go file. Choose one and it will get added in the import block of your Go file.
 
-Rename symbols
---------------
+## Rename symbols
 
 You can rename symbols using `kb(editor.action.rename)` or by running the **Rename Symbol** command in the context menu in the editor.
 
-Debugging
----------
+## Debugging
 
 The Go extension lets you debug Go code as well. You will need to install the [Delve](https://github.com/go-delve/delve) debugger manually as a prerequisite. Read [Debug Go programs in VS Code](https://github.com/golang/vscode-go/blob/master/docs/debugging.md) for setup steps, information on remote debugging and a troubleshooting guide.
 
-Next steps
-----------
+## Next steps
 
 This has been a brief overview showing the Go extension features within VS Code. For more information, see the details provided in the Go extension [README](https://github.com/golang/vscode-go/blob/master/README.md).
 
@@ -122,6 +112,6 @@ If you have any issues or feature requests, feel free to log them in the Go exte
 
 If you’d like to learn more about VS Code, try these topics:
 
--   [Basic Editing](/docs/editor/codebasics.md) - A quick introduction to the basics of the VS Code editor.
--   [Install an Extension](/docs/editor/extension-marketplace.md) - Learn about other extensions are available in the [Marketplace](https://marketplace.visualstudio.com/vscode).
--   [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
+- [Basic Editing](/docs/editor/codebasics.md) - A quick introduction to the basics of the VS Code editor.
+- [Install an Extension](/docs/editor/extension-marketplace.md) - Learn about other extensions are available in the [Marketplace](https://marketplace.visualstudio.com/vscode).
+- [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.

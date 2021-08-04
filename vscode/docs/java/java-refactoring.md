@@ -1,10 +1,8 @@
-Java refactoring and Source Actions
-===================================
+# Java refactoring and Source Actions
 
 Visual Studio Code provide many options to refactor your source code as well as Source Actions to generate code and fix issues while you’re coding. To access them, click on the `light bulb` 💡 whenever you see it. Or right-click the editor view and pick **Source Action…**.
 
-Refactoring
------------
+## Refactoring
 
 The goal of the Java program refactoring is to make system-wide code changes without affecting behavior of the program. The Java Language Support for VS Code provides a lot of easily accessible refactoring options.
 
@@ -18,30 +16,30 @@ Then you will see all the available refactoring options.
 
 ### List of Supported Code Actions
 
--   [Assign to variable](#assign-to-variable)
--   [Change modifiers to final](#change-modifiers-to-final)
--   [Convert anonymous to nested class](#convert-anonymous-to-nested-class)
--   [Convert to anonymous class creation](#convert-to-anonymous-class-creation)
--   [Convert to enhanced for loop](#convert-to-enhanced-for-loop)
--   [Convert to lambda expression](#convert-to-lambda-expression)
--   [Convert to static import](#convert-to-static-import)
--   Extract refactorings
-    -   [Extract to constant](#extract-to-constant)
-    -   [Extract to field](#extract-to-field)
-    -   [Extract to method](#extract-to-method)
-    -   [Extract to local variable](#extract-to-local-variable)
--   Inline refactorings
-    -   [Inline constant](#inline-constant)
-    -   [Inline local variable](#inline-local-variable)
-    -   [Inline method](#inline-method)
--   Invert boolean
-    -   [Invert conditions](#invert-conditions)
-    -   [Invert local variable](#invert-local-variable)
--   [Move](#move)
--   [Rename](#rename)
--   Type change
-    -   [Change resolved type to var type](#change-resolved-type-to-var-type)
-    -   [Change var type to resolved type](#change-var-type-to-resolved-type)
+- [Assign to variable](#assign-to-variable)
+- [Change modifiers to final](#change-modifiers-to-final)
+- [Convert anonymous to nested class](#convert-anonymous-to-nested-class)
+- [Convert to anonymous class creation](#convert-to-anonymous-class-creation)
+- [Convert to enhanced for loop](#convert-to-enhanced-for-loop)
+- [Convert to lambda expression](#convert-to-lambda-expression)
+- [Convert to static import](#convert-to-static-import)
+- Extract refactorings
+  - [Extract to constant](#extract-to-constant)
+  - [Extract to field](#extract-to-field)
+  - [Extract to method](#extract-to-method)
+  - [Extract to local variable](#extract-to-local-variable)
+- Inline refactorings
+  - [Inline constant](#inline-constant)
+  - [Inline local variable](#inline-local-variable)
+  - [Inline method](#inline-method)
+- Invert boolean
+  - [Invert conditions](#invert-conditions)
+  - [Invert local variable](#invert-local-variable)
+- [Move](#move)
+- [Rename](#rename)
+- Type change
+  - [Change resolved type to var type](#change-resolved-type-to-var-type)
+  - [Change var type to resolved type](#change-var-type-to-resolved-type)
 
 ### Assign to variable
 
@@ -479,9 +477,9 @@ Let’s invert the variable `valid`.
 
 Moves the selected elements and corrects all references to the elements (also in other files). Available actions are:
 
--   Move class to another package
--   Move static or instance method to another class
--   Move inner class to a new file
+- Move class to another package
+- Move static or instance method to another class
+- Move inner class to a new file
 
 #### Example
 
@@ -573,7 +571,7 @@ Uses `var` to declare local variables.
 
 > Also see: [Change var type to resolved type](#change-var-type-to-resolved-type)
 
-------------------------------------------------------------------------
+---
 
 ### Change var type to resolved type
 
@@ -591,8 +589,7 @@ Uses the resolved type to declare local variables.
 
 > Also see: [Change resolved type to var type](#change-resolved-type-to-var-type)
 
-Source Actions
---------------
+## Source Actions
 
 Source Actions could be used to generate common code structures and recurring elements. Some of them are quick fixes which helps you fix your code issues on the fly.
 
@@ -622,8 +619,8 @@ You can bulk generate getters and setters for all new member variables. If the c
 
 There are two options for you to customize the generated code:
 
--   If you use Java 7+, you can set `java.codeGeneration.hashCodeEquals.useJava7Objects` to `true` to generate shorter code that calls `Objects.hash` and `Objects.equals`.
--   You can also set `java.codeGeneration.hashCodeEquals.useInstanceof` to `true` to use `instanceOf` operator to check the object types instead of calling `Object.getClass()`.
+- If you use Java 7+, you can set `java.codeGeneration.hashCodeEquals.useJava7Objects` to `true` to generate shorter code that calls `Objects.hash` and `Objects.equals`.
+- You can also set `java.codeGeneration.hashCodeEquals.useInstanceof` to `true` to use `instanceOf` operator to check the object types instead of calling `Object.getClass()`.
 
 ### Generate `toString()`
 
@@ -641,10 +638,10 @@ When your package name doesn’t match the folder name, you have the options to 
 
 The list of Code Actions supported by VS Code keeps growing and only listed the most popular ones above. Other notable supported actions include (but not limited to):
 
--   Create unresolved types
--   Remove the `final` modifier
--   Remove unnecessary cast
--   Remove redundant interfaces
--   Add missing case labels in switch statements
--   Jump to definition on break/continue
--   Correct access to static elements
+- Create unresolved types
+- Remove the `final` modifier
+- Remove unnecessary cast
+- Remove redundant interfaces
+- Add missing case labels in switch statements
+- Jump to definition on break/continue
+- Correct access to static elements

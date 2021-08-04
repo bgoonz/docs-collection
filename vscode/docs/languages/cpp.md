@@ -1,12 +1,10 @@
-C/C++ for Visual Studio Code
-============================
+# C/C++ for Visual Studio Code
 
 C/C++ support for Visual Studio Code is provided by a [Microsoft C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) to enable cross-platform C and C++ development on Windows, Linux, and macOS.
 
 ![cpp extension](images/cpp/cpp-extension.png)
 
-Install the extension
----------------------
+## Install the extension
 
 1.  Open VS Code.
 2.  Select the Extensions view icon on the Activity bar or use the keyboard shortcut (`kb(workbench.view.extensions)`).
@@ -19,8 +17,7 @@ After you install the extension, when you open or create a `*.cpp` file, you wil
 
 ![C++ language features](images/cpp/msg-intellisense.png)
 
-Install a compiler
-------------------
+## Install a compiler
 
 C++ is a compiled language meaning your program’s source code must be translated (compiled) before it can be run on your computer. VS Code is first and foremost an editor, and relies on command-line tools to do much of the development workflow. The C/C++ extension does not include a C++ compiler or debugger. You will need to install these tools or use those already installed on your computer.
 
@@ -44,8 +41,7 @@ Checking for the Clang compiler `clang`:
 
 If you don’t have a compiler installed, in the example below, we describe how to install the Minimalist GNU for Windows (MinGW) C++ tools (compiler and debugger). MinGW is a popular, free toolset for Windows. If you are running VS Code on another platform, you can read the [C++ tutorials](#tutorials), which cover C++ configurations for Linux and macOS.
 
-Example: Install MinGW-x64
---------------------------
+## Example: Install MinGW-x64
 
 We will install Mingw-w64 via [MSYS2](https://www.msys2.org/), which provides up-to-date native builds of GCC, Mingw-w64, and other helpful C++ tools and libraries. [Click here](https://github.com/msys2/msys2-installer/releases/download/2021-06-04/msys2-x86_64-20210604.exe) to download the MSYS2 installer. Then follow the instructions on the [MSYS2 website](https://www.msys2.org/) to install Mingw-w64.
 
@@ -68,8 +64,7 @@ To check that your Mingw-w64 tools are correctly installed and available, open a
 
 If you don’t see the expected output or `g++` or `gdb` is not a recognized command, make sure your PATH entry matches the Mingw-w64 binary location where the compiler tools are located.
 
-Hello World
------------
+## Hello World
 
 To make sure the compiler is installed and configured correctly, we’ll create the simplest Hello World C++ program.
 
@@ -124,32 +119,29 @@ If everything is set up correctly, you should see the output “Hello World”.
 
 This has been a very simple example to help you get started with C++ development in VS Code. The next step is to try one of the tutorials listed below on your platform (Windows, Linux, or macOS) with your preferred toolset (GCC, Clang, Microsoft C++) and learn more about the Microsoft C/C++ extension’s language features such as IntelliSense, code navigation, build configuration, and debugging.
 
-Tutorials
----------
+## Tutorials
 
 Get started with C++ and VS Code with tutorials for your environment:
 
--   [GCC on Windows via MinGW](/docs/cpp/config-mingw.md)
--   [Microsoft C++ on Windows](/docs/cpp/config-msvc.md)
--   [GCC on Linux](/docs/cpp/config-linux.md)
--   [GCC on Windows Subsystem For Linux](/docs/cpp/config-wsl.md)
--   [Clang/LLVM on macOS](/docs/cpp/config-clang-mac.md)
--   [CMake Tools on Linux](/docs/cpp/cmake-linux.md)
+- [GCC on Windows via MinGW](/docs/cpp/config-mingw.md)
+- [Microsoft C++ on Windows](/docs/cpp/config-msvc.md)
+- [GCC on Linux](/docs/cpp/config-linux.md)
+- [GCC on Windows Subsystem For Linux](/docs/cpp/config-wsl.md)
+- [Clang/LLVM on macOS](/docs/cpp/config-clang-mac.md)
+- [CMake Tools on Linux](/docs/cpp/cmake-linux.md)
 
-Documentation
--------------
+## Documentation
 
 You can find more documentation on using the Microsoft C/C++ extension under the [C++ section](/docs/cpp) of the VS Code website, where you’ll find topics on:
 
--   [Debugging](/docs/cpp/cpp-debug.md)
--   [Editing](/docs/cpp/cpp-ide.md)
--   [Settings](/docs/cpp/customize-default-settings-cpp.md)
--   [FAQ](/docs/cpp/faq-cpp.md)
+- [Debugging](/docs/cpp/cpp-debug.md)
+- [Editing](/docs/cpp/cpp-ide.md)
+- [Settings](/docs/cpp/customize-default-settings-cpp.md)
+- [FAQ](/docs/cpp/faq-cpp.md)
 
 ![C++ TOC on code.visualstudio.com](images/cpp/cpp-toc.png)
 
-Remote Development
-------------------
+## Remote Development
 
 VS Code and the C++ extension support [Remote Development](/docs/remote/remote-overview.md) allowing you to work over SSH on a remote machine or VM, inside a Docker container, or in the [Windows Subsystem for Linux](https://docs.microsoft.com/windows/wsl) (WSL).
 
@@ -160,7 +152,6 @@ To install support for Remote Development:
 3.  If you are connecting to a remote machine with SSH, use the **Remote - SSH** extension.
 4.  If the remote source files are hosted in a container (for example, Docker), use the **Remote - Containers** extension.
 
-Feedback
---------
+## Feedback
 
 If you run into any issues or have suggestions for the Microsoft C/C++ extension, please file [issues and suggestions on GitHub](https://github.com/microsoft/vscode-cpptools/issues). If you haven’t already provided feedback, please take this [quick survey](https://www.research.net/r/VBVV6C6) to help shape this extension for your needs.

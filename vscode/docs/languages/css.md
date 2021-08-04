@@ -1,12 +1,10 @@
-CSS, SCSS and Less
-==================
+# CSS, SCSS and Less
 
 Visual Studio Code has built-in support for editing style sheets in CSS `.css`, SCSS `.scss` and Less `.less`. In addition, you can install an extension for greater functionality.
 
 > **Tip:** Click on an extension tile above to read the description and reviews to decide which extension is best for you. See more in the [Marketplace](https://marketplace.visualstudio.com).
 
-IntelliSense
-------------
+## IntelliSense
 
 VS Code has support for selectors, properties and values. Use `kb(editor.action.triggerSuggest)` to get a list of context specific options.
 
@@ -14,8 +12,7 @@ VS Code has support for selectors, properties and values. Use `kb(editor.action.
 
 Proposals contain extensive documentation, including a list of browsers that support the property. To see the full description text of the selected entry, use `kb(toggleSuggestionDetails)`.
 
-Syntax coloring & color preview
--------------------------------
+## Syntax coloring & color preview
 
 As you type, there is syntax highlighting as well as in context preview of colors.
 
@@ -37,8 +34,7 @@ To just disable it for css, Less and SCSS, use
         "editor.colorDecorators": false
     }
 
-Folding
--------
+## Folding
 
 You can fold regions of source code using the folding icons on the gutter between line numbers and line start. Folding regions are available for all declarations (for example, rule declarations) and for multiline comments in the source code.
 
@@ -50,8 +46,7 @@ If you prefer to switch to indentation based folding for CSS, Less and SCSS, use
         "editor.foldingStrategy": "indentation"
     },
 
-Emmet snippets
---------------
+## Emmet snippets
 
 [Emmet abbreviation support](/docs/editor/emmet.md) is built into VS Code, suggestions are listed along with other suggestions and snippets in the editor auto-completion list.
 
@@ -59,8 +54,7 @@ Emmet snippets
 
 VS Code also supports [User Defined Snippets](/docs/editor/userdefinedsnippets.md).
 
-Syntax Verification & Linting
------------------------------
+## Syntax Verification & Linting
 
 There is support for CSS version &lt;= 2.1, Sass version &lt;= 3.2 and Less version &lt;= 2.3.
 
@@ -68,34 +62,29 @@ There is support for CSS version &lt;= 2.1, Sass version &lt;= 3.2 and Less vers
 >
 >     "css.validate": false
 
-Go to Symbol in file
---------------------
+## Go to Symbol in file
 
 You can quickly navigate to the relevant CSS symbol in the current file by pressing `kb(workbench.action.gotoSymbol)`.
 
-Hovers
-------
+## Hovers
 
 Hovering over a selector or property will provide an HTML snippet that is matched by the CSS rule.
 
 ![Hover in CSS](images/css/hover.png)
 
-Go to Declaration and Find References
--------------------------------------
+## Go to Declaration and Find References
 
 This is supported for Sass and Less variables in the same file. [CSS variables](https://developer.mozilla.org/docs/Web/CSS/Using_CSS_variables) per the [draft standards proposal](https://drafts.csswg.org/css-variables/) are also supported.
 
 There is jump to definition for `@import` and `url()` links in CSS, SCSS and Less.
 
-CSS custom data
----------------
+## CSS custom data
 
 You can extend VS Code’s CSS support through a declarative [custom data format](https://github.com/microsoft/vscode-css-languageservice/blob/main/docs/customData.md). By setting `css.customData` to a list of JSON files following the custom data format, you can enhance VS Code’s understanding of new CSS properties, at-directives, pseudo-classes and pesudo-elements. VS Code will then offer language support such as completion & hover information for the provided properties, at-directives, pseudo-classes and pesudo-elements.
 
 You can read more about using custom data in the [vscode-custom-data](https://github.com/microsoft/vscode-custom-data) repository.
 
-Transpiling Sass and Less into CSS
-----------------------------------
+## Transpiling Sass and Less into CSS
 
 VS Code can integrate with Sass and Less transpilers through our integrated [task runner](/docs/editor/tasks.md). We can use this to transpile `.scss` or `.less` files into `.css` files. Let’s walk through transpiling a simple Sass/Less file.
 
@@ -181,8 +170,7 @@ If you want to make the task the default build task to run execute **Configure D
 
 > **Note:** If your build fails or you see an error message such as “An output directory must be specified when compiling a directory”, be sure the filenames in your `tasks.json` match the filenames on disk. You can always test your build by running `node-sass styles.scss styles.css` from the command line.
 
-Automating Sass/Less compilation
---------------------------------
+## Automating Sass/Less compilation
 
 Let’s take things a little further and automate Sass/Less compilation with VS Code. We can do so with the same task runner integration as before, but with a few modifications.
 
@@ -258,8 +246,7 @@ If you want to make the **gulp: default** task the default build task executed w
 
 The **gulp: default** task runs in the background and watches for file changes to Sass/Less files. If you want to stop the task, you can use the **Terminate Task** from the global **Terminal** menu.
 
-Customizing CSS, SCSS and Less Settings
----------------------------------------
+## Customizing CSS, SCSS and Less Settings
 
 You can configure the following lint warnings as [User and Workspace Settings](/docs/getstarted/settings.md).
 
@@ -273,18 +260,16 @@ Set a setting to `warning` or `error` if you want to enable lint checking, use `
 
 <table style="width:99%;"><colgroup><col style="width: 15%" /><col style="width: 63%" /><col style="width: 21%" /></colgroup><thead><tr class="header"><th>Id</th><th>Description</th><th>Default</th></tr></thead><tbody><tr class="odd"><td>validate</td><td>Enables or disables all validations</td><td>true</td></tr><tr class="even"><td>compatibleVendorPrefixes</td><td>When using a property with a vendor-specific prefix (for example <code>-webkit-transition</code>), make sure to also include all other vendor-specific properties e.g. <code>-moz-transition</code>, <code>-ms-transition</code> and <code>-o-transition</code></td><td>ignore</td></tr><tr class="odd"><td>vendorPrefix</td><td>When using a property with a vendor-specific prefix for example <code>-webkit-transition</code>, make sure to also include the standard property if it exists e.g. <code>transition</code></td><td>warning</td></tr><tr class="even"><td>duplicateProperties</td><td>Warn about duplicate properties in the same ruleset</td><td>ignore</td></tr><tr class="odd"><td>emptyRules</td><td>Warn about empty rulesets</td><td>warning</td></tr><tr class="even"><td>importStatement</td><td>Warn about using an <code>import</code> statement as import statements are loaded sequentially which has a negative impact on web page performance</td><td>ignore</td></tr><tr class="odd"><td>boxModel</td><td>Do not use <code>width</code> or <code>height</code> when using <code>padding</code> or <code>border</code></td><td>ignore</td></tr><tr class="even"><td>universalSelector</td><td>Warn when using the universal selector <code>*</code> as it is known to be slow and should be avoided</td><td>ignore</td></tr><tr class="odd"><td>zeroUnits</td><td>Warn when having zero with a unit e.g. <code>0em</code> as zero does not need a unit.</td><td>ignore</td></tr><tr class="even"><td>fontFaceProperties</td><td>Warn when using <code>@font-face</code> rule without defining a <code>src</code> and <code>font-family</code> property</td><td>warning</td></tr><tr class="odd"><td>hexColorLength</td><td>Warn when using hex numbers that don’t consist of three or six hex numbers</td><td>error</td></tr><tr class="even"><td>argumentsInColorFunction</td><td>Warn when an invalid number of parameters in color functions e.g. <code>rgb</code></td><td>error</td></tr><tr class="odd"><td>unknownProperties</td><td>Warn when using an unknown property</td><td>warning</td></tr><tr class="even"><td>ieHack</td><td>Warn when using an IE hack <code>*propertyName</code> or <code>_propertyName</code></td><td>ignore</td></tr><tr class="odd"><td>unknownVendorSpecificProperties</td><td>Warn when using an unknown vendor-specific property</td><td>ignore</td></tr><tr class="even"><td>propertyIgnoredDueToDisplay</td><td>Warn when using a property that is ignored due to the display. For example, with <code>display: inline</code>, the <code>width</code>, <code>height</code>, <code>margin-top</code>, <code>margin-bottom</code>, and <code>float</code> properties have no effect.</td><td>warning</td></tr><tr class="odd"><td>important</td><td>Warn when using <code>!important</code> as it is an indication that the specificity of the entire CSS has gotten out of control and needs to be refactored.</td><td>ignore</td></tr><tr class="even"><td>float</td><td>Warn when using <code>float</code> as floats lead to fragile CSS that is easy to break if one aspect of the layout changes.</td><td>ignore</td></tr><tr class="odd"><td>idSelector</td><td>Warn when using selectors for an id <code>#id</code> as selectors should not contain IDs because these rules are too tightly coupled with the HTML.</td><td>ignore</td></tr></tbody></table>
 
-Next steps
-----------
+## Next steps
 
 Read on to find out about:
 
--   [Configure Tasks](/docs/editor/tasks.md) - Dig into Tasks to help you transpile your SCSS and Less to CSS.
--   [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
--   [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
--   [HTML](/docs/languages/html.md) - CSS is just the start, HTML is also very well supported in VS Code.
+- [Configure Tasks](/docs/editor/tasks.md) - Dig into Tasks to help you transpile your SCSS and Less to CSS.
+- [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
+- [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
+- [HTML](/docs/languages/html.md) - CSS is just the start, HTML is also very well supported in VS Code.
 
-Common questions
-----------------
+## Common questions
 
 ### Does VS Code provide a color picker?
 
