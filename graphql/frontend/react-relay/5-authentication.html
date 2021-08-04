@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’ll learn how you can implement authentication functionality with Relay and Graphcool to provide a login to the user.</p>
+<h3 id="prepare-the-react-components">Prepare the React components</h3>
+<p>As in the sections before, you’ll set the stage for the login functionality by preparing the React components that are needed for this feature. You’ll start by implementing the <code>Login</code> component.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/components</code> and call it <code>Login.js</code>. Then paste the following code inside of it:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/login.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;../constants&#39;
+
+class Login extends Component {
+
+  state = {
+    login: true, // switch between Login and SignUp
+    email: &#39;&#39;,
+    password: &#39;&#39;,
+    name: &#39;&#39;
+  }
+
+  render() {
+
+    return (
+      &lt;div&gt;
+        &lt;h4 className=&#39;mv3&#39;&gt;{this.state.login ? &#39;Login&#39; : &#39;Sign Up&#39;}&lt;/h4&gt;
+        &lt;div className=&#39;flex flex-column&#39;&gt;
+          {!this.state.login &amp;&amp;
+          &lt;input
+            value={this.state.name}
+            onChange={(e) =&gt; this.setState({ name: e.target.value })}
+            type=&#39;text&#39;
+            placeholder=&#39;Your name&#39;
+          /&gt;}
+          &lt;input
+            value={this.state.email}
+            onChange={(e) =&gt; this.setState({ email: e.target.value })}
+            type=&#39;text&#39;
+            placeholder=&#39;Your email address&#39;
+          /&gt;
+          &lt;input
+            value={this.state.password}
+            onChange={(e) =&gt; this.setState({ password: e.target.value })}
+            type=&#39;password&#39;
+            placeholder=&#39;Choose a safe password&#39;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div className=&#39;flex mt3&#39;&gt;
+          &lt;div
+            className=&#39;pointer mr2 button&#39;
+            onClick={() =&gt; this._confirm()}
+          &gt;
+            {this.state.login ? &#39;login&#39; : &#39;create Account&#39; }
+          &lt;/div&gt;
+          &lt;div
+            className=&#39;pointer button&#39;
+            onClick={() =&gt; this.setState({ login: !this.state.login })}
+          &gt;
+            {this.state.login ? &#39;need to create an account?&#39; : &#39;already have an account?&#39;}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    )
+  }
+
+  _confirm = async () =&gt; {
+    // ... you&#39;ll implement this in a bit
+  }
+
+  _saveUserData = (id, token) =&gt; {
+    localStorage.setItem(GC_USER_ID, id)
+    localStorage.setItem(GC_AUTH_TOKEN, token)
+  }
+
+}
+
+export default Login</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly understand the structure of this <code>Login</code> new component. It can have two major states based on the boolean flag that’s represented by <code>state.login</code>.</p>
+<p>One state is for users that already have an account and only need to login, here the component will only render two <code>input</code> fields for the user provide <code>email</code> and <code>password</code>. Notice that <code>state.login</code> will be <code>true</code> in this case.</p>
+<p>The second state is for users that haven’t created an account yet and thus still need to sign up. Here, you also render a third <code>input</code> field where users can provide their <code>name</code>. In this case, <code>state.login</code> will be <code>false</code>.</p>
+<p>The method <code>_confirm</code> will be used to implement the mutations that we need to send for the login functionality.</p>
+<p>Next you also need to provide the <code>constants.js</code> file that we use to define keys for the credentials that we’re storing in the browser’s <code>localStorage</code>.</p>
+<p><Instruction></p>
+<p>In <code>src</code>, create a new file called <code>constants.js</code> and add the following two definitions:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/constants.js&quot;)"><code>export const GC_USER_ID = &#39;graphcool-user-id&#39;
+export const GC_AUTH_TOKEN = &#39;graphcool-auth-token&#39;</code></pre>
+<p></Instruction></p>
+<p>With that component in place, you can go and add a new route to your <code>react-router-dom</code> setup.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and update <code>render</code> to include the new route:</p>
+<pre class="js{7}(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>render() {
+  return (
+    &lt;div className=&#39;center w85&#39;&gt;
+      &lt;Header /&gt;
+      &lt;div className=&#39;ph3 pv1 background-gray&#39;&gt;
+        &lt;Switch&gt;
+          &lt;Route exact path=&#39;/&#39; component={LinkListPage}/&gt;
+          &lt;Route exact path=&#39;/login&#39; component={Login}/&gt;
+          &lt;Route exact path=&#39;/create&#39; component={CreateLink}/&gt;
+        &lt;/Switch&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also import the <code>Login</code> component on top of the same file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>import Login from &#39;./Login&#39;</code></pre>
+<p></Instruction></p>
+<p>Finally, go ahead and add <code>Link</code> to the <code>Header</code> that allows the users to navigate to the <code>Login</code> page.</p>
+<p><Instruction></p>
+<p>Open <code>Header.js</code> and update <code>render</code> to look as follows:</p>
+<pre class="js{2,8,13,15-25}(path=&quot;.../hackernews-react-relay/src/components/header.js&quot;)"><code>render() {
+  const userId = localStorage.getItem(GC_USER_ID)
+  return (
+    &lt;div className=&#39;flex pa1 justify-between nowrap orange&#39;&gt;
+      &lt;div className=&#39;flex flex-fixed black&#39;&gt;
+        &lt;div className=&#39;fw7 mr1&#39;&gt;Hacker News&lt;/div&gt;
+        &lt;Link to=&#39;/&#39; className=&#39;ml1 no-underline black&#39;&gt;new&lt;/Link&gt;
+        {userId &amp;&amp;
+        &lt;div className=&#39;flex&#39;&gt;
+          &lt;div className=&#39;ml1&#39;&gt;|&lt;/div&gt;
+          &lt;Link to=&#39;/create&#39; className=&#39;ml1 no-underline black&#39;&gt;submit&lt;/Link&gt;
+        &lt;/div&gt;
+        }
+      &lt;/div&gt;
+      &lt;div className=&#39;flex flex-fixed&#39;&gt;
+        {userId ?
+          &lt;div className=&#39;ml1 pointer black&#39; onClick={() =&gt; {
+            localStorage.removeItem(GC_USER_ID)
+            localStorage.removeItem(GC_AUTH_TOKEN)
+            this.props.history.push(`/`)
+          }}&gt;logout&lt;/div&gt;
+          :
+          &lt;Link to=&#39;/login&#39; className=&#39;ml1 no-underline black&#39;&gt;login&lt;/Link&gt;
+        }
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>You first retrieve the <code>userId</code> from local storage. If the <code>userId</code> is not available, the <em>submit</em>-button won’t be rendered any more. That way you make sure only authenticated users can create new links.</p>
+<p>You’re also adding a second button to the right of the <code>Header</code> that users can use to login and logout.</p>
+<p><Instruction></p>
+<p>Lastly, you need to import the key definitions from <code>constants.js</code> in <code>Header.js</code>. Add the following statement to the top of file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/header.js&quot;)"><code>import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;../constants&#39;</code></pre>
+<p></Instruction></p>
+<p>Here is what the ready component looks like:</p>
+<figure>
+<img src="http://imgur.com/tBxMVtb.png" alt="The completed component" /><figcaption>The completed component</figcaption>
+</figure>
+<p>Before you can implement the authentication functionality in <code>Login.js</code>, you need to prepare the Graphcool project and enable authentication on the server-side.</p>
+<h3 id="enabling-email-and-password-authentication-updating-the-schema">Enabling Email-and-Password Authentication &amp; Updating the Schema</h3>
+<p><Instruction></p>
+<p>In the directory where <code>project.graphcool</code> is located, type the following into the terminal:</p>
+<pre class="bash(path=&quot;../hackernews-react-relay&quot;)"><code>graphcool console</code></pre>
+<p></Instruction></p>
+<p>This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.</p>
+<p><Instruction></p>
+<p>Select the <em>Integrations</em>-tab in the left side-menu and then click on the <em>Email-Password-Auth</em>-integration.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/FkyzuuM.png" alt="The email-password-auth integration" /><figcaption>The email-password-auth integration</figcaption>
+</figure>
+<p>This will open the popup that allows you to enable the Graphcool’s email-based authentication mechanism.</p>
+<p><Instruction></p>
+<p>In the popup, simply click <em>Enable</em>.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/HNdmas3.png" alt="Click enable in the popup" /><figcaption>Click enable in the popup</figcaption>
+</figure>
+<p>Having the <code>Email-and-Password</code> auth provider enabled adds two new mutations to the project’s API:</p>
+<pre class="graphql(nocopy)"><code># 1. Create new user
+createUser(authProvider: { email: { email, password } }): User
+
+# 2. Login existing user
+signinUser(email: { email, password }): SignInUserPayload
+
+# SignInUserPayload bundles information about the `user` and `token`
+type SignInUserPayload {
+  user: User
+  token: String
+}</code></pre>
+<p>Next, you have to make sure that the changes introduced by the authentication provider are reflected in your local project file. You can use the <code>graphcool pull</code> to update your local schema file with changes that happened remotely.</p>
+<p><Instruction></p>
+<p>Open a terminal window and navigate to the directory where <code>project.graphcool</code> is located. Then run the following command:</p>
+<pre class="bash(path=&quot;../hackernews-react-relay&quot;)"><code>graphcool pull</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>Note: Before the remote schema gets fetched, you will be asked to confirm that you want to override the current project file. You can confirm by typing <code>y</code>.</p>
+</blockquote>
+<p>This will bump the schema <code>version</code> to <code>2</code> and update the <code>User</code> type to look also include the <code>email</code> and <code>password</code> fields:</p>
+<pre class="{3,5}graphql(nocopy)"><code>type User @model {
+  createdAt: DateTime!
+  email: String @isUnique
+  id: ID! @isUnique
+  password: String
+  updatedAt: DateTime!
+}</code></pre>
+<p>Perfect, you’re all set now to actually implement the authentication functionality inside your app.</p>
+<h3 id="implementing-the-login-mutations">Implementing the Login Mutations</h3>
+<p><code>createUser</code> and <code>signinUser</code> are two regular GraphQL mutations that you can use in the same way as you did with the <code>createLink</code> mutation from before.</p>
+<p>You’ll start with the <code>createUser</code> mutation.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/mutations</code> and call it <code>CreateUserMutation.js</code>. Then copy the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/mutations/createusermutation.js&quot;)"><code>import {
+  commitMutation,
+  graphql
+} from &#39;react-relay&#39;
+import environment from &#39;../Environment&#39;
+
+const mutation = graphql`
+  mutation CreateUserMutation($createUserInput: SignupUserInput!, $signinUserInput: SigninUserInput!) {
+    createUser(input: $createUserInput) {
+      user {
+        id
+      }
+    }
+
+    signinUser(input: $signinUserInput) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly understand what’s going in the code that you just added.</p>
+<p>You’re again defining a <code>mutation</code> by using the <code>graphql</code> function. The template string that you’re tagging with <code>graphql</code> actually contains <em>two</em> mutations at once!</p>
+<p>The first mutation is used to <em>create</em> a new <code>User</code>. It takes the <code>SignupUserInput</code> as an argument, which is essentially a wrapper object for the user’s <code>name</code>, <code>email</code> and <code>password</code>.</p>
+<p>The second mutation is used to <em>log in</em> the user and will return a <code>token</code> that you can attach to all subsequent requests and thus authenticate the user against the API.</p>
+<p>When these two mutations are sent to the server, it will execute them <em>synchronously</em> from <em>top to bottom</em>. This means that the server will first <em>create</em> the user and then directly <em>log them in</em> so that you don’t have to send an additional request to obtain the user’s authentication token. Neat!</p>
+<p>To send the mutation, you need to use the <code>commitMutation</code> function again and pass it the <code>mutation</code>, the <code>environment</code> and the right user input.</p>
+<p><Instruction></p>
+<p>Still in <code>CreateUserMutation.js</code>, add the following snippet below the code you just added before:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/mutations/createusermutation.js&quot;)"><code>export default (name, email, password, callback) =&gt; {
+  const variables = {
+    // 1 
+    createUserInput: {
+      name,
+      authProvider: {
+        email: {
+          email,
+          password
+        }
+      },
+      clientMutationId: &quot;&quot;
+    },
+    // 2
+    signinUserInput: {
+      email: {
+        email,
+        password
+      },
+      clientMutationId: &quot;&quot;
+    }
+  }
+
+  // 3
+  commitMutation(
+    environment,
+    {
+      mutation,
+      variables,
+      // 4
+      onCompleted: (response) =&gt; {
+        const id = response.createUser.user.id
+        const token = response.signinUser.token
+        callback(id, token)
+      },
+      onError: err =&gt; console.error(err),
+    },
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly walk through what’s going on here!</p>
+<ol type="1">
+<li>Here you prepare the first input object that you’re passing as an argument into the <code>createUser</code> mutation</li>
+<li>Then, directly after that you’re creating the second input object for the <code>signinUser</code> mutation</li>
+<li>Once the arguments are ready and stored in <code>variables</code>, you’re calling <code>commitMutation</code> and pass the required data</li>
+<li>Finally, you’re implementing <code>onCompleted</code> again where you retrieve the <code>id</code> of the user and their authentication <code>token</code> and pass it into a callback</li>
+</ol>
+<p>Go ahead and add the single <code>signinUser</code> mutation right away so that users can also login without having to create an account.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/mutations</code> and call it <code>SigninUserMutation.js</code>.</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/mutations/signinusermutation.js&quot;)"><code>import {
+  commitMutation,
+  graphql
+} from &#39;react-relay&#39;
+import environment from &#39;../Environment&#39;
+
+const mutation = graphql`
+  mutation SigninUserMutation($input: SigninUserInput!) {
+    signinUser(input: $input) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`
+
+export default (email, password, callback) =&gt; {
+  const variables = {
+    input: {
+      email: {
+        email,
+        password
+      },
+      clientMutationId: &quot;&quot;
+    },
+  }
+
+  commitMutation(
+    environment,
+    {
+      mutation,
+      variables,
+      onCompleted: (response) =&gt; {
+        const id = response.signinUser.user.id
+        const token = response.signinUser.token
+        callback(id, token)
+      },
+      onError: err =&gt; console.error(err),
+    },
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>This code is very similar to the mutation you just implemented, just a bit simpler. In fact, it’s very much the same setup except that the <code>createUser</code> mutation is removed - so the sole purpose of this mutation will be to authenticate an existing <code>User</code> and get a <code>token</code> for them from the server.</p>
+<h3 id="calling-the-login-mutations">Calling the Login Mutations</h3>
+<p>Finally, you need to make sure that the two mutations can be called from within the <code>Login</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>Login.js</code> and implement <code>_confirm</code> as follows:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/login.js&quot;)"><code>_confirm = () =&gt; {
+  const { name, email, password } = this.state
+  if (this.state.login) {
+    SigninUserMutation(email, password, (id, token) =&gt; {
+      this._saveUserData(id, token)
+      this.props.history.push(`/`)
+    })
+  } else {
+    CreateUserMutation(name, email, password, (id, token) =&gt; {
+      this._saveUserData(id, token)
+      this.props.history.push(`/`)
+    })
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>The code is pretty straightforward. If the user wants to only login, you’re calling the <code>SigninUserMutation</code> and pass the provided <code>email</code> and <code>password</code> as arguments. Otherwise you’re using the <code>CreateUserMutation</code> where you also pass the user’s <code>name</code>. The last argument in both cases is the callback that receives the <code>id</code> and <code>token</code> which you’re then storing in <code>localStorage</code> using the <code>_saveUserData</code> method and navigate back to the root route.</p>
+<p>Before you’re running the app, you need to import the mutations and run the Relay Compiler again.</p>
+<p><Instruction></p>
+<p>Still in <code>Login.js</code>, add the following two imports to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/login.js&quot;)"><code>import SigninUserMutation from &#39;../mutations/SigninUserMutation&#39;
+import CreateUserMutation from &#39;../mutations/CreateUserMutation&#39;</code></pre>
+<p></Instruction></p>
+<p>Now invoke the Relay Compiler.</p>
+<p><Instruction></p>
+<p>In a terminal, navigate to the project’s root directory and execute the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>relay-compiler --src ./src --schema ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>You can now create an account by providing a <code>name</code>, <code>email</code> and <code>password</code>. Once you did that, the <em>submit</em>-button will be rendered again:</p>
+<figure>
+<img src="http://imgur.com/WoWLmDJ.png" alt="Creating an account by providing name, email, and password" /><figcaption>Creating an account by providing name, email, and password</figcaption>
+</figure>
+<h3 id="updating-the-createlink-mutation">Updating the <code>createLink</code>-mutation</h3>
+<p>Since you’re now able to authenticate users and also added a new relation between the <code>Link</code> and <code>User</code> type, you can also make sure that every new link that gets created in the app can store information about the user that posted it. That’s what the <code>postedBy</code> field on <code>Link</code> will be used for.</p>
+<p><Instruction></p>
+<p>Open <code>CreateLinkMutation.js</code> and update the exported function as follows:</p>
+<pre class="js{1,4}(path=&quot;.../hackernews-react-relay/src/mutations/createlinkmutation.js&quot;)"><code>export default (postedById, description, url, callback) =&gt; {
+  const variables = {
+    input: {
+      postedById,
+      description,
+      url,
+      clientMutationId: &quot;&quot;
+    },
+  }
+
+  ...
+}</code></pre>
+<p></Instruction></p>
+<p>All you do is include a new argument that represents the <code>id</code> of the user who is posting the link.</p>
+<p>Secondly, you should also include the information about the user in the mutation’s payload so Relay can put it into the cache.</p>
+<p><Instruction></p>
+<p>Still in <code>CreateLinkMutation.js</code>, update the definition of <code>mutation</code> like so:</p>
+<pre class="js{9-11}(path=&quot;.../hackernews-react-relay/src/mutations/createlinkmutation.js&quot;)"><code>const mutation = graphql`
+  mutation CreateLinkMutation($input: CreateLinkInput!) {
+    createLink(input: $input) {
+      link {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Now you need to make sure that the <code>id</code> of the posting user is included when you’re calling the mutation in <code>_createLink</code>.</p>
+<p><Instruction></p>
+<p>Open in <code>CreateLink.js</code> and adjust the implementation of <code>_createLink</code> to also pass the user’s id that you’re retrieving from <code>localStorage</code>:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/createlink.js&quot;)"><code>_createLink = () =&gt; {
+  const postedById = localStorage.getItem(GC_USER_ID)
+  if (!postedById) {
+    console.error(&#39;No user logged in&#39;)
+    return
+  }
+  const { description, url } = this.state
+  CreateLinkMutation(postedById, description, url, () =&gt; this.props.history.push(&#39;/&#39;))
+}</code></pre>
+<p></Instruction></p>
+<p>For this to work, you also need to import the <code>GC_USER_ID</code> key.</p>
+<p><Instruction></p>
+<p>Add the following import statement to the top of <code>CreateLink.js</code>.</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/createlink.js&quot;)"><code>import { GC_USER_ID } from &#39;../constants&#39;</code></pre>
+<p></Instruction></p>
+<p>Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from <code>localStorage</code>. If that succeeds, you’ll pass it to the call to <code>createLinkMutation</code> so that every new <code>Link</code> will from now on store information about the <code>User</code> who created it.</p>
+<p>If you haven’t done so before, go ahead and test the login functionality. Run <code>yarn start</code> and open <code>http://localhost:3000/login</code>. Then click the <em>need to create an account?</em>-button and provide some user data for the user you’re creating. Finally, click the <em>create Account</em>-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> or sending the <code>allUsers</code> query in a Playground.</p>
+<h3 id="configuring-relay-with-the-auth-token">Configuring Relay with the Auth Token</h3>
+<p>Now that users are able to login and obtain a token that authenticates them against the Graphcool backend, you actually need to make sure that the token gets attached to all requests that are sent to the API.</p>
+<p>Since all the API request are actually created and sent by Relay in your app, you need to make sure it knows about the user’s token.</p>
+<p>All you need to do for that is reconfigure the <code>fetchQuery</code> function that you’re currently using to instantiate the Relay <code>Environment</code> and attach the token to a header.</p>
+<p><Instruction></p>
+<p>Open <code>Environment.js</code> and update the <code>headers</code> in <code>fetchQuery</code> to also include the token:</p>
+<pre class="js{4}(path=&quot;.../hackernews-react-relay/src/environment.js&quot;)"><code>headers: {
+  &#39;Accept&#39;: &#39;application/json&#39;,
+  &#39;Content-Type&#39;: &#39;application/json&#39;,
+  &#39;Authorization&#39;: `Bearer ${localStorage.getItem(GC_AUTH_TOKEN)}`
+},</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then directly import the key that you need to retrieve the token from <code>localStorage</code> on top of the same file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/environment.js&quot;)"><code>import { GC_AUTH_TOKEN } from &#39;./constants&#39;</code></pre>
+<p></Instruction></p>
+<p>That’s it - now all your API requests will be authenticated if a <code>token</code> is available.</p>
+<blockquote>
+<p>Note: In a real application you would now configure the <a href="https://www.graph.cool/docs/reference/auth/authorization-iegoo0heez/">authorization rules</a> (permissions) of your project to define what kind of operations authenticated and non-authenticated users should be allowed to perform.</p>
+</blockquote>
+</body>
+</html>

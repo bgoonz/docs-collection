@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Realtime GraphQL Subscriptions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Realtime GraphQL Subscriptions</h1>
+</header>
+<p>In this section, you’ll learn how you can bring realtime functionality into your app by implementing GraphQL subscriptions. The goal is to implement two subscriptions to be exposed by your GraphQL server:</p>
+<ul>
+<li>Send realtime updates to subscribed clients when a new <code>Link</code> element is <em>created</em></li>
+<li>Send realtime updates to subscribed clients when an existing <code>Link</code> element is <em>upvoted</em></li>
+</ul>
+<h3 id="what-are-graphql-subscriptions">What are GraphQL subscriptions?</h3>
+<p>Subscriptions are a GraphQL feature that allows a server to send data to its clients when a specific <em>event</em> happens. Subscriptions are usually implemented with <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>. In that setup, the server maintains a steady connection to its subscribed client. This also breaks the “Request-Response-Cycle” that were used for all previous interactions with the API.</p>
+<p>Instead, the client initially opens up a long-lived connection to the server by sending a <em>subscription query</em> that specifies which <em>event</em> it is interested in. Every time this particular event happens, the server uses the connection to push the event data to the subscribed client(s).</p>
+<h3 id="implementing-graphql-subscriptions">Implementing GraphQL subscriptions</h3>
+<p>We will be using <code>PubSub</code> from the <code>apollo-server</code> library that we have already been using for our GraphQL server to implement subscriptions to the following <em>events</em>:</p>
+<ul>
+<li>A new model is <strong>created</strong></li>
+<li>An existing model <strong>updated</strong></li>
+<li>An existing model is <strong>deleted</strong></li>
+</ul>
+<p>You will do this by first adding an instance of <code>PubSub</code> to the context, just as we did with <code>PrismaClient</code>, and then calling its methods in the resolvers that handle each of the above events.</p>
+<h3 id="setting-up-pubsub">Setting up <code>PubSub</code></h3>
+<p><Instruction></p>
+<p>Open your <code>index.js</code> file where we instantiate the server and add the following code:</p>
+<pre class="graphql(path=&quot;.../hackernews-node/src/index.js)"><code>// ... previous import statements
+const { PubSub } = require(&#39;apollo-server&#39;)
+
+const pubsub = new PubSub()</code></pre>
+<p></Instruction></p>
+<p>Here, you’re creating an instance of <code>PubSub</code> and storing it in the variable <code>pubsub</code>, just as we stored an instance of <code>PrismaClient</code> in the variable <code>prisma</code>.</p>
+<p><Instruction></p>
+<p>Now, in the same file, add <code>pubsub</code> to the context, just as did with <code>prisma</code>:</p>
+<pre class="js{11}graphql(path=&quot;.../hackernews-node/src/index.js)"><code>const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, &#39;schema.graphql&#39;),
+    &#39;utf8&#39;
+  ),
+  resolvers,
+  context: ({ req }) =&gt; {
+    return {
+      ...req,
+      prisma,
+      pubsub,
+      userId:
+        req &amp;&amp; req.headers.authorization
+          ? getUserId(req)
+          : null
+    };
+  }
+});</code></pre>
+<p></Instruction></p>
+<p>Great! Now we can access the methods we need to implement our subscriptions from inside our resolvers via <code>context.pubsub</code>!</p>
+<h3 id="subscribing-to-new-link-elements">Subscribing to new <code>Link</code> elements</h3>
+<p>Alright – let’s go ahead and implement the subscription that allows your clients to subscribe to newly created <code>Link</code> elements.</p>
+<p>Just like with queries and mutations, the first step to implement a subscription is to extend your GraphQL schema definition.</p>
+<p><Instruction></p>
+<p>Open your application schema and add the <code>Subscription</code> type:</p>
+<pre class="graphql(path=&quot;.../hackernews-node/src/schema.graphql#l28&quot;)"><code>type Subscription {
+  newLink: Link
+}</code></pre>
+<p></Instruction></p>
+<p>Next, go ahead and implement the resolver for the <code>newLink</code> field. Resolvers for subscriptions are slightly different than the ones for queries and mutations:</p>
+<ol type="1">
+<li>Rather than returning any data directly, they return an <code>AsyncIterator</code> which subsequently is used by the GraphQL server to push the event data to the client.</li>
+<li>Subscription resolvers are wrapped inside an object and need to be provided as the value for a <code>subscribe</code> field. You also need to provide another field called <code>resolve</code> that actually returns the data from the data emitted by the <code>AsyncIterator</code>.</li>
+</ol>
+<p><Instruction></p>
+<p>To adhere to the modular structure of your resolver implementation, first create a new file called <code>Subscription.js</code>:</p>
+<pre class="bash(path=&quot;.../hackernews-node/src/resolvers/)"><code>touch src/resolvers/Subscription.js</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Here’s how you need to implement the subscription resolver in that new file:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/subscription.js&quot;)"><code>function newLinkSubscribe(parent, args, context, info) {
+  return context.pubsub.asyncIterator(&quot;NEW_LINK&quot;)
+}
+
+const newLink = {
+  subscribe: newLinkSubscribe,
+  resolve: payload =&gt; {
+    return payload
+  },
+}
+
+module.exports = {
+  newLink,
+}</code></pre>
+<p></Instruction></p>
+<p>The code seems pretty straightforward. As mentioned before, the subscription resolver is provided as the value for a <code>subscribe</code> field inside a plain JavaScript object.</p>
+<p>Now you can see how we access <code>pubsub</code> on the <code>context</code> and call <code>asyncIterator()</code> passing the string <code>"NEW_LINK"</code> into it. This function is used to resolve subscriptions and push the event data.</p>
+<h3 id="adding-subscriptions-to-your-resolvers">Adding subscriptions to your resolvers</h3>
+<p>The last thing we need to do for our subscription implementation itself is to actually call this function inside of a resolver!</p>
+<p><Instruction></p>
+<p>Pop over to <code>Mutation.js</code> and locate your <code>post</code> resolver function, adding the following call to <code>pubsub.publish()</code> right before we return our <code>newLink</code>:</p>
+<pre class="js{4,11,13}(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>async function post(parent, args, context, info) {
+  const { userId } = context;
+
+  const newLink = await context.prisma.link.create({
+    data: {
+      url: args.url,
+      description: args.description,
+      postedBy: { connect: { id: userId } },
+    }
+  })
+  context.pubsub.publish(&quot;NEW_LINK&quot;, newLink)
+
+  return newLink
+}</code></pre>
+<p></Instruction></p>
+<p>Now you can see how we pass the same string to the <code>publish</code> method as you added in your <code>newLinkSubscribe</code> function just above, along with passing in the <code>newLink</code> as a second argument!</p>
+<p>Ok, I’m sure you’re dying to test out your brand-spanking new Subscription! All we need to do now is make sure your GraphQL server knows about your changes.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add an import statement for the <code>Subscription</code> module to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const Subscription = require(&#39;./resolvers/Subscription&#39;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, update the definition of the <code>resolvers</code> object to looks as follows:</p>
+<pre class="js{4}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const resolvers = {
+  Query,
+  Mutation,
+  Subscription,
+  User,
+  Link,
+}</code></pre>
+<p></Instruction></p>
+<h3 id="testing-subscriptions">Testing subscriptions</h3>
+<p>With all the code in place, it’s time to test your realtime API ⚡️ You can do so by using two instances (i.e. tabs or windows) of the GraphQL Playground at once.</p>
+<p><Instruction></p>
+<p>If you haven’t already, restart the server by first killing it with <strong>CTRL+C</strong>, then run <code>node src/index.js</code> again.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, open two browser windows and navigate both to the endpoint of your GraphQL server: <a href="http://localhost:4000"><code>http://localhost:4000</code></a>.</p>
+<p></Instruction></p>
+<p>As you might guess, you’ll use one Playground to send a subscription query and thereby create a permanent websocket connection to the server. The second one will be used to send a <code>post</code> mutation which triggers the subscription.</p>
+<p><Instruction></p>
+<p>In one Playground, send the following subscription:</p>
+<pre class="graphql"><code>subscription {
+  newLink {
+    id
+    url
+    description
+    postedBy {
+      id
+      name
+      email
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>In contrast to what happens when sending queries and mutations, you’ll not immediately see the result of the operation. Instead, there’s a loading spinner indicating that it’s waiting for an event to happen.</p>
+<figure>
+<img src="https://imgur.com/hmqRJws.png" alt="loading spinner" /><figcaption>loading spinner</figcaption>
+</figure>
+<p>Time to trigger a subscription event.</p>
+<p><Instruction></p>
+<p>Send the following <code>post</code> mutation inside a GraphQL Playground. Remember that you need to be authenticated for that (see the previous chapter to learn how that works):</p>
+<pre class="graphql"><code>mutation {
+  post(url: &quot;www.graphqlweekly.com&quot;, description: &quot;Curated GraphQL content coming to your email inbox every Friday&quot;) {
+    id
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Now observe the Playground where the subscription was running:</p>
+<figure>
+<img src="https://imgur.com/0BJQhWj.png" alt="subscription running" /><figcaption>subscription running</figcaption>
+</figure>
+<h3 id="adding-a-voting-feature">Adding a voting feature</h3>
+<h4 id="implementing-a-vote-mutation">Implementing a <code>vote</code> mutation</h4>
+<p>The next feature to be added is a voting feature which lets users <em>upvote</em> certain links. The very first step here is to extend your Prisma data model to represent votes in the database.</p>
+<p><Instruction></p>
+<p>Open <code>prisma/schema.prisma</code> and adjust it to look as follows:</p>
+<pre class="graphql{8,17,20-27}(path=&quot;.../hackernews-node/prisma/schema.prisma&quot;)"><code>model Link {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  description String
+  url         String
+  postedBy    User?     @relation(fields: [postedById], references: [id])
+  postedById  Int?
+  votes       Vote[]
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  links    Link[]
+  votes    Vote[]
+}
+
+model Vote {
+  id     Int  @id @default(autoincrement())
+  link   Link @relation(fields: [linkId], references: [id])
+  linkId Int
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  @@unique([linkId, userId])
+}</code></pre>
+<p></Instruction></p>
+<p>As you can see, you added a new <code>Vote</code> type to the data model. It has one-to-many relationships to the <code>User</code> and the <code>Link</code> type.</p>
+<p><Instruction></p>
+<p>Now migrate your database schema with the following commands:</p>
+<pre><code>npx prisma migrate dev --name &quot;add-vote-model&quot;</code></pre>
+<p></Instruction></p>
+<p>To apply the changes and update your Prisma Client API so it exposes CRUD queries for the new <code>Vote</code> model, regenerate <code>PrismaClient</code>.</p>
+<p><Instruction></p>
+<p>Run the following command in your terminal:</p>
+<pre class="bash(path=&quot;.../hackernews-node)"><code>npx prisma generate</code></pre>
+<p></Instruction></p>
+<p>Now, with the process of schema-driven development in mind, go ahead and extend the schema definition of your application schema so that your GraphQL server also exposes a <code>vote</code> mutation:</p>
+<pre class="graphql{5}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Mutation {
+  post(url: String!, description: String!): Link!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  vote(linkId: ID!): Vote
+}</code></pre>
+<p><Instruction></p>
+<p>The referenced <code>Vote</code> type also needs to be defined in the GraphQL schema:</p>
+<pre class="graphql(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Vote {
+  id: ID!
+  link: Link!
+  user: User!
+}</code></pre>
+<p></Instruction></p>
+<p>It should also be possible to query all the <code>votes</code> from a <code>Link</code>, so you need to adjust the <code>Link</code> type in <code>schema.graphql</code> as well.</p>
+<p><Instruction></p>
+<p>Open <code>schema.graphql</code> and add the <code>votes</code> field to <code>Link</code>:</p>
+<pre class="graphql{6}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Link {
+  id: ID!
+  description: String!
+  url: String!
+  postedBy: User
+  votes: [Vote!]!
+}</code></pre>
+<p></Instruction></p>
+<p>You know what’s next: Implementing the corresponding resolver functions.</p>
+<p><Instruction></p>
+<p>Add the following function to <code>src/resolvers/Mutation.js</code>:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>async function vote(parent, args, context, info) {
+  // 1
+  const userId = context.userId
+
+  // 2
+  const vote = await context.prisma.vote.findUnique({
+    where: {
+      linkId_userId: {
+        linkId: Number(args.linkId),
+        userId: userId
+      }
+    }
+  })
+
+  if (Boolean(vote)) {
+    throw new Error(`Already voted for link: ${args.linkId}`)
+  }
+
+  // 3
+  const newVote = context.prisma.vote.create({
+    data: {
+      user: { connect: { id: userId } },
+      link: { connect: { id: Number(args.linkId) } },
+    }
+  })
+  context.pubsub.publish(&quot;NEW_VOTE&quot;, newVote)
+
+  return newVote
+}</code></pre>
+<p></Instruction></p>
+<p>Here is what’s going on:</p>
+<ol type="1">
+<li>Similar to what you’re doing in the <code>post</code> resolver, the first step is to validate the incoming JWT with the <code>getUserId</code> helper function. If it’s valid, the function will return the <code>userId</code> of the <code>User</code> who is making the request. If the JWT is not valid, the function will throw an exception.</li>
+<li>To protect against those pesky “double voters” (or honest folks who accidentally click twice), you need to check if the vote already exists or not. First, you try to fetch a vote with the same <code>linkId</code> and <code>userId</code>. If the vote exists, it will be stored in the <code>vote</code> variable, resulting in the boolean <code>true</code> from your call to <code>Boolean(vote)</code> – throwing an error kindly telling the user that they already voted.</li>
+<li>If that <code>Boolean(vote)</code> call returns <code>false</code>, the <code>vote.create</code> method will be used to create a new <code>Vote</code> that’s <em>connected</em> to the <code>User</code> and the <code>Link</code>.</li>
+</ol>
+<p><Instruction></p>
+<p>Also, don’t forget to adjust the export statement to include the <code>vote</code> resolver in the module:</p>
+<pre class="js{5}(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>module.exports = {
+  post,
+  signup,
+  login,
+  vote,
+}</code></pre>
+<p></Instruction></p>
+<p>You also need to account for the new relations in your GraphQL schema:</p>
+<ul>
+<li><code>votes</code> on <code>Link</code></li>
+<li><code>user</code> on <code>Vote</code></li>
+<li><code>link</code> on <code>Vote</code></li>
+</ul>
+<p>Similar to before, you need to implement resolvers for these.</p>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and add the following function to it:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/link.js&quot;)"><code>function votes(parent, args, context) {
+  return context.prisma.link.findUnique({ where: { id: parent.id } }).votes()
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Don’t forget to include the new resolver in the exports:</p>
+<pre class="js{3}(path=&quot;.../hackernews-node/src/resolvers/link.js&quot;)"><code>module.exports = {
+  postedBy,
+  votes,
+}</code></pre>
+<p></Instruction></p>
+<p>Finally you need to resolve the relations from the <code>Vote</code> type.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>Vote.js</code> inside <code>resolvers</code>:</p>
+<pre class="bash(path=&quot;.../hackernews-node&quot;)"><code>touch src/resolvers/Vote.js</code></pre>
+<p></Instruction></p>
+<p>Great job!</p>
+<p><Instruction></p>
+<p>Now add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/vote.js&quot;)"><code>function link(parent, args, context) {
+  return context.prisma.vote.findUnique({ where: { id: parent.id } }).link()
+}
+
+function user(parent, args, context) {
+  return context.prisma.vote.findUnique({ where: { id: parent.id } }).user()
+}
+
+module.exports = {
+  link,
+  user,
+}</code></pre>
+<p></Instruction></p>
+<p>Finally the <code>Vote</code> resolver needs to be included in the main <code>resolvers</code> object in <code>index.js</code>.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add a new import statement to its top:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const Vote = require(&#39;./resolvers/Vote&#39;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, include the <code>Vote</code> resolver in the <code>resolvers</code> object:</p>
+<pre class="js{7}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const resolvers = {
+  Query,
+  Mutation,
+  Subscription,
+  User,
+  Link,
+  Vote,
+}</code></pre>
+<p></Instruction></p>
+<p>Your GraphQL API now accepts <code>vote</code> mutations! 👏</p>
+<h4 id="subscribing-to-new-votes">Subscribing to new votes</h4>
+<p>The last task in this chapter is to add a subscription that fires when new <code>Vote</code>s are being created. You’ll use an analogous approach as for the <code>newLink</code> query for that.</p>
+<p><Instruction></p>
+<p>Add a new field to the <code>Subscription</code> type of your GraphQL schema:</p>
+<pre class="graphql{3}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Subscription {
+  newLink: Link
+  newVote: Vote
+}</code></pre>
+<p></Instruction></p>
+<p>Next, you need to add the subscription resolver function.</p>
+<p><Instruction></p>
+<p>Add the following code to <code>Subscription.js</code>:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/subscription.js&quot;)"><code>function newVoteSubscribe(parent, args, context, info) {
+  return context.pubsub.asyncIterator(&quot;NEW_VOTE&quot;)
+}
+
+const newVote = {
+  subscribe: newVoteSubscribe,
+  resolve: payload =&gt; {
+    return payload
+  },
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And update the export statement of the file accordingly:</p>
+<pre class="js{3}(path=&quot;.../hackernews-node/src/resolvers/subscription.js&quot;)"><code>module.exports = {
+  newLink,
+  newVote,
+}</code></pre>
+<p></Instruction></p>
+<p>All right, that’s it! You can now test the implementation of your <code>newVote</code> subscription!</p>
+<p><Instruction></p>
+<p>If you haven’t done so already, stop and restart the server by first killing it with <strong>CTRL+C</strong>, then run <code>node src/index.js</code>. Afterwards, open a new Playground with the GraphQL CLI by running <code>graphql playground</code>.</p>
+<p></Instruction></p>
+<p>You can use the following subscription for that:</p>
+<pre class="graphql"><code>subscription {
+  newVote {
+    id
+    link {
+      url
+      description
+    }
+    user {
+      name
+      email
+    }
+  }
+}</code></pre>
+<p>If you’re unsure about writing one yourself, here’s a sample <code>vote</code> mutation you can use. You’ll need to replace the <code>__LINK_ID__</code> placeholder with the <code>id</code> of an actual <code>Link</code> from your database. Also, make sure that you’re authenticated when sending the mutation.</p>
+<pre class="graphql"><code>mutation {
+  vote(linkId: &quot;__LINK_ID__&quot;) {
+    link {
+      url
+      description
+    }
+    user {
+      name
+      email
+    }
+  }
+}</code></pre>
+<figure>
+<img src="https://i.imgur.com/cYkqy1j.png" alt="authenticated when sending the mutation" /><figcaption>authenticated when sending the mutation</figcaption>
+</figure>
+</body>
+</html>

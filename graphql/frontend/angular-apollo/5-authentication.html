@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’ll learn how you can implement authentication functionality with Apollo and Graphcool to provide a login to the user.</p>
+<h3 id="prepare-the-angular-components">Prepare the Angular components</h3>
+<p>As in the sections before, you’ll set the stage for the login functionality by preparing the Angular components that are needed for this feature. You’ll start by implementing the <code>Login</code> component.</p>
+<p><Instruction></p>
+<p>Go ahead and run <code>ng generate component login</code> and this create <code>login.component.ts</code> , <code>login.component.spec.ts</code>, <code>login.component.html</code>, <code>login.component.css</code> in <code>src/app/login</code> folder and add the following code inside <code>login.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/login/login.component.ts&quot;)"><code>import {Component, OnInit} from &#39;@angular/core&#39;;
+
+@Component({
+  selector: &#39;hn-login&#39;,
+  templateUrl: &#39;./login.component.html&#39;,
+  styleUrls: [&#39;./login.component.css&#39;]
+})
+export class LoginComponent implements OnInit {
+
+  login: boolean = true; // switch between Login and SignUp
+  email: string = &#39;&#39;;
+  password: string = &#39;&#39;;
+  name: string = &#39;&#39;;
+
+  constructor(private authService: AuthService) {
+  }
+
+  ngOnInit() {
+  }
+
+  confirm() {
+    // ... you&#39;ll implement this in a bit
+  }
+
+  saveUserData(id, token) {
+    localStorage.setItem(GC_USER_ID, id);
+    localStorage.setItem(GC_AUTH_TOKEN, token);
+    this.authService.setUserId(id);
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction> Then, add the following code in <code>login.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/login/login.component.html&quot;)"><code>
+&lt;h4 class=&#39;mv3&#39;&gt;{{login ? &#39;Login&#39; : &#39;Sign Up&#39;}}&lt;/h4&gt;
+&lt;div class=&#39;flex flex-column&#39;&gt;
+  &lt;input
+    *ngIf=&quot;!login&quot;
+    [(ngModel)]=&quot;name&quot;
+    type=&quot;text&quot;
+    placeholder=&quot;Your name&quot;&gt;
+  &lt;input
+    [(ngModel)]=&quot;email&quot;
+    type=&quot;text&quot;
+    placeholder=&quot;Your email address&quot;&gt;
+  &lt;input
+    [(ngModel)]=&quot;password&quot;
+    type=&quot;password&quot;
+    placeholder=&quot;Password&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&#39;flex mt3&#39;&gt;
+  &lt;div
+    class=&#39;pointer mr2 button&#39;
+    (click)=&quot;confirm()&quot;&gt;
+    {{login ? &#39;login&#39; : &#39;create account&#39;}}
+  &lt;/div&gt;
+  &lt;div
+    class=&#39;pointer button&#39;
+    (click)=&quot;login = !login&quot;&gt;
+    {{login ? &#39;need to create an account?&#39; : &#39;already have an account?&#39;}}
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly gain an understanding of the structure of this new component which can have two important states.</p>
+<ul>
+<li>One state is <strong>for users that already have an account</strong> and only need to login. In this state, the component will just render two <code>input</code> fields for the user to provide their <code>email</code> and <code>password</code>. Notice that <code>login</code> will be <code>true</code> in this case.</li>
+<li>The second state is <strong>for users that haven’t created an account yet</strong>, and thus still need to sign up. Here, you also render a third <code>input</code> field where users can provide their <code>name</code>. In this case, <code>login</code> will be <code>false</code>.</li>
+</ul>
+<p>The method <code>confirm</code> will be used to implement the mutations that we need to send for the login functionality.</p>
+<p>Next, you also need to provide the <code>src/app/constants.ts</code> file that we use to define keys for the credentials that we’re storing in the browser’s <code>localStorage</code>.</p>
+<p><Instruction></p>
+<p>In <code>src/app</code>, create a new file called <code>constants.ts</code> and add the following two definitions:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/constants.ts&quot;)"><code>export const GC_USER_ID = &#39;graphcool-user-id&#39;
+export const GC_AUTH_TOKEN = &#39;graphcool-auth-token&#39;</code></pre>
+<p></Instruction></p>
+<p>With that component in place, you can go ahead and add a new route to your <code>src/app/app.routing.module</code> file.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/app.routing.ts</code> and update the <code>routes</code> array to include the new route:</p>
+<pre class="ts{23-27}(path=&quot;.../hackernews-angular-apollo/src/app/app.routing.ts&quot;)"><code>const routes: Routes = [
+  {
+    path: &#39;&#39;,
+    component: LinkListComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;create&#39;,
+    component: CreateLinkComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;login&#39;,
+    component: LoginComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;**&#39;,
+    redirectTo: &#39;&#39;,
+  }
+];</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also import the <code>Login</code> component near top of the same file:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/app.routing.ts&quot;)"><code>import {LoginComponent} from &#39;./login/login.component&#39;;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Let’s continue by creating a new file in <code>src/app</code> called <code>auth.service.ts</code> and add the following code inside:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/auth.service.ts&quot;)"><code>import {Injectable} from &#39;@angular/core&#39;;
+import {Observable} from &#39;rxjs/Observable&#39;;
+import {BehaviorSubject} from &#39;rxjs/BehaviorSubject&#39;;
+import {GC_AUTH_TOKEN, GC_USER_ID} from &#39;./constants&#39;;
+
+// 1
+@Injectable()
+export class AuthService {
+  // 2
+  private userId: string = null;
+
+  // 3
+  private _isAuthenticated = new BehaviorSubject(false);
+
+  constructor() {
+  }
+
+  // 4
+  get isAuthenticated(): Observable&lt;boolean&gt; {
+    return this._isAuthenticated.asObservable();
+  }
+  // 5
+  saveUserData(id: string, token: string) {
+
+    localStorage.setItem(GC_USER_ID, id);
+    localStorage.setItem(GC_AUTH_TOKEN, token);
+    this.setUserId(id);
+  }
+
+  // 6
+  setUserId(id: string) {
+    this.userId = id;
+
+    this._isAuthenticated.next(true);
+  }
+  // 7
+  logout() {
+    localStorage.removeItem(GC_USER_ID);
+    localStorage.removeItem(GC_AUTH_TOKEN);
+    this.userId = null;
+
+    this._isAuthenticated.next(false);
+  }
+
+  // 8
+  autoLogin() {
+    const id = localStorage.getItem(GC_USER_ID);
+
+    if (id) {
+      this.setUserId(id);
+    }
+  }
+}</code></pre>
+<p>Let’s take a close look again to understand what’s going on:</p>
+<ol type="1">
+<li>You first create the typescript class called <code>AuthService</code> that will manage the authentication and be injected in the <code>src/app/app.module.ts</code>’s <code>providers</code>.</li>
+<li>Now you define the <code>userId</code> property where will save the user id received from the backend.</li>
+<li>Then you declare the <code>_isAuthenticated</code> stream where we will push the authentication state changes</li>
+<li>You provide next the <code>isAuthenticated</code> observable to listen to the <code>_isAuthenticated</code> stream</li>
+<li>Afterwards, you declare <code>saveUserData</code> method to save the data coming from the backend in the local storage and the service itself</li>
+<li>Then, you define <code>setUserId</code>, the actual method that will set the user id in the service and dispatch to all listeners that the user is authenticated (through the <code>next</code> method in <code>_isAuthenticated</code>)</li>
+<li>Now, you provide the <code>logout</code> method to log out the user by removing user data from local storage, the service and dispatching to all listeners that the user is not authenticated</li>
+<li>In the end, you declare the <code>autoLogin</code> method to log the user automatically if a token is already stored in the localStorage.</li>
+</ol>
+<p>Note, don’t forgot to inject <code>AuthService</code> in <code>app.module.ts</code>:</p>
+<p></Instruction> <Instruction></p>
+<pre class="ts{31-33}(path=&quot;.../hackernews-angular-apollo/src/app/app.module.ts&quot;)"><code>providers: [
+    AuthService
+],</code></pre>
+<p></Instruction></p>
+<p>Finally, go ahead and add the <code>Login</code> link to the <code>Header</code> component that allows users to navigate to the <code>Login</code> page.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/header/header.ts</code> and update the file to look like the following:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/header/header.component.ts&quot;)"><code>import {Component, OnInit} from &#39;@angular/core&#39;;
+import {AuthService} from &#39;../auth.service&#39;;
+import &#39;rxjs/add/operator/distinctUntilChanged&#39;;
+
+@Component({
+  selector: &#39;hn-header&#39;,
+  templateUrl: &#39;./header.component.html&#39;,
+  styleUrls: [&#39;./header.component.css&#39;]
+})
+export class HeaderComponent implements OnInit {
+  logged: boolean = false;
+
+  constructor(private authService: AuthService) {
+  }
+
+  ngOnInit() {
+    this.authService.isAuthenticated
+      .distinctUntilChanged() // Only emit when the current value is different than the last
+      .subscribe(isAuthenticated =&gt; {
+        this.logged = isAuthenticated
+      });
+
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+}
+</code></pre>
+<p></Instruction></p>
+<p><Instruction> Then, update the following code in <code>header.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/header/header.component.html&quot;)"><code>&lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+  &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+    &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+    &lt;a [routerLink]=&quot;[&#39;/&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;new&lt;/a&gt;
+    &lt;div class=&quot;flex&quot; *ngIf=&quot;logged&quot;&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;a [routerLink]=&quot;[&#39;/create&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;submit&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;flex flex-fixed&quot;&gt;
+    &lt;div *ngIf=&quot;logged&quot; class=&quot;ml1 pointer black&quot; (click)=&quot;logout()&quot;&gt;logout&lt;/div&gt;
+    &lt;a *ngIf=&quot;!logged&quot; [routerLink]=&quot;[&#39;/login&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;login&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p></Instruction></p>
+<p>You first subscribe to the <code>isAuthenticated</code> stream from <code>authService</code> and update the <code>logged</code> property. If the <code>logged</code> is false, the <em>submit</em>-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.</p>
+<p>You’re also adding a second button on the right side of the <code>HeaderComponent</code> that users can use to login and logout.</p>
+<p>Here is what the <code>LoginComponent</code> and <code>HeaderComponent</code> components now look like:</p>
+<figure>
+<img src="https://i.imgur.com/myNAp8K.png" alt="The Login component and Header component" /><figcaption>The Login component and Header component</figcaption>
+</figure>
+<p>Before you can implement the authentication functionality in <code>src/app/login/login.component.ts</code>, you need to prepare the Graphcool project and enable authentication on the server-side.</p>
+<h3 id="enabling-email-and-password-authentication-updating-the-schema">Enabling Email-and-Password Authentication &amp; Updating the Schema</h3>
+<p>Authentication in the Graphcool Framework is based on <a href="https://www.graph.cool/docs/reference/functions/resolvers-su6wu3yoo2">resolver</a> functions that deal with login-functionality by issuing and returning <a href="https://www.graph.cool/docs/reference/auth/authentication/authentication-tokens-eip7ahqu5o#node-tokens">node tokens</a> which are used to authenticate requests.</p>
+<p>Graphcool has a lightweight and flexible <a href="https://www.graph.cool/docs/reference/service-definition/templates-zeiv8phail">template</a> system that allows to conventiently pull in predefined functionality into a service. You’ll be using the <code>email-password</code> template for authentication.</p>
+<p>You can use the CLI’s <a href="https://www.graph.cool/docs/reference/graphcool-cli/commands-aiteerae6l#graphcool-add-template"><code>add-template</code></a> command to use a template in your Graphcool service. This command will perform two major tasks:</p>
+<ul>
+<li>Download the files from Graphcool’s <a href="https://github.com/graphcool/templates"><code>templates</code> repository</a> that are required for the <code>email-password</code> template.</li>
+<li>Add commented lines to <code>graphcool.yml</code> and <code>types.graphql</code> that allow you to “activate” the template’s functionality by uncommenting them and then invoking <code>graphcool-framework deploy</code> again.</li>
+</ul>
+<p><Instruction></p>
+<p>Navigate into the <code>server</code> directory inside your project and run the following command:</p>
+<pre class="bash(path=&quot;../hackernews-react-apollo/server&quot;)"><code>graphcool-framework add-template graphcool/templates/auth/email-password</code></pre>
+<p></Instruction></p>
+<p>This now downloaded six new files and placed them in the <code>src/email-password</code> directory. It also added comments to <code>graphcool.yml</code> and <code>types.graphql</code>.</p>
+<p>Next, you have to actually “activate” the templates functionality by uncommenting these lines.</p>
+<p><Instruction></p>
+<p>Open <code>graphcool.yml</code> and uncomment the definitions for the <code>signup</code>, <code>authenticate</code> and <code>loggedInUser</code> functions:</p>
+<pre class="yml(path=&quot;.../hackernews-react-apollo/server/graphcool.yml)"><code>functions:
+
+# added by email-password template: (please uncomment)
+
+  signup:
+    type: resolver
+    schema: src/email-password/signup.graphql
+    handler:
+      code: src/email-password/signup.ts
+
+  authenticate:
+    type: resolver
+    schema: src/email-password/authenticate.graphql
+    handler:
+      code: src/email-password/authenticate.ts
+
+  loggedInUser:
+    type: resolver
+    schema: src/email-password/loggedInUser.graphql
+    handler:
+      code: src/email-password/loggedInUser.ts</code></pre>
+<p></Instruction></p>
+<p>If you take a look at the code for these functions, you’ll notice that they’re referencing a <code>User</code> type that still needs to be added to your data model. In fact, the <code>add-template</code> command already wrote this <code>User</code> type to <code>types.graphql</code> - except that it still has comments.</p>
+<p><Instruction></p>
+<p>Open <code>types.graphql</code> and uncomment the <code>User</code> type:</p>
+<pre class="graphql(path=&quot;.../hackernews-angular-apollo/server/types.graphql)"><code># added by email-password template: (please uncomment)
+type User @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String! @isUnique
+  password: String!
+}</code></pre>
+<p></Instruction></p>
+<p>Before you apply the changes to the running service, you’ll make another modification to your data model by adding the <em>relation</em> between the <code>Link</code> and the newly added <code>User</code> type as well as a new field <code>name</code> for the <code>User</code>.</p>
+<p><Instruction></p>
+<p>Open your type definitions file <code>types.graphql</code> and update the <code>User</code> and <code>Link</code> types as follows:</p>
+<pre class="{7,14,17}graphql"><code>type Link @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  description: String!
+  url: String!
+  postedBy: User @relation(name: &quot;UsersLinks&quot;)
+}
+
+type User @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  email: String @isUnique
+  password: String
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>You added two things to the schema:</p>
+<ul>
+<li>A new field on the <code>User</code> type to store the <code>name</code> of the user.</li>
+<li>A new relation between the <code>User</code> and the <code>Link</code> type that represents a one-to-many relationship and expresses that one <code>User</code> can be associated with multiple links. The relation manifests itself in the two fields <code>postedBy</code> and <code>links</code>.</li>
+</ul>
+<p>Now it’s time to apply the changes by deploying your service again.</p>
+<p><Instruction></p>
+<p>Save the file and execute the following command in the <code>server</code> directory in a terminal:</p>
+<pre class="bash(path=&quot;../hackernews-angular-apollo/server&quot;)"><code>graphcool-framework deploy</code></pre>
+<p></Instruction></p>
+<p>Your GraphQL API now includes three additional operations, as specified in <code>graphcool.yml</code>:</p>
+<ul>
+<li><code>signup</code>: Create a new user based on <code>email</code> and <code>password</code>.</li>
+<li><code>authenticate</code>: Log in existing user with <code>email</code> and <code>password</code>.</li>
+<li><code>loggedInUser</code>: Checks whether a user is currently logged in.</li>
+</ul>
+<h3 id="adding-an-additional-argument-to-the-signup-mutation">Adding an additional Argument to the <code>signup</code> Mutation</h3>
+<p>You can see the GraphQL interface for the newly added operations in the corresponding <code>.graphql</code>-files inside the <code>server/src/email-password</code> directory. Let’s take a look at the interface of the <code>signup</code> function:</p>
+<pre class="graphql(nocopy)"><code>type SignupUserPayload {
+  id: ID!
+  token: String!
+}
+
+extend type Mutation {
+  signupUser(email: String!, password: String!): SignupUserPayload
+}</code></pre>
+<p>The <code>signupUser</code>-mutation is used to create a new <code>User</code> in the database. The problem right now is that our schema requires every <code>User</code> instance to have a <code>name</code>. However, the above <code>signupUser</code>-mutation only accepts <code>email</code> and <code>password</code> as arguments. You now need to adjust the <code>signup</code> resolver so it also accepts the <code>name</code> for the new <code>User</code> as an input argument and make sure it’s saved when the <code>User</code> is created.</p>
+<p><Instruction></p>
+<p>Open <code>server/src/email-password/signup.graphql</code> and update the extension of the <code>Mutation</code> type to look as follows:</p>
+<pre class="graphql(path=&quot;../hackernews-angular-apollo/server/src/email-password/signup.graphql&quot;)"><code>extend type Mutation {
+  signupUser(email: String!, password: String!, name: String!): SignupUserPayload
+}</code></pre>
+<p></Instruction></p>
+<p>For now you only adjusted the <em>interface</em> of the <code>signup</code> resolver. Next, you also need to make sure to update the <em>implementation</em>.</p>
+<blockquote>
+<p>Note: The <code>signup</code> resolver is implemented as a <a href="https://www.graph.cool/docs/reference/functions/overview-aiw4aimie9">serverless function</a> which will be deployed for you by the Graphcool Framework. The input arguments for that function are determined by the input arguments of the corresponding GraphQL operation. In this case, this is the <code>signupUser</code>-mutation, so the function will received three string as input arguments: <code>email</code>, <code>password</code> and <code>name</code>. (Notice that these are wrapped in a single object called <code>event</code> though.)</p>
+</blockquote>
+<p>The goal in the new implementation is to retrieve the <code>name</code> argument from the input <code>event</code> and send it along when creating the new <code>User</code>.</p>
+<p><Instruction></p>
+<p>Open <code>signup.ts</code> and update the definition of the <code>EventData</code> interface like so:</p>
+<pre class="ts{4}(path=&quot;../hackernews-angular-apollo/server/src/email-password/signup.ts&quot;)"><code>interface EventData {
+  email: string
+  password: string
+  name: string
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>signup.ts</code>, adjust the implementation of the anonymous (and topmost) function to look as follows:</p>
+<pre class="ts{8,26}(path=&quot;../hackernews-angular-apollo/server/src/email-password/signup.ts&quot;)"><code>export default async (event: FunctionEvent&lt;EventData&gt;) =&gt; {
+  console.log(event)
+
+  try {
+    const graphcool = fromEvent(event)
+    const api = graphcool.api(&#39;simple/v1&#39;)
+
+    const { email, password, name } = event.data
+
+    if (!validator.isEmail(email)) {
+      return { error: &#39;Not a valid email&#39; }
+    }
+
+    // check if user exists already
+    const userExists: boolean = await getUser(api, email)
+      .then(r =&gt; r.User !== null)
+    if (userExists) {
+      return { error: &#39;Email already in use&#39; }
+    }
+
+    // create password hash
+    const salt = bcrypt.genSaltSync(SALT_ROUNDS)
+    const hash = await bcrypt.hash(password, SALT_ROUNDS)
+
+    // create new user
+    const userId = await createGraphcoolUser(api, email, hash, name)
+
+    // generate node token for new User node
+    const token = await graphcool.generateNodeToken(userId, &#39;User&#39;)
+
+    return { data: { id: userId, token } }
+  } catch (e) {
+    console.log(e)
+    return { error: &#39;An unexpected error occured during signup.&#39; }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>All you do is also retrieve the <code>name</code> from the input <code>event</code> and then pass it to the <code>createGraphcoolUser</code> function a bit later.</p>
+<p><Instruction></p>
+<p>Still in <code>signup.ts</code>, update the <code>createGraphcoolUser</code> function like so:</p>
+<pre class="ts{1,7,17}(path=&quot;../hackernews-angular-apollo/server/src/email-password/signup.ts&quot;)"><code>async function createGraphcoolUser(api: GraphQLClient, email: string, password: string, name: string): Promise&lt;string&gt; {
+  const mutation = `
+    mutation createGraphcoolUser($email: String!, $password: String!, $name: String!) {
+      createUser(
+        email: $email,
+        password: $password,
+        name: $name
+      ) {
+        id
+      }
+    }
+  `
+
+  const variables = {
+    email,
+    password,
+    name
+  }
+
+  return api.request&lt;{ createUser: User }&gt;(mutation, variables)
+    .then(r =&gt; r.createUser.id)
+}</code></pre>
+<p></Instruction></p>
+<p>All that’s left for you now is deploying these changes to make sure your running Graphcool service gets updated and exposes the new functionality in its API.</p>
+<p><Instruction></p>
+<p>In your terminal, navigate to the <code>server</code> directory and run:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo/server&quot;)"><code>graphcool-framework deploy</code></pre>
+<p></Instruction></p>
+<p>Perfect, you’re all set now to actually implement the authentication functionality in the frontend as well.</p>
+<h3 id="implementing-the-login-mutations">Implementing the Login Mutations</h3>
+<p><code>createUser</code> and <code>signinUser</code> are two regular GraphQL mutations that you can use in the same way as you did with the <code>createLink</code> mutation from before.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/graphql.ts</code> and add the following two definitions to the file:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>import {Link, User} from &#39;./types&#39;;
+// ...
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUserMutation($name: String!, $email: String!, $password: String!) {
+    createUser(
+      name: $name,
+      authProvider: {
+        email: {
+          email: $email,
+          password: $password
+        }
+      }
+    ) {
+      id
+    }
+
+    signinUser(email: {
+      email: $email,
+      password: $password
+    }) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export interface CreateUserMutationResponse {
+  loading: boolean;
+  createUser: User;
+  signinUser: {
+    token: string,
+    user?: User
+  };
+}
+
+export const SIGNIN_USER_MUTATION = gql`
+  mutation SigninUserMutation($email: String!, $password: String!) {
+    signinUser(email: {
+      email: $email,
+      password: $password
+    }) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`;
+
+
+export interface CreateUserMutationResponse {
+  loading: boolean;
+  signinUser: {
+    token: string,
+    user?: User
+  };
+}</code></pre>
+<p></Instruction></p>
+<p>Now, let’s gain a better understanding what’s going on in the two mutations that you just added to the <code>src/app/graphql.ts</code> file.</p>
+<p>The <code>SIGNIN_USER_MUTATION</code> looks very similar to the mutations we saw before. It simply takes the <code>email</code> and <code>password</code> as arguments and returns info about the <code>user</code> as well as a <code>token</code> that you can attach to subsequent requests to authenticate the user. You’ll learn a bit how to do so.</p>
+<p>The <code>CREATE_USER_MUTATION</code> however is a bit different! Here, we define <em>two</em> mutations at once! When you’re doing that, the execution order is always <em>from top to bottom</em>. So, in your case, the <code>createUser</code> mutation will be executed <em>before</em> the <code>signinUser</code> mutation. Bundling two mutations like this allow you to sign up and login in a single request!</p>
+<p>All right, all that’s left to do is to call the two mutations inside the <code>Login</code> component!</p>
+<p><Instruction></p>
+<p>Open <code>src/app/login/login.component.ts</code> and implement <code>confirm</code> as follows:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/login/login.component.ts&quot;)"><code>// ...
+  login: boolean = true; // switch between Login and SignUp
+  email: string = &#39;&#39;;
+  password: string = &#39;&#39;;
+  name: string = &#39;&#39;;
+
+  constructor(private router: Router,
+              private authService: AuthService,
+              private apollo: Apollo) {
+  }
+
+  ngOnInit() {
+  }
+
+  confirm() {
+    if (this.login) {
+      this.apollo.mutate&lt;CreateUserMutationResponse&gt;({
+        mutation: SIGNIN_USER_MUTATION,
+        variables: {
+          email: this.email,
+          password: this.password
+        }
+      }).subscribe((result) =&gt; {
+        const id = result.data.signinUser.user.id;
+        const token = result.data.signinUser.token;
+        this.saveUserData(id, token);
+
+        this.router.navigate([&#39;/&#39;]);
+
+      }, (error) =&gt; {
+        alert(error)
+      });
+    } else {
+      this.apollo.mutate&lt;SigninUserMutationResponse&gt;({
+        mutation: CREATE_USER_MUTATION,
+        variables: {
+          name: this.name,
+          email: this.email,
+          password: this.password
+        }
+      }).subscribe((result) =&gt; {
+        const id = result.data.signinUser.user.id;
+        const token = result.data.signinUser.token;
+        this.saveUserData(id, token);
+
+        this.router.navigate([&#39;/&#39;]);
+
+      }, (error) =&gt; {
+        alert(error)
+      })
+    }
+  }
+
+// ...</code></pre>
+<p></Instruction></p>
+<p>The code is pretty straightforward. If the user wants to only login, you’re calling the <code>SIGNIN_USER_MUTATION</code> and pass the provided <code>email</code> and <code>password</code> as arguments. Otherwise, you’re using the <code>CREATE_USER_MUTATION</code> where you also pass the user’s <code>name</code>. After the mutation is performed, you are calling the <code>authService</code> that will take care of storing the data and navigating back to the root route.</p>
+<p><Instruction></p>
+<p>Also import the <code>CREATE_USER_MUTATION</code> and <code>SIGNIN_USER_MUTATION</code> constants and response interface near top of the component:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/login/login.component.ts&quot;)"><code>import {
+  CREATE_USER_MUTATION,
+  CreateUserMutationResponse,
+  SIGNIN_USER_MUTATION,
+  SigninUserMutationResponse
+} from &#39;../graphql&#39;;</code></pre>
+<p></Instruction></p>
+<p>You now need to make a couple more changes to <code>src/app/app.component.ts</code> to get things working.</p>
+<p><Instruction></p>
+<p>First, import <code>AuthService</code> near top of <code>./auth.service</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import {AuthService} from &#39;./auth.service&#39;;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/app/app.component.ts</code> make the following change :</p>
+<pre class="ts{1-2,9-12}(path=&quot;.../hackernews-apollo-apollo/src/app/app.component.ts&quot;)"><code>// ...
+export class AppComponent implements OnInit {
+  title = &#39;app&#39;;
+  // 1
+  constructor(private authService: AuthService) {
+
+  }
+
+  ngOnInit(): void {
+    // 2
+    this.authService.autoLogin();
+  }
+}
+</code></pre>
+<p></Instruction></p>
+<ol type="1">
+<li>You inject the <code>authService</code></li>
+<li>You try to log in automatically</li>
+<li>You set this <code>userId</code> on the <code>$root</code> <code>$data</code> object</li>
+</ol>
+<p>You can now create an account by providing a <code>name</code>, <code>email</code> and <code>password</code>. Once you do so, the <em>submit</em>-button will be rendered again:</p>
+<figure>
+<img src="http://imgur.com/WoWLmDJ.png" alt="Creating an account by providing name, email, and password" /><figcaption>Creating an account by providing name, email, and password</figcaption>
+</figure>
+<h3 id="updating-the-createlink-mutation">Updating the <code>createLink</code>-mutation</h3>
+<p>Since you’re now able to authenticate users and also added a new relation between the <code>Link</code> and <code>User</code> type, you can also make sure that every new link that gets created in the app can store information about the user that posted it. That’s what the <code>postedBy</code> field on <code>Link</code> will be used for.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/graphql.ts</code> and update the definition of <code>CREATE_LINK_MUTATION</code> as follows:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>export const CREATE_LINK_MUTATION = gql`
+  mutation CreateLinkMutation($description: String!, $url: String!, $postedById: ID!) {
+    createLink(
+      description: $description,
+      url: $url,
+      postedById: $postedById
+    ) {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>There are two major changes. You first added another argument to the mutation that represents the <code>id</code> of the user that is posting the link. Secondly, you also include the <code>postedBy</code> information in the <em>payload</em> of the mutation.</p>
+<p>Now you need to make sure that the <code>id</code> of the posting user is included when you’re calling the mutation in <code>CreateLinkComponent</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/create-link/create-link.component.ts</code> and update the implementation of <code>createLink</code> like so:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.ts&quot;)"><code>createLink () {
+    const postedById = localStorage.getItem(GC_USER_ID);
+    if (!postedById) {
+      console.error(&#39;No user logged in&#39;);
+      return
+    }
+
+    const newDescription = this.description;
+    const newUrl = this.url;
+    this.description = &#39;&#39;;
+    this.url = &#39;&#39;;
+
+    this.apollo.mutate&lt;CreateLinkMutationResponse&gt;({
+      mutation: CREATE_LINK_MUTATION,
+      variables: {
+        description: newDescription,
+        url: newUrl,
+        postedById
+      },
+      update: (store, { data: { createLink } }) =&gt; {
+        const data: any = store.readQuery({
+          query: ALL_LINKS_QUERY
+        });
+
+        data.allLinks.push(createLink);
+        store.writeQuery({ query: ALL_LINKS_QUERY, data })
+      },
+    }).subscribe((response) =&gt; {
+      // We injected the Router service
+      this.router.navigate([&#39;/&#39;]);
+    }, (error)=&gt;{
+      console.error(error);
+      this.description = newDescription;
+      this.url = newUrl;
+    });
+}</code></pre>
+<p></Instruction></p>
+<p>For this to work, you also need to import the <code>GC_USER_ID</code> key.</p>
+<p><Instruction></p>
+<p>Add the following import statement near the top of <code>src/app/create-link/create-link.component.ts</code>.</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.ts&quot;)"><code>import {GC_USER_ID} from &#39;../constant&#39;;</code></pre>
+<p></Instruction></p>
+<p>Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from <code>localStorage</code>. If that succeeds, you’ll pass it to the call to <code>CREATE_LINK_MUTATION</code> so that every new <code>Link</code> will from now on store information about the <code>User</code> who created it.</p>
+<p>If you haven’t done so before, go ahead and test the login functionality. Open <code>http://localhost:4200/login</code>. Then click the <em>need to create an account?</em>-button and provide some user data for the user you’re creating. Finally, click the <em>create Account</em>-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> or sending the <code>allUsers</code> query in a Playground.</p>
+<h3 id="configuring-apollo-with-the-auth-token">Configuring Apollo with the Auth Token</h3>
+<p>Now that users are able to login and obtain a token that authenticates them against the Graphcool backend, you actually need to make sure that the token gets attached to all requests that are sent to the API.</p>
+<p>Since all the API requests are actually created and sent by the <code>HttpLink</code> in your app, you need to make sure it knows about the user’s token. Luckily, Apollo provides a nice way for authenticating all requests by using <a href="">headers</a>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/apollo.config.ts</code>, put the following code <em>after</em> the creation of the <code>httpLink</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/apollo.config.ts&quot;)"><code>    const middleware = new ApolloLink((operation, forward) =&gt; {
+      const token = localStorage.getItem(GC_AUTH_TOKEN);
+      if (token) {
+        operation.setContext({
+          headers: new HttpHeaders().set(&#39;Authorization&#39;, `Bearer ${token}`)
+        });
+      }
+      return forward(operation);
+    });</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, update the <code>apollo.create</code> configuration by adding the middleware:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/apollo.config.ts&quot;)"><code>    apollo.create({
+      link: middleware.concat(http),
+      cache: new InMemoryCache()
+    });</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, directly import the key that you need to retrieve the token from <code>localStorage</code> on top of the same file, <code>HttpHeaders</code> from <code>@angular/common/http</code> and <code>ApolloLink</code> from <code>apollo-link</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/constants.ts&quot;)"><code>import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;./constants&#39;;
+import { HttpClientModule, HttpHeaders } from &#39;@angular/common/http&#39;;
+import { ApolloLink } from &#39;apollo-link&#39;;</code></pre>
+<p></Instruction></p>
+<p>That’s it - now all your API requests will be authenticated if a <code>token</code> is available.</p>
+<blockquote>
+<p>Note: In a real application you would now configure the <a href="https://www.graph.cool/docs/reference/auth/authorization-iegoo0heez/">authorization rules</a> (permissions) of your project to define what kind of operations authenticated and non-authenticated users should be allowed to perform.</p>
+</blockquote>
+</body>
+</html>

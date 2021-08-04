@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mutations: Creating Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mutations: Creating Links</h1>
+</header>
+<p>In this section, you’ll learn how you can send mutations with urql. It’s actually not that different from sending queries and follows the same three steps that were mentioned before, with minor (but logical) differences in the last two steps:</p>
+<ol type="1">
+<li>write the query as a JavaScript constant using the <code>gql</code> parser function</li>
+<li>use the <code>useMutation</code> hook passing the GraphQL mutation as the first and only argument</li>
+<li>call the <code>executeMutation</code> with the mutation’s variables and receive the result as a promise or in the first <code>state</code> part of the array that the <code>useMutation</code> hook returns</li>
+</ol>
+<p>The difference between <code>useQuery</code> and <code>useMutation</code> are minor. While <code>useQuery</code> accepts multiple options, including <code>query</code> and <code>variables</code>, the <code>useMutation</code> hook accepts the mutation definition as its only argument. It still returns an array of <code>[state, executeMutation]</code>. The <code>executeMutation</code> function accepts variables as its first argument and returns a promise of the mutation result. The <code>state</code> part of the array will be updated with the mutation’s state and <code>data</code> as well.</p>
+<h3 id="why-do-the-promise-and-the-state-both-exist">Why do the promise <em>and</em> the <code>state</code> both exist?</h3>
+<p>As you can tell the <code>useMutation</code> hook still returns <code>[state, executeMutation]</code> very similar to <code>useQuery</code> which returns <code>[state, executeQuery]</code>. In both cases, the <code>state</code> part is updated with the current mutation’s or query’s result. The difference is that <code>useQuery</code> eagerly executes the queries you pass to it, and the <code>useMutation</code> hook only executes once you call <code>executeMutation</code>.</p>
+<p>Furthermore, <code>executeMutation</code> returns a promise of the mutation’s result, which is very similar to <code>state</code>, except that it’s missing the <code>fetching: boolean</code> property.</p>
+<p>This is because accessing both <code>useMutation</code>’s state and having a promise cover very common use-cases. You may want to run a side-effect after a mutation completes, for instance navigating away from the current page or closing a modal. Meanwhile you may also want to use <code>state.fetching</code> to change the UI while the mutation is running. This is why <code>useMutation</code> provides both!</p>
+<h3 id="preparing-the-react-components">Preparing the React components</h3>
+<p>Like before, let’s start by writing the React component where users will be able to add new links.</p>
+<p><Instruction></p>
+<p>Create a new file in the <code>src/components</code> directory and call it <code>CreateLink.js</code>. Then paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/createlink.js&quot;)"><code>import React from &#39;react&#39;
+
+const CreateLink = props =&gt; {
+  const [description, setDescription] = React.useState(&#39;&#39;)
+  const [url, setUrl] = React.useState(&#39;&#39;)
+  
+  const submit = React.useCallback(() =&gt; {
+    // ... you&#39;ll implement this 🔜
+  }, [])
+
+  return (
+    &lt;div&gt;
+      &lt;div className=&quot;flex flex-column mt3&quot;&gt;
+        &lt;input
+          className=&quot;mb2&quot;
+          value={description}
+          onChange={e =&gt; setDescription(e.target.value)}
+          type=&quot;text&quot;
+          placeholder=&quot;A description for the link&quot;
+        /&gt;
+        &lt;input
+          className=&quot;mb2&quot;
+          value={url}
+          onChange={e =&gt; setUrl(e.target.value)}
+          type=&quot;text&quot;
+          placeholder=&quot;The URL for the link&quot;
+        /&gt;
+      &lt;/div&gt;
+      &lt;button onClick={submit}&gt;
+        Submit
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default CreateLink</code></pre>
+<p></Instruction></p>
+<p>Here you’ve added two <code>input</code> fields using which users will provide the <code>url</code> and <code>description</code> of the <code>Link</code> that they want to create. The data that’s typed into these fields is stored in <code>React.useState</code> hooks and will be used when the mutation is sent.</p>
+<h3 id="writing-the-mutation">Writing the mutation</h3>
+<p>But how can you now actually send the mutation to your server? Let’s follow the three steps from before.</p>
+<p>First you need to define the mutation and add a <code>useMutation</code> hook to the <code>CreateLink</code> component, much in a similar way as we’ve added a query to <code>LinkList</code> before.</p>
+<p><Instruction></p>
+<p>In <code>CreateLink.js</code>, add the following statement to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/createlink.js&quot;)"><code>import gql from &#39;graphql-tag&#39;;
+import { useMutation } from &#39;urql&#39;;
+
+const POST_MUTATION = gql`
+  mutation PostMutation($description: String!, $url: String!) {
+    post(description: $description, url: $url) {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then add the <code>useMutation</code> hook to the <code>CreateLink</code> component and implement a handler by replacing the <code>submit</code> stub:</p>
+<pre class="js{5,7-9}(path=&quot;.../hackernews-react-urql/src/components/createlink.js&quot;)"><code>const CreateLink = props =&gt; {
+  const [description, setDescription] = React.useState(&#39;&#39;)
+  const [url, setUrl] = React.useState(&#39;&#39;)
+
+  const [state, executeMutation] = useMutation(POST_MUTATION)
+  
+  const submit = React.useCallback(() =&gt; {
+    executeMutation({ url, description })
+  }, [executeMutation, url, description])
+  
+  // ...
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s take a closer look again to understand what’s going on:</p>
+<ol type="1">
+<li>You’ve added imports for the <code>gql</code> tag and the <code>useMutation</code> hook.</li>
+<li>Then you’ve defined <code>POST_MUTATION</code> which accepts a description and url as variables.</li>
+<li>You’ve added the <code>useMutation</code> hook which accepts the new mutation and returns you the current state of the mutation and an <code>executeMutation</code> function as an array.</li>
+<li>Lastly you’ve written a <code>submit</code> handler, which calls <code>executeMutation</code> with the variables from your input state hooks.</li>
+</ol>
+<p>Let’s see the mutation in action!</p>
+<p><Instruction></p>
+<p>Still in <code>CreateLink.js</code>, replace the <code>button</code> element as follows:</p>
+<pre class="js{2-3}(path=&quot;.../hackernews-react-urql/src/components/createlink.js&quot;)"><code>&lt;button
+  disabled={state.fetching}
+  onClick={submit}
+&gt;
+  Submit
+&lt;/button&gt;</code></pre>
+<p></Instruction></p>
+<p>As you can see, <code>useMutation</code> is as simple to use as <code>useQuery</code>. All you need to do is pass it a mutation definition and call <code>executeMutation</code> with your variables. It also returns <code>state</code>, which is used here to disable the “Submit” button, while the mutation is still in progress.</p>
+<p><Instruction></p>
+<p>Go ahead and see if the mutation works. To be able to test the code, open <code>App.js</code> and change it to render <code>CreateLink</code> instead of <code>LinkList</code>:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+// import LinkList from &#39;./LinkList&#39;
+import CreateLink from &#39;./CreateLink&#39;
+
+const App = () =&gt; &lt;CreateLink /&gt;
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>Now, run <code>yarn start</code> and you’ll see the following screen:</p>
+<figure>
+<img src="http://imgur.com/AJNlEfj.png" alt="Run yarn start" /><figcaption>Run yarn start</figcaption>
+</figure>
+<p>Two input fields and a “Submit” button. Not pretty, but functional.</p>
+<p>Enter some data into the fields, e.g.:</p>
+<ul>
+<li><strong>Description</strong>: <code>The best learning resource for GraphQL</code></li>
+<li><strong>URL</strong>: <code>www.howtographql.com</code></li>
+</ul>
+<p>Then submit! You won’t get any visual feedback in the UI apart from the button switching to its disabled state, but let’s see if the query actually worked by checking the current list of links in a Playground.</p>
+<p>You can open a Playground again by navigating to <code>http://localhost:4000</code> in your browser. Then send the following query:</p>
+<pre class="graphql"><code>{
+  feed {
+    links {
+      description
+      url
+    }
+  }
+}</code></pre>
+<p>You’ll see the following server response:</p>
+<pre class="js(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;feed&quot;: {
+      &quot;links&quot;: [
+        // ...
+        {
+          &quot;description&quot;: &quot;The best learning resource for GraphQL&quot;,
+          &quot;url&quot;: &quot;www.howtographql.com&quot;
+        }
+      ]
+    }
+  }
+}</code></pre>
+<p>Awesome! The mutation works, great job! 💪</p>
+</body>
+</html>

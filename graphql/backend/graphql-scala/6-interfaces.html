@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Interfaces</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Interfaces</h1>
+</header>
+<p>At this point you should know the basics, so it’s a perfect time for some hands-on training. The following paragraph will give you hints on what needs to be done. Try implementing it yourself. At the end I will add an example solution in case you are stuck. Later in this chapter we will learn about interfaces and how they relate to the work you’ve done.</p>
+<h3 id="your-diy-kit">Your DIY kit</h3>
+<p>Before you go further, try to implement the changes yourself. I think, at this point, you have the necessary knowledge to add the <code>User</code> and <code>Vote</code> models. I’ll show what to do later in this chapter, but try to implement it yourself first.</p>
+<p>What you have to do:</p>
+<ol type="1">
+<li>Add <code>User</code> class with fields: <code>id</code>, <code>name</code>, <code>email</code>, <code>password</code> and <code>createdAt</code></li>
+<li>Add <code>Vote</code> class with fields: <code>id</code>, <code>createdAt</code>, <code>userId</code>, <code>linkId</code>(you don’t have to to define any relations for now)</li>
+<li>Create database tables for both,</li>
+<li>Add object types for both,</li>
+<li>Add fetchers for both,</li>
+<li>Implement <code>HasId</code> type class,</li>
+<li>Add fields in main <code>ObjectType</code> which allows for fetching a list of entities like <code>users</code> and <code>votes</code></li>
+</ol>
+<p>Please, go ahead with your implementation … I will wait here</p>
+<h3 id="user-entity">User entity</h3>
+<p>Let’s start from the user entity:</p>
+<p><Instruction></p>
+<p>Add <code>User.scala</code>class to <code>models</code> package object with the following content:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">User</span>(id: Int, name: String, email: String, password: String, createdAt: DateTime = DateTime.<span class="fu">now</span>)</a></code></pre></div>
+<p></Instruction></p>
+<p>Database setup.</p>
+<p><Instruction></p>
+<p>Add the following content to the <code>DBSchema</code> class (after <code>Links</code> definition):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">class</span> <span class="fu">UsersTable</span>(tag: Tag) <span class="kw">extends</span> Table[User](tag, <span class="st">&quot;USERS&quot;</span>){</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">def</span> id = column[Int](<span class="st">&quot;ID&quot;</span>, O.<span class="fu">PrimaryKey</span>, O.<span class="fu">AutoInc</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="kw">def</span> name = column[String](<span class="st">&quot;NAME&quot;</span>)</a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">def</span> email = column[String](<span class="st">&quot;EMAIL&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="kw">def</span> password = column[String](<span class="st">&quot;PASSWORD&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">def</span> createdAt = column[DateTime](<span class="st">&quot;CREATED_AT&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="kw">def</span> * = (id, name, email, password, createdAt).<span class="fu">mapTo</span>[User]</a>
+<a class="sourceLine" id="cb2-9" title="9">}</a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="kw">val</span> Users = TableQuery[UsersTable]</a></code></pre></div>
+<p></Instruction></p>
+<p>Sample entities:</p>
+<p><Instruction></p>
+<p>In DBSchema in the function <code>databaseSetup</code>, add an action <code>Users.schema.create</code> at beginning of the function and then add a few users later in this function:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb3-1" title="1">Users forceInsertAll Seq(</a>
+<a class="sourceLine" id="cb3-2" title="2">    <span class="fu">User</span>(<span class="dv">1</span>, <span class="st">&quot;mario&quot;</span>, <span class="st">&quot;mario@example.com&quot;</span>, <span class="st">&quot;s3cr3t&quot;</span>),</a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="fu">User</span>(<span class="dv">2</span>, <span class="st">&quot;Fred&quot;</span>, <span class="st">&quot;fred@flinstones.com&quot;</span>, <span class="st">&quot;wilmalove&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4">  )</a></code></pre></div>
+<p></Instruction></p>
+<p>Add a function responsible for user retrieval:</p>
+<p><Instruction></p>
+<p>In <code>DAO</code> class add a function:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">def</span> <span class="fu">getUsers</span>(ids: Seq[Int]): Future[Seq[User]] = {</a>
+<a class="sourceLine" id="cb4-2" title="2">    db.<span class="fu">run</span>(</a>
+<a class="sourceLine" id="cb4-3" title="3">      Users.<span class="fu">filter</span>(_.<span class="fu">id</span> inSet ids).<span class="fu">result</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    )</a>
+<a class="sourceLine" id="cb4-5" title="5">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Dont’ forget about <code>import com.howtographql.scala.sangria.models.User</code>…</p>
+<p>GraphQL part:</p>
+<p><Instruction></p>
+<p>In <code>GraphQLSchema</code> add :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">val</span> UserType = deriveObjectType[Unit, User]() <span class="co">//ObjectType for user</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">implicit</span> <span class="kw">val</span> userHasId = HasId[User, Int](_.<span class="fu">id</span>) <span class="co">//HasId type class</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">val</span> usersFetcher = <span class="fu">Fetcher</span>(</a>
+<a class="sourceLine" id="cb5-4" title="4">    (ctx: MyContext, ids: Seq[Int]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getUsers</span>(ids)</a>
+<a class="sourceLine" id="cb5-5" title="5">)<span class="co">// resolver</span></a></code></pre></div>
+<p></Instruction></p>
+<p>Add fetcher to resolvers.</p>
+<p><Instruction></p>
+<p>And lastly add the new fetcher to the resolvers list. In the same file, replace constant <code>Resolver</code> with:</p>
+<pre><code>val Resolver = DeferredResolver.fetchers(linksFetcher, usersFetcher)</code></pre>
+<p></Instruction></p>
+<p>Add fields to main ObjectType:</p>
+<p><Instruction></p>
+<p>Add to <code>QueryType.fields</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb7-1" title="1">Field(<span class="st">&quot;users&quot;</span>,</a>
+<a class="sourceLine" id="cb7-2" title="2">        <span class="fu">ListType</span>(UserType),</a>
+<a class="sourceLine" id="cb7-3" title="3">        arguments = List(Ids),</a>
+<a class="sourceLine" id="cb7-4" title="4">        resolve = c =&gt; usersFetcher.<span class="fu">deferSeq</span>(c.<span class="fu">arg</span>(Ids))</a>
+<a class="sourceLine" id="cb7-5" title="5">)</a></code></pre></div>
+<p></Instruction></p>
+<p>We’re ready… you can now execute a query like this:</p>
+<pre class="graphql"><code>query {
+    users(ids: [1, 2]){
+      id
+      name
+      email
+      createdAt
+    }
+}</code></pre>
+<h3 id="vote-entity">Vote entity</h3>
+<p>If you want, you can make similar changes for <code>Vote</code> entity. And then follow the instructions and check everything works.</p>
+<p><Instruction></p>
+<p>Create <code>Vote</code> class</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Vote</span>(id: Int, userId: Int, linkId: Int, createdAt: DateTime = DateTime.<span class="fu">now</span>)</a></code></pre></div>
+<p></Instruction></p>
+<p>Database setup.</p>
+<p><Instruction></p>
+<p>Add the following content to the <code>DBSchema</code> class:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">class</span> <span class="fu">VotesTable</span>(tag: Tag) <span class="kw">extends</span> Table[Vote](tag, <span class="st">&quot;VOTES&quot;</span>){</a>
+<a class="sourceLine" id="cb10-2" title="2">    <span class="kw">def</span> id = column[Int](<span class="st">&quot;ID&quot;</span>, O.<span class="fu">PrimaryKey</span>, O.<span class="fu">AutoInc</span>)</a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="kw">def</span> userId = column[Int](<span class="st">&quot;USER_ID&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="kw">def</span> linkId = column[Int](<span class="st">&quot;LINK_ID&quot;</span>)</a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="kw">def</span> createdAt = column[DateTime](<span class="st">&quot;CREATED_AT&quot;</span>)</a>
+<a class="sourceLine" id="cb10-6" title="6"></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="kw">def</span> * = (id, userId, linkId, createdAt).<span class="fu">mapTo</span>[Vote]</a>
+<a class="sourceLine" id="cb10-8" title="8">  }</a>
+<a class="sourceLine" id="cb10-9" title="9"></a>
+<a class="sourceLine" id="cb10-10" title="10">  <span class="kw">val</span> Votes = TableQuery[VotesTable]</a></code></pre></div>
+<p></Instruction></p>
+<p>The next step is creating relations.</p>
+<p><Instruction></p>
+<p>In file <code>DBSchema</code> in function databaseSetup: Add an action <code>Votes.schema.create</code> at beginning of the sentence and then add few users later in this function:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb11-1" title="1">Votes forceInsertAll Seq(</a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">Vote</span>(id = <span class="dv">1</span>, userId = <span class="dv">1</span>, linkId = <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="fu">Vote</span>(id = <span class="dv">2</span>, userId = <span class="dv">1</span>, linkId = <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="fu">Vote</span>(id = <span class="dv">3</span>, userId = <span class="dv">1</span>, linkId = <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="fu">Vote</span>(id = <span class="dv">4</span>, userId = <span class="dv">2</span>, linkId = <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb11-6" title="6">)</a></code></pre></div>
+<p></Instruction></p>
+<p>Add votes retrieval function.</p>
+<p><Instruction></p>
+<p>In <code>DAO</code> class add a function:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">def</span> <span class="fu">getVotes</span>(ids: Seq[Int]): Future[Seq[Vote]] = {</a>
+<a class="sourceLine" id="cb12-2" title="2">    db.<span class="fu">run</span>(</a>
+<a class="sourceLine" id="cb12-3" title="3">      Votes.<span class="fu">filter</span>(_.<span class="fu">id</span> inSet ids).<span class="fu">result</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    )</a>
+<a class="sourceLine" id="cb12-5" title="5">}</a></code></pre></div>
+<p></Instruction></p>
+<p>GraphQL part:</p>
+<p><Instruction></p>
+<p>In <code>GraphQLSchema</code> add :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">implicit</span> <span class="kw">val</span> VoteType = deriveObjectType[Unit, Vote]()</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">implicit</span> <span class="kw">val</span> voteHasId = HasId[Vote, Int](_.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="kw">val</span> votesFetcher = <span class="fu">Fetcher</span>(</a>
+<a class="sourceLine" id="cb13-5" title="5">  (ctx: MyContext, ids: Seq[Int]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotes</span>(ids)</a>
+<a class="sourceLine" id="cb13-6" title="6">)</a></code></pre></div>
+<p></Instruction></p>
+<p>Add fetcher to resolvers.</p>
+<p><Instruction></p>
+<p>Add the new fetcher to the resolvers list. In the same file, replace constant <code>Resolver</code> with:</p>
+<pre><code>val Resolver = DeferredResolver.fetchers(linksFetcher, usersFetcher, votesFetcher)</code></pre>
+<p></Instruction></p>
+<p>Add fields to main ObjectType:</p>
+<p><Instruction></p>
+<p>Add to <code>QueryType.fields</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb15-1" title="1"><span class="co">//val Ids = Argument(&quot;ids&quot;, ListInputType(IntType))</span></a>
+<a class="sourceLine" id="cb15-2" title="2">Field(<span class="st">&quot;votes&quot;</span>,</a>
+<a class="sourceLine" id="cb15-3" title="3">        <span class="fu">ListType</span>(VoteType),</a>
+<a class="sourceLine" id="cb15-4" title="4">        arguments = List(Ids),</a>
+<a class="sourceLine" id="cb15-5" title="5">        resolve = c =&gt; votesFetcher.<span class="fu">deferSeq</span>(c.<span class="fu">arg</span>(Ids))</a>
+<a class="sourceLine" id="cb15-6" title="6">)</a></code></pre></div>
+<p></Instruction></p>
+<p>The following query should now execute successfully:</p>
+<pre class="graphql"><code>
+query {
+  votes(ids: [1, 2]){
+    id
+    createdAt
+  }
+}  </code></pre>
+<h3 id="finding-common-parts">Finding common parts</h3>
+<p>As you can see some code is very similar. Like <code>HasId</code> for all three types:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">implicit</span> <span class="kw">val</span> linkHasId = HasId[Link, Int](_.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">implicit</span> <span class="kw">val</span> userHasId = HasId[User, Int](_.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">implicit</span> <span class="kw">val</span> voteHasId = HasId[Vote, Int](_.<span class="fu">id</span>)</a></code></pre></div>
+<p>What if you want to add more entities? You will have to duplicate this code.</p>
+<p>The solution for this is an interface. We can provide an interface that will be extended by any of the entities. This way, for example, you will need just one HasId</p>
+<p><Instruction></p>
+<p>Create trait <code>Identifiable</code> into the <code>models</code> package object:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">trait</span> Identifiable {</a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="kw">val</span> id: Int</a>
+<a class="sourceLine" id="cb18-3" title="3">}</a></code></pre></div>
+<p></Instruction></p>
+<p>And then extend this trait by all of those classes like:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Link</span>(...) <span class="kw">extends</span> Identifiable</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">User</span>(...) <span class="kw">extends</span> Identifiable</a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Vote</span>(...) <span class="kw">extends</span> Identifiable</a></code></pre></div>
+<p></Instruction></p>
+<p>Now we can replace all above <code>HasId</code> type classes with the single one. But now we will move it into companion object so it will be accessible whenever we import the trait.</p>
+<p><Instruction></p>
+<p>Remove <code>linkHasId</code>, <code>userHasId</code> and <code>voteHasId</code>, and add companion object to the <code>Identifiable</code> trait:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb20-1" title="1"><span class="co">//add to imports:</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">import</span> sangria.<span class="fu">execution</span>.<span class="fu">deferred</span>.<span class="fu">HasId</span></a>
+<a class="sourceLine" id="cb20-3" title="3"></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">//add int he body</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw">object</span> Identifiable {</a>
+<a class="sourceLine" id="cb20-6" title="6">    <span class="kw">implicit</span> <span class="kw">def</span> hasId[T &lt;: Identifiable]: HasId[T, Int] = <span class="fu">HasId</span>(_.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb20-7" title="7">}</a></code></pre></div>
+<p></Instruction></p>
+<p>The next step is providing GraphQL’s interface type for that trait.</p>
+<p><Instruction></p>
+<p>Add a definition of the interface and change the <code>LinkType</code> for the following:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">val</span> IdentifiableType = <span class="fu">InterfaceType</span>(</a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="st">&quot;Identifiable&quot;</span>,</a>
+<a class="sourceLine" id="cb21-3" title="3">  fields[Unit, Identifiable](</a>
+<a class="sourceLine" id="cb21-4" title="4">    Field(<span class="st">&quot;id&quot;</span>, IntType, resolve = _.<span class="fu">value</span>.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb21-5" title="5">  )</a>
+<a class="sourceLine" id="cb21-6" title="6">)</a>
+<a class="sourceLine" id="cb21-7" title="7">  </a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="kw">implicit</span> <span class="kw">val</span> LinkType = deriveObjectType[Unit, Link](</a>
+<a class="sourceLine" id="cb21-9" title="9">    <span class="fu">Interfaces</span>(IdentifiableType)</a>
+<a class="sourceLine" id="cb21-10" title="10">)</a></code></pre></div>
+<p></Instruction></p>
+<p>Make similar changes to <code>UserType</code> and <code>VoteType</code>.</p>
+<p>Now if you look into the schema definition in graphiql console you will see that all three models implement the <code>Identifiable</code> interface.</p>
+<p>So far so good. We made many changes in this chapter, so if you like you can compare current state o files with the following snippets.</p>
+<p><a href="https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-graphqlschema-scala">GraphQLSchema.scala</a><br />
+<a href="https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-models_package-scala">models/package.scala</a><br />
+<a href="https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-dao-scala">DAO.scala</a><br />
+<a href="https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-dbschema-scala">DBSchema.scala</a></p>
+<hr />
+<p>Ok, that’s all for this chapter. In the next one you will learn about relations.</p>
+</body>
+</html>

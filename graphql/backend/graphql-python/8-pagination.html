@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>Imagine that your Hackernews has thousands of created links – that would be awesome for you – but the clients making the request wouldn’t be happy. Retrieving too much data on a single request is unpractical and may even break your app. Pagination exists to solve this problem, allowing the client to specify how many items it wants.</p>
+<p>The simple way defined in the GraphQL <a href="http://graphql.org/learn/pagination/">pagination</a> documentation is to slice the results using two parameters: <code>first</code>, which returns the first <em>n</em> items and <code>skip</code>, which skips the first <em>n</em> items.</p>
+<p>Let’s implement it in the links query.</p>
+<h3 id="paginating-links">Paginating Links</h3>
+<p><Instruction></p>
+<p>Change your links query class to the following:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code>class Query(graphene.ObjectType):
+    # Add the first and skip parameters
+    links = graphene.List(
+        LinkType,
+        search=graphene.String(),
+        first=graphene.Int(),
+        skip=graphene.Int(),
+    )
+    votes = graphene.List(VoteType)
+
+    # Use them to slice the Django queryset
+    def resolve_links(self, info, search=None, first=None, skip=None, **kwargs):
+        qs = Link.objects.all()
+
+        if search:
+            filter = (
+                Q(url__icontains=search) |
+                Q(description__icontains=search)
+            )
+            qs = qs.filter(filter)
+
+        if skip:
+            qs = qs[skip:]
+
+        if first:
+            qs = qs[:first]
+
+        return qs
+
+    def resolve_votes(self, info, **kwargs):
+        return Vote.objects.all()
+</code></pre>
+<p></Instruction></p>
+<p>The <code>skip</code> and <code>first</code> uses <a href="https://www.dotnetperls.com/slice-python">Python Slicing</a>.</p>
+<p>Testing it in the Insomnia interface:</p>
+<figure>
+<img src="https://i.imgur.com/pcNvb8y.png" alt="Insomnia interface" /><figcaption>Insomnia interface</figcaption>
+</figure>
+</body>
+</html>

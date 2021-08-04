@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>Next up we’ll cover pagination. You’ll implement a simple pagination approach so that users are able to view the links in smaller chunks rather than having an extremely long list of <code>Link</code> elements.</p>
+<h2 id="preparing-the-vuejs-components">Preparing the VueJS Components</h2>
+<p>Once more, you first need to prepare the VueJS components for this new functionality. In fact, we’ll slightly adjust the current routing setup. Here’s the idea: The <code>LinkList</code> component will be used for two different use cases (and routes). The first one is to display the 10 top voted links. Its second use case is to display new links in a list separated into multiple pages that the user can navigate through.</p>
+<p><Instruction></p>
+<p>Open <code>src/router/index.js</code> and adjust the routes like so:</p>
+<pre class="js{4,15,23}(path=&quot;.../hackernews-vue-apollo/src/router/index.js&quot;)"><code>routes: [
+  {
+    path: &#39;/&#39;,
+    redirect: &#39;/new/1&#39;
+  },
+  {
+    path: &#39;/create&#39;,
+    component: CreateLink
+  },
+  {
+    path: &#39;/login&#39;,
+    component: AppLogin
+  },
+  {
+    path: &#39;/new/:page&#39;,
+    component: LinkList
+  },
+  {
+    path: &#39;/search&#39;,
+    component: Search
+  },
+  {
+    path: &#39;/top&#39;,
+    component: LinkList
+  }
+]</code></pre>
+<p></Instruction></p>
+<p>You added two new routes: <code>/top</code> and <code>/new/:page</code>. The second one reads the value for <code>page</code> from the url so that this information is available inside the component that’s rendered, here that’s <code>LinkList</code>.</p>
+<p>The root route <code>/</code> now redirects to the first page of the route where new posts are displayed.</p>
+<p>You need to update the <code>AppHeader</code> component to show the new <code>/top</code> route:</p>
+<p><Instruction></p>
+<p>Open <code>src/components/AppHeader.vue</code> and add <code>top</code>. This component’s template should now look like this:</p>
+<pre class="html{6-7}(path=&quot;.../hackernews-vue-apollo/src/components/appheader.vue&quot;)"><code>&lt;template&gt;
+  &lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+    &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+      &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+      &lt;router-link to=&quot;/&quot; class=&quot;ml1 no-underline black&quot;&gt;new&lt;/router-link&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;router-link to=&quot;/top&quot; class=&quot;ml1 no-underline black&quot;&gt;top&lt;/router-link&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;router-link to=&quot;/search&quot; class=&quot;ml1 no-underline black&quot;&gt;search&lt;/router-link&gt;
+      &lt;div class=&quot;flex&quot; v-if=&quot;userId&quot;&gt;
+        &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+        &lt;router-link to=&quot;/create&quot; class=&quot;ml1 no-underline black&quot;&gt;submit&lt;/router-link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;flex flex-fixed&quot;&gt;
+      &lt;div v-if=&quot;userId&quot; class=&quot;ml1 pointer black&quot; @click=&quot;logout()&quot;&gt;logout&lt;/div&gt;
+      &lt;router-link v-else to=&quot;/login&quot; class=&quot;ml1 no-underline black&quot;&gt;login&lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p></Instruction></p>
+<p>We need to add quite a bit of logic to the <code>LinkList</code> component to account for the two different responsibilities that it now has.</p>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add three arguments to the <code>AllLinksQuery</code> by replacing the <code>ALL_LINKS_QUERY</code> definition with the following. Note that you are also adding the <code>count</code> property from <code>_allLinksMeta</code> so that you have access to the count of links:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const ALL_LINKS_QUERY = gql`
+  query AllLinksQuery($first: Int, $skip: Int, $orderBy: LinkOrderBy) {
+    allLinks(first: $first, skip: $skip, orderBy: $orderBy) {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+    _allLinksMeta {
+      count
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>The query now accepts arguments that we’ll use to implement pagination and ordering. <code>skip</code> defines the <em>offset</em> where the query will start. If you passed a value of e.g. <code>10</code> to this argument, it means that the first 10 items of the list will not be included in the response. <code>first</code> then defines the <em>limit</em>, or <em>how many</em> elements, you want to load from that list. Say, you’re passing the <code>10</code> for <code>skip</code> and <code>5</code> for <code>first</code>, you’ll receive items 10 to 15 from the list.</p>
+<p>You need to update the references to this query in the <code>CreateLink</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/CreateLink.vue</code> and update the <code>update</code> callback within the mutation to look like this:</p>
+<pre class="js{4-8,13-17}(path=&quot;.../hackernews-vue-apollo/src/components/createlink.vue&quot;)"><code>update: (store, { data: { createLink } }) =&gt; {
+  const data = store.readQuery({
+    query: ALL_LINKS_QUERY,
+    variables: {
+      first: 5,
+      skip: 0,
+      orderBy: &#39;createdAt_DESC&#39;
+    }
+  })
+  data.allLinks.push(createLink)
+  store.writeQuery({
+    query: ALL_LINKS_QUERY,
+    variables: {
+      first: 5,
+      skip: 0,
+      orderBy: &#39;createdAt_DESC&#39;
+    },
+    data
+  })
+}</code></pre>
+<p>You also need to add variables in <code>voteForLink</code> method in <code>LinkItem</code> component.</p>
+<p>Open <code>src/components/LinkItem.vue</code> and update the <code>updateStoreAfterVote</code> callback within the methods object to look like this:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>updateStoreAfterVote (store, createVote, linkId) {
+  const data = store.readQuery({
+    query: ALL_LINKS_QUERY,
+    variables: {     
+      first: 5,
+      skip: 0,
+      orderBy: &#39;createdAt_DESC&#39;
+    }
+  })
+  const votedLink = data.allLinks.find(link =&gt; link.id === linkId)
+  votedLink.votes = createVote.link.votes
+  store.writeQuery({query: ALL_LINKS_QUERY, data})
+}</code></pre>
+<p>Here you are simply adding the variables that this query now expects.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, open <code>src/components/LinkList.vue</code> and add the following <code>variables</code> and <code>update</code> callback to <code>allLinks</code> within the <code>apollo</code> object:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>variables () {
+  const page = parseInt(this.$route.params.page, 10)
+  const isNewPage = this.$route.path.includes(&#39;new&#39;)
+  const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0
+  const first = isNewPage ? LINKS_PER_PAGE : 100
+  const orderBy = isNewPage ? &#39;createdAt_DESC&#39; : null
+  return {
+    first,
+    skip,
+    orderBy
+  }
+},
+update (data) {
+  this.count = data._allLinksMeta.count
+  return data.allLinks
+}</code></pre>
+<p></Instruction></p>
+<p>You’ve set the <code>variables</code> to a function which runs before the query is executed. This allows you to retrieve the information about the current page from the router (<code>this.$route.params.page</code>) and use it to calculate the chunk of links that you retrieve with <code>first</code> and <code>skip</code>.</p>
+<p>Also note that you’re including the ordering attribute <code>createdAt_DESC</code> for the <code>new</code> page to make sure the newest links are displayed first. The ordering for the <code>/top</code> route will be calculated manually based on the number of votes for each link.</p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> you also need to update the <code>updateQuery</code> method like so:</p>
+<pre class="js{8}(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>updateQuery: (previous, { subscriptionData }) =&gt; {
+  const newAllLinks = [
+    subscriptionData.data.Link.node,
+    ...previous.allLinks
+  ]
+  const result = {
+    ...previous,
+    allLinks: newAllLinks.slice(0, LINKS_PER_PAGE)
+  }
+  return result
+}</code></pre>
+<p>This change ensures that only the most recent <code>LINKS_PER_PAGE</code> links will be shown even after an update through subscriptions.</p>
+<p>You also need to define the <code>LINKS_PER_PAGE</code> constant and then import it into the <code>LinkList</code> component as well as the <code>LinkItem</code> component.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Open <code>src/constants/settings.js</code> and add the following definition:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/settings.js&quot;)"><code>export const LINKS_PER_PAGE = 5</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now add an import statement from <code>../constants/settings</code> in <code>src/components/LinkList.vue</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>import { LINKS_PER_PAGE } from &#39;../constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add an import statement from <code>../constants/settings</code> in <code>src/components/LinkItem.vue</code> as well:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>import { LINKS_PER_PAGE } from &#39;../constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p>You also need to map <code>linksPerPage</code> to <code>LINKS_PER_PAGE</code> in <code>src/components/LinkItem.vue</code>.</p>
+<p><Instruction></p>
+<p>Add a <code>data</code> property to the <code>LinkItem</code> component:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>data () {
+  return {
+    linksPerPage: LINKS_PER_PAGE
+  }
+}</code></pre>
+<p></Instruction></p>
+<h3 id="implementing-navigation">Implementing Navigation</h3>
+<p>Next, you need functionality for the user to switch between the pages. First add two <code>button</code> elements to the bottom of the <code>LinkList</code> component that can be used to navigate back and forth.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkList.vue</code> and update the <code>template</code> to look like the following:</p>
+<pre class="html(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;link-item
+        v-for=&quot;(link, index) in orderedLinks&quot;
+        :key=&quot;link.id&quot;
+        :link=&quot;link&quot;
+        :index=&quot;index&quot;
+        :pageNumber=&quot;pageNumber&quot;&gt;
+      &lt;/link-item&gt;
+    &lt;/div&gt;
+    &lt;div v-if=&quot;isNewPage&quot;&gt;
+      &lt;button v-show=&quot;!isFirstPage&quot; @click=&quot;previousPage()&quot;&gt;Previous&lt;/button&gt;
+      &lt;button v-show=&quot;morePages&quot; @click=&quot;nextPage()&quot;&gt;Next&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p></Instruction></p>
+<p>Since you added <code>pageNumber</code> as one of the <code>props</code> on <code>LinkItem</code>, you now need to add it to the <code>props</code> array of the <code>LinkItem</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkItem.vue</code> and update the <code>props</code> array to also include <code>pageNumber</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>props: [&#39;link&#39;, &#39;index&#39;, &#39;pageNumber&#39;]</code></pre>
+<p></Instruction></p>
+<p>Since the setup is slightly more complicated now, you are going to calculate the list of links to be rendered in a separate method.</p>
+<p><Instruction></p>
+<p>In <code>src/components/LinkList.vue</code>, add the following method:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>getLinksToRender (isNewPage) {
+  if (isNewPage) {
+    return this.$apollo.queries.allLinks
+  }
+  const rankedLinks = this.$apollo.queries.allLinks.slice()
+  rankedLinks.sort((l1, l2) =&gt; l2.votes.length - l1.votes.length)
+  return rankedLinks
+}</code></pre>
+<p></Instruction></p>
+<p>For the <code>isNewPage</code>, you’ll simply return all the links returned by the query. That’s logical since here you don’t have to make any manual modifications to the list that is to be rendered. If the user loaded the component from the <code>/top</code> route, you’ll sort the list according to the number of votes and return the top 10 links. This is accomplished through an <code>orderedLinks</code> computed property which you will implement next.</p>
+<p>You will make use of the <a href="https://lodash.com/">lodash</a> library within the <code>orderedLinks</code> function.</p>
+<p><Instruction></p>
+<p>Open a terminal window and within your project directory run the following command:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">npm</span> install --save lodash</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now, in <code>src/components/LinkList.vue</code> near the top of the <code>script</code> block import <code>lodash</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>import _ from &#39;lodash&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> implement the following within the <code>computed</code> object:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>orderedLinks: function () {
+  if (this.$route.path.includes(&#39;top&#39;)) {
+    return _.orderBy(this.allLinks, &#39;votes.length&#39;).reverse()
+  } else {
+    return this.allLinks
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> there are four more <code>computed</code> properties you need to add as follows:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>isFirstPage () {
+  return this.$route.params.page === &#39;1&#39;
+},
+isNewPage () {
+  return this.$route.path.includes(&#39;new&#39;)
+},
+pageNumber (index) {
+  return parseInt(this.$route.params.page, 10)
+},
+morePages () {
+  return parseInt(this.$route.params.page, 10) &lt; this.count / LINKS_PER_PAGE
+}</code></pre>
+<p></Instruction></p>
+<p>You also need to add a <code>count</code> property to the <code>LinkList</code> <code>data</code> property.</p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> add <code>count</code> to <code>data</code> and initialize it to 0:</p>
+<pre class="js{4}(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>data () {
+  return {
+    allLinks: [],
+    count: 0,
+    loading: 0
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Next, you’ll implement the functionality for the <em>Previous</em>- and <em>Next</em>-buttons.</p>
+<p><Instruction></p>
+<p>In <code>src/components/LinkList.vue</code>, add the following two methods that will be called when the buttons are pressed:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>nextPage () {
+  const page = parseInt(this.$route.params.page, 10)
+  if (page &lt; this.count / LINKS_PER_PAGE) {
+    const nextPage = page + 1
+    this.$router.push({path: `/new/${nextPage}`})
+  }
+},
+previousPage () {
+  const page = parseInt(this.$route.params.page, 10)
+  if (page &gt; 1) {
+    const previousPage = page - 1
+    this.$router.push({path: `/new/${previousPage}`})
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>The implementation of these is very simple. You’re retrieving the current page from the url and implementing a sanity check to make sure that it makes sense to paginate back or forth. Then you simply calculate the next page and tell the router where to navigate next. The router will then reload the component with a new <code>page</code> in the url that will be used to calculate the right chunk of links to load. Hop on over to the running app and use the new buttons to paginate through your list of links!</p>
+<p>You have now added a simple pagination system to the app, allowing users to load links in small chunks instead of loading them all up front.</p>
+</body>
+</html>

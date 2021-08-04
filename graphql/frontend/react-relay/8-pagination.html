@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>In this chapter, you’ll implement pagination functionality. The goal is that the user can load the links in smaller, more consumable chunks instead <em>all</em> of them at once. You’ll realize this with a <em>More</em>-button that will be placed below the list and that allows to load another chunk of links that’s then added to the list.</p>
+<h3 id="preparing-the-react-components">Preparing the React Components</h3>
+<p>As before, the first step towards this new functionality is to make adjustments to the plain React components so that you can add the actual data fetching logic later.</p>
+<p>This time, this only means adding the <em>More</em>-button at the bottom of the <code>LinkList</code> component so the user has a way to go and load more links that will be fetched and fetched to the list.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and adjust <code>render</code> to now also include the <em>More</em>-button:</p>
+<pre class="js{10-12}(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>render() {
+
+  return (
+    &lt;div&gt;
+      &lt;div&gt;
+        {this.props.viewer.allLinks.edges.map(({node}, index) =&gt; (
+          &lt;Link key={node.__id} index={index} link={node}/&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;div className=&#39;flex ml4 mv3 gray&#39;&gt;
+        &lt;div className=&#39;pointer&#39; onClick={() =&gt; this._loadMore()}&gt;More&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+
+}</code></pre>
+<p></Instruction></p>
+<p>The button invokes a method called <code>_loadMore</code> which will be used to add the actual pagination logic. Go ahead and create the stub for that method already.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, add the empty <code>_loadMore</code> method to the class:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>_loadMore() {
+  // ... you&#39;ll implement this in a bit
+}</code></pre>
+<p></Instruction></p>
+<h3 id="pagination-with-relay-modern">Pagination with Relay Modern</h3>
+<p>You already know about Relay’s <code>FragmentContainer</code> API that allows you to wrap a React component along with a GraphQL fragment that represents the component’s data dependencies and then lets Relay figure out how and when to fetch the needed data.</p>
+<p>In this chapter, you’ll get to know a new API that’s called <code>PaginationContainer</code> and that provides a nice abstraction for implementing pagination in a Relay app.</p>
+<h4 id="relay-connections">Relay Connections</h4>
+<p>As mentioned briefly in the 3rd chapter, lists in Relay are implemented using the concept of <a href="https://facebook.github.io/relay/docs/graphql-connections.html"><em>connections</em></a>.</p>
+<p>The goal of this concept is to <em>enrich</em> a simple list of items with meta information about the list itself. This meta information can be used by clients to implement more sophisticated pagination approaches than a simple <a href="https://www.postgresql.org/docs/8.2/static/queries-limit.html">limit-offset pagination</a> (also referred to as <em>numbered pages</em>).</p>
+<blockquote>
+<p>Note: The article <a href="https://dev-blog.apollodata.com/understanding-pagination-rest-graphql-and-relay-b10f835549e7">Understanding pagination: REST, GraphQL, and Relay</a> on the Apollo blog has a great overview on different pagination models.</p>
+</blockquote>
+<p>If you’ve wondered why in the previous chapters you had to do the <code>edges</code>-<code>node</code>-dance everytime you needed to access information about the items in a list that was returned by the server - this is the answer to it. Instead of directly exposing the items that are inside the list, a connection will store additional data about the <em>context</em> of each item, where context refers to the position of the item in the list as well as the parts of the list that come directly before and after it.</p>
+<p>To be more concrete, here is what the Relay server needs to provide so that a list of items is considered a connection:</p>
+<ul>
+<li>Each item in the list is wrapped in an <a href="https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types"><code>Edge</code></a> type.</li>
+<li>This <code>Edge</code> type has to expose (at least) two fields:
+<ul>
+<li><code>node</code>: Contains information about the <em>actual</em> item.</li>
+<li><code>cursor</code>: Represents the <em>position</em> of that items inside the list - note that <code>cursor</code> is represent as an <em>opaque</em> string (opaque essentially means that it can not be generated on the frontend).</li>
+</ul></li>
+<li>The connection itself needs to expose a <code>pageInfo</code> field which again needs to expose the following four fields:
+<ul>
+<li><code>hasNextPage</code>: A boolean value that indicates whether the <em>end</em> of the list was reached (only relevant when paginating <em>forward</em> through a list).</li>
+<li><code>hasPreviousPage</code>: A boolean value that indicates whether the <em>beginning</em> of the list was reached (only relevant when paginating <em>backwards</em> through a list).</li>
+<li><code>startCursor</code> &amp; <code>endCursor</code>: Represent the cursors that are associated with the first and last edges in the list of edges that’s returned for the current query.</li>
+</ul></li>
+<li>The connection also needs to expose a number of different arguments that can be used for <em>slicing</em> and <em>pagination</em>:
+<ul>
+<li><code>first</code> and <code>last</code> each expect integer values can be used to <em>slice</em> the list and only ask for a subset of the actual list</li>
+<li><code>before</code> and <code>after</code> each expect strings representing the cursor.</li>
+</ul></li>
+<li>Note that <code>Graphcool</code> also implements a <code>count</code> field on the connection itself that allows to retrieve the number of items that are currently in the list.</li>
+</ul>
+<blockquote>
+<p>For the detailed requirements, take a look at the official <a href="https://facebook.github.io/relay/graphql/connections.htm">Relay Cursor Connections Specification</a>.</p>
+</blockquote>
+<p>The last point in the list in particular enables the pagination functionality since combining either <code>first</code> and <code>after</code> (<em>forward pagination</em>) or <code>last</code> and <code>before</code> (<em>backward pagination</em>) allows to retrieve concrete chunks from the list. In fact, Relay requires them to be included when retrieving data from a connection and the Relay Compiler will throw an error if you don’t include at least <code>first</code> <em>or</em> <code>last</code> (<code>before</code> and <code>after</code> are optional). These two GitHub issues have interesting discussions around this requirement: <a href="https://github.com/facebook/relay/issues/1201">facebook/relay #1201</a> and <a href="https://github.com/graphql/graphql-relay-js/issues/20">graphql/graphql-relay-js #20</a>.</p>
+<h4 id="the-paginationcontainer-api">The <code>PaginationContainer</code> API</h4>
+<p>When using Relay’s <code>PaginationContainer</code>, it’s crucial that the Relay server adheres to the official connection specification since the implementation relies on the mentioned fields to be present. A <code>PaginationContainer</code> can be used instead of a <code>FragmentContainer</code> when requesting data from a connection and directly includes some methods that are convenient when implementing pagination:</p>
+<ul>
+<li><code>hasMore</code>: Returns a <code>boolean</code> that indicates whether there is at least one more page.</li>
+<li><code>isLoading</code>: Returns a <code>boolean</code> that indicates whether one or more requests triggered by <code>loadMore</code> are currently pending.</li>
+<li><code>loadMore</code>: Allows to load the next chunk of items for the current connection (pagination direction, <code>forward</code> or <code>backward</code> will be inferred).</li>
+<li><code>refetchConnection</code>: Allows to refetch items in the connection (with potentially new variables).</li>
+</ul>
+<p>All these methods can be called on the <code>relay</code> object that’s injected into the props of a component that’s passed into <code>createPaginationContainer</code>. You’ll see in a bit how this works.</p>
+<h3 id="using-createpaginationcontainer">Using <code>createPaginationContainer</code></h3>
+<p>That was enough background info to give you the basic grasp on Relay’s pagination functionality, you can finally go and start with the implementation!</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and replace the current export statement with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>export default createPaginationContainer(LinkList, 
+  {
+    viewer: graphql`
+      fragment LinkList_viewer on Viewer {
+        allLinks(
+          first: $count,
+          after: $after,
+          orderBy: createdAt_DESC
+        ) @connection(key: &quot;LinkList_allLinks&quot;) {
+          edges {
+            node {
+              ...Link_link
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    `,
+  },
+  { // ... this will be added soon }
+)</code></pre>
+<p></Instruction></p>
+<p>Let’s take a closer look at what’s going on there! Instead of simply passing a React component with a fragment to <code>createFragmentContainer</code> as was the case before, you’re now passing a React component along with two configuration objects to <code>createPaginationContainer</code> (the second of which is not yet implemented).</p>
+<p>The first configuration object is similar defines the fragments that express the component’s data requirements - so here it’s quite similar to the fragment that you used for the previous call to <code>createFragmentContainer</code>. Notice that instead of hardcoding the value for <code>last</code>, you’re now using a variable called <code>$count</code> that you’re passing in for the <code>first</code> argument. You need to use <code>first</code> here as you want to implement <em>forward</em> pagination. You’re also adding the <code>after</code> argument to the fragment which will receive the cursor that indicates where the list should be sliced.</p>
+<p>Another field that was added to the payload of this fragment is <code>pageInfo</code> including relevant information that’s needed for the forward pagination. If you were to implement <em>backward</em> pagination, you’d have to specify <code>hasPreviousPage</code> and <code>startCursor</code> instead.</p>
+<p>Go ahead and add the second configuration object next.</p>
+<p><Instruction></p>
+<p>Replace the empty object that only contains the <code>... this will be added soon</code> comment with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>{
+  direction: &#39;forward&#39;,
+  query: graphql`
+    query LinkListForwardQuery(
+      $count: Int!,
+      $after: String,
+    ) {
+      viewer {
+        ...LinkList_viewer
+      }
+    }
+  `,
+  getConnectionFromProps(props) {
+    return props.viewer &amp;&amp; props.viewer.allLinks
+  },
+  getFragmentVariables(previousVariables, totalCount) {
+    return {
+      ...previousVariables,
+      count: totalCount,
+    }
+  },
+  getVariables(props, paginationInfo, fragmentVariables) {
+    return {
+      count: paginationInfo.count,
+      after: paginationInfo.cursor,
+    }
+  },
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s discuss the properties of this configuration object:</p>
+<ul>
+<li><code>direction</code>: Indicates whether you want implement <code>forward</code> or <code>backward</code> pagination (these are also the only two valid values you can provide).</li>
+<li><code>query</code>: You define another query, this one will be used for all the requests triggered through <code>loadMore</code>.</li>
+<li><code>getConnectionFromProps</code>: Should return the connection you want to paginate on (this is relevant in case a component would request data from multiple connections).</li>
+<li><code>getFragmentVariables</code>: These are the variables used to read the data from the fragment.</li>
+<li><code>getVariables</code>: These are the variables to use when sending the pagination <code>query</code>.</li>
+</ul>
+<blockquote>
+<p>Note: There is not much documentation on this configuration object. However, the comments in the actual implementation <a href="https://github.com/facebook/relay/blob/0581cb39009733238d062d98388dc7ecfb683ee1/packages/react-relay/modern/ReactRelayPaginationContainer.js#L194">on GitHub</a> do provide some helpful hints.</p>
+</blockquote>
+<p>As you’re now using <code>createPaginationContainer</code> instead of <code>createFragmentContainer</code>, you also need to adjust your imports.</p>
+<p><Instruction></p>
+<p>At the top of <code>LinkList.js</code>, replace the import of <code>createFragmentContainer</code> from <code>react-relay</code> with <code>createPaginationContainer</code>.</p>
+<p></Instruction></p>
+<p>The next thing you need to do is make sure the variables returned by <code>getVariables</code> can be passed into the root query that’s used by the <code>QueryRenderer</code> at the root of the component hierarchy.</p>
+<p><Instruction></p>
+<p>Open <code>LinkListPage.js</code> and update the root query to accept the <code>$count</code> and <code>$after</code> arguments:</p>
+<pre class="js{3-4}(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>const LinkListPageQuery = graphql`
+  query LinkListPageQuery(
+    $count: Int!,
+    $after: String
+  ) {
+    viewer {
+      ...LinkList_viewer
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Since the <code>$count</code> argument is required, you have to pass a value for it to the initial call performed by the <code>QueryRenderer</code>. You do this by adding the <code>variables</code> prop to it.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkListPage.js</code> update the code of the <code>QueryRenderer</code> as follows:</p>
+<pre class="js{4-6}(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>&lt;QueryRenderer
+  environment={environment}
+  query={LinkListPageQuery}
+  variables={{
+    count: ITEMS_PER_PAGE,
+  }}
+  render={({error, props}) =&gt; {
+    if (error) {
+      return &lt;div&gt;{error.message}&lt;/div&gt;
+    } else if (props) {
+      return &lt;LinkList viewer={props.viewer} /&gt;
+    }
+    return &lt;div&gt;Loading&lt;/div&gt;
+  }}
+/&gt;</code></pre>
+<p></Instruction></p>
+<p>Notice that <code>count</code> is set to a constant here that should live where you’ve been putting all the declaration of constants.</p>
+<p><Instruction></p>
+<p>Open <code>constants.js</code> and add the following definition to it:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/constants.js&quot;)"><code>export const ITEMS_PER_PAGE = 1 // setting this only to one so you can easily test your pagination implementation</code></pre>
+<p></Instruction></p>
+<p>Then of course you also need the corresponding import statement.</p>
+<p><Instruction></p>
+<p>Back in <code>LinkListPage.js</code>, import the constant you just defined:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>import {ITEMS_PER_PAGE} from &#39;../constants&#39;</code></pre>
+<p></Instruction></p>
+<p>All right - you’re almost there! The last thing you need is actually calling Relay’s <code>loadMore</code> function to fetch the next chunk of links from the server.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and implement <code>_loadMore</code> as like so:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>_loadMore() {
+  if (!this.props.relay.hasMore()) {
+    console.log(`Nothing more to load`)
+    return
+  } else if (this.props.relay.isLoading()) {
+    console.log(`Request is already pending`)
+    return
+  }
+    
+  this.props.relay.loadMore(ITEMS_PER_PAGE)
+}</code></pre>
+<p></Instruction></p>
+<p>Notice that you’re again using <code>ITEMS_PER_PAGE</code>, so make sure to import it here as well.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code> add the following import statement at the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>import {ITEMS_PER_PAGE} from &#39;../constants&#39;</code></pre>
+<p></Instruction></p>
+<p>Perfect, that’s all the code you need to write to get the pagination to work! You can now go ahead and run the Relay Compiler and then test your implementation!</p>
+<p><Instruction></p>
+<p>In a terminal, navigate to the root directory of the project and invoke the Relay Compiler:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>relay-compiler --src ./src --schema ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>Now you can run the app with <code>yarn start</code> and load more links as needed 🙌</p>
+</body>
+</html>

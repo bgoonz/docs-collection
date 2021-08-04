@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting Started</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting Started</h1>
+</header>
+<h3 id="backend">Backend</h3>
+<p>Since this is a frontend track, we don’t want to spend too much time setting up the backend. This is why we use <a href="https://www.graph.cool/">Graphcool</a>, a service that provides a production-ready GraphQL API out-of-the-box.</p>
+<h4 id="the-data-model">The Data Model</h4>
+<p>You’ll use the <a href="https://www.graph.cool/docs/reference/cli/overview-kie1quohli/">Graphcool CLI</a> to generate the server based on the data model that we need for the app. Speaking of the data model, here is what the final version of it looks like written in the <a href="https://www.graph.cool/docs/faq/graphql-sdl-schema-definition-language-kr84dktnp0/">GraphQL Schema Definition Language</a> (SDL):</p>
+<pre class="graphql(nocopy)"><code>type User {
+  name: String!
+  links: [Link!] @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!] @relation(name: &quot;UsersVotes&quot;)
+}
+
+type Link {
+  url: String!
+  postedBy: User @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!] @relation(name: &quot;VotesOnLink&quot;)
+}
+
+type Vote {
+  user: User @relation(name: &quot;UsersVotes&quot;)
+  link: Link @relation(name: &quot;VotesOnLink&quot;)
+}</code></pre>
+<h4 id="creating-the-graphql-server">Creating the GraphQL Server</h4>
+<p>The first thing you need to do is install the Graphcool CLI with npm.</p>
+<p><Instruction></p>
+<p>Open up a terminal window and type the following:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">npm</span> install -g graphcool</a></code></pre></div>
+<p></Instruction></p>
+<blockquote>
+<p><strong>NOTE</strong>: This tutorial uses the <a href="https://www.graph.cool/docs/reference/service-definition/legacy-console-projects-aemieb1aev">legacy</a> version of <a href="https://www.graph.cool/">Graphcool</a> and will be updated soon to use the new <a href="https://blog.graph.cool/introducing-the-graphcool-framework-d9edab2a7816">Graphcool Framework</a>. The CLI commands mentioned in tutorial are outdated, you can read more about the new CLI <a href="https://www.graph.cool/docs/reference/cli/overview-kie1quohli/">here</a>. If you still want to go through this tutorial, you can install the old version of the CLI using <code>npm install -g graphcool@0.4</code>.</p>
+</blockquote>
+<p>Now you can go and create the server.</p>
+<p><Instruction></p>
+<p>Type the following command into the terminal:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">graphcool</span> init --schema https://graphqlbin.com/hn-relay.graphql --name Hackernews</a></code></pre></div>
+<p></Instruction></p>
+<p>This will execute the <code>graphcool init</code> command with two arguments:</p>
+<ul>
+<li><code>--schema</code>: This option accepts a <code>.graphql</code>-schema that’s either stored <em>locally</em> or at a <em>remote URL</em>. In your case, you’re using the schema stored at <a href="https://graphqlbin.com/hn-relay.graphql">https://graphqlbin.com/hn-relay.graphql</a>, we’ll take a look at it in a bit.</li>
+<li><code>--name</code>: This is the name of the Graphcool project you’re creating, here you’re simply calling it <code>Hackernews</code>.</li>
+</ul>
+<p>Note that this command will open up a browser window first and ask you to authenticate on the Graphcool platform.</p>
+<p>The schema that’s stored at <a href="https://graphqlbin.com/hn-relay.graphql">https://graphqlbin.com/hn-relay.graphql</a> is identical to the one that you just saw.</p>
+<p>Once the project was created, you’ll find the <a href="https://www.graph.cool/docs/reference/cli/project-files-ow2yei7mew/">Graphcool Project File</a> (<code>project.graphcool</code>) in the directory where you executed the command. It should look similar to this:</p>
+<pre class="graphql(nocopy)"><code># project: cj4liutcbackk01648jagrepi
+# version: 1
+
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type Link @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  postedBy: User @relation(name: &quot;UsersLinks&quot;)
+  updatedAt: DateTime!
+  url: String!
+  votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+  name: String!
+  updatedAt: DateTime!
+  votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)
+}
+
+type Vote @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  link: Link @relation(name: &quot;VotesOnLink&quot;)
+  updatedAt: DateTime!
+  user: User @relation(name: &quot;UsersVotes&quot;)
+}</code></pre>
+<p>The top of the file contains some metadata about the project, namely the <em>project ID</em> and the <em>version number of the schema</em>.</p>
+<p>The <a href="https://www.graph.cool/docs/reference/schema/system-artifacts-uhieg2shio/#user-type"><code>User</code></a> and <a href="https://www.graph.cool/docs/reference/schema/system-artifacts-uhieg2shio/#file-type"><code>File</code></a> types are generated by Graphcool and have some special characteristics. <code>User</code> can be used for <em>authentication</em> and <code>File</code> for <em>file management</em>.</p>
+<p>Also notice that each type has three fields called <code>id</code>, <code>createdAt</code> and <code>updatedAt</code>. These are managed by the system and read-only for you.</p>
+<h4 id="populate-the-database-graphql-playgrounds">Populate The Database &amp; GraphQL Playgrounds</h4>
+<p>Before you move on to setup the frontend, go ahead and create some initial data in the project so you’ve got something to see once you start rendering data in the app!</p>
+<p>You’ll do this by using a GraphQL <a href="https://www.graph.cool/docs/reference/console/playground-oe1ier4iej/">Playground</a> which is an interactive environment that allows you to send queries and mutations. It’s a great way to explore the capabilities of an API.</p>
+<p><Instruction></p>
+<p>Open up a terminal and navigate to the directory where <code>project.graphcool</code> is located. Then execute the following command:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">graphcool</span> playground</a></code></pre></div>
+<p></Instruction></p>
+<p>This command will read the project ID from the project file and open up a GraphQL Playground for that project in a browser.</p>
+<p>The left pane of the Playground is the <em>editor</em> that you can use to write your queries and mutations (and even subscriptions). Once you click the play button in the middle, the response to the request will be displayed in the <em>results</em> pane on the right.</p>
+<p><Instruction></p>
+<p>Copy the following two mutations into the <em>editor</em> pane:</p>
+<pre class="graphql"><code>mutation CreateGraphcoolLink {
+  createLink(
+    description: &quot;The coolest GraphQL backend 😎&quot;,
+    url: &quot;https://graph.cool&quot;) {
+    id
+  }
+}
+
+mutation CreateRelayLink {
+  createLink(
+    description: &quot;Highly performant GraphQL client from Facebook&quot;,
+    url: &quot;https://facebook.github.io/relay/&quot;) {
+    id
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Since you’re adding two mutations to the editor at once, the mutations need to have <em>operation names</em>. In your case, these are <code>CreateGraphcoolLink</code> and <code>CreateRelayLink</code>.</p>
+<p><Instruction></p>
+<p>Click the <em>Play</em>-button in the middle of the two panes and select each mutation from the dropdown exactly once.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/ZBgeq22.png" alt="Click the Play button" /><figcaption>Click the Play button</figcaption>
+</figure>
+<p>This creates two new <code>Link</code> records in the database. You can verify that the mutations actually worked by either viewing the currently stored data in the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> (simply click <em>DATA</em> in the left side-menu) or by sending the following query in the already open Playground:</p>
+<pre class="graphql"><code>{
+  allLinks {
+    id
+    description
+    url
+  }
+}</code></pre>
+<p>If everything wen well, the query will return the following data:</p>
+<pre class="graphql(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;allLinks&quot;: [
+      {
+        &quot;id&quot;: &quot;cj4jo6xxat8o901420m0yy60i&quot;,
+        &quot;description&quot;: &quot;The coolest GraphQL backend 😎&quot;,
+        &quot;url&quot;: &quot;https://graph.cool&quot;
+      },
+      {
+        &quot;id&quot;: &quot;cj4jo6z4it8on0142p7q015hc&quot;,
+        &quot;description&quot;: &quot;Highly performant GraphQL client from Facebook&quot;,
+        &quot;url&quot;: &quot;https://facebook.github.io/relay/&quot;
+      }
+    ]
+  }
+}  </code></pre>
+<h3 id="frontend">Frontend</h3>
+<h4 id="creating-the-app">Creating the App</h4>
+<p>Next, you are going to create the React project! As mentioned in the beginning, you’ll use <code>create-react-app</code> for that.</p>
+<p><Instruction></p>
+<p>If you haven’t already, you need to install <code>create-react-app</code> using npm:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">npm</span> install -g create-react-app</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, you can use it to bootstrap your React application:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">create-react-app</span> hackernews-react-relay</a></code></pre></div>
+<p></Instruction></p>
+<p>This will create a new directory called <code>hackernews-react-relay</code> that has all the basic configuration setup.</p>
+<p>Make sure everything works by navigating into the directory and starting the app:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">cd</span> hackernews-react-relay</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="ex">yarn</span> start</a></code></pre></div>
+<p>This will open a browser and navigate to <code>http://localhost:3000</code> where the app is running. If everything went well, you’ll see the following:</p>
+<figure>
+<img src="http://imgur.com/Yujwwi6.png" alt="Navigating to localhost:3000" /><figcaption>Navigating to localhost:3000</figcaption>
+</figure>
+<p><Instruction></p>
+<p>Next you should move <code>project.graphcool</code> into the <code>hackernews-react-relay</code> directory to manage everything in one place.</p>
+<p>To improve the project structure, you can now create two directories, both inside the <code>src</code> folder. The first is called <code>components</code> and will hold all our React components. Call the second one <code>styles</code>, that one is for all the CSS files.</p>
+<p>Now clean up the existing files accordingly. Move <code>App.js</code> into <code>components</code> and <code>App.css</code> as well as <code>index.css</code> into <code>styles</code>.</p>
+<p></Instruction></p>
+<p>Your project structure should now look as follows:</p>
+<pre class="bash(nocopy)"><code>.
+├── README.md
+├── node_modules
+├── project.graphcool
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+├── src
+│   ├── App.test.js
+│   ├── components
+│   │   └── App.js
+│   ├── index.js
+│   ├── logo.svg
+│   ├── registerServiceWorker.js
+│   └── styles
+│       ├── App.css
+│       └── index.css
+└── yarn.lock</code></pre>
+<p><Instruction></p>
+<p>Now that you’ve updated the structure of your project and moved <code>App.js</code> and <code>index.css</code> you need to make sure they are imported properly in <code>index.js</code>. Open <code>index.js</code> and update the import statements with the new relative paths:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/index.js&quot;)"><code>import &#39;./styles/index.css&#39;;
+import App from &#39;./components/App&#39;;</code></pre>
+<p></Instruction></p>
+<h4 id="prepare-styling">Prepare Styling</h4>
+<p>This tutorial is about the concepts of GraphQL and how you can use it from within a React application with Relay, so we want to spend the least time on styling issues. To ease up usage of CSS in this project, you’ll use the <a href="http://tachyons.io/">Tachyons</a> library which provides a number of CSS classes.</p>
+<p><Instruction></p>
+<p>Open <code>index.html</code> and add a third <code>link</code> tag right below the two existing ones that pulls in Tachyons:</p>
+<pre class="html{3}(path=&quot;.../hackernews-react-relay/public/index.html&quot;)"><code>&lt;link rel=&quot;manifest&quot; href=&quot;%PUBLIC_URL%/manifest.json&quot;&gt;
+&lt;link rel=&quot;shortcut icon&quot; href=&quot;%PUBLIC_URL%/favicon.ico&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/tachyons@4.2.1/css/tachyons.min.css&quot;/&gt;</code></pre>
+<p></Instruction></p>
+<p>Since we still want to have a bit more custom styling here and there, we also prepared some styles for you that you need to include in the project.</p>
+<p><Instruction></p>
+<p>Open <code>index.css</code> and replace its content with the following:</p>
+<pre class="css(path=&quot;.../hackernews-react-relay/src/styles/index.css&quot;)"><code>body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+input {
+  max-width: 500px;
+}
+
+.gray {
+  color: #828282;
+}
+
+.orange {
+  background-color: #ff6600;
+}
+
+.background-gray {
+  background-color: rgb(246,246,239);
+}
+
+.f11 {
+  font-size: 11px;
+}
+
+.w85 {
+  width: 85%;
+}
+
+.button {
+  font-family: monospace;
+  font-size: 10pt;
+  color: black;
+  background-color: buttonface;
+  text-align: center;
+  padding: 2px 6px 3px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonface;
+  cursor: pointer;
+  max-width: 250px;
+}</code></pre>
+<p></Instruction></p>
+<h4 id="installing-relay-dependencies">Installing Relay Dependencies</h4>
+<p>Next, you need to pull in the functionality of Relay into your project. In particular, there are three dependencies you need to install:</p>
+<ol type="1">
+<li><a href="https://github.com/facebook/relay/tree/master/packages/react-relay"><code>react-relay</code></a>: Contains major functionality of the Relay runtime and is responsible for all networking and caching tasks.</li>
+<li><a href="https://github.com/facebook/relay/tree/master/packages/relay-compiler"><code>relay-compiler</code></a>: The Relay Compiler is a tool you’ll use at <em>build time</em> to validate and optimize the GraphQL code you’re writing in the project. Read more about it in the <a href="https://facebook.github.io/relay/docs/relay-compiler.html">official docs</a>.</li>
+<li><a href="https://github.com/facebook/relay/tree/master/packages/babel-plugin-relay"><code>babel-plugin-relay</code></a>: Relay leverages a <a href="https://babeljs.io/">Babel</a> plugin to transform the GraphQL code you write in a project and bring it into the right format for the Relay Compiler. Read more about it in the <a href="https://facebook.github.io/relay/docs/babel-plugin-relay.html">official docs</a>.</li>
+</ol>
+<blockquote>
+<p><a href="https://github.com/facebook/relay/tree/master/packages">Here</a> is high-level overview on the architecture used for Relay Modern.</p>
+</blockquote>
+<p><Instruction></p>
+<p>First, install the <code>react-relay</code> package:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn add react-relay</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, go ahead and add the <code>relay-compiler</code> as a development dependency:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn add relay-compiler --dev</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, install the <code>babel-plugin-relay</code>, again only as a development dependency:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn add babel-plugin-relay --dev</code></pre>
+<p></Instruction></p>
+<h4 id="eject-from-create-react-app-to-configure-babel">Eject from <code>create-react-app</code> to configure Babel</h4>
+<p><code>create-react-app</code> hides all the build tooling configurations from you and provides a comfortable spot for starting out. However, in your case you actually need to do some custom Babel configurations to get Relay to work. So you need to <a href="https://facebook.github.io/react/blog/2016/07/22/create-apps-with-no-configuration.html#no-lock-in"><em>eject</em></a> from <code>create-react-app</code>.</p>
+<p><Instruction></p>
+<p>In the terminal, use the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn eject</code></pre>
+<p></Instruction></p>
+<p>This command essentially opens up the <em>blackbox</em> that was handed to you by <code>create-react-app</code> and let’s you do the build configuration yourself. In this case, you need to add the <code>babel-plugin-relay</code> that you installed in the previous step to the build process.</p>
+<p><Instruction></p>
+<p>Open <code>package.json</code> and add the <code>relay</code> plugin by modifying the <code>babel</code> section like so:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/package.json&quot;)"><code>&quot;babel&quot;: {
+  &quot;presets&quot;: [
+    &quot;react-app&quot;
+  ],
+  &quot;plugins&quot;: [
+    &quot;relay&quot;
+  ]
+},</code></pre>
+<p></Instruction></p>
+<p>That’s it already for the Babel configuration. Set up the Relay <code>Environment</code> in the app next!</p>
+<h4 id="creating-the-relay-environment">Creating the Relay <code>Environment</code></h4>
+<p>The <a href="https://facebook.github.io/relay/docs/relay-environment.html">Relay Environment</a> provides the core of the Relay functionality at runtime by “[bundling] together the configuration, cache storage, and network-handling that Relay needs in order to operate.”</p>
+<p>A Relay Environment needs to be instantiated with two major components:</p>
+<ol type="1">
+<li>A <code>Network</code> that knows which GraphQL server it can talk to</li>
+<li>A <code>Store</code> that takes care of the caching</li>
+</ol>
+<p><Instruction></p>
+<p>To achieve this, create new file in the project’s <code>src</code> directory called <code>Environment.js</code> and add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/environment.js&quot;)"><code>// 1
+const {
+  Environment,
+  Network,
+  RecordSource,
+  Store,
+} = require(&#39;relay-runtime&#39;)
+
+// 2
+const store = new Store(new RecordSource())
+
+// 3
+const network = Network.create((operation, variables) =&gt; {
+  // 4
+  return fetch(&#39;__RELAY_API_ENDPOINT__&#39;, {
+    method: &#39;POST&#39;,
+    headers: {
+      &#39;Accept&#39;: &#39;application/json&#39;,
+      &#39;Content-Type&#39;: &#39;application/json&#39;
+    },
+    body: JSON.stringify({
+      query: operation.text,
+      variables,
+    }),
+  }).then(response =&gt; {
+    return response.json()
+  })
+})
+
+// 5
+const environment = new Environment({
+  network,
+  store,
+})
+
+// 6
+export default environment</code></pre>
+<p></Instruction></p>
+<p>This code has been taken from the example in the <a href="https://facebook.github.io/relay/docs/relay-environment.html#a-simple-example">docs</a> and was only slightly customised.</p>
+<p>Let’s quickly discuss the commented sections to understand better what’s going on:</p>
+<ol type="1">
+<li>You first import the required JS modules that you need to instantiate and configure the <code>Environment</code>.</li>
+<li>Here you instantiate the required <code>Store</code> that will store the cached data.</li>
+<li>Now you create a <code>Network</code> that knows your GraphQL server from before, it’s instantiated with a function that returns a <code>Promise</code> of a networking call to the GraphQL API - here that’s done using <code>fetch</code>.</li>
+<li>The <code>Network</code> needs to know the server endpoint for your API. In the next step, you’ll replace the placeholder <code>__RELAY_API_ENDPOINT__</code> with your actual endpoint.</li>
+<li>With the <code>store</code> and <code>network</code> available you can instantiate the actual <code>Environment</code>.</li>
+<li>Lastly you need to export the <code>environment</code> from this module.</li>
+</ol>
+<p>There are two ways for you to get your endpoint. You can either open the <a href="https://console.graph.cool">Graphcool Console</a> and click the <em>Endoints</em>-button in the bottom-left corner. The second option is to use the CLI which is what you’ll do now.</p>
+<p><Instruction></p>
+<p>Open up a terminal to navigate to the root directory of your project (where <code>project.graphcool</code> is located) and execute the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>graphcool endpoints</code></pre>
+<p></Instruction></p>
+<p>This command will display four different endpoints that each have a specific purpose. Since you’re using Relay in this tutorial, you need to use the endpoint for the <code>Relay API</code>.</p>
+<blockquote>
+<p>Note: All endpoints follow a similar structure in that there is a fixed portion of the URL and the last part is the ID of your project. For the <code>Relay API</code>, the structure looks as follows: <code>https://api.graph.cool/relay/v1/&lt;project-id&gt;</code></p>
+</blockquote>
+<p><Instruction></p>
+<p>Copy the endpoint from the terminal output and paste it into <code>src/Environment.js</code> replacing the current placeholder <code>__RELAY_API_ENDPOINT__</code>.</p>
+<p></Instruction></p>
+<h4 id="downloading-the-schema">Downloading the Schema</h4>
+<p>Before you can start using Relay, you’ll need to download the <em>full</em> GraphQL schema into your project and make it available to the Relay Compiler.</p>
+<blockquote>
+<p>Note: There is a difference between the GraphQL schema that you saw above and a <em>full</em> GraphQL schema. The full schema is required for every GraphQL server since it defines all capabilities of the API by spelling out <a href="http://graphql.org/learn/schema/#the-query-and-mutation-types">the <code>Query</code> and <code>Mutation</code> types</a>. However, when using Graphcool, you only define a subset of this schema, namely the types of your <em>data model</em>. The rest of the schema that represents the actual API will then be generated for you.</p>
+</blockquote>
+<p>You’ll download the schema using a tool called <a href="https://github.com/graphcool/get-graphql-schema"><code>get-graphql-schema</code></a>.</p>
+<p><Instruction></p>
+<p>First, install <code>get-graphql-schema</code> with npm by typing the following command into a terminal:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1"><span class="ex">npm</span> install -g get-graphql-schema</a></code></pre></div>
+<p></Instruction></p>
+<p>Next, you need to use the endpoint for the Relay API again since that’s where <code>get-graphql-schema</code> will download the schema from.</p>
+<p><Instruction></p>
+<p>In the terminal, navigate to the root directory of your project and execute the following command, again replacing the placeholder <code>__RELAY_API_ENDPOINT__</code> with the actual URL that you also copied into <code>Environment.js</code>:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>get-graphql-schema __RELAY_API_ENDPOINT__ &gt; ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>Notice that the <code>&gt;</code> in the this command means that the output of <code>get-graphql-schema __RELAY_API_ENDPOINT__</code> will be written to a new file called <code>schema.graphql</code>. This file needs to be placed into the root directory of your project, so the project structure should now look as follows:</p>
+<pre class="{5}bash(nocopy)"><code>.
+├── README.md
+├── config
+├── node_modules
+├── project.graphcool
+├── schema.graphql
+├── package.json
+├── public
+├── src
+└── yarn.lock</code></pre>
+<p>That’s it, you’re all set to start loading some data into your app! 🚀</p>
+</body>
+</html>

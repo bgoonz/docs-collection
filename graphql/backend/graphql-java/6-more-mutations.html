@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations</h1>
+</header>
+<h2 id="voting-for-links">Voting for links</h2>
+<p>With the authentication part done, it’s time to introduce a new feature into the system - voting! The user is supposed to be able to vote for the links they like, so that later the links can be ordered by popularity. Almost like the real Hackernews!</p>
+<p>This one will require quite a few steps, so buckle up!</p>
+<ol type="1">
+<li><p>Schema needs changes first. (Surprised? … I didn’t expect so)</p>
+<p><Instruction></p>
+<p>Describe the new mutation and the related type</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Mutation {
+  #the others stay the same
+  createVote(linkId: ID, userId: ID): Vote
+}
+
+type Vote {
+    id: ID!
+    createdAt: DateTime!
+    user: User!
+    link: Link!
+}
+
+scalar DateTime</code></pre>
+<p></Instruction></p></li>
+<li><p>Create the analogous data and resolver classes.</p>
+<p><Instruction></p>
+<p>Create <code>Vote</code> and <code>VoteResolver</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/vote.java&quot;)"><code>public class Vote {
+    private final String id;
+    private final ZonedDateTime createdAt;
+    private final String userId;
+    private final String linkId;
+
+    public Vote(ZonedDateTime createdAt, String userId, String linkId) {
+        this(null, createdAt, userId, linkId);
+    }
+
+    public Vote(String id, ZonedDateTime createdAt, String userId, String linkId) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.userId = userId;
+        this.linkId = linkId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getLinkId() {
+        return linkId;
+    }
+}</code></pre>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/voteresolver.java&quot;)"><code>public class VoteResolver implements GraphQLResolver&lt;Vote&gt; {
+
+    private final LinkRepository linkRepository;
+    private final UserRepository userRepository;
+
+    public VoteResolver(LinkRepository linkRepository, UserRepository userRepository) {
+        this.linkRepository = linkRepository;
+        this.userRepository = userRepository;
+    }
+
+    public User user(Vote vote) {
+        return userRepository.findById(vote.getUserId());
+    }
+
+    public Link link(Vote vote) {
+        return linkRepository.findById(vote.getLinkId());
+    }
+}</code></pre>
+<p><Instruction></p></li>
+<li><p>Persistence gets its own class.</p>
+<p><Instruction></p>
+<p>Create <code>VoteRepository</code> to handle the boring database stuff, as usual</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/voterepository.java&quot;)"><code>public class VoteRepository {
+
+    private final MongoCollection&lt;Document&gt; votes;
+
+    public VoteRepository(MongoCollection&lt;Document&gt; votes) {
+        this.votes = votes;
+    }
+
+    public List&lt;Vote&gt; findByUserId(String userId) {
+        List&lt;Vote&gt; list = new ArrayList&lt;&gt;();
+        for (Document doc : votes.find(eq(&quot;userId&quot;, userId))) {
+            list.add(vote(doc));
+        }
+        return list;
+    }
+
+    public List&lt;Vote&gt; findByLinkId(String linkId) {
+        List&lt;Vote&gt; list = new ArrayList&lt;&gt;();
+        for (Document doc : votes.find(eq(&quot;linkId&quot;, linkId))) {
+            list.add(vote(doc));
+        }
+        return list;
+    }
+
+    public Vote saveVote(Vote vote) {
+        Document doc = new Document();
+        doc.append(&quot;userId&quot;, vote.getUserId());
+        doc.append(&quot;linkId&quot;, vote.getLinkId());
+        doc.append(&quot;createdAt&quot;, Scalars.dateTime.getCoercing().serialize(vote.getCreatedAt()));
+        votes.insertOne(doc);
+        return new Vote(
+                doc.get(&quot;_id&quot;).toString(),
+                vote.getCreatedAt(),
+                vote.getUserId(),
+                vote.getLinkId());
+    }
+
+    private Vote vote(Document doc) {
+        return new Vote(
+                doc.get(&quot;_id&quot;).toString(),
+                ZonedDateTime.parse(doc.getString(&quot;createdAt&quot;)),
+                doc.getString(&quot;userId&quot;),
+                doc.getString(&quot;linkId&quot;)
+        );
+    }
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>This is an interesting step. You need to create a new scalar type to represent an instant in time. For this, you need an instance of <code>GraphQLScalarType</code>. For reference on how to create these, you can check out the build-in types in <a href="https://github.com/graphql-java/graphql-java/blob/master/src/main/java/graphql/Scalars.java#L34"><code>graphql-java</code></a>.</p>
+<p><Instruction></p>
+<p>Create a custom date/time scalar</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/scalars.java&quot;)"><code>public class Scalars {
+
+    public static GraphQLScalarType dateTime = new GraphQLScalarType(&quot;DateTime&quot;, &quot;DataTime scalar&quot;, new Coercing() {
+        @Override
+        public String serialize(Object input) {
+            //serialize the ZonedDateTime into string on the way out
+            return ((ZonedDateTime)input).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        }
+
+        @Override
+        public Object parseValue(Object input) {
+            return serialize(input);
+        }
+
+        @Override
+        public ZonedDateTime parseLiteral(Object input) {
+            //parse the string values coming in
+            if (input instanceof StringValue) {
+                return ZonedDateTime.parse(((StringValue) input).getValue());
+            } else {
+                return null;
+            }
+        }
+    });
+}</code></pre>
+<p></Instruction></p></li>
+<li><p><code>GraphQLEndpoint</code> needs to be aware of the new repository, resolver and scalar</p>
+<p><Instruction></p>
+<p>Update the schema-building logic</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>private static final VoteRepository voteRepository;
+
+static {
+    // the rest stays
+    voteRepository = new VoteRepository(mongo.getCollection(&quot;votes&quot;));
+}
+
+private static GraphQLSchema buildSchema() {
+    return SchemaParser.newParser()
+        .file(&quot;schema.graphqls&quot;)
+        .resolvers(
+            new Query(linkRepository),
+            new Mutation(linkRepository, userRepository, voteRepository),
+            new SigninResolver(),
+            new LinkResolver(userRepository),
+            new VoteResolver(linkRepository, userRepository)) //new resolver
+        .scalars(Scalars.dateTime) //register the new scalar
+        .build()
+        .makeExecutableSchema();
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>And finally, create the new mutation resolver</p>
+<p><Instruction></p>
+<p>Implement the logic for the new mutation</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code>public Vote createVote(String linkId, String userId) {
+    ZonedDateTime now = Instant.now().atZone(ZoneOffset.UTC);
+    return voteRepository.saveVote(new Vote(now, userId, linkId));
+}</code></pre>
+<p></Instruction></p></li>
+</ol>
+<p>Phew! That was a handful! 😩 Jump back into GraphiQL to see what has changed.</p>
+<figure>
+<img src="http://i.imgur.com/yOGAMop.png" alt="View the changes in GraphiQL" /><figcaption>View the changes in GraphiQL</figcaption>
+</figure>
+</body>
+</html>

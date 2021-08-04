@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error Handling</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error Handling</h1>
+</header>
+<p>At this point, it is likely you’ve already seen an error showing up GraphiQL, so you probably have some intuition as to what happens when something goes wrong on the server. In the simplest case, if you just mistype a query you’ll see an error popping up in the dedicated <code>errors</code> field in the response.</p>
+<p>GraphQL puts an accent on consistency and predictability and, in that tone, the response from a GraphQL server always has a predictable structure, consisting the 3 fields:</p>
+<ul>
+<li>The <code>data</code> field, where the result of the operation is stored</li>
+<li>The <code>errors</code> field, where all the errors accumulated during the execution of the operation are kept</li>
+<li>An optional <code>extensions</code> field with arbitrary contents, usually meta-data about the response</li>
+</ul>
+<p>Any GraphQL server will automatically handle syntactical and validation errors and inform the client appropriately, but the exceptions encountered in the resolver functions usually require application-specific handling. With your current stack, error handling can be customized on a few different levels.</p>
+<p>At the highest level, <code>graphql-java-servlet</code> exposes a method (called <code>isClientError</code>) that decides whether an error’s message is to be sent to the client verbatim or if it is to be obscured by a generic <em>server error</em> message. By default, only syntactical and validation errors will be sent as they are. This is a reasonable default, as exception messages and stack traces can potentially reveal a lot of information best kept hidden from public view. Yet, non-informative error messages (or even too numerous messages) can have severe negative impact on the API’s usability.</p>
+<p>Check out the default behavior in GraphiQL by first asking for an non-existent <code>address</code> field of a link:</p>
+<figure>
+<img src="http://i.imgur.com/ov6c4eQ.png" alt="Arrow pointing to Field address is undefined" /><figcaption>Arrow pointing to Field address is undefined</figcaption>
+</figure>
+<p>Then check out the behavior for application-specific errors by, for example, providing a wrong password to <code>signinUser</code>:</p>
+<figure>
+<img src="http://i.imgur.com/fskuAah.png" alt="Arrow pointing to Internal Server Error(s)" /><figcaption>Arrow pointing to Internal Server Error(s)</figcaption>
+</figure>
+<p>To allow the user to properly sanitize outgoing messages, while keeping them relevant and specific, <code>graphql-java-servlet</code> exposes another extension point: the <code>GraphQLServlet#filterGraphQLErrors</code> method. By overriding this method it is possible to sanitize, filter, wrap or otherwise transform the collected errors before they’re sent to the client.</p>
+<p>One good use-case is enriching the messages with extra information useful to the client.</p>
+<p><Instruction></p>
+<p>To forward the data-fetching exception messages, while still hiding the corresponding stack traces, you should start by creating a simple wrapper class:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/sanitizederror.java&quot;)"><code>import com.fasterxml.jackson.annotation.JsonIgnore;
+import graphql.ExceptionWhileDataFetching;
+
+public class SanitizedError extends ExceptionWhileDataFetching {
+    
+    public SanitizedError(ExceptionWhileDataFetching inner) {
+        super(inner.getException());
+    }
+
+    @Override
+    @JsonIgnore
+    public Throwable getException() {
+        return super.getException();
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>This wrapper doesn’t do much - it just instructs <a href="https://github.com/FasterXML/jackson">Jackson</a> (the JSON (de)serialization library) to ignore the linked exception during serialization. This way, the stack trace won’t reach the client.</p>
+<p><Instruction></p>
+<p>Then, wrap all data-fetching exceptions by overriding <code>filterGraphQLErrors</code> in <code>GraphQLEndpoint</code>:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>@Override
+protected List&lt;GraphQLError&gt; filterGraphQLErrors(List&lt;GraphQLError&gt; errors) {
+    return errors.stream()
+            .filter(e -&gt; e instanceof ExceptionWhileDataFetching || super.isClientError(e))
+            .map(e -&gt; e instanceof ExceptionWhileDataFetching ? new SanitizedError((ExceptionWhileDataFetching) e) : e)
+            .collect(Collectors.toList());
+}</code></pre>
+<p></Instruction></p>
+<p>This way, in addition to the syntactical and validation errors, data-fetching errors will have precise messages sent to the client, but without the gritty details. All other error types will still be hidden behind a generic message.</p>
+<p>As always, verify your work in GraphiQL:</p>
+<figure>
+<img src="http://i.imgur.com/aiH4DcK.png" alt="Arrow pointing to Invalid credentials" /><figcaption>Arrow pointing to Invalid credentials</figcaption>
+</figure>
+<p>For even lower-level control, it is possible to customize the execution strategy (the way the operations are executed, modeled by the <code>ExecutionStrategy</code> interface), and override <code>ExecutionStrategy#handleDataFetchingException</code> method which translates Java exceptions into GraphQL errors.</p>
+<p>To use a custom execution strategy, change <code>GraphQLEndpoint</code>’s constructor to some like:</p>
+<pre class="java(nocopy)"><code>public GraphQLEndpoint() {
+    super(buildSchema(), new CustomExecutionStrategy());
+} </code></pre>
+</body>
+</html>

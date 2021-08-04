@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Database</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Database</h1>
+</header>
+<p>Before we jump into implementing GraphQL schema we need to setup database to save users and links, This is not supposed to be tutorial about databases in go but here is what we are going to do: * Setup MySQL * Create MySQL database * Define our models and create migrations</p>
+<h2 id="setup-mysql">Setup MySQL <a name="setup-mysql"></a></h2>
+<p>If you have docker you can run <a href="https://hub.docker.com/_/mysql">Mysql image</a> from docker and use it.</p>
+<p><Instruction></p>
+<p><code>docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=dbpass -e MYSQL_DATABASE=hackernews -d mysql:latest</code> now run <code>docker ps</code> and you should see our mysql image is running:</p>
+<pre><code>CONTAINER ID        IMAGE                                                               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+8fea71529bb2        mysql:latest                                                        &quot;docker-entrypoint.s…&quot;   2 hours ago         Up 2 hours          3306/tcp, 33060/tcp    mysql
+</code></pre>
+<h2 id="create-mysql-database">Create MySQL database <a name="create-mysql-database"></a></h2>
+<p>You have already started <code>mysql</code> instance in the previous step. Now we will need to create our <code>hackernews</code> database in that instance. To create the database run these commands.</p>
+<p><Instruction></p>
+<p><code>docker exec -it mysql bash</code></p>
+<p>It will open the bash terminal inside <code>mysql</code> instance.</p>
+<p>In the next step we will open <code>mysql</code> repl as the root user:</p>
+<p><code>mysql -u root -p</code></p>
+<p>It will ask you for root password, enter <code>dbpass</code> and enter.</p>
+<p>Now we are inside <code>mysql</code> repl. To create the database, run this command:</p>
+<p><code>CREATE DATABASE hackernews;</code></p>
+<p></Instruction></p>
+<h2 id="models-and-migrations">Models and migrations <a name="models-and-migrations"></a></h2>
+<p>We need to create migrations for our app so every time our app runs it creates tables it needs to work properly, we are going to use <a href="https://github.com/golang-migrate/migrate">golang-migrate</a> package. Create a folder structure for our database files in the project root directory:</p>
+<pre><code>go-graphql-hackernews
+--internal
+----pkg
+------db
+--------migrations
+----------mysql</code></pre>
+<p>Install go mysql driver and golang-migrate packages then create migrations:</p>
+<p><Instruction></p>
+<pre><code>go get -u github.com/go-sql-driver/mysql
+go build -tags &#39;mysql&#39; -ldflags=&quot;-X main.Version=1.0.0&quot; -o $GOPATH/bin/migrate github.com/golang-migrate/migrate/v4/cmd/migrate/
+cd internal/pkg/db/migrations/
+migrate create -ext sql -dir mysql -seq create_users_table
+migrate create -ext sql -dir mysql -seq create_links_table</code></pre>
+<p></Instruction></p>
+<p>migrate command will create two files for each migration ending with .up and .down; up is responsible for applying migration and down is responsible for reversing it. open <code>000001_create_users_table.up.sql</code> and add table for our users:</p>
+<p><Instruction></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> Users(</a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="kw">ID</span> <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span> AUTO_INCREMENT,</a>
+<a class="sourceLine" id="cb4-3" title="3">    Username <span class="dt">VARCHAR</span> (<span class="dv">127</span>) <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="kw">Password</span> <span class="dt">VARCHAR</span> (<span class="dv">127</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">ID</span>)</a>
+<a class="sourceLine" id="cb4-6" title="6">)</a></code></pre></div>
+<p></Instruction></p>
+<p>in <code>000002_create_links_table.up.sql</code>:</p>
+<p><Instruction></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> Links(</a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="kw">ID</span> <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span> AUTO_INCREMENT,</a>
+<a class="sourceLine" id="cb5-3" title="3">    Title <span class="dt">VARCHAR</span> (<span class="dv">255</span>) ,</a>
+<a class="sourceLine" id="cb5-4" title="4">    Address <span class="dt">VARCHAR</span> (<span class="dv">255</span>) ,</a>
+<a class="sourceLine" id="cb5-5" title="5">    UserID <span class="dt">INT</span> ,</a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (UserID) <span class="kw">REFERENCES</span> Users(<span class="kw">ID</span>) ,</a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">ID</span>)</a>
+<a class="sourceLine" id="cb5-8" title="8">)</a></code></pre></div>
+<p></Instruction></p>
+<p>We need one table for saving links and one table for saving users, Then we apply these to our database using migrate command. Run this command in your project root directory.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">  <span class="ex">migrate</span> -database mysql://root:dbpass@/hackernews -path internal/pkg/db/migrations/mysql up</a></code></pre></div>
+<p>Last thing is that we need a connection to our database, for this we create a mysql.go under mysql folder(We name this file after mysql since we are now using mysql and if we want to have multiple databases we can add other folders) with a function to initialize connection to database for later use.</p>
+<p><Instruction></p>
+<p><code>internal/pkg/db/mysql/mysql.go</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">package</span> database</a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">import</span> (</a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="st">&quot;database/sql&quot;</span></a>
+<a class="sourceLine" id="cb7-5" title="5">    _ <span class="st">&quot;github.com/go-sql-driver/mysql&quot;</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="st">&quot;github.com/golang-migrate/migrate&quot;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="st">&quot;github.com/golang-migrate/migrate/database/mysql&quot;</span></a>
+<a class="sourceLine" id="cb7-8" title="8">    _ <span class="st">&quot;github.com/golang-migrate/migrate/source/file&quot;</span></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="st">&quot;log&quot;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">)</a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="kw">var</span> Db *sql.DB</a>
+<a class="sourceLine" id="cb7-13" title="13"></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="kw">func</span> InitDB() {</a>
+<a class="sourceLine" id="cb7-15" title="15">    <span class="co">// Use root:dbpass@tcp(172.17.0.2)/hackernews, if you&#39;re using Windows.</span></a>
+<a class="sourceLine" id="cb7-16" title="16">    db, err := sql.Open(<span class="st">&quot;mysql&quot;</span>, <span class="st">&quot;root:dbpass@tcp(localhost)/hackernews&quot;</span>)</a>
+<a class="sourceLine" id="cb7-17" title="17">    <span class="kw">if</span> err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb7-18" title="18">        log.Panic(err)</a>
+<a class="sourceLine" id="cb7-19" title="19">    }</a>
+<a class="sourceLine" id="cb7-20" title="20"></a>
+<a class="sourceLine" id="cb7-21" title="21">    <span class="kw">if</span> err = db.Ping(); err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb7-22" title="22">        log.Panic(err)</a>
+<a class="sourceLine" id="cb7-23" title="23">    }</a>
+<a class="sourceLine" id="cb7-24" title="24">    Db = db</a>
+<a class="sourceLine" id="cb7-25" title="25">}</a>
+<a class="sourceLine" id="cb7-26" title="26"></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="kw">func</span> Migrate() {</a>
+<a class="sourceLine" id="cb7-28" title="28">    <span class="kw">if</span> err := Db.Ping(); err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb7-29" title="29">        log.Fatal(err)</a>
+<a class="sourceLine" id="cb7-30" title="30">    }</a>
+<a class="sourceLine" id="cb7-31" title="31">    driver, _ := mysql.WithInstance(Db, &amp;mysql.Config{})</a>
+<a class="sourceLine" id="cb7-32" title="32">    m, _ := migrate.NewWithDatabaseInstance(</a>
+<a class="sourceLine" id="cb7-33" title="33">        <span class="st">&quot;file://internal/pkg/db/migrations/mysql&quot;</span>,</a>
+<a class="sourceLine" id="cb7-34" title="34">        <span class="st">&quot;mysql&quot;</span>,</a>
+<a class="sourceLine" id="cb7-35" title="35">        driver,</a>
+<a class="sourceLine" id="cb7-36" title="36">    )</a>
+<a class="sourceLine" id="cb7-37" title="37">    <span class="kw">if</span> err := m.Up(); err != <span class="ot">nil</span> &amp;&amp; err != migrate.ErrNoChange {</a>
+<a class="sourceLine" id="cb7-38" title="38">        log.Fatal(err)</a>
+<a class="sourceLine" id="cb7-39" title="39">    }</a>
+<a class="sourceLine" id="cb7-40" title="40"></a>
+<a class="sourceLine" id="cb7-41" title="41">}</a></code></pre></div>
+<p></Instruction></p>
+<p><code>InitDB</code> Function creates a connection to our database and <code>Migrate</code> function runs migrations file for us. In `Migrate function we apply migrations just like we did with command line but with this function your app will always apply the latest migrations before start.</p>
+<p>Then call <code>InitDB</code> and <code>Migrate</code>(Optional) In main func to create database connection at the start of the app:</p>
+<p><Instruction></p>
+<p><code>server.go</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb8-1" title="1"></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">func</span> main() {</a>
+<a class="sourceLine" id="cb8-3" title="3">    port := os.Getenv(<span class="st">&quot;PORT&quot;</span>)</a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="kw">if</span> port == <span class="st">&quot;&quot;</span> {</a>
+<a class="sourceLine" id="cb8-5" title="5">        port = defaultPort</a>
+<a class="sourceLine" id="cb8-6" title="6">    }</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8">    router := chi.NewRouter()</a>
+<a class="sourceLine" id="cb8-9" title="9"></a>
+<a class="sourceLine" id="cb8-10" title="10">    database.InitDB()</a>
+<a class="sourceLine" id="cb8-11" title="11">    database.Migrate()</a>
+<a class="sourceLine" id="cb8-12" title="12">    server := handler.NewDefaultServer(hackernews.NewExecutableSchema(hackernews.Config{Resolvers: &amp;hackernews.Resolver{}}))</a>
+<a class="sourceLine" id="cb8-13" title="13">    router.Handle(<span class="st">&quot;/&quot;</span>, playground.Handler(<span class="st">&quot;GraphQL playground&quot;</span>, <span class="st">&quot;/query&quot;</span>))</a>
+<a class="sourceLine" id="cb8-14" title="14">    router.Handle(<span class="st">&quot;/query&quot;</span>, server)</a>
+<a class="sourceLine" id="cb8-15" title="15"></a>
+<a class="sourceLine" id="cb8-16" title="16">    log.Printf(<span class="st">&quot;connect to http://localhost:%s/ for GraphQL playground&quot;</span>, port)</a>
+<a class="sourceLine" id="cb8-17" title="17">    log.Fatal(http.ListenAndServe(<span class="st">&quot;:&quot;</span>+port, router))</a>
+<a class="sourceLine" id="cb8-18" title="18">}</a></code></pre></div>
+<p></Instruction></p>
+</body>
+</html>

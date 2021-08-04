@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Realtime Updates with Subscriptions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Realtime Updates with Subscriptions</h1>
+</header>
+<p>The goal of this chapter is to add realtime functionality to the app using <a href="http://graphql.org/blog/subscriptions-in-graphql-and-relay/">GraphQL subscriptions</a>. In particular, you’re going to make sure that when other users vote on a link, the link’s vote count updates immediately in the app for all other users without the need to refresh the page.</p>
+<h3 id="what-are-graphql-subscriptions">What are GraphQL Subscriptions?</h3>
+<p>GraphQL subscriptions allow you to add event-based realtime functionality to your app. A client can <em>subscribe</em> to specific events that are happening on the server-side. Then, whenenever that event actually happens, the server will send the corresponding data over to the client.</p>
+<p>Events usually refer to mutations, so typically we’re talking about events where data was created, updated or deleted.</p>
+<p>Subscriptions are somewhat different from queries and mutations, since they don’t follow a <em>request-response-cycle</em> but instead represent a <em>stream</em> of data. The most common way to implement subscriptions is by using WebSockets, where the server maintains a steady connection to the subscribed clients that it uses to send over the data upon each event.</p>
+<h3 id="subscriptions-with-relay-modern">Subscriptions with Relay Modern</h3>
+<h4 id="subscription-api">Subscription API</h4>
+<p>Subscription support was only added to Relay with the release of Relay Modern. Client can now use the <a href="https://facebook.github.io/relay/docs/subscriptions.html"><code>requestSubscription</code></a> function to initiate a subscription.</p>
+<p><code>requestSubscription</code> works very similar to the <code>commitMutation</code> function as it also allows you to implement an <code>updater</code> functions to specify how you want the cache to update based on the new data that was received from the server.</p>
+<p>However, in order to get <code>requestSubscription</code> to work, you also need to configure your Relay <code>Environment</code> accordingly and provide the URL for your subscription endpoint. If subscriptions are implemented with WebSockets, the subscriptions URL will contain the <code>wss</code> protocol instead of <code>http</code>.</p>
+<h4 id="using-subscriptions-with-graphcool-and-relay-modern">Using Subscriptions with Graphcool and Relay Modern</h4>
+<p>Graphcool generally exposes two different GraphQL APIs whose type definitions slitghly vary:</p>
+<ul>
+<li>Simple API: Intuitive API to provide CRUD-style capabilities for all model types</li>
+<li>Relay API: Adheres to the requirements that Relay has for a GraphQL schema</li>
+</ul>
+<p>Currently, subscriptions are only supported for the Simple API. However, you can still use subscriptions with the Relay API by making some manual adjustments to the <code>schema.graphql</code> which you feed into the <code>relay-compiler</code>.</p>
+<p>Notice that we already did these manual adjustments for you and you already have them in your project as you imported the project from <a href="https://graphqlbin.com/hn-relay-full.graphql">this URL</a> in chapter 3. If you’re interested in what these changes actually look like, take a look at the <code>Subscription</code> type in <code>schema.grahpql</code>.</p>
+<h3 id="configuring-the-relay-environment">Configuring the Relay Environment</h3>
+<p>The first thing you need to do to get subscriptions to work is add websocket support to your project.</p>
+<p><Instruction></p>
+<p>In a terminal, navigate to the root directory of your project and execute the following command</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn add subscriptions-transport-ws@0.8.3</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>Note: We’re using a version 0.8.3 of the <code>subscriptions-transport-ws</code> package to be able to use the <code>SubscriptionClient</code>. The tutorial will soon be updated to use the latest APIs.</p>
+</blockquote>
+<p>This package contains the <code>SubscriptionClient</code> that you need to setup subscriptions on the frontend. The <code>SubscriptionClient</code> is a good fit in this case as it implements the same <a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md">protocol</a> as the subscriptions API from Graphcool.</p>
+<p>Next you’ll have to configure your Relay <code>Environment</code> and tell it about the additional endpoint that you want to use for subscriptions. The way how this works is actually by adding a second function to the creation of the <code>Network</code>. This function knows about the subscription endpoint and is able to initiate and maintain a connection to it.</p>
+<p><Instruction></p>
+<p>Open <code>Environment.js</code> and replace the current created of <code>network</code> with the following code:</p>
+<pre class="js(path=&quot;.../hackernews-reat-relay/src/environment.js&quot;)"><code>//1
+const fetchQuery = (operation, variables) =&gt; {
+  return fetch(&#39;https://api.graph.cool/relay/v1/__PROJECT_ID__&#39;, {
+    method: &#39;POST&#39;,
+    headers: {
+      &#39;Accept&#39;: &#39;application/json&#39;,
+      &#39;Content-Type&#39;: &#39;application/json&#39;,
+      &#39;Authorization&#39;: `Bearer ${localStorage.getItem(GC_AUTH_TOKEN)}`
+    },
+    body: JSON.stringify({
+      query: operation.text,
+      variables,
+    }),
+  }).then(response =&gt; {
+    return response.json()
+  })
+}
+
+// 2
+const setupSubscription = (config, variables, cacheConfig, observer) =&gt; {
+  const query = config.text
+
+  const subscriptionClient = new SubscriptionClient(&#39;wss://subscriptions.__REGION__.graph.cool/v1/__PROJECT_ID__&#39;, {reconnect: true})
+  subscriptionClient.subscribe({query, variables}, (error, result) =&gt; {
+    observer.onNext({data: result})
+  })
+}
+
+// 3
+const network = Network.create(fetchQuery, setupSubscription)</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly understand what’s going on there:</p>
+<ol type="1">
+<li>Instead of passing a closure directly into <code>Network.create()</code>, you just pull out the code of that closure and store it in a variable called <code>fetchQuery</code>. Note that you’ll have to replace <code>__PROJECT_ID__</code> again with your actual project ID.<br />
+</li>
+<li>Here you define the second function called <code>setupSubscription</code> that the <code>Network</code> needs in order to be able to talk to the subscriptions endpoint. You’re using the <code>SubscriptionClient</code> in that function to initiate and maintain a connection to the given endpoint. The <code>config</code> that’s passed into the function carries the subscription query which determines what event the client wants to subscribe to and what data it wants to receive. Note that again you need to replace the placeholder for <code>__PROJECT_ID__</code> with the actual ID of your Graphcool project. Also, you need to replace the placeholder for <code>__REGION__</code> with the AWS region that your graphcool API endpoint is served from.</li>
+<li>Finally, we take <code>fetchQuery</code> (which is the same code as before but stored in a variable) and <code>setupSubscription</code> and use them to create the <code>Network</code>, which then will be used to instantiate the Relay <code>Environment</code>.</li>
+</ol>
+<blockquote>
+<p>If you’re not sure what your Graphcool project ID is that you need to replace the <code>__PROJECT_ID__</code>, you can open <code>project.graphcool</code> and check its frontmatter or execute <code>graphcool endpoints</code> in a terminal to see the endpoints for the Relay API and Subscriptions API.</p>
+</blockquote>
+<blockquote>
+<p>To find the <code>__REGION__</code> your endpoint is served from, go to your Graphcool console. Click the <strong>Endpoints</strong>-button in the bottom-left corner, go to <code>Subscriptions API</code> and replace <code>__REGION__</code> with the region mentioned there (example: ‘wss://subscriptions.<code>ap-northeast-1</code>.graph.cool/v1/<strong>PROJECT_ID</strong>’)</p>
+</blockquote>
+<p><Instruction></p>
+<p>For this code to work, you of course also need to import the <code>SubscriptionClient</code>. Add the following statement to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-reat-relay/src/environment.js&quot;)"><code>import { SubscriptionClient } from &#39;subscriptions-transport-ws&#39;</code></pre>
+<p></Instruction></p>
+<p>Awesome, your app is now capable of using subscriptions! ⚡️</p>
+<h3 id="creating-the-subscription">Creating the Subscription</h3>
+<p>Similar to what you did with the mutations before, you’ll implement each subscription in a dedicated file to provide a more convenient wrapper around the <code>requestSubscription</code> function that’s provided by Relay.</p>
+<p><Instruction></p>
+<p>First, create a new directory inside <code>src</code> and call it <code>subscriptions</code>. Then create a new file, called <code>NewVoteSubscription.js</code>, inside that directory and add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-reat-relay/src/subscriptions/newvotesubscription.js&quot;)"><code>import {
+  graphql,
+  requestSubscription
+} from &#39;react-relay&#39;
+import environment from &#39;../Environment&#39;
+
+const newVoteSubscription = graphql`
+  subscription NewVoteSubscription {
+    # 1
+    Vote {
+      # 2
+      node {
+        id
+        user {
+          id
+        }    
+        link {
+          id
+          _votesMeta {
+            count
+          }
+        }    
+      }
+    }
+  }
+`
+
+// 3
+export default () =&gt; {
+
+  const subscriptionConfig = {
+    subscription: newVoteSubscription,
+    variables: {},
+    updater: proxyStore =&gt; {
+      const createVoteField = proxyStore.getRootField(&#39;Vote&#39;)
+      const newVote = createVoteField.getLinkedRecord(&#39;node&#39;)
+      const updatedLink = newVote.getLinkedRecord(&#39;link&#39;)
+      const linkId = updatedLink.getValue(&#39;id&#39;)
+      const newVotes = updatedLink.getLinkedRecord(&#39;_votesMeta&#39;)
+      const newVoteCount = newVotes.getValue(&#39;count&#39;)
+
+      const link = proxyStore.get(linkId)
+      link.getLinkedRecord(&#39;votes&#39;).setValue(newVoteCount, &#39;count&#39;)
+    },
+    onError: error =&gt; console.log(`An error occured:`, error)
+  }
+
+  requestSubscription(
+    environment,
+    subscriptionConfig
+  )
+
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s take a closer look at the subscription query that you’re storing in <code>newVoteSubscription</code> first:</p>
+<ol type="1">
+<li>The root field of the subscription and the belonging filter express the event that you’re interested in. Here, you specify that you are interested all events that are happening on the <code>Vote</code> type.</li>
+<li>In the payload of the subscription query, you’re then including information about the new <code>Vote</code> that was created, this information is represented by the <code>node</code> field. Every time a vote is submitted by another user, the server will send information about that new vote, including the <code>id</code> of the <code>user</code> who created it and the total number of votes on the corresponding link (<code>link._votesMeta</code>).</li>
+<li>Finally, this part is similar to what you already did for the mutations: You’re exporting a function that can be called from anywhere in the application and which actually submits the subscription to the server by wrapping the <code>requestSubscription</code> function. Notice that you’re using the <code>updater</code> to increase the number of votes for the link that was voted on.</li>
+</ol>
+<h3 id="initiating-the-subscription">Initiating the Subscription</h3>
+<p>Now that you have all required infrastructure setup, you can go ahead and actually iniate a subscription! For our project, it’s not too important where exactly the subscription is invoked as there are no context-dependent arguments that the subscription needs. However, it is important that the subscription only gets invoked once, so you don’t want to put it into the <code>Link</code> component where it would be invoked as many times as <code>Link</code> elements are rendered. You’ll therefore put it into the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add an implementation of <code>componentDidMount</code> as follows:</p>
+<pre class="js(path=&quot;.../hackernews-reat-relay/src/components/linklist.js&quot;)"><code>componentDidMount() {
+  NewVoteSubscription()
+}</code></pre>
+<p></Instruction></p>
+<p>Then of course you also need to add the corresponding import.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, add the required import statement to the top:</p>
+<pre class="js(path=&quot;.../hackernews-reat-relay/src/components/linklist.js&quot;)"><code>import NewVoteSubscription from &#39;../subscriptions/NewVoteSubscription&#39;</code></pre>
+<p></Instruction></p>
+<p>Before you’re running the app, you’ll need to invoke the Relay Compiler again so it can compile the <code>graphql</code>-tagged code inside <code>NewVoteSubscription.js</code>.</p>
+<p><Instruction></p>
+<p>In a terminal, navigate to the root directory of the project and run the Relay Compiler:</p>
+<pre class="bash(path=&quot;.../hackernews-reat-relay&quot;)"><code>relay-compiler --src ./src --schema schema.graphql</code></pre>
+<p></Instruction></p>
+<p>All right, you can now run the app with <code>yarn start</code> to test your subscription. The best way to test subscriptions is to use two different windows (or simply tabs) that are both running the app. If you then submit a vote in one window, the app should automatically update in the second window as well. 🎉</p>
+<figure>
+<img src="http://imgur.com/Rp4lYBS.gif" alt="Run the app with yarn start" /><figcaption>Run the app with yarn start</figcaption>
+</figure>
+</body>
+</html>

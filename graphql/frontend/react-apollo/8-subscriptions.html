@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Realtime Updates with GraphQL Subscriptions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Realtime Updates with GraphQL Subscriptions</h1>
+</header>
+<p>This section is all about bringing realtime functionality into the app by using GraphQL subscriptions.</p>
+<h3 id="what-are-graphql-subscriptions">What are GraphQL Subscriptions?</h3>
+<p>Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific <em>event</em> happens. Subscriptions are usually implemented with <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, where the server holds a steady connection to the client. This means when working with subscriptions, we’re breaking the <em>Request-Response</em> cycle that is typically used for interactions with the API. Instead, the client now initiates a steady connection with the server by specifying which event it is interested in. Every time this particular event then happens, the server uses the connection to push the expected data to the client.</p>
+<h3 id="subscriptions-with-apollo">Subscriptions with Apollo</h3>
+<p>When using Apollo, we need to configure our <code>ApolloClient</code> with information about the subscriptions endpoint. This is done by adding another <code>ApolloLink</code> to the Apollo middleware chain. This time, it’s the <code>WebSocketLink</code> from the <a href="https://github.com/apollographql/apollo-link/tree/master/packages/apollo-link-ws"><code>@apollo/client/link/ws</code></a> package.</p>
+<p>To get started, add <code>subscriptions-transport-ws</code> as a dependency to the app.</p>
+<p><Instruction></p>
+<p>Open a terminal and navigate to the project’s root directory. Then execute the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-apollo&quot;)"><code>yarn add subscriptions-transport-ws</code></pre>
+<p></Instruction></p>
+<p>Next, let’s make sure our <code>ApolloClient</code> instance knows about the subscription server.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add the following imports to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/index.js&quot;)"><code>import { split } from &#39;@apollo/client&#39;;
+import { WebSocketLink } from &#39;@apollo/client/link/ws&#39;;
+import { getMainDefinition } from &#39;@apollo/client/utilities&#39;;</code></pre>
+<p>Let’s now create a new <code>WebSocketLink</code> that represents the WebSocket connection. We’ll use <code>split</code> for proper “routing” of the requests and update the constructor call of <code>ApolloClient</code> like so:</p>
+<p>``<code>js{1-9, 11-21}(path=".../hackernews-react-apollo/src/index.js") const wsLink = new WebSocketLink({   uri:</code>ws://localhost:4000/graphql`, options: { reconnect: true, connectionParams: { authToken: localStorage.getItem(AUTH_TOKEN) } } });</p>
+<p>const link = split( ({ query }) =&gt; { const { kind, operation } = getMainDefinition(query); return ( kind === ‘OperationDefinition’ &amp;&amp; operation === ‘subscription’ ); }, wsLink, authLink.concat(httpLink) );</p>
+<p>const client = new ApolloClient({ link, cache: new InMemoryCache() }); ```</p>
+<p></Instruction></p>
+<p>We’re instantiating a <code>WebSocketLink</code> that knows about the <strong>subscriptions</strong> endpoint. The <strong>subscriptions</strong> endpoint in this case is similar to the HTTP endpoint, except that it uses the <code>ws</code> (WebSocket) protocol instead of <code>http</code>. Notice that we’re also authenticating the WebSocket connection with the user’s <code>token</code> that we retrieve from <code>localStorage</code>.</p>
+<p><a href="https://github.com/apollographql/apollo-link/blob/98eeb1deb0363384f291822b6c18cdc2c97e5bdb/packages/apollo-link/src/link.ts#L33"><code>split</code></a> is used to “route” a request to a specific middleware link. It takes three arguments, the first one is a <code>test</code> function which returns a boolean. The remaining two arguments are again of type <code>ApolloLink</code>. If <code>test</code> returns <code>true</code>, the request will be forwarded to the link passed as the second argument. If <code>false</code>, to the third one.</p>
+<p>In our case, the <code>test</code> function is checking whether the requested operation is a <em>subscription</em>. If it is, it will be forwarded to the <code>wsLink</code>, otherwise (if it’s a <em>query</em> or <em>mutation</em>), the <code>authLink.concat(httpLink)</code> will take care of it:</p>
+<p><img src="https://cdn-images-1.medium.com/max/720/1*KwnMO21k0d3UbyKWnlbeJg.png" alt="Apollo Link" /> <em>Picture taken from <a href="https://dev-blog.apollodata.com/apollo-link-the-modular-graphql-network-stack-3b6d5fcf9244">Apollo Link: The modular GraphQL network stack</a> by <a href="https://twitter.com/EvansHauser">Evans Hauser</a></em></p>
+<h3 id="subscribing-to-new-links">Subscribing to New links</h3>
+<p>For the app to update in realtime when new links are created, we need to subscribe to events that are happening on the <code>Link</code> type. We’ll implement the subscription in the <code>LinkList</code> component since that’s where all the links are rendered.</p>
+<p><Instruction></p>
+<p>The <code>useQuery</code> hook provided by Apollo gives us access to a function called <code>subscribeToMore</code>. We can destructure this function out and use it to act on new data that comes in over a subscription. This will give us the effect of making our app “realtime”.</p>
+<p>Open <code>LinkList.js</code> and update current component as follow:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>const getQueryVariables = (isNewPage, page) =&gt; {
+  const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
+  const take = isNewPage ? LINKS_PER_PAGE : 100;
+  const orderBy = { createdAt: &#39;desc&#39; };
+  return { take, skip, orderBy };
+};
+
+const LinkList = () =&gt; {
+  const history = useHistory();
+  const isNewPage = history.location.pathname.includes(
+    &#39;new&#39;
+  );
+  const pageIndexParams = history.location.pathname.split(
+    &#39;/&#39;
+  );
+  const page = parseInt(
+    pageIndexParams[pageIndexParams.length - 1]
+  );
+
+  const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
+
+  const {
+    data,
+    loading,
+    error,
+    subscribeToMore
+  } = useQuery(FEED_QUERY, {
+    variables: getQueryVariables(isNewPage, page)
+  });
+
+  subscribeToMore({
+    // ...
+  });
+
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>The <code>subscribeToMore</code> function takes a single object as an argument. This object requires configuration for how to listen for and respond to a subscription.</p>
+<p>At the very least, we need to pass a subscription document to the <code>document</code> key in this object. This is a GraphQL document where we define our subscription.</p>
+<p>We can also pass a field called <code>updateQuery</code> which can be used to update the cache, much like we would do in a mutation.</p>
+<p>Let’s get started by providing the complete configuration we need for <code>subscribeToMore</code> to function properly.</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>// ...
+
+subscribeToMore({
+  document: NEW_LINKS_SUBSCRIPTION,
+  updateQuery: (prev, { subscriptionData }) =&gt; {
+    if (!subscriptionData.data) return prev;
+    const newLink = subscriptionData.data.newLink;
+    const exists = prev.feed.links.find(
+      ({ id }) =&gt; id === newLink.id
+    );
+    if (exists) return prev;
+
+    return Object.assign({}, prev, {
+      feed: {
+        links: [newLink, ...prev.feed.links],
+        count: prev.feed.links.length + 1,
+        __typename: prev.feed.__typename
+      }
+    });
+  }
+});</code></pre>
+<p><Instruction></p>
+<p>The last thing we need to do for this to work is add the <code>NEW_LINKS_SUBSCRIPTION</code> to the top of the file:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>const NEW_LINKS_SUBSCRIPTION = gql`
+  subscription {
+    newLink {
+      id
+      url
+      description
+      createdAt
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`;</code></pre>
+<p></Instruction></p>
+<p>Awesome, that’s it! We can test our implementation by opening two browser windows. In the first window, we have our application running on <code>http://localhost:3000/</code>. In the second window, we can open the GraphQL Playground and send a <code>post</code> mutation. When we send the mutation, we see the app update in realtime! ⚡️</p>
+<h3 id="subscribing-to-new-votes">Subscribing to New Votes</h3>
+<p>We can also subscribe to new votes that are submitted by other users so that the latest vote count is always visible in the app.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add the following method to the <code>LinkList</code> component:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>subscribeToMore({
+  document: NEW_VOTES_SUBSCRIPTION
+});</code></pre>
+<p></Instruction></p>
+<p>Similar to what we did before, we’re calling <code>subscribeToMore</code> but now using <code>NEW_VOTES_SUBSCRIPTION</code> as the document. This time, we’re passing in a subscription that asks for newly created votes. When the subscription fires, Apollo Client automatically updates the link that was voted on.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code> add the <code>NEW_VOTES_SUBSCRIPTION</code> to the top of the file:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription {
+    newVote {
+      id
+      link {
+        id
+        url
+        description
+        createdAt
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`;</code></pre>
+<p></Instruction></p>
+<p>Fantastic! Our app is now ready for realtime and will immediately update links and votes whenever they’re created by other users.</p>
+</body>
+</html>

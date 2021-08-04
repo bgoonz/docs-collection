@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Routing</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Routing</h1>
+</header>
+<p>In this section, you’ll learn how to use the <a href="https://github.com/vuejs/vue-router"><code>vue-router</code></a> library with Apollo to implement some navigation functionality!</p>
+<h3 id="create-a-header">Create a Header</h3>
+<p>Before moving on to configure the different routes for your application, you need to create an <code>AppHeader</code> component that users can use to navigate between the different parts of your app.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/components</code> and call it <code>AppHeader.vue</code>. Then paste the following code inside of it:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/appheader.vue&quot;)"><code>&lt;template&gt;
+  &lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+    &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+      &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+      &lt;router-link to=&quot;/&quot; class=&quot;ml1 no-underline black&quot;&gt;new&lt;/router-link&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;router-link to=&quot;/create&quot; class=&quot;ml1 no-underline black&quot;&gt;submit&lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    name: &#39;AppHeader&#39;
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>This simply renders two <code>RouterLink</code> components that users can use to navigate between the <code>LinkList</code> and the <code>CreateLink</code> components.</p>
+<h3 id="setup-routes">Setup routes</h3>
+<p>You’ll configure the different routes for the app in <code>src/router/index.js</code>.</p>
+<p><Instruction></p>
+<p>Open the corresponding file <code>src/router/index.js</code> and update the code to match the following:</p>
+<pre class="js{4-6,11-23}(path=&quot;.../hackernews-vue-apollo/src/router/index.js&quot;)"><code>import Vue from &#39;vue&#39;
+import Router from &#39;vue-router&#39;
+
+// 1
+import CreateLink from &#39;../components/CreateLink&#39;
+import LinkList from &#39;../components/LinkList&#39;
+
+Vue.use(Router)
+
+export default new Router({
+  // 2
+  routes: [
+    {
+      path: &#39;/&#39;,
+      component: LinkList
+    },
+    {
+      path: &#39;/create&#39;,
+      component: CreateLink
+    }
+  ],
+  // 3
+  mode: &#39;history&#39;
+})</code></pre>
+<p></Instruction></p>
+<p>Let’s take a closer look to better understand what’s going on:</p>
+<ol type="1">
+<li>Here you import the <code>CreateLink</code> and <code>LinkList</code> components which will be rendered for different routes</li>
+<li>Here you map each route to the component that should be rendered</li>
+<li>Here you set mode to ‘history’ to remove the hash from the URLs</li>
+</ol>
+<p>You now need to make some small updates to <code>src/main.js</code>.</p>
+<p><Instruction></p>
+<p>Open up <code>src/main.js</code> and add the following import:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import router from &#39;./router&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/main.js</code>, add <code>router</code> to the Vue instance:</p>
+<pre class="js{4}(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>new Vue({
+  el: &#39;#app&#39;,
+  provide: apolloProvider.provide(),
+  router,
+  render: h =&gt; h(App)
+})</code></pre>
+<p></Instruction></p>
+<p>You need to update one more file, <code>src/App.vue</code>.</p>
+<p><Instruction></p>
+<p>In <code>src/App.vue</code> update your template to the following (<code>router-view</code> is where the component for the current route will be rendered):</p>
+<pre class="html{6}(path=&quot;.../hackernews-vue-apollo/src/app.vue&quot;)"><code>&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;div class=&quot;center w85&quot;&gt;
+      &lt;app-header&gt;&lt;/app-header&gt;
+      &lt;div class=&#39;ph3 pv1 background-gray&#39;&gt;
+        &lt;router-view&gt;&lt;/router-view&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/App.vue</code>, import <code>AppHeader</code> and add it to the <code>components</code> object, and remove <code>CreateLink</code> and <code>LinkList</code>. Your <code>script</code> block should now look like this:</p>
+<pre class="js{2,7}(path=&quot;.../hackernews-vue-apollo/src/app.vue&quot;)"><code>&lt;script&gt;
+  import AppHeader from &#39;./components/AppHeader&#39;
+
+  export default {
+    name: &#39;app&#39;,
+    components: {
+      AppHeader
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>That’s it. You can now access two URLs: <code>http://localhost:8080/</code> will render <code>LinkList</code> and <code>http://localhost:8080/create</code> will render the <code>CreateLink</code> component you just wrote in the previous section.</p>
+<figure>
+<img src="http://imgur.com/bcHzt5W.gif" alt="Access the app at localhost:8080" /><figcaption>Access the app at localhost:8080</figcaption>
+</figure>
+<h3 id="implement-navigation">Implement navigation</h3>
+<p>To wrap up this section, you need to implement an automatic redirect from <code>CreateLink</code> to <code>LinkList</code> after a mutation is performed.</p>
+<p><Instruction></p>
+<p>First, open <code>src/components/CreateLink.vue</code> and add <code>ALL_LINKS_QUERY</code> to your imports like so:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/createlink.vue&quot;)"><code>import { ALL_LINKS_QUERY, CREATE_LINK_MUTATION } from &#39;../constants/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/CreateLink.vue</code> update the <code>createLink</code> method to look like the following:</p>
+<pre class="js{9-21}(path=&quot;.../hackernews-vue-apollo/src/components/createlink.vue&quot;)"><code>createLink () {
+  const { description, url } = this.$data
+  this.$apollo.mutate({
+    mutation: CREATE_LINK_MUTATION,
+    variables: {
+      description,
+      url
+    },
+    // 1
+    update: (store, { data: { createLink } }) =&gt; {
+      const data = store.readQuery({
+        query: ALL_LINKS_QUERY
+      })
+      data.allLinks.push(createLink)
+      store.writeQuery({ query: ALL_LINKS_QUERY, data })
+    }
+  // 2
+  }).then((data) =&gt; {
+    this.$router.push({path: &#39;/&#39;})
+  // 3
+  }).catch((error) =&gt; {
+    console.error(error)
+  })
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s unpack what’s going on here:</p>
+<ol type="1">
+<li>You add an <code>update</code> method which queries the current cache (<code>store</code>) and updates it with the result of your mutation.</li>
+<li>Here you define a success handler which routes to <code>/</code> upon a successful mutation</li>
+<li>Here you define an error handler which logs the error when a mutation fails</li>
+</ol>
+<p>After the mutation is performed, <code>vue-router</code> will now navigate back to the <code>LinkList</code> component that’s accessible on the root route: <code>/</code>.</p>
+</body>
+</html>

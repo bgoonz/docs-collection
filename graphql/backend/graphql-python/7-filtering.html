@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Filtering</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Filtering</h1>
+</header>
+<p>You already can list all links, but another feature of Hackernews is to search them, by URL or description. In GraphQL, this concept is the same as mutations: you pass an argument to the <code>links</code> field, used by the resolver to filter the results.</p>
+<h3 id="filtering-links">Filtering Links</h3>
+<p><Instruction></p>
+<p>Change your links query class to the following:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ..code
+# After the imports, add
+from django.db.models import Q
+
+# ...code
+class Query(graphene.ObjectType):
+    # Add the search parameter inside our links field
+    links = graphene.List(LinkType, search=graphene.String())
+    votes = graphene.List(VoteType)
+
+    # Change the resolver
+    def resolve_links(self, info, search=None, **kwargs):
+        # The value sent with the search parameter will be in the args variable
+        if search:
+            filter = (
+                Q(url__icontains=search) |
+                Q(description__icontains=search)
+            )
+            return Link.objects.filter(filter)
+
+        return Link.objects.all()
+
+    def resolve_votes(self, info, **kwargs):
+        return Vote.objects.all()</code></pre>
+<p></Instruction></p>
+<p>To test it, just pass the <code>search</code> argument to the query:</p>
+<figure>
+<img src="https://i.imgur.com/JdUSjJx.png" alt="pass the search argument to the query" /><figcaption>pass the search argument to the query</figcaption>
+</figure>
+</body>
+</html>

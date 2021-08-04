@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More GraphQL Concepts</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More GraphQL Concepts</h1>
+</header>
+<h3 id="enhancing-reusability-with-fragments">Enhancing Reusability with Fragments</h3>
+<p><em>Fragments</em> are a handy feature to help to improve the structure and reusability of your GraphQL code. A fragment is a collection of fields on a specific type.</p>
+<p>Let’s assume we have the following type:</p>
+<pre class="graphql(nocopy)"><code>type User {
+  name: String!
+  age: Int!
+  email: String!
+  street: String!
+  zipcode: String!
+  city: String!
+}</code></pre>
+<p>Here, we could represent all the information that relates to the user’s physical address into a fragment:</p>
+<pre class="graphql(nocopy)"><code>fragment addressDetails on User {
+  name
+  street
+  zipcode
+  city
+}</code></pre>
+<p>Now, when writing a query to access the address information of a user, we can use the following syntax to refer to the fragment and save the work to actually spell out the four fields:</p>
+<pre class="graphql(nocopy)"><code>{
+  allUsers {
+    ... addressDetails
+  }
+}</code></pre>
+<p>This query is equivalent to writing:</p>
+<pre class="graphql(nocopy)"><code>{
+  allUsers {
+    name
+    street
+    zipcode
+    city
+  }
+}</code></pre>
+<h3 id="parameterizing-fields-with-arguments">Parameterizing Fields with Arguments</h3>
+<p>In GraphQL type definitions, each field can take zero or more <em>arguments</em>. Similar to arguments that are passed into functions in typed programming languages, each argument needs to have a <em>name</em> and a <em>type</em>. In GraphQL, it’s also possible to specify <em>default values</em> for arguments.</p>
+<p>As an example, let’s consider a part of the schema that we saw in the beginning:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  allUsers: [User!]!
+}
+
+type User {
+  name: String!
+  age: Int!
+}</code></pre>
+<p>We could now add an argument to the <code>allUsers</code> field that allows us to pass an argument to filter users and include only those above a certain age. We also specify a default value so that by default all users will be returned:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  allUsers(olderThan: Int = -1): [User!]!
+}</code></pre>
+<p>This <code>olderThan</code> argument can now be passed into the query using the following syntax:</p>
+<pre class="graphql(nocopy)"><code>{
+  allUsers(olderThan: 30) {
+    name
+    age
+  }
+}</code></pre>
+<h3 id="named-query-results-with-aliases">Named Query Results with Aliases</h3>
+<p>One of GraphQL’s major strengths is that it lets you send multiple queries in a single request. However, since the response data is shaped after the structure of the fields being requested, you might run into naming issues when you’re sending multiple queries asking for the same fields:</p>
+<pre class="graphql(nocopy)"><code>{
+  User(id: &quot;1&quot;) {
+    name
+  }
+  User(id: &quot;2&quot;) {
+    name
+  }
+}</code></pre>
+<p>In fact, this will produce an error with a GraphQL server, since it’s the same field but different arguments. The only way to send a query like that would be to use aliases, i.e. specifying names for the query results:</p>
+<pre class="graphql(nocopy)"><code>{
+  first: User(id: &quot;1&quot;) {
+    name
+  }
+  second: User(id: &quot;2&quot;) {
+    name
+  }
+}</code></pre>
+<p>In the result, the server would now name each <code>User</code> object according to the specified alias:</p>
+<pre class="graphql(nocopy)"><code>{
+  &quot;first&quot;: {
+    &quot;name&quot;: &quot;Alice&quot;
+  },
+  &quot;second&quot;: {
+    &quot;name&quot;: &quot;Sarah&quot;
+  }
+}</code></pre>
+<h3 id="advanced-sdl">Advanced SDL</h3>
+<p>The SDL offers a couple of language features that weren’t discussed in the previous chapter. In the following, we’ll discuss those by practical examples.</p>
+<h4 id="object-scalar-types">Object &amp; Scalar Types</h4>
+<p>In GraphQL, there are two different kinds of types.</p>
+<ul>
+<li><em>Scalar</em> types represent concrete units of data. The GraphQL spec has five predefined scalars: as <code>String</code>, <code>Int</code>, <code>Float</code>, <code>Boolean</code>, and <code>ID</code>.</li>
+<li><em>Object</em> types have <em>fields</em> that express the properties of that type and are composable. Examples of object types are the <code>User</code> or <code>Post</code> types we saw in the previous section.</li>
+</ul>
+<p>In every GraphQL schema, you can define your own scalar and object types. An often cited example for a custom scalar would be a <code>Date</code> type where the implementation needs to define how that type is validated, serialized, and deserialized.</p>
+<h4 id="enums">Enums</h4>
+<p>GraphQL allows you to define <em>enumerations</em> types (short <em>enums</em>), a language feature to express the semantics of a type that has a fixed set of values. We could thus define a type called <code>Weekday</code> to represent all the days of a week:</p>
+<pre class="graphql(nocopy)"><code>enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}</code></pre>
+<p>Note that technically enums are special kinds of scalar types.</p>
+<h4 id="interface">Interface</h4>
+<p>An <em>interface</em> can be used to describe a type in an abstract way. It allows you to specify a set of fields that any concrete type, which <em>implements</em> this interface, needs to have. In many GraphQL schemas, every type is required to have an <code>id</code> field. Using interfaces, this requirement can be expressed by defining an interface with this field and then making sure that all custom types implement it:</p>
+<pre class="graphql(nocopy)"><code>interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+  age: Int!
+}</code></pre>
+<h4 id="union-types">Union Types</h4>
+<p><em>Union types</em> can be used to express that a type should be <em>either</em> of a collection of other types. They are best understood by means of an example. Let’s consider the following types:</p>
+<pre class="graphql(nocopy)"><code>type Adult {
+  name: String!
+  work: String!
+}
+
+type Child {
+  name: String!
+  school: String!
+}</code></pre>
+<p>Now, we could define a <code>Person</code> type to be the <em>union</em> of <code>Adult</code> and <code>Child</code>:</p>
+<pre class="graphql(nocopy)"><code>union Person = Adult | Child</code></pre>
+<p>This brings up a different problem: In a GraphQL query where we ask to retrieve information about a <code>Child</code> but only have a <code>Person</code> type to work with, how do we know whether we can actually access this field?</p>
+<p>The answer to this is called <em>conditional fragments</em>:</p>
+<pre class="graphql(nocopy)"><code>{
+  allPersons {
+    name # works for `Adult` and `Child`
+    ... on Child {
+      school
+    }
+    ... on Adult {
+       work
+    }
+  }
+}</code></pre>
+</body>
+</html>

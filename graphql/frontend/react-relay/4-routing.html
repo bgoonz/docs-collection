@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Routing</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Routing</h1>
+</header>
+<p>In this section, you’ll learn how to use the <a href="https://github.com/ReactTraining/react-router"><code>react-router</code></a> library with Relay to implement some navigation functionality!</p>
+<h3 id="routing-in-relay">Routing in Relay</h3>
+<p>An interesting note about Relay is that it actually started out as a routing framework that eventually also got connected with data loading responsibilities. This was particularly visible in the design of Relay Classic, where <a href="https://facebook.github.io/relay/docs/api-reference-relay-route.html"><code>Relay.Route</code></a> was a core component. However with Relay Modern, the idea is to move away from having routing as an integral part of Relay and make it more flexible to work with different routing solutions.</p>
+<p>Since we’re in the early days of Relay Modern, there’s not really much advise or conventions to build upon. The Facebook team delivers a <a href="https://facebook.github.io/relay/docs/routing.html">few suggestions</a> how this can be handled. But it will certainly take some time until best practices and appropriate tools around this topic evolve!</p>
+<p>So, to keep it simple in this tutorial, we’ll use <a href="https://github.com/ReactTraining/react-router"><code>react-router</code></a> which is a popular routing solution in the React ecosystem.</p>
+<h3 id="install-dependencies">Install Dependencies</h3>
+<p>The first thing you need to do is install the corresponding dependency.</p>
+<p><Instruction></p>
+<p>Open a terminal, navigate to your project directory and type:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>yarn add react-router-dom</code></pre>
+<p></Instruction></p>
+<h3 id="create-a-header">Create a Header</h3>
+<p>Before you’re moving on to configure the different routes for your application, you need to create a <code>Header</code> component that users can use to navigate to between the different parts of your app.</p>
+<p>Create a new file in <code>src/components</code> and call it <code>Header.js</code>. Then paste the following code inside of it:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> React<span class="op">,</span> <span class="op">{</span> Component <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react&#39;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="im">import</span> <span class="op">{</span> Link <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react-router-dom&#39;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="im">import</span> <span class="op">{</span> withRouter <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react-router&#39;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw">class</span> Header <span class="kw">extends</span> Component <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="at">render</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="cf">return</span> (</a>
+<a class="sourceLine" id="cb2-9" title="9">      <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&#39;flex pa1 justify-between nowrap orange&#39;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-10" title="10">        <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&#39;flex flex-fixed black&#39;</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">          <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&#39;fw7 mr1&#39;</span><span class="op">&gt;</span>Hacker News&lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">          <span class="op">&lt;</span>Link to<span class="op">=</span><span class="st">&#39;/&#39;</span> className<span class="op">=</span><span class="st">&#39;ml1 no-underline black&#39;</span><span class="op">&gt;</span><span class="kw">new</span>&lt;/Link<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">          <span class="op">&lt;</span>div className<span class="op">=</span><span class="st">&#39;ml1&#39;</span><span class="op">&gt;|</span>&lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">          <span class="op">&lt;</span>Link to<span class="op">=</span><span class="st">&#39;/create&#39;</span> className<span class="op">=</span><span class="st">&#39;ml1 no-underline black&#39;</span><span class="op">&gt;</span>submit&lt;/Link<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-15" title="15">        &lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-16" title="16">      &lt;/div<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-17" title="17">    )</a>
+<a class="sourceLine" id="cb2-18" title="18">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-19" title="19"></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-21" title="21"></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="im">export</span> <span class="im">default</span> <span class="at">withRouter</span>(Header)</a></code></pre></div>
+<p>This simply renders two <code>Link</code> components that users can use to navigate between the <code>LinkList</code> and the <code>CreateLink</code> components.</p>
+<blockquote>
+<p>Don’t get confused by the “other” <code>Link</code> component that is used here. The one that you’re using in the <code>Header</code> has nothing to do with the <code>Link</code> component that you wrote before, they just happen to have the same name. This <a href="https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/api/Link.md"><code>Link</code></a> stems from the <code>react-router-dom</code> package and allows you to navigate between routes inside of your application.</p>
+</blockquote>
+<h3 id="setup-routes">Setup routes</h3>
+<p>You’ll configure the different routes for the app in the project’s root component: <code>App</code>.</p>
+<p><Instruction></p>
+<p>Open the corresponding file <code>App.js</code> and update <code>render</code> to include the <code>Header</code> as well as <code>LinkList</code> and the <code>CreateLink</code> components in different routes:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>render() {
+  return (
+    &lt;div className=&#39;center w85&#39;&gt;
+      &lt;Header /&gt;
+      &lt;div className=&#39;ph3 pv1 background-gray&#39;&gt;
+        &lt;Switch&gt;
+          &lt;Route exact path=&#39;/&#39; component={LinkListPage}/&gt;
+          &lt;Route exact path=&#39;/create&#39; component={CreateLink}/&gt;
+         &lt;/Switch&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>For this code to work, you need to import the required dependencies of <code>react-router</code>.</p>
+<p><Instruction></p>
+<p>Add the following statement to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>import Header from &#39;./Header&#39;
+import { Switch, Route } from &#39;react-router-dom&#39;</code></pre>
+<p></Instruction></p>
+<p>Now you need to wrap the <code>App</code> with <code>BrowserRouter</code> so that all child components of <code>App</code> will get access to the routing functionality.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add the following import statement to the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/index.js&quot;)"><code>import { BrowserRouter } from &#39;react-router-dom&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, still in <code>index.js</code> update <code>ReactDOM.render</code> and wrap the whole app with the <code>BrowserRouter</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="va">ReactDOM</span>.<span class="at">render</span>(</a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="op">&lt;</span>BrowserRouter<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="op">&lt;</span>App /<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  &lt;/BrowserRouter<span class="op">&gt;,</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="va">document</span>.<span class="at">getElementById</span>(<span class="st">&#39;root&#39;</span>)</a>
+<a class="sourceLine" id="cb6-6" title="6">)</a></code></pre></div>
+<p></Instruction></p>
+<p>That’s it. If you run <code>yarn start</code>, you can now access two URLs. <code>http://localhost:3000/</code> will render <code>LinkListPage</code> and <code>http://localhost:3000/create</code> renders the <code>CreateLink</code> component you just wrote in the previous section.</p>
+<figure>
+<img src="http://imgur.com/I16JzwW.png" alt="Running yarn start to see the app at localhost:3000" /><figcaption>Running yarn start to see the app at localhost:3000</figcaption>
+</figure>
+<h3 id="implement-navigation">Implement navigation</h3>
+<p>To wrap up this section, you need to implement an automatic redirect from the <code>CreateLink</code> to <code>LinkList</code> after a mutation was performed.</p>
+<p><Instruction></p>
+<p>Open <code>CreateLink.js</code> and update <code>_createLink</code> to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/createlink.js&quot;)"><code>_createLink = () =&gt; {
+  const { description, url } = this.state
+  CreateLinkMutation(description, url, () =&gt; this.props.history.push(&#39;/&#39;))
+}</code></pre>
+<p><Instruction></p>
+<p>All you do here is update the <code>callback</code> that’s passed into <code>CreateLinkMutation</code> to navigate back to the app’s root router after mutation was completed, replacing the logging statement that you used to print before.</p>
+<p>Awesome, you’re all set to build authentication functionality for the app!</p>
+</body>
+</html>

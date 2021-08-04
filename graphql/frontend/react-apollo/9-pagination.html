@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>The last topic that we’ll cover in this tutorial is pagination. We’ll implement a simple pagination approach so that users are able to view the links in smaller chunks rather than having an extremely long list of <code>Link</code> elements.</p>
+<h2 id="preparing-the-react-components">Preparing the React Components</h2>
+<p>Once more, we first need to prepare the React components for this new functionality. In fact, we’ll make a slight adjustment to the current routing setup. The idea is that the <code>LinkList</code> component will be used for two different purposes (and routes). The first one is to display the top ten voted links and the second use case is to display new links in a list separated into multiple pages that the user can navigate through.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and adjust the component to look like this:</p>
+<pre class="js{20-24}(path=&quot;.../hackernews-react-apollo/src/components/app.js&quot;)"><code>const App = () =&gt; (
+  &lt;div className=&quot;center w85&quot;&gt;
+    &lt;Header /&gt;
+    &lt;div className=&quot;ph3 pv1 background-gray&quot;&gt;
+      &lt;Switch&gt;
+        &lt;Route
+          exact
+          path=&quot;/&quot;
+          render={() =&gt; &lt;Redirect to=&quot;/new/1&quot; /&gt;}
+        /&gt;
+
+        &lt;Route
+          exact
+          path=&quot;/create&quot;
+          component={CreateLink}
+        /&gt;
+        &lt;Route exact path=&quot;/login&quot; component={Login} /&gt;
+        &lt;Route exact path=&quot;/search&quot; component={Search} /&gt;
+        &lt;Route exact path=&quot;/top&quot; component={LinkList} /&gt;
+        &lt;Route
+          exact
+          path=&quot;/new/:page&quot;
+          component={LinkList}
+        /&gt;
+      &lt;/Switch&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+);</code></pre>
+<p></Instruction></p>
+<p>Let’s be sure to import the <code>Redirect</code> component so we don’t get any errors.</p>
+<p><Instruction></p>
+<p>Update the router import on the top of the file:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/app.js&quot;)"><code>import { Redirect, Route, Switch } from &#39;react-router-dom&#39;;</code></pre>
+<p></Instruction></p>
+<p>We’ve now added two new routes: <code>/top</code> and <code>/new/:page</code>. The latter reads the value for <code>page</code> from the url so that this information is available inside the component that’s rendered. For this route that’s <code>LinkList</code>.</p>
+<p>The main route <code>/</code> now redirects to the first page of the route where new posts are displayed.</p>
+<p>Before moving on, quickly add a new navigation item to the <code>Header</code> component that brings the user to the <code>/top</code> route.</p>
+<p><Instruction></p>
+<p>Open <code>Header.js</code> and add the following lines <em>between</em> the <code>/</code> and the <code>/search</code> routes:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/header.js&quot;)"><code>&lt;Link to=&quot;/top&quot; className=&quot;ml1 no-underline black&quot;&gt;
+  top
+&lt;/Link&gt;
+&lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>We also need to add some logic to the <code>LinkList</code> component to account for the two different responsibilities it now has.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add three arguments to the <code>FeedQuery</code> by replacing the <code>FEED_QUERY</code> definition with the following:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>export const FEED_QUERY = gql`
+  query FeedQuery(
+    $take: Int
+    $skip: Int
+    $orderBy: LinkOrderByInput
+  ) {
+    feed(take: $take, skip: $skip, orderBy: $orderBy) {
+      id
+      links {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      count
+    }
+  }
+`;</code></pre>
+<p></Instruction></p>
+<p>The query now accepts arguments that we’ll use to implement pagination and ordering. <code>skip</code> defines the <em>offset</em> where the query will start. For example, if we passed a value of <strong>10</strong> for this argument, it means that the first 10 items of the list will not be included in the response. <code>take</code> then defines the <em>limit</em> or <em>how many</em> elements we want to load from that list. If we pass in <code>10</code> for <code>skip</code> and <code>5</code> for <code>take</code>, we’ll receive items 10 to 15 from the list. <code>orderBy</code> defines how the returned list should be sorted.</p>
+<p>But how can we pass the variables when using the <code>useQuery</code> hook which is fetching the data under the hood? The key is that we need to pass these variables in when we make the call to <code>useQuery</code>.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, adjust the <code>useQuery</code> hook to accept the variables we want to pass to the query.</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import { useHistory } from &#39;react-router&#39;;
+
+// ...
+
+const LinkList = () =&gt; {
+  const history = useHistory();
+  const isNewPage = history.location.pathname.includes(
+    &#39;new&#39;
+  );
+  const pageIndexParams = history.location.pathname.split(
+    &#39;/&#39;
+  );
+  const page = parseInt(
+    pageIndexParams[pageIndexParams.length - 1]
+  );
+
+  const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
+
+  const {
+    data,
+    loading,
+    error,
+    subscribeToMore
+  } = useQuery(FEED_QUERY, {
+    variables: getQueryVariables(isNewPage, page)
+  });
+
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>We’re passing in an object as the second argument to <code>useQuery</code>, right after we pass in the <code>FEED_QUERY</code> document. We can use this object to modify the behavior of the query in various ways. One of the most common things we do with it is to provide <code>variables</code>.</p>
+<p><Instruction></p>
+<p>The <code>variables</code> key points to a function call that will retrieve the variables. Let’s implement the <code>getQueryVariables</code> function.</p>
+<p></Instruction></p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import { LINKS_PER_PAGE } from &#39;../constants&#39;;
+
+// ...
+
+const getQueryVariables = (isNewPage, page) =&gt; {
+  const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
+  const take = isNewPage ? LINKS_PER_PAGE : 100;
+  const orderBy = { createdAt: &#39;desc&#39; };
+  return { take, skip, orderBy };
+};</code></pre>
+<p><Instruction></p>
+<p>The <code>getQueryVariables</code> function is responsible for returning values for <code>skip</code>, <code>take</code>, and <code>orderBy</code>. For <code>skip</code>, we first check whether we are currently on the <code>/new</code> route. If so, the value for <code>skip</code> is the current page (subtracting <code>1</code> to handle the index) multiplied by the <code>LINKS_PER_PAGE</code> contstant. If we’re not on the <code>/new</code> route, the value for <code>skip</code> is <code>0</code>. We use the same <code>LINKS_PER_PAGE</code> constant to determine how many links to <code>take</code>.</p>
+<p></Instruction></p>
+<p>We’re now passing <code>take, skip, orderBy</code> values as <code>variables</code> based on the current page.</p>
+<p>Also note that we’re including the ordering attribute <code>{ createdAt: 'desc' }</code> for the <code>new</code> page to make sure the newest links are displayed first. The ordering for the <code>/top</code> route will be calculated manually based on the number of votes for each link.</p>
+<p>We also need to define the <code>LINKS_PER_PAGE</code> constant and then import it into the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>src/constants.js</code> and add the following definition:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/constants.js&quot;)"><code>export const LINKS_PER_PAGE = 5;</code></pre>
+<p></Instruction></p>
+<h3 id="implementing-navigation">Implementing Navigation</h3>
+<p>Next, we need functionality for the user to switch between the pages. First add two <code>button</code> elements to the bottom of the <code>LinkList</code> component that can be used to navigate back and forth.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and update the returned JSX to look as follows:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>return (
+  &lt;&gt;
+    {loading &amp;&amp; &lt;p&gt;Loading...&lt;/p&gt;}
+    {error &amp;&amp; &lt;pre&gt;{JSON.stringify(error, null, 2)}&lt;/pre&gt;}
+    {data &amp;&amp; (
+      &lt;&gt;
+        {getLinksToRender(isNewPage, data).map(
+          (link, index) =&gt; (
+            &lt;Link
+              key={link.id}
+              link={link}
+              index={index + pageIndex}
+            /&gt;
+          )
+        )}
+        {isNewPage &amp;&amp; (
+          &lt;div className=&quot;flex ml4 mv3 gray&quot;&gt;
+            &lt;div
+              className=&quot;pointer mr2&quot;
+              onClick={() =&gt; {
+                if (page &gt; 1) {
+                  history.push(`/new/${page - 1}`);
+                }
+              }}
+            &gt;
+              Previous
+            &lt;/div&gt;
+            &lt;div
+              className=&quot;pointer&quot;
+              onClick={() =&gt; {
+                if (
+                  page &lt;=
+                  data.feed.count / LINKS_PER_PAGE
+                ) {
+                  const nextPage = page + 1;
+                  history.push(`/new/${nextPage}`);
+                }
+              }}
+            &gt;
+              Next
+            &lt;/div&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/&gt;
+    )}
+  &lt;/&gt;
+);</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now adjust the import statement from <code>../constants</code> in <code>LinkList.js</code> to also include the new constant:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import { LINKS_PER_PAGE } from &#39;../constants&#39;;</code></pre>
+<p></Instruction></p>
+<p>Since the setup is slightly more complicated now, we are going to calculate the list of links to be rendered in a separate method.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, add the following method implementation:</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>const getLinksToRender = (isNewPage, data) =&gt; {
+  if (isNewPage) {
+    return data.feed.links;
+  }
+  const rankedLinks = data.feed.links.slice();
+  rankedLinks.sort(
+    (l1, l2) =&gt; l2.votes.length - l1.votes.length
+  );
+  return rankedLinks;
+};</code></pre>
+<p></Instruction></p>
+<p>For the <code>newPage</code>, we simply return all the links returned by the query. That’s logical since here we don’t have to make any manual modifications to the list that is to be rendered. If the user loaded the component from the <code>/top</code> route, we’ll sort the list according to the number of votes and return the top 10 links.</p>
+<p>Let’s have a closer look at the logic for the <strong>Next</strong> and <strong>Previous</strong> links.</p>
+<pre class="js{}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>{
+  isNewPage &amp;&amp; (
+    &lt;div className=&quot;flex ml4 mv3 gray&quot;&gt;
+      &lt;div
+        className=&quot;pointer mr2&quot;
+        onClick={() =&gt; {
+          if (page &gt; 1) {
+            history.push(`/new/${page - 1}`);
+          }
+        }}
+      &gt;
+        Previous
+      &lt;/div&gt;
+      &lt;div
+        className=&quot;pointer&quot;
+        onClick={() =&gt; {
+          if (page &lt;= data.feed.count / LINKS_PER_PAGE) {
+            const nextPage = page + 1;
+            history.push(`/new/${nextPage}`);
+          }
+        }}
+      &gt;
+        Next
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>We start by retrieving the current page from the URL and doing a sanity check to make sure that it makes sense to paginate back or forth. We then calculate the next page and tell the router where to navigate to next. The router will then reload the component with a new <code>page</code> in the URL that will be used to calculate the right chunk of links to load.</p>
+<p>Run the app by typing <code>yarn start</code> in a terminal and use the new buttons to paginate through the list of links!</p>
+<h3 id="final-adjustments">Final Adjustments</h3>
+<p>Through the changes that we made to the <code>FEED_QUERY</code>, we’ll notice that the <code>update</code> functions of the mutations don’t work any more. That’s because <code>readQuery</code> now also expects to get passed the same variables that we defined before.</p>
+<blockquote>
+<p><strong>Note</strong>: <code>readQuery</code> essentially works in the same way as the <code>query</code> method on the <code>ApolloClient</code> that we used to implement the search. However, instead of making a call to the server, it will simply resolve the query against the local store! If a query was fetched from the server with variables, <code>readQuery</code> also needs to know the variables to make sure it can deliver the right information from the cache.</p>
+</blockquote>
+<p><Instruction></p>
+<p>With that information, open <code>Link.js</code> and update the <code>update</code> function on the <code>useMutation</code> hook:</p>
+<p>```js{5-7, 16-20, 40-44}(path=“…/hackernews-react-apollo/src/components/Link.js”) import { AUTH_TOKEN, LINKS_PER_PAGE } from ‘../constants’;</p>
+<p>// …</p>
+<p>const take = LINKS_PER_PAGE; const skip = 0; const orderBy = { createdAt: ‘desc’ };</p>
+<p>const [vote] = useMutation(VOTE_MUTATION, { variables: { linkId: link.id }, update(cache, { data: { vote } }) { const { feed } = cache.readQuery({ query: FEED_QUERY, variables: { take, skip, orderBy } });</p>
+<pre><code>const updatedLinks = feed.links.map((feedLink) =&gt; {
+  if (feedLink.id === link.id) {
+    return {
+      ...feedLink,
+      votes: [...feedLink.votes, vote]
+    };
+  }
+  return feedLink;
+});
+
+cache.writeQuery({
+  query: FEED_QUERY,
+  data: {
+    feed: {
+      links: updatedLinks
+    }
+  },
+  variables: {
+    take,
+    skip,
+    orderBy
+  }
+});</code></pre>
+<p>} }); ```</p>
+<p></Instruction></p>
+<p>We have now added a simple pagination system to the app, allowing users to load links in small chunks instead of loading them all up front.</p>
+</body>
+</html>

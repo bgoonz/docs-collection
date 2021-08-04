@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations and Updating the Store</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations and Updating the Store</h1>
+</header>
+<p>The next piece of functionality we’ll implement is the voting feature! Authenticated users are allowed to submit a vote for a link. The most upvoted links will later be displayed on a separate route!</p>
+<h3 id="preparing-the-react-components">Preparing the React Components</h3>
+<p>Once more, the first step to implement this new feature is to make our React components ready for the expected functionality.</p>
+<p></Instruction></p>
+<p>Open <code>Link.js</code> and update the returned JSX to look like this:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>import { AUTH_TOKEN, LINKS_PER_PAGE } from &#39;../constants&#39;;
+// ...
+
+const Link = (props) =&gt; {
+  const { link } = props;
+  const authToken = localStorage.getItem(AUTH_TOKEN);
+
+  const take = LINKS_PER_PAGE;
+  const skip = 0;
+  const orderBy = { createdAt: &#39;desc&#39; };
+
+  return (
+    &lt;div className=&quot;flex mt2 items-start&quot;&gt;
+      &lt;div className=&quot;flex items-center&quot;&gt;
+        &lt;span className=&quot;gray&quot;&gt;{props.index + 1}.&lt;/span&gt;
+        {authToken &amp;&amp; (
+          &lt;div
+            className=&quot;ml1 gray f11&quot;
+            style={{ cursor: &#39;pointer&#39; }}
+            onClick={vote}
+          &gt;
+            ▲
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+      &lt;div className=&quot;ml1&quot;&gt;
+        &lt;div&gt;
+          {link.description} ({link.url})
+        &lt;/div&gt;
+        {authToken &amp;&amp; (
+          &lt;div className=&quot;f6 lh-copy gray&quot;&gt;
+            {link.votes.length} votes | by{&#39; &#39;}
+            {link.postedBy ? link.postedBy.name : &#39;Unknown&#39;}{&#39; &#39;}
+            {timeDifferenceForDate(link.createdAt)}
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+<p></Instruction></p>
+<p>We’re already preparing the <code>Link</code> component to render the number of votes for each link and the name of the user that posted it. We’ll also render the upvote button if a user is currently logged in - that’s what we’re using the <code>authToken</code> for. If the <code>Link</code> is not associated with a <code>User</code>, the user’s name will be displayed as <code>Unknown</code>.</p>
+<p>Notice that we’re also using a function called <code>timeDifferenceForDate</code> that gets passed the <code>createdAt</code> information for each link. The function will take the timestamp and convert it to a string that’s more user friendly, e.g. <code>"3 hours ago"</code>.</p>
+<p>Go ahead and implement the <code>timeDifferenceForDate</code> function next so we can import and use it in the <code>Link</code> component.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>utils.js</code> in the <code>src</code> directory and paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/utils.js&quot;)"><code>function timeDifference(current, previous) {
+  const milliSecondsPerMinute = 60 * 1000;
+  const milliSecondsPerHour = milliSecondsPerMinute * 60;
+  const milliSecondsPerDay = milliSecondsPerHour * 24;
+  const milliSecondsPerMonth = milliSecondsPerDay * 30;
+  const milliSecondsPerYear = milliSecondsPerDay * 365;
+
+  const elapsed = current - previous;
+
+  if (elapsed &lt; milliSecondsPerMinute / 3) {
+    return &#39;just now&#39;;
+  }
+
+  if (elapsed &lt; milliSecondsPerMinute) {
+    return &#39;less than 1 min ago&#39;;
+  } else if (elapsed &lt; milliSecondsPerHour) {
+    return (
+      Math.round(elapsed / milliSecondsPerMinute) +
+      &#39; min ago&#39;
+    );
+  } else if (elapsed &lt; milliSecondsPerDay) {
+    return (
+      Math.round(elapsed / milliSecondsPerHour) + &#39; h ago&#39;
+    );
+  } else if (elapsed &lt; milliSecondsPerMonth) {
+    return (
+      Math.round(elapsed / milliSecondsPerDay) + &#39; days ago&#39;
+    );
+  } else if (elapsed &lt; milliSecondsPerYear) {
+    return (
+      Math.round(elapsed / milliSecondsPerMonth) + &#39; mo ago&#39;
+    );
+  } else {
+    return (
+      Math.round(elapsed / milliSecondsPerYear) +
+      &#39; years ago&#39;
+    );
+  }
+}
+
+export function timeDifferenceForDate(date) {
+  const now = new Date().getTime();
+  const updated = new Date(date).getTime();
+  return timeDifference(now, updated);
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Back in <code>Link.js</code>, import <code>AUTH_TOKEN</code> and <code>timeDifferenceForDate</code> on top the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>import { AUTH_TOKEN } from &#39;../constants&#39;;
+import { timeDifferenceForDate } from &#39;../utils&#39;;</code></pre>
+<p></Instruction></p>
+<p>Finally, each <code>Link</code> element will also render its position inside the list, so we have to pass down an <code>index</code> from the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and update the rendering of the <code>Link</code> component to include the <code>index</code>.</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>return (
+  &lt;div&gt;
+    {data &amp;&amp; (
+      &lt;&gt;
+        {data.feed.links.map((link, index) =&gt; (
+          &lt;Link key={link.id} link={link} index={index} /&gt;
+        ))}
+      &lt;/&gt;
+    )}
+  &lt;/div&gt;
+);</code></pre>
+<p></Instruction></p>
+<p>Notice that the app won’t run at the moment since the <code>votes</code> are not yet included in the query. We’ll fix that next!</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and update the definition of <code>FEED_QUERY</code> to include votes. We should also export this query so that it can be imported in other files.</p>
+<pre class="js{9-18}(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>export const FEED_QUERY = gql`
+  {
+    feed {
+      id
+      links {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`;</code></pre>
+<p></Instruction></p>
+<p>Here we are including information about the user who posted a link as well as information about the links’ votes in the query’s payload. We can now run the app again and the links will be properly displayed.</p>
+<figure>
+<img src="https://imgur.com/YCv4QGb.png" alt="Links in the query’s payload" /><figcaption>Links in the query’s payload</figcaption>
+</figure>
+<blockquote>
+<p><strong>Note</strong>: If you’re not able to fetch the <code>Links</code>, restart the server and reload the browser. You could also check if everything is working as expected on <code>GraphQL Playground</code>!</p>
+</blockquote>
+<p>Let’s now move on and implement the <code>vote</code> mutation!</p>
+<h3 id="calling-the-mutation">Calling the Mutation</h3>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and add the following mutation definition to the top of the file.</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>const VOTE_MUTATION = gql`
+  mutation VoteMutation($linkId: ID!) {
+    vote(linkId: $linkId) {
+      id
+      link {
+        id
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Once more, let’s use the <code>useMutation</code> hook to do the voting. We’ll call the function that runs the mutation <code>vote</code> and will pass the <code>VOTE_MUTATION</code> GraphQL mutation to it.</p>
+<pre class="js{2-6}(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>const Link = (props) =&gt; {
+  // ...
+  const [vote] = useMutation(VOTE_MUTATION, {
+    variables: {
+      linkId: link.id
+    }
+  });
+  return (
+    &lt;div className=&quot;flex mt2 items-start&quot;&gt;
+      &lt;div className=&quot;flex items-center&quot;&gt;
+        &lt;span className=&quot;gray&quot;&gt;{props.index + 1}.&lt;/span&gt;
+        &lt;div
+          className=&quot;ml1 gray f11&quot;
+          style={{ cursor: &#39;pointer&#39; }}
+          onClick={vote}
+        &gt;
+          ▲
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;ml1&quot;&gt;
+        &lt;div&gt;
+          {link.description} ({link.url})
+        &lt;/div&gt;
+        {authToken &amp;&amp; (
+          &lt;div className=&quot;f6 lh-copy gray&quot;&gt;
+            {link.votes.length} votes | by{&#39; &#39;}
+            {link.postedBy ? link.postedBy.name : &#39;Unknown&#39;}{&#39; &#39;}
+            {timeDifferenceForDate(link.createdAt)}
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+<p></Instruction></p>
+<p>This step should feel pretty familiar by now. The <code>onClick</code> handler of the <code>div</code> with the up caret calls the <code>vote</code> function which runs the mutation to place a vote.</p>
+<p><Instruction></p>
+<p>We need to import <code>useMutation</code> and <code>gql</code> for the mutation to work.</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>import { useMutation, gql } from &#39;@apollo/client&#39;;</code></pre>
+<p></Instruction></p>
+<p>We can now go and test the implementation! Run <code>yarn start</code> in <code>hackernews-react-apollo</code> and click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page we’ll see the added votes.</p>
+<blockquote>
+<p><strong>Remember</strong>: We have to be logged in to being able to vote links!</p>
+</blockquote>
+<p>In the next section, we’ll learn how to automatically update the UI after each mutation!</p>
+<h3 id="updating-the-cache">Updating the cache</h3>
+<p>One of Apollo’s biggest value propositions is that it creates and maintains a client-side cache for our GraphQL apps. We typically don’t need to do much to manage the cache, but in some circumstances, we do.</p>
+<p>When we perform mutations that affect a list of data, we need to manually intervene to update the cache. We’ll implement this functionality by using Apollo’s <a href="https://www.apollographql.com/docs/react/caching/cache-configuration/#after-mutations">caching data</a>.</p>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and update the mutation to include some additional behavior in the <code>update</code> callback. This runs after the mutation has completed and allows us to read the cache, modify it, and commit the changes.</p>
+<pre class="js{7-29}(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>const Link = (props) =&gt; {
+  // ...
+  const [vote] = useMutation(VOTE_MUTATION, {
+    variables: {
+      linkId: link.id
+    },
+    update(cache, { data: { vote } }) {
+      const { feed } = cache.readQuery({
+        query: FEED_QUERY
+      });
+
+      const updatedLinks = feed.links.map((feedLink) =&gt; {
+        if (feedLink.id === link.id) {
+          return {
+            ...feedLink,
+            votes: [...feedLink.votes, vote]
+          };
+        }
+        return feedLink;
+      });
+
+      cache.writeQuery({
+        query: FEED_QUERY,
+        data: {
+          feed: {
+            links: updatedLinks
+          }
+        }
+      });
+    }
+  });
+
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>In the <code>update</code> callback is that we’ve included with the mutation, we’re calling <code>cache.readQuery</code> and passing in the <code>FEED_QUERY</code> document. This allows us to read the exact portion of the Apollo cache that we need to allow us to update it. Once we have the cache, we create a new array of data that includes the vote that was just made. The vote that was made with the mutation is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">destructured</a> out using <code>{ data: { vote } }</code>. Once we have the new list of votes, we can commit the changes to the cache using <code>cache.writeQuery</code>, passing in the new data.</p>
+<p>That’s it! The <code>update</code> function will now be executed and make sure that the store gets updated properly after a mutation was performed. The store update will trigger a rerender of the component and thus update the UI with the correct information!</p>
+<p>While we’re at it, let’s also implement <code>update</code> for adding new links!</p>
+<p><Instruction></p>
+<p>Open <code>CreateLink.js</code> and following what we did before, add an <code>update</code> callback to the <code>useMutation</code> hook to update the Apollo store.</p>
+<pre class="js{6-34}(path=&quot;.../hackernews-react-apollo/src/components/createlink.js&quot;)"><code>const [createLink] = useMutation(CREATE_LINK_MUTATION, {
+    variables: {
+      description: formState.description,
+      url: formState.url
+    },
+    update: (cache, { data: { post } }) =&gt; {
+      const take = LINKS_PER_PAGE;
+      const skip = 0;
+      const orderBy = { createdAt: &#39;desc&#39; };
+
+      const data = cache.readQuery({
+        query: FEED_QUERY,
+        variables: {
+          take,
+          skip,
+          orderBy
+        }
+      });
+
+      cache.writeQuery({
+        query: FEED_QUERY,
+        data: {
+          feed: {
+            links: [post, ...data.feed.links]
+          }
+        },
+        variables: {
+          take,
+          skip,
+          orderBy
+        }
+      });
+    },
+    onCompleted: () =&gt; history.push(&#39;/new/1&#39;)
+  });</code></pre>
+<p></Instruction></p>
+<p>The <code>update</code> function works in a very similar way as before. We first read the current state of the results of the <code>FEED_QUERY</code>. Then we insert the newest link at beginning and write the query results back to the store. Note that we need to pass in a set of variables to the <code>readQuery</code> and <code>writeQuery</code> functions. It’s not enough to simply pass the <code>FEED_QUERY</code> query document in, we also need to specify the conditions of the original query we’re targeting. In this case, we pass in variables that line up with the initial variables we passed into the query in <code>LinkList.js</code>.</p>
+<p><Instruction></p>
+<p>The last thing we need to do for this to work is import the <code>FEED_QUERY</code> into that file:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/createlink.js&quot;)"><code>import { FEED_QUERY } from &#39;./LinkList&#39;;</code></pre>
+<p></Instruction></p>
+<p>Conversely, it also needs to be exported from where it is defined.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and adjust the definition of the <code>FEED_QUERY</code> by adding the <code>export</code> keyword to it:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>export const FEED_QUERY = ...</code></pre>
+<p></Instruction></p>
+<p>Awesome, now the store also updates with the right information after new links are added. The app is getting into shape 🤓</p>
+</body>
+</html>

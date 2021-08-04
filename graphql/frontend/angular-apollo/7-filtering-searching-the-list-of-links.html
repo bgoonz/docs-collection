@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Filtering: Searching the List of Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Filtering: Searching the List of Links</h1>
+</header>
+<p>In this section, you’ll implement a search feature and learn about the filtering capabilities of your GraphQL API.</p>
+<blockquote>
+<p>Note: If you’re interested in all the filtering capabilities of Graphcool, you can check out the <a href="https://www.graph.cool/docs/reference/simple-api/filtering-by-field-xookaexai0/">documentation</a> on it.</p>
+</blockquote>
+<h3 id="preparing-the-angular-components">Preparing the Angular Components</h3>
+<p>The search will be available on a new route and implemented in a new Angular component.</p>
+<p><Instruction></p>
+<p>Start by running <code>ng generate component search</code> and this create <code>search.component.ts</code> , <code>search.component.spec.ts</code>, <code>search.component.html</code>, <code>search.component.css</code> in <code>src/app/search</code> folder and add the following code inside <code>search.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/search/search.component.html&quot;)"><code>&lt;div&gt;
+  Search
+  &lt;!-- 1 --&gt;
+  &lt;input type=&quot;text&quot; [(ngModel)]=&quot;searchText&quot; (ngModelChange)=&quot;executeSearch()&quot;&gt;
+&lt;/div&gt;
+&lt;hn-link-item
+  *ngFor=&quot;let link of allLinks;let index=index&quot;
+  [link]=&quot;link&quot;
+  [index]=&quot;index&quot;
+  [isAuthenticated]=&quot;logged&quot;&gt;
+&lt;/hn-link-item&gt;
+</code></pre>
+<p></Instruction></p>
+<p><Instruction> Then, add the following code in <code>search.component.ts</code>:</p>
+<pre class="ts{6-7,}(path=&quot;.../hackernews-angular-apollo/src/app/search/search.component.ts&quot;)"><code>import {Component, OnDestroy, OnInit} from &#39;@angular/core&#39;;
+import {AuthService} from &#39;../auth.service&#39;;
+import {Apollo} from &#39;apollo-angular&#39;;
+import {Subscription} from &#39;rxjs/Subscription&#39;;
+import {Link} from &#39;../types&#39;;
+// 2
+import {ALL_LINKS_SEARCH_QUERY, AllLinksSearchQueryResponse} from &#39;../graphql&#39;;
+
+@Component({
+  selector: &#39;hn-search&#39;,
+  templateUrl: &#39;./search.component.html&#39;,
+  styleUrls: [&#39;./search.component.css&#39;]
+})
+export class SearchComponent implements OnInit, OnDestroy {
+  allLinks: Link[] = [];
+  loading: boolean = true;
+  searchText: string = &#39;&#39;;
+
+  logged: boolean = false;
+
+  subscriptions: Subscription[] = [];
+
+  constructor(private apollo: Apollo, private authService: AuthService) {
+  }
+
+  ngOnInit() {
+
+    this.authService.isAuthenticated
+      .distinctUntilChanged()
+      .subscribe(isAuthenticated =&gt; {
+        this.logged = isAuthenticated
+      });
+
+  }
+
+  // 3
+  executeSearch() {
+    if (!this.searchText) {
+      return;
+    }
+
+    const querySubscription = this.apollo.watchQuery&lt;AllLinksSearchQueryResponse&gt;({
+      query: ALL_LINKS_SEARCH_QUERY,
+      variables: {
+        searchText: this.searchText
+      },
+    }).valueChanges.subscribe((response) =&gt; {
+      this.allLinks = response.data.allLinks;
+      this.loading = response.data.loading;
+    });
+
+    this.subscriptions = [...this.subscriptions, querySubscription];
+  }
+
+  ngOnDestroy(): void {
+    for (let sub of this.subscriptions) {
+      if (sub &amp;&amp; sub.unsubscribe) {
+        sub.unsubscribe();
+      }
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s review what you are doing here.</p>
+<ol type="1">
+<li>First, you bind <code>searchText</code> to an input element and listen to his change thanks to <code>ngModelChange</code> event</li>
+<li>Next, you import the, soon to be created, <code>ALL_LINKS_SEARCH_QUERY</code></li>
+<li>Finally, you define a <code>executeSearch</code> function that will executed each time <code>this.searchText</code> is updated. You also will not run it if there is no <code>searchText</code> to search.</li>
+</ol>
+<p><Instruction></p>
+<p>Now add the <code>SearchComponent</code> as a new route to the app. Open <code>src/app/app.routing.ts</code> and update it to look like the following:</p>
+<pre class="ts{6-7,28-33}(path=&quot;.../hackernews-angular-apollo/src/router/index.ts&quot;)"><code>import {NgModule} from &#39;@angular/core&#39;;
+import {RouterModule, Routes} from &#39;@angular/router&#39;;
+import {LinkListComponent} from &#39;./link-list/link-list.component&#39;;
+import {CreateLinkComponent} from &#39;./create-link/create-link.component&#39;;
+import {LoginComponent} from &#39;./login/login.component&#39;;
+// 1
+import {SearchComponent} from &#39;./search/search.component&#39;;
+
+/**
+ * Setup all routes here
+ */
+const routes: Routes = [
+  {
+    path: &#39;&#39;,
+    component: LinkListComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;create&#39;,
+    component: CreateLinkComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;login&#39;,
+    component: LoginComponent,
+    pathMatch: &#39;full&#39;
+  },
+  // 2
+  {
+    path: &#39;search&#39;,
+    component: SearchComponent,
+    pathMatch: &#39;full&#39;
+  },
+  {
+    path: &#39;**&#39;,
+    redirectTo: &#39;&#39;,
+  }
+];
+
+// ...</code></pre>
+<p></Instruction></p>
+<ol type="1">
+<li>You import the <code>SearchComponent</code></li>
+<li>You render the <code>SearchComponent</code> when the <code>/search</code> route is reached</li>
+</ol>
+<p>For the user to be able to navigate to the search functionality comfortably, you should also add a new navigation item to the <code>HeaderComponent</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/header/header.component.html</code> and put a new <code>route</code> between <code>new</code> and <code>submit</code>:</p>
+<pre class="ts{6-7}(path=&quot;.../hackernews-angular-apollo/src/app/header/header.component.&quot;)"><code>&lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+  &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+    &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+    &lt;a [routerLink]=&quot;[&#39;/&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;new&lt;/a&gt;
+    &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+    &lt;a [routerLink]=&quot;[&#39;/search&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;search&lt;/a&gt;
+    &lt;div class=&quot;flex&quot; *ngIf=&quot;logged&quot;&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;a [routerLink]=&quot;[&#39;/create&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;submit&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;flex flex-fixed&quot;&gt;
+    &lt;div *ngIf=&quot;logged&quot; class=&quot;ml1 pointer black&quot; (click)=&quot;logout()&quot;&gt;logout&lt;/div&gt;
+    &lt;a *ngIf=&quot;!logged&quot; [routerLink]=&quot;[&#39;/login&#39;]&quot; class=&#39;ml1 no-underline black&#39;&gt;login&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p></Instruction></p>
+<p>You can now navigate to the search functionality using the new button in the <code>HeaderComponent</code>:</p>
+<figure>
+<img src="http://imgur.com/XxPdUvo.png" alt="See the search functionality in the Header component" /><figcaption>See the search functionality in the Header component</figcaption>
+</figure>
+<p>Great, let’s now define <code>ALL_LINKS_SEARCH_QUERY</code>.</p>
+<h3 id="filtering-links">Filtering Links</h3>
+<p><Instruction></p>
+<p>Open <code>src/app/graphql.ts</code> and add the following query definition to the file:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>export const ALL_LINKS_SEARCH_QUERY = gql`
+  query AllLinksSearchQuery($searchText: String!) {
+    allLinks(filter: {
+      OR: [{
+        url_contains: $searchText
+      }, {
+        description_contains: $searchText
+      }]
+    }) {
+      id
+      url
+      description
+      createdAt
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export interface AllLinksSearchQueryResponse {
+  loading: boolean;
+  allLinks: Link[];
+}
+</code></pre>
+<p></Instruction></p>
+<p>This query looks similar to the <code>allLinks</code> query that’s used in <code>LinkListComponent</code>. However, this time it takes in an argument called <code>searchText</code> and specifies a <code>filter</code> object that will be used to specify conditions on the links that you want to retrieve.</p>
+<p>In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its <code>URL</code> contains the provided <code>searchText</code> <em>or</em> its <code>description</code> contains the provided <code>searchText</code>. Both conditions can be combined using the <code>OR</code> operator.</p>
+<p>The implementation is almost trivial. You’re executing the <code>ALL_LINKS_SEARCH_QUERY</code> each time <code>searchText</code> changes, and binding the results to <code>allLinks</code> so that they can be rendered.</p>
+<p>Go ahead and test the app by navigating to <code>http://localhost:4200/search</code>. Then type a search string into the text field and verify the links that are returned fit the filter conditions.</p>
+</body>
+</html>

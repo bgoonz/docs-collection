@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Filtering: Searching the List of Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Filtering: Searching the List of Links</h1>
+</header>
+<p>In this section, you’ll implement a search feature and learn about the filtering capabilities of your GraphQL API.</p>
+<blockquote>
+<p>Note: If you’re interested in all the filtering capabilities of Graphcool, you can check out the <a href="https://www.graph.cool/docs/reference/simple-api/filtering-by-field-xookaexai0/">documentation</a> on it.</p>
+</blockquote>
+<h3 id="preparing-the-vuejs-components">Preparing the VueJS Components</h3>
+<p>The search will be available under a new route and implemented in a new VueJS component.</p>
+<p><Instruction></p>
+<p>Start by creating a new file called <code>src/components/Search.vue</code> and add the following code:</p>
+<pre class="js{5-6,18-19,30-43}(path=&quot;.../hackernews-vue-apollo/src/components/search.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      Search
+      &lt;!-- 1 --&gt;
+      &lt;input type=&quot;text&quot; v-model=&quot;searchText&quot;&gt;
+    &lt;/div&gt;
+    &lt;link-item
+      v-for=&quot;(link, index) in allLinks&quot;
+      :key=&quot;link.id&quot;
+      :link=&quot;link&quot;
+      :index=&quot;index&quot;&gt;
+    &lt;/link-item&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  // 2
+  import { ALL_LINKS_SEARCH_QUERY } from &#39;../constants/graphql&#39;
+  import LinkItem from &#39;./LinkItem&#39;
+
+  export default {
+    name: &#39;Search&#39;,
+    data () {
+      return {
+        allLinks: [],
+        searchText: &#39;&#39;
+      }
+    },
+    // 3
+    apollo: {
+      allLinks: {
+        query: ALL_LINKS_SEARCH_QUERY,
+        variables () {
+          return {
+            searchText: this.searchText
+          }
+        },
+        skip () {
+          return !this.searchText
+        }
+      }
+    },
+    components: {
+      LinkItem
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>Let’s review what you are doing here.</p>
+<ol type="1">
+<li>First, you bind <code>searchText</code> to an input element</li>
+<li>Next, you import the, soon to be created, <code>ALL_LINKS_SEARCH_QUERY</code></li>
+<li>Finally, you define a smart query. Note that <code>variables</code> is a function rather than an object. This means that each time <code>this.searchText</code> is updated, <code>variables</code> will trigger the smart query to re-run. You also define <code>skip</code> which ensures this query will not run if there is no <code>searchText</code> to search.</li>
+</ol>
+<p>Notice that the <code>allLinks</code> field in the component’s <code>data</code> will hold all the links to be rendered, so this time we’re not accessing query results through the component props!</p>
+<p><Instruction></p>
+<p>Now add the <code>Search</code> component as a new route to the app. Open <code>src/router/index.js</code> and update it to look like the following:</p>
+<pre class="js{7-8,26-30}(path=&quot;.../hackernews-vue-apollo/src/router/index.js&quot;)"><code>import Vue from &#39;vue&#39;
+import Router from &#39;vue-router&#39;
+
+import AppLogin from &#39;../components/AppLogin&#39;
+import CreateLink from &#39;../components/CreateLink&#39;
+import LinkList from &#39;../components/LinkList&#39;
+// 1
+import Search from &#39;../components/Search&#39;
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: &#39;/&#39;,
+      component: LinkList
+    },
+    {
+      path: &#39;/create&#39;,
+      component: CreateLink
+    },
+    {
+      path: &#39;/login&#39;,
+      component: AppLogin
+    },
+    // 2
+    {
+      path: &#39;/search&#39;,
+      component: Search
+    }
+  ],
+  mode: &#39;history&#39;
+})</code></pre>
+<p></Instruction></p>
+<ol type="1">
+<li>You import the <code>Search</code> component</li>
+<li>You render the <code>Search</code> component when the <code>/search</code> route is reached</li>
+</ol>
+<p>For the user to be able to comfortably navigate to the search functionality, you should also add a new navigation item to the <code>AppHeader</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/AppHeader.vue</code> and put a new <code>RouterLink</code> between <code>new</code> and <code>submit</code>:</p>
+<pre class="js{6-7}(path=&quot;.../hackernews-vue-apollo/src/components/appheader.vue&quot;)"><code>&lt;template&gt;
+  &lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+    &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+      &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+      &lt;router-link to=&quot;/&quot; class=&quot;ml1 no-underline black&quot;&gt;new&lt;/router-link&gt;
+      &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;router-link to=&quot;/search&quot; class=&quot;ml1 no-underline black&quot;&gt;search&lt;/router-link&gt;
+      &lt;div class=&quot;flex&quot; v-if=&quot;userId&quot;&gt;
+        &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+        &lt;router-link to=&quot;/create&quot; class=&quot;ml1 no-underline black&quot;&gt;submit&lt;/router-link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;flex flex-fixed&quot;&gt;
+      &lt;div v-if=&quot;userId&quot; class=&quot;ml1 pointer black&quot; @click=&quot;logout()&quot;&gt;logout&lt;/div&gt;
+      &lt;router-link v-else to=&quot;/login&quot; class=&quot;ml1 no-underline black&quot;&gt;login&lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p></Instruction></p>
+<p>You can now navigate to the search functionality using the new button in the <code>AppHeader</code>:</p>
+<figure>
+<img src="http://imgur.com/XxPdUvo.png" alt="See the search functionality in the Header component" /><figcaption>See the search functionality in the Header component</figcaption>
+</figure>
+<p>Great, let’s now define <code>ALL_LINKS_SEARCH_QUERY</code>.</p>
+<h3 id="filtering-links">Filtering Links</h3>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add the following query definition to the file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const ALL_LINKS_SEARCH_QUERY = gql`
+  query AllLinksSearchQuery($searchText: String!) {
+    allLinks(filter: {
+      OR: [{
+        url_contains: $searchText
+      }, {
+        description_contains: $searchText
+      }]
+    }) {
+      id
+      url
+      description
+      createdAt
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>This query looks similar to the <code>allLinks</code> query that’s used in <code>LinkList</code>. However, this time it takes in an argument called <code>searchText</code> and specifies a <code>filter</code> object that will be used to specify conditions on the links that you want to retrieve.</p>
+<p>In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its <code>url</code> contains the provided <code>searchText</code> <em>or</em> its <code>description</code> contains the provided <code>searchText</code>. Both conditions can be combined using the <code>OR</code> operator.</p>
+<p>The implementation is almost trivial. You’re executing the <code>ALL_LINKS_SEARCH_QUERY</code> each time <code>searchText</code> changes, and binding the results to <code>allLinks</code> on the component’s <code>data</code> so that they can be rendered.</p>
+<p>Go ahead and test the app by navigating to <code>http://localhost:8080/search</code>. Then type a search string into the text field and verify the links that are returned fit the filter conditions.</p>
+</body>
+</html>

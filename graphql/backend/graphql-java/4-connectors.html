@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Connectors</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Connectors</h1>
+</header>
+<p>As fun as it may be, your GraphQL API is unlikely to be of much use if it doesn’t connect to other systems, be it databases, third-party APIs or alike.</p>
+<blockquote>
+<p>One of the beauties of the architecture imposed by GraphQL (remember all that <em>single responsibility</em> stuff?) is that introducing third-party connectors is both trivial for the developer (you) and completely transparent for the client.</p>
+</blockquote>
+<p>Since resolvers are responsible for fetching the value of a single field, it is easy to imagine that, within a single query response, values could be coming from multiple storages and third-party APIs at the same time, without the client ever being affected.</p>
+<h3 id="refactor-the-link-type">Refactor the link type</h3>
+<p><Instruction></p>
+<p>Take this opportunity to add the <code>id</code> field to the <code>Link</code> type as you’ll need it for the features coming later.</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Link {
+    id: ID!
+    url: String!
+    description: String
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Analogously, refactor the <code>Link</code> class to add the new field:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/link.java&quot;)"><code>public class Link {
+    
+    private final String id; //the new field
+    private final String url;
+    private final String description;
+
+    public Link(String url, String description) {
+        this(null, url, description);
+    }
+
+    public Link(String id, String url, String description) {
+        this.id = id;
+        this.url = url;
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    
+}</code></pre>
+<p></Instruction></p>
+<h3 id="connecting-mongo-db">Connecting Mongo DB</h3>
+<p>For this project, you’ll use MongoDB as the persistent storage, but by following the exact same approach you can integrate any other third-party system as the underlying provider for your resolvers.</p>
+<ol type="1">
+<li><p>First off, install MongoDB on your computer</p>
+<p><Instruction></p>
+<p>Following <a href="https://docs.mongodb.com/manual/administration/install-community/">the installation instructions</a> for your platform, and start it up.</p>
+<p></Instruction></p></li>
+<li><p>Having that done, add MongoDB Java driver</p>
+<p><Instruction></p>
+<p>Declare a dependency to MongoDB Java driver to <code>pom.xml</code>:</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.mongodb&lt;/groupId&gt;
+    &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;
+    &lt;version&gt;3.4.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p></Instruction></p></li>
+<li><p>Thanks to the decision to extract the logic for saving and loading links into the <code>LinkRepository</code> class, introduction of MongoDB now has a very localized impact.</p>
+<p><Instruction></p>
+<p>Refactor <code>LinkRepository</code> so that it persists and loads links from MongoDB and not from an in-memory list.</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkrepository.java&quot;)"><code>public class LinkRepository {
+
+    private final MongoCollection&lt;Document&gt; links;
+
+    public LinkRepository(MongoCollection&lt;Document&gt; links) {
+        this.links = links;
+    }
+
+    public Link findById(String id) {
+        Document doc = links.find(eq(&quot;_id&quot;, new ObjectId(id))).first();
+        return link(doc);
+    }
+
+    public List&lt;Link&gt; getAllLinks() {
+        List&lt;Link&gt; allLinks = new ArrayList&lt;&gt;();
+        for (Document doc : links.find()) {
+            allLinks.add(link(doc));
+        }
+        return allLinks;
+    }
+
+    public void saveLink(Link link) {
+        Document doc = new Document();
+        doc.append(&quot;url&quot;, link.getUrl());
+        doc.append(&quot;description&quot;, link.getDescription());
+        links.insertOne(doc);
+    }
+
+    private Link link(Document doc) {
+        return new Link(
+                doc.get(&quot;_id&quot;).toString(),
+                doc.getString(&quot;url&quot;),
+                doc.getString(&quot;description&quot;));
+    }
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>Update the allLinks method in the Query class to now call <code>linkRepository.getAllLinks()</code> instead of <code>linkRepository.allLinks()</code>.</p></li>
+<li><p>You’ll also have to update <code>GraphQLEndpoint</code> to connect to MongoDB.</p>
+<p><Instruction></p>
+<p>Get the <code>links</code> collection from MongoDB and provide it to <code>LinkRepository</code>.</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>@WebServlet(urlPatterns = &quot;/graphql&quot;)
+public class GraphQLEndpoint extends SimpleGraphQLServlet {
+
+    private static final LinkRepository linkRepository;
+
+    static {
+        //Change to `new MongoClient(&quot;&lt;host&gt;:&lt;port&gt;&quot;)`
+        //if you don&#39;t have Mongo running locally on port 27017
+        MongoDatabase mongo = new MongoClient().getDatabase(&quot;hackernews&quot;);
+        linkRepository = new LinkRepository(mongo.getCollection(&quot;links&quot;));
+    }
+
+    public GraphQLEndpoint() {
+        super(buildSchema());
+    }
+
+    private static GraphQLSchema buildSchema() {
+        return SchemaParser.newParser()
+                .file(&quot;schema.graphqls&quot;)
+                .resolvers(new Query(linkRepository), new Mutation(linkRepository))
+                .build()
+                .makeExecutableSchema();
+    }
+}</code></pre>
+<p></Instruction></p></li>
+</ol>
+<p>That’s all! Restart Jetty, fire up GraphiQL and give it a spin! Just make sure you create some links before querying them. Everything should still work the same except you won’t lose the saved links if the power goes out.</p>
+<h3 id="performance">Performance</h3>
+<p>You may have noticed that the execution strategy seen so far is somewhat naive. Imagine the link descriptions are stored in a different database. That would mean for a query like this</p>
+<pre class="graphql(nocopy)"><code>query links {
+  allLinks {
+    description
+  }
+}</code></pre>
+<p>the resolver for the <code>description</code> field (invoked once for each link in the result) would query that other database as many times are there were links. This a classic example of the N+1 problem. The solution for this is to batch multiple requests and resolve them in one go. In case of a SQL database, the desired resolver would look like:</p>
+<pre class="sql(nocopy)"><code>SELECT * FROM Descriptions WHERE link_id IN (1,2,3) // fetch descriptions for 3 links at once</code></pre>
+<p><strong>DataLoader</strong></p>
+<p>In JavaScript and a few other languages, a popular way to implement this strategy is the <a href="https://github.com/facebook/dataloader">DataLoader</a> utility. <a href="https://github.com/graphql-java/java-dataloader">The Java implementation of DataLoader can be found here.</a></p>
+<p>As an alternative, <code>graphql-java</code> offers <code>BatchedExecutionStrategy</code>, which looks for resolvers (<code>DataFetcher</code>s in <code>graphql-java</code> lingo) annotated by <code>@Batched</code>. Such resolvers are expected to take a list of source objects and return a list of results. For the example above, that would mean taking a list of links (<code>List&lt;Link&gt;</code>) and returning a list of descriptions (<code>List&lt;String&gt;</code>). Update: <code>graphql-java-tools</code> now supports batched data fetchers as of <a href="https://github.com/graphql-java/graphql-java-tools/commit/73d42e746ffdb55575b9e4d839ffc41fed70d99a">this commit</a>!</p>
+</body>
+</html>

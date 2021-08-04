@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries</h1>
+</header>
+<h3 id="about-the-django-structure">About the Django structure</h3>
+<p>It’s important to understand how the Django project structure works before moving on.</p>
+<p>In the last chapter, you created a <em>Django Project</em>, which holds everything related to your application. However, Django separates the project into <em>apps</em>. Think about apps as a <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>. You will have two apps, one for Users and one for the Links.</p>
+<p>Another essential decision is about the database. Django works out of the box with <a href="https://www.sqlite.org/">SQLite</a> – a file based database – which you will use. On production systems, you should have a more robust database, such as <a href="https://www.postgresql.org/">PostgreSQL</a>.</p>
+<h3 id="creating-the-links-app">Creating the Links app</h3>
+<p><Instruction></p>
+<p>In the project’s root (next to the <code>manage.py</code> file), create the <code>links</code> app:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">python</span> manage.py startapp links</a></code></pre></div>
+<p></Instruction></p>
+<p>It will create the links app and some default files inside it.</p>
+<p>With an app in place, you need to define a Model – the layer between Django and the database.</p>
+<p><Instruction></p>
+<p>In the <code>links/models.py</code> file, add the following content:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/models.py&quot;)"><code>class Link(models.Model):
+    url = models.URLField()
+    description = models.TextField(blank=True)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Lastly, configure Django to use the new <code>links</code> app in the <code>hackernews/settings.py</code> file:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/hackernews/settings.py&quot;)"><code>INSTALLED_APPS = (
+    # After the graphene_django app
+    &#39;links&#39;,
+)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Create the database tables:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">python</span> manage.py makemigrations</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="ex">python</span> manage.py migrate</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Enter the Django shell with the command <code>python manage.py shell</code> and create some links:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">from</span> links.models import Link</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">Link.objects.create</span>(url=<span class="st">&#39;https://www.howtographql.com/&#39;</span>, description=<span class="st">&#39;The Fullstack Tutorial for GraphQL&#39;</span>)</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">Link.objects.create</span>(url=<span class="st">&#39;https://twitter.com/jonatasbaldin/&#39;</span>, description=<span class="st">&#39;The Jonatas Baldin Twitter&#39;</span>)</a></code></pre></div>
+<h3 id="creating-your-first-type-and-schema">Creating your first Type and Schema</h3>
+<p>In GraphQL, a <em>Type</em> is an object that may contain multiple <em>fields</em>. Each field is calculated through <em>resolvers</em>, that returns a value. A collection of types is called a <em>schema</em>. Every schema has a special type called <em>query</em> for getting data from the server and <em>mutation</em> for sending data to the server.</p>
+<p>This is a simple overview of the concepts, but it should be enough to go through the tutorial. You can read more about it <a href="http://graphql.org/learn/schema/">here</a>.</p>
+<p><Instruction></p>
+<p>Create the <code>links/schema.py</code> file, with the content below:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code>import graphene
+from graphene_django import DjangoObjectType
+
+from .models import Link
+
+
+class LinkType(DjangoObjectType):
+    class Meta:
+        model = Link
+
+
+class Query(graphene.ObjectType):
+    links = graphene.List(LinkType)
+
+    def resolve_links(self, info, **kwargs):
+        return Link.objects.all()</code></pre>
+<p></Instruction></p>
+<p>In the snippet above, the <code>LinkType</code> was created using the <code>DjangoObjectType</code> – a custom type available in Graphene Django. Also, the special type query was created with a resolver for the field <code>links</code>, which returns all the links.</p>
+<p><Instruction></p>
+<p>Create the <code>hackernews/schema.py</code> file, with the query type:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/hackernews/schema.py&quot;)"><code>import graphene
+
+import links.schema
+
+
+class Query(links.schema.Query, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query)</code></pre>
+<p></Instruction></p>
+<p>Why creating another query? This query just inherits the query defined before. This way, you are able to keep every part of the schema isolated in the apps.</p>
+<p>Wow, that’s a lot, right? But now you can finally query some data!</p>
+<h3 id="introducing-graphiql">Introducing GraphiQL</h3>
+<p><a href="https://github.com/graphql/graphiql">GraphiQL</a> is a graphical interactive in-browser GraphQL IDE. In other words, a playground. Note that you need to disable the <a href="https://docs.djangoproject.com/en/2.0/ref/csrf/">Django CSRF protection</a>.</p>
+<p><Instruction></p>
+<p>To install it, add the following in the <code>hackernews/urls.py</code> file:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/hackernews/urls.py&quot;)"><code>... # code
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
+
+urlpatterns = [
+    path(&#39;admin/&#39;, admin.site.urls),
+    path(&#39;graphql/&#39;, csrf_exempt(GraphQLView.as_view(graphiql=True))),
+]</code></pre>
+<p></Instruction></p>
+<p>Open your browser and access <code>http://localhost:8000/graphql/</code>, you should see a screen like this:</p>
+<figure>
+<img src="http://i.imgur.com/b8Zrtvh.png" alt="Access GraphiQL at localhost:8000/graphql" /><figcaption>Access GraphiQL at localhost:8000/graphql</figcaption>
+</figure>
+<p>On the right there’s the <strong>Documentation Explorer</strong>, information about our schema created automatically through <a href="http://graphql.org/learn/introspection/">introspection</a>. On the left, to create your first query, typing the following:</p>
+<pre><code>query {
+  links {
+    id
+    description
+    url
+  }
+}</code></pre>
+<p>You should see a response link this:</p>
+<figure>
+<img src="http://i.imgur.com/bND8TCT.png" alt="Query response" /><figcaption>Query response</figcaption>
+</figure>
+<p>Congratulations! Play around a little bit, try to remove some fields or add others. Break it! It’s the best way of learning!</p>
+</body>
+</html>

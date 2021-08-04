@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error Handling</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error Handling</h1>
+</header>
+<h3 id="schema-validation-errors">Schema Validation errors</h3>
+<p>Any good server should be able to handle errors well. Otherwise, it becomes harder and harder to maintain. Thankfully, the tools we’ve been using before help on this area.</p>
+<p>In fact, if you try right now to send an invalid request to the server, such as a request with a field that doesn’t exist, you’ll already get a pretty good error message back. For example:</p>
+<figure>
+<img src="https://i.imgur.com/kHTelsi.png" alt="Request with a field that doesn’t exist error" /><figcaption>Request with a field that doesn’t exist error</figcaption>
+</figure>
+<h3 id="application-errors">Application errors</h3>
+<p>Some errors will be specific to the application though. For example, let’s say that <code>createLink</code> is called with the <code>url</code> field as a string, as specified by the schema, but its content doesn’t follow an expected url format. You’ll need to throw an error yourself in this case.</p>
+<p>Luckily, all you need to do is to detect the problem and throw the error.</p>
+<p><a href="http://graphql-ruby.org/">GraphQL Gem</a> provides an exception for just these cases <a href="http://graphql-ruby.org/mutations/mutation_errors.html#raising-errors">GraphQL<strong>::</strong>ExecutionError</a>.</p>
+<p><Instruction></p>
+<p>First add validations to the <code>Link</code> model:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/models/link.rb&quot;)"><code>class Link &lt; ApplicationRecord
+  belongs_to :user, optional: true
+
+  validates :url, presence: true, length: { minimum: 5 }
+  validates :description, presence: true, length: { minimum: 5 }
+
+  has_many :votes
+end</code></pre>
+<p></Instruction></p>
+<p>Now every link, requires to have a <code>url</code> and <code>description</code> attributes.</p>
+<p><Instruction></p>
+<p>Then, try to add this to the <code>createLink</code> mutation:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/mutations/create_link.rb&quot;)"><code>module Mutations
+  class CreateLink &lt; BaseMutation
+    argument :description, String, required: true
+    argument :url, String, required: true
+
+    type Types::LinkType
+
+    def resolve(description: nil, url: nil)
+      Link.create!(
+        description: description,
+        url: url,
+        user: context[:current_user]
+      )
+    rescue ActiveRecord::RecordInvalid =&gt; e
+      GraphQL::ExecutionError.new(&quot;Invalid input: #{e.record.errors.full_messages.join(&#39;, &#39;)}&quot;)
+    end
+  end
+end</code></pre>
+<p></Instruction></p>
+<p>Now when you try to submit a link with invalid arguments you get an error.</p>
+<figure>
+<img src="http://i.imgur.com/e5ZgK9c.png" alt="a link with invalid arguments you get an error" /><figcaption>a link with invalid arguments you get an error</figcaption>
+</figure>
+<p><em>You can learn more about GraphQL errors <a href="http://blog.rstankov.com/graphql-mutations-and-form-errors/">here</a>.</em></p>
+</body>
+</html>

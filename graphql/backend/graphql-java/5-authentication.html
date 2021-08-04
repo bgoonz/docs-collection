@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>So far so good, but not a lot of interaction is possible without keeping track of who the current user is. To be a cool Hackernews clone, your app needs to be able to let users sign up and login.</p>
+<h3 id="creating-users">Creating users</h3>
+<p>The steps for creating users are similar to those for creating links.</p>
+<p><Instruction></p>
+<p>Start off by defining the new mutation and related types in the schema:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>    type Mutation {
+      #The new mutation
+      createUser(name: String!, authProvider: AuthData!): User
+      createLink(url: String!, description: String!): Link
+    }
+    
+    type User {
+      id: ID!
+      name: String!
+      email: String
+      password: String
+    }
+    
+    input AuthData {
+      email: String!
+      password: String!
+    }</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Follow by creating the analogous Java types:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/user.java&quot;)"><code>public class User {
+    
+    private final String id;
+    private final String name;
+    private final String email;
+    private final String password;
+
+    public User(String name, String email, String password) {
+        this(null, name, email, password);
+    }
+    
+    public User(String id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+</code></pre>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/authdata.java&quot;)"><code>
+public class AuthData {
+
+    private String email;
+    private String password;
+
+    public AuthData() {
+    }
+
+    public AuthData(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>You’ll also need a new repository class to handle saving and loading users, in the fashion of <code>LinkRepository</code>.</p>
+<p><em>Note that you should never ever store passwords in plain text. This is only to keep the tutorial simple.</em></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/userrepository.java&quot;)"><code>public class UserRepository {
+
+    private final MongoCollection&lt;Document&gt; users;
+
+    public UserRepository(MongoCollection&lt;Document&gt; users) {
+        this.users = users;
+    }
+    
+    public User findByEmail(String email) {
+        Document doc = users.find(eq(&quot;email&quot;, email)).first();
+        return user(doc);
+    }
+
+    public User findById(String id) {
+        Document doc = users.find(eq(&quot;_id&quot;, new ObjectId(id))).first();
+        return user(doc);
+    }
+    
+    public User saveUser(User user) {
+        Document doc = new Document();
+        doc.append(&quot;name&quot;, user.getName());
+        doc.append(&quot;email&quot;, user.getEmail());
+        doc.append(&quot;password&quot;, user.getPassword());
+        users.insertOne(doc);
+        return new User(
+                doc.get(&quot;_id&quot;).toString(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword());
+    }
+    
+    private User user(Document doc) {
+    if (doc == null) {
+        return null;
+    }
+        return new User(
+                doc.get(&quot;_id&quot;).toString(),
+                doc.getString(&quot;name&quot;),
+                doc.getString(&quot;email&quot;),
+                doc.getString(&quot;password&quot;));
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Before adding the new <code>createUser</code> resolver to <code>Mutation</code>, you’ll have to refactor it slightly to also accept a <code>UserRepository</code> instance in the constructor</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code>public class Mutation implements GraphQLRootResolver {
+        
+    private final LinkRepository linkRepository;
+    private final UserRepository userRepository;
+
+    public Mutation(LinkRepository linkRepository, UserRepository userRepository) {
+        this.linkRepository = linkRepository;
+        this.userRepository = userRepository;
+    }
+
+    public Link createLink(String url, String description) {
+        //stays the same
+    }
+    
+    public User createUser(String name, AuthData auth) {
+        User newUser = new User(name, auth.getEmail(), auth.getPassword());
+        return userRepository.saveUser(newUser);
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And finally, you’ll need to instantiate a <code>UserRepository</code> and update the schema-building logic in <code>GraphQLEndpoint</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>    private static final LinkRepository linkRepository;
+    private static final UserRepository userRepository; //the new field
+    
+    static {
+            MongoDatabase mongo = new MongoClient().getDatabase(&quot;hackernews&quot;);
+            linkRepository = new LinkRepository(mongo.getCollection(&quot;links&quot;));
+            userRepository = new UserRepository(mongo.getCollection(&quot;users&quot;));
+    }
+    
+    //the rest is the same
+    
+    private static GraphQLSchema buildSchema() {
+        return SchemaParser.newParser()
+                .file(&quot;schema.graphqls&quot;)
+                .resolvers(new Query(linkRepository), new Mutation(linkRepository, userRepository))
+                .build()
+                .makeExecutableSchema();
+    }</code></pre>
+<p></Instruction></p>
+<p>With all this behind, all that’s left is to test it out in GraphiQL:</p>
+<figure>
+<img src="http://i.imgur.com/W3XsMKY.png" alt="test it out in GraphiQL" /><figcaption>test it out in GraphiQL</figcaption>
+</figure>
+<p>Great, now BoJack’s in the game 😎 You’re one step closer to awesomeness.</p>
+<h3 id="signing-in">Signing in</h3>
+<p>For signing in, you’ll need another mutation (as it is a side-effect producing action). The mutation will expect email and password and it will return a token to be used for authenticating subsequent requests.</p>
+<p><Instruction></p>
+<p>As always, start off by defining the new mutation and related types in the schema:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Mutation {
+  #other mutations stay the same
+  signinUser(auth: AuthData): SigninPayload
+}
+
+type SigninPayload {
+  token: String
+  user: User
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Create a new class to model the new type</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/signinpayload.java&quot;)"><code>public class SigninPayload {
+    
+    private final String token;
+    private final User user;
+
+    public SigninPayload(String token, User user) {
+        this.token = token;
+        this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Because <code>SigninPayload</code> data class contains a complex (non-scalar) object <code>User</code>, it needs a companion resolver class</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/signinresolver.java&quot;)"><code>public class SigninResolver implements GraphQLResolver&lt;SigninPayload&gt; {
+
+    public User user(SigninPayload payload) {
+        return payload.getUser();
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add the new top-level resolver to <code>Mutation</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code>public SigninPayload signinUser(AuthData auth) throws IllegalAccessException {
+    User user = userRepository.findByEmail(auth.getEmail());
+    if (user.getPassword().equals(auth.getPassword())) {
+        return new SigninPayload(user.getId(), user);
+    }
+    throw new GraphQLException(&quot;Invalid credentials&quot;);
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, update the schema building logic in <code>GraphQLEndpoint</code> to include the new resolver:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>return SchemaParser.newParser()
+    .file(&quot;schema.graphqls&quot;)
+    .resolvers(
+        new Query(linkRepository),
+        new Mutation(linkRepository, userRepository),
+        new SigninResolver())
+    .build()
+    .makeExecutableSchema();</code></pre>
+<p></Instruction></p>
+<p>Restart Jetty and enjoy the fruit of your labor in GraphiQL:</p>
+<figure>
+<img src="http://i.imgur.com/5m3uc2I.png" alt="enjoy the fruit of your labor in GraphiQL" /><figcaption>enjoy the fruit of your labor in GraphiQL</figcaption>
+</figure>
+<p>The token in this example is just the user id. In reality, it should be a <a href="https://jwt.io/">JWT</a> or similar.</p>
+<h3 id="authenticating-requests">Authenticating requests</h3>
+<p>Now that you have a way to sign the user in, it’s time to deal with authenticating their future requests. A common way of doing this is expecting the client (usually the browser) to return the token received after a successful sign-in on every subsequent request in the <code>Authorization</code> header.</p>
+<p>Sadly, there’s no good way to make GraphiQL send this header, so you’ll just have to hard-code it for testing.</p>
+<h3 id="configuring-graphiql-for-authentication">Configuring GraphiQL for authentication</h3>
+<p><Instruction></p>
+<p>Open <code>index.html</code> and find the lines setting the headers:</p>
+<pre class="html(nocopy)"><code>method: &#39;post&#39;,
+headers: {
+    &#39;Accept&#39;: &#39;application/json&#39;,
+    &#39;Content-Type&#39;: &#39;application/json&#39;,
+}</code></pre>
+<p>and add the <code>Authorization</code> header to the list, <strong>with the value obtained by executing <code>signinUser</code> mutation as above</strong>:</p>
+<pre class="html(path=&quot;.../hackernews-graphql-java/src/main/webapp/index.html&quot;)"><code>method: &#39;post&#39;,
+headers: {
+    &#39;Accept&#39;: &#39;application/json&#39;,
+    &#39;Content-Type&#39;: &#39;application/json&#39;,
+    &#39;Authorization&#39;: &#39;Bearer 5959649b3b067a55a3c1ffad&#39;,
+}</code></pre>
+<p>🔔<strong>Don’t use the Authorization code from the above code snippet, use the value obtained by executing <code>signinUser</code> mutation</strong> </Instruction></p>
+<p>What this means for you, as the server developer, is that you need to check the value of the <code>Authorization</code> header on every request that needs authentication and/or authorization.</p>
+<p>In GraphQL, the way to obtain this type of data, that isn’t coming from the query or mutation itself, is via the context object. This is a value that gets passed to all the resolvers triggered during the operation execution. The <code>SimpleGraphQLServlet</code> class that your <code>GraphQLEndpoint</code> extends already provides such an object, and it stores the HTTP request and response objects inside. While this is already usable, it’s better to extend it to support your use-case more directly.</p>
+<p><Instruction></p>
+<p>Create a class called <code>AuthContext</code> extending <code>GraphQLContext</code> as such:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/authcontext.java&quot;)"><code>public class AuthContext extends GraphQLContext {
+    
+    private final User user;
+    
+    public AuthContext(User user, Optional&lt;HttpServletRequest&gt; request, Optional&lt;HttpServletResponse&gt; response) {
+        super(request, response);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, override <code>createContext</code> method in <code>GraphQLEndpoint</code> to create this context object instead of the original:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>@Override
+protected GraphQLContext createContext(Optional&lt;HttpServletRequest&gt; request, Optional&lt;HttpServletResponse&gt; response) {
+    User user = request
+        .map(req -&gt; req.getHeader(&quot;Authorization&quot;))
+        .filter(id -&gt; !id.isEmpty())
+        .map(id -&gt; id.replace(&quot;Bearer &quot;, &quot;&quot;))
+        .map(userRepository::findById)
+        .orElse(null);
+    return new AuthContext(user, request, response);
+}</code></pre>
+<p></Instruction></p>
+<p>This code will check if the <code>Authorization</code> header is present and if so, trim the <code>Bearer</code> prefix and use the remainder as an id to fetch the user by. The user will then be stored in the custom context you created. <code>AuthContext</code> will be accessible to all resolvers that need it.</p>
+<p>With this in place, it’s possible to track who posted a link.</p>
+<h3 id="extending-the-link-model">Extending the link model</h3>
+<ol type="1">
+<li><p>Start off by modifying the link model to track the user that created it</p>
+<p><Instruction></p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Link {
+    id: ID!
+    url: String!
+    description: String
+    postedBy: User
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>The <code>Link</code> class needs a similar face-lift.</p>
+<p><Instruction></p>
+<p>Add <code>userId</code> to <code>Link</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/link.java&quot;)"><code>public class Link {
+
+    private final String id;
+    private final String url;
+    private final String description;
+    private final String userId;
+
+    public Link(String url, String description, String userId) {
+        this(null, url, description, userId);
+    }
+
+    public Link(String id, String url, String description, String userId) {
+        this.id = id;
+        this.url = url;
+        this.description = description;
+        this.userId = userId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>As a non-scalar relationship has been added to <code>Link</code>, it now needs a companion <code>LinkResolver</code> class</p>
+<p><Instruction></p>
+<p>Create <code>LinkResolver</code> to contain the link manipulation logic (<code>Link</code> simply holds data)</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkresolver.java&quot;)"><code>public class LinkResolver implements GraphQLResolver&lt;Link&gt; {
+
+    private final UserRepository userRepository;
+
+    public LinkResolver(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User postedBy(Link link) {
+        if (link.getUserId() == null) {
+            return null;
+        }
+        return userRepository.findById(link.getUserId());
+    }
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>Register the new resolver with the <code>SchemaParser</code>.</p>
+<p><Instruction></p>
+<p>Update <code>GraphQLEndpoint#buildSchema</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>private static GraphQLSchema buildSchema() {
+        return SchemaParser.newParser()
+                .file(&quot;schema.graphqls&quot;)
+                .resolvers(
+                        new Query(linkRepository),
+                        new Mutation(linkRepository, userRepository),
+                        new SigninResolver(),
+                        new LinkResolver(userRepository))
+                .build()
+                .makeExecutableSchema();
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>You also need to update the logic for loading and saving the links to take care of the new field</p>
+<p><Instruction></p>
+<p>Load and save <code>userId</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkrepository.java&quot;)"><code>public class LinkRepository {
+
+    private final MongoCollection&lt;Document&gt; links;
+
+    public LinkRepository(MongoCollection&lt;Document&gt; links) {
+        this.links = links;
+    }
+
+    public List&lt;Link&gt; getAllLinks() {
+        List&lt;Link&gt; allLinks = new ArrayList&lt;&gt;();
+        for (Document doc : links.find()) {
+            Link link = new Link(
+                    doc.get(&quot;_id&quot;).toString(),
+                    doc.getString(&quot;url&quot;),
+                    doc.getString(&quot;description&quot;),
+                    doc.getString(&quot;postedBy&quot;)
+            );
+            allLinks.add(link);
+        }
+        return allLinks;
+    }
+
+    public void saveLink(Link link) {
+        Document doc = new Document();
+        doc.append(&quot;url&quot;, link.getUrl());
+        doc.append(&quot;description&quot;, link.getDescription());
+        doc.append(&quot;postedBy&quot;, link.getUserId());
+        links.insertOne(doc);
+    }
+}</code></pre>
+<p></Instruction></p></li>
+<li><p>Finally, treat the currently logged-in user as the creator</p>
+<p><Instruction></p>
+<p>Change the <code>createLink</code> resolver method to insert <code>userId</code></p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code> //The way to inject the context is via DataFetchingEnvironment
+ public Link createLink(String url, String description, DataFetchingEnvironment env) {
+     AuthContext context = env.getContext();
+     Link newLink = new Link(url, description, context.getUser().getId());
+     linkRepository.saveLink(newLink);
+     return newLink;
+ }</code></pre>
+<p></Instruction></p></li>
+</ol>
+<p>Time to test it! Restart the server and create the link as usual, no changes here.</p>
+<figure>
+<img src="http://i.imgur.com/GDVlEfY.png" alt="Restart and test the link" /><figcaption>Restart and test the link</figcaption>
+</figure>
+<p>The good part comes when fetching all links. Try getting the user details via the new <code>postedBy</code> field:</p>
+<figure>
+<img src="http://i.imgur.com/9PlICQM.png" alt="Fetching all the links" /><figcaption>Fetching all the links</figcaption>
+</figure>
+</body>
+</html>

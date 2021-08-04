@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading Links</h1>
+</header>
+<h3 id="preparing-the-vuejs-components">Preparing the VueJS components</h3>
+<p>The first piece of functionality that you’ll implement in the app is loading and displaying a list of <code>LinkItem</code> elements. You’ll walk your way up in the VueJS component hierarchy and start with the component that will render a single link.</p>
+<p><Instruction></p>
+<p>Remove the <code>Hello.vue</code> file from <code>src/components</code>. You will be creating several new components throughout the remainder of this tutorial.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Create a new file called <code>LinkItem.vue</code> in the <code>src/components</code> directory and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;{{link.description}} ({{link.url}})&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    name: &#39;LinkItem&#39;,
+    props: [&#39;link&#39;]
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>This is a simple VueJS component that expects a <code>link</code> in its <code>props</code> and renders the link’s <code>description</code> and <code>url</code>. Easy as pie! 🍰</p>
+<p>Next, you’ll implement the component that renders a list of links.</p>
+<p><Instruction></p>
+<p>Again, in the <code>src/components</code> directory, go ahead and create a new file called <code>LinkList.vue</code> and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;link-item
+      v-for=&quot;link in allLinks&quot;
+      :key=&quot;link.id&quot;
+      :link=&quot;link&quot;&gt;
+    &lt;/link-item&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import LinkItem from &#39;./LinkItem&#39;
+
+  export default {
+    name: &#39;LinkList&#39;,
+    data () {
+      return {
+        allLinks: [
+          {
+            id: &#39;1&#39;,
+            description: &#39;The Coolest GraphQL Backend 😎&#39;,
+            url: &#39;https://www.graph.cool&#39;
+          }, {
+            id: &#39;2&#39;,
+            description: &#39;The Best GraphQL Client&#39;,
+            url: &#39;http://dev.apollodata.com/&#39;
+          }
+        ]
+      }
+    },
+    components: {
+      LinkItem
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>Here, you’re using mock data for now to make sure the component setup works. You’ll soon replace this with some actual data loaded from the server - patience, young Padawan!</p>
+<p><Instruction></p>
+<p>To complete the setup, open <code>src/App.vue</code> and replace the current contents with the following:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/app.vue&quot;)"><code>&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;link-list&gt;&lt;/link-list&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import LinkList from &#39;./components/LinkList&#39;
+
+  export default {
+    name: &#39;app&#39;,
+    components: {
+      LinkList
+    }
+  }
+&lt;/script&gt;
+
+&lt;style&gt;
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, sans-serif;
+  }
+
+  input {
+    max-width: 500px;
+  }
+
+  .gray {
+    color: #828282;
+  }
+
+  .orange {
+    background-color: #ff6600;
+  }
+
+  .background-gray {
+    background-color: rgb(246,246,239);
+  }
+
+  .f11 {
+    font-size: 11px;
+  }
+
+  .w85 {
+    width: 85%;
+  }
+
+  .button {
+    font-family: monospace;
+    font-size: 10pt;
+    color: black;
+    background-color: buttonface;
+    text-align: center;
+    padding: 2px 6px 3px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    cursor: pointer;
+    max-width: 250px;
+  }
+&lt;/style&gt;</code></pre>
+<p></Instruction></p>
+<p>Note that you only changed the <code>template</code> and <code>script</code> blocks here. You are now displaying the <code>LinkList</code> component within the top-level <code>App</code> component.</p>
+<p>You need to make one more change before testing out the app.</p>
+<p><Instruction></p>
+<p>Open <code>src/main.js</code> and remove the two references to router for now. After removing them, <code>src/main.js</code> should look like this:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import { ApolloClient } from &#39;apollo-client&#39;
+import { HttpLink } from &#39;apollo-link-http&#39;
+import { InMemoryCache } from &#39;apollo-cache-inmemory&#39;
+import &#39;tachyons&#39;
+import Vue from &#39;vue&#39;
+import VueApollo from &#39;vue-apollo&#39;
+
+import App from &#39;./App&#39;
+
+Vue.config.productionTip = false
+
+const httpLink = new HttpLink({
+  // You should use an absolute URL here
+  uri: &#39;__SIMPLE_API_ENDPOINT__&#39;
+})
+
+const apolloClient = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+  connectToDevTools: true
+})
+
+Vue.use(VueApollo)
+
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+  defaultOptions: {
+    $loadingKey: &#39;loading&#39;
+  }
+})
+
+/* eslint-disable no-new */
+new Vue({
+  el: &#39;#app&#39;,
+  provide: apolloProvider.provide(),
+  render: h =&gt; h(App)
+})</code></pre>
+<p></Instruction></p>
+<p>Run the app to check if everything works so far (<code>npm run dev</code>)! The app should now display the two links from the <code>allLinks</code> array:</p>
+<figure>
+<img src="http://imgur.com/NKQswvL.png" alt="Run the app using npm run dev" /><figcaption>Run the app using npm run dev</figcaption>
+</figure>
+<h3 id="writing-the-graphql-query">Writing the GraphQL Query</h3>
+<p>You’ll now load the actual links that are stored on the server. The first thing you need to do for that is define the GraphQL query that you want to send to the API.</p>
+<p>Here is what it looks like:</p>
+<pre class="graphql"><code>query AllLinks {
+  allLinks {
+    id
+    createdAt
+    description
+    url
+  }
+}</code></pre>
+<p>You could now simply execute this query in a Playground and retrieve the results from your GraphQL server. But how can you use it inside your JavaScript code?</p>
+<h3 id="queries-with-apollo-client">Queries with Apollo Client</h3>
+<p>When using VueJS with <code>vue-apollo</code> the <code>apollo</code> object makes it easy to fetch GraphQL data.</p>
+<p>With this approach, all you need to do when it comes to data fetching is write the GraphQL query and <code>apollo-client</code> will fetch the data for you under the hood and then make it available in your component’s <code>data</code>.</p>
+<p>In general, the process for you to add some data fetching logic will be very similar every time:</p>
+<ol type="1">
+<li>Write the query as a JS constant using the <code>gql</code> parser function</li>
+<li>Initialize the property in your component’s <code>data</code> property</li>
+<li>Use the <code>apollo</code> object to fetch the results of your <code>graphql</code> query</li>
+<li>Access the query results in the component’s <code>data</code></li>
+</ol>
+<p>You will be writing your queries and mutations in a <code>constants</code> folder and simply importing these queries and mutations into components as needed.</p>
+<p><Instruction></p>
+<p>Create a directory within <code>src</code> called <code>constants</code>. Within this new directory, create a file called <code>graphql.js</code>. This is where all of your queries and mutations will live.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Open up <code>src/constants/graphql.js</code> and add your first query:</p>
+<pre class="js{1-2,4-13}(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>// 1
+import gql from &#39;graphql-tag&#39;
+
+// 2
+export const ALL_LINKS_QUERY = gql`
+  query AllLinksQuery {
+    allLinks {
+      id
+      createdAt
+      url
+      description
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>First, you import <code>gql</code> from the <code>graphql-tag</code> package. The <code>gql</code> function is used to parse the plain GraphQL code.</li>
+<li>Now you define the plain GraphQL query. The name <code>AllLinksQuery</code> is the <em>operation name</em> and will be used by Apollo to refer to this query in its internals. You export this parsed query as <code>ALL_LINKS_QUERY</code> so you can easily import it into components.</li>
+</ol>
+<p>Next, you will add an <code>apollo</code> object to the <code>LinkList</code> component and call this newly created query to fetch data.</p>
+<p><Instruction></p>
+<p>Open up <code>src/components/LinkList.vue</code>, import <code>ALL_LINKS_QUERY</code>, remove the hard-coded <code>allLinks</code>, and add the <code>apollo</code> object. Your <code>LinkList</code> component should now look like this:</p>
+<pre class="js{3-6,16-17,24-26,32-37}(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;!-- 1 --&gt;
+    &lt;h4 v-if=&quot;loading&quot;&gt;Loading...&lt;/h4&gt;
+    &lt;link-item
+      v-for=&quot;link in allLinks&quot;
+      :key=&quot;link.id&quot;
+      :link=&quot;link&quot;&gt;
+    &lt;/link-item&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  // 2
+  import { ALL_LINKS_QUERY } from &#39;../constants/graphql&#39;
+  import LinkItem from &#39;./LinkItem&#39;
+
+  export default {
+    name: &#39;LinkList&#39;,
+    data () {
+      return {
+        // 3
+        allLinks: [],
+        loading: 0
+      }
+    },
+    components: {
+      LinkItem
+    },
+    // 4
+    apollo: {
+      allLinks: {
+        query: ALL_LINKS_QUERY
+      }
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>First, you use <code>v-if</code> to display a loading indicator while data is being fetched.</li>
+<li>You import the <code>ALL_LINKS_QUERY</code> which you just created</li>
+<li>Next, you initialize the <code>allLinks</code> data property to an empty array, and <code>loading</code> to 0. This will be incremented to 1 once data loads.</li>
+<li>Now you add an <code>apollo</code> object to your component and add an <code>allLinks</code> property to it. This property requires a <code>query</code> and you pass it the <code>ALL_LINKS_QUERY</code>.</li>
+</ol>
+<p>That’s it! If you ran <code>npm run dev</code> earlier, you should see your UI update and show the two links thanks to built-in <a href="https://vue-loader.vuejs.org/en/features/hot-reload.html">hot-reloading</a>.</p>
+</body>
+</html>

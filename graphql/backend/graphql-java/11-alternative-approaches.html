@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Alternative approaches to schema development</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Alternative approaches to schema development</h1>
+</header>
+<p>The way you’ve been developing so far is known as schema-first, as you always start by defining the schema. This style has important benefits, discussed at the beginning of this tutorial, and it works well for new projects, where no legacy code exists. Still, you may have noticed that in strongly and statically typed languages, like Java, it leads to a lot of duplication. For example, revisit the way you developed the <code>Link</code> type.</p>
+<p>You defined it in the schema:</p>
+<pre class="graphql(nocopy)"><code>type Link {
+    id: ID!
+    url: String!
+    description: String
+}</code></pre>
+<p>and then you created a corresponding POJO:</p>
+<pre class="java(nocopy)"><code>public class Link {
+    
+    private final String id;
+    private final String url;
+    private final String description;
+    
+    //constructors, getters and setters
+    //...
+}</code></pre>
+<p>Both of these blocks contain the exact same information. Worse yet, changing one requires immediate change to the other. This makes refactoring risky and cumbersome. On the other hand, if you’re trying to introduce a GraphQL API into an existing project, writing the schema practically means re-describing the entire existing model. This is both expensive and error-prone, and still suffers from duplication.</p>
+<h3 id="code-first-style">Code-first style</h3>
+<p>A common alternative to the schema-first style, known as code-first, is generating the schema from the existing model. This keeps the schema and the model in sync, easing refactoring. It also works well in projects where GraphQL is introduced on top of an existing codebase. The downside of this approach is that the schema doesn’t exist until some server code is written, introducing a dependency between the client-side and server-side work. One workaround would be using stubs on the server to generate the schema quickly, then developing the real server code in parallel with the client.</p>
+<p>The Java/GraphQL ecosystem spawned a few libraries that facilitate this style of development. You can find them listed <a href="https://github.com/graphql-java/awesome-graphql-java#code-first">here</a>. An example using <a href="https://github.com/leangen/graphql-spqr"><code>graphql-spqr</code></a>, written by yours truly, follows below.</p>
+<h3 id="setting-up-graphql-spqr">Setting up graphql-spqr</h3>
+<p><Instruction></p>
+<p>To experiment with <code>graphql-spqr</code>, you should first declare a dependency to it in <code>pom.xml</code>:</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.leangen.graphql&lt;/groupId&gt;
+    &lt;artifactId&gt;spqr&lt;/artifactId&gt;
+    &lt;version&gt;0.9.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p></Instruction></p>
+<p>Additionally, it will be much more comfortable to work if the <a href="https://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html">method parameter names are preserved</a> (you’ll understand why in a second).</p>
+<p><Instruction></p>
+<p>So enable the <code>-paramaters</code> javac option by configuring the <code>maven-compiler-plugin</code> as follows:</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.6.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;compilerArgs&gt;
+            &lt;arg&gt;-parameters&lt;/arg&gt;
+        &lt;/compilerArgs&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+<p></Instruction></p>
+<p>Make sure you <strong>rebuild the project</strong> now (e.g. run <code>mvn clean package</code>) for the new option to take effect. Then, restart Jetty.</p>
+<h3 id="generating-the-schema-using-graphql-spqr">Generating the schema using graphql-spqr</h3>
+<p>In order to generate a schema similar to the one you’ve been working on so far, but this time using the code-first style you’d (unsurprisingly) start from the business logic. It is fortunate that you already have some business logic ready, in <code>Query</code>, <code>Mutation</code> and <code>*Resolver</code> classes, as it simulates introducing GraphQL into an existing project.</p>
+<p>The easiest way to demonstrate <code>graphql-spqr</code> is by using annotations, but note that they’re entirely optional.</p>
+<p><Instruction></p>
+<p>Start off by decorating the methods you want exposed over GraphQL.</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/query.java&quot;)"><code>public class Query { //1
+
+    private final LinkRepository linkRepository;
+
+    public Query(LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
+    }
+
+    @GraphQLQuery //2
+    public List&lt;Link&gt; allLinks(LinkFilter filter,
+                               @GraphQLArgument(name = &quot;skip&quot;, defaultValue = &quot;0&quot;) Number skip, //3
+                               @GraphQLArgument(name = &quot;first&quot;, defaultValue = &quot;0&quot;) Number first) {
+        return linkRepository.getAllLinks(filter, skip.intValue(), first.intValue());
+    }</code></pre>
+<p></Instruction></p>
+<p>A few things to note about this code:</p>
+<ol type="1">
+<li>Implementing <code>GraphQLRootResolver</code> is no longer needed (nor is the dependency to <code>graphql-java-tools</code>). In fact, <code>graphql-spqr</code> goes to great lengths to ensure the code needs no special classes, interfaces or any modifications in order to be exposed over GraphQL</li>
+<li>As noted, the annotations are entirely optional, but the default configuration will expect them at the top-level</li>
+<li>By default, the name of the method parameter will be used in the schema (this is why you want <code>-parameters</code> javac option enabled when compiling). Using <code>@GraphQLArgument</code> is a way to change the name and set the default value. All of this is doable without annotations as well.</li>
+</ol>
+<p><Instruction></p>
+<p>Decorate the interesting bits in <code>LinkResolver</code> too:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkresolver.java&quot;)"><code>public class LinkResolver { //1
+    
+    private final UserRepository userRepository;
+
+    LinkResolver(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @GraphQLQuery
+    public User postedBy(@GraphQLContext Link link) { //2
+        if (link.getUserId() == null) {
+            return null;
+        }
+        return userRepository.findById(link.getUserId());
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>The point of interest in this block:</p>
+<ol type="1">
+<li>No more <code>implements GraphQLResolver&lt;Link&gt;</code></li>
+<li><code>@GraphQLContext</code> is used to wire external methods into types. This mapping is semantically the same as if the <code>Link</code> class contained a method <code>public User postedBy() {...}</code>. In this manner, it is possible to keep the logic separate from data, yet still produce deeply nested structures.</li>
+</ol>
+<p><Instruction></p>
+<p>Expose the <code>createLink</code> mutation is a similar fashion:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code>@GraphQLMutation //1
+public Link createLink(String url, String description, @GraphQLRootContext AuthContext context) { //2
+    Link newLink = new Link(url, description, context.getUser().getId());
+    linkRepository.saveLink(newLink);
+    return newLink;
+}</code></pre>
+<p></Instruction></p>
+<p>Things to note:</p>
+<ol type="1">
+<li>You expose mutations via <code>@GraphQLMutation</code></li>
+<li>You can inject the <code>AuthContext</code> directly via <code>@GraphQLRootContext</code>. No more need for <code>DataFetchingEnvironment</code>. This nicely removes the dependency to <code>graphql-java</code> specific code in the logic layer.</li>
+</ol>
+<p><Instruction></p>
+<p>Finally, to generate the schema from the classes, update <code>GraphQLEndoint#buildSchema</code> to look as follows:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendoint.java&quot;)"><code>private static GraphQLSchema buildSchema() {
+    Query query = new Query(linkRepository); //create or inject the service beans
+    LinkResolver linkResolver = new LinkResolver(userRepository);
+    Mutation mutation = new Mutation(linkRepository, userRepository, voteRepository);
+    
+    return new GraphQLSchemaGenerator()
+            .withOperationsFromSingletons(query, linkResolver, mutation) //register the beans
+            .generate(); //done :)
+}</code></pre>
+<p></Instruction></p>
+<p>If you now fire up GraphiQL, you’d get the exact same result as before:</p>
+<p><img src="http://i.imgur.com/RQufTw6.png" alt="Query links the same result as before" /> <img src="http://i.imgur.com/NBQFPJ9.png" alt="Mutation createlink same result as before" /></p>
+<p>The important points to note:</p>
+<ul>
+<li>You never defined the schema explicitly (meaning you won’t have to update it when the code changes either).</li>
+<li>You don’t have to separate the logic for manipulating <code>Link</code>s into the top level queries (<code>allLinks</code> inside <code>Query</code>), embedded ones (<code>postedBy</code> inside <code>LinkResolver</code>) and mutations (<code>createLink</code> inside <code>Mutation</code>). All the queries and mutations operating on links could have been placed into a single class (e.g. <code>LinkService</code>), yet having them separate was not a hurdle either. This implies that your legacy code and best practices can stay untouched.</li>
+</ul>
+<p>This is just a glance at the alternative style of development. There are many more possibilities to explore, so take a look at what <a href="https://github.com/graphql-java/awesome-graphql-java">the ecosystem</a> has to offer. For more info on <code>graphql-spqr</code> check out <a href="https://github.com/leangen/graphql-spqr">the project page</a>, and for a full example see <a href="https://github.com/leangen/graphql-spqr-samples">here</a>.</p>
+</body>
+</html>

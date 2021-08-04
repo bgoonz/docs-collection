@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Filtering: Searching the List of Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Filtering: Searching the List of Links</h1>
+</header>
+<p>In this section, you’ll implement a search feature and learn about the filtering capabilities of your GraphQL API.</p>
+<blockquote>
+<p>Note: If you’re interested in all the filtering capabilities of Graphcool, you can check out the <a href="https://www.graph.cool/docs/reference/simple-api/filtering-by-field-xookaexai0/">documentation</a> on it.</p>
+</blockquote>
+<h3 id="preparing-the-route">Preparing the route</h3>
+<p><Instruction></p>
+<p>The search will be available under a new route. Start by creating a new route called <code>search</code>:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate route search</code></pre>
+<p></Instruction></p>
+<p>This will generate a new route, add it to your <code>router.js</code> and create a new template. You won’t be needing the route file go delete <code>app/routes/search.js</code>.</p>
+<p><Instruction></p>
+<p>Open that template (<code>app/templates/search.hbs</code>) and replace the contents with the following code:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/search.hbs&quot;)"><code>&lt;div&gt;
+  &lt;form {{action &#39;executeSearch&#39; on=&#39;submit&#39;}}&gt;
+    {{input type=&#39;text&#39; value=searchText}}
+    {{input type=&#39;submit&#39; value=&#39;search&#39;}}
+  &lt;/form&gt;
+  {{#each model as |link index|}}
+    {{link-post index=index link=link}}
+  {{/each}}
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>Again, this is a pretty standard setup. You’re rendering an <code>input</code> field where the user can type a search string.</p>
+<p>Notice that you are also preparing to display the results using the <code>link-post</code> component.</p>
+<p>For the user to be able to comfortably navigate to the search functionality, you should also add a new navigation item to the <code>site-header</code> component.</p>
+<p><Instruction></p>
+<p>Open the template for your <code>site-header</code> component and insert a new link between <code>new</code> and <code>submit</code>:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/components/site-header.hbs&quot;)"><code>&lt;div class=&#39;flex pa1 justify-between nowrap orange&#39;&gt;
+  &lt;div class=&#39;flex flex-fixed black&#39;&gt;
+    &lt;div class=&#39;fw7 mr1&#39;&gt;Hacker News&lt;/div&gt;
+    {{#link-to &#39;links&#39; class=&#39;ml1 no-underline black&#39;}}new{{/link-to}}
+    &lt;div class=&#39;ml1&#39;&gt;|&lt;/div&gt;
+    {{#link-to &#39;search&#39; class=&#39;ml1 no-underline black&#39;}}search{{/link-to}}
+    {{#if userLoggedIn}}
+      &lt;div class=&#39;flex&#39;&gt;
+        &lt;div class=&#39;ml1&#39;&gt;|&lt;/div&gt;
+        {{#link-to &#39;create&#39; class=&#39;ml1 no-underline black&#39;}}submit{{/link-to}}
+      &lt;/div&gt;
+    {{/if}}
+  &lt;/div&gt;
+  &lt;div class=&#39;flex flex-fixed&#39;&gt;
+    {{#if userLoggedIn}}
+      &lt;div class=&#39;ml1 pointer black&#39; {{action &#39;logout&#39;}}&gt;
+        logout
+      &lt;/div&gt;
+    {{else}}
+      {{#link-to &#39;login&#39; class=&#39;ml1 no-underline black&#39;}}login{{/link-to}}
+    {{/if}}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>You can now navigate to the search functionality using the new button in the <code>site-header</code> component.</p>
+<h3 id="filtering-links">Filtering Links</h3>
+<p><Instruction></p>
+<p>Create a new controller for this route by adding a new file in your <code>app/controllers</code> folder. Name the file <code>search.js</code> and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/search.js&quot;)"><code>import Ember from &#39;ember&#39;;
+import query from &#39;hackernews-ember-apollo/gql/queries/allLinksSearch&#39;;
+
+export default Ember.Controller.extend({
+  actions: {
+    executeSearch() {
+      const searchText = this.get(&#39;searchText&#39;);
+      if (!searchText) return console.error(&#39;No search text provided.&#39;);
+      return this.get(&#39;apollo&#39;).queryOnce({ query, variables: { searchText } }, &#39;allLinks&#39;).then(result =&gt; {
+        this.set(&#39;model&#39;, result);
+      }).catch(error =&gt; alert(error));
+    }
+  },
+
+  apollo: Ember.inject.service()
+});</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also create a new file named <code>allLinksSearch.graphql</code> in your <code>app/gql/queries</code> directory, and add the following contents:</p>
+<pre class="graphql"><code>query AllLinksSearchQuery($searchText: String!) {
+  allLinks(filter: { OR: [{ url_contains: $searchText }, { description_contains: $searchText }] }) {
+    id
+    url
+    description
+    createdAt
+    postedBy {
+      id
+      name
+    }
+    votes {
+      id
+      user {
+        id
+      }
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>This query looks similar to the <code>allLinks</code> query that’s used in many places. However, this time it takes in an argument called <code>searchText</code> and specifies a <code>filter</code> object that will be used to specify conditions on the links that you want to retrieve.</p>
+<p>In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its <code>url</code> contains the provided <code>searchText</code> <em>or</em> its <code>description</code> contains the provided <code>searchText</code>. Both conditions can be combined using the <code>OR</code> operator.</p>
+<p>Perfect, the query is defined! But this time you actually want to load the data every time the user hits the <em>search</em>-button which is what the <code>executeSearch</code> method is handling. You are getting the <code>searchText</code> the user provided, running a <code>queryOnce</code> method on your Apollo client, and setting the results to your model.</p>
+<p>Notice that you aren’t using the <code>query</code> method, but are instead using <code>queryOnce</code>. The difference is subtle, but important. <code>ember-apollo-client</code>s <code>query</code> method, by default, sets an internal Apollo subscription. This allows the client to be notified if another component calls your server and receives results that would need to update the data in your store.</p>
+<p>Basically, by default, <code>ember-apollo-client</code> is trying to help you prevent stale data, if possible. The <code>queryOnce</code> method does not setup that internal Apollo subscription. Since you don’t care about being notified when a detail on your search results changes, you are using <code>queryOnce</code>.</p>
+<p>Go ahead and test the app by running <code>yarn start</code> in a Terminal and navigating to <code>http://localhost:4200/search</code>. Then type a search string into the text field, click the <em>search</em>-button and verify the links that are returned fit the filter conditions.</p>
+</body>
+</html>

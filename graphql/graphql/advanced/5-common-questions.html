@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Common Questions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Common Questions</h1>
+</header>
+<h3 id="is-graphql-a-database-technology">Is GraphQL a Database Technology?</h3>
+<p>No. GraphQL is often confused with being a database technology. This is a misconception, GraphQL is a <em>query language</em> for APIs - not databases. In that sense it’s database agnostic and can be used with any kind of database or even no database at all.</p>
+<h3 id="is-graphql-only-for-react-javascript-developers">Is GraphQL only for React / Javascript Developers?</h3>
+<p>No. GraphQL is an API technology so it can be used in any context where an API is required.</p>
+<p>On the <em>backend</em>, a GraphQL server can be implemented in any programming language that can be used to build a web server. Next to Javascript, there are popular reference implementations for Ruby, Python, Scala, Java, Clojure, Go and .NET.</p>
+<p>Since a GraphQL API is usually operated over HTTP, any client that can speak HTTP is able to query data from a GraphQL server.</p>
+<blockquote>
+<p>Note: GraphQL is actually transport layer agnostic, so you could choose protocols other than HTTP to implement your server.</p>
+</blockquote>
+<h3 id="how-to-do-server-side-caching">How to do Server-side Caching?</h3>
+<p>One common concern with GraphQL, especially when comparing it to REST, are the difficulties to maintain server-side cache. With REST, it’s easy to cache the data for each endpoint, since it’s sure that the <em>structure</em> of the data will not change.</p>
+<p>With GraphQL on the other hand, it’s not clear what a client will request next, so putting a caching layer right behind the API doesn’t make a lot of sense.</p>
+<p>Server-side caching still is a challenge with GraphQL. More info about caching can be found on the <a href="http://graphql.org/learn/caching/">GraphQL website</a>.</p>
+<h3 id="how-to-do-authentication-and-authorization">How to do Authentication and Authorization?</h3>
+<p>Authentication and authorization are often confused. <em>Authentication</em> describes the process of claiming an <em>identity</em>. That’s what you do when you log in to a service with a username and password, you authenticate yourself. <em>Authorization</em> on the other hand describes <em>permission rules</em> that specify the access rights of individual users and user groups to certain parts of the system.</p>
+<p>Authentication in GraphQL can be implemented with common patterns such as <a href="https://oauth.net/">OAuth</a>.</p>
+<p>To implement authorization, it is <a href="http://graphql.org/learn/authorization/">recommended</a> to delegate any data access logic to the business logic layer and not handle it directly in the GraphQL implementation. If you want to have some inspiration on how to implement authorization, you can take a look at this blogpost on <a href="https://www.prisma.io/blog/graphql-directive-permissions-authorization-made-easy-54c076b5368e">how to implement authorization using GraphQL directives</a>.</p>
+<h3 id="how-to-do-error-handling">How to do Error Handling?</h3>
+<p>A successful GraphQL query is supposed to return a JSON object with a root field called <code>"data"</code>. If the request fails or partially fails (e.g. because the user requesting the data doesn’t have the right access permissions), a second root field called <code>"errors"</code> is added to the response:</p>
+<pre class="js(nocopy)"><code>{
+  &quot;data&quot;: { ... },
+  &quot;errors&quot;: [ ... ]
+}</code></pre>
+<p>For more details, you can refer to the <a href="http://spec.graphql.org/">GraphQL specification</a>.</p>
+<h3 id="does-graphql-support-offline-usage">Does GraphQL Support Offline Usage?</h3>
+<p>GraphQL is a query language for (web) APIs, and in that sense by definition only works online. However, offline support on the client-side is a valid concern. The caching abilities of Relay and Apollo might already be enough for some use cases, but there isn’t a popular solution for actually persisting stored data yet. You can gain some more insights in the GitHub issues of <a href="https://github.com/facebook/relay/issues/676">Relay</a> and <a href="https://github.com/apollographql/apollo-client/issues/424">Apollo</a> where offline support is discussed.</p>
+<blockquote>
+<p>One interesting approach for offline usage and persistence can be found <a href="http://www.east5th.co/blog/2017/07/24/offline-graphql-queries-with-redux-offline-and-apollo/">here</a>.</p>
+</blockquote>
+</body>
+</html>

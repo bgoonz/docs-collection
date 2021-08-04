@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Server</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Server</h1>
+</header>
+<p>GraphQL is often explained as a frontend-focused API technology because it enables clients to get data in a much nicer way than before. But the API itself is, of course, implemented on the server side. There are a lot of benefits to be had on the server as well because GraphQL enables the server developer to focus on describing the data available rather than implementing and optimizing specific endpoints.</p>
+<h2 id="graphql-execution">GraphQL execution</h2>
+<p>GraphQL doesn’t just specify a way to describe schemas and a query language to retrieve data from those schemas, but an actual execution algorithm for how those queries are transformed into results. This algorithm is quite simple at its core: The query is traversed field by field, executing “resolvers” for each field. So, let’s say we have the following schema:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  author(id: ID!): Author
+}
+
+type Author {
+  posts: [Post]
+}
+
+type Post {
+  title: String
+  content: String
+}</code></pre>
+<p>The following is a query we would be able to send to a server with that schema:</p>
+<pre class="graphql(nocopy)"><code>query {
+  author(id: &quot;abc&quot;) {
+    posts {
+      title
+      content
+    }
+  }
+}</code></pre>
+<p>The first thing to see is that every field in the query can be associated with a type:</p>
+<pre class="graphql(nocopy)"><code>query: Query {
+  author(id: &quot;abc&quot;): Author {
+    posts: [Post] {
+      title: String
+      content: String
+    }
+  }
+}</code></pre>
+<p>Now, we can easily find the resolvers in our server to run for every field. The execution starts at the query type and goes breadth-first. This means we run the resolver for <code>Query.author</code> first. Then, we take the result of that resolver, and pass it into its child, the resolver for <code>Author.posts</code>. At the next level, the result is a list, so in that case, the execution algorithm runs on one item at a time. So the execution works like this:</p>
+<pre class="(nocopy)"><code>Query.author(root, { id: &#39;abc&#39; }, context) -&gt; author
+Author.posts(author, null, context) -&gt; posts
+for each post in posts
+  Post.title(post, null, context) -&gt; title
+  Post.content(post, null, context) -&gt; content</code></pre>
+<p>At the end, the execution algorithm puts everything together into the correct shape for the result and returns that.</p>
+<p>One thing to note is that most GraphQL server implementations will provide “default resolvers” - so you don’t have to specify a resolver function for every single field. In GraphQL.js, for example, you don’t need to specify resolvers when the parent object of the resolver contains a field with the correct name.</p>
+<p>Read more in-depth about GraphQL execution in the <a href="https://dev-blog.apollodata.com/graphql-explained-5844742f195e">“GraphQL Explained” post</a> on the Apollo blog.</p>
+<h2 id="batched-resolving">Batched Resolving</h2>
+<p>One thing you might notice about the execution strategy above is that it’s somewhat naive. For example, if you have a resolver that fetches from a backend API or database, that backend might get called many times during the execution of one query. Let’s imagine we wanted to get the authors of several posts, like so:</p>
+<pre class="grapqhl(nocopy)"><code>query {
+  posts {
+    title
+    author {
+      name
+      avatar
+    }
+  }
+}</code></pre>
+<p>If these are posts on a blog, it’s likely that many of the posts will have the same authors. So if we need to make an API call to get each author object, we might accidentally make multiple requests for the same one. For example:</p>
+<pre class="javascript(nocopy)"><code>fetch(&#39;/authors/1&#39;)
+fetch(&#39;/authors/2&#39;)
+fetch(&#39;/authors/1&#39;)
+fetch(&#39;/authors/2&#39;)
+fetch(&#39;/authors/1&#39;)
+fetch(&#39;/authors/2&#39;)</code></pre>
+<p>How do we solve this? By making our fetching a bit smarter. We can wrap our fetching function in a utility that will wait for all of the resolvers to run, then make sure to only fetch each item once:</p>
+<pre class="javascript(nocopy)"><code>authorLoader = new AuthorLoader()
+
+// Queue up a bunch of fetches
+authorLoader.load(1);
+authorLoader.load(2);
+authorLoader.load(1);
+authorLoader.load(2);
+
+// Then, the loader only does the minimal amount of work
+fetch(&#39;/authors/1&#39;);
+fetch(&#39;/authors/2&#39;);</code></pre>
+<p>Can we do even better? Yes, if our API supports batched requests, we can do only one fetch to the backend, like so:</p>
+<pre class="javascript(nocopy)"><code>fetch(&#39;/authors?ids=1,2&#39;)</code></pre>
+<p>This can also be encapsulated in the loader above.</p>
+<p>In JavaScript, the above strategies can be implemented using a utility called <a href="https://github.com/facebook/dataloader">DataLoader</a>, and there are similar utilities for other languages.</p>
+</body>
+</html>

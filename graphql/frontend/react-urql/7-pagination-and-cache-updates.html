@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination and Cache Updates</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination and Cache Updates</h1>
+</header>
+<p>In this section of the tutorial we’ll cover pagination. You’ll implement a simple pagination approach so that users are able to view the links in smaller chunks rather than all at once with a long list of <code>Link</code> elements.</p>
+<p>You also haven’t implemented any cache updates yet, which we’ll also cover. With cache updates you can update the cache when a new post is created, which will cause your app to automatically render the new data.</p>
+<h2 id="preparing-the-react-components">Preparing the React Components</h2>
+<p>Like in every other section, let’s first prepare the React components for the new pagination feature. In fact, we’ll just slightly adjust the current routing setup. We’ll reuse the existing <code>LinkList</code> component for two slightly different use-cases and routes.</p>
+<p>The first one is to display the 10 top voted links. The second one is to display new links in a list separated into multiple pages that the user can navigate through.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and adjust the routes like so:</p>
+<pre class="js{2,17-19}(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import { Switch, Route, Redirect } from &#39;react-router-dom&#39;
+
+import LoadingBoundary from &#39;./LoadingBoundary&#39;
+import Header from &#39;./Header&#39;
+import LinkList from &#39;./LinkList&#39;
+import CreateLink from &#39;./CreateLink&#39;
+import Login from &#39;./Login&#39;
+import Search from &#39;./Search&#39;
+
+const App = () =&gt; (
+  &lt;div className=&quot;center w85&quot;&gt;
+    &lt;Header /&gt;
+    &lt;div className=&quot;ph3 pv1 background-gray&quot;&gt;
+      &lt;LoadingBoundary&gt;
+        &lt;Switch&gt;
+          &lt;Route exact path=&quot;/&quot; render={() =&gt; &lt;Redirect to=&quot;/new/1&quot; /&gt;} /&gt;
+          &lt;Route exact path=&quot;/top&quot; component={LinkList} /&gt;
+          &lt;Route exact path=&quot;/new/:page&quot; component={LinkList} /&gt;
+          &lt;Route exact path=&quot;/create&quot; component={CreateLink} /&gt;
+          &lt;Route exact path=&quot;/login&quot; component={Login} /&gt;
+          &lt;Route exact path=&quot;/search&quot; component={Search} /&gt;
+        &lt;/Switch&gt;
+      &lt;/LoadingBoundary&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>You’ve set up a redirect that sends the user from the homepage to the <code>/new/1</code> route, which will show any newly added routes. Furthermore the <code>LinkList</code> component is now rendered on two routes, <code>/top</code> for the top links, and <code>/new/:page</code> which is the paginated list of new links.</p>
+<p>Before moving on, quickly add a new navigation item to the <code>Header</code> component that brings the user to the <code>/top</code> route.</p>
+<p><Instruction></p>
+<p>Open <code>Header.js</code> add the new link to <code>/top</code> <em>between</em> the <code>/</code> and the <code>/search</code> links:</p>
+<pre class="js{5-8}(path=&quot;.../hackernews-react-urql/src/components/header.js&quot;)"><code>&lt;div className=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+&lt;Link to=&quot;/&quot; className=&quot;ml1 no-underline black&quot;&gt;
+  new
+&lt;/Link&gt;
+&lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+&lt;Link to=&quot;/top&quot; className=&quot;ml1 no-underline black&quot;&gt;
+  top
+&lt;/Link&gt;
+&lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+&lt;Link to=&quot;/search&quot; className=&quot;ml1 no-underline black&quot;&gt;
+  search
+&lt;/Link&gt;</code></pre>
+<p></Instruction></p>
+<p>Next, you’ll update the <code>LinkList</code> component to actually account for the two different responsibilities it now has.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add three arguments to the <code>FeedQuery</code> by replacing the <code>FEED_QUERY</code> definition with the following:</p>
+<pre class="js{2-4}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>export const FEED_QUERY = gql`
+  query FeedQuery($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
+    feed(first: $first, skip: $skip, orderBy: $orderBy) {
+      count
+      links {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>The query now accepts arguments that you’ll use to implement pagination and ordering. The file is also now exporting <code>FEED_QUERY</code> because you’ll be needing it in a later step to implement some cache updates.</p>
+<ul>
+<li><code>skip</code> defines the <em>offset</em> where the query will start. If you for instance passed a value of <code>10</code> for this argument, it means that the first 10 items of the list will not be included in the response.</li>
+<li><code>first</code> then defines the <em>limit</em>, or <em>how many</em> elements, you want to load from that list. Say, you’re passing the <code>10</code> for <code>skip</code> and <code>5</code> for <code>first</code>, you’ll receive items 10 to 15 from the list.</li>
+<li><code>orderBy</code> defines how the returned list should be sorted.</li>
+</ul>
+<p>To actually pass the variables into the <code>useQuery</code> hook’s variables argument you’ll now create a small memo hook that returns the <code>variables</code> object.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, add the following code before the <code>useQuery</code> hook inside the <code>LinkList</code> component and pass <code>variables</code> into <code>useQuery</code>:</p>
+<pre class="js{1-3,5-9,11}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const LinkList = props =&gt; {
+  const isNewPage = props.location.pathname.includes(&#39;new&#39;)
+  const page = parseInt(props.match.params.page, 10)
+  
+  const variables = React.useMemo(() =&gt; ({
+    skip: isNewPage ? (page - 1) * 10 : 0,
+    first: isNewPage ? 10 : 100,
+    orderBy: isNewPage ? &#39;createdAt_DESC&#39; : null
+  }), [isNewPage, page])
+
+  const [result] = useQuery({ query: FEED_QUERY, variables })
+  const { data, fetching, error } = result
+  
+  // ...
+}</code></pre>
+<p></Instruction></p>
+<p>Here, you’re checking what page the user is on by looking at some props that <code>react-router</code> passes to the <code>LinkList</code> component. The <code>location</code> prop tells you more about the current route. In this case you’re checking the <code>pathname</code> for <code>new</code>, which indicates that the user is on the <code>/new/:page</code> route. Then you’re also parsing the current page from <code>react-router</code>’s <code>match.params</code> prop.</p>
+<p>The variables are now also including the <code>'createdAt_DESC'</code> mode for the <code>/new</code> route to make sure that the newest links are displayed first. The ordering for the <code>/top</code> route will be calculated manually based on the number of votes on each link, which you’ll be implementing in just a bit.</p>
+<p>Lastly, let’s update the <code>Link</code> component’s <code>index</code> prop so that the numbers change correctly when the page is switched, for instance to <code>/new/2</code>.</p>
+<p><Instruction></p>
+<p>In <code>LinkList.js</code> replace the <code>index</code> prop that you’re passing to the <code>Link</code> elements:</p>
+<pre class="js{1-3,6,11}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const LinkList = props =&gt; {
+  const isNewPage = props.location.pathname.includes(&#39;new&#39;)
+  const page = parseInt(props.match.params.page, 10)
+  // ...
+  
+  const pageIndex = isNewPage ? (page - 1) * 10 : 0
+  
+  return (
+    &lt;div&gt;
+      {linksToRender.map((link, index) =&gt; (
+        &lt;Link key={link.id} link={link} index={pageIndex + index} /&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Now you can manually navigate to <code>/new/1</code>, <code>/new/2</code>, and so on, provided you’ve created enough links on your GraphQL API. The index number of the links will correctly change per page!</p>
+<h3 id="implementing-navigation">Implementing navigation</h3>
+<p>Next, let’s add some buttons for the user to switch between pages.</p>
+<p><Instruction></p>
+<p>Once again in <code>LinkList.js</code> modify the <code>LinkList</code> component:</p>
+<pre class="js{6-10,12-16,19,25-35}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const LinkList = props =&gt; {
+  const isNewPage = props.location.pathname.includes(&#39;new&#39;)
+  const page = parseInt(props.match.params.page, 10)
+  // ...
+  
+  const nextPage = React.useCallback(() =&gt; {
+    if (page &lt;= data.feed.count / 10) {
+      props.history.push(`/new/${page + 1}`);
+    }
+  }, [props.history, data.feed.count, page]);
+
+  const previousPage = React.useCallback(() =&gt; {
+    if (page &gt; 1) {
+      props.history.push(`/new/${page - 1}`);
+    }
+  }, [props.history, page]);
+  
+  return (
+    &lt;React.Fragment&gt;
+      &lt;div&gt;
+        {linksToRender.map((link, index) =&gt; (
+          &lt;Link key={link.id} link={link} index={pageIndex + index} /&gt;
+        ))}
+      &lt;/div&gt;
+      {isNewPage &amp;&amp; (
+        &lt;div className=&quot;flex ml4 mv3 gray&quot;&gt;
+          &lt;div className=&quot;pointer mr2&quot; onClick={previousPage}&gt;
+            Previous
+          &lt;/div&gt;
+          &lt;div className=&quot;pointer&quot; onClick={nextPage}&gt;
+            Next
+          &lt;/div&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/React.Fragment&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Lastly you’ll need to ensure that when the <code>/top</code> route is opened, the list of links is sorted by the number of links. You’ll only need to replace the <code>linksToRender</code> variable with some more logic to make this work.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, replace the <code>linksToRender</code> variable and move it above the <code>if</code> checks for fetching and error:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const linksToRender = React.useMemo(() =&gt; {
+  if (!data || !data.feed) {
+    return [];
+  } else if (isNewPage) {
+    return data.feed.links;
+  } else {
+    const rankedLinks = data.feed.links
+      .slice()
+      .sort((l1, l2) =&gt; l2.votes.length - l1.votes.length);
+    return rankedLinks;
+  }
+}, [data, isNewPage]);</code></pre>
+<p></Instruction></p>
+<p>Here, for the <code>/new</code> route the memo hook is returning the links from the query without changes, as before. That’s because the <code>orderBy</code> argument on the query already asks for ordered data for this route. The server doesn’t support sorting by votes however, so on the <code>/top</code> route the links are manually sorted by how many votes they have.</p>
+<h3 id="what-are-urqls-request-policies-about">What are urql’s request policies about?</h3>
+<p>Back when you’ve created the <code>CreateLink</code> page, you saw how the UI doesn’t give any feedback when creating a new link, apart from redirecting to the homepage. Any links that are created in the app aren’t immediately shown on the <code>/new/1</code> route.</p>
+<p>This is because a normalized cache cannot relate the newly created link that your GraphQL API sends back with the queries in <code>LinkList</code>. Instead it only shows the stale, outdated data it knows about.</p>
+<p>One simple way to fix this is to pass a different “request policy” to <code>useQuery</code>. We can use different policies to tell urql how to treat cached data. By default, it will always be using <code>cache-first</code>, which means that if a query exists in the cache, urql won’t make another network request.</p>
+<p>There are several request policies that tell the <code>cacheExchange</code> in your urql Client how to treat cached data:</p>
+<ul>
+<li><code>cache-first</code> prevents a network request, when the query’s result has already been cached.</li>
+<li><code>cache-only</code> prevents a network request, even when the query’s result has never been cached.</li>
+<li><code>network-only</code> always sends a network request to get a query’s result and ignores the cache.</li>
+<li><code>cache-and-network</code> returns a query’s cached result but then also makes a network request.</li>
+</ul>
+<p>As you can see, you could use the last request policy, <code>cache-and-network</code>, to update the <code>/new/1</code> page automatically from your GraphQL API, when you’re redirected to it from <code>/create</code>, like so:</p>
+<pre class="js(nocopy)"><code>const [result] = useQuery({
+  query: FEED_QUERY,
+  variables,
+  requestPolicy: &#39;cache-and-network&#39;
+})</code></pre>
+<p>However, <strong>this is not what we’ll be doing to solve this problem in this tutorial</strong>.</p>
+<h3 id="cache-updates-when-creating-links">Cache Updates when creating links</h3>
+<p>With <code>@urql/exchange-graphcache</code> there’s an easy fix to update the cache after a mutation completes. You can pass an updater to the Graphcache exchange that tells it how to update the normalized cache data manually!</p>
+<p><Instruction></p>
+<p>In <code>index.js</code> replace the <code>cacheExchange</code>’s config with the following and import <code>FEED_QUERY</code> from <code>LinkList.js</code>:</p>
+<pre class="js{2,5-20}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import { cacheExchange } from &#39;@urql/exchange-graphcache&#39;
+import { FEED_QUERY } from &#39;./components/LinkList&#39;
+
+const cache = cacheExchange({
+  updates: {
+    Mutation: {
+      post: ({ post }, _args, cache) =&gt; {
+        const variables = { first: 10, skip: 0, orderBy: &#39;createdAt_DESC&#39; }
+        cache.updateQuery({ query: FEED_QUERY, variables }, data =&gt; {
+          if (data !== null) {
+            data.feed.links.unshift(post)
+            data.feed.count++
+            return data
+          } else {
+            return null
+          }
+        })
+      }
+    }
+  }
+})</code></pre>
+<p></Instruction></p>
+<p>This is all it takes to update some cache data after a mutation is performed! ✨</p>
+<p>This has the added advantage that you’ll only be using the data that comes back from the mutation. With this approach you’ll never make additional network requests, when the normalized cache already has enough information, which is great!</p>
+<p>You can add any number of update functions to the <code>updates</code> config. In this example, we’ve only added a handler for the <code>post</code> mutation. The function receives the data of the mutation, any arguments that have been passed to the mutation field, and an instance of the cache. The cache itself has a method called <code>updateQuery</code> that can be used to update the data for a given query in the cache.</p>
+<p>Go ahead and test this by running <code>yarn start</code> in a terminal and navigating to <code>http://localhost:3000/create</code>. Then submit a new link and verify that your newly created link shows up on the <code>/new/1</code> page.</p>
+</body>
+</html>

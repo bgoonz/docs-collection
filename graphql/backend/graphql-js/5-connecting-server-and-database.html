@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Connecting The Server and Database with Prisma Client</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Connecting The Server and Database with Prisma Client</h1>
+</header>
+<p>In this section, you’re going to learn how to connect your GraphQL server to your database using <a href="https://www.prisma.io">Prisma</a>, which provides the interface to your database. This connection is implemented via <a href="https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client">Prisma Client</a>.</p>
+<h3 id="wiring-up-your-graphql-schema-with-prisma-client">Wiring up your GraphQL schema with Prisma Client</h3>
+<p>The first thing you need to do is import your generated Prisma Client library and wire up the GraphQL server so that you can access the database queries that your new Prisma Client exposes.</p>
+<h4 id="the-graphql-context-resolver-argument">The GraphQL <code>context</code> resolver argument</h4>
+<p>Remember how we said earlier that all GraphQL resolver functions <em>always</em> receive four arguments? To accomplish this step, you’ll need to get to know another one – the <code>context</code> argument!</p>
+<p>The <code>context</code> argument is a plain JavaScript object that every resolver in the resolver chain can read from and write to. Thus, it is basically a means for resolvers to communicate. A really helpful feature is that you can already write to the <code>context</code> at the moment when the GraphQL server itself is being initialized.</p>
+<p>This means that we can attach an instance of Prisma Client to the <code>context</code> when initializing the server and then access it from inside our resolvers via the <code>context</code> argument!</p>
+<p>That’s all a bit theoretical, so let’s see how it looks in action 💻</p>
+<h3 id="updating-the-resolver-functions-to-use-prisma-client">Updating the resolver functions to use Prisma Client</h3>
+<p><Instruction></p>
+<p>First, import <code>PrismaClient</code> into <code>index.js</code> at the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const { PrismaClient } = require(&#39;@prisma/client&#39;)</code></pre>
+<p></Instruction></p>
+<p>Now you can attach an instance of PrismaClient to the <code>context</code> when the <code>GraphQLServer</code> is being initialized.</p>
+<p><Instruction></p>
+<p>In <code>index.js</code>, save an instance of PrismaClient to a variable and update the instantiation of the <code>GraphQLServer</code> to add is to the context as follows:</p>
+<pre class="js{1,9-11}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const prisma = new PrismaClient()
+
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, &#39;schema.graphql&#39;),
+    &#39;utf8&#39;
+  ),
+  resolvers,
+  context: {
+    prisma,
+  }
+})</code></pre>
+<p></Instruction></p>
+<p>Awesome! Now, the <code>context</code> object that’s passed into all your GraphQL resolvers is being initialized right here and because you’re attaching an instance of <code>PrismaClient</code> (as <code>prisma</code>) to it when the <code>GraphQLServer</code> is instantiated, you’ll now be able to access <code>context.prisma</code> in all of your resolvers.</p>
+<p>Finally, it’s time to refactor your resolvers. Again, we encourage you to type these changes yourself so that you can get used to Prisma’s autocompletion and how to leverage that to intuitively figure out what resolvers should be on your own.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and remove the <code>links</code> array entirely, as well as the <code>idCount</code> variable – you don’t need those any more since the data will now be stored in an actual database.</p>
+<p></Instruction></p>
+<p>Next, you need to update the implementation of the resolver functions because they’re still accessing the variables that were just deleted. Plus, you now want to return actual data from the database instead of local dummy data.</p>
+<p><Instruction></p>
+<p>Still in <code>index.js</code>, update the <code>resolvers</code> object to look as follows:</p>
+<pre class="js{4-6,8-17}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const resolvers = {
+  Query: {
+    info: () =&gt; `This is the API of a Hackernews Clone`,
+    feed: async (parent, args, context) =&gt; {
+      return context.prisma.link.findMany()
+    },
+  },
+  Mutation: {
+    post: (parent, args, context, info) =&gt; {
+      const newLink = context.prisma.link.create({
+        data: {
+          url: args.url,
+          description: args.description,
+        },
+      })
+      return newLink
+    },
+  },
+}</code></pre>
+<p></Instruction></p>
+<p>Now let’s understand how these new resolvers are working!</p>
+<h4 id="understanding-the-feed-resolver">Understanding the <code>feed</code> resolver</h4>
+<p>The <code>feed</code> resolver is implemented as follows:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;&amp;nocopy)"><code>feed: async (parent, args, context, info) =&gt; {
+  return context.prisma.link.findMany()
+},</code></pre>
+<p>It accesses the <code>prisma</code> object via the <code>context</code> argument we discussed a moment ago. As a reminder, this is actually an entire <code>PrismaClient</code> instance that’s imported from the generated <code>@prisma/client</code> library, effectively allowing you to access your database through the Prisma Client API you set up in chapter 4.</p>
+<p>Now, you should be able to imagine the complete system and workflow of a Prisma/GraphQL project, where our Prisma Client API exposes a number of database queries that let you read and write data in the database.</p>
+<h4 id="understanding-the-post-resolver">Understanding the <code>post</code> resolver</h4>
+<p>The <code>post</code> resolver now looks like this:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;&amp;nocopy)"><code>post: (parent, args, context) =&gt; {
+  const newLink = context.prisma.link.create({
+    data: {
+      url: args.url,
+      description: args.description,
+    },
+  })
+  return newLink
+},</code></pre>
+<p>Similar to the <code>feed</code> resolver, you’re simply invoking a function on the <code>PrismaClient</code> instance which is attached to the <code>context</code>.</p>
+<p>You’re calling the <code>create</code> method on a <code>link</code> from your Prisma Client API. As arguments, you’re passing the data that the resolvers receive via the <code>args</code> parameter.</p>
+<p>So, to summarize, Prisma Client exposes a CRUD API for the models in your datamodel for you to read and write in your database. These methods are auto-generated based on your model definitions in <code>schema.prisma</code>.</p>
+<h3 id="testing-the-new-implementation">Testing the new implementation</h3>
+<p>With these code changes, you can now go ahead and test if the new implementation with a database works as expected. As usual, run the following command in your terminal to start the GraphQL server:</p>
+<pre class="bash(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>node src/index.js</code></pre>
+<p>Then, open the GraphQL Playground at <code>http://localhost:4000</code>. You can send the same <code>feed</code> query and <code>post</code> mutation as before. However, the difference is that this time the submitted links will be persisted in your SQLite database. Therefore, if you restart the server, the <code>feed</code> query will keep returning the same links.</p>
+<h3 id="exploring-your-data-in-prisma-studio">Exploring your data in Prisma Studio</h3>
+<p>Prisma ships with a powerful database GUI where you can interact with your data: <a href="https://github.com/prisma/studio">Prisma Studio</a>.</p>
+<p>Prisma Studio is different from a typical database GUI (such as <a href="https://tableplus.com/">TablePlus</a>) in that it provides a layer of abstraction which allows you to see your data represented as it is in your Prisma data model.</p>
+<p>This is one of the several ways that Prisma bridges the gap between how you structure and interact with your data in your application and how it is actually structured and represented in the underlying database. One major benefit of this is that it helps you to build intuition and understanding of these two linked but separate layers over time.</p>
+<p>Let’s run Prisma Studio and see it in action!</p>
+<p><Instruction></p>
+<p>Run the following command in your terminal</p>
+<pre class="js(path=&quot;.../hackernews-node&quot;)"><code>npx prisma studio</code></pre>
+<p></Instruction></p>
+<p>Running the command should open a tab in your browser automatically (running on <code>http://localhost:5555</code>) where you will see the following interface. Notice that you see a tab for your <code>Link</code> model and can also explore all models by hovering on the far left menu:</p>
+<figure>
+<img src="https://i.imgur.com/SRIzETY.png" alt="see a tab for your Link model" /><figcaption>see a tab for your Link model</figcaption>
+</figure>
+<figure>
+<img src="https://i.imgur.com/JSHElJ2.png" alt="hovering on the far left menu" /><figcaption>hovering on the far left menu</figcaption>
+</figure>
+</body>
+</html>

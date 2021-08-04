@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>A Simple Query</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">A Simple Query</h1>
+</header>
+<p>In this section, you are going to implement the first API operation that provides the functionality of a Hacker News clone: querying a feed of <em>links</em> that were posted by other users.</p>
+<h3 id="extending-the-schema-definition">Extending the schema definition</h3>
+<p>Let’s start by implementing a <code>feed</code> query which allows you to retrieve a list of <code>Link</code> elements. In general, when adding a new feature to the API, the process will look pretty similar every time:</p>
+<ol type="1">
+<li>Extend the GraphQL schema definition with a new <em>root field</em> (and new <em>object types</em>, if needed)</li>
+<li>Implement corresponding <em>resolver functions</em> for the added fields</li>
+</ol>
+<p>This process is also referred to as <em>schema-driven</em> or <em>schema-first development</em>.</p>
+<p>So, let’s go ahead and tackle the first step, extending the GraphQL schema definition.</p>
+<p><Instruction></p>
+<p>In <code>index.js</code>, update the <code>typeDefs</code> constant to look as follows:</p>
+<pre class="js{4,7-11}(path=&quot;../hackernews-node/src/index.js&quot;)"><code>const typeDefs = `
+  type Query {
+    info: String!
+    feed: [Link!]!
+  }
+
+  type Link {
+    id: ID!
+    description: String!
+    url: String!
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Pretty straightforward, right? You’re defining a new <code>Link</code> type that represents the links that can be posted to Hacker News. Each <code>Link</code> has an <code>id</code>, a <code>description</code>, and a <code>url</code>. You’re then adding another root field to the <code>Query</code> type that allows you to retrieve a list of <code>Link</code> elements. This list is guaranteed to never be <code>null</code> (if anything, it will be empty) and never contain any elements that are <code>null</code> - that’s what the two exclamation marks are for.</p>
+<h3 id="implement-resolver-functions">Implement resolver functions</h3>
+<p>The next step is to implement the resolver function for the <code>feed</code> query. In fact, one thing we haven’t mentioned yet is that not only <em>root fields</em>, but virtually <em>all</em> fields on the types in a GraphQL schema have resolver functions. So, you’ll add resolvers for the <code>id</code>, <code>description</code>, and <code>url</code> fields of the <code>Link</code> type as well.</p>
+<p><Instruction></p>
+<p>In <code>index.js</code>, add a new list with dummy data as well and update the <code>resolvers</code> to look as follows:</p>
+<pre class="js{2-6,12,15-19}(path=&quot;../hackernews-node/src/index.js&quot;)"><code>// 1
+let links = [{
+  id: &#39;link-0&#39;,
+  url: &#39;www.howtographql.com&#39;,
+  description: &#39;Fullstack tutorial for GraphQL&#39;
+}]
+
+const resolvers = {
+  Query: {
+    info: () =&gt; `This is the API of a Hackernews Clone`,
+    // 2
+    feed: () =&gt; links,
+  },
+  // 3
+  Link: {
+    id: (parent) =&gt; parent.id,
+    description: (parent) =&gt; parent.description,
+    url: (parent) =&gt; parent.url,
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s walk through the numbered comments again:</p>
+<ol type="1">
+<li>The <code>links</code> variable is used to store the links at runtime. For now, everything is stored only <em>in-memory</em> rather than being persisted in a database.</li>
+<li>You’re adding a new resolver for the <code>feed</code> root field. Notice that a resolver always has to be named <em>exactly</em> after the corresponding field from the schema definition.</li>
+<li>Finally, you’re adding three more resolvers for the fields on the <code>Link</code> type from the schema definition. We’ll discuss what the <code>parent</code> argument that’s passed into the resolver here is in a bit.</li>
+</ol>
+<p>Go ahead and test the implementation by restarting the server (first use <strong>CTRL+C</strong> to stop the server if it is still running, then execute <code>node src/index.js</code> again) and navigate to <code>http://localhost:4000</code> in your browser. If you expand the documentation of the Playground, you’ll notice that another query called <code>feed</code> is now available:</p>
+<figure>
+<img src="https://imgur.com/0EQ5P9p.png" alt="another query called feed" /><figcaption>another query called feed</figcaption>
+</figure>
+<p>Try it out by sending the following query:</p>
+<pre class="graphql"><code>query {
+  feed {
+    id
+    url
+    description
+  }
+}</code></pre>
+<p>Awesome, the server responds with the data you defined in <code>links</code>:</p>
+<pre class="json(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;feed&quot;: [
+      {
+        &quot;id&quot;: &quot;link-0&quot;,
+        &quot;url&quot;: &quot;www.howtographql.com&quot;,
+        &quot;description&quot;: &quot;Fullstack tutorial for GraphQL&quot;
+      }
+    ]
+  }
+}</code></pre>
+<p>Feel free to play around with the query by removing any fields from the selection set and observe the responses sent by the server.</p>
+<h3 id="the-query-resolution-process">The query resolution process</h3>
+<p>Let’s now quickly talk about how a GraphQL server actually resolves incoming queries. As you already saw, a GraphQL query consists of a number of <em>fields</em> that have their source in the type definitions of the GraphQL schema.</p>
+<p>Let’s consider the query from above again:</p>
+<pre class="graphql(nocopy)"><code>query {
+  feed {
+    id
+    url
+    description
+  }
+}</code></pre>
+<p>All four fields specified in the query (<code>feed</code>, <code>id</code>, <code>url</code>, and <code>description</code>) can also be found inside the schema definition. Now, you also learned that <em>every</em> field inside the schema definition is backed by one resolver function whose responsibility it is to return the data for precisely that field.</p>
+<p>Can you imagine what the query resolution process looks like now? Effectively, all the GraphQL server has to do is invoke all resolver functions for the fields that are contained in the query and then package up the response according to the query’s shape. Query resolution thus merely becomes a process of orchestrating the invocation of resolver functions!</p>
+<p>One thing that’s still a bit weird in the implementation right now are the resolvers for the <code>Link</code> type that all seem to follow a very simple and trivial pattern:</p>
+<pre class="js(nocopy)"><code>Link: {
+  id: (parent) =&gt; parent.id,
+  description: (parent) =&gt; parent.description,
+  url: (parent) =&gt; parent.url,
+}</code></pre>
+<p>First, it’s important to note that every GraphQL resolver function actually receives <em>four</em> input arguments. As the remaining three are not needed in our scenario right now, we’re simply omitting them. Don’t worry, you’ll get to know them soon.</p>
+<p>The first argument, commonly called <code>parent</code> (or sometimes <code>root</code>) is the result of the previous <em>resolver execution level</em>. Hang on, what does that mean? 🤔</p>
+<p>Well, as you already saw, GraphQL queries can be <em>nested</em>. Each level of nesting (i.e. nested curly braces) corresponds to one resolver execution level. The above query therefore has two of these execution levels.</p>
+<p>On the first level, it invokes the <code>feed</code> resolver and returns the entire data stored in <code>links</code>. For the second execution level, the GraphQL server is smart enough to invoke the resolvers of the <code>Link</code> type (because thanks to the schema, it knows that <code>feed</code> returns a list of <code>Link</code> elements) for each element inside the list that was returned on the previous resolver level. Therefore, in all of the three <code>Link</code> resolvers, the incoming <code>parent</code> object is the element inside the <code>links</code> list.</p>
+<blockquote>
+<p><strong>Note</strong>: To learn more about this, check out <a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#9d03">this</a> article.</p>
+</blockquote>
+<p>In any case, because the implementation of the <code>Link</code> resolvers is trivial, you can actually omit them and the server will work in the same way as it did before 👌 We just wanted you to understand what’s happening under the hood 🚗</p>
+</body>
+</html>

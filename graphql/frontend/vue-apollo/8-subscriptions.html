@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Realtime Updates with GraphQL Subscriptions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Realtime Updates with GraphQL Subscriptions</h1>
+</header>
+<p>This section is all about bringing realtime functionality into the app by using GraphQL subscriptions.</p>
+<h3 id="what-are-graphql-subscriptions">What are GraphQL Subscriptions?</h3>
+<p>Subscriptions are a GraphQL feature that allows the server to send data to the clients when a specific event happens on the backend. Subscriptions are usually implemented with <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, where the server holds a steady connection to the client. That is, the <em>Request-Response-Cycle</em> that we used for all previous interactions with the API is not used for subscriptions. Instead, the client initially opens up a steady connection to the server by specifying which event it is interested in. Every time this particular event happens, the server uses the connection to push the data that’s related to the event to the client.</p>
+<h3 id="subscriptions-with-apollo">Subscriptions with Apollo</h3>
+<p>When using Apollo, you need to configure your <code>ApolloClient</code> with information about the subscriptions endpoint. This is done by using functionality from the <code>subscriptions-transport-ws</code> npm module.</p>
+<p>Go ahead and add this dependency to your app first.</p>
+<p><Instruction></p>
+<p>Open a terminal and navigate to the project’s root directory. Then execute the following command:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">npm</span> install --save subscriptions-transport-ws@0.8.3</a></code></pre></div>
+<p></Instruction></p>
+<p>Next, make sure your <code>ApolloClient</code> instance knows about the subscription server.</p>
+<p><Instruction></p>
+<p>Open <code>src/main.js</code> and add the following import near the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import { SubscriptionClient, addGraphQLSubscriptions } from &#39;subscriptions-transport-ws&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now update the configuration code like so:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>const httpLink = new HttpLink({
+  uri: &#39;__SIMPLE_API_ENDPOINT__&#39;
+})
+
+const wsClient = new SubscriptionClient(&#39;__SUBSCRIPTION_API_ENDPOINT__&#39;, {
+  reconnect: true,
+  connectionParams: {
+    authToken: localStorage.getItem(GC_AUTH_TOKEN)
+  }
+})
+
+const authMiddleware = new ApolloLink((operation, forward) =&gt; {
+  // add the authorization to the headers
+  const token = localStorage.getItem(GC_AUTH_TOKEN)
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : null
+    }
+  })
+
+  return forward(operation)
+})
+
+const httpLinkWithSubscriptions = addGraphQLSubscriptions(
+  authMiddleware.concat(httpLink),
+  wsClient
+)
+
+const apolloClient = new ApolloClient({
+  link: httpLinkWithSubscriptions,
+  cache: new InMemoryCache(),
+  connectToDevTools: true
+})</code></pre>
+<p></Instruction></p>
+<p>You’re instantiating a <code>SubscriptionClient</code> that knows the endpoint for the Subscriptions API. Notice that you’re also authenticating the websocket connection with the user’s <code>token</code> that you retrieve from <code>localStorage</code>.</p>
+<p>Now you need to replace the placeholder <code>__SUBSCRIPTION_API_ENDPOINT__</code> with the endpoint for the subscriptions API.</p>
+<p><Instruction></p>
+<p>To get access to this endpoint, open up a terminal and navigate to the directory where <code>project.graphcool</code> is located. Then type the <code>graphcool endpoints</code> command. Now copy the endpoint for the <code>Subscriptions API</code> and replace the placeholder with it.</p>
+<p></Instruction></p>
+<blockquote>
+<p>The endpoints for the Subscription API generally are of the form: <code>wss://subscriptions.graph.cool/v1/&lt;project-id&gt;</code>.</p>
+<p>Notice that if your project is not running in the “default” Graphcool <a href="https://blog.graph.cool/new-regions-and-improved-performance-7bbc0a35c880">region</a>, you need to add the your project’s region to the endpoint like so: <code>wss://subscriptions.ap-northeast-1.graph.cool/v1/&lt;project-id&gt;</code> (for regoin <em>Asia Pacific</em>) or <code>wss://subscriptions.us-west-2.graph.cool/v1/&lt;project-id&gt;</code> (for <em>US West</em>).</p>
+</blockquote>
+<h3 id="subscribing-to-new-links">Subscribing to new Links</h3>
+<p>For the app to update in realtime when new links are created, you need to subscribe to events that are happening on the <code>Link</code> type. There generally are three kinds of events you can subscribe to:</p>
+<ul>
+<li>a new <code>Link</code> is <em>created</em></li>
+<li>an existing <code>Link</code> is <em>updated</em></li>
+<li>an existing <code>Link</code> is <em>deleted</em></li>
+</ul>
+<p>First, you need to add a subscription to <code>src/constants/graphql.js</code>:</p>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add the following subscription:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const NEW_LINKS_SUBSCRIPTION = gql`
+  subscription {
+    Link(filter: {
+      mutation_in: [CREATED]
+    }) {
+      node {
+        id
+        url
+        description
+        createdAt
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>You’ll implement this subscription in the <code>LinkList</code> component since that’s where all the links are rendered.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkList.vue</code> and add the following property to the <code>allLinks</code> object within the <code>apollo</code> object:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>subscribeToMore: [
+  {
+    document: NEW_LINKS_SUBSCRIPTION,
+    updateQuery: (previous, { subscriptionData }) =&gt; {
+      // ... you&#39;ll implement this in a bit
+    }
+  }
+]</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> you now need to import <code>NEW_LINKS_SUBSCRIPTION</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>import { ALL_LINKS_QUERY, NEW_LINKS_SUBSCRIPTION } from &#39;../constants/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p>Let’s understand what’s going on here! You’re using the <code>allLinks</code> query that you have access to call <a href="https://github.com/Akryum/vue-apollo#subscribetomore"><code>subscribeToMore</code></a>. This call opens up a websocket connection to the subscription server.</p>
+<p>You’re passing an array to <code>subscribeToMore</code>:</p>
+<ol type="1">
+<li>Each object within the array contains a <code>document</code> property: This represents the subscription itself. In your case, the subscription will fire for <code>CREATED</code> events on the <code>Link</code> type, i.e. every time a new link is created.</li>
+<li>The other property is <code>updateQuery</code>: Similar to <code>update</code>, this function allows you to determine how the store should be updated with the information that was sent by the server.</li>
+</ol>
+<p>Go ahead and implement <code>updateQuery</code> next. This function works slightly differently than <code>update</code>. In fact, it follows exactly the same principle as a <a href="http://redux.js.org/docs/basics/Reducers.html">Redux reducer</a>: It takes as arguments the previous state (of the query that <code>subscribeToMore</code> was called on) and the subscription data that’s sent by the server. You can then determine how to merge the subscription data into the existing state and return the updated version.</p>
+<p>Let’s see what this looks like in action!</p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> implement <code>updateQuery</code> like so:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>updateQuery: (previous, { subscriptionData }) =&gt; {
+  if (!subscriptionData.data.Link) return
+
+  const newAllLinks = [
+    subscriptionData.data.Link.node,
+    ...previous.allLinks
+  ]
+  const result = {
+    ...previous,
+    allLinks: newAllLinks
+  }
+  return result
+}</code></pre>
+<p></Instruction></p>
+<p>All you do here is retrieve the new link from the subscription data (<code>subscriptionData.data.Link.node</code>), merge it into the existing list of links and return the result of this operation.</p>
+<p>Awesome, that’s it! You can test your implementation by opening two browser windows. In the first window, you have your application running on <code>http://localhost:8080/</code>. The second window you use to open a Playground and send a <code>createLink</code> mutation. When you’re sending the mutation, you’ll see the app update in realtime! ⚡️</p>
+<h3 id="subscribing-to-new-votes">Subscribing to new Votes</h3>
+<p>Next you’ll subscribe to new votes that are emitted by other users as well so that the latest vote count is always visible in the app.</p>
+<p>First, you need to add another subscription to <code>src/constants/graphql.js</code>:</p>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add the following subscription:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription {
+    Vote(filter: {
+      mutation_in: [CREATED]
+    }) {
+      node {
+        id
+        link {
+          id
+          url
+          description
+          createdAt
+          postedBy {
+            id
+            name
+          }
+          votes {
+            id
+            user {
+              id
+            }
+          }
+        }
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>You’ll also implement this subscription in the <code>LinkList</code> component since that’s where all the links are rendered.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkList.vue</code> and add the following object to the <code>subscribeToMore</code> array:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>{
+  document: NEW_VOTES_SUBSCRIPTION,
+  updateQuery: (previous, { subscriptionData }) =&gt; {
+    if (!subscriptionData.data.Vote) return
+     
+    const votedLinkIndex = previous.allLinks.findIndex(link =&gt; link.id === subscriptionData.data.Vote.node.link.id)
+    const link = subscriptionData.data.Vote.node.link
+    const newAllLinks = previous.allLinks.slice()
+    newAllLinks[votedLinkIndex] = link
+    const result = {
+      ...previous,
+      allLinks: newAllLinks
+    }
+    return result
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkList.vue</code> you now need to update the import to add <code>NEW_VOTES_SUBSCRIPTION</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>import { ALL_LINKS_QUERY, NEW_LINKS_SUBSCRIPTION, NEW_VOTES_SUBSCRIPTION } from &#39;../constants/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p>Similar to before, you’re calling <code>subscribeToMore</code> on the <code>allLinks</code> query. This time you’re passing in a subscription that asks for newly created votes. In <code>updateQuery</code>, you’re then adding the information about the new vote to the cache by first looking for the <code>Link</code> that was just voted on and then updating its <code>votes</code> with the <code>Vote</code> element that was sent from the server.</p>
+<p>Fantastic! Your app is now ready for realtime and will immediately update links and votes whenever they’re created by other users.</p>
+</body>
+</html>

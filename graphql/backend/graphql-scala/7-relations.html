@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Relations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Relations</h1>
+</header>
+<p>Relations define how entities are connected with one another. You probably encountered those while working with databases. In GraphQL (and Sangria) relations are strictly connected with deferred resolvers and have a similar role. When you want to find related entities, the query can be optimized and all needed data fetched at once.</p>
+<p>In other words: Relations expand Fetchers, allows for finding entities not only by their id field, but also by ids quite often stored in fields of another entity.</p>
+<p>Lets try to define how many relations we have in our schema.</p>
+<p><code>User</code> has <code>links</code> and <code>votes</code> fields.</p>
+<p><code>Link</code> has <code>postedBy</code> and <code>votes</code> fields.</p>
+<p><code>Vote</code> has <code>user</code> and <code>link</code></p>
+<p>How do those relations work? <code>Link</code> is a main entity, first created by us and the most important. <code>Link</code> is added by a (single) user. On the other hand, a user can have more than one link.</p>
+<p><code>User</code> also can vote for a link. He can vote for a single link once, but a link can have more than one votes.</p>
+<p>So, in our app we have 3 one-to-many relations.</p>
+<h3 id="preparing-database">Preparing database</h3>
+<p>First change slightly <code>Link</code> model:</p>
+<p><Instruction></p>
+<p>Add <code>postedBy</code> field to the <code>Link</code> case class, the class should look like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb1-1" title="1"></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Link</span>(id: Int, url: String, description: String, postedBy: Int, createdAt: DateTime = DateTime.<span class="fu">now</span>) <span class="kw">extends</span> Identifiable</a></code></pre></div>
+<p></Instruction></p>
+<p>Update <code>LinksTable</code>. <Instruction></p>
+<p>Change the database schema. In the <code>DBSchema</code> change <code>LinksTable</code>, apply changes from the following code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">class</span> <span class="fu">LinksTable</span>(tag: Tag) <span class="kw">extends</span> Table[Link](tag, <span class="st">&quot;LINKS&quot;</span>){</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">def</span> postedBy = column[Int](<span class="st">&quot;USER_ID&quot;</span>)</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="kw">def</span> * = (id, url, description, postedBy, createdAt).<span class="fu">mapTo</span>[Link]</a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Add foreign keys.</p>
+<p><Instruction></p>
+<p>In <code>LinksTable</code> add:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb3-1" title="1"></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">def</span> postedByFK = <span class="fu">foreignKey</span>(<span class="st">&quot;postedBy_FK&quot;</span>, postedBy, Users)(_.<span class="fu">id</span>)</a></code></pre></div>
+<p></Instruction></p>
+<p><code>Votes</code> model already has proper fields for storing external ids, we only have to add foreign keys in database setup.</p>
+<p><Instruction></p>
+<p>In <code>VotesTable</code> add:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb4-1" title="1"></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">def</span> userFK = <span class="fu">foreignKey</span>(<span class="st">&quot;user_FK&quot;</span>, userId, Users)(_.<span class="fu">id</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="kw">def</span> linkFK = <span class="fu">foreignKey</span>(<span class="st">&quot;link_FK&quot;</span>, linkId, Links)(_.<span class="fu">id</span>)</a></code></pre></div>
+<p></Instruction></p>
+<p>Because domain models has slightly changed, we also have to redefine our data.</p>
+<p><Instruction></p>
+<p><code>databaseSetup</code> should be changed as in the following code:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb5-1" title="1"><span class="co">/**</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="co">*</span> Load schema and populate sample data within this Sequence od DBActions</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="co">*/</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">val</span> databaseSetup = DBIO.<span class="fu">seq</span>(</a>
+<a class="sourceLine" id="cb5-5" title="5">  Users.<span class="fu">schema</span>.<span class="fu">create</span>,</a>
+<a class="sourceLine" id="cb5-6" title="6">  Links.<span class="fu">schema</span>.<span class="fu">create</span>,</a>
+<a class="sourceLine" id="cb5-7" title="7">  Votes.<span class="fu">schema</span>.<span class="fu">create</span>,</a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9">  Users forceInsertAll Seq(</a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="fu">User</span>(<span class="dv">1</span>, <span class="st">&quot;mario&quot;</span>, <span class="st">&quot;mario@example.com&quot;</span>, <span class="st">&quot;s3cr3t&quot;</span>),</a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="fu">User</span>(<span class="dv">2</span>, <span class="st">&quot;Fred&quot;</span>, <span class="st">&quot;fred@flinstones.com&quot;</span>, <span class="st">&quot;wilmalove&quot;</span>)</a>
+<a class="sourceLine" id="cb5-12" title="12">  ),</a>
+<a class="sourceLine" id="cb5-13" title="13"></a>
+<a class="sourceLine" id="cb5-14" title="14">  Links forceInsertAll Seq(</a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="fu">Link</span>(<span class="dv">1</span>, <span class="st">&quot;http://howtographql.com&quot;</span>, <span class="st">&quot;Awesome community driven GraphQL tutorial&quot;</span>,<span class="dv">1</span>, <span class="fu">DateTime</span>(<span class="dv">2017</span>,<span class="dv">9</span>,<span class="dv">12</span>)),</a>
+<a class="sourceLine" id="cb5-16" title="16">    <span class="fu">Link</span>(<span class="dv">2</span>, <span class="st">&quot;http://graphql.org&quot;</span>, <span class="st">&quot;Official GraphQL web page&quot;</span>,<span class="dv">1</span>, <span class="fu">DateTime</span>(<span class="dv">2017</span>,<span class="dv">10</span>,<span class="dv">1</span>)),</a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="fu">Link</span>(<span class="dv">3</span>, <span class="st">&quot;https://graphql.org/&quot;</span>, <span class="st">&quot;GraphQL specification&quot;</span>,<span class="dv">2</span>, <span class="fu">DateTime</span>(<span class="dv">2017</span>,<span class="dv">10</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-18" title="18">  ),</a>
+<a class="sourceLine" id="cb5-19" title="19"></a>
+<a class="sourceLine" id="cb5-20" title="20">  Votes forceInsertAll Seq(</a>
+<a class="sourceLine" id="cb5-21" title="21">    <span class="fu">Vote</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb5-22" title="22">    <span class="fu">Vote</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb5-23" title="23">    <span class="fu">Vote</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb5-24" title="24">    <span class="fu">Vote</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb5-25" title="25">  )</a>
+<a class="sourceLine" id="cb5-26" title="26">)</a></code></pre></div>
+<p></Instruction></p>
+<p>I think we’re done with the Database part of changes. The following code represents the current state of <code>DBSchema</code> file:</p>
+<p><a href="https://gist.github.com/marioosh/033380591bc796c7b7b002f0860dfb79#file-dbschema-scala">DBSchema.scala</a></p>
+<p>Now we can go and do the GraphQL part of changes.</p>
+<h3 id="defining-user-link-relation">Defining User-&gt;Link relation</h3>
+<p>Let’s begin with User-Link relation. In the first entity we have to add the field <code>links</code> and in the second the field <code>postedBy</code>. Both fields uses the same Relation model.</p>
+<p>Actually a <code>Link</code> entity has to have two defined relations. First because we can lookup the database to find a link with a particular Id, Second, when we want to filter links by user ids stored in <code>postedBy</code> column. Our Fetcher accepts the provided id already, so we have what covers the first case but we still have to define the second one:</p>
+<p><Instruction></p>
+<p>In <code>GraphQLSchema</code> Add a relation to be able to find <code>Link</code>s by userId.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb6-1" title="1"><span class="co">//add to imports:</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">import</span> sangria.<span class="fu">execution</span>.<span class="fu">deferred</span>.<span class="fu">Relation</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">//place before fetchers definition</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">val</span> linkByUserRel = Relation[Link, Int](<span class="st">&quot;byUser&quot;</span>, l =&gt; Seq(l.<span class="fu">postedBy</span>))</a></code></pre></div>
+<p></Instruction></p>
+<p>This relation is of type <code>SimpleRelation</code> and has only two arguments: the first is the name, the second is a function which extracts a sequence of user ids from the link entity. Our case is super easy, because <code>postedBy</code> has such id. All we need to do is wrap it into the sequence.</p>
+<p>Now we have to add this relation to the fetcher. To do this, we have to use <code>Fetcher.rel</code> function instead of the previously used <code>apply</code></p>
+<p><Instruction></p>
+<p>Change <code>linksFetcher</code> to the following:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb7-1" title="1"><span class="co">//add to imports:</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">import</span> sangria.<span class="fu">execution</span>.<span class="fu">deferred</span>.<span class="fu">RelationIds</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">//replace the current `linksFetcher` declaration</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw">val</span> linksFetcher = Fetcher.<span class="fu">rel</span>(</a>
+<a class="sourceLine" id="cb7-6" title="6">    (ctx: MyContext, ids: Seq[Int]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getLinks</span>(ids),</a>
+<a class="sourceLine" id="cb7-7" title="7">    (ctx: MyContext, ids: RelationIds[Link]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getLinksByUserIds</span>(<span class="fu">ids</span>(linkByUserRel))</a>
+<a class="sourceLine" id="cb7-8" title="8">  )</a></code></pre></div>
+<p></Instruction></p>
+<p>What do we have here? As I mentioned above, now we’re using <code>.rel</code> function. It needs the second function to be passed as the argument. This function is for fetching related data from a datasource. In our case it uses a function <code>getLinksByUserIds</code> that we have to add to our dao. <code>ids(linkByUserRel)</code> extracts user ids by the defined in relation way and passes it into the DAO function.</p>
+<p><Instruction></p>
+<p>In <code>DAO</code> class add a function:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">def</span> <span class="fu">getLinksByUserIds</span>(ids: Seq[Int]): Future[Seq[Link]] = {</a>
+<a class="sourceLine" id="cb8-2" title="2">    db.<span class="fu">run</span> {</a>
+<a class="sourceLine" id="cb8-3" title="3">      Links.<span class="fu">filter</span>(_.<span class="fu">postedBy</span> inSet ids).<span class="fu">result</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    }</a>
+<a class="sourceLine" id="cb8-5" title="5">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Actually we’ve simplified the code above a little. When you look into the part <code>ctx.dao.getLinksByUserIds(ids(linkByUserRel))</code> a bit, you can wonder “And what if link has two relations? Could <code>getLinkByUserIds</code> be replaced by another function?” Be patient, such case will be covered later in this chapter. In our case we have only one relation, so we can retrieve all <code>userId</code>’s by calling <code>ids(linkByUserRel)</code> functions.</p>
+<h3 id="add-fields-to-graphql-objects">Add fields to GraphQL Objects</h3>
+<p>Let’s begin with <code>LinkType</code>. <code>Link</code> already has a <code>postedBy</code> field, but for now it’s only an <code>Int</code> and we need the entire user. To achieve this we have to replace the entire field definition and instruct resolver to use already defined fetcher to do this.</p>
+<p><Instruction></p>
+<p>Add <code>ReplaceField</code> type class to the <code>LinkType</code> constructor.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">ReplaceField</span>(<span class="st">&quot;postedBy&quot;</span>,</a>
+<a class="sourceLine" id="cb9-2" title="2">      Field(<span class="st">&quot;postedBy&quot;</span>, UserType, resolve = c =&gt; usersFetcher.<span class="fu">defer</span>(c.<span class="fu">value</span>.<span class="fu">postedBy</span>))</a>
+<a class="sourceLine" id="cb9-3" title="3">)</a></code></pre></div>
+<p></Instruction></p>
+<p>In similar way we will change the <code>UserType</code> but <code>User</code> entity hasn’t <code>links</code> property so we have to add such field manually to the ObjectType. <code>AddField</code> type class is for such reason:</p>
+<p><Instruction></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">AddFields</span>(</a>
+<a class="sourceLine" id="cb10-2" title="2">  Field(<span class="st">&quot;links&quot;</span>, <span class="fu">ListType</span>(LinkType), </a>
+<a class="sourceLine" id="cb10-3" title="3">  resolve = c =&gt;  linksFetcher.<span class="fu">deferRelSeq</span>(linkByUserRel, c.<span class="fu">value</span>.<span class="fu">id</span>))</a>
+<a class="sourceLine" id="cb10-4" title="4">)</a></code></pre></div>
+<p></Instruction></p>
+<p>Now you can see that another fetcher function is being called. All <code>.deferRel...</code> functions needs two arguments instead of one. We have to add the relation object as the first argument, the second is a function which will get a mapping value from entity.</p>
+<p>We just added two relations to both <code>User</code> and <code>Link</code> object types. If you have tried to run this, you have probably experienced some issues. It’s because now we have a circular reference in the Object type declaration. There are two things we have to do to avoid this issue:</p>
+<p><Instruction></p>
+<p>Make <code>Link</code> and <code>User</code> lazy values. Additionally all types explicitly if you haven’t done so yet:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">lazy</span> <span class="kw">val</span> UserType: ObjectType[Unit, User] = deriveObjectType[Unit, User]<span class="co">//...</span></a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">lazy</span> <span class="kw">val</span> LinkType: ObjectType[Unit, Link] = deriveObjectType[Unit, Link]<span class="co">//...</span></a></code></pre></div>
+<p>Wait, but why there is a <code>Unit</code> in type where should be a our context type? Because if we don’t use it explicitly inside field declaration (for example to get some data stored in context) we can do it this way. In such case our object field fit any context, not only defined one.</p>
+<p></Instruction></p>
+<p>Now open the <code>graphiql</code> console in browser and try to execute this query: (tip: if the autocomplete doesn’t work for the new fields, try to refresh a page)</p>
+<pre class="graphql"><code>query {
+  link(id: 1){
+    id
+    url
+    createdAt
+    postedBy {
+      name
+      links {
+        id
+        url
+      }
+    }
+  }
+}</code></pre>
+<p>As you can see, both relations work perfectly.</p>
+<p>Time to add the rest of them.</p>
+<h3 id="vote---user-relation">Vote - User Relation</h3>
+<p>Before I go further, try to do it yourself. All steps you need to do, are similar to the those we have already done.</p>
+<p>To be honest, half of work you have already done :D There is <code>userId</code> field in the <code>Vote</code> model. Database is also prepared, there is not much work to do here.</p>
+<p>Ok. Let’s begin from proper database function.</p>
+<p><Instruction></p>
+<p>In <code>DAO</code> class add following function:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">def</span> <span class="fu">getVotesByUserIds</span>(ids: Seq[Int]): Future[Seq[Vote]] = {</a>
+<a class="sourceLine" id="cb13-2" title="2">    db.<span class="fu">run</span> {</a>
+<a class="sourceLine" id="cb13-3" title="3">      Votes.<span class="fu">filter</span>(_.<span class="fu">userId</span> inSet ids).<span class="fu">result</span></a>
+<a class="sourceLine" id="cb13-4" title="4">    }</a>
+<a class="sourceLine" id="cb13-5" title="5">}</a></code></pre></div>
+<p></Instruction></p>
+<p>The rest of the changes will be applied in the <code>GraphQLSchema</code> file.</p>
+<p><Instruction></p>
+<p>Add a relation between <code>Vote</code> and <code>User</code></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">val</span> voteByUserRel = Relation[Vote, Int](<span class="st">&quot;byUser&quot;</span>, v =&gt; Seq(v.<span class="fu">userId</span>))</a></code></pre></div>
+<p></Instruction></p>
+<p>Don’t forget in <code>Relation</code> we always have to return a sequence! Also we have to change the fetcher definition.</p>
+<p><Instruction></p>
+<p>Change the <code>votesFetcher</code> definition with the following:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">val</span> votesFetcher = Fetcher.<span class="fu">rel</span>(</a>
+<a class="sourceLine" id="cb15-2" title="2">    (ctx: MyContext, ids: Seq[Int]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotes</span>(ids),</a>
+<a class="sourceLine" id="cb15-3" title="3">    (ctx: MyContext, ids: RelationIds[Vote]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotesByUserIds</span>(<span class="fu">ids</span>(voteByUserRel))</a>
+<a class="sourceLine" id="cb15-4" title="4">)</a></code></pre></div>
+<p></Instruction></p>
+<p>Change <code>UserType</code>:</p>
+<p><Instruction></p>
+<p>Inside <code>AddField</code> type class, add a new field:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb16-1" title="1">Field(<span class="st">&quot;votes&quot;</span>, <span class="fu">ListType</span>(VoteType), resolve = c =&gt;  votesFetcher.<span class="fu">deferRelSeq</span>(voteByUserRel, c.<span class="fu">value</span>.<span class="fu">id</span>))</a></code></pre></div>
+<p></Instruction></p>
+<p>Also modify the defined <code>VoteType</code>:</p>
+<p><Instruction></p>
+<p>Replace <code>VoteType</code> with the following code:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">lazy</span> <span class="kw">val</span> VoteType: ObjectType[Unit, Vote] = deriveObjectType[Unit, Vote](</a>
+<a class="sourceLine" id="cb17-2" title="2">    <span class="fu">Interfaces</span>(IdentifiableType),</a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="fu">ExcludeFields</span>(<span class="st">&quot;userId&quot;</span>),</a>
+<a class="sourceLine" id="cb17-4" title="4">    <span class="fu">AddFields</span>(Field(<span class="st">&quot;user&quot;</span>,  UserType, resolve = c =&gt; usersFetcher.<span class="fu">defer</span>(c.<span class="fu">value</span>.<span class="fu">userId</span>)))</a>
+<a class="sourceLine" id="cb17-5" title="5">  )</a></code></pre></div>
+<p></Instruction></p>
+<p>That’s all. After this changes you should be able to execute the query like this:</p>
+<pre><code>query {
+  link(id: 1){
+    id
+    url
+    createdAt
+    postedBy {
+      name
+      links {
+        id
+        url
+      }
+      votes {
+        id
+        user {
+          name
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>As you can see we can ask for users who vote for links posted by the author of the current link. Simple like that.</p>
+<h3 id="vote---link-relation">Vote - Link Relation</h3>
+<p>One relation is still missing in our example. In my opinion you have enough knowledge to try and write it yourself. After that I’ll do it step by step. Reminder: case classes and database setup support this relation, you do not need to change anything there.</p>
+<p>Lets start from defining relation object:</p>
+<p><Instruction></p>
+<p>Add <code>voteByLinkRel</code> constant to the <code>GraphQLSchema</code> file.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">val</span> voteByLinkRel = Relation[Vote, Int](<span class="st">&quot;byLink&quot;</span>, v =&gt; Seq(v.<span class="fu">linkId</span>))</a></code></pre></div>
+<p></Instruction></p>
+<p>Now we can add the <code>votes</code> field to the <code>LinkType</code>.</p>
+<p><Instruction></p>
+<p>Add the following code after the existing <code>ReplaceField</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">AddFields</span>(</a>
+<a class="sourceLine" id="cb20-2" title="2">      Field(<span class="st">&quot;votes&quot;</span>, <span class="fu">ListType</span>(VoteType), resolve = c =&gt; votesFetcher.<span class="fu">deferRelSeq</span>(voteByLinkRel, c.<span class="fu">value</span>.<span class="fu">id</span>))</a>
+<a class="sourceLine" id="cb20-3" title="3">)</a></code></pre></div>
+<p></Instruction></p>
+<p>You see the similarities between both <code>votes</code> fields, don’t you?</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb21-1" title="1"><span class="co">//UserType</span></a>
+<a class="sourceLine" id="cb21-2" title="2">Field(<span class="st">&quot;votes&quot;</span>, <span class="fu">ListType</span>(VoteType), resolve = c =&gt; votesFetcher.<span class="fu">deferRelSeq</span>(voteByUserRel, c.<span class="fu">value</span>.<span class="fu">id</span>))</a>
+<a class="sourceLine" id="cb21-3" title="3"></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="co">//LinkType</span></a>
+<a class="sourceLine" id="cb21-5" title="5">Field(<span class="st">&quot;votes&quot;</span>, <span class="fu">ListType</span>(VoteType), resolve = c =&gt; votesFetcher.<span class="fu">deferRelSeq</span>(voteByLinkRel, c.<span class="fu">value</span>.<span class="fu">id</span>))</a></code></pre></div>
+<p>Both are almost the same, the only difference is the type of <code>Relation</code> we’re using as the first argument. Actually in this way you can add any relation you want.</p>
+<p>Now you should be able to query for this field.</p>
+<hr />
+<p>The second part won’t be as easy.</p>
+<p>Please look at the existing <code>votesFetcher</code> definition:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">val</span> votesFetcher = Fetcher.<span class="fu">rel</span>(</a>
+<a class="sourceLine" id="cb22-2" title="2">    (ctx: MyContext, ids: Seq[Int]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotes</span>(ids),</a>
+<a class="sourceLine" id="cb22-3" title="3">    (ctx: MyContext, ids: RelationIds[Vote]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotesByUserIds</span>(<span class="fu">ids</span>(voteByUserRel))</a>
+<a class="sourceLine" id="cb22-4" title="4">)</a></code></pre></div>
+<p>The first function fetches votes by their id. Nothing to comment here. The second function, on the other hand, fetches votes by relation. Actually by <code>voteByUserRel</code> relation. There is no fetcher API that supports more than one relation function, so we have to refactor it a little bit.</p>
+<p>In our case, we want to fetch votes by any relation, either with <code>User</code> or with <code>Link</code>.</p>
+<p><code>ids(voteByUserRel)</code> extracts the users’ ids and passes those to the db function, we have to change it. It is a good idea to pass <code>ids</code> down to the function, and in <code>DAO</code> decide which field it should use to filter.</p>
+<p><Instruction></p>
+<p>Replace the second function of <code>votesFetcher</code> with the following one:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb23-1" title="1">(ctx: MyContext, ids: RelationIds[Vote]) =&gt; ctx.<span class="fu">dao</span>.<span class="fu">getVotesByRelationIds</span>(ids)</a></code></pre></div>
+<p></Instruction></p>
+<p>There is one missing part: <code>DAO.getVotesByRelationIds</code> function, let’s create it now. This function should match the kind of relation we’re asking for, and filter by field depends on that relation.</p>
+<p><Instruction></p>
+<p>To the <code>DAO</code> file add <code>getVotesByRelationIds</code> function with code:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb24-1" title="1"><span class="co">//add to imports:</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="kw">import</span> sangria.<span class="fu">execution</span>.<span class="fu">deferred</span>.{RelationIds, SimpleRelation}</a>
+<a class="sourceLine" id="cb24-3" title="3"></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="co">//add in body</span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="kw">def</span> <span class="fu">getVotesByRelationIds</span>(rel: RelationIds[Vote]): Future[Seq[Vote]] =</a>
+<a class="sourceLine" id="cb24-6" title="6">  db.<span class="fu">run</span>(</a>
+<a class="sourceLine" id="cb24-7" title="7">    Votes.<span class="fu">filter</span> { vote =&gt;</a>
+<a class="sourceLine" id="cb24-8" title="8">      rel.<span class="fu">rawIds</span>.<span class="fu">collect</span>({</a>
+<a class="sourceLine" id="cb24-9" title="9">        <span class="kw">case</span> (<span class="fu">SimpleRelation</span>(<span class="st">&quot;byUser&quot;</span>), ids: Seq[Int]) =&gt; vote.<span class="fu">userId</span> inSet ids</a>
+<a class="sourceLine" id="cb24-10" title="10">        <span class="kw">case</span> (<span class="fu">SimpleRelation</span>(<span class="st">&quot;byLink&quot;</span>), ids: Seq[Int]) =&gt; vote.<span class="fu">linkId</span> inSet ids</a>
+<a class="sourceLine" id="cb24-11" title="11">      }).<span class="fu">foldLeft</span>(<span class="kw">true</span>: Rep[Boolean])(_ || _)</a>
+<a class="sourceLine" id="cb24-12" title="12"></a>
+<a class="sourceLine" id="cb24-13" title="13">    } result</a>
+<a class="sourceLine" id="cb24-14" title="14">  )</a></code></pre></div>
+<p>The function above use pattern matching to recognize which type of relation it has and depending on that relation uses the proper filter.</p>
+<p></Instruction></p>
+<p>The last thing to do is to change <code>VoteType</code> definition. We have to remove <code>linkId</code> property and instead add <code>link</code> field which returns the entire <code>Link</code> object.</p>
+<p><Instruction></p>
+<p>Replace current <code>VoteType</code> declaration with the following one:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb25-1" title="1"></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="kw">lazy</span> <span class="kw">val</span> VoteType: ObjectType[Unit, Vote] = deriveObjectType[Unit, Vote](</a>
+<a class="sourceLine" id="cb25-3" title="3">    <span class="fu">Interfaces</span>(IdentifiableType),</a>
+<a class="sourceLine" id="cb25-4" title="4">    <span class="fu">ExcludeFields</span>(<span class="st">&quot;userId&quot;</span>, <span class="st">&quot;linkId&quot;</span>),</a>
+<a class="sourceLine" id="cb25-5" title="5">    <span class="fu">AddFields</span>(Field(<span class="st">&quot;user&quot;</span>,  UserType, resolve = c =&gt; usersFetcher.<span class="fu">defer</span>(c.<span class="fu">value</span>.<span class="fu">userId</span>))),</a>
+<a class="sourceLine" id="cb25-6" title="6">    <span class="fu">AddFields</span>(Field(<span class="st">&quot;link&quot;</span>,  LinkType, resolve = c =&gt; linksFetcher.<span class="fu">defer</span>(c.<span class="fu">value</span>.<span class="fu">linkId</span>)))</a>
+<a class="sourceLine" id="cb25-7" title="7">  )</a>
+<a class="sourceLine" id="cb25-8" title="8">    </a></code></pre></div>
+<p></Instruction></p>
+<p>Now you’re ready to execute a query like that:</p>
+<pre class="graphql"><code>
+query {
+  links(ids :[1,2]){
+    url
+    votes {
+      user{
+        name
+      }
+    }
+  }
+}
+</code></pre>
+<p>You can also delete <code>DAO.getVotesByUserIds</code> function, we won’t need it anymore.</p>
+<h3 id="recap">Recap</h3>
+<p>We achieved our goal for this chapter, our models have new functions:</p>
+<p><code>User</code> has <code>links</code> and <code>votes</code> fields.<br />
+<code>Link</code> has <code>postedBy</code> and <code>votes</code> fields.<br />
+<code>Vote</code> has <code>user</code> and <code>link</code> fields.</p>
+<p>Now we can fetch the related data…</p>
+<p>The current state of fileds we’ve changed in this chapter you can compare with those gists:</p>
+<p><a href="https://gist.github.com/marioosh/7c3ee5fed1238c5daf89a4459727f575#file-dao-scala">DAO.scala</a><br />
+<a href="https://gist.github.com/marioosh/7c3ee5fed1238c5daf89a4459727f575#file-models_package-scala">models/package.scala</a><br />
+<a href="https://gist.github.com/marioosh/7c3ee5fed1238c5daf89a4459727f575#file-dbschema-scala">DBSchema.scala</a><br />
+<a href="https://gist.github.com/marioosh/7c3ee5fed1238c5daf89a4459727f575#file-graphqlschema-scala">GraphQLSchema.scala</a></p>
+<p>In the next chapter you will learn how to add and save entities with GraphQL mutations.</p>
+</body>
+</html>

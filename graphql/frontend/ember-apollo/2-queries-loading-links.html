@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading Links</h1>
+</header>
+<h3 id="preparing-the-components">Preparing the components</h3>
+<p>The first piece of functionality that you’ll implement in the app is loading and displaying a list of links. You’ll build each part of the hierarchy, but for now start with the component that’ll render a single link.</p>
+<p><Instruction></p>
+<p>In your terminal, create a new component named <code>link-post</code>. You are naming this component <code>link-post</code>, as opposed to <code>link</code>, because Ember requires all components to have a hyphen in it’s name.</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate component link-post</code></pre>
+<p></Instruction></p>
+<p>Running that generator creates a component file and a handlebars template along with a test for the component.</p>
+<p><Instruction></p>
+<p>Replace the code in the <code>link-post</code> template with the following:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/components/link-post.hbs&quot;)"><code>&lt;div&gt;
+  &lt;div&gt;{{link.description}} ({{link.url}})&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>This is a simple component that takes a <code>link</code> and renders the link’s <code>description</code> and <code>url</code>. Easy peasy!</p>
+<p>Next, you’ll implement the route that renders a list of links.</p>
+<p><Instruction></p>
+<p>Again, you will use an ember-cli generate command to create a links route.</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate route links</code></pre>
+<p></Instruction></p>
+<p>This creates a few files including a route file, template for the route, and it adds a <code>/links</code> route to the router map.</p>
+<p><Instruction></p>
+<p>Replace the contents of the route template with the following:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/links.hbs&quot;)"><code>&lt;div&gt;
+  {{#each model as |link index|}}
+    {{link-post index=index link=link}}
+  {{/each}}
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>In the link route’s <code>model</code> hook, add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/routes/links.js&quot;)"><code>model() {
+  return [
+    {
+      id: &#39;1&#39;,
+      description: &#39;The Coolest GraphQL Backend 😎&#39;,
+      url: &#39;https://www.graph.cool&#39;
+    },
+    {
+      id: &#39;2&#39;,
+      description: &#39;The Best GraphQL Client&#39;,
+      url: &#39;http://dev.apollodata.com/&#39;
+    }
+  ];
+}</code></pre>
+<p></Instruction></p>
+<p>Here, you’re using mock data for now to make sure the setup works. You’ll soon replace this with some actual data loaded from the server.</p>
+<p><Instruction></p>
+<p>To complete the setup, open <code>router.js</code> and change the links route to add a custom pathname.</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/router.js&quot;)"><code>Router.map(function() {
+  this.route(&#39;links&#39;, { path: &#39;/&#39; });
+});</code></pre>
+<p></Instruction></p>
+<p>Run the app to check if everything works so far! The app should now display the two links from the array:</p>
+<figure>
+<img src="http://i.imgur.com/Oky5GLx.png" alt="Run the app to check that it works" /><figcaption>Run the app to check that it works</figcaption>
+</figure>
+<h3 id="writing-the-graphql-query">Writing the GraphQL Query</h3>
+<p>You’ll now load the actual links that are stored on the server. The first thing you need to do for that is define the GraphQL query that you want to send to the API.</p>
+<p>Here is what that GraphQL query looks like:</p>
+<pre class="graphql"><code>query AllLinks {
+  allLinks {
+    id
+    createdAt
+    description
+    url
+  }
+}</code></pre>
+<p>You could now simply execute this query in a Playground and retrieve the results from your GraphQL server. But how can you use it inside your Ember app?</p>
+<h3 id="queries-with-ember-apollo-client">Queries with <code>ember-apollo-client</code></h3>
+<p>When using Apollo in Ember, you can use the <a href="http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query"><code>query</code></a> method on the <code>ApolloClient</code>. This will fetch the data and will allow you to process the response as a <em>promise</em>. This method is exposed by the <code>ember-apollo-client</code> add-on through the <code>apollo</code> service.</p>
+<p>A example would look as follows:</p>
+<pre class="js(nocopy)"><code>this.get(‘apollo’).query({
+  query: gql`
+    query AllLinks {
+      allLinks {
+        id
+      }
+    }
+  `
+}, ‘allLinks’).then(response =&gt; console.log(response))</code></pre>
+<p>In general, the process for you to add some data fetching logic will be very similar every time:</p>
+<ol type="1">
+<li>Write the query into a <code>.graphql</code> file.</li>
+<li>Import the query and use the <code>apollo</code> service to query your GraphQL endpoint.</li>
+<li>Access the query results via the promise that is returned.</li>
+</ol>
+<p>You can store your queries and mutations in separate files within your <code>app</code> folder, so add your first query!</p>
+<p><Instruction></p>
+<p>Create a nested set of folders in the <code>app</code> folder like so:</p>
+<pre class="bash(nocopy)"><code>.
+├── app
+│ ├── gql
+│ │ ├── queries
+│ │ ├── mutations</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>In the <code>queries</code> folder, create a new file named <code>allLinks.graphql</code> and add the following contents:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/app/gql/queries/alllinks.graphql&quot;)"><code>query AllLinksQuery {
+  allLinks {
+    id
+    createdAt
+    url
+    description
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<p>You defined the plain GraphQL query. The name <code>AllLinksQuery</code> is the <em>operation name</em> and will be used by Apollo to refer to this query in its internals.</p>
+<p>You can now finally remove the mock data and render actual links that are fetched from the server.</p>
+<p><Instruction></p>
+<p>In the <code>links.js</code> route file, update the code as follows:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/routes/links.js&quot;)"><code>import Ember from &#39;ember&#39;;
+import UnsubscribeRoute from &#39;ember-apollo-client/mixins/unsubscribe-route&#39;;
+import query from ‘hackernews-ember-apollo/gql/queries/allLinks&#39;;
+
+// 1.
+export default Ember.Route.extend(UnsubscribeRoute, {
+  // 2.  
+  apollo: Ember.inject.service(),
+
+  model() {
+    // 3.
+    return this.get(&#39;apollo&#39;).query({ query }, &#39;allLinks&#39;).catch(error =&gt; alert(error));
+  }
+});</code></pre>
+<p></Instruction></p>
+<p>Let’s walk through what’s happening in this code.</p>
+<ol type="1">
+<li>After importing your query and the <code>UnsubscribeRoute</code> mixin, you are extending the route and using the <code>UnsubscribeRoute</code> mixin. More about this mixin in the “More Mutations and Updating the Store” section.</li>
+<li>Here you are injecting the <code>apollo</code> service that <code>ember-apollo-client</code> exposes.</li>
+<li>Finally you are using the <code>apollo</code> service to query your GraphQL endpoint. The final string, <code>allLinks</code>, is specifying where in the returned data your expected data will be located.</li>
+</ol>
+<p>That’s it! Go ahead and run <code>yarn start</code> again. You should see the exact same screen as before.</p>
+</body>
+</html>

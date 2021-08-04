@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Auth Endpoints</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Auth Endpoints</h1>
+</header>
+<h2 id="createuser">CreateUser <a name="createuser"></a></h2>
+<p>We continue our implementation of CreateUser mutation with functions we have written in auth section.</p>
+<p><Instruction></p>
+<p><code>schema.resolvers.go</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">func</span> (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (<span class="dt">string</span>, <span class="dt">error</span>) {</a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="kw">var</span> user users.User</a>
+<a class="sourceLine" id="cb1-3" title="3">    user.Username = input.Username</a>
+<a class="sourceLine" id="cb1-4" title="4">    user.Password = input.Password</a>
+<a class="sourceLine" id="cb1-5" title="5">    user.Create()</a>
+<a class="sourceLine" id="cb1-6" title="6">    token, err := jwt.GenerateToken(user.Username)</a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="kw">if</span> err != <span class="ot">nil</span>{</a>
+<a class="sourceLine" id="cb1-8" title="8">        <span class="kw">return</span> <span class="st">&quot;&quot;</span>, err</a>
+<a class="sourceLine" id="cb1-9" title="9">    }</a>
+<a class="sourceLine" id="cb1-10" title="10">    <span class="kw">return</span> token, <span class="ot">nil</span></a>
+<a class="sourceLine" id="cb1-11" title="11">}</a></code></pre></div>
+<p></Instruction></p>
+<p>In our mutation first we create a user using given username and password and then generate a token for the user so we can recognize the user in requests. Start the server and try it in graphiql: query:</p>
+<pre><code>mutation {
+  createUser(input: {username: &quot;user1&quot;, password: &quot;123&quot;})
+}</code></pre>
+<p>results:</p>
+<pre><code>{
+  &quot;data&quot;: {
+    &quot;createUser&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODE0NjAwODUsImlhdCI6MTU4MTQ1OTc4NX0.rYLOM123kSulGjvK5VP8c7S0kgk03WweS2VJUUbAgNA&quot;
+  }
+}</code></pre>
+<p>So we successfully created our first user!</p>
+<h2 id="login">Login <a name="login"></a></h2>
+<p>For this mutation, first we have to check if user exists in database and given password is correct, then we generate a token for user and give it back to user.</p>
+<p><Instruction></p>
+<p><code>internal/users.go</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">func</span> (user *User) Authenticate() <span class="dt">bool</span> {</a>
+<a class="sourceLine" id="cb4-2" title="2">    statement, err := database.Db.Prepare(<span class="st">&quot;select Password from Users WHERE Username = ?&quot;</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="kw">if</span> err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb4-4" title="4">        log.Fatal(err)</a>
+<a class="sourceLine" id="cb4-5" title="5">    }</a>
+<a class="sourceLine" id="cb4-6" title="6">    row := statement.QueryRow(user.Username)</a>
+<a class="sourceLine" id="cb4-7" title="7"></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="kw">var</span> hashedPassword <span class="dt">string</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    err = row.Scan(&amp;hashedPassword)</a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="kw">if</span> err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb4-11" title="11">        <span class="kw">if</span> err == sql.ErrNoRows {</a>
+<a class="sourceLine" id="cb4-12" title="12">            <span class="kw">return</span> <span class="ot">false</span></a>
+<a class="sourceLine" id="cb4-13" title="13">        } <span class="kw">else</span> {</a>
+<a class="sourceLine" id="cb4-14" title="14">            log.Fatal(err)</a>
+<a class="sourceLine" id="cb4-15" title="15">        }</a>
+<a class="sourceLine" id="cb4-16" title="16">    }</a>
+<a class="sourceLine" id="cb4-17" title="17"></a>
+<a class="sourceLine" id="cb4-18" title="18">    <span class="kw">return</span> CheckPasswordHash(user.Password, hashedPassword)</a>
+<a class="sourceLine" id="cb4-19" title="19">}</a>
+<a class="sourceLine" id="cb4-20" title="20"></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">//CheckPassword hash compares raw password with it&#39;s hashed values</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="kw">func</span> CheckPasswordHash(password, hash <span class="dt">string</span>) <span class="dt">bool</span> {</a>
+<a class="sourceLine" id="cb4-23" title="23">    err := bcrypt.CompareHashAndPassword([]<span class="dt">byte</span>(hash), []<span class="dt">byte</span>(password))</a>
+<a class="sourceLine" id="cb4-24" title="24">    <span class="kw">return</span> err == <span class="ot">nil</span></a>
+<a class="sourceLine" id="cb4-25" title="25">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Explanation: * we select the user with the given username and then check if hash of the given password is equal to hashed password that we saved in database.</p>
+<p><Instruction></p>
+<p><code>schema.resolvers.go</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">func</span> (r *mutationResolver) Login(ctx context.Context, input model.Login) (<span class="dt">string</span>, <span class="dt">error</span>) {</a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="kw">var</span> user users.User</a>
+<a class="sourceLine" id="cb5-3" title="3">    user.Username = input.Username</a>
+<a class="sourceLine" id="cb5-4" title="4">    user.Password = input.Password</a>
+<a class="sourceLine" id="cb5-5" title="5">    correct := user.Authenticate()</a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">if</span> !correct {</a>
+<a class="sourceLine" id="cb5-7" title="7">        <span class="co">// 1</span></a>
+<a class="sourceLine" id="cb5-8" title="8">        <span class="kw">return</span> <span class="st">&quot;&quot;</span>, &amp;users.WrongUsernameOrPasswordError{}</a>
+<a class="sourceLine" id="cb5-9" title="9">    }</a>
+<a class="sourceLine" id="cb5-10" title="10">    token, err := jwt.GenerateToken(user.Username)</a>
+<a class="sourceLine" id="cb5-11" title="11">    <span class="kw">if</span> err != <span class="ot">nil</span>{</a>
+<a class="sourceLine" id="cb5-12" title="12">        <span class="kw">return</span> <span class="st">&quot;&quot;</span>, err</a>
+<a class="sourceLine" id="cb5-13" title="13">    }</a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="kw">return</span> token, <span class="ot">nil</span></a>
+<a class="sourceLine" id="cb5-15" title="15">}</a></code></pre></div>
+<p></Instruction></p>
+<p>We used the Authenticate function declared above and after that if the username and password are correct we return a new token for user and if not we return error, <code>&amp;users.WrongUsernameOrPasswordError</code>, here is implementation for this error:</p>
+<p><Instruction></p>
+<p><code>internal/users/errors.go</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">package</span> users</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">type</span> WrongUsernameOrPasswordError <span class="kw">struct</span>{}</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">func</span> (m *WrongUsernameOrPasswordError) Error() <span class="dt">string</span> {</a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="kw">return</span> <span class="st">&quot;wrong username or password&quot;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">}</a></code></pre></div>
+<p></Instruction></p>
+<p>To define a custom error in go you need a struct with Error method implemented, here is our error for wrong username or password with it’s Error() method. Again you can try login with username and password from the user we created and get a token.</p>
+<h2 id="refresh-token">Refresh Token <a name="refresh-token"></a></h2>
+<p>This is the last endpoint we need to complete our authentication system, imagine a user has loggedIn in our app and it’s token is going to get expired after minutes we set(when generated the token), now we need a solution to keep our user loggedIn. One solution is to have a endpoint to get tokens that are going to expire and regenerate a new token for that user so that app uses new token. So our endpoint should take a token, Parse the username and generate a new token for that username.</p>
+<p><Instruction></p>
+<p><code>schema.resolvers.go</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">func</span> (r *mutationResolver) RefreshToken(ctx context.Context, input model.RefreshTokenInput) (<span class="dt">string</span>, <span class="dt">error</span>) {</a>
+<a class="sourceLine" id="cb7-2" title="2">    username, err := jwt.ParseToken(input.Token)</a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="kw">if</span> err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb7-4" title="4">        <span class="kw">return</span> <span class="st">&quot;&quot;</span>, fmt.Errorf(<span class="st">&quot;access denied&quot;</span>)</a>
+<a class="sourceLine" id="cb7-5" title="5">    }</a>
+<a class="sourceLine" id="cb7-6" title="6">    token, err := jwt.GenerateToken(username)</a>
+<a class="sourceLine" id="cb7-7" title="7">    <span class="kw">if</span> err != <span class="ot">nil</span> {</a>
+<a class="sourceLine" id="cb7-8" title="8">        <span class="kw">return</span> <span class="st">&quot;&quot;</span>, err</a>
+<a class="sourceLine" id="cb7-9" title="9">    }</a>
+<a class="sourceLine" id="cb7-10" title="10">    <span class="kw">return</span> token, <span class="ot">nil</span></a>
+<a class="sourceLine" id="cb7-11" title="11">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Implementation is pretty straightforward so we skip the explanation for this.</p>
+</body>
+</html>

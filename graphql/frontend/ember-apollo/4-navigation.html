@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Navigation</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Navigation</h1>
+</header>
+<p>In this section, you’ll implement some navigation functionality.</p>
+<h3 id="create-a-header">Create a Header</h3>
+<p><Instruction></p>
+<p>First, you need to create a <code>site-header</code> component that users can use to navigate between the different routes of your application.</p>
+<pre><code>ember generate component site-header</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Replace the contents of the <code>site-header</code> handlebars template with the following:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/components/site-header.hbs&quot;)"><code>&lt;div class=&#39;flex pa1 justify-between nowrap orange&#39;&gt;
+  &lt;div class=&#39;flex flex-fixed black&#39;&gt;
+    &lt;div class=&#39;fw7 mr1&#39;&gt;Hacker News&lt;/div&gt;
+    {{#link-to &#39;links&#39; class=&#39;ml1 no-underline black&#39;}}new{{/link-to}}
+    &lt;div class=&#39;ml1&#39;&gt;|&lt;/div&gt;
+    {{#link-to &#39;create&#39; class=&#39;ml1 no-underline black&#39;}}submit{{/link-to}}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Inside of your <code>application.hbs</code> template, add your <code>site-header</code> component and some other structure:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/application.hbs&quot;)"><code>&lt;div class=&#39;center w85&#39;&gt;
+  {{site-header}}
+  &lt;div class=&#39;ph3 pv1 background-gray&#39;&gt;
+    {{outlet}}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>This simply renders two links that users can use to navigate between the <code>/links</code> route and the <code>/create</code> route.</p>
+<p>That’s it. If you run <code>yarn start</code>, you can now access two URLs. <code>http://localhost:4200/</code> will render all links and <code>http://localhost:4200/create</code> renders the form to add a link component you just wrote in the previous section.</p>
+<figure>
+<img src="http://i.imgur.com/zxf1Dfv.png" alt="Run yarn start to see the app at localhost:4200" /><figcaption>Run yarn start to see the app at localhost:4200</figcaption>
+</figure>
+<p>You’ve already integrated the redirect after creating a new link, so this section is super simple, but necessary!</p>
+</body>
+</html>

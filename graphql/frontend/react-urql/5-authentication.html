@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’ll learn how you can implement authentication with urql to provide signup and login features to your users.</p>
+<h3 id="prepare-the-token-logic">Prepare the token logic</h3>
+<p>You’ll later be adding a <code>Login</code> component and some mutations to either login or signup a user. These mutations return a <code>token</code> string that authenticates each request sent to your GraphQL API. For the purpose of this tutorial we’ll store this token in your browser’s <code>LocalStorage</code>.</p>
+<p>However, let’s write some utilities to make it easier to reuse this code and abstract the local storage API away.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src</code> and call it <code>token.js</code>. Then paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/token.js&quot;)"><code>const AUTH_TOKEN = &#39;auth-token&#39;;
+
+export const getToken = () =&gt; localStorage.getItem(AUTH_TOKEN);
+export const setToken = token =&gt; localStorage.setItem(AUTH_TOKEN, token);
+export const deleteToken = () =&gt; localStorage.removeItem(AUTH_TOKEN);</code></pre>
+<p></Instruction></p>
+<p>You now have two functions that you can use in the upcoming steps to set up authentication:</p>
+<ul>
+<li>the <code>getToken</code> funtion returns the token or <code>null</code> if the user is not logged in yet.</li>
+<li>the <code>setToken</code> function updates the token in local storage.</li>
+<li>the <code>deleteToken</code> function removes the token from local storage, when logging out.</li>
+</ul>
+<blockquote>
+<p><strong>Warning</strong>: Storing JWTs in <code>localStorage</code> is not a safe approach to implement authentication on the frontend. Because this tutorial is focused on GraphQL, we want to keep things simple and therefore are using it here. You can read more about this topic <a href="https://www.rdegges.com/2018/please-stop-using-local-storage/">here</a>.</p>
+</blockquote>
+<h3 id="prepare-the-react-components">Prepare the React components</h3>
+<p>As in the sections before, you’ll set the stage for the login functionality by preparing the React components that are needed for this feature. You’ll start by building the <code>Login</code> UI.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/components</code> and call it <code>Login.js</code>. Then paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/login.js&quot;)"><code>import React from &#39;react&#39;
+import { setToken } from &#39;../token&#39;
+
+const Login = props =&gt; {
+  // Used to switch between login and signup
+  const [isLogin, setIsLogin] = React.useState(true)
+
+  const [email, setEmail] = React.useState(&#39;&#39;)
+  const [password, setPassword] = React.useState(&#39;&#39;)
+  const [name, setName] = React.useState(&#39;&#39;)
+  
+  return (
+    &lt;div&gt;
+      &lt;h4 className=&quot;mv3&quot;&gt;{isLogin ? &#39;Login&#39; : &#39;Sign Up&#39;}&lt;/h4&gt;
+
+      &lt;div className=&quot;flex flex-column&quot;&gt;
+        {!isLogin &amp;&amp; (
+          &lt;input
+            value={name}
+            onChange={e =&gt; setName(e.target.value)}
+            type=&quot;text&quot;
+            placeholder=&quot;Your name&quot;
+          /&gt;
+        )}
+        &lt;input
+          value={email}
+          onChange={e =&gt; setEmail(e.target.value)}
+          type=&quot;text&quot;
+          placeholder=&quot;Your email address&quot;
+        /&gt;
+        &lt;input
+          value={password}
+          onChange={e =&gt; setPassword(e.target.value)}
+          type=&quot;password&quot;
+          placeholder=&quot;Choose a safe password&quot;
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div className=&quot;flex mt3&quot;&gt;
+        &lt;button
+          type=&quot;button&quot;
+          className=&quot;pointer mr2 button&quot;
+        &gt;
+          {isLogin ? &quot;login&quot; : &quot;create account&quot;}
+        &lt;/button&gt;
+        &lt;button
+          type=&quot;button&quot;
+          className=&quot;pointer button&quot;
+          onClick={() =&gt; setIsLogin(!isLogin)}
+        &gt;
+          {isLogin ? &#39;need to create an account?&#39; : &#39;already have an account?&#39;}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Login</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly understand the structure of this new component, which can have two major states:</p>
+<ul>
+<li>One state is <strong>for users that already have an account</strong> and only need to login. In this state, the component will only render two <code>input</code> fields for the user to provide their <code>email</code> and <code>password</code>. <code>isLogin</code> will be <code>true</code> in this case.</li>
+<li>The second state is for <strong>users that haven’t created an account yet</strong>, and thus still need to sign up. Here, you also render a third <code>input</code> field where users can provide their <code>name</code>. In this case, <code>isLogin</code> will be <code>false</code>.</li>
+</ul>
+<p>Later, you’ll add an <code>onClick</code> handler to the first button to execute the mutations for the login and signup functionality. You’ve also added an import for <code>setToken</code> at the top of the file that will later be used to update the token after the mutation is sent.</p>
+<p>With that component in place, you can go ahead and add a new route to your <code>react-router</code> setup.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and update your routes to include the new <code>Login</code> component:</p>
+<pre class="js{8,18}(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import { Switch, Route } from &#39;react-router-dom&#39;
+
+import LoadingBoundary from &#39;./LoadingBoundary&#39;
+import Header from &#39;./Header&#39;
+import LinkList from &#39;./LinkList&#39;
+import CreateLink from &#39;./CreateLink&#39;
+import Login from &#39;./Login&#39;
+
+const App = () =&gt; (
+  &lt;div className=&quot;center w85&quot;&gt;
+    &lt;Header /&gt;
+    &lt;div className=&quot;ph3 pv1 background-gray&quot;&gt;
+      &lt;LoadingBoundary&gt;
+        &lt;Switch&gt;
+          &lt;Route exact path=&quot;/&quot; component={LinkList} /&gt;
+          &lt;Route exact path=&quot;/create&quot; component={CreateLink} /&gt;
+          &lt;Route exact path=&quot;/login&quot; component={Login} /&gt;
+        &lt;/Switch&gt;
+      &lt;/LoadingBoundary&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>Finally, let’s add a new link to the <code>Header</code> that allows the users to navigate to the <code>Login</code> page.</p>
+<p><Instruction></p>
+<p>Open <code>Header.js</code> and update it to look as follows:</p>
+<pre class="js{2,4,6,15-22,25-41,47}(path=&quot;.../hackernews-react-urql/src/components/header.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import { withRouter } from &#39;react-router&#39;
+import { Link } from &#39;react-router-dom&#39;
+import { getToken, deleteToken } from &#39;../token&#39;
+
+const Header = props =&gt; {
+  const isLoggedIn = !!getToken();
+
+  return (
+    &lt;div className=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+      &lt;div className=&quot;flex flex-fixed black&quot;&gt;
+        &lt;div className=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+        &lt;Link to=&quot;/&quot; className=&quot;ml1 no-underline black&quot;&gt;
+          new
+        &lt;/Link&gt;
+        {isLoggedIn &amp;&amp; (
+          &lt;div className=&quot;flex&quot;&gt;
+            &lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+            &lt;Link to=&quot;/create&quot; className=&quot;ml1 no-underline black&quot;&gt;
+              submit
+            &lt;/Link&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+
+      &lt;div className=&quot;flex flex-fixed&quot;&gt;
+        {isLoggedIn ? (
+          &lt;div
+            className=&quot;ml1 pointer black&quot;
+            onClick={() =&gt; {
+              deleteToken()
+              props.history.push(&#39;/&#39;)
+            }}
+          &gt;
+            logout
+          &lt;/div&gt;
+        ) : (
+          &lt;Link to=&quot;/login&quot; className=&quot;ml1 no-underline black&quot;&gt;
+            login
+          &lt;/Link&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default withRouter(Header)</code></pre>
+<p></Instruction></p>
+<p>You first call <code>getToken()</code> to retrieve the current token from local storage. We just use it to see if the user is logged in. If the token is not available, the “Submit” link won’t be rendered any more. That way you make sure only authenticated users can create new links.</p>
+<p>You’re also adding a second button to the right of the <code>Header</code> that users can use to either login or logout.</p>
+<p>Here is what the app now looks like:</p>
+<figure>
+<img src="http://imgur.com/tBxMVtb.png" alt="The completed component" /><figcaption>The completed component</figcaption>
+</figure>
+<p>Perfect, you’re all set now to implement the authentication mutations.</p>
+<h3 id="add-the-authentication-mutations">Add the authentication mutations</h3>
+<p><code>signup</code> and <code>login</code> are two regular GraphQL mutations you can use in the same way as you did with the <code>createLink</code> mutation from before.</p>
+<p><Instruction></p>
+<p>Open <code>Login.js</code> and add the following import statements and GraphQL mutations at the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/login.js&quot;)"><code>import gql from &#39;graphql-tag&#39;
+import { useMutation } from &#39;urql&#39;
+import { setToken } from &#39;../token&#39;
+
+const SIGNUP_MUTATION = gql`
+  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
+    signup(email: $email, password: $password, name: $name) {
+      token
+    }
+  }
+`
+
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Both mutations are very similar. They take a number of arguments and return a <code>token</code> that you can save to local storage to authenticate the user. You’ve also added the <code>useMutation</code> and <code>setToken</code> imports that are used in the next step to actually authenticate the user.</p>
+<p>You’re now going to implement the two mutations. Luckily you can write just one <code>useMutation</code> hook for both login and signup since their results are identical and only one of them is used at a time.</p>
+<p><Instruction></p>
+<p>Add the <code>useMutation</code> hook to the <code>Login</code> component:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/login.js&quot;)"><code>const Login = props =&gt; {
+  // ...
+
+  const [state, executeMutation] = useMutation(
+    isLogin ? LOGIN_MUTATION : SIGNUP_MUTATION
+  );
+
+  const mutate = React.useCallback(() =&gt; {
+    executeMutation({ email, password, name })
+      .then(({ data }) =&gt; {
+        const token = data &amp;&amp; data[isLogin ? &#39;login&#39; : &#39;signup&#39;].token
+        if (token) {
+          setToken(token)
+          props.history.push(&#39;/&#39;)
+        }
+      });
+  }, [executeMutation, props.history, isLogin, email, password, name]);
+    
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>If the user wants to login you’re passing <code>LOGIN_MUTATION</code> to <code>useMutation</code>, if the user wants to sign up you’re passing <code>SIGNUP_MUTATION</code>. The <code>mutate</code> handler then calls <code>executeMutation</code> with all variables; <code>email</code>, <code>password</code>, and <code>name</code>. Lastly, after the mutation has finished, the token from the result data is stored, and the app then redirects to the homepage.</p>
+<p>All right, all that’s left to do is to add the handler to the <code>button</code> element!</p>
+<p><Instruction></p>
+<p>Also in <code>Login.js</code> and update <code>div</code> containing the two buttons as follows:</p>
+<pre class="js{5-6,13}(path=&quot;.../hackernews-react-urql/src/components/login.js&quot;)"><code>&lt;div className=&quot;flex mt3&quot;&gt;
+  &lt;button
+    type=&quot;button&quot;
+    className=&quot;pointer mr2 button&quot;
+    disabled={state.fetching}
+    onClick={mutate}
+  &gt;
+    {isLogin ? &quot;login&quot; : &quot;create account&quot;}
+  &lt;/button&gt;
+  &lt;button
+    type=&quot;button&quot;
+    className=&quot;pointer button&quot;
+    disabled={state.fetching}
+    onClick={() =&gt; setIsLogin(!isLogin)}
+  &gt;
+    {isLogin ? &#39;need to create an account?&#39; : &#39;already have an account?&#39;}
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>To summarise what you’ve been coding:</p>
+<ul>
+<li>you’ve added the <code>LOGIN_MUTATION</code> and the <code>SIGNUP_MUTATION</code>, and added a <code>useMutation</code> hook that uses one of them depending on <code>isLogin</code>.</li>
+<li>you’ve implemented a <code>mutate</code> handler that calls <code>executeMutation</code> with the <code>Login</code> form’s variables, stores the token from the result in local storage, and redirects to the homepage</li>
+<li>and lastly, you added the handler and <code>disabled</code> flags to the buttons</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: Like with queries, depending on what your mutations definitions request, you’ll get different sets of data. That’s why you need to read either from <code>login</code> or <code>signup</code> on the result <code>data</code>.</p>
+</blockquote>
+<p>You can now create an account by providing a <code>name</code>, <code>email</code> and <code>password</code>. Once you’ve done that, the “Submit” button in the header will be displayed again:</p>
+<figure>
+<img src="https://imgur.com/z4KILTw.png" alt="Create an account by providing name, email, and password" /><figcaption>Create an account by providing name, email, and password</figcaption>
+</figure>
+<p>If you haven’t done so yet, go ahead and test the login functionality. Run <code>yarn start</code> and open <code>http://localhost:3000/login</code>. Then click the “<strong>need to create an account?</strong>” button and provide some user data for the user you’re creating. Finally, submit and if all went well, the app will navigate back to the homepage and your user was created.</p>
+<p>You can verify that the new user has properly been added by sending the <code>users</code> query to the <strong>dev</strong> Playground in the <strong>database</strong> project.</p>
+<h3 id="configuring-the-urql-client-with-the-token">Configuring the urql Client with the token</h3>
+<p>Now that users are able to login and obtain a token that authenticates them against your GraphQL API, you actually need to make sure that the token gets attached to all requests that are sent.</p>
+<p>Since all the API requests are actually created and sent by urql’s <code>Client</code> in your app, you need to make sure it knows about the user’s token! There are several ways of doing this, the easiest being the <code>fetchOptions</code> option that you can pass to the client.</p>
+<p><Instruction></p>
+<p>Open <code>src/index.js</code> and modify the <code>client</code> and import statements like so:</p>
+<pre class="js{1,7-12}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import { getToken } from &#39;./token&#39;
+
+// ...
+
+const client = new Client({
+  url: &#39;http://localhost:4000&#39;,
+  fetchOptions: () =&gt; {
+    const token = getToken()
+    return {
+      headers: { authorization: token ? `Bearer ${token}` : &#39;&#39; }
+    }
+  },
+  exchanges: [dedupExchange, cache, fetchExchange]
+})</code></pre>
+<p></Instruction></p>
+<p>Just one more configuration option for the <code>Client</code>, that’s it!</p>
+<p>Now all your GraphQL operations will have an <code>Authorization</code> header if a <code>token</code> is available. This works because <code>fetchExchange</code> will call <code>fetchOptions</code> for every request it sends and attaches them to its default <code>fetch</code> parameters. Your GraphQL API will use this token to retrieve data on the user that is currently logged in.</p>
+<blockquote>
+<p><strong>Note</strong>: In fully productionized apps you may run into cases where you need to reauthenticate or refresh the token on the fly, or maybe you can’t retrieve the token synchronously. In those cases it will make sense to write a custom Exchange that handles authentication for you. <a href="https://formidable.com/open-source/urql/docs/api/auth-exchange/">You can find a guide on how to write an authentication exchange on the urql docs.</a></p>
+</blockquote>
+<h3 id="requiring-authentication-on-the-server-side">Requiring authentication on the server-side</h3>
+<p>The last thing you might do in this chapter is check how to ensure only authenticated users are able to <code>post</code> new links. Plus, every <code>Link</code> that’s created by a <code>post</code> mutation should automatically set the <code>User</code> who sent the request for its <code>postedBy</code> field.</p>
+<p><Instruction></p>
+<p>Open <code>server/src/resolvers/Mutation.js</code> and take a look at how you may implement this:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/server/src/resolvers/mutation.js&quot;)"><code>function post(parent, { url, description }, context) {
+  const userId = getUserId(context)
+  return context.prisma.createLink({
+    url,
+    description,
+    postedBy: {
+      connect: {
+        id: userId
+      }
+    }
+  })
+}</code></pre>
+<p></Instruction></p>
+<p>With this, you’re extracting the <code>userId</code> from the <code>Authorization</code> header of the request and use it to directly <a href="https://www.prismagraphql.com/docs/reference/prisma-api/mutations-ol0yuoz6go#nested-mutations"><code>connect</code></a> it with the <code>Link</code> that’s being created. Note that <code>getUserId</code> will <a href="https://github.com/howtographql/react-urql/blob/master/server/src/utils.js#L12">throw an error</a> if the token is invalid or missing.</p>
+</body>
+</html>

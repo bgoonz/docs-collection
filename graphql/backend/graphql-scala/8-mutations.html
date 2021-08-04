@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>8-mutations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<p>In the last chapters you’ve learnt how to use GraphQL to read data. Time to add some. When you want to add data, you use almost the same syntax. How does the server know when you want to write data instead of reading? You have to use the <code>mutation</code> keyword instead of <code>query</code>. That’s all. Actually not all, but you will learn about the differences in this chapter.</p>
+<h3 id="create-an-user">Create an user</h3>
+<p>Let’s start with the mutation which adds a new user to the database, like in the <a href="https://github.com/howtographql/howtographql/blob/master/meta/structure.graphql">howtographql.com common schema</a></p>
+<pre class="graphql"><code>
+mutation {
+  createUser(name: String!, authProvider: AuthProviderSignupData!): User
+}
+
+input AuthProviderSignupData {
+  email: AUTH_PROVIDER_EMAIL
+}
+
+input AUTH_PROVIDER_EMAIL {
+  email: String!
+  password: String!
+}</code></pre>
+<p>It isn’t hard to imagine what this mutation does. The name suggests it matches our interest - it creates an user, takes two parameters of type <code>String</code> and <code>AuthProviderSignupData</code> and returns an <code>User</code> in response.</p>
+<p>But wait… until now we’ve been using <code>type</code> not <code>input</code>. So what is this? <code>input</code> is a type that can be used as a parameter. You will frequently see it among <code>mutation</code>s.</p>
+<p>Let’s try to implement mutation in the following order:</p>
+<ul>
+<li>Define case classes for inputs</li>
+<li>Define InputObjectType’s for those classes,</li>
+<li>Define ObjectType responsible for all Mutations</li>
+<li>Tell a Schema to use this object.</li>
+</ul>
+<h3 id="create-case-classes">Create case classes</h3>
+<p><Instruction></p>
+<p>Create classes needed for inputs.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb2-1" title="1"></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">AuthProviderEmail</span>(email: String, password: String)</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">case</span> <span class="kw">class</span> <span class="fu">AuthProviderSignupData</span>(email: AuthProviderEmail)</a></code></pre></div>
+<p></Instruction></p>
+<h3 id="define-inputobjecttypes">Define InputObjectType’s</h3>
+<p><code>InputObjectType</code> is to <code>input</code> what <code>ObjectType</code> is to the <code>type</code> keyword. It tells Sangria how to understand data. In fact you can define <code>ObjectType</code> and <code>InputObjectType</code> for the same case class, or even more than one. A good example is a <code>User</code> entity which consists of many fields. But if you need different data when you register a new user and during sign in, you can create different <code>InputObjectType</code>’s.</p>
+<p><Instruction></p>
+<p>In <code>GraphQLSchema.scala</code> add the following definitions:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">implicit</span> <span class="kw">val</span> AuthProviderEmailInputType: InputObjectType[AuthProviderEmail] = deriveInputObjectType[AuthProviderEmail](</a>
+<a class="sourceLine" id="cb3-2" title="2">   <span class="fu">InputObjectTypeName</span>(<span class="st">&quot;AUTH_PROVIDER_EMAIL&quot;</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3">)</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">lazy</span> <span class="kw">val</span> AuthProviderSignupDataInputType: InputObjectType[AuthProviderSignupData] = deriveInputObjectType[AuthProviderSignupData]()</a></code></pre></div>
+<p></Instruction></p>
+<p>To avoid circular dependencies of types, like we’ve experiences in the last chapter ther a suggestion to use <code>lazy</code> keyword for every type. But in case above, <code>AuthProviderEmail</code> is nested object in <code>AuthProviderSignupData</code> which is built by macro. Thats why we had to add <code>implicit</code> we have to have this nested object type in the scope in the time of macro executing.</p>
+<h3 id="define-mutation-object">Define Mutation Object</h3>
+<p>It will be similar to the process you already know.</p>
+<p><Instruction></p>
+<p>In the same file add the following code:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb4-1" title="1">  <span class="kw">val</span> NameArg = <span class="fu">Argument</span>(<span class="st">&quot;name&quot;</span>, StringType)</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">val</span> AuthProviderArg = <span class="fu">Argument</span>(<span class="st">&quot;authProvider&quot;</span>, AuthProviderSignupDataInputType)</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="kw">val</span> Mutation = <span class="fu">ObjectType</span>(</a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="st">&quot;Mutation&quot;</span>,</a>
+<a class="sourceLine" id="cb4-6" title="6">    fields[MyContext, Unit](</a>
+<a class="sourceLine" id="cb4-7" title="7">      Field(<span class="st">&quot;createUser&quot;</span>,</a>
+<a class="sourceLine" id="cb4-8" title="8">        UserType,</a>
+<a class="sourceLine" id="cb4-9" title="9">        arguments = NameArg :: AuthProviderArg :: Nil,</a>
+<a class="sourceLine" id="cb4-10" title="10">        resolve = c =&gt; c.<span class="fu">ctx</span>.<span class="fu">dao</span>.<span class="fu">createUser</span>(c.<span class="fu">arg</span>(NameArg), c.<span class="fu">arg</span>(AuthProviderArg))</a>
+<a class="sourceLine" id="cb4-11" title="11">      )</a>
+<a class="sourceLine" id="cb4-12" title="12">    )</a>
+<a class="sourceLine" id="cb4-13" title="13">  )</a></code></pre></div>
+<p></Instruction></p>
+<p>As you can see, we’re missing one function in <code>DAO</code></p>
+<p><Instruction></p>
+<p>Add to <code>DAO</code> the following function:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb5-1" title="1"><span class="co">//add to imports</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">import</span> com.<span class="fu">howtographql</span>.<span class="fu">scala</span>.<span class="fu">sangria</span>.<span class="fu">models</span>.<span class="fu">AuthProviderSignupData</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">//add in body</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">def</span> <span class="fu">createUser</span>(name: String, authProvider: AuthProviderSignupData): Future[User] = {</a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="kw">val</span> newUser = <span class="fu">User</span>(<span class="dv">0</span>, name, authProvider.<span class="fu">email</span>.<span class="fu">email</span>, authProvider.<span class="fu">email</span>.<span class="fu">password</span>)</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="kw">val</span> insertAndReturnUserQuery = (Users returning Users.<span class="fu">map</span>(_.<span class="fu">id</span>)) into {</a>
+<a class="sourceLine" id="cb5-9" title="9">    (user, id) =&gt; user.<span class="fu">copy</span>(id = id)</a>
+<a class="sourceLine" id="cb5-10" title="10">  }</a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12">  db.<span class="fu">run</span> {</a>
+<a class="sourceLine" id="cb5-13" title="13">    insertAndReturnUserQuery += newUser</a>
+<a class="sourceLine" id="cb5-14" title="14">  }</a>
+<a class="sourceLine" id="cb5-15" title="15"></a>
+<a class="sourceLine" id="cb5-16" title="16">}</a>
+<a class="sourceLine" id="cb5-17" title="17">  </a></code></pre></div>
+<p></Instruction></p>
+<h3 id="add-mutation-to-schema">Add Mutation to Schema</h3>
+<p><Instruction></p>
+<p>Replace <code>schemaDefinition</code> with the code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">val</span> SchemaDefinition = Schema(QueryType, Some(Mutation))</a></code></pre></div>
+<p></Instruction></p>
+<p>All mutations are optional so you have to wrap it in <code>Some</code>.</p>
+<p>If you will try to run a server, you will get errors about unimplemented <code>FromInput</code>’s. It’s an additional step we have to do to able run those mutations.</p>
+<h3 id="provide-frominput-for-input-classes">Provide FromInput for input classes</h3>
+<p>Sangria needs to read a part of JSON-like structure and convert it to case classes. That’s the reason why we need such <code>FromInput</code> type classes. There are two ways to do it, you can write your own mapper, but you can also use any JSON library to help with this process. In the first step we’ve added a dependency to the <code>sangria-spray-json</code> library, but if you want you can use any other library. Sangria uses this to convert it into proper <code>FromInput</code> type. All we need to do is to define a proper JSONReader for that case class and import some converting functions.</p>
+<p><Instruction></p>
+<p>In the <code>GraphQLSchema</code> file, add the following code before the definitions of InputObjectTypes:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb7-1" title="1"></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">import</span> sangria.<span class="fu">marshalling</span>.<span class="fu">sprayJson</span>._</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">import</span> spray.<span class="fu">json</span>.<span class="fu">DefaultJsonProtocol</span>._</a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw">implicit</span> <span class="kw">val</span> authProviderEmailFormat = <span class="fu">jsonFormat2</span>(AuthProviderEmail)</a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">implicit</span> <span class="kw">val</span> authProviderSignupDataFormat = <span class="fu">jsonFormat1</span>(AuthProviderSignupData)</a></code></pre></div>
+<p></Instruction></p>
+<p>Everything should work as expected now.</p>
+<h3 id="test-case">Test case</h3>
+<p>Perform a query in graphQL console:</p>
+<pre class="graphql"><code>
+mutation addMe {
+  createUser(
+    name: &quot;Mario&quot;,
+    authProvider:{
+      email:{
+        email:&quot;mario@example.com&quot;,
+        password:&quot;p4ssw0rd&quot;
+      }
+    }){
+    id
+    name
+  }
+}</code></pre>
+<p>Of course you can use different data :)<br />
+If everything works, we can move forward and implement two more mutations.</p>
+<h3 id="addlink-mutation">AddLink mutation</h3>
+<p>Implement a mutation to able run a following code:</p>
+<pre class="graphql"><code>createLink(description: String!, url: String!, postedById: ID): Link</code></pre>
+<p>First try on your own, next compare to my solution.</p>
+<p>Hint! You can skip creating case classes phase because we don’t need any of them. In this case parameters uses only <code>String</code> and <code>Int</code> which are simple scalars available out-of-the-box.</p>
+<p><Instruction></p>
+<p>In <code>DAO</code> add a function:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb10-1" title="1"></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">def</span> <span class="fu">createLink</span>(url: String, description: String, postedBy: Int): Future[Link] = {</a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="kw">val</span> insertAndReturnLinkQuery = (Links returning Links.<span class="fu">map</span>(_.<span class="fu">id</span>)) into {</a>
+<a class="sourceLine" id="cb10-5" title="5">    (link, id) =&gt; link.<span class="fu">copy</span>(id = id)</a>
+<a class="sourceLine" id="cb10-6" title="6">  }</a>
+<a class="sourceLine" id="cb10-7" title="7">  db.<span class="fu">run</span> {</a>
+<a class="sourceLine" id="cb10-8" title="8">    insertAndReturnLinkQuery += <span class="fu">Link</span>(<span class="dv">0</span>, url, description, postedBy)</a>
+<a class="sourceLine" id="cb10-9" title="9">  }</a>
+<a class="sourceLine" id="cb10-10" title="10">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Also add a mutation’s definition inside the <code>Mutation.fields</code> sequence.</p>
+<p><Instruction></p>
+<p>In <code>GraphQLSchema</code> file, inside <code>Mutation</code> definition, add the following field:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb11-1" title="1">Field(<span class="st">&quot;createLink&quot;</span>,</a>
+<a class="sourceLine" id="cb11-2" title="2">  LinkType,</a>
+<a class="sourceLine" id="cb11-3" title="3">  arguments = UrlArg :: DescArg :: PostedByArg :: Nil,</a>
+<a class="sourceLine" id="cb11-4" title="4">  resolve = c =&gt; c.<span class="fu">ctx</span>.<span class="fu">dao</span>.<span class="fu">createLink</span>(c.<span class="fu">arg</span>(UrlArg), c.<span class="fu">arg</span>(DescArg), c.<span class="fu">arg</span>(PostedByArg)))</a></code></pre></div>
+<p></Instruction></p>
+<p>We’re missing arguments definitions</p>
+<p><Instruction></p>
+<p>Add arguments definitions somewhere before <code>Mutation</code></p>
+<pre><code>
+val UrlArg = Argument(&quot;url&quot;, StringType)
+val DescArg = Argument(&quot;description&quot;, StringType)
+val PostedByArg = Argument(&quot;postedById&quot;, IntType)
+</code></pre>
+<p></Instruction></p>
+<p>That’s all, now you should be able to run following query:</p>
+<pre class="graphql"><code>mutation addLink {
+  createLink(
+    url: &quot;howtographql.com&quot;,
+    description: &quot;Great tutorial page&quot;,
+    postedById: 1
+  ){
+    url
+    description
+    postedBy{
+      name
+    }
+  }
+
+}</code></pre>
+<p>Let’s implement the last mutation for voting:</p>
+<h3 id="create-mutation-for-voting">Create mutation for voting</h3>
+<p><Instruction></p>
+<p>In <code>DAO</code> add function which will be able to save new vote.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">def</span> <span class="fu">createVote</span>(linkId: Int, userId: Int): Future[Vote] = {</a>
+<a class="sourceLine" id="cb14-2" title="2">  <span class="kw">val</span> insertAndReturnVoteQuery = (Votes returning Votes.<span class="fu">map</span>(_.<span class="fu">id</span>)) into {</a>
+<a class="sourceLine" id="cb14-3" title="3">    (vote, id) =&gt; vote.<span class="fu">copy</span>(id = id)</a>
+<a class="sourceLine" id="cb14-4" title="4">  }</a>
+<a class="sourceLine" id="cb14-5" title="5">  db.<span class="fu">run</span> {</a>
+<a class="sourceLine" id="cb14-6" title="6">    insertAndReturnVoteQuery += <span class="fu">Vote</span>(<span class="dv">0</span>, userId, linkId)</a>
+<a class="sourceLine" id="cb14-7" title="7">  }</a>
+<a class="sourceLine" id="cb14-8" title="8">}</a></code></pre></div>
+<p></Instruction></p>
+<p>Add arguments needed by the next mutation and this mutation itself.</p>
+<p><Instruction></p>
+<p>Add argument definitions:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">val</span> LinkIdArg = <span class="fu">Argument</span>(<span class="st">&quot;linkId&quot;</span>, IntType)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">val</span> UserIdArg = <span class="fu">Argument</span>(<span class="st">&quot;userId&quot;</span>, IntType)</a></code></pre></div>
+<p></Instruction></p>
+<p>Add mutation definition.</p>
+<p><Instruction></p>
+<p>Add another field inside <code>Mutation</code> objectType:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode scala"><code class="sourceCode scala"><a class="sourceLine" id="cb16-1" title="1">Field(<span class="st">&quot;createVote&quot;</span>,</a>
+<a class="sourceLine" id="cb16-2" title="2">  VoteType,</a>
+<a class="sourceLine" id="cb16-3" title="3">  arguments = LinkIdArg :: UserIdArg :: Nil,</a>
+<a class="sourceLine" id="cb16-4" title="4">  resolve = c =&gt; c.<span class="fu">ctx</span>.<span class="fu">dao</span>.<span class="fu">createVote</span>(c.<span class="fu">arg</span>(LinkIdArg), c.<span class="fu">arg</span>(UserIdArg)))</a></code></pre></div>
+<p></Instruction></p>
+<p>We are done! You can test all those mutations in Graphiql console.</p>
+<p>The current state of files changed in this chapter:</p>
+<p><a href="https://gist.github.com/marioosh/316468a9ac5e1179e226a3191f03fab8#file-models_package-scala">models/package.scala</a><br />
+<a href="https://gist.github.com/marioosh/316468a9ac5e1179e226a3191f03fab8#file-dao-scala">DAO.scala</a><br />
+<a href="https://gist.github.com/marioosh/316468a9ac5e1179e226a3191f03fab8#file-graphqlschema-scala">GraphQLSchema.scala</a></p>
+<hr />
+<p>Now you know how to send data to the server. You will use this knowledge when we implement authentication and authorization logic in the next chapter.</p>
+</body>
+</html>

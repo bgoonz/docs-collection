@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations and Queries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations and Queries</h1>
+</header>
+<p>In this section of the tutorial you’ll implement the voting feature! Authenticated users are allowed to submit a vote for a link. The most upvoted links will later be displayed on a separate route!</p>
+<h3 id="preparing-the-link-component">Preparing the Link component</h3>
+<p>Once more, let’s first prepare the app’s components before implementing the actual upvote mutation. There’s several things that the <code>Link</code> component isn’t currently displaying, compared to the real Hackernews site.</p>
+<ul>
+<li>a link should display its number in the list of the current page (<code>1.</code>, <code>2.</code>, …)</li>
+<li>it should display an upvote button and the number of upvotes it received</li>
+<li>it should display who posted the link</li>
+<li>and it should display when it was posted</li>
+</ul>
+<p>Before you’ll modify the <code>Link</code> component, let’s write a function that takes a timestamp and converts it to a string that’s more user friendly, e.g. <code>"3 hours ago"</code>.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>dates.js</code> in the <code>src</code> directory and paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/dates.js&quot;)"><code>const timeDifference = (current, previous) =&gt; {
+  const milliSecondsPerMinute = 60 * 1000
+  const milliSecondsPerHour = milliSecondsPerMinute * 60
+  const milliSecondsPerDay = milliSecondsPerHour * 24
+  const milliSecondsPerMonth = milliSecondsPerDay * 30
+  const milliSecondsPerYear = milliSecondsPerDay * 365
+
+  const elapsed = current - previous
+
+  if (elapsed &lt; milliSecondsPerMinute / 3) {
+    return &#39;just now&#39;
+  }
+
+  if (elapsed &lt; milliSecondsPerMinute) {
+    return &#39;less than 1 min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerHour) {
+    return Math.round(elapsed / milliSecondsPerMinute) + &#39; min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerDay) {
+    return Math.round(elapsed / milliSecondsPerHour) + &#39; h ago&#39;
+  } else if (elapsed &lt; milliSecondsPerMonth) {
+    return Math.round(elapsed / milliSecondsPerDay) + &#39; days ago&#39;
+  } else if (elapsed &lt; milliSecondsPerYear) {
+    return Math.round(elapsed / milliSecondsPerMonth) + &#39; mo ago&#39;
+  } else {
+    return Math.round(elapsed / milliSecondsPerYear) + &#39; years ago&#39;
+  }
+}
+
+export const timeDifferenceForDate = date =&gt; {
+  const now = new Date().getTime()
+  const updated = new Date(date).getTime()
+  return timeDifference(now, updated)
+}</code></pre>
+<p></Instruction></p>
+<p>Now, let’s update the <code>Link</code> component with everything that is has previously been missing!</p>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and update it to look as follows:</p>
+<pre class="js{2-3,5-6,8,12-19,24-30}(path=&quot;.../hackernews-react-urql/src/components/link.js&quot;)"><code>import React from &#39;react&#39;
+import { getToken } from &#39;../token&#39;
+import { timeDifferenceForDate } from &#39;../dates&#39;
+
+const Link = ({ index, link }) =&gt; {
+  const isLoggedIn = !!getToken()
+  
+  const upvote = React.useCallback(() =&gt; {}, [])
+  
+  return (
+    &lt;div className=&quot;flex mt2 items-start&quot;&gt;
+      &lt;div className=&quot;flex items-center&quot;&gt;
+        &lt;span className=&quot;gray&quot;&gt;{index + 1}.&lt;/span&gt;
+        {isLoggedIn &amp;&amp; (
+          &lt;div className=&quot;ml1 gray f11&quot; onClick={upvote}&gt;
+            ▲
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+      &lt;div className=&quot;ml1&quot;&gt;
+        &lt;div&gt;
+          {link.description} ({link.url})
+        &lt;/div&gt;
+        &lt;div className=&quot;f6 lh-copy gray&quot;&gt;
+          {link.votes.length} votes | by{&#39; &#39;}
+          {link.postedBy
+            ? link.postedBy.name
+            : &#39;Unknown&#39;}{&#39; &#39;}
+          {timeDifferenceForDate(link.createdAt)}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Link</code></pre>
+<p></Instruction></p>
+<p>As you can see, we’ve also added a new prop. Each <code>Link</code> element will also render its position inside the list, so you have to now pass it the <code>index</code> prop from the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and update the rendering of the <code>Link</code> components inside its returned elements:</p>
+<pre class="js{6-8}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>// const linksToRender = data.feed.links
+// ...
+
+return (
+  &lt;div&gt;
+    {linksToRender.map((link, index) =&gt; (
+      &lt;Link key={link.id} link={link} index={index} /&gt;
+    ))}
+  &lt;/div&gt;
+)</code></pre>
+<p></Instruction></p>
+<p>Notice that the app won’t run at the moment since the <code>votes</code> are not yet included in the query. You’ll fix that next!</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, update the definition of <code>FEED_QUERY</code> to look as follows:</p>
+<pre class="js{9-18}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const FEED_QUERY = gql`
+  {
+    feed {
+      links {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>All you do here is include information about the user who posted a link as well as information about each link’s votes in the query’s payload. You can now run the app again and the links will be ddisplayed properly.</p>
+<figure>
+<img src="https://imgur.com/tKzj3b5.png" alt="Include info on the user" /><figcaption>Include info on the user</figcaption>
+</figure>
+<blockquote>
+<p><strong>Note</strong>: If you’re not able to fetch the links, restart the server and reload the browser. You could also check if everything is working as expected on <code>GraphQL Playground</code>!</p>
+</blockquote>
+<h3 id="the-upvote-mutation">The Upvote Mutation</h3>
+<p>Let’s now move on and implement the <code>vote</code> mutation!</p>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and add the following import statements and GraphQL mutation at the top:</p>
+<pre class="js{2-3,8}(path=&quot;.../hackernews-react-urql/src/components/link.js&quot;)"><code>import React from &#39;react&#39;
+import gql from &#39;graphql-tag&#39;
+import { useMutation } from &#39;urql&#39;
+
+import { getToken } from &#39;../token&#39;
+import { timeDifferenceForDate } from &#39;../dates
+
+const VOTE_MUTATION = gql`
+  mutation VoteMutation($linkId: ID!) {
+    vote(linkId: $linkId) {
+      link {
+        id
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+// ...</code></pre>
+<p></Instruction></p>
+<p>When you’ve updated the <code>Link</code> component you also added an empty <code>upvote</code> handler. Let’s now add the mutation and populate that handler with the usual logic, like you did back for the <code>Login</code> component in a previous step.</p>
+<p><Instruction></p>
+<p>Still in <code>Link.js</code>, implement the <code>useMutation</code> hook and update the <code>upvote</code> handler:</p>
+<pre class="js{4,6-10}(path=&quot;.../hackernews-react-urql/src/components/link.js&quot;)"><code>const Link = ({ index, link }) =&gt; {
+  // ...
+
+  const [state, executeMutation] = useMutation(VOTE_MUTATION);
+
+  const upvote = React.useCallback(() =&gt; {
+    if (!state.fetching) {
+      executeMutation({ linkId: link.id });
+    }
+  }, [state.fetching, executeMutation, link.id]);
+    
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>This step should feel pretty familiar by now. You’re adding the new mutation inside of your component by adding the <code>useMutation</code> hook. You’re also passing the <code>linkId</code> variable to <code>executeMutation</code>, since it’s required by the <code>VoteMutation</code>’s definition.</p>
+<p>You can now go ahead and test this! Run <code>yarn start</code> in <code>hackernews-react-urql</code>, make sure that you’re logged in, then click the upvote button on a link. You should then see the link’s upvote number update automatically!</p>
+<blockquote>
+<p><strong>Remember</strong>: We haven’t set up any configuration for <code>@urql/exchange-graphcache</code> yet, but since it’s a normalized cache, it knows that the link it receives back from the mutation needs to also be updated on the feed query!</p>
+</blockquote>
+<h3 id="creating-the-search-page">Creating the Search page</h3>
+<p>Next up, you’ll add a search page to your app!</p>
+<p>The search will be available under a new route and allow you to filter all links that have been submitted to your GraphQL API.</p>
+<p><Instruction></p>
+<p>Start by creating a new file called <code>Search.js</code> in <code>src/components</code> and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/search.js&quot;)"><code>import React from &#39;react&#39;
+import { useQuery } from &#39;urql&#39;
+import gql from &#39;graphql-tag&#39;
+import Link from &#39;./Link&#39;
+
+const Search = () =&gt; {
+  const [filter, setFilter] = React.useState(&#39;&#39;)
+
+  const search = React.useCallback(() =&gt; {}, []);
+  const links = []
+  
+  return (
+    &lt;div&gt;
+      &lt;div&gt;
+        Search
+        &lt;input
+          type=&#39;text&#39;
+          onChange={e =&gt; setFilter(e.target.value)}
+        /&gt;
+        &lt;button onClick={search}&gt;search&lt;/button&gt;
+      &lt;/div&gt;
+      {links.map((link, index) =&gt; (
+        &lt;Link key={link.id} link={link} index={index} /&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+export default Search</code></pre>
+<p></Instruction></p>
+<p>Again, this is a pretty standard setup. You’re rendering an <code>input</code> field where the user can type a search string.</p>
+<p>It’s worth noting that this time we’d like to start the search imperatively. Instead of the <code>useQuery</code> hook starting the search immediately while the user is typing, we’d like to only start searching once the user clicks the “search” button.</p>
+<p>For now the <code>search</code> handler and <code>links</code> array are also empty stubs, but we’ll be replacing them in a later step.</p>
+<p><Instruction></p>
+<p>Add a new <code>/search</code> route to the app. Open <code>App.js</code> and update the routes to include the <code>Search</code> component:</p>
+<pre class="js{9,20}(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import { Switch, Route } from &#39;react-router-dom&#39;
+
+import LoadingBoundary from &#39;./LoadingBoundary&#39;
+import Header from &#39;./Header&#39;
+import LinkList from &#39;./LinkList&#39;
+import CreateLink from &#39;./CreateLink&#39;
+import Login from &#39;./Login&#39;
+import Search from &#39;./Search&#39;
+
+const App = () =&gt; (
+  &lt;div className=&quot;center w85&quot;&gt;
+    &lt;Header /&gt;
+    &lt;div className=&quot;ph3 pv1 background-gray&quot;&gt;
+      &lt;LoadingBoundary&gt;
+        &lt;Switch&gt;
+          &lt;Route exact path=&quot;/&quot; component={LinkList} /&gt;
+          &lt;Route exact path=&quot;/create&quot; component={CreateLink} /&gt;
+          &lt;Route exact path=&quot;/login&quot; component={Login} /&gt;
+          &lt;Route exact path=&quot;/search&quot; component={Search} /&gt;
+        &lt;/Switch&gt;
+      &lt;/LoadingBoundary&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>Let’s also add a button to the header so users can comfortably navigate to the search page.</p>
+<p><Instruction></p>
+<p>Open <code>Header.js</code> and put a new <code>Link</code> between <code>new</code> and <code>submit</code>:</p>
+<pre class="js{9-12}(path=&quot;.../hackernews-react-urql/src/components/header.js&quot;)"><code>// ...
+
+&lt;div className=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+  &lt;div className=&quot;flex flex-fixed black&quot;&gt;
+    &lt;div className=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+    &lt;Link to=&quot;/&quot; className=&quot;ml1 no-underline black&quot;&gt;
+      new
+    &lt;/Link&gt;
+    &lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+    &lt;Link to=&quot;/search&quot; className=&quot;ml1 no-underline black&quot;&gt;
+      search
+    &lt;/Link&gt;
+    {isLoggedIn &amp;&amp; (
+      &lt;div className=&quot;flex&quot;&gt;
+        &lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+        &lt;Link to=&quot;/create&quot; className=&quot;ml1 no-underline black&quot;&gt;
+          submit
+        &lt;/Link&gt;
+      &lt;/div&gt;
+    )}
+  &lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>You can now navigate to the search feature using the “search” button in the <code>Header</code>:</p>
+<figure>
+<img src="http://imgur.com/XxPdUvo.png" alt="See the search functionality in the Header component" /><figcaption>See the search functionality in the Header component</figcaption>
+</figure>
+<h3 id="the-search-query">The Search Query</h3>
+<p>Great, let’s now go back to the <code>Search</code> component and implement the actual search!</p>
+<p><Instruction></p>
+<p>Open <code>Search.js</code> and add the following import statements and query definition at the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/search.js&quot;)"><code>import gql from &#39;graphql-tag&#39;
+import { useQuery } from &#39;urql&#39;
+
+const FEED_SEARCH_QUERY = gql`
+  query FeedSearchQuery($filter: String!) {
+    feed(filter: $filter) {
+      links {
+        id
+        url
+        description
+        createdAt
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>This query looks similar to the feed query that’s used in <code>LinkList</code>. However, this time it takes in an argument called <code>filter</code> that will be used to constrain the list of links you want to retrieve.</p>
+<p>Previously you’ve always just passed <code>useQuery</code> a query and some variables. But in the case of the new <code>Search</code> component, the query is meant to run programmatically, when the “search” button is clicked. You can utilise the <code>executeQuery</code> method and the <code>pause</code> argument to achieve this.</p>
+<p><Instruction></p>
+<p>Still in <code>Search.js</code>, add the <code>useQuery</code> hook to the <code>Search</code> component and replace the <code>search</code> handler and empty <code>links</code> array:</p>
+<pre class="js{4-8,10-12,14}(path=&quot;.../hackernews-react-urql/src/components/search.js&quot;)"><code>const Search = () =&gt; {
+  const [filter, setFilter] = React.useState(&#39;&#39;)
+
+  const [result, executeQuery] = useQuery({
+    query: FEED_SEARCH_QUERY,
+    variables: { filter },
+    pause: true,
+  })
+
+  const search = React.useCallback(() =&gt; {
+    executeQuery();
+  }, [executeQuery]);
+  
+  const links = result.data ? result.data.feed.links : [];
+    
+  // ...
+};</code></pre>
+<p></Instruction></p>
+<p>Like in <code>LinkList</code> you’re passing the query and variables arguments to <code>useQuery</code>. But instead of immediately running the query, the <code>pause</code> option is now set to <code>true</code>. This flag will cause <code>useQuery</code> to wait until <code>executeQuery</code> is programmatically called.</p>
+<p>This is a very powerful option as you could also flip <code>pause</code> to <code>false</code> at any time to let the hook start the query automatically. This is essentially one of the use-cases of having <code>executeQuery</code>! You can call it programmatically to ask for new results or use it in combination with <code>pause: true</code> to make it behave like the <code>useMutation</code> hook’s <code>executeMutation</code>.</p>
+<p>Go ahead and test the app by running <code>yarn start</code> in a terminal and navigating to <code>http://localhost:3000/search</code>. Then type a search string into the text field, submit the search, and verify that the links that are being displayed were filtered by your search string.</p>
+</body>
+</html>

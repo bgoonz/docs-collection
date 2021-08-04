@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting Started</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting Started</h1>
+</header>
+<h3 id="backend">Backend</h3>
+<p>Since this is a frontend track, you don’t want to spend too much time setting up the backend. This is why you use <a href="https://www.graph.cool/">Graphcool</a>, a service that provides a production-ready GraphQL API out-of-the-box.</p>
+<h4 id="the-data-model">The Data Model</h4>
+<p>You’ll use the <a href="https://www.graph.cool/docs/reference/cli/overview-kie1quohli/">Graphcool CLI</a> to build (and deploy) your GraphQL API based on the data model that you need for the app.</p>
+<p>Speaking of the data model, here is what the final version looks like written in the <a href="http://graphql.org/learn/schema/">GraphQL Schema Definition Language</a> (SDL):</p>
+<pre class="graphql(nocopy)"><code>type User @model {
+  id: ID! @isUnique     # required system field (read-only)
+  createdAt: DateTime!  # optional system field (read-only)
+  updatedAt: DateTime!  # optional system field (read-only)
+
+  email: String! @isUnique # for authentication
+  password: String!        # for authentication
+
+  name: String!
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)
+}
+
+type Link @model {
+  id: ID! @isUnique     # required system field (read-only)
+  createdAt: DateTime!  # optional system field (read-only)
+  updatedAt: DateTime!  # optional system field (read-only)
+
+  description: String!
+  url: String!
+  postedBy: User! @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)
+}
+
+type Vote @model {
+  id: ID! @isUnique     # required system field (read-only)
+  createdAt: DateTime!  # optional system field (read-only)
+
+  user: User! @relation(name: &quot;UsersVotes&quot;)
+  link: Link! @relation(name: &quot;VotesOnLink&quot;)
+}</code></pre>
+<p>As you can see from the comments, some fields on your model types are read-only. This means they will be managed for you by the Graphcool Framework.</p>
+<p>In general, there are a few things to note about these type definitions:</p>
+<ul>
+<li>Every type annotated with the <code>@model</code>-directive will be <em>mapped</em> to the database and corresponding CRUD-operations are added to the GraphQL API of your Graphcool service.</li>
+<li>The <code>@isUnique</code>-directive means that the annotated field can never have the same value for two different records of that type (also called <em>nodes</em>). Since this is a read-only field, the Graphcool Framework will take care of managing this constraint.</li>
+<li><code>createdAt</code> and <code>updatedAt</code> are special fields that are managed by the Graphcool Framework as well. <code>createdAt</code> will carry the date for when a node of that type was created, <code>updatedAt</code> when it was last updated.</li>
+</ul>
+<h4 id="creating-the-graphql-server">Creating the GraphQL Server</h4>
+<p>For starting out, you’re not going to use the full data model that you saw above. That’s because we want to evolve the schema when it becomes necessary for the features that we implement.</p>
+<p>For now, you’ll just use the <code>Link</code> type to create the backend.</p>
+<p>The first thing you need to do to get your GraphQL server, install the Graphcool CLI with npm.</p>
+<p><Instruction></p>
+<p>Open up a terminal window and type the following:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">npm</span> install -g graphcool-framework</a></code></pre></div>
+<p></Instruction></p>
+<p>To use the Graphcool CLI, you can either use the <code>graphcool-framework</code> command, or the shorter form: <code>gcf</code>.</p>
+<p>Now you can go and create the server. There are two steps involved in this:</p>
+<ol type="1">
+<li>Creating the local file structure that contains all required configuration for your backend. This is done with the <a href="https://www.graph.cool/docs/reference/graphcool-cli/commands-aiteerae6l#graphcool-init"><code>graphcool-framework init</code></a> command.</li>
+<li>Configuring the data model and deploying the server with <a href="https://www.graph.cool/docs/reference/graphcool-cli/commands-aiteerae6l#graphcool-deploy"><code>graphcool-framework deploy</code></a>.</li>
+</ol>
+<p><Instruction></p>
+<p>Type the following command into the terminal:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Create the file structure for the backend in a directory called `server`</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">graphcool-framework</span> init server</a></code></pre></div>
+<p></Instruction></p>
+<p>This will create a new directory called <code>server</code> and place the following files in there:</p>
+<ul>
+<li><code>graphcool.yml</code>: This is the <a href="https://www.graph.cool/docs/reference/service-definition/graphcool.yml-foatho8aip">root configuration</a> file for your Graphcool service. It tells the Graphcool Framework where to find your data model (and other type definitions), specifies the <a href="https://www.graph.cool/docs/reference/auth/authorization/overview-iegoo0heez"><em>permission rules</em></a> and provides information about any integrated <em>serverless <a href="https://www.graph.cool/docs/reference/functions/overview-aiw4aimie9">functions</a></em>.</li>
+<li><code>types.graphql</code>: This specifies the data model for your application, all type definitions are written in GraphQL SDL.</li>
+<li><code>package.json</code>: If you’re integrating any serverless functions that are using dependencies from npm, you need to list those dependencies here. Note that this file is completely independent from the dependencies of your frontend which you’ll create in a bit. Since this tutorial won’t actually use any serverless functions, you can simply ignore it.</li>
+<li><code>src</code>: The <code>src</code> directory is used to for the code of the serverless functions you’re integrating in your Graphcool service. It currently contains the setup for a simple “Hello World”-<a href="https://www.graph.cool/docs/reference/functions/resolvers-su6wu3yoo2">resolver</a> function (which you can delete if you like). Again, you can ignore this directory since we’re not going to use any functions in this tutorial.</li>
+</ul>
+<p>Next you need to make sure that the data model of the GraphQL server is correct, so you need to adjust the type definitions in <code>types.graphql</code>.</p>
+<p><Instruction></p>
+<p>Open <code>types.graphql</code> and replace its current contents with the (not yet complete) definition of the <code>Link</code> type:</p>
+<pre class="graphql(path=&quot;.../hackernews-angular-apollo/server/types.graphql&quot;)"><code>type Link @model {
+  id: ID! @isUnique     # required system field (read-only)
+  createdAt: DateTime!  # optional system field (read-only)
+  updatedAt: DateTime!  # optional system field (read-only)
+
+  description: String!
+  url: String!
+}</code></pre>
+<p></Instruction></p>
+<p>As mentioned above, we’ll start with only a sub-part of the actual data model and evolve our schema and API when necessary. This change is all you need to put your GraphQL server into production.</p>
+<p><Instruction></p>
+<p>Open a terminal and navigate into the <code>server</code> directory. Then deploy the server with the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo/server&quot;)"><code>graphcool-framework deploy</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>When prompted, select any of the <strong>Shared Clusters</strong> deployment options, e.g. <code>shared-eu-west</code>.</p>
+<p>For any other prompt, you can just hit <strong>Enter</strong> to go with the suggested default value.</p>
+<p></Instruction></p>
+<blockquote>
+<p>Note that this command will open up a browser window first and ask you to authenticate on the Graphcool platform (if you haven’t done so before).</p>
+</blockquote>
+<h4 id="populate-the-database-graphql-playgrounds">Populate The Database &amp; GraphQL Playgrounds</h4>
+<p>Before you move on to setup the frontend, go ahead and create some initial data in the project so you’ve got something to see once you start rendering data in the app!</p>
+<p>You’ll do this by using a GraphQL <a href="https://github.com/graphcool/graphql-playground">Playground</a> which is an interactive environment that allows you to send queries and mutations. It’s a great way to explore the capabilities of a GraphQL API.</p>
+<p><Instruction></p>
+<p>Still in the <code>server</code> directory in your terminal, run the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-apollo/server&quot;)"><code>graphcool-framework playground</code></pre>
+<p></Instruction></p>
+<p>The left pane of the Playground is the <em>editor</em> that you can use to write your queries and mutations (and even realtime subscriptions). Once you click the play button in the middle, the response to the request will be displayed in the <em>results</em> pane on the right.</p>
+<p><Instruction></p>
+<p>Copy the following two mutations into the <em>editor</em> pane:</p>
+<pre class="graphql"><code>mutation CreateGraphcoolLink {
+  createLink(
+    description: &quot;The coolest GraphQL backend 😎&quot;,
+    url: &quot;https://graph.cool&quot;) {
+    id
+  }
+}
+
+mutation CreateApolloLink {
+  createLink(
+    description: &quot;The best GraphQL client&quot;,
+    url: &quot;http://dev.apollodata.com/&quot;) {
+    id
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Since you’re adding two mutations to the editor at once, the mutations need to have <em>operation names</em>. In your case, these are <code>CreateGraphcoolLink</code> and <code>CreateApolloLink</code>.</p>
+<p><Instruction></p>
+<p>Click the <em>Play</em>-button in the middle of the two panes and select each mutation from the dropdown exactly once.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/ZBgeq22.png" alt="Clicking the play button" /><figcaption>Clicking the play button</figcaption>
+</figure>
+<p>This creates two new <code>Link</code> records in the database. You can verify that the mutations worked by either viewing the currently stored data in the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> (simply click <em>DATA</em> in the left side-menu) or by sending the following query in the already open Playground:</p>
+<pre class="graphql"><code>{
+  allLinks {
+    id
+    description
+    url
+  }
+}</code></pre>
+<p>If everything went well, the query would return the following data:</p>
+<pre class="graphql(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;allLinks&quot;: [
+      {
+        &quot;id&quot;: &quot;cj4jo6xxat8o901420m0yy60i&quot;,
+        &quot;description&quot;: &quot;The coolest GraphQL backend 😎&quot;,
+        &quot;url&quot;: &quot;https://graph.cool&quot;
+      },
+      {
+        &quot;id&quot;: &quot;cj4jo6z4it8on0142p7q015hc&quot;,
+        &quot;description&quot;: &quot;The best GraphQL client&quot;,
+        &quot;url&quot;: &quot;http://dev.apollodata.com/&quot;
+      }
+    ]
+  }</code></pre>
+<h3 id="frontend">Frontend</h3>
+<h4 id="creating-the-app">Creating the App</h4>
+<p>Next, you are going to create the Angular project! As mentioned in the beginning, you’ll use <code>angular-cli</code> for that.</p>
+<p><Instruction></p>
+<p>If you haven’t already, you need to install <code>angular-cli</code> using npm:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">npm</span> install -g @angular/cli</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, you can use it to bootstrap your Angular application:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">ng</span> new hackernews-angular-apollo</a></code></pre></div>
+<p></Instruction></p>
+<p>This will create a new directory called <code>hackernews-angular-apollo</code> that has all the basic configuration setup.</p>
+<p>Make sure everything works by navigating to the directory and starting the app:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="bu">cd</span> hackernews-angular-apollo</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="ex">npm</span> install <span class="co"># or yarn</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="ex">npm</span> start <span class="co"># or yarn start</span></a></code></pre></div>
+<p>This will open a browser and navigate to <code>http://localhost:4200</code> where the app is running. If everything went well, you’d see the following:</p>
+<figure>
+<img src="http://i.imgur.com/9IUB9Qh.png" alt="Open a browser to localhost:4200" /><figcaption>Open a browser to localhost:4200</figcaption>
+</figure>
+<p><Instruction></p>
+<p>Next, go ahead move <code>graphcool</code> folder created into the <code>hackernews-angular-apollo</code> directory to manage everything in one place.</p>
+<p></Instruction></p>
+<p>Your project structure should now look as follows:</p>
+<pre class="bash(nocopy)(path=&quot;.../hackernews-angular-apollo&quot;)"><code>.
+├── README.md
+├── e2e
+│   ├── app.e2e-spec.ts
+│   ├── app.po.ts
+│   └── tsconfig.e2e.tson
+├── karma.conf.ts
+├── node_modules
+├── package.tson
+├── server
+│   ├── graphcool.yml
+│   ├── package.json
+│   ├── types.graphql
+│   └── src
+│       ├── hello.js
+│       └── hello.graphql
+├── protractor.conf.ts
+├── src
+│   ├── app
+│   │   ├── app.component.css
+│   │   ├── app.component.html
+│   │   ├── app.component.spec.ts
+│   │   ├── app.component.ts
+│   │   └── app.module.ts
+│   ├── assets
+│   ├── environments
+│   │   ├── environment.prod.ts
+│   │   └── environment.ts
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── main.ts
+│   ├── polyfills.ts
+│   ├── styles.css
+│   ├── test.ts
+│   ├── tsconfig.app.tson
+│   ├── tsconfig.spec.tson
+│   └── typings.d.ts
+├── tsconfig.tson
+├── tslint.tson
+└── yarn.lock</code></pre>
+<h4 id="prepare-styling">Prepare Styling</h4>
+<p>This tutorial is about the concepts of GraphQL and how you can use it from within an Angular application, so we want to spend the least time on styling issues. To ease up usage of CSS in this project, you’ll use the <a href="http://tachyons.io/">Tachyons</a> library which provides some CSS classes.</p>
+<p><Instruction></p>
+<p>Open <code>src/index.html</code> and add a second <code>link</code> tag right below the two existing ones that pulls in Tachyons:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/index.html&quot;)"><code>  &lt;link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;favicon.ico&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/tachyons@4.2.1/css/tachyons.min.css&quot;/&gt;</code></pre>
+<p></Instruction></p>
+<p>Since we still want to have a bit more custom styling here and there, we also prepared some styles for you that you need to include in the project.</p>
+<p><Instruction></p>
+<p>Open <code>styles.css</code> and replace its content with the following:</p>
+<pre class="css(path=&quot;.../hackernews-angular-apollo/src/styles.css&quot;)"><code>body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+input {
+  max-width: 500px;
+}
+
+.gray {
+  color: #828282;
+}
+
+.orange {
+  background-color: #ff6600;
+}
+
+.background-gray {
+  background-color: rgb(246,246,239);
+}
+
+.f11 {
+  font-size: 11px;
+}
+
+.w85 {
+  width: 85%;
+}
+
+.button {
+  font-family: monospace;
+  font-size: 10pt;
+  color: black;
+  background-color: buttonface;
+  text-align: center;
+  padding: 2px 6px 3px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonface;
+  cursor: pointer;
+  max-width: 250px;
+}</code></pre>
+<p></Instruction></p>
+<h4 id="installing-apollo">Installing Apollo</h4>
+<p><Instruction></p>
+<p>ApolloClient 2.0 introduced two new features, Links, and Cache. Links are for fetching and manipulating data using custom logic. The Cache API allows us to store and handle data in any way we want.</p>
+<p>To get back all the functionality of Apollo Client (and its Angular bindings), we need to pull several packages:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo&quot;)"><code>npm install apollo-angular apollo-cache-inmemory  apollo-client apollo-angular-link-http graphql graphql-tag --save
+
+# or
+# yarn add apollo-angular apollo-cache-inmemory apollo-client apollo-angular-link-http graphql graphql-tag
+</code></pre>
+<p></Instruction></p>
+<p>Here’s an overview of the packages you just installed:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/apollo-client"><code>apollo-client</code></a> is the Apollo Client library</li>
+<li><a href="https://github.com/apollographql/apollo-angular"><code>apollo-angular</code></a> contains the bindings to use Apollo Client with Angular.</li>
+<li><a href="https://github.com/apollographql/graphql-tag"><code>graphql-tag</code></a> is a GraphQL parser. Every GraphQL operation you hand over to Apollo Client will have to be parsed by the <code>gql</code> function.</li>
+<li><a href="https://github.com/apollographql/apollo-angular/tree/master/packages/apollo-angular-link-http"><code>apollo-angular-link-http</code></a> provides a similar <code>HttpLink</code> to Apollo’s <code>HttpLink</code> with one difference, it uses Angular’s <code>HttpClient</code>.</li>
+<li><a href="https://www.npmjs.com/package/apollo-cache-inmemory"><code>apollo-cache-inmemory</code></a> is a cache implementation that supports all of Apollo Client 1.0’s features without the dependency on <code>Redux</code>.</li>
+<li><a href="https://github.com/graphql/graphql-js"><code>graphql</code></a> contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality as well.</li>
+</ul>
+<p>That’s it; you’re ready to write some code! 🚀</p>
+<h4 id="configuring-the-apolloclient">Configuring the <code>ApolloClient</code></h4>
+<p>Apollo abstracts away all lower-lever networking logic and provides a friendly interface to the GraphQL API. In contrast to working with REST APIs, you don’t have to deal with constructing your HTTP requests anymore - instead, you can just write queries and mutations and send them using the <code>ApolloClient</code>.</p>
+<p>The first thing you have to do when using Apollo is to configure your <code>ApolloClient</code> instance. It needs to know the endpoint of your GraphQL API so it can deal with the network connections.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/apollo.config.ts</code> and add the following contents :</p>
+<pre class="ts{3-7,11-14,18-19,21-24,25-30}(path=&quot;.../hackernews-angular-apollo/src/app/apollo.config.ts&quot;)"><code>import {NgModule} from &#39;@angular/core&#39;;
+import {HttpClientModule} from &#39;@angular/common/http&#39;;
+// 1
+import {Apollo, ApolloModule} from &#39;apollo-angular&#39;;
+import {HttpLink, HttpLinkModule} from &#39;apollo-angular-link-http&#39;;
+import {InMemoryCache} from &#39;apollo-cache-inmemory&#39;;
+
+
+@NgModule({
+  exports: [
+    // 2
+    HttpClientModule,
+    ApolloModule,
+    HttpLinkModule
+  ]
+})
+export class GraphQLModule {
+  // 3
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+
+    // 4
+    const uri = &#39;__SIMPLE_API_ENDPOINT__&#39;;
+    const http = httpLink.create({ uri });
+
+    // 5
+    apollo.create({
+      link: http,
+      cache: new InMemoryCache()
+    });
+  }
+}
+
+</code></pre>
+<p></Instruction></p>
+<p>Let’s try to understand what’s going on in that code snippet:</p>
+<ol type="1">
+<li>You’re importing the required dependencies from the <code>apollo-angular</code>, <code>apollo-angular-link-http</code>, <code>apollo-cache-inmemory</code> packages</li>
+<li>We export the <code>HttpClientModule</code>, <code>ApolloModule</code>, <code>HttpLinkModule</code> to make them “public” when <code>GraphQLModule</code> is imported in another module. In fact, if you don’t export, it stays private, visible only to other component declared in this module. You can find more information in <a href="https://angular.io/guide/ngmodule-faq#what-should-i-export">NgModule FAQs</a></li>
+<li>We inject the <code>Apollo</code> and <code>HttpLink</code> to be able to configure them</li>
+<li>We create a <code>link</code> by providing the <code>URI</code> (i.e. your actual GraphQL endpoint) to the <code>.create</code> method of the <code>HttpLink</code> instance. You’ll replace the placeholder <code>__SIMPLE_API_ENDPOINT__</code> with your actual endpoint in a bit</li>
+<li>Now you instantiate the <code>ApolloClient</code> by passing in the <code>link</code> created and an <code>InMemoryCache</code> cache instance. You can also use <code>new InMemoryCache({ dataIdFromObject: o =&gt; (o as GraphCoolObject).id })</code> and have all your objects in <code>types.ts</code> extend a common interface names <code>GraphCoolObject</code> with an <code>id: string;</code> property to specify how Apollo will identify and de-duplicate the objects returned from the server. The <code>HttpLink</code> is a replacement for <code>createNetworkInterface</code> from Apollo Client 1.0</li>
+</ol>
+<p>Finally, we export the <code>GraphQLModule</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/app.module.ts</code> and import the GraphQLModule in AppModule:</p>
+<pre class="ts{14}(path=&quot;.../hackernews-angular-apollo/src/app/app.module.ts&quot;)"><code>import {BrowserModule} from &#39;@angular/platform-browser&#39;;
+import {NgModule} from &#39;@angular/core&#39;;
+
+import {AppComponent} from &#39;./app.component&#39;;
+import {GraphQLModule} from &#39;./apollo.config&#39;;
+
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    // connection
+    GraphQLModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+</code></pre>
+<p></Instruction></p>
+<p>Next, you need to replace the placeholder for the GraphQL endpoint with your actual endpoint. But where do you get your endpoint from?</p>
+<p>There are two ways for you to get your endpoint. You can either open the <a href="https://console.graph.cool">Graphcool Console</a> and click the <em>Endoints</em>-button in the bottom-left corner. The second option is to use the CLI.</p>
+<p><Instruction></p>
+<p>In the terminal, navigate into the <code>server</code> directory and use the following command to get access to the API endpoints of your Graphcools service:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo/graphcool&quot;)"><code>graphcool-framework info</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Copy the endpoint for the <code>Simple API</code> and paste it into <code>src/app/apollo.config.ts</code> to replace the current placeholder <code>__SIMPLE_API_ENDPOINT__</code>.</p>
+<p></Instruction></p>
+<p>That’s it; you’re all set to start for loading some data into your app! 😎</p>
+</body>
+</html>

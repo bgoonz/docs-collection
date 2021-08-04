@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<h3 id="creating-users">Creating Users</h3>
+<p>So far you’ve been working only with the <code>Link</code> type, but it’s time to include <code>User</code> as well so that the app can show who posted a link and who voted on it.</p>
+<p>You’ll need some registered users for this, so start by implementing the mutation for creating them.</p>
+<p><Instruction></p>
+<p>You already know the process for this, but let’s go through each step again.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">bundle</span> exec rails generate model User name email password_digest</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ex">bundle</span> exec rails db:migrate</a></code></pre></div>
+<p></Instruction></p>
+<p>This generates a <code>user.rb</code> file in <code>app/models</code>.</p>
+<p><Instruction></p>
+<p>Update the user model contents to:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/models/user.rb&quot;)"><code>class User &lt; ApplicationRecord
+  has_secure_password
+
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: true
+end</code></pre>
+<p></Instruction></p>
+<p>Now we have users, which are required to have <code>name</code> and <code>email</code>.</p>
+<p>They also have a <a href="http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password">secure password</a>. The <a href="http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password">has_secure_password</a> requires the <a href="https://rubygems.org/gems/bcrypt">bcrypt</a> gem to encrypt and verify user passwords.</p>
+<p><Instruction></p>
+<p>Add the following line to your <code>Gemfile</code>:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/gemfile&quot;)"><code>gem &#39;bcrypt&#39;, &#39;~&gt; 3.1.13&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then run:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">bundle</span> update</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now, lets create GraphQL type for representing a user:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">bundle</span> exec rails generate graphql:object UserType id:ID! name:String! email:String!</a></code></pre></div>
+<p></Instruction></p>
+<p>Now that we have our user model and its GraphQL type, we need a way to create users. Users will be created by <code>name</code>, <code>email</code> and <code>password</code>.</p>
+<p><Instruction></p>
+<p>Create a type for the authentication provider <a href="http://graphql-ruby.org/type_definitions/input_objects.html">input type</a>:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/types/auth_provider_credentials_input.rb&quot;)"><code>module Types
+  class AuthProviderCredentialsInput &lt; BaseInputObject
+    # the name is usually inferred by class name but can be overwritten
+    graphql_name &#39;AUTH_PROVIDER_CREDENTIALS&#39;
+
+    argument :email, String, required: true
+    argument :password, String, required: true
+  end
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then create a mutation for creating a user:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/mutations/create_user.rb&quot;)"><code>module Mutations
+  class CreateUser &lt; BaseMutation
+    # often we will need input types for specific mutation
+    # in those cases we can define those input types in the mutation class itself
+    class AuthProviderSignupData &lt; Types::BaseInputObject
+      argument :credentials, Types::AuthProviderCredentialsInput, required: false
+    end
+
+    argument :name, String, required: true
+    argument :auth_provider, AuthProviderSignupData, required: false
+
+    type Types::UserType
+
+    def resolve(name: nil, auth_provider: nil)
+      User.create!(
+        name: name,
+        email: auth_provider&amp;.[](:credentials)&amp;.[](:email),
+        password: auth_provider&amp;.[](:credentials)&amp;.[](:password)
+      )
+    end
+  end
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And add it to mutations list:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/types/mutation_type.rb&quot;)"><code>module Types
+  class MutationType &lt; BaseObject
+    field :create_user, mutation: Mutations::CreateUser
+    field :create_link, mutation: Mutations::CreateLink
+  end
+end</code></pre>
+<p></Instruction></p>
+<p>Now, you can create a new user using <a href="https://github.com/graphql/graphiql">GraphiQL</a>:</p>
+<figure>
+<img src="https://i.imgur.com/J3OeMk4.png" alt="Creating a new user" /><figcaption>Creating a new user</figcaption>
+</figure>
+<p><Instruction></p>
+<p>Here is how the unit test for your mutation is going to look like:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/test/graphql/mutations/create_user_test.rb&quot;)"><code>require &#39;test_helper&#39;
+
+class Mutations::CreateUserTest &lt; ActiveSupport::TestCase
+  def perform(args = {})
+    Mutations::CreateUser.new(object: nil, field: nil, context: {}).resolve(args)
+  end
+
+  test &#39;create new user&#39; do
+    user = perform(
+      name: &#39;Test User&#39;,
+      auth_provider: {
+        credentials: {
+          email: &#39;email@example.com&#39;,
+          password: &#39;[omitted]&#39;
+        }
+      }
+    )
+
+    assert user.persisted?
+    assert_equal user.name, &#39;Test User&#39;
+    assert_equal user.email, &#39;email@example.com&#39;
+  end
+end</code></pre>
+<p>You can run the tests with the following command:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="ex">bundle</span> exec rails test</a></code></pre></div>
+<p></Instruction></p>
+<h3 id="sign-in-mutation">Sign in Mutation</h3>
+<p>Now that you have users, how would you sign them in using GraphQL? With a new mutation, of course! Mutations are a way for the client to talk to the server whenever it needs an operation that isn’t just about fetching data.</p>
+<p>For this first time signing users in through GraphQL you’ll be using a simple email/password login method, returning a token that can be used in subsequent requests for authentication.</p>
+<blockquote>
+<p>Note that this is <strong>NOT</strong> supposed to be a production-ready authentication feature, but just a small functioning prototype to show the basic concept. In a real app, you should make sure to encrypt passwords properly before passing them around and use a good token generation method, such as <a href="https://jwt.io/">JWT</a>.</p>
+</blockquote>
+<p>Again, the workflow for adding this mutation will be very similar to the ones we’ve done before:</p>
+<p><Instruction></p>
+<p>Create a resolver for the mutation:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/mutations/sign_in_user.rb&quot;)"><code>module Mutations
+  class SignInUser &lt; BaseMutation
+    null true
+
+    argument :credentials, Types::AuthProviderCredentialsInput, required: false
+
+    field :token, String, null: true
+    field :user, Types::UserType, null: true
+
+    def resolve(credentials: nil)
+      # basic validation
+      return unless credentials
+
+      user = User.find_by email: credentials[:email]
+
+      # ensures we have the correct user
+      return unless user
+      return unless user.authenticate(credentials[:password])
+
+      # use Ruby on Rails - ActiveSupport::MessageEncryptor, to build a token
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
+      token = crypt.encrypt_and_sign(&quot;user-id:#{ user.id }&quot;)
+
+      { user: user, token: token }
+    end
+  end
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add the resolver for the mutation to the mutations list:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/types/mutation_type.rb&quot;)"><code>module Types
+  class MutationType &lt; BaseObject
+    field :create_user, mutation: Mutations::CreateUser
+    field :create_link, mutation: Mutations::CreateLink
+    field :signin_user, mutation: Mutations::SignInUser
+  end
+end</code></pre>
+<p></Instruction></p>
+<p>Now, you can get the token by using <a href="https://github.com/graphql/graphiql">GraphiQL</a>:</p>
+<figure>
+<img src="https://i.imgur.com/7wYZXgw.png" alt="Getting a token in GraphiQL" /><figcaption>Getting a token in GraphiQL</figcaption>
+</figure>
+<p><Instruction></p>
+<p>Here is how the unit test for your mutation is going to look like:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/test/graphql/mutations/sign_in_user_test.rb&quot;)"><code>require &#39;test_helper&#39;
+
+class Mutations::SignInUserTest &lt; ActiveSupport::TestCase
+  def perform(args = {})
+    Mutations::SignInUser.new(object: nil, field: nil, context: { session: {} }).resolve(args)
+  end
+
+  def create_user
+    User.create!(
+      name: &#39;Test User&#39;,
+      email: &#39;email@example.com&#39;,
+      password: &#39;[omitted]&#39;,
+    )
+  end
+
+  test &#39;success&#39; do
+    user = create_user
+
+    result = perform(
+      credentials: {
+        email: user.email,
+        password: user.password
+      }
+    )
+
+    assert result[:token].present?
+    assert_equal result[:user], user
+  end
+
+  test &#39;failure because no credentials&#39; do
+    assert_nil perform
+  end
+
+  test &#39;failure because wrong email&#39; do
+    create_user
+    assert_nil perform(credentials: { email: &#39;wrong&#39; })
+  end
+
+  test &#39;failure because wrong password&#39; do
+    user = create_user
+    assert_nil perform(credentials: { email: user.email, password: &#39;wrong&#39; })
+  end
+end</code></pre>
+<p>You can run the tests with the following command:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">bundle</span> exec rails test</a></code></pre></div>
+<p></Instruction></p>
+<h3 id="authenticating-requests">Authenticating requests</h3>
+<p>With the token that the <code>SignInUser</code> mutation provides, apps can authenticate subsequent requests. There are a couple of ways this can be done. In this tutorial, we are just going to use the built-in <strong>session</strong>, since this doesn’t add any requirements to the client application. The GraphQL server should be able to get the token from the session header on each request, detect what user it relates to, and pass this information down to the mutations.</p>
+<p>The best place to put data shared between mutations is in the context object. You’ll need that object to be different in every request now though, since each one may be from a different user.</p>
+<p><Instruction></p>
+<p>Thankfully, the <a href="https://rubygems.org/gems/graphql">graphql gem</a> allows that you’ll just have to change the auto-generated <code>graphql_controller.rb</code> to accomplish this:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/controllers/graphql_controller.rb&quot;)"><code>class GraphqlController &lt; ApplicationController
+  def execute
+    variables = ensure_hash(params[:variables])
+    query = params[:query]
+    operation_name = params[:operationName]
+    context = {
+      # we need to provide session and current user
+      session: session,
+      current_user: current_user
+    }
+    result = GraphqlTutorialSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    render json: result
+  rescue =&gt; e
+    raise e unless Rails.env.development?
+    handle_error_in_development e
+  end
+
+  private
+
+  # gets current user from token stored in the session
+  def current_user
+    # if we want to change the sign-in strategy, this is the place to do it
+    return unless session[:token]
+
+    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
+    token = crypt.decrypt_and_verify session[:token]
+    user_id = token.gsub(&#39;user-id:&#39;, &#39;&#39;).to_i
+    User.find user_id
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    nil
+  end
+
+  # Handle form data, JSON body, or a blank value
+  def ensure_hash(ambiguous_param)
+    # ...code
+  end
+
+  def handle_error_in_development(e)
+    # ...code
+  end
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>We also need to update our <code>SignInUser</code> resolver, so it also stores the <code>token</code> in <code>session</code>:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/mutations/sign_in_user.rb&quot;)"><code>module Mutations
+  class SignInUser &lt; BaseMutation
+    # ...code
+
+    def resolve(email: nil)
+      # ...code
+
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
+      token = crypt.encrypt_and_sign(&quot;user-id:#{ user.id }&quot;)
+
+      context[:session][:token] = token
+
+      # ...code
+    end
+  end
+end</code></pre>
+<p></Instruction></p>
+<p>This is pretty straightforward since the generated token is so simple. Like was said before, make sure to check out a different token method out there when building a real-world application though, such as <a href="https://jwt.io/">JWT</a>.</p>
+<h3 id="linking-user-to-created-links">Linking User to Created Links</h3>
+<p><Instruction></p>
+<p>Your server can now detect the user that triggered each GraphQL request. This could be useful in many situations. For example, the authenticated user should be exactly the one that posted a link being created with the <code>createLink</code> mutation. You can now store this information for each link.</p>
+<p>First run the following script:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="ex">bundle</span> exec rails generate migration add_user_id_link</a></code></pre></div>
+<p>It generates a <a href="http://edgeguides.rubyonrails.org/active_record_migrations.html">database migration</a>.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Change its contents to:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">class</span> <span class="dt">AddUserIdLink</span> &lt; <span class="dt">ActiveRecord</span>::<span class="dt">Migration</span>[<span class="fl">5.1</span>]</a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="kw">def</span> change</a>
+<a class="sourceLine" id="cb18-3" title="3">    change_table <span class="st">:links</span> <span class="kw">do</span> |t|</a>
+<a class="sourceLine" id="cb18-4" title="4">      t.references <span class="st">:user</span>, <span class="st">foreign_key: </span><span class="dv">true</span></a>
+<a class="sourceLine" id="cb18-5" title="5">    <span class="kw">end</span></a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="kw">end</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="kw">end</span></a></code></pre></div>
+<p>Then run the following script:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1"><span class="ex">bundle</span> exec rails db:migrate</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>This connects the <code>users</code> and <code>links</code> tables in the database. Then you need to update the <code>Link</code> model:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/models/link.rb&quot;)"><code>class Link &lt; ApplicationRecord
+  belongs_to :user
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also you have to update the <code>LinkType</code>:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/types/link_type.rb&quot;)"><code>module Types
+  class LinkType &lt; BaseObject
+    field :id, ID, null: false
+    field :url, String, null: false
+    field :description, String, null: false
+    # `posted_by` is automatically camelcased as `postedBy`
+    # field can be nil, because we added users relationship later
+    # &quot;method&quot; option remaps field to an attribute of Link model
+    field :posted_by, UserType, null: true, method: :user
+  end
+end</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And update <code>CreateLink</code> resolver:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/mutations/create_link.rb&quot;)"><code>module Mutations
+  class CreateLink &lt; BaseMutation
+    argument :description, String, required: true
+    argument :url, String, required: true
+
+    type Types::LinkType
+
+    def resolve(description: nil, url: nil)
+      Link.create!(
+        description: description,
+        url: url,
+        user: context[:current_user]
+      )
+    end
+  end
+end</code></pre>
+<p></Instruction></p>
+<p>Done! Now when you post links, they will be attached to your user, so you have to run <code>SignInUser</code> beforehand.</p>
+<figure>
+<img src="http://i.imgur.com/9ma8r8u.png" alt="Running SignInUser" /><figcaption>Running SignInUser</figcaption>
+</figure>
+</body>
+</html>

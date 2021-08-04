@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Introduction</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction</h1>
+</header>
+<h2 id="motivation">Motivation <a name="motivation"></a></h2>
+<p><a href="https://golang.org/"><strong>Go</strong></a> is a modern general purpose programming language designed by google; best known for it’s simplicity, concurrency and fast performance. It’s being used by big players in the industry like Google, Docker, Lyft and Uber. If you are new to golang you can start from <a href="https://tour.golang.org/">golang tour</a> to learn fundamentals.</p>
+<p><a href="https://gqlgen.com/"><strong>gqlgen</strong></a> is a library for creating GraphQL applications in Go.</p>
+<p>In this tutorial we Implement a Hackernews GraphQL API clone with <em>golang</em> and <em>gqlgen</em> and learn about GraphQL fundamentals along the way. Source code and also this tutorial are available on Github at: https://github.com/howtographql/graphql-golang</p>
+<h2 id="what-is-a-graphql-server">What is a GraphQL server? <a name="what-is-a-graphql-server"></a></h2>
+<p>A GraphQL server is able to receive requests in GraphQL Query Language format and return response in desired form. GraphQL is a query language for API so you can send queries and ask for what you need and exactly get that piece of data. In this sample query we are looking for address, title of the links and name of the user who add it:</p>
+<pre><code>query {
+    links{
+        title
+        address,
+        user{
+            name
+        }
+    }
+}</code></pre>
+<p>response:</p>
+<pre><code>{
+  &quot;data&quot;: {
+    &quot;links&quot;: [
+      {
+        &quot;title&quot;: &quot;our dummy link&quot;,
+        &quot;address&quot;: &quot;https://address.org&quot;,
+        &quot;user&quot;: {
+          &quot;name&quot;: &quot;admin&quot;
+        }
+      }
+    ]
+  }
+}</code></pre>
+<h2 id="schema-driven-development">Schema-Driven Development <a name="schema-driven-development"></a></h2>
+<p>In GraphQL your API starts with a schema that defines all your types, queries and mutations, It helps others to understand your API. So it’s like a contract between server and the client. Whenever you need to add a new capability to a GraphQL API you must redefine schema file and then implement that part in your code. GraphQL has its <a href="http://graphql.org/learn/schema/">Schema Definition Language</a> for this purpose. gqlgen is a Go library for building GraphQL servers and has a nice feature that generates code based on your schema definition.</p>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting Started</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting Started</h1>
+</header>
+<p>Since this is a frontend track, you’re not going to spend any time implementing the backend. Instead, you’ll use the server from the <a href="https://www.howtographql.com/graphql-js/0-introduction">Node tutorial</a>.</p>
+<p>Once you’ve created your React application, you’ll pull in the required code for the backend.</p>
+<blockquote>
+<p><strong>Note</strong>: The final project for this tutorial can be found on <a href="https://github.com/howtographql/react-urql">GitHub</a>. You can always use it as a reference whenever you get lost throughout the course of the following chapters. Also note that each code block is annotated with a filename. These annotations directly link to the corresponding file on GitHub so you can clearly see where to put the code and what the end result will look like.</p>
+</blockquote>
+<blockquote>
+<p><strong>Need some help?</strong> No tutorial is perfect and questions always come up, so <a href="https://spectrum.chat/urql">feel free to reach out to us and the community over on the urql Spectrum</a>, if you have any questions or need some help!</p>
+</blockquote>
+<h3 id="frontend">Frontend</h3>
+<h4 id="creating-the-app">Creating the app</h4>
+<p>First, you are going to create the React project! As mentioned in the beginning, you’ll use <code>create-react-app</code> for that.</p>
+<p><Instruction></p>
+<p>If you haven’t already, you need to install <code>create-react-app</code> using yarn:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">yarn</span> global add create-react-app</a></code></pre></div>
+<p></Instruction></p>
+<blockquote>
+<p><strong>Note</strong>: This tutorial uses <a href="https://yarnpkg.com/">Yarn</a> for dependency management. Find instructions for how you can install it <a href="https://yarnpkg.com/en/docs/install">here</a>. If you prefer using <code>npm</code>, you can just run the equivalent commands.</p>
+</blockquote>
+<p><Instruction></p>
+<p>Next, you can use it to bootstrap your React application:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">create-react-app</span> hackernews-react-urql</a></code></pre></div>
+<p></Instruction></p>
+<p>This will create a new directory called <code>hackernews-react-urql</code> that contains a complete setup for a client-side only React app.</p>
+<p>Make sure everything works by navigating into the directory and starting the app:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">cd</span> hackernews-react-urql</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">yarn</span> start</a></code></pre></div>
+<p>This will open a browser and navigate to <code>http://localhost:3000</code> where the app is running. If everything went well, you’ll see the following:</p>
+<figure>
+<img src="http://imgur.com/Yujwwi6.png" alt="Navigating to localhost:3000" /><figcaption>Navigating to localhost:3000</figcaption>
+</figure>
+<p><Instruction></p>
+<p>To improve the project structure, move on to create two directories, both inside the <code>src</code> folder. The first is called <code>components</code> and will hold all React components. Call the second one <code>styles</code>, that one is for all the CSS files you’ll use.</p>
+<p><code>App.js</code> is a component, so move it into <code>components</code>. <code>App.css</code> and <code>index.css</code> contain styles, so move them into <code>styles</code>. You also need to change the references to these files in both <code>index.js</code> and <code>App.js</code> accordingly:</p>
+<p></Instruction></p>
+<pre class="js{4}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import &#39;./styles/index.css&#39;
+import App from &#39;./components/App&#39;</code></pre>
+<pre class="js{2}(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import logo from &#39;../logo.svg&#39;
+import &#39;../styles/App.css&#39;</code></pre>
+<p>Your project structure should now look as follows:</p>
+<pre class="bash(nocopy)"><code>.
+├── README.md
+├── node_modules
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+├── src
+│   ├── App.test.js
+│   ├── components
+│   │   └── App.js
+│   ├── index.js
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   └── styles
+│       ├── App.css
+│       └── index.css
+└── yarn.lock</code></pre>
+<h4 id="prepare-styling">Prepare styling</h4>
+<p>This tutorial is about the concepts of GraphQL and how you can use it from within a React application, so we want to spend the least time possible on styling. To reduce the usage of CSS in this project, you’ll use the <a href="http://tachyons.io/">Tachyons</a> library which provides a number of CSS classes.</p>
+<p><Instruction></p>
+<p>Open <code>public/index.html</code> and add a third <code>link</code> tag right below the two existing ones that pulls in Tachyons:</p>
+<pre class="html{3}(path=&quot;.../hackernews-react-urql/public/index.html&quot;)"><code>&lt;link rel=&quot;manifest&quot; href=&quot;%PUBLIC_URL%/manifest.json&quot;&gt;
+&lt;link rel=&quot;shortcut icon&quot; href=&quot;%PUBLIC_URL%/favicon.ico&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/tachyons@4.2.1/css/tachyons.min.css&quot;/&gt;</code></pre>
+<p></Instruction></p>
+<p>Since we still want to have a bit more custom styling here and there, we also prepared some styles for you that you need to include in the project.</p>
+<p><Instruction></p>
+<p>Open <code>index.css</code> and replace its content with the following:</p>
+<pre class="css(path=&quot;.../hackernews-react-urql/src/styles/index.css&quot;)"><code>body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+input {
+  max-width: 500px;
+}
+
+.gray {
+  color: #828282;
+}
+
+.orange {
+  background-color: #ff6600;
+}
+
+.background-gray {
+  background-color: rgb(246,246,239);
+}
+
+.f11 {
+  font-size: 11px;
+}
+
+.w85 {
+  width: 85%;
+}
+
+.button {
+  font-family: monospace;
+  font-size: 10pt;
+  color: black;
+  background-color: buttonface;
+  text-align: center;
+  padding: 2px 6px 3px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonface;
+  cursor: pointer;
+  max-width: 250px;
+}</code></pre>
+<p></Instruction></p>
+<h4 id="install-urql">Install urql</h4>
+<p><Instruction></p>
+<p>Next, you need to pull in the functionality of <code>urql</code>. We’ll also be installing an “Exchange” for urql, which we’ll use to set up normalized caching:</p>
+<pre class="bash(path=&quot;.../hackernews-react-urql&quot;)"><code>yarn add urql @urql/exchange-graphcache graphql graphql-tag</code></pre>
+<p></Instruction></p>
+<p>Here’s an overview of the packages you just installed:</p>
+<ul>
+<li><a href="https://github.com/FormidableLabs/urql"><code>urql</code></a> offers the basic <code>urql</code> client which includes React hooks and components, and a basic document cache by default</li>
+<li><a href="https://github.com/FormidableLabs/urql-exchange-graphcache"><code>@urql/exchange-graphcache</code></a> is a replacement for <code>urql</code>’s default cache, which supports full normalized caching, which we’ll set up later</li>
+<li><a href="https://github.com/graphql/graphql-js"><code>graphql</code></a> contains Facebook’s reference implementation of GraphQL - urql and its other packages use some of its functionality as well.</li>
+<li><a href="https://github.com/apollographql/graphql-tag"><code>graphql-tag</code></a> is a utility to write GraphQL query definitions using <a href="https://mxstbr.blog/2016/11/styled-components-magic-explained/">tagged template literals</a>.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: You can find more information on <a href="https://formidable.com/open-source/urql/docs/">how urql’s Exchanges work in its docs</a>. Generally speaking, every GraphQL operation goes through a chain of middleware that can transform, filter, or fulfill them. Every core feature in urql including fetching, deduplication, and caching is implemented using Exchanges.</p>
+</blockquote>
+<p>That’s it, you’re ready to write some code! 🚀</p>
+<h4 id="configure-urqls-client">Configure urql’s Client</h4>
+<p>Instead of dealing with GraphQL requests directly, urql has a central Client. It controls when and how operations are made and deals with all the details of deduplication, caching, and cancellation. In contrast to working with REST APIs, you don’t have to construct any HTTP requests manually or store the results explicitly - instead you can simply write queries and mutations and send them using <code>urql</code>’s React bindings. Internally these bindings just use methods on the Client, for instance <code>executeQuery</code> and <code>executeMutation</code>.</p>
+<p>The first thing you have to do when using urql is configure a <code>Client</code> instance. It needs to know the <em>endpoint</em> of your GraphQL API so it can deal with the network connections.</p>
+<p><Instruction></p>
+<p>Open <code>src/index.js</code> and replace the contents with the following:</p>
+<pre class="js{6,8-11,14-16}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import &#39;./styles/index.css&#39;
+import App from &#39;./components/App&#39;
+
+import { Provider, Client, defaultExchanges } from &#39;urql&#39;
+
+const client = new Client({
+  url: &#39;http://localhost:4000&#39;,
+  exchanges: defaultExchanges
+})
+
+ReactDOM.render(
+  &lt;Provider value={client}&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;,
+  document.getElementById(&#39;root&#39;)
+)</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>Note: The project that was generated by <code>create-react-app</code> uses semicolons and double quotes for strings. All the code that you’re going to add will use <strong>no semicolons</strong> and mostly <strong>single quotes</strong>. You’re also free to delete any existing semicolons and replace double with single quotes 🔥</p>
+</blockquote>
+<p>Let’s try to understand what’s going on in that code snippet:</p>
+<ul>
+<li>You’re importing the <code>Client</code>, <code>Provider</code>, and <code>defaultExchanges</code> from <code>urql</code>.</li>
+<li>Here you’re instantiating a new <code>Client</code> and are passing it your endpoint <code>url</code> and a list of <code>defaultExchanges</code></li>
+<li>Finally you render the root component of your React app. The <code>App</code> is wrapped with the context Provider for the <code>urql</code> Client.</li>
+</ul>
+<p>The <code>defaultExchanges</code> would also be applied automatically, but in the next step you’ll set up the normalized cache!</p>
+<h4 id="set-up-additional-urql-exchanges">Set up additional urql Exchanges</h4>
+<p>By default urql sets up three built-in exchanges, which provide its core functionality. These are all part of the <code>defaultExchanges</code> array:</p>
+<ul>
+<li><code>dedupExchange</code> deduplicates operations. If you’re sending the same queries at the same time, then it will make sure that only one of them is actually sent to your API</li>
+<li><code>cacheExchange</code> caches operation results. This is only a document cache, so it caches results from your GraphQL API by the unique query + variables combination that those results have been requested with.</li>
+<li><code>fetchExchange</code> sends GraphQL requests using <code>fetch</code> and supports cancellation by default.</li>
+</ul>
+<p>As you can see above, by default <code>urql</code> only comes with a simple document cache. This cache is very useful for content-heavy sites, since it treats every query and result as documents that it can simply cache 1:1. For more complex apps you will most likely want to use normalized caching, which makes sure that data updates globally across the app, if it can be shared across queries.</p>
+<p>Let’s set up a normalized cache!</p>
+<p><Instruction></p>
+<p>Modify <code>src/index.js</code> with the following new changes:</p>
+<pre class="js{7,9,13}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import &#39;./styles/index.css&#39;
+import App from &#39;./components/App&#39;
+
+import { Provider, Client, dedupExchange, fetchExchange } from &#39;urql&#39;
+import { cacheExchange } from &#39;@urql/exchange-graphcache&#39;
+
+const cache = cacheExchange({})
+
+const client = new Client({
+  url: &#39;http://localhost:4000&#39;,
+  exchanges: [dedupExchange, cache, fetchExchange],
+})
+
+ReactDOM.render(
+  &lt;Provider value={client}&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;,
+  document.getElementById(&#39;root&#39;)
+)</code></pre>
+<p></Instruction></p>
+<p>Let’s go through the changes we’ve made to <code>index.js</code> in order:</p>
+<ul>
+<li>you’re now importing <code>dedupExchange</code> and <code>fetchExchange</code> from <code>urql</code> and have added <code>cacheExchange</code> from the additional <code>@urql/exchange-graphcache</code> package.</li>
+<li>you’re creating a new normalized cache by calling <code>cacheExchange</code> with a config, which is empty for now.</li>
+<li>lastly, you’ve replaced <code>defaultExchanges</code> on the <code>Client</code> with a new list of exchanges that includes the normalized cache exchange. The list is in a specific order (basically: <code>fetch</code> last and <code>dedup</code> first.)</li>
+</ul>
+<p>That’s it, you’re all set to start for loading some data into your app! 😎</p>
+<h3 id="backend">Backend</h3>
+<h4 id="downloading-the-server-code">Downloading the server code</h4>
+<p>As mentioned above, for the backend in this tutorial you’ll simply use the final project from the <a href="https://www.howtographql.com/graphql-js/0-introduction">Node tutorial</a>.</p>
+<p><Instruction></p>
+<p>In your terminal, navigate to the <code>hackernews-react-urql</code> directory and run the following commands:</p>
+<pre class="bash(path=&quot;.../hackernews-react-urql&quot;)"><code>curl https://codeload.github.com/howtographql/react-urql/tar.gz/master | tar -xz --strip=1 react-urql-master/server</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p><strong>Note</strong>: If you are on Windows, you may want to install <a href="https://git-scm.com/">Git CLI</a> to avoid potential problems with commands such as <code>curl</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: You can find the server’s code <a href="https://github.com/howtographql/react-urql/tree/master/server">on the react-urql example repository</a> in case the command is not working.</p>
+</blockquote>
+<p>You now have a new directory called <code>server</code> inside your project that contains all the code you need for your backend.</p>
+<p>Before we start the server, let’s quickly understand the main components:</p>
+<ul>
+<li><code>prisma</code>: This directory holds all the files that relate to your <a href="https://www.prisma.io">Prisma</a> setup. Prisma Client is used to access the database in your GraphQL resolvers (similar to an ORM).
+<ul>
+<li><code>prisma.yml</code> is the root configuration file for your Prisma project.</li>
+<li><code>datamodel.prisma</code> defines your data model in the GraphQL <a href="https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51">Schema Definition Language</a> (SDL). When using Prisma, the datamodel is used to describe the database schema.</li>
+</ul></li>
+<li><code>src</code>: This directory holds the source files for your GraphQL server.
+<ul>
+<li><code>schema.graphql</code> contains your <strong>application schema</strong>. The application schema defines the GraphQL operations you can send from the frontend. We’ll take a closer look at this file in just a bit.</li>
+<li><code>generated/prisma-client</code> contains the auto-generated Prisma client, a type-safe database access library (similar to an ORM).</li>
+<li><code>resolvers</code> contains the <a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#resolvers-implement-the-api"><em>resolver functions</em></a> for the operations defined in the application schema.</li>
+<li><code>index.js</code> is the entry point for your GraphQL server.</li>
+</ul></li>
+</ul>
+<p>From the mentioned files, only the application schema defined in <code>server/src/schema.graphql</code> is relevant for you as a frontend developer. This file contains the <a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e">GraphQL schema</a> which defines all the operations (queries, mutations and subscriptions) you can send from your frontend app.</p>
+<p>Here is what it looks like:</p>
+<pre class="graphql(path=&quot;.../react-apollo/blob/master/server/src/schema.graphql&quot;)"><code># import Link, Vote, LinkSubscriptionPayload, VoteSubscriptionPayload from &quot;./generated/prisma.graphql&quot;
+
+type Query {
+  feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
+}
+
+type Feed {
+  links: [Link!]!
+  count: Int!
+}
+
+type Mutation {
+  post(url: String!, description: String!): Link!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  vote(linkId: ID!): Vote
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Subscription {
+  newLink: LinkSubscriptionPayload
+  newVote: VoteSubscriptionPayload
+}</code></pre>
+<p>This schema allows for the following operations:</p>
+<ul>
+<li>Queries:
+<ul>
+<li><code>feed</code>: Retrieves all links from the backend, note that this query also allows for filter, sorting and pagination arguments</li>
+</ul></li>
+<li>Mutations:
+<ul>
+<li><code>post</code>: Allows authenticated users to create a new link</li>
+<li><code>signup</code>: Create an account for a new user</li>
+<li><code>login</code>: Login an existing user</li>
+<li><code>vote</code>: Allows authenticated users to vote for an existing link</li>
+</ul></li>
+<li>Subscriptions:
+<ul>
+<li><code>newLink</code>: Receive realtime updates when a new link is created</li>
+<li><code>newVote</code>: Receive realtime updates when a vote was submitted</li>
+</ul></li>
+</ul>
+<p>For example, you can send the following <code>feed</code> query to retrieve the first 10 links from the server:</p>
+<pre class="graphql(nocopy)"><code>{
+  feed(skip: 0, first: 10) {
+    links {
+      description
+      url
+      postedBy {
+        name
+      }
+    }
+  }
+}</code></pre>
+<p>Or the <code>signup</code> mutation to create a new user:</p>
+<pre class="graphql(nocopy)"><code>mutation {
+  signup(
+    name: &quot;Sarah&quot;,
+    email: &quot;sarah@graph.cool&quot;,
+    password: &quot;graphql&quot;
+  ) {
+    token
+    user {
+      id
+    }
+  }
+}</code></pre>
+<h4 id="deploying-the-prisma-database-service">Deploying the Prisma database service</h4>
+<p>There is one thing left to do before you can start your server and begin sending queries and mutations to it. The Prisma project needs to be deployed so the GraphQL server can access it.</p>
+<p>To deploy the service all you need to do is install the server’s dependencies and invoke the <code>prisma deploy</code> command inside the <code>server</code> directory.</p>
+<p><Instruction></p>
+<p>In your terminal, navigate to the <code>server</code> directory and execute the following commands:</p>
+<pre class="sh(path=&quot;.../hackernews-react-urql/server&quot;)"><code>cd server
+yarn install
+yarn prisma deploy</code></pre>
+<p></Instruction></p>
+<p>Note that you can also omit <code>yarn prisma</code> in the above command if you have the <code>prisma</code> CLI installed globally on your machine (which you can do with <code>yarn global add prisma</code>). In that case, you can simply run <code>prisma deploy</code>.</p>
+<p><Instruction></p>
+<p>When prompted where you want to set/deploy your service, select <code>Demo server</code> (it requires login, you could sign in with your GitHub account), then choose a <em>region</em>, e.g. <code>demo-us1</code> or <code>demo-eu1</code>. The Demo server includes a free instance of an AWS Aurora database. (If you have Docker installed, you can also deploy locally.)</p>
+<p></Instruction></p>
+<blockquote>
+<p><strong>Note</strong>: Once the command has finished running, the CLI writes the endpoint for the Prisma API to your prisma.yml. It will look similar to this: https://eu1.prisma.sh/john-doe/hackernews-node/dev.</p>
+</blockquote>
+<h4 id="exploring-the-server">Exploring the server</h4>
+<p>With the proper Prisma endpoint in place, you can now explore the server!</p>
+<p><Instruction></p>
+<p>Navigate into the <code>server</code> directory and run the following commands to start the server:</p>
+<pre class="bash(path=&quot;.../hackernews-react-urql/server&quot;)"><code>yarn start</code></pre>
+<p></Instruction></p>
+<p>The <code>yarn start</code> executes the <code>start</code> script defined in <code>package.json</code>. The script first starts the server (which is then running on <code>http://localhost:4000</code>) and then opens up a <a href="https://github.com/graphcool/graphql-playground">GraphQL Playground</a> for you to explore and work with the API.</p>
+<figure>
+<img src="https://imgur.com/V1hp4ID.png" alt="carrying the authentication token" /><figcaption>carrying the authentication token</figcaption>
+</figure>
+<blockquote>
+<p>A Playground is a “GraphQL IDE”, providing an interactive environment that allows to send queries, mutations and subscriptions to your GraphQL API. It is similar to a tool like <a href="https://www.getpostman.com">Postman</a> which you might know from working with REST APIs, but comes with a lot of additional benefits.</p>
+</blockquote>
+<p>The first thing to note about the Playground is that it has built-in documentation for its GraphQL API. This documentation is generated based on the GraphQL schema and can be opened by clicking the green <strong>SCHEMA</strong>-button on the right edge of the Playground. Consequently, it shows you the same information you saw in the application schema above:</p>
+<figure>
+<img src="https://imgur.com/8xK81qt.png" alt="The GraphQL Playground" /><figcaption>The GraphQL Playground</figcaption>
+</figure>
+<p>The left pane of the Playground is the <em>editor</em> that you can use to write your queries, mutations and subscriptions. Once you click the play button in the middle, your request is sent and the server’s response will be displayed in the <em>results</em> pane on the right.</p>
+<p><Instruction></p>
+<p>Copy the following two mutations into the <em>editor</em> pane - make sure to have the <strong>default</strong> Playground from the <strong>app</strong> project selected in the left side-menu:</p>
+<pre class="graphql"><code>mutation CreatePrismaLink {
+  post(
+    description: &quot;Prisma turns your database into a GraphQL API 😎&quot;,
+    url: &quot;https://www.prismagraphql.com&quot;
+  ) {
+    id
+  }
+}
+
+mutation CreateUrqlLink {
+  post(
+    description: &quot;The best GraphQL client for React&quot;,
+    url: &quot;https://github.com/FormidableLabs/urql&quot;
+  ) {
+    id
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Since you’re adding two mutations to the editor at once, the mutations need to have <em>operation names</em>. In your case, these are <code>CreatePrismaLink</code> and <code>CreateUrqlLink</code>.</p>
+<p><Instruction></p>
+<p>Click the <strong>Play</strong>-button in the middle of the two panes and select each mutation from the dropdown exactly once.</p>
+<p></Instruction></p>
+<figure>
+<img src="https://imgur.com/2GViJwb.png" alt="Clicking the play button to select the mutation" /><figcaption>Clicking the play button to select the mutation</figcaption>
+</figure>
+<p>This creates two new <code>Link</code> records in the database. You can verify that the mutations actually worked by sending the following query in the already open Playground:</p>
+<pre class="graphql"><code>{
+  feed {
+    links {
+      id
+      description
+      url
+    }
+  }
+}</code></pre>
+<blockquote>
+<p><strong>Note</strong>: You can also send the <code>feed</code> query in the <strong>default</strong> Playground in the <strong>app</strong> section.</p>
+</blockquote>
+<p>If everything went well, the query will return the following data (the <code>id</code>s will of course be different in your case since they were generated by Prisma and are globally unique):</p>
+<pre class="json(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;feed&quot;: {
+      &quot;links&quot;: [
+        {
+          &quot;id&quot;: &quot;cjcnfwjeif1rx012483nh6utk&quot;,
+          &quot;description&quot;: &quot;The best GraphQL client&quot;,
+          &quot;url&quot;: &quot;https://github.com/FormidableLabs/urql&quot;
+        },
+        {
+          &quot;id&quot;: &quot;cjcnfznzff1w601247iili50x&quot;,
+          &quot;description&quot;: &quot;Prisma turns your database into a GraphQL API 😎&quot;,
+          &quot;url&quot;: &quot;https://www.prismagraphql.com&quot;
+        }
+      ]
+    }
+  }
+}</code></pre>
+<p>Fantastic, your server works! 👏</p>
+</body>
+</html>

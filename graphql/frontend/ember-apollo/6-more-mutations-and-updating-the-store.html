@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations and Updating the Store</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations and Updating the Store</h1>
+</header>
+<p>The next piece of functionality that you’ll implement is the voting feature! Authenticated users are allowed to submit a vote for a link.</p>
+<h3 id="preparing-the-component">Preparing the Component</h3>
+<p>Once more, the first step to implement this new feature is to make your component ready for the expected functionality.</p>
+<p><Instruction></p>
+<p>Open the template for your <code>link-post</code> component and update it to look as follows:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/components/link-post.hbs&quot;)"><code>&lt;div class=&#39;flex mt2 items-start&#39;&gt;
+  &lt;div class=&#39;flex items-center&#39;&gt;
+    &lt;span class=&#39;gray&#39;&gt;{{add index 1}}.&lt;/span&gt;
+    {{#if userLoggedIn}}
+      &lt;div class=&#39;ml1 gray f11 pointer&#39; {{action &#39;voteForLink&#39; link.votes link.id}}&gt;
+        ▲
+      &lt;/div&gt;
+    {{/if}}
+  &lt;/div&gt;
+  &lt;div class=&#39;ml1&#39;&gt;
+    &lt;div&gt;{{link.description}} ({{link.url}})&lt;/div&gt;
+    &lt;div class=&#39;f6 lh-copy gray&#39;&gt;{{link.votes.length}} votes | by {{if link.postedBy.name link.postedBy.name &#39;Unknown&#39;}} {{moment-from-now link.createdAt}}&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>You’re preparing the <code>link-post</code> component to render the number of votes for each link and the name of the user that posted it. Plus you’ll render the upvote button if a user is currently logged in - that’s what you’re using the <code>userId</code> for. If the <code>Link</code> is not associated with a <code>User</code>, the user’s name will be rendered as <code>Unknown</code>.</p>
+<p>Notice that you’re also using several helpers including <code>moment-from-now</code> that gets passed the <code>createdAt</code> information for each link. The helper will take the timestamp and convert it to a string that’s more user friendly, e.g. <code>"3 hours ago"</code>.</p>
+<p>Go ahead and add the <code>moment-from-now</code> and <code>add</code> helpers next.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>add.js</code> in the <code>app/helpers</code> directory and paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/helpers/add.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+export function add(params) {
+  return params.reduce((a, b) =&gt; Number(a) + Number(b));
+}
+
+export default Ember.Helper.helper(add);</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>In your terminal, add the <code>ember-moment</code> add-on:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember install ember-moment</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, you need to let your <code>link-post</code> component know about your <code>auth</code> service and the user’s currently logged in status:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/components/link-post.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+export default Ember.Component.extend({
+  auth: Ember.inject.service(),
+
+  userLoggedIn: Ember.computed.oneWay(&#39;auth.isLoggedIn&#39;)
+});</code></pre>
+<p></Instruction></p>
+<p>Notice that the app won’t run at the moment since the <code>votes</code> are not yet included in the query. You’ll fix that next!</p>
+<h3 id="updating-the-schema">Updating the Schema</h3>
+<p>For this new feature, you also need to update the schema again since votes on links will be represented with a custom <code>Vote</code> type.</p>
+<p><Instruction></p>
+<p>Open <code>project.graphcool</code> and add the following type:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/project.graphcool&quot;)"><code>type Vote {
+  id: ID! @isUnique
+  user: User! @relation(name: &quot;UsersVotes&quot;)
+  link: Link! @relation(name: &quot;VotesOnLink&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>Each <code>Vote</code> will be associated with the <code>User</code> who created it as well as the <code>Link</code> that it belongs to. You also have to add the other end of the relation.</p>
+<p><Instruction></p>
+<p>Still in <code>project.graphcool</code>, add the following field to the <code>User</code> type:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/project.graphcool&quot;)"><code>votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now add another field to the <code>Link</code> type:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/project.graphcool&quot;)"><code>votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, open up a terminal window and navigate to the directory where <code>project.graphcool</code> is located. Then apply your schema changes by typing the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>graphcool push</code></pre>
+<p></Instruction></p>
+<p>Here is what the Terminal output looks like:</p>
+<pre class="(nocopy)"><code>$ gc push
+ ✔ Your schema was successfully updated. Here are the changes: 
+
+  | (+)  A new type with the name `Vote` is created.
+  |
+  | (+)  The relation `UsersVotes` is created. It connects the type `User` with the type `Vote`.
+  |
+  | (+)  The relation `VotesOnLink` is created. It connects the type `Link` with the type `Vote`.
+
+Your project file project.graphcool was updated. Reload it in your editor if needed.</code></pre>
+<p>Awesome! Now that you updated the schema, you can fix the issue that currently prevents you from properly running the app. It can be fixed by including the information about the links’ votes in the <code>allLinks</code> query.</p>
+<p><Instruction></p>
+<p>Open <code>gql/queries/allLinks.graphql</code> and update the definition of <code>AllLinksQuery</code> to look as follows:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/gql/queries/alllinks.graphql&quot;)"><code>query AllLinksQuery {
+  allLinks {
+    id
+    createdAt
+    url
+    description
+    postedBy {
+      id
+      name
+    }
+    votes {
+      id
+      user {
+        id
+      }
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>All you do here is to also include information about the user who posted a link as well as information about the links’ votes in the query’s payload. You can now run the app again and the links will be properly displayed.</p>
+<p>Time to move on and implement the upvote mutation!</p>
+<h3 id="calling-the-mutation">Calling the Mutation</h3>
+<p><Instruction></p>
+<p>Open the component file for your <code>link-post</code> component and add the following import and actions:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/components/link-post.js&quot;)"><code>import Ember from &#39;ember&#39;;
+import createVote from &#39;hackernews-ember-apollo/gql/mutations/createVote&#39;;
+import allLinks from &#39;hackernews-ember-apollo/gql/queries/allLinks&#39;;
+
+export default Ember.Component.extend({
+  actions: {
+    voteForLink(votes, linkId) {
+      const userId = this.get(&#39;auth&#39;).getUserId();
+      const voterIds = votes.map(vote =&gt; vote.user.id);
+      if (voterIds.includes(userId)) {
+        console.error(`User (${userId}) already voted for this link.`);
+        return;
+      }
+
+      return this.get(&#39;apollo&#39;).mutate(
+        {
+          mutation: createVote,
+          variables: { userId, linkId }
+        },
+        &#39;createVote&#39;
+      ).catch(error =&gt; alert(error));
+    }
+  },
+
+  apollo: Ember.inject.service(),
+
+  auth: Ember.inject.service(),
+
+  userLoggedIn: Ember.computed.oneWay(&#39;auth.isLoggedIn&#39;)
+});</code></pre>
+<p></Instruction></p>
+<p>This step should feel pretty familiar by now. You’re adding the ability to call the <code>createVote</code> mutation to the <code>link-post</code> component.</p>
+<p>Notice that in the first part of the method, you’re checking whether the current user already voted for that link. If that’s the case, you return early from the method and not actually execute the mutation.</p>
+<p><Instruction></p>
+<p>You need to now add the <code>createVote</code> mutation that you imported. Create a new file in <code>app/gql/mutations</code> named <code>createVote</code> and add these contents:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/gql/mutations/createvote.graphql&quot;)"><code>mutation CreateVoteMutation($userId: ID!, $linkId: ID!) {
+  createVote(userId: $userId, linkId: $linkId) {
+    id
+    link {
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+    user {
+      id
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>You can now go and test the implementation! Run <code>yarn start</code> and click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page you’ll see the added votes.</p>
+<p>There still is a flaw in the app though. Since the <code>votes</code> on a <code>link-post</code> don’t get updated right away, a user currently can submit an indefinite number of votes until the page is refreshed. Only then the protection mechanism will apply and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: <em>User (cj42qfzwnugfo01955uasit8l) already voted for this link.</em></p>
+<p>But at least you know that the mutation is working. In the next section, you’ll fix the issue and make sure that the cache gets updated directly after each mutation!</p>
+<h3 id="updating-the-cache">Updating the Cache</h3>
+<p>One cool thing about Apollo is that you can manually control the contents of the cache. This is really handy, especially after a mutation was performed, since this allows you to determine precisely how you want the cache to be updated. Here, you’ll use it to make sure the UI displays the correct number of votes right after the <code>createVote</code> mutation was performed. You can implement this functionality by using Apollo’s <a href="https://dev-blog.apollodata.com/apollo-clients-new-imperative-store-api-6cb69318a1e3">imperative store API</a>.</p>
+<p><Instruction></p>
+<p>Open the component file for your <code>link-post</code> component and update the call to <code>ember-apollo-client</code>s <code>mutate</code> method as follows:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/components/link-post.js&quot;)"><code>return this.get(&#39;apollo&#39;).mutate(
+  {
+    mutation: createVote,
+    variables: { userId, linkId },
+    update: (store, { data: { createVote } }) =&gt; {
+      // 1.
+      const data = store.readQuery({ query: allLinks });
+      
+      // 2.
+      const votedLink = data.allLinks.find(link =&gt; link.id === linkId);
+      votedLink.votes = createVote.link.votes;
+      
+      // 3.
+      store.writeQuery({ query: allLinks, data });
+    }
+  },
+  &#39;createVote&#39;
+).catch(error =&gt; alert(error));</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also be sure to import the <code>allLinks.graphql</code> query that you are using in the update method:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/components/link-post.js&quot;)"><code>import allLinks from &#39;hackernews-ember-apollo/gql/queries/allLinks&#39;;</code></pre>
+<p></Instruction></p>
+<p>The <code>update</code> function that you’re adding as an argument to the mutation call will be called when the server returns the response. It receives the payload of the mutation (<code>data</code>) and the current cache (<code>store</code>) as arguments. You can then use this input to determine a new state of the cache.</p>
+<p>Notice that you’re already <em>destructuring</em> the server response and retrieving the <code>createVote</code> field from it.</p>
+<p>What’s going in the update function?</p>
+<ol type="1">
+<li>You start by reading the current state of the cached data for the <code>allLinks</code> query from the <code>store</code>.</li>
+<li>Now you’re retrieving the link that the user just voted for from that list. You’re also manipulating that link by resetting its <code>votes</code> to the <code>votes</code> that were just returned by the server.</li>
+<li>Finally, you take the modified data and write it back into the store.</li>
+</ol>
+<p>While you’re at it, also implement <code>update</code> for adding new links!</p>
+<p><Instruction></p>
+<p>Open the controller for your <code>create</code> route and update the <code>mutate</code> method like so:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/create.js&quot;)"><code>return this.get(&#39;apollo&#39;)
+  .mutate(
+    {
+      mutation,
+      variables,
+      update: (store, { data: { createLink } }) =&gt; {
+        const data = store.readQuery({ query: allLinks })
+        data.allLinks.splice(0,0,createLink)
+        store.writeQuery({
+          query: allLinks,
+          data
+        })
+      }
+    },
+    &#39;createLink&#39;
+  )
+  .then(() =&gt; {
+    this.set(&#39;description&#39;, &#39;&#39;);
+    this.set(&#39;url&#39;, &#39;&#39;);
+    this.transitionToRoute(&#39;links&#39;);
+  }).catch(error =&gt; alert(error));</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also be sure to import the <code>allLinks.graphql</code> query that you are using in the update method:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/create.js&quot;)"><code>import allLinks from &#39;hackernews-ember-apollo/gql/queries/allLinks&#39;;</code></pre>
+<p></Instruction></p>
+<p>The <code>update</code> function works in a very similar way as before. You first read the current state of the results of the <code>allLinks</code> query. Then you insert the newest link to the top and write the query results back to the store.</p>
+<p>Awesome, now the store also updates with the right information after new links are added. The app is taking shape. 🤓</p>
+</body>
+</html>

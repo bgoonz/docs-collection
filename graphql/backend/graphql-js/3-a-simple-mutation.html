@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>A Simple Mutation</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">A Simple Mutation</h1>
+</header>
+<p>In this section, you’ll learn how to add a mutation to the GraphQL API. This mutation will allow you to <em>post</em> new links to the server.</p>
+<h3 id="extending-the-schema-definition">Extending the schema definition</h3>
+<p>Like before, you need to start by adding the new operation to your GraphQL schema definition.</p>
+<p><Instruction></p>
+<p>In <code>index.js</code>, extend the <code>typeDefs</code> string as follows:</p>
+<pre class="js{7-9}(path=&quot;../hackernews-node/src/index.js&quot;)"><code>const typeDefs = `
+  type Query {
+    info: String!
+    feed: [Link!]!
+  }
+
+  type Mutation {
+    post(url: String!, description: String!): Link!
+  }
+
+  type Link {
+    id: ID!
+    description: String!
+    url: String!
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>At this point, the schema definition has already grown to be quite large. Let’s refactor the app a bit and pull the schema out into its own file!</p>
+<p><Instruction></p>
+<p>Create a new file inside the <code>src</code> directory and call it <code>schema.graphql</code>:</p>
+<pre class="bash(path=&quot;../hackernews-node/src)"><code>touch src/schema.graphql</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, copy the entire schema definition into the new file:</p>
+<pre class="graphql(path=&quot;../hackernews-node/src/schema.graphql)"><code>type Query {
+  info: String!
+  feed: [Link!]!
+}
+
+type Mutation {
+  post(url: String!, description: String!): Link!
+}
+
+type Link {
+  id: ID!
+  description: String!
+  url: String!
+}</code></pre>
+<p></Instruction></p>
+<p>With that new file in place, you can cleanup <code>index.js</code> a bit.</p>
+<p><Instruction></p>
+<p>First, entirely delete the definition of the <code>typeDefs</code> constant - it’s not needed any more because the schema definition now lives in its own file. Then, update the way that the <code>GraphQLServer</code> is instantiated at the bottom of the file:</p>
+<pre class="js{5-8}(path=&quot;../hackernews-node/src/index.js)"><code>const fs = require(&#39;fs&#39;);
+const path = require(&#39;path&#39;);
+
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, &#39;schema.graphql&#39;),
+    &#39;utf8&#39;
+  ),
+  resolvers,
+})</code></pre>
+<p></Instruction></p>
+<p>One convenient thing about the constructor of the <code>GraphQLServer</code> is that <code>typeDefs</code> can be provided either directly as a string (as you previously did) or by referencing a file that contains your schema definition (this is what you’re doing now).</p>
+<h3 id="implementing-the-resolver-function">Implementing the resolver function</h3>
+<p>The next step in the process of adding a new feature to the API is to implement the resolver function for the new field.</p>
+<p><Instruction></p>
+<p>Next, update the <code>resolvers</code> functions to look as follows:</p>
+<pre class="js{7,13-24}(path=&quot;../hackernews-node/src/index.js&quot;)"><code>let links = [{
+  id: &#39;link-0&#39;,
+  url: &#39;www.howtographql.com&#39;,
+  description: &#39;Fullstack tutorial for GraphQL&#39;
+}]
+
+// 1
+const resolvers = {
+  Query: {
+    info: () =&gt; `This is the API of a Hackernews Clone`,
+    feed: () =&gt; links,
+  },
+  Mutation: {
+    // 2
+    post: (parent, args) =&gt; {
+  
+    let idCount = links.length
+
+       const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url,
+      }
+      links.push(link)
+      return link
+    }
+  },
+}</code></pre>
+<p></Instruction></p>
+<p>First off, note that you’re entirely removing the <code>Link</code> resolvers (as explained at the very end of the last section). They are not needed because the GraphQL server infers what they look like.</p>
+<p>Also, here’s what’s going on with the numbered comments:</p>
+<ol type="1">
+<li>You’re adding a new integer variable that simply serves as a very rudimentary way to generate unique IDs for newly created <code>Link</code> elements.</li>
+<li>The implementation of the <code>post</code> resolver first creates a new <code>link</code> object, then adds it to the existing <code>links</code> list and finally returns the new <code>link</code>.</li>
+</ol>
+<p>Now’s a good time to discuss the second argument that’s passed into all resolver functions: <code>args</code>. Any guesses what it’s used for?</p>
+<p>Correct! 💡 It carries the <em>arguments</em> for the operation – in this case the <code>url</code> and <code>description</code> of the <code>Link</code> to be created. We didn’t need it for the <code>feed</code> and <code>info</code> resolvers before, because the corresponding root fields don’t specify any arguments in the schema definition.</p>
+<h3 id="testing-the-mutation">Testing the mutation</h3>
+<p>Go ahead and restart your server so you can test the new API operations. Here is a sample mutation you can send through the GraphQL Playground:</p>
+<pre class="graphql"><code>mutation {
+  post(url: &quot;www.prisma.io&quot;, description: &quot;Prisma replaces traditional ORMs&quot;) {
+    id
+  }
+}</code></pre>
+<p>The server response will look as follows:</p>
+<pre class="json(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;post&quot;: {
+      &quot;id&quot;: &quot;link-1&quot;
+    }
+  }
+}</code></pre>
+<p>With every mutation you send, the <code>idCount</code> will increase and the following IDs for created links will be <code>link-2</code>, <code>link-3</code>, and so forth…</p>
+<p>To verify that your mutation worked, you can send the <code>feed</code> query from before again – it now returns the additional Link that you created with the mutation:</p>
+<figure>
+<img src="https://imgur.com/ZfJQwdB.png" alt="returns the additional Link" /><figcaption>returns the additional Link</figcaption>
+</figure>
+<p>However, once you kill and restart the server, you’ll notice that the previously added links are now gone and you need to add them again. This is because the links are only stored <em>in-memory</em>, in the <code>links</code> array. In the next sections, you will learn how to add a <em>database</em> to the GraphQL server in order to persist the data beyond the runtime of the server.</p>
+<h3 id="exercise">Exercise</h3>
+<p>If you want to practice implementing GraphQL resolvers a bit more, here’s an <em>optional</em> challenge for you. Based on your current implementation, extend the GraphQL API with full CRUD functionality for the <code>Link</code> type. In particular, implement the queries and mutations that have the following definitions:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  # Fetch a single link by its `id`
+  link(id: ID!): Link
+}
+
+type Mutation {
+  # Update a link
+  updateLink(id: ID!, url: String, description: String): Link
+
+  # Delete a link
+  deleteLink(id: ID!): Link
+}</code></pre>
+</body>
+</html>

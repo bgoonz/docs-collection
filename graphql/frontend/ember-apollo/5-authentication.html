@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’ll learn how you can implement authentication functionality with Apollo and Graphcool to provide a login to the user. Hang in there, because this will be a lengthy section. Once it’s all over you will understand how to handle authentication with Apollo and Ember though!</p>
+<h3 id="one-service-to-rule-them-all">One Service To Rule Them All</h3>
+<p><Instruction></p>
+<p>Start off by creating an authentication service to handle the logic and state. You’ll add this, again, by using a generator:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate service auth</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>The <code>userId</code> and <code>authToken</code> will be stored in the user’s <code>localStorage</code> in this app, so add some methods for setting and retrieving that data from <code>localStorage</code> and in your service:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/services/auth.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+// 1.
+const GC_USER_ID = &#39;graphcool-user-id&#39;;
+const GC_AUTH_TOKEN = &#39;graphcool-auth-token&#39;;
+
+export default Ember.Service.extend({
+  init() {
+    this._super(...arguments);
+    // 2.
+    this.getUserId();
+    this.getAuthToken();
+  },
+
+  authToken: null,
+
+  // 3.
+  getUserId() {
+    const userId = localStorage.getItem(GC_USER_ID);
+    this.setUserId(userId);
+    return userId;
+  },
+
+  getAuthToken() {
+    const token = localStorage.getItem(GC_AUTH_TOKEN);
+    this.setAuthToken(token);
+    return token;
+  },
+
+  // 4.
+  removeUserId() {
+    localStorage.removeItem(GC_USER_ID);
+    this.set(&#39;userId&#39;, null);
+  },
+
+  removeAuthToken() {
+    localStorage.removeItem(GC_AUTH_TOKEN);
+    this.set(&#39;authToken&#39;, null);
+  },
+
+  // 5.
+  setUserId(id) {
+    localStorage.setItem(GC_USER_ID, id);
+    this.set(&#39;userId&#39;, id);
+  },
+
+  setAuthToken(token) {
+    localStorage.setItem(GC_AUTH_TOKEN, token);
+    this.set(&#39;authToken&#39;, token);
+  },
+
+  userId: null
+});</code></pre>
+<p></Instruction></p>
+<p>Let’s breeze through what is happening in this piece of code as it’s vital to the application in the long run.</p>
+<ol type="1">
+<li>You are defining two constants, <code>GC_USER_ID</code> and <code>GC_AUTH_TOKEN</code> which hold the key values that <code>localStorage</code> will need.</li>
+<li>Right off the bat in the service initialization, you are executing two methods to get the user’s ID and auth token, if they are set in <code>localStorage</code>.</li>
+<li>You are also defining those two methods <code>getUserId</code> and <code>getAuthToken</code> which query the <code>localStorage</code> for the value and pass it to each method to be set on your service.</li>
+<li>Two methods, <code>removeUserId</code> and <code>removeAuthToken</code>, are created to remove the value from <code>localStorage</code> and reset the local value, on the service, to null.</li>
+<li>Finally, you have the two methods that are setting the value in <code>localStorage</code> and on the service.</li>
+</ol>
+<p>What’s missing from this long block of code is methods to login, signup, and logout. You will add those in a moment, but first let’s talk about how Graphcool handles authentication.</p>
+<h3 id="enabling-email-and-password-authentication-updating-the-schema">Enabling Email-and-Password Authentication &amp; Updating the Schema</h3>
+<p><Instruction></p>
+<p>In the directory where <code>project.graphcool</code> is located, type the following into the terminal:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>graphcool console</code></pre>
+<p></Instruction></p>
+<p>This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.</p>
+<p><Instruction></p>
+<p>Select the <em>Integrations</em>-tab in the left side-menu and then click on the <em>Email-Password-Auth</em>-integration.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://i.imgur.com/25iMZtf.png" alt="The integrations tab" /><figcaption>The integrations tab</figcaption>
+</figure>
+<p>This will open the popup that allows you to enable the Graphcool’s email-based authentication mechanism.</p>
+<p><Instruction></p>
+<p>In the popup, simply click <em>Enable</em>.</p>
+<p></Instruction></p>
+<p>Having the <code>Email-and-Password</code> auth provider enabled adds two new mutations to the project’s API:</p>
+<pre class="graphql(nocopy)"><code># 1. Create new user
+createUser(authProvider: { email: { email, password } }): User
+
+# 2. Login existing user
+signinUser(email: { email, password }): SignInUserPayload
+
+# SignInUserPayload bundles information about the `user` and `token`
+type SignInUserPayload {
+  user: User
+  token: String
+}</code></pre>
+<p>Next, you have to make sure that the changes introduced by the authentication provider are reflected in your local project file. You can use the <code>graphcool pull</code> command to update your local schema file with changes that happened remotely.</p>
+<p><Instruction></p>
+<p>Open a terminal window and navigate to the directory where <code>project.graphcool</code> is located. Then run the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>graphcool pull</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>Note: Before the remote schema gets fetched, you will be asked to confirm that you want to override the current project file. You can confirm by typing <code>y</code>.</p>
+</blockquote>
+<p>This will bump the schema <code>version</code> and update the <code>User</code> type to now also include the <code>email</code> and <code>password</code> fields:</p>
+<pre class="graphql(nocopy)"><code>type User @model {
+  createdAt: DateTime!
+  email: String @isUnique
+  id: ID! @isUnique
+  password: String
+  updatedAt: DateTime!
+}</code></pre>
+<p>Next you need to make one more modification to the schema. Generally, when updating the schema of a Graphcool project, you’ve got two ways of doing so:</p>
+<ol type="1">
+<li>Use the web-based <a href="https://console.graph.cool/">Graphcool Console</a> and change the schema directly</li>
+<li>Use the Graphcool project file and the CLI to update the schema from your local machine</li>
+</ol>
+<p><Instruction></p>
+<p>Open your project file <code>project.graphcool</code> and update the <code>User</code> and <code>Link</code> types as follows:</p>
+<pre class="graphql"><code>type Link @model {
+  createdAt: DateTime!
+  description: String!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  url: String!
+  postedBy: User @relation(name: &quot;UsersLinks&quot;)
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  email: String @isUnique
+  updatedAt: DateTime!
+  name: String!
+  password: String
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>You added two things to the schema:</p>
+<ul>
+<li>A new field on the <code>User</code> type to store the <code>name</code> of the user.</li>
+<li>A new relation between the <code>User</code> and the <code>Link</code> type that represents a one-to-many relationship and expresses that one <code>User</code> can be associated with multiple links. The relation manifests itself in the two fields <code>postedBy</code> and <code>links</code>.</li>
+</ul>
+<p><Instruction></p>
+<p>Save the file and execute the following command in the Terminal:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>graphcool push</code></pre>
+<p></Instruction></p>
+<p>Here is the Terminal output after you execute the command:</p>
+<pre class="bash(nocopy)"><code>$ graphcool push
+ ✔ Your schema was successfully updated. Here are the changes: 
+
+  | (*)  The type `User` is updated.
+  ├── (+)  A new field with the name `name` and type `String!` is created.
+  |
+  | (+)  The relation `UsersLinks` is created. It connects the type `Link` with the type `User`.
+
+Your project file project.graphcool was updated. Reload it in your editor if needed.</code></pre>
+<blockquote>
+<p><strong>Note</strong>: You can also use the <code>graphcool status</code> command after having made changes to the schema to preview the potential changes that would be performed with <code>graphcool push</code>.</p>
+</blockquote>
+<p>Perfect, you’re all set now to actually implement the authentication functionality inside your app.</p>
+<h3 id="authentication-with-graphcool">Authentication with Graphcool</h3>
+<p>Time to quickly add the remaning methods to your <code>auth</code> service that would allow us to login, sign up, and logout.</p>
+<p>First you need to add the <code>signInUserMutation</code> and <code>createUser</code> mutations to your mutations folder.</p>
+<p><Instruction></p>
+<p>Add a new file in the <code>app/gql/mutations</code> directory named <code>signInUser.graphql</code> and add these contents:</p>
+<pre class="graphql"><code>mutation SigninUserMutation($email: String!, $password: String!) {
+  signinUser(email: { email: $email, password: $password }) {
+    token
+    user {
+      id
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also add a <code>createUser.graphql</code> file and add these contents:</p>
+<pre class="graphql"><code>mutation CreateUserMutation($name: String!, $email: String!, $password: String!) {
+  createUser(name: $name, authProvider: { email: { email: $email, password: $password } }) {
+    id
+  }
+  signinUser(email: { email: $email, password: $password }) {
+    token
+    user {
+      id
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now add some more imports to your <code>auth</code> service:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/services/auth.js&quot;)"><code>import RSVP from &#39;rsvp&#39;;
+import signInUserMutation from &#39;hackernews-ember-apollo/gql/mutations/signInUser&#39;;
+import createUser from &#39;hackernews-ember-apollo/gql/mutations/createUser&#39;;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And the remaining methods for login, logout, and sign up:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/services/auth.js&quot;)"><code>apollo: Ember.inject.service(),
+  
+// 1.
+isLoggedIn: Ember.computed(&#39;userId&#39;, function() {
+  return !!this.get(&#39;userId&#39;);
+}),
+
+// 2.
+loginOrSignUp(state, name, email, password) {
+  let variables;
+  return new RSVP.Promise((resolve, reject) =&gt; {
+    if (state) {
+      variables = { email, password };
+      this.get(&#39;apollo&#39;)
+        .mutate({ mutation: signInUserMutation, variables }, &#39;signinUser&#39;)
+        .then(result =&gt; {
+          this.saveUserData(result.user.id, result.token);
+          resolve();
+        })
+        .catch(error =&gt; reject(error));
+    } else {
+      variables = { name, email, password };
+      this.get(&#39;apollo&#39;)
+        .mutate({ mutation: createUser, variables }, &#39;signinUser&#39;)
+        .then(result =&gt; {
+          this.saveUserData(result.user.id, result.token);
+          resolve();
+        })
+        .catch(error =&gt; reject(error));
+    }
+  });
+},
+
+// 3.
+logout() {
+  return new RSVP.Promise(resolve =&gt; {
+    this.removeUserId();
+    this.removeAuthToken();
+    resolve();
+  });
+},
+
+// 4.
+saveUserData(id, token) {
+  this.setUserId(id);
+  this.setAuthToken(token);
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s look through what these new methods are doing:</p>
+<ol type="1">
+<li><code>isLoggedIn</code> is a simple computed property utility you will use in templates regularly.</li>
+<li><code>loginOrSignUp</code> is a method that will, depending on the value of <code>state</code>, either create a new user or sign in an existing user. In both cases the user will end up signed in and their id and token is passed to <code>saveUserData</code>.</li>
+<li><code>logout</code> is simple method that removes the user’s ID and token on the service and <code>localStorage</code>, and resolves a Promise.</li>
+<li>Finally <code>saveUserData</code> executes the methods to set the user ID and token on the service and in <code>localStorage</code>.</li>
+</ol>
+<p>With that, you have a working authentication service and necessary mutations. Next you will create your login route and template and wire it all up to work.</p>
+<h3 id="implementing-your-login-route">Implementing your Login route</h3>
+<p><Instruction></p>
+<p>In your <code>router.js</code> file, add a <code>login</code> route:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/router.js&quot;)"><code>Router.map(function() {
+  this.route(&#39;links&#39;, { path: &#39;/&#39; });
+  this.route(&#39;create&#39;);
+  this.route(&#39;login&#39;);
+});</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, add a controller for your login route. Create a new file, <code>login.js</code> in the <code>app/controllers</code> directory, and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/login.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+export default Ember.Controller.extend({
+  actions: {
+    // 1.
+    changeLoginState() {
+      this.toggleProperty(&#39;loginState&#39;);
+    },
+
+    // 2.
+    loginOrSignUp() {
+      const loginState = this.loginState;
+      const email = this.get(&#39;email&#39;);
+      const name = this.get(&#39;name&#39;);
+      const password = this.get(&#39;password&#39;);
+      return this.get(&#39;auth&#39;)
+        .loginOrSignUp(loginState, name, email, password)
+        .then(() =&gt; {
+          this.transitionToRoute(&#39;/&#39;);
+        })
+        .catch(error =&gt; alert(error));
+    }
+  },
+
+  auth: Ember.inject.service(),
+
+  // 3.
+  loginState: true
+});</code></pre>
+<p></Instruction></p>
+<p>This controller is:</p>
+<ol type="1">
+<li>Defining an action to change the value of <code>loginState</code>.</li>
+<li>Adding an action to handle signing up and logging in.</li>
+<li>Maintaining a state called <code>loginState</code>.</li>
+</ol>
+<p>Now add the template for your login route.</p>
+<p><Instruction></p>
+<p>Add a new file named <code>login.hbs</code> to your <code>app/templates</code> directory and add the following contents:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/login.hbs&quot;)"><code>&lt;div&gt;
+  &lt;h4 class=&#39;mv3&#39;&gt;
+    {{#if loginState}}
+      Login
+    {{else}}
+      Sign Up
+    {{/if}}
+  &lt;/h4&gt;
+  &lt;form {{action &#39;loginOrSignUp&#39; on=&#39;submit&#39;}} class=&#39;flex flex-column&#39;&gt;
+    {{#unless loginState}}
+      {{input type=&#39;text&#39; class=&#39;mb2&#39; placeholder=&#39;Your name&#39; value=name}}
+    {{/unless}}
+    {{input type=&#39;text&#39; class=&#39;mb2&#39; placeholder=&#39;Your email address&#39; value=email}}
+    {{input type=&#39;password&#39; class=&#39;mb2&#39; placeholder=&#39;Choose a safe password&#39; value=password}}
+    &lt;div class=&#39;flex&#39;&gt;
+      {{input type=&#39;submit&#39; class=&#39;mr2&#39; value=(if loginState &#39;login&#39; &#39;create account&#39;)}}
+      &lt;button {{action &#39;changeLoginState&#39;}}&gt;
+        {{#if loginState}}
+          need to create an account?
+        {{else}}
+          already have an account?
+        {{/if}}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>It’s a pretty simple template that brings us full circle with the login/signup functionality.</p>
+<p>Go ahead and test the login functionality. Run <code>yarn start</code> and open <code>http://localhost:4200/login</code>. Then click the <em>need to create an account?</em>-button and provide some user data for the user you’re creating. Finally, click the <em>create Account</em>-button. If all went well, the app navigates back to the root route and your user was created.</p>
+<p>You can verify that the new user is there by checking the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> or sending the <code>allUsers</code> query in a Playground.</p>
+<h3 id="integrate-authentication-with-site-header">Integrate authentication with <code>site-header</code></h3>
+<p>You need to update your <code>site-header</code> component to add a link to the login route, and to show auth status.</p>
+<p><Instruction></p>
+<p>Inside of <code>app/components/site-header.js</code> add the following:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/components/site-header.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+export default Ember.Component.extend({
+  actions: {
+    logout() {
+      this.get(&#39;auth&#39;).logout().then(() =&gt; {
+        this.sendAction(&#39;onLogout&#39;);
+      });
+    }
+  },
+
+  auth: Ember.inject.service(),
+
+  userLoggedIn: Ember.computed.oneWay(&#39;auth.isLoggedIn&#39;)
+});</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also update the template:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/components/site-header.hbs&quot;)"><code>&lt;div class=&#39;flex pa1 justify-between nowrap orange&#39;&gt;
+  &lt;div class=&#39;flex flex-fixed black&#39;&gt;
+    &lt;div class=&#39;fw7 mr1&#39;&gt;Hacker News&lt;/div&gt;
+    {{#link-to &#39;links&#39; class=&#39;ml1 no-underline black&#39;}}new{{/link-to}}
+    {{#if userLoggedIn}}
+      &lt;div class=&#39;flex&#39;&gt;
+        &lt;div class=&#39;ml1&#39;&gt;|&lt;/div&gt;
+        {{#link-to &#39;create&#39; class=&#39;ml1 no-underline black&#39;}}submit{{/link-to}}
+      &lt;/div&gt;
+    {{/if}}
+  &lt;/div&gt;
+  &lt;div class=&#39;flex flex-fixed&#39;&gt;
+    {{#if userLoggedIn}}
+      &lt;div class=&#39;ml1 pointer black&#39; {{action &#39;logout&#39;}}&gt;
+        logout
+      &lt;/div&gt;
+    {{else}}
+      {{#link-to &#39;login&#39; class=&#39;ml1 no-underline black&#39;}}login{{/link-to}}
+    {{/if}}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>You are accessing your <code>auth</code> service so you can use the <code>isLoggedIn</code> helper and <code>logout</code> method. You also added a link to the login route.</p>
+<h3 id="redirecting-user-on-logout">Redirecting user on logout</h3>
+<p>You need to now redirect a user when they click the logout link. For this you will need to add a new add-on and an application level route file.</p>
+<p><Instruction></p>
+<p>In your terminal, add the <code>ember-route-action-helper</code> add-on:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember install ember-route-action-helper</code></pre>
+<p></Instruction></p>
+<p>This add-on allows you to specify a route level action and fire that via the <code>route-action</code> helper.</p>
+<p><Instruction></p>
+<p>Now add a new file, <code>app/routes/application.js</code>, and add the following contents:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/routes/application.js&quot;)"><code>import Ember from &#39;ember&#39;;
+
+export default Ember.Route.extend({
+  actions: {
+    navigateHome() {
+      this.transitionTo(&#39;links&#39;);
+    }
+  }
+});</code></pre>
+<p></Instruction></p>
+<p>This action is defined on the application route so when a user clicks the “logout” button it will be fired no matter where they are in the application.</p>
+<p>The last piece to all of this is that you need to pass in that route-action to your <code>site-header</code> component so it can be called. Earlier you added an action to the <code>site-header</code> component that calls the <code>navigateHome</code> action. This is simply hooking it all up to work now!</p>
+<p><Instruction></p>
+<p>In <code>app/templates/application.hbs</code> change your <code>site-header</code> component to recieve the following:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/application.hbs&quot;)"><code>&lt;div class=&#39;center w85&#39;&gt;
+  {{site-header onLogout=(route-action &#39;navigateHome&#39;)}}
+  &lt;div class=&#39;ph3 pv1 background-gray&#39;&gt;
+    {{outlet}}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>Now if you run the app, with <code>yarn start</code>, login, navigate to <code>/create</code>, then click the logout link in the header, you should be redirected back to the home page!</p>
+<h3 id="updating-the-createlink-mutation">Updating the <code>createLink</code>-mutation</h3>
+<p>I promise you are nearly done with authentication; only this section and one more!</p>
+<p>Since you’re now able to authenticate users and also added a new relation between the <code>Link</code> and <code>User</code> type, you can also make sure that every new link that gets created in the app can store information about the user that posted it. That’s what the <code>postedBy</code> field on <code>Link</code> will be used for.</p>
+<p><Instruction></p>
+<p>Open <code>createLink.graphql</code> and update the definition as follows:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/app/gql/mutations/createlink.graphql&quot;)"><code>mutation CreateLinkMutation($description: String!, $url: String!, $postedById: ID!) {
+  createLink(
+    description: $description,
+    url: $url,
+    postedById: $postedById
+  ) {
+    id
+    createdAt
+    url
+    description
+    postedBy {
+      id
+      name
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>There are two major changes. You first added another argument to the mutation that represents the <code>id</code> of the user that is posting the link. Secondly, you also include the <code>postedBy</code> information in the <em>payload</em> of the mutation.</p>
+<p>Now you need to make sure that the <code>id</code> of the posting user is included when you’re calling the mutation in <code>createLink</code>.</p>
+<p><Instruction></p>
+<p>In the <code>create</code> controller, update the controller like so:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/create.js&quot;)"><code>import Ember from &#39;ember&#39;;
+import mutation from &#39;hackernews-ember-apollo/gql/mutations/createLink&#39;;
+
+export default Ember.Controller.extend({
+  actions: {
+    createLink() {
+      const postedById = this.get(&#39;auth&#39;).getUserId();
+      if (!postedById) {
+        console.error(&#39;No user logged in&#39;);
+        return;
+      }
+      const description = this.get(&#39;description&#39;);
+      const url = this.get(&#39;url&#39;);
+      let variables = { description, url, postedById };
+
+      return this.get(&#39;apollo&#39;)
+        .mutate(
+          {
+            mutation,
+            variables
+          },
+          &#39;createLink&#39;
+        )
+        .then(() =&gt; {
+          this.set(&#39;description&#39;, &#39;&#39;);
+          this.set(&#39;url&#39;, &#39;&#39;);
+          this.transitionToRoute(&#39;links&#39;);
+        }).catch(error =&gt; alert(error));
+    }
+  },
+
+  apollo: Ember.inject.service(),
+
+  auth: Ember.inject.service()
+});</code></pre>
+<p></Instruction></p>
+<p>Perfect! Now, before you send the mutation you are gathering the user’s ID and setting that into the variables to be sent!</p>
+<h3 id="configuring-apollo-with-the-auth-token">Configuring Apollo with the Auth Token</h3>
+<p>Now that users are able to login and obtain a token that authenticates them against the Graphcool backend, you actually need to make sure that the token gets attached to all requests that are sent to the API.</p>
+<p>Since all of the API requests are actually created and sent by the <code>ApolloClient</code> in your app, you need to make sure it knows about the user’s token. Luckily, Apollo provides a nice way for authenticating all request by using middleware.</p>
+<p>You need to override the default <code>ApolloService</code> that <code>ember-apollo-client</code> is exposing so you can add your own middleware.</p>
+<p><Instruction></p>
+<p>Within your command line, add an apollo service:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate service apollo</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add the following imports to the top of your new service:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/services/apollo.js&quot;)"><code>import ApolloService from &#39;ember-apollo-client/services/apollo&#39;;
+import middlewares from &#39;ember-apollo-client/utils/middlewares&#39;;</code></pre>
+<p></Instruction></p>
+<p>Here you are importing the service that <code>ember-apollo-client</code> uses, and a utility that you will use to add your authorization middleware.</p>
+<p><Instruction></p>
+<p>Within the <code>apollo</code> service file you created, add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/services/apollo.js&quot;)"><code>// 1.
+export default ApolloService.extend({
+  // 2.
+  middlewares: middlewares(&#39;authorize&#39;),
+
+  auth: Ember.inject.service(),
+
+  // 3.
+  authorize(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};
+    }
+    const token = this.get(&#39;auth&#39;).getAuthToken();
+    req.options.headers.authorization = token ? `Bearer ${token}` : null;
+    next();
+  }
+});</code></pre>
+<p></Instruction></p>
+<p>Let’s walk through this code:</p>
+<ol type="1">
+<li>You are not extending the typical Ember service, but are instead extending that <code>ApolloService</code> you imported.</li>
+<li>You are using that <code>middlewares</code> utility you imported to add an new middleware</li>
+<li>That new middleware checks that there are no headers. If there are none, then the user’s <code>authToken</code> is retrieved, and attached to the authorization header</li>
+</ol>
+<p>That’s it - now all your API requests will be authenticated if a <code>token</code> is available.</p>
+<blockquote>
+<p>Note: In a real application you would now configure the <a href="https://www.graph.cool/docs/reference/auth/authorization-iegoo0heez/">authorization rules</a> (permissions) of your project to define what kind of operations authenticated and non-authenticated users should be allowed to perform.</p>
+</blockquote>
+<p>At this point you should have a working login route to authenticate/signup with, and a working <code>site-header</code> component that updates based on the user’s login status. You should also have a link creation process that attaches the user ID to that created link.</p>
+</body>
+</html>

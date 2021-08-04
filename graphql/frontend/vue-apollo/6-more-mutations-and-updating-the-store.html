@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations and Updating the Store</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations and Updating the Store</h1>
+</header>
+<p>The next piece of functionality that you’ll implement is the voting feature! Authenticated users are allowed to submit a vote for a link. The most upvoted links will later be displayed on a separate route!</p>
+<h3 id="preparing-the-vuejs-components">Preparing the VueJS Components</h3>
+<p>Once more, the first step to implement this new feature is to prepare your VueJS components for the new functionality.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkItem.vue</code> and update it to look like the following:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>&lt;template&gt;
+  &lt;div class=&quot;flex mt2 items-start&quot;&gt;
+    &lt;div class=&quot;flex items-center&quot;&gt;
+      &lt;span class=&quot;gray&quot;&gt;{{linkNumber}}.&lt;/span&gt;
+      &lt;div v-if=&quot;userId&quot; class=&quot;ml1 gray f11 upvote&quot; @click=&quot;voteForLink()&quot;&gt;▲&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;ml1&quot;&gt;
+      &lt;a :href=&quot;link.url&quot; class=&quot;link&quot;&gt;{{link.description}} ({{link.url}})&lt;/a&gt;
+      &lt;div class=&quot;f6 lh-copy gray&quot;&gt;
+        {{link.votes.length}} votes | by {{link.postedBy ? link.postedBy.name : &#39;Unknown&#39;}} {{timeDifferenceForDate(link.createdAt)}}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    name: &#39;LinkItem&#39;,
+    computed: {
+      userId () {
+        return this.$root.$data.userId
+      },
+      linkNumber () {
+        if (this.$route.path.includes(&#39;new&#39;)) {
+          return (this.pageNumber - 1) * this.linksPerPage + (this.index + 1)
+        } else {
+          return this.index + 1
+        }
+      }
+    },
+    props: [&#39;link&#39;, &#39;index&#39;],
+    methods: {
+      timeDifferenceForDate
+    }
+  }
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+  .upvote {
+    cursor: pointer;
+  }
+
+  .link {
+    text-decoration: none;
+    color: black;
+  }
+&lt;/style&gt;</code></pre>
+<p></Instruction></p>
+<p>You’re already preparing the <code>LinkItem</code> component to render the number of votes for each link and the name of the user that posted it. Plus you’ll render the upvote button if a user is currently logged in - that’s what you’re using the <code>userId</code> for. If the <code>Link</code> is not associated with a <code>User</code>, the user’s name will be rendered as <code>Unknown</code>.</p>
+<p>Notice that you’re also using a function called <code>timeDifferenceForDate</code> that gets passed the <code>createdAt</code> information for each link. The function will take the timestamp and convert it to a string that’s more user friendly, e.g. <code>"3 hours ago"</code>.</p>
+<p>Go ahead and implement the <code>timeDifferenceForDate</code> function next so you can import and use it in the <code>LinkItem</code> component.</p>
+<p><Instruction></p>
+<p>Create a new directory called <code>utils</code> in the <code>/src</code> directory and create a an <code>index.js</code> file within this directory with the following content:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/utils/index.js&quot;)"><code>function timeDifference (current, previous) {
+  const milliSecondsPerMinute = 60 * 1000
+  const milliSecondsPerHour = milliSecondsPerMinute * 60
+  const milliSecondsPerDay = milliSecondsPerHour * 24
+  const milliSecondsPerMonth = milliSecondsPerDay * 30
+  const milliSecondsPerYear = milliSecondsPerDay * 365
+
+  const elapsed = current - previous
+
+  if (elapsed &lt; milliSecondsPerMinute / 3) {
+    return &#39;just now&#39;
+  }
+
+  if (elapsed &lt; milliSecondsPerMinute) {
+    return &#39;less than 1 min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerHour) {
+    return Math.round(elapsed / milliSecondsPerMinute) + &#39; min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerDay) {
+    return Math.round(elapsed / milliSecondsPerHour) + &#39; h ago&#39;
+  } else if (elapsed &lt; milliSecondsPerMonth) {
+    return Math.round(elapsed / milliSecondsPerDay) + &#39; days ago&#39;
+  } else if (elapsed &lt; milliSecondsPerYear) {
+    return Math.round(elapsed / milliSecondsPerMonth) + &#39; mo ago&#39;
+  } else {
+    return Math.round(elapsed / milliSecondsPerYear) + &#39; years ago&#39;
+  }
+}
+
+export function timeDifferenceForDate (date) {
+  const now = new Date().getTime()
+  const updated = new Date(date).getTime()
+  return timeDifference(now, updated)
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Back in <code>src/components/LinkItem.vue</code>, import <code>timeDifferenceForDate</code> near the top of the <code>script</code> block:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>import { timeDifferenceForDate } from &#39;../utils&#39;</code></pre>
+<p></Instruction></p>
+<p>Finally, each <code>Link</code> element will also render its position inside the list, so you have to pass down an <code>index</code> from the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkList.vue</code> and update the rendering of the <code>LinkItem</code> components to also include the link’s position:</p>
+<pre class="html(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>&lt;link-item
+  v-for=&quot;(link, index) in allLinks&quot;
+  :key=&quot;link.id&quot;
+  :link=&quot;link&quot;
+  :index=&quot;index&quot;&gt;
+&lt;/link-item&gt;</code></pre>
+<p></Instruction></p>
+<p>Notice that the app won’t run at the moment since the <code>votes</code> are not yet included in the query. You’ll fix that next!</p>
+<h3 id="updating-the-schema">Updating the Schema</h3>
+<p>For this new feature, you also need to update the schema again since votes on links will be represented with a custom <code>Vote</code> type.</p>
+<p><Instruction></p>
+<p>Open <code>project.graphcool</code> and add the following type:</p>
+<pre class="graphql"><code>type Vote @model{
+  id: ID! @isUnique
+  user: User! @relation(name: &quot;UsersVotes&quot;)
+  link: Link! @relation(name: &quot;VotesOnLink&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>Each <code>Vote</code> will be associated with the <code>User</code> who created it as well as the <code>Link</code> that it belongs to. You also have to add the other end of the relation.</p>
+<p><Instruction></p>
+<p>Still in <code>project.graphcool</code>, add the following field to the <code>User</code> type:</p>
+<pre class="graphql"><code>votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now add another field to the <code>Link</code> type:</p>
+<pre class="graphql"><code>votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, open up a terminal window and navigate to the directory where <code>project.graphcool</code> is located. Then apply your schema changes by typing the following command:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">graphcool</span> push</a></code></pre></div>
+<p></Instruction></p>
+<p>Here is what the Terminal output looks like:</p>
+<pre class="(nocopy)"><code>$ gc push
+ ✔ Your schema was successfully updated. Here are the changes:
+
+  | (+)  A new type with the name `Vote` is created.
+  |
+  | (+)  The relation `UsersVotes` is created. It connects the type `User` with the type `Vote`.
+  |
+  | (+)  The relation `VotesOnLink` is created. It connects the type `Link` with the type `Vote`.
+
+Your project file project.graphcool was updated. Reload it in your editor if needed.</code></pre>
+<p>Awesome! Now that you updated the schema, you can fix the issue that currently prevents you from properly running the app. It can be fixed by including the information about the links’ votes in the <code>allLinks</code> query that’s defined in <code>/src/constants/graphql.js</code>.</p>
+<p><Instruction></p>
+<p>Open <code>/src/constants/graphql.js</code> and update the definition of <code>ALL_LINKS_QUERY</code> to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const ALL_LINKS_QUERY = gql`
+  query AllLinksQuery {
+    allLinks {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>All you do here is add information about the user who posted a link as well as information about the links’ votes in the query’s payload. You can now run the app again and the links will be properly displayed.</p>
+<figure>
+<img src="http://imgur.com/j50X5Dm.png" alt="Votes in the query payload" /><figcaption>Votes in the query payload</figcaption>
+</figure>
+<p>Let’s now move on and implement the upvote mutation!</p>
+<h3 id="calling-the-mutation">Calling the Mutation</h3>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add the following mutation definition to the file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const CREATE_VOTE_MUTATION = gql`
+  mutation CreateVoteMutation($userId: ID!, $linkId: ID!) {
+    createVote(userId: $userId, linkId: $linkId) {
+      id
+      link {
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>This step should feel pretty familiar by now. You’re adding the ability to call the <code>createVoteMutation</code> to the <code>src/constants/graphql.js</code> file and naming it <code>CREATE_VOTE_MUTATION</code>.</p>
+<p><Instruction></p>
+<p>As with the times before, you also need to import this constant near the top of the <code>script</code> block in <code>src/components/LinkItem.vue</code>. You need to import <code>GC_USER_ID</code> as well:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>import { CREATE_VOTE_MUTATION } from &#39;../constants/graphql&#39;
+import { GC_USER_ID } from &#39;../constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, you need to implement <code>voteForLink</code> as follows in <code>src/components/LinkItem.vue</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>voteForLink () {
+  const userId = localStorage.getItem(GC_USER_ID)
+  const voterIds = this.link.votes.map(vote =&gt; vote.user.id)
+  if (voterIds.includes(userId)) {
+    alert(`User (${userId}) already voted for this link.`)
+    return
+  }
+  const linkId = this.link.id
+  this.$apollo.mutate({
+    mutation: CREATE_VOTE_MUTATION,
+    variables: {
+      userId,
+      linkId
+    }
+  })
+}</code></pre>
+<p></Instruction></p>
+<p>Notice that in the first part of the method, you’re checking whether the current user already voted for that link. If that’s the case, you return early from the method and do not actually execute the mutation.</p>
+<p>You can now go ahead and test the implementation! Click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page you’ll see the added votes.</p>
+<p>There is still a flaw in the app. Since the <code>votes</code> on a <code>Link</code> don’t get updated right away, a <code>User</code> currently can submit an indefinite number of votes until the page is refreshed. Only then will the protection mechanism be applied and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: <em>User (cj42qfzwnugfo01955uasit8l) already voted for this link.</em></p>
+<p>But at least you know that the mutation is working. In the next section, you’ll fix the issue and make sure that the cache gets updated directly after each mutation!</p>
+<h3 id="updating-the-cache">Updating the Cache</h3>
+<p>One cool thing about Apollo is that you can manually control the contents of the cache. This is really handy, especially after a mutation was performed, since this allows you to determine precisely how you want the cache to be updated. Here, you’ll use it to make sure the UI displays the correct number of votes right after the <code>createVote</code> mutation is performed.</p>
+<p>You can implement this functionality by using Apollo’s <a href="https://dev-blog.apollodata.com/apollo-clients-new-imperative-store-api-6cb69318a1e3">imperative store API</a>.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/LinkItem.vue</code> and update the call to <code>CREATE_VOTE_MUTATION</code> inside the <code>voteForLink</code> method as follows:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/linkitem.vue&quot;)"><code>this.$apollo.mutate({
+  mutation: CREATE_VOTE_MUTATION,
+  variables: {
+    userId,
+    linkId
+  },
+  update: (store, { data: { createVote } }) =&gt; {
+    this.updateStoreAfterVote(store, createVote, linkId)
+  }
+})</code></pre>
+<p></Instruction></p>
+<p>The <code>update</code> function that you’re adding as an argument to the mutation will be called when the server returns the response. It receives the payload of the mutation (<code>data</code>) and the current cache (<code>store</code>) as arguments. You can then use this input to determine a new state for the cache.</p>
+<p>Notice that you’re already <em>destructuring</em> the server response and retrieving the <code>createVote</code> field from it.</p>
+<p>All right, so now you know what this <code>update</code> function is, next you will need to implement the <code>updateStoreAfterVote</code> method.</p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkItem.vue</code>, add the following method:</p>
+<pre class="js{2-5,7-9,11-12}(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>updateStoreAfterVote (store, createVote, linkId) {
+  // 1
+  const data = store.readQuery({
+    query: ALL_LINKS_QUERY
+  })
+
+  // 2
+  const votedLink = data.allLinks.find(link =&gt; link.id === linkId)
+  votedLink.votes = createVote.link.votes
+
+  // 3
+  store.writeQuery({ query: ALL_LINKS_QUERY, data })
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/components/LinkItem.vue</code>, you now need to import <code>ALL_LINKS_QUERY</code>:</p>
+<pre class="js{2-9,5-7,9-10}(path=&quot;.../hackernews-vue-apollo/src/components/linklist.vue&quot;)"><code>import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from &#39;../constants/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>You start by reading the current state of the cached data for the <code>ALL_LINKS_QUERY</code> from the <code>store</code>.</li>
+<li>Now you’re retrieving the link that the user just voted for from that list. You’re also manipulating that link by resetting its <code>votes</code> to the <code>votes</code> that were just returned by the server.</li>
+<li>Finally, you take the modified data and write it back into the store.</li>
+</ol>
+<p>That’s it! The <code>update</code> method will now be executed and ensure that the store gets updated properly after a mutation is performed. The store update will trigger a re-render of the component and thus update the UI with the correct information!</p>
+<p>Note that we already implemented this same “optimistic UI updating” within the <code>CreateLink</code> component in an earlier chapter. The app is rounding into shape! 🤓</p>
+</body>
+</html>

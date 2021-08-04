@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mutations: Creating Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mutations: Creating Links</h1>
+</header>
+<p>In this section, you’ll learn how you can send mutations with Apollo. It’s not that different from creati queries and follows similar steps that were mentioned before with queries:</p>
+<ol type="1">
+<li>write the mutation as a ts constant using the <code>gql</code> parser function</li>
+<li>use <code>Apollo</code> service to call the mutation through the <code>mutate</code> method</li>
+</ol>
+<h3 id="preparing-the-angular-components">Preparing the Angular components</h3>
+<p>Like before, let’s start by writing the Angular component where users will be able to add new links.</p>
+<p><Instruction> In the root directory, go ahead and run <code>ng generate component create-link</code> and this create <code>create-link.component.ts</code> , <code>create-link.component.spec.ts</code>, <code>create-link.component.html</code>, <code>create-link.component.css</code> in <code>src/app/create-link</code> folder and add the following code in <code>create-link.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.ts&quot;)"><code>import {Component, OnInit} from &#39;@angular/core&#39;;
+
+@Component({
+  selector: &#39;hn-create-link&#39;,
+  templateUrl: &#39;./create-link.component.html&#39;,
+  styleUrls: [&#39;./create-link.component.css&#39;]
+})
+export class CreateLinkComponent implements OnInit {
+  description: string = &#39;&#39;;
+  url: string = &#39;&#39;;
+
+  constructor(public apollo: Apollo) {
+  }
+
+  ngOnInit() {
+  }
+
+  createLink() {
+    // ... you&#39;ll implement this in a bit
+  }
+}
+</code></pre>
+<p></Instruction></p>
+<p><Instruction> Then, add the following code in <code>create-link.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.html&quot;)"><code>
+&lt;div class=&#39;flex flex-column mt3&#39;&gt;
+  &lt;input
+    class=&#39;mb2&#39;
+    [(ngModel)]=&quot;description&quot;
+    type=&#39;text&#39;
+    placeholder=&#39;A description for the link&#39;
+  /&gt;
+  &lt;input
+    class=&#39;mb2&#39;
+    [(ngModel)]=&quot;url&quot;
+    type=&#39;text&#39;
+    placeholder=&#39;The URL for the link&#39;
+  /&gt;
+&lt;/div&gt;
+&lt;button
+  (click)=&quot;createLink()&quot;&gt;
+  Submit
+&lt;/button&gt;
+</code></pre>
+<p>Note: <code>[(ngModel)]</code> is the Angular syntax to bind the <code>description</code> and <code>URL</code> property to their textbox. Data flows in both directions: from the property to the textbox, and from the textbox back to the property. <code>NgModel</code> isn’t available by default. It belongs to the optional <code>FormsModule</code>. You must import it in <code>src/app/app.module.ts</code> to be able to use.</p>
+<p></Instruction></p>
+<p>This is a standard setup for an Angular component with two <code>input</code> fields where users can provide the <code>URL</code> and <code>description</code> of the <code>Link</code> they want to create. The data that’s typed into these fields is bound in the component’s properties (<code>description</code> and <code>URL</code>) and will be used in <code>createLink</code> when the mutation is sent.</p>
+<h3 id="writing-the-mutation">Writing the Mutation</h3>
+<p>But how can you now actually send the mutation? Let’s follow the two steps from before.</p>
+<p>First, you need to define the mutation in your <code>graphql</code> file and parse your query with <code>gql</code>. You’ll do that in a similar way as with the query before.</p>
+<p><Instruction></p>
+<p>In <code>src/app/graphql.ts</code>, add the following statement to the bottom of the file:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>// 1
+export const CREATE_LINK_MUTATION = gql`
+  # 2
+  mutation CreateLinkMutation($description: String!, $url: String!) {
+    createLink(
+      description: $description,
+      url: $url,
+    ) {
+      id
+      createdAt
+      url
+      description
+    }
+  }
+`;
+
+//3
+export interface CreateLinkMutationResponse {
+  createLink: Link;
+  loading: boolean;
+}
+</code></pre>
+<p></Instruction></p>
+<p>Let’s retake a close look to understand what’s going on:</p>
+<ol type="1">
+<li>You first create the typescript constant called <code>CREATE_LINK_MUTATION</code> that stores the mutation.</li>
+<li>Now you define the actual GraphQL mutation. It takes two arguments, <code>URL</code> and <code>description</code>, that you’ll have to provide when calling the mutation.</li>
+<li>You also declare the response interface of <code>CreateLinkMutationResponse</code></li>
+</ol>
+<p><Instruction></p>
+<p>Before moving on, you need to import the mutation from the <code>graphql</code> file and the Apollo dependencies. Add the following to the top of <code>src/app/create-link/create-link.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.ts&quot;)"><code>import {Apollo} from &#39;apollo-angular&#39;;
+import {CREATE_LINK_MUTATION, CreateLinkMutationResponse} from &#39;../graphql&#39;;</code></pre>
+<p></Instruction></p>
+<p>Let’s see the mutation in action!</p>
+<p><Instruction></p>
+<p>Still in <code>CreateLinkComponent.ts</code>, implement the <code>createLink</code> mutation as follows:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/create-link/create-link.component.ts&quot;)"><code>createLink() {
+    this.apollo.mutate&lt;CreateLinkMutationResponse&gt;({
+      mutation: CREATE_LINK_MUTATION,
+      variables: {
+        description: this.description,
+        url: this.url
+      }
+    }).subscribe((response) =&gt; {
+
+    });
+}</code></pre>
+<p></Instruction></p>
+<p>As promised, all you need to do is call <code>this.apollo.mutate</code> and pass the mutation and the variables that represent the user input.</p>
+<p><Instruction></p>
+<p>Go ahead and see if the mutation works. To be able to test the code, open <code>src/app/app.component.html</code> and change the template to looks as follows:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/app.component.html&quot;)"><code>
+&lt;hn-link-list&gt;&lt;/hn-link-list&gt;
+&lt;hn-create-link&gt;&lt;/hn-create-link&gt;
+</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, check that the <code>CreateLinkComponent</code> components in <code>app.module.ts</code> is declared, the current contents should look like:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/app.module.ts&quot;)"><code>import {BrowserModule} from &#39;@angular/platform-browser&#39;;
+import {NgModule} from &#39;@angular/core&#39;;
+
+import {AppComponent} from &#39;./app.component&#39;;
+
+import {GraphQLModule} from &#39;./apollo.config&#39;;
+import {LinkListComponent} from &#39;./link-list/link-list.component&#39;;
+import {LinkItemComponent} from &#39;./link-item/link-item.component&#39;;
+import {CreateLinkComponent} from &#39;./create-link/create-link.component&#39;;
+import {FormsModule} from &#39;@angular/forms&#39;;
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    LinkListComponent,
+    LinkItemComponent,
+    CreateLinkComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    GraphQLModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+
+</code></pre>
+<p></Instruction></p>
+<p>You should now see the following screen:</p>
+<figure>
+<img src="https://i.imgur.com/mPiqOCd.png" alt="The CreateLinkComponent" /><figcaption>The CreateLinkComponent</figcaption>
+</figure>
+<p>Two input fields and a <em>submit</em>-button - not very pretty but functional.</p>
+<p>Enter some data into the fields, e.g.:</p>
+<ul>
+<li><strong>Description</strong>: <code>The best learning resource for GraphQL</code></li>
+<li><strong>URL</strong>: <code>www.howtographql.com</code></li>
+</ul>
+<p>Then click the <em>submit</em>-button. You won’t get any visual feedback in the UI, but let’s see if the query worked by checking the current list of links in a Playground.</p>
+<p>Type <code>graphcool-framework playground</code> into a Terminal and send the following query:</p>
+<pre class="graphql"><code>{
+  allLinks {
+    description
+    url
+  }
+}</code></pre>
+<p>You’ll see the following server response:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode ts"><code class="sourceCode typescript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="st">&quot;data&quot;</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-3" title="3">    <span class="st">&quot;allLinks&quot;</span><span class="op">:</span> <span class="op">[</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-5" title="5">        <span class="st">&quot;description&quot;</span><span class="op">:</span> <span class="st">&quot;The best learning resource for GraphQL&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb9-6" title="6">        <span class="st">&quot;url&quot;</span><span class="op">:</span> <span class="st">&quot;www.howtographql.com&quot;</span></a>
+<a class="sourceLine" id="cb9-7" title="7">      <span class="op">},</span></a>
+<a class="sourceLine" id="cb9-8" title="8">      <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="op">]</span></a>
+<a class="sourceLine" id="cb9-10" title="10">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="op">}</span></a></code></pre></div>
+<p>Awesome! The mutation works, great job! 💪</p>
+</body>
+</html>

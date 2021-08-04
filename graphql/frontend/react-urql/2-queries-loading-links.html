@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading Links</h1>
+</header>
+<h3 id="preparing-the-react-components">Preparing the React components</h3>
+<p>The first piece of functionality you’ll implement in the app is loading and displaying a list of <code>Link</code> elements. We’ll start by preparing some React components for displaying the links. Let’s begin at the bottom of the component hierarchy by writing one that’ll render a single link.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>Link.js</code> in the <code>components</code> directory and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/link.js&quot;)"><code>import React from &#39;react&#39;
+
+const Link = ({ link }) =&gt; (
+  &lt;div&gt;
+    &lt;div&gt;
+      {link.description} ({link.url})
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default Link</code></pre>
+<p></Instruction></p>
+<p>This is a simple React component that expects a <code>link</code> in its <code>props</code> and renders the link’s <code>description</code> and <code>url</code>. Easy as pie! 🍰</p>
+<blockquote>
+<p><strong>Note</strong>: This tutorial doesn’t focus too much on using semantic HTML elements, for the sake of simplifying parts of the steps we’ll take to create this app. The two <code>&lt;div&gt;</code>s here are later used for styling.</p>
+</blockquote>
+<p>Next, you’ll implement the component that renders a list of links.</p>
+<p><Instruction></p>
+<p>Again, in the <code>components</code> directory, go ahead and create a new file called <code>LinkList.js</code>. Then add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>import React from &#39;react&#39;
+import Link from &#39;./Link&#39;
+
+const linksToRender = [
+  {
+    id: &#39;1&#39;,
+    description: &#39;Prisma turns your database into a GraphQL API 😎&#39;,
+    url: &#39;https://www.prismagraphql.com&#39;,
+  },
+  {
+    id: &#39;2&#39;,
+    description: &#39;The best GraphQL client&#39;,
+    url: &#39;https://formidable.com/open-source/urql/&#39;,
+  },
+]
+
+const LinkList = () =&gt; (
+  &lt;div&gt;
+    {linksToRender.map(link =&gt; &lt;Link key={link.id} link={link} /&gt;)}
+  &lt;/div&gt;
+)
+
+export default LinkList</code></pre>
+<p></Instruction></p>
+<p>For now you’re pasting in some mock data to make sure the component setup works. You’ll soon replace this with some actual data loaded from the server!</p>
+<p><Instruction></p>
+<p>To complete the setup, open <code>App.js</code> and replace the current contents with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import LinkList from &#39;./LinkList&#39;
+
+const App = () =&gt; &lt;LinkList /&gt;
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>Run the app to check if everything works so far! The app should now display the two links from the <code>linksToRender</code> array:</p>
+<figure>
+<img src="https://imgur.com/VJzRyjq.png" alt="Run the app to ensure everything works" /><figcaption>Run the app to ensure everything works</figcaption>
+</figure>
+<h3 id="writing-the-graphql-query">Writing the GraphQL query</h3>
+<p>Next you’ll load the actual links that are stored in the database from your GraphQL API. The first thing you need to do for that is define the GraphQL query you want to send.</p>
+<p>Here is what it looks like:</p>
+<pre class="graphql"><code>{
+  feed {
+    links {
+      id
+      createdAt
+      description
+      url
+    }
+  }
+}</code></pre>
+<p>You could now simply execute this query in a <a href="https://github.com/graphql/graphql-playground">Playground</a> (against the <em>application schema</em>) and retrieve the results from your GraphQL server. But let’s see how to run this query in your React app with urql!</p>
+<h3 id="queries-with-urql">Queries with urql</h3>
+<p>When using urql, you’ve got several ways of sending queries to the server. The React bindings for urql call methods on the Client that return a “stream” of results. These low-level methods are called <code>executeQuery</code>, <code>executeMutation</code>, and <code>executeSubscription</code>. The returned stream of results is implemented using the <a href="https://wonka.kitten.sh/">Wonka library, which you can read more about on its site</a>.</p>
+<p>A practical example of using these is a little longer than using the React bindings, but would look as follows:</p>
+<pre class="js(nocopy)"><code>import { createRequest } from &#39;urql&#39;
+import { pipe, subscribe } from &#39;wonka&#39;
+
+const request = createRequest(gql`
+  {
+    feed {
+      links {
+        id
+      }
+    }
+  }
+`, {
+  // ... variables
+});
+
+pipe(
+  client.executeQuery(request),
+  subscribe(response =&gt; {
+    console.log(response.data.feed);
+  })
+);</code></pre>
+<blockquote>
+<p><strong>Note</strong>: <code>urql</code> is planned to expose helper methods on its Client that internally call <code>useRequest</code> for you eventually, but since it is primarily meant to be used with its React bindings, these methods haven’t been implemented yet. Stay tuned!</p>
+</blockquote>
+<p>The more declarative way when using React however is to use <a href="https://formidable.com/open-source/urql/docs/api/#react-components-and-hooks"><code>urql</code>’s hook APIs</a> to manage your GraphQL data just using components.</p>
+<p>Depending on whether you’re using queries, mutations, or subscriptions there are three corresponding hooks: <code>useQuery</code>, <code>useMutation</code>, and <code>useSubscription</code>. All three also have corresponding components with render prop APIs.</p>
+<p>These hooks and components are convenient wrappers around the urql Client! They automatically take care of cancellation, updates, and correctly set the initial state for you.</p>
+<p>When it comes to making a GraphQL query using the urql hooks, you will need to pass your query as an option to <code>useQuery</code> and optionally pass some variables as well. The hook will internally tell the client to execute your query, and the cache will be able to proactively send updates to your components, when the data changes or the cached data is invalidated.</p>
+<p>In general, the process for you to add some data fetching logic will be very similar every time:</p>
+<ol type="1">
+<li>write the query as a JavaScript constant using the <code>gql</code> parser function</li>
+<li>use the <code>useQuery</code> hook passing the GraphQL query and variables as <code>{ query, variables }</code></li>
+<li>access the query results that the hook returns, <code>const [result] = useQuery(...)</code></li>
+</ol>
+<p><Instruction></p>
+<p>Open up <code>LinkList.js</code> and add the query to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const FEED_QUERY = gql`
+  {
+    feed {
+      links {
+        id
+        createdAt
+        url
+        description
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction> <Instruction></p>
+<p>Then replace the current <code>LinkList</code> component with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const LinkList = () =&gt; {
+  useQuery({ query: FEED_QUERY });
+
+  return (
+    &lt;div&gt;
+      {linksToRender.map(link =&gt; &lt;Link key={link.id} link={link} /&gt;)}
+    &lt;/div&gt;
+  );
+};</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>First, you create a JavaScript constant called <code>FEED_QUERY</code> that holds your GraphQL query. The <code>gql</code> function parses the plain string that contains the GraphQL code (if you’re unfamiliar with the backtick-syntax, you can read up on JavaScript’s <a href="http://wesbos.com/tagged-template-literals/">tagged template literals</a>).</li>
+<li>Finally, you add the <code>useQuery</code> hook to the component, passing <code>FEED_QUERY</code> to the <code>query</code> option.</li>
+</ol>
+<blockquote>
+<p><strong>Note</strong>: Notice that the example still returns the mocked <code>linksToRender</code> as a function result, as you haven’t written any code just yet to use the result from <code>useQuery</code>.</p>
+</blockquote>
+<p><Instruction></p>
+<p>For this code to work, you also need to import the corresponding dependencies. Add the following two lines to the top of the file, right below the other import statements:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>import { useQuery } from &#39;urql&#39;
+import gql from &#39;graphql-tag&#39;</code></pre>
+<p></Instruction></p>
+<p>Awesome, that’s all your data fetching code. If you check your app now you can see that a request is sent to your GraphQL API. But as you can already tell, <code>LinkList</code> is not using the server data yet, so let’s make it happen 🤩</p>
+<p>You can now finally remove the mock data and render actual links that are fetched from the server.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code>, delete the <code>linksToRender</code> mock data and then update the <code>LinkList</code> component as follows:</p>
+<pre class="js{2-3,5-6,8}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const LinkList = () =&gt; {
+  const [result] = useQuery({ query: FEED_QUERY })
+  const { data, fetching, error } = result
+  
+  if (fetching) return &lt;div&gt;Fetching&lt;/div&gt;
+  if (error) return &lt;div&gt;Error&lt;/div&gt;
+  
+  const linksToRender = data.feed.links
+
+  return (
+    &lt;div&gt;
+      {linksToRender.map(link =&gt; &lt;Link key={link.id} link={link} /&gt;)}
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s walk through what’s happening in this code. As expected, <code>useQuery</code> returns an array with the result as the first item. It returns this array because the second value of any hook that <code>urql</code> exposes is always an <code>execute</code> function that can be used to refetch queries.</p>
+<p>The properties of the <code>result</code> from the hook tell us more about the state of your query and pass you the data that it receives from your GraphQL API:</p>
+<ol type="1">
+<li><code>fetching</code>: Is <code>true</code> as long as the request is still ongoing and the response hasn’t been received, otherwise it’ll be <code>false</code></li>
+<li><code>error</code>: In case the request fails, this field will contain a <code>CombinedError</code> that tells you what exactly went wrong. Depending on what error has occured it’ll either have a <code>networkError</code> or a <code>graphQLErrors</code> property.</li>
+<li><code>data</code>: This is the actual data that is received from the server. It’ll have a <code>links</code> property with a list of <code>Link</code> elements, since the <code>FEED_QUERY</code> definition is requesting them.</li>
+</ol>
+<p>That’s it! You should see the exact same screen as before! 🤩 And to summarize, in this section you’ve:</p>
+<ul>
+<li>created a <code>Link</code> and <code>LinkList</code></li>
+<li>added a <code>useQuery</code> hook to load some feed data from your GraphQL API</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: If the browser on <code>http://localhost:4000</code> only says error and is empty otherwise, you probably forgot to have your server running. Note that for the app to work the server needs to run as well - so you have two running processes in your terminal: One for the server and one for the React app. To start the server, navigate into the <code>server</code> directory and run <code>yarn start</code>.</p>
+</blockquote>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Introduction</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction</h1>
+</header>
+<h3 id="overview">Overview</h3>
+<blockquote>
+<p><strong>NOTE</strong>: This tutorial uses the <a href="https://www.graph.cool/docs/reference/service-definition/legacy-console-projects-aemieb1aev">legacy</a> version of <a href="https://www.graph.cool/">Graphcool</a> and will be updated soon to use the new <a href="https://blog.graph.cool/introducing-the-graphcool-framework-d9edab2a7816">Graphcool Framework</a>. The CLI commands mentioned in tutorial are outdated, you can read more about the new CLI <a href="https://www.graph.cool/docs/reference/cli/overview-kie1quohli/">here</a>. If you still want to go through this tutorial, you can install the old version of the CLI using <code>npm install -g graphcool@0.4</code>.</p>
+</blockquote>
+<p>In the previous chapter, you learned about major concepts and benefits of GraphQL. Now is the time to get your hands dirty and start out with an actual project!</p>
+<p>You’re going to build a simple clone of <a href="https://news.ycombinator.com/">Hackernews</a>. Here’s a list of the features the app will have:</p>
+<ul>
+<li>Display a list of links</li>
+<li>Users can authenticate</li>
+<li>Authenticated users can create new links</li>
+<li>Authenticated users can upvote links (one vote per link and user)</li>
+<li>Realtime updates when other users upvote a link or create a new one</li>
+</ul>
+<p>In this track, you’ll use the following technologies for building the app:</p>
+<ul>
+<li>Frontend:
+<ul>
+<li><a href="https://facebook.github.io/react/">React</a>: Frontend framework for building user interfaces</li>
+<li><a href="https://facebook.github.io/relay/">Relay</a>: Powerful GraphQL client developed by Facebook, heavily optimized for performance</li>
+</ul></li>
+<li>Backend:
+<ul>
+<li><a href="https://www.graph.cool/">Graphcool</a>: Flexible backend platform combining GraphQL + Serverless</li>
+</ul></li>
+</ul>
+<p>You’ll create the React project with <a href="https://github.com/facebookincubator/create-react-app"><code>create-react-app</code></a>, a popular command-line tool that gives you a blank project with all required build configuration already setup.</p>
+<h3 id="why-a-graphql-client">Why a GraphQL Client?</h3>
+<p>In the <a href="/advanced/0-clients/">Clients</a> section in the GraphQL part, we already covered the responsibilities of a GraphQL client on a higher level, now it’s time to get bit more concrete.</p>
+<p>In short, you should use a GraphQL client for tasks that are repetitive and agnostic to the app you’re building. For example, being able to send queries and mutations without having to worry about lower-level networking details or maintaining a local cache. This is functionality that you’ll want in any frontend application that’s talking to a GraphQL server - why build it yourself if you can use one of the amazing GraphQL clients out there?</p>
+<p>There are a few GraphQL client libraries available, that all give you varying degrees of control over ongoing GraphQL operations and come with various different benefits and drawbacks. For very simple use cases (such as writing scripts), <a href="https://github.com/prisma/graphql-request"><code>graphql-request</code></a> might already be enough for your needs. Libraries like it are thin layers around sending HTTP requests to your GraphQL API.</p>
+<p>Chances are that you’re writing a somewhat larger application where you want to benefit from caching, optimistic UI updates and other handy features. In these cases you’ll likely want to use a full GraphQL client that handles the lifecycle of all your GraphQL operations. You have the choice between <a href="https://facebook.github.io/relay/">Relay</a>, <a href="https://github.com/apollographql/apollo-client">Apollo Client</a>, and <a href="https://github.com/FormidableLabs/urql">urql</a>.</p>
+<h3 id="apollo-vs-relay-vs-urql">Apollo vs Relay vs urql</h3>
+<p>The most common question heard from people that are getting started with GraphQL on the frontend is which GraphQL client they should use. We’ll try to provide a few hints that’ll help you decide which of these clients is the right one for your next project!</p>
+<p><a href="https://facebook.github.io/relay/">Relay</a> is Facebook’s homegrown GraphQL client that they open-sourced alongside GraphQL in 2015. It incorporates all the learnings that Facebook gathered since they started using GraphQL in 2012. Relay is heavily optimized for performance and tries to reduce network traffic where possible. An interesting side-note is that Relay itself actually started out as a <em>routing</em> framework that eventually got combined with data loading responsibilities. It thus evolved into a powerful data management solution that can be used in JavaScript apps to interface with GraphQL APIs.</p>
+<p>The performance benefits of Relay come at the cost of a notable learning curve. Relay is a pretty complex framework and understanding all its bits and pieces does require some time to really get into it. The overall situation in that respect has improved with the release of the 1.0 version, called <a href="http://facebook.github.io/relay/docs/en/introduction-to-relay.html">Relay Modern</a>, but if you’re looking for something to <em>just get started</em> with GraphQL, Relay might not be the right choice just yet.</p>
+<p><a href="https://github.com/apollographql/apollo-client">Apollo Client</a> is a community-driven effort to build an easy-to-understand, flexible and powerful GraphQL client. Apollo has the ambition to build one library for every major development platform that people use to build web and mobile applications. Right now there is a JavaScript client with bindings for popular frameworks like <a href="https://github.com/apollographql/react-apollo">React</a>, <a href="https://github.com/apollographql/apollo-angular">Angular</a>, <a href="https://github.com/bgentry/ember-apollo-client">Ember</a> or <a href="https://github.com/Akryum/vue-apollo">Vue</a> as well as early versions of <a href="https://github.com/apollographql/apollo-ios">iOS</a> and <a href="https://github.com/apollographql/apollo-android">Android</a> clients. Apollo is production-ready and has handy features like caching, optimistic UI, subscription support and many more.</p>
+<p><a href="https://github.com/FormidableLabs/urql">urql</a> is a more dynamic approach on GraphQL clients and a newer project compared to Relay and Apollo. While it’s highly focused on React, at its core it focuses on simplicity and extensibility. It comes with the barebones to build an efficient GraphQL client, but gives you full control over how it processes GraphQL operations and results via “Exchanges”. Together with the first-party exchange <a href="https://github.com/FormidableLabs/urql-exchange-graphcache"><code>@urql/exchange-graphcache</code></a> it is basically equivalent in functionality with Apollo, but with a smaller footprint and a very focused API.</p>
+</body>
+</html>

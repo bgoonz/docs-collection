@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Introduction</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction</h1>
+</header>
+<h3 id="motivation">Motivation</h3>
+<p>Scala is a very popular language nowadays and it’s often chosen to deliver efficient and scalable systems. It leverages the Java VM, known for its reliability and robustness. Support for Functional Programming, rich ecosystem and stable foundation allow building fast applications, quickly.</p>
+<p>In the next chapters you’ll learn how to build your own GraphQL server using Scala and the following technologies: * <a href="https://www.scala-lang.org/">Scala</a> Scala language * <a href="https://doc.akka.io/docs/akka-http/current/?language=scala">Akka HTTP</a> Web server to handle HTTP requests. * <a href="https://sangria-graphql.github.io/">Sangria</a> A library for GraphQL execution * <a href="http://slick.lightbend.com/">Slick</a> A Database query and access library. * <a href="http://www.h2database.com/html/main.html">H2 Database</a> In-memory database. * <a href="https://github.com/graphql/graphiql">Graphiql</a> A simple GraphQL console to play with. * <a href="https://github.com/foundweekends/giter8">Giter8</a> A project templating tool for Scala.</p>
+<p>I assume you’re familiar with GraphQL concepts, but if not, you can visit <a href="http://graphql.org/">GraphQL site</a> to learn more about that.</p>
+<h3 id="what-is-a-graphql-server">What is a GraphQL Server?</h3>
+<p>A GraphQL server should be able to:</p>
+<ul>
+<li>Receive requests following the GraphQL format, for example:</li>
+</ul>
+<pre class="graphql(nocopy)"><code>{  &quot;query&quot;: &quot;query { allLinks { url } }&quot; }</code></pre>
+<ul>
+<li>Connect to one or more data sources, like databases or other APIs and format obtained information.</li>
+<li>Response with the requested data, such as this one:</li>
+</ul>
+<pre class="graphql(nocopy)"><code>{ &quot;data&quot;: { &quot;allLinks&quot;: { &quot;url&quot;: &quot;http://graphql.org/&quot; } } }</code></pre>
+<ul>
+<li>Validate incoming requests accordingly to the schema definition and supported formats. For example, if a query is made with an unknown field, the response should be something like:</li>
+</ul>
+<pre class="graphql(nocopy)"><code>{
+  &quot;errors&quot;: [{
+    &quot;message&quot;: &quot;Cannot query field \&quot;unknown\&quot; on type \&quot;Link\&quot;.&quot;
+  }]
+}</code></pre>
+<p>As you can see our server will be really simple, but real GraphQL implementation can do much more than this. (We will explore it more later on.)</p>
+<h3 id="schema-driven-development">Schema-Driven Development</h3>
+<p>Schema-first GraphQL development forces frontend and backend developers to agree on a strict contract up front, enabling them to work quickly and efficiently while staying on spec. It improves both your API’s performance and the performance of your team in general.</p>
+<p>Sensibly then, the experience of building a GraphQL server starts with working on its schema. You’ll see in this chapter that the main steps you follow will be something like this:</p>
+<ol type="1">
+<li>Define your types and the appropriate queries and mutations for them.</li>
+<li>Implement functions (called <strong>resolvers</strong>) to perform agreed upon queries in terms of defined types.</li>
+<li>As new requirements arrive, go back to step 1 to update the schema and go through the other steps.</li>
+</ol>
+<p>The schema is a contract between the frontend and backend, so keeping it at the center allows both sides of the development to evolve without going off the spec. This also makes it easier to parallelize the work. Since the frontend can move on with full knowledge of the API from the start, using a simple mocking service (or even a full backend such as Graphcool) which can later be easily replaced with the final server.</p>
+<h3 id="goal-of-the-tutorial">Goal of the tutorial</h3>
+<p>Most of the HowToGraphQL tutorials are based on the same schema. In our tutorial we will try to run scala server which supports that schema. In this case you can take any frontend example and connect it to our server. The schema more or less looks like this:</p>
+<pre class="graphql(nocopy)(https://github.com/howtographql/howtographql/blob/master/meta/structure.graphql)"><code>type Query {
+  allLinks(filter: LinkFilter, orderBy: LinkOrderBy, skip: Int, first: Int): [Link!]!
+  _allLinksMeta: _QueryMeta!
+}
+
+type Mutation {
+  signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayload!
+  createUser(name: String!, authProvider: AuthProviderSignupData!): User
+  createLink(description: String!, url: String!, postedById: ID): Link
+  createVote(linkId: ID, userId: ID): Vote
+}
+
+type Subscription {
+  Link(filter: LinkSubscriptionFilter): LinkSubscriptionPayload
+  Vote(filter: VoteSubscriptionFilter): VoteSubscriptionPayload
+}
+
+interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  name: String!
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)
+  email: String @isUnique
+  password: String
+}
+
+type Link implements Node {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  url: String!
+  description: String!
+  postedBy: User! @relation(name: &quot;UsersLinks&quot;)
+  votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)
+}
+
+type Vote implements Node {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  user: User! @relation(name: &quot;UsersVotes&quot;)
+  link: Link! @relation(name: &quot;VotesOnLink&quot;)
+}
+
+input AuthProviderSignupData {
+  email: AUTH_PROVIDER_EMAIL
+}
+
+input AUTH_PROVIDER_EMAIL {
+  email: String!
+  password: String!
+}
+
+input LinkSubscriptionFilter {
+  mutation_in: [_ModelMutationType!]
+}
+
+input VoteSubscriptionFilter {
+  mutation_in: [_ModelMutationType!]
+}
+
+input LinkFilter {
+  OR: [LinkFilter!]
+  description_contains: String
+  url_contains: String
+}
+
+type SigninPayload {
+  token: String
+  user: User
+}
+
+type LinkSubscriptionPayload {
+  mutation: _ModelMutationType!
+  node: Link
+  updatedFields: [String!]
+}
+
+type VoteSubscriptionPayload {
+  mutation: _ModelMutationType!
+  node: Vote
+  updatedFields: [String!]
+}
+
+enum LinkOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+}
+
+enum _ModelMutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type _QueryMeta {
+  count: Int!
+}
+
+scalar DateTime</code></pre>
+<p>When we know what to do, we move on to the next chapter and begin the tutorial.</p>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting Started</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting Started</h1>
+</header>
+<h3 id="initialize-the-project">Initialize the project</h3>
+<p>Since you’ll be using <a href="https://maven.apache.org/">Maven</a> (still the most widely used build tool for Java) in this tutorial, make sure you have a reasonably fresh version installed.</p>
+<p><Instruction></p>
+<p>To bootstrap a simple web application project execute the following commands in a terminal (and confirm with <code>Y</code> when prompted):</p>
+<pre class="bash(path=&quot;.../&quot;)"><code>mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp -DgroupId=com.howtographql.sample -DartifactId=hackernews-graphql-java -Dversion=1.0-SNAPSHOT</code></pre>
+<p></Instruction></p>
+<p>Next you’ll setup the project structure.</p>
+<p><Instruction></p>
+<p>Immediately create a directory called <code>java</code> under <code>src/main</code>. This is where all the Java sources will go.</p>
+<p>Additionally, make sure you also delete <code>WEB-INF/web.xml</code> (or simply the entire <code>WEB-INF</code>) from <code>src/main/webapp</code>. Otherwise, Servlet 3.x style configuration that you’ll use will be ignored.</p>
+<p></Instruction></p>
+<h3 id="defining-the-schema">Defining the schema</h3>
+<p>It is important to note that the resolver functions are an integral part of the field definitions, and thus a part of the schema. This means the schema isn’t just a document, but a runtime object instance (for the purposes of this track, that would mean a Java object).</p>
+<p>The schema can be defined in two ways:</p>
+<ul>
+<li>programmatically - where type definitions are assembled manually in code</li>
+<li>using the <a href="http://graphql.org/learn/schema/#type-language">Schema Definition Language</a> (SDL) - where the schema is generated from a textual language-independent description you’ve seen in the previous chapters with the resolver functions then wired dynamically</li>
+</ul>
+<p>Both approaches have merit, and come down to a matter of preference. The former collocates the fields and their associated resolves, while the latter makes a clear cut between data and behavior. We’ll use SDL for the most part of this track as it allows for succinct examples.</p>
+<p>The SDL definition for a simple type representing a link might look like this:</p>
+<p><Instruction></p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Link {
+  url: String!
+  description: String!
+}</code></pre>
+<p>And a query to fetch all links could be defined as:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Query {
+  allLinks: [Link]
+}</code></pre>
+<p>Finally, the schema containing this query would be defined as:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>schema {
+  query: Query
+}</code></pre>
+<p>Save these definitions in a file called <code>schema.graphqls</code> inside <code>src/main/resources</code>.</p>
+<p></Instruction></p>
+<h3 id="install-dependencies">Install dependencies</h3>
+<p>To build a GraphQL-enabled application, only <code>graphql-java</code> (the GraphQL implementation itself) is strictly required. Still, to make dynamic resolver wiring easy, you’ll also want to use <code>graphql-java-tools</code>, the library inspired by Apollo’s <code>graphql-tools</code>. Additionally, because the goal is to expose the API over the web, you’ll also make use of <code>graphql-java-servlet</code> (a simple helper library containing a ready-made servlet for accepting GraphQL queries) and <code>javax.servlet-api</code> (the servlet specification implementation).</p>
+<p><Instruction></p>
+<p>Add all the dependencies to your <code>pom.xml</code> (under <code>&lt;dependencies&gt;</code>):</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.graphql-java&lt;/groupId&gt;
+    &lt;artifactId&gt;graphql-java&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.graphql-java&lt;/groupId&gt;
+    &lt;artifactId&gt;graphql-java-tools&lt;/artifactId&gt;
+    &lt;version&gt;3.2.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.graphql-java&lt;/groupId&gt;
+    &lt;artifactId&gt;graphql-java-servlet&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+    &lt;version&gt;3.0.1&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+<p></Instruction></p>
+<p>The versions listed above were the latest at the time of writing, but they change quickly as bugs are fixed and features are added. Make sure you always check for updates before going further.</p>
+<h3 id="setup-server">Setup server</h3>
+<p>Any servlet container will do here, and the simplest way to use one during development is via a Maven plugin.</p>
+<p><Instruction></p>
+<p>For Jetty, add the plugin to the <code>build</code> section as follows:</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;build&gt;
+    &lt;finalName&gt;hackernews&lt;/finalName&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
+            &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;9.4.6.v20170531&lt;/version&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
+<p></Instruction></p>
+<p>This also a good opportunity to configure some basics.</p>
+<p><Instruction></p>
+<p>Add the following plugin configuration (just below the Jetty plugin) to set Java version to 8 and servlet spec version to 3.1:</p>
+<pre class="xml(path=&quot;.../hackernews-graphql-java/pom.xml&quot;)"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.5.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;1.8&lt;/source&gt;
+        &lt;target&gt;1.8&lt;/target&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+
+&lt;plugin&gt;
+    &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt;
+&lt;/plugin&gt;</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>You can run the app just by executing <code>mvn jetty:run</code> in the directory where <code>pom.xml</code> is located, and Jetty will start on port 8080.</p>
+</blockquote>
+<p>But opening it at this moment won’t bring you much joy, as the server still isn’t configured to <em>do</em> anything.</p>
+<p><Instruction></p>
+<p>To remedy this, start by creating a class called <code>GraphQLEndpoint</code>, this will be the servlet exposing the API. All classes in <a href="https://github.com/howtographql/graphql-java">the sample project</a> are placed in the package called <code>com.howtographql.hackernews</code>, so you may wish to create such a package inside <code>src/main/java</code> at this moment. <code>GraphQLEndpoint</code> should look as follows:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>import com.coxautodev.graphql.tools.SchemaParser;
+import javax.servlet.annotation.WebServlet;
+import graphql.servlet.SimpleGraphQLServlet;
+
+
+@WebServlet(urlPatterns = &quot;/graphql&quot;)
+public class GraphQLEndpoint extends SimpleGraphQLServlet {
+
+    public GraphQLEndpoint() {
+        super(SchemaParser.newParser()
+                .file(&quot;schema.graphqls&quot;) //parse the schema file created earlier
+                .build()
+                .makeExecutableSchema());
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>Starting the server now and accessing http://localhost:8080/graphql will still result in an error because no resolver functions have been wired in (so the defined <code>allLinks</code> query has no way to execute).</p>
+</body>
+</html>

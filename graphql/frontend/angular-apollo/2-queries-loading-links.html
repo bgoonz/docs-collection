@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading link-items</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading link-items</h1>
+</header>
+<h3 id="preparing-the-angular-components">Preparing the Angular components</h3>
+<p>The first piece of functionality that you’ll implement in the app is loading and displaying a list of <code>link-item</code> elements. You’ll walk up our way in the Angular component hierarchy and start with the component that’ll render a single link-item.</p>
+<p><Instruction></p>
+<p>Run the command below to generate all boilerplate files:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo/&quot;)"><code>ng generate component link-item</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>This command will create a <code>link-item</code> folder containing several new files called <code>link-item.component.ts</code> , <code>link-item.component.spec.ts</code>, <code>link-item.component.html</code>, <code>link-item.component.css</code> in the <code>app</code> directory and add the following code in <code>link-item.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>import {Component, Input, OnInit} from &#39;@angular/core&#39;;
+import {Link} from &#39;../types&#39;;
+
+@Component({
+  selector: &#39;hn-link-item&#39;,
+  templateUrl: &#39;./link-item.component.html&#39;,
+  styleUrls: [&#39;./link-item.component.css&#39;]
+})
+export class LinkItemComponent implements OnInit {
+  @Input()
+  link: Link;
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+  voteForLink= async () =&gt; {
+    // ... you&#39;ll implement this in chapter 6
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add the following code in <code>link-item.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.html&quot;)"><code>&lt;div&gt;{{link.description}} ({{link.url}})&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>Note, we will be writing all our typings in a <code>./src/app/types.ts</code> file and merely importing these types into components as needed.</p>
+<p><Instruction></p>
+<p>This command will create a <code>link-item</code> folder containing several new files called <code>link-item.component.ts</code> , <code>link-item.component.spec.ts</code>, <code>link-item.component.html</code>, <code>link-item.component.css</code> in the <code>app</code> directory and add the following code in <code>link-item.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/types.ts&quot;)"><code>export class Link {
+  id: string;
+  description: string;
+  url: string;
+  createdAt: string;
+}
+</code></pre>
+<p></Instruction></p>
+<p>This is a simple Angular component that expects a <code>link</code> in its <code>Input</code> (<code>link-item.component.ts</code>) and renders the link’s <code>description</code> and <code>URL</code> (<code>link-item.component.html</code>). Easy as pie! 🍰</p>
+<p>Next, you’ll implement the component that renders a list of link-items.</p>
+<p><Instruction></p>
+<p>Again, in the root directory, go ahead and run <code>ng generate component link-list</code> and this create <code>link-list.component.ts</code> , <code>link-list.component.spec.ts</code>, <code>link-list.component.html</code>, <code>link-list.component.css</code> in <code>src/app/link-list</code> folder and add the following code in <code>link-list.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.ts&quot;)"><code>import {Component, OnInit} from &#39;@angular/core&#39;;
+import {Link} from &#39;../types&#39;;
+
+@Component({
+  selector: &#39;hn-link-list&#39;,
+  templateUrl: &#39;./link-list.component.html&#39;,
+  styleUrls: [&#39;./link-list.component.css&#39;]
+})
+export class LinkListComponent implements OnInit {
+  linksToRender: Link[] = [{
+    id: &#39;1&#39;,
+    description: &#39;The Coolest GraphQL Backend 😎&#39;,
+    url: &#39;https://www.graph.cool&#39;,
+    createdAt: &#39;2018-02-08T16:54:37.000Z&#39;,
+  }, {
+    id: &#39;2&#39;,
+    description: &#39;The Best GraphQL Client&#39;,
+    url: &#39;http://dev.apollodata.com/&#39;,
+    createdAt: &#39;2018-02-08T16:54:37.000Z&#39;,
+  }];
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, add the following code in <code>link-list.component.html</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.html&quot;)"><code>
+&lt;hn-link-item *ngFor=&quot;let link of linksToRender&quot; [link]=&quot;link&quot;&gt;
+&lt;/hn-link-item&gt;
+</code></pre>
+<p></Instruction></p>
+<p>Here, you’re using mock data (<code>link-list.component.ts</code>) for now to make sure the component setup works. You’ll soon replace this with some actual data loaded from the server - patience, young Padawan!</p>
+<p><Instruction></p>
+<p>To complete the setup, we should check that all the components in <code>app.module.ts</code>, created until now, are declared ,the current contents should look like:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/app.module.ts&quot;)"><code>import {BrowserModule} from &#39;@angular/platform-browser&#39;;
+import {NgModule} from &#39;@angular/core&#39;;
+
+import {AppComponent} from &#39;./app.component&#39;;
+
+import {GraphQLModule} from &#39;./apollo.config&#39;;
+import { LinkItemComponent } from &#39;./link-item/link-item.component&#39;;
+import { LinkListComponent } from &#39;./link-list/link-list.component&#39;;
+
+@NgModule({
+  // here
+  declarations: [
+    AppComponent,
+    LinkItemComponent,
+    LinkListComponent,
+  ],
+  imports: [
+    BrowserModule,
+    GraphQLModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+</code></pre>
+<p></Instruction> <Instruction></p>
+<p>Then, open <code>app.component.html</code> and replace the current contents with the following:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/app.component.html&quot;)"><code>  &lt;hn-link-list&gt;&lt;/hn-link-list&gt;</code></pre>
+<p></Instruction></p>
+<p>Run the app to check if everything works so far! The app should now display the two links from the <code>linksToRender</code> array:</p>
+<figure>
+<img src="https://i.imgur.com/R7YcAlj.png" alt="Run the search to find linksToRender" /><figcaption>Run the search to find linksToRender</figcaption>
+</figure>
+<h3 id="writing-the-graphql-query">Writing the GraphQL Query</h3>
+<p>You’ll now load the actual link-items stored on the server. The first thing you need to do is to define the GraphQL query that you want to send to the API.</p>
+<p>Here is what it looks like:</p>
+<pre class="graphql"><code>query AllLinks {
+  allLinks {
+    id
+    createdAt
+    description
+    url
+  }
+}</code></pre>
+<p>You could now merely execute this query in a Playground and retrieve the results from your GraphQL server. But how can you use it inside your JavaScript code?</p>
+<h3 id="queries-with-apollo-client">Queries with Apollo Client</h3>
+<p>When using Angular with <code>apollo-angular</code> the <code>Apollo</code> service makes it easy to fetch GraphQL data.</p>
+<p>With this approach, all you need to do when it comes to data fetching is write the GraphQL query, then injecting the <code>Apollo</code> service and use <a href="http://dev.apollodata.com/angular2/queries.html"><code>query</code></a> or <a href="http://dev.apollodata.com/angular2/queries.html"><code>watchQuery</code></a> method on the service directly that will fetch the data for you and finally make it available in your component.</p>
+<p>In general, the process for you to add some data fetching logic will be very similar every time:</p>
+<ol type="1">
+<li>Write the query as a typescript constant using the <code>gql</code> parser function</li>
+<li>Initialize the property in your component</li>
+<li>Use the <code>Apollo</code> service to fetch the results of your <code>graphql</code> query using Observable</li>
+<li>Access the query results in the observable subscribe and assign it to the property in your component</li>
+</ol>
+<p>You will be writing your queries and mutations in a <code>graphql.ts</code> file and merely importing these queries and mutations into components as needed.</p>
+<p><Instruction></p>
+<p>Create a file within <code>src/app</code> called <code>graphql.ts</code>. This is where all of your queries and mutations will live.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Open up <code>src/app/graphql.ts</code> and add your first query:</p>
+<pre class="ts{2-3,5-15,17-21}(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>import {Link} from &#39;./types&#39;;
+// 1
+import gql from &#39;graphql-tag&#39;
+
+// 2
+export const ALL_LINKS_QUERY = gql`
+  query AllLinksQuery {
+    allLinks {
+      id
+      createdAt
+      url
+      description
+    }
+  }
+`;
+
+// 3
+export interface AllLinkQueryResponse {
+  allLinks: Link[];
+  loading: boolean;
+}
+</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>First, you import <code>gql</code> from the <code>graphql-tag</code> package. The <code>gql</code> function is used to parse the plain GraphQL code.</li>
+<li>Now you define the plain GraphQL query. The name <code>AllLinksQuery</code> is the <em>operation name</em> and will be used by Apollo to refer to this query in its internals. You export this parsed query as <code>ALL_LINKS_QUERY</code> so you can easily import it into components.</li>
+<li>You also declare the response interface of <code>AllLinksQuery</code></li>
+</ol>
+<p>Next, you will inject the <code>Apollo</code> service to the <code>LinkList</code> component and call this newly created query to fetch data.</p>
+<p><Instruction></p>
+<p>Open up <code>src/app/link-list/link-list.component.html</code>, update the HTML template to display a loading indicator while data is being fetched using <code>*ngIf</code>:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.html&quot;)"><code>
+&lt;h4 *ngIf=&quot;loading&quot;&gt;Loading...&lt;/h4&gt;
+&lt;hn-link-item *ngFor=&quot;let link of allLinks&quot; [link]=&quot;link&quot;&gt;
+&lt;/hn-link-item&gt;
+
+</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, open up <code>src/app/link-list/link-list.component.ts</code>, import <code>ALL_LINKS_QUERY</code>, remove the hard-coded <code>linksToRender</code>, and inject the <code>Apollo</code> service. Your <code>LinkListComponent</code> component should now look like this:</p>
+<pre class="ts{5-6,17-18,23-25,27-28}(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.ts&quot;)"><code>import {Component, OnInit} from &#39;@angular/core&#39;;
+import {Apollo} from &#39;apollo-angular&#39;;
+import {Link} from &#39;../types&#39;;
+
+// 1
+import {ALL_LINKS_QUERY, AllLinkQueryResponse} from &#39;../graphql&#39;;
+
+@Component({
+  selector: &#39;hn-link-list&#39;,
+  templateUrl: &#39;./link-list.component.html&#39;,
+  styleUrls: [&#39;./link-list.component.css&#39;]
+})
+export class LinkListComponent implements OnInit {
+  // 2
+  allLinks: Link[] = [];
+  loading: boolean = true;
+
+  // 3
+  constructor(private apollo: Apollo) {
+  }
+
+  ngOnInit() {
+
+    // 4
+    this.apollo.watchQuery&lt;AllLinkQueryResponse&gt;({
+      query: ALL_LINKS_QUERY
+    }).valueChanges.subscribe((response) =&gt; {
+      // 5
+      this.allLinks = response.data.allLinks;
+      this.loading = response.data.loading;
+     });
+
+  }
+
+}
+</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>You import the <code>ALL_LINKS_QUERY</code> which you just created</li>
+<li>Next, you initialize the <code>allLinks</code> data property to an empty array and <code>loading</code> to <code>true</code>. This will be set to false once data loads.</li>
+<li>Now you inject an <code>Apollo</code> service to your component</li>
+<li>You call the <code>query</code> method to it ( you can also use another method named <code>watchQuery</code>). This method requires a <code>query,</code> and you pass it the <code>ALL_LINKS_QUERY</code>. As you can see, there is a new property, <code>valueChanges</code>. To watch results you have to subscribe to <code>valueChanges</code> property.</li>
+<li>The <code>query</code> method gives back a observable where we subscribe to get the response that contains a <code>data</code> property with <code>loading</code> set to <code>true</code> as long as the request is still ongoing and the response hasn’t been received and <code>allLinks</code> which is the actual data that was received from the server.</li>
+</ol>
+<p>That’s it! If you ran <code>npm start</code> or <code>yarn start</code> earlier, you should see your UI update and show the two links.</p>
+</body>
+</html>

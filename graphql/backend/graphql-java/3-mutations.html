@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mutations</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mutations</h1>
+</header>
+<p>Defining a mutation is similarly straight forward.</p>
+<p><Instruction></p>
+<p>Start off by describing a mutation for creating links in SDL:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Mutation {
+  createLink(url: String!, description: String!): Link
+}</code></pre>
+<p>Add this definition with the rest in <code>schema.graphqls</code>.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also, update the schema entry to contain the mutation root:</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>schema {
+    query: Query
+    mutation: Mutation
+}</code></pre>
+<p></Instruction></p>
+<h3 id="resolvers-with-arguments">Resolvers with arguments</h3>
+<p><Instruction></p>
+<p>Next off, create the root mutation resolver class (similar to the <code>Query</code> class you already have):</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/mutation.java&quot;)"><code>public class Mutation implements GraphQLRootResolver {
+    
+    private final LinkRepository linkRepository;
+
+    public Mutation(LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
+    }
+    
+    public Link createLink(String url, String description) {
+        Link newLink = new Link(url, description);
+        linkRepository.saveLink(newLink);
+        return newLink;
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>Notice how the <code>createLink</code> method, that will act as the resolver function for the <code>createLink</code> mutation, takes arguments of the name and type analogous to those defined in the mutation itself.</p>
+<p><Instruction></p>
+<p>Finally, register this new resolver the same way you registered <code>Query</code> inside <code>GraphQLEndpoint#buildSchema</code>:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>private static GraphQLSchema buildSchema() {
+    LinkRepository linkRepository = new LinkRepository();
+    return SchemaParser.newParser()
+    .file(&quot;schema.graphqls&quot;)
+    .resolvers(new Query(linkRepository), new Mutation(linkRepository))
+    .build()
+    .makeExecutableSchema();
+}</code></pre>
+<p></Instruction></p>
+<h3 id="creating-links">Creating links</h3>
+<p>Restart Jetty and test out your spiffy new mutation using GraphiQL:</p>
+<figure>
+<img src="http://i.imgur.com/6l8HrQq.png" alt="Restart Jetty and test out your spiffy new mutation using GraphiQL" /><figcaption>Restart Jetty and test out your spiffy new mutation using GraphiQL</figcaption>
+</figure>
+<p>Re-run <code>allLinks</code> to verify your new link has indeed been persisted:</p>
+<figure>
+<img src="http://i.imgur.com/X6pD0t0.png" alt="Re-run allLinks to verify your new link has indeed been persisted" /><figcaption>Re-run allLinks to verify your new link has indeed been persisted</figcaption>
+</figure>
+</body>
+</html>

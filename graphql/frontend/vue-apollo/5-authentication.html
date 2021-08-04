@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’ll learn how you can implement authentication functionality with Apollo and Graphcool to provide a login to the user.</p>
+<h3 id="prepare-the-vuejs-components">Prepare the VueJS components</h3>
+<p>As in the sections before, you’ll set the stage for the login functionality by preparing the VueJS components that are needed for this feature. You’ll start by implementing the <code>AppLogin</code> component.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/components</code> and call it <code>AppLogin.vue</code>. Then paste the following code inside of it:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/applogin.vue&quot;)"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;h4 class=&#39;mv3&#39;&gt;{{login ? &#39;Login&#39; : &#39;Sign Up&#39;}}&lt;/h4&gt;
+    &lt;div class=&#39;flex flex-column&#39;&gt;
+      &lt;input
+        v-show=&quot;!login&quot;
+        v-model=&quot;name&quot;
+        type=&quot;text&quot;
+        placeholder=&quot;Your name&quot;&gt;
+      &lt;input
+        v-model=&quot;email&quot;
+        type=&quot;text&quot;
+        placeholder=&quot;Your email address&quot;&gt;
+      &lt;input
+        v-model=&quot;password&quot;
+        type=&quot;password&quot;
+        placeholder=&quot;Password&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&#39;flex mt3&#39;&gt;
+      &lt;button
+        type=&quot;button&quot;
+        class=&#39;pointer mr2 button&#39;
+        @click=&quot;confirm()&quot;&gt;
+        {{login ? &#39;login&#39; : &#39;create account&#39;}}
+      &lt;/button&gt;
+      &lt;button
+        type=&quot;button&quot;
+        class=&#39;pointer button&#39;
+        @click=&quot;login = !login&quot;&gt;
+        {{login ? &#39;need to create an account?&#39; : &#39;already have an account?&#39;}}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;../constants/settings&#39;
+
+  export default {
+    name: &#39;AppLogin&#39;,
+    data () {
+      return {
+        email: &#39;&#39;,
+        login: true,
+        name: &#39;&#39;,
+        password: &#39;&#39;
+      }
+    },
+    methods: {
+      confirm () {
+        // ... you&#39;ll implement this in a bit
+      },
+      saveUserData (id, token) {
+        localStorage.setItem(GC_USER_ID, id)
+        localStorage.setItem(GC_AUTH_TOKEN, token)
+        this.$root.$data.userId = localStorage.getItem(GC_USER_ID)
+      }
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly gain an understanding of the structure of this new component which can have two major states.</p>
+<p>One state is for users that already have an account and only need to login. In this state, the component will only render two <code>input</code> fields for the user to provide their <code>email</code> and <code>password</code>. Notice that <code>login</code> will be <code>true</code> in this case.</p>
+<p>The second state is for users that haven’t created an account yet, and thus still need to sign up. Here, you also render a third <code>input</code> field where users can provide their <code>name</code>. In this case, <code>login</code> will be <code>false</code>.</p>
+<p>The method <code>confirm</code> will be used to implement the mutations that we need to send for the login functionality.</p>
+<p>Next you also need to provide the <code>src/constants/settings.js</code> file that we use to define keys for the credentials that we’re storing in the browser’s <code>localStorage</code>.</p>
+<p><Instruction></p>
+<p>In <code>src/constants</code>, create a new file called <code>settings.js</code> and add the following two definitions:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/settings.js&quot;)"><code>export const GC_USER_ID = &#39;graphcool-user-id&#39;
+export const GC_AUTH_TOKEN = &#39;graphcool-auth-token&#39;</code></pre>
+<p></Instruction></p>
+<p>With that component in place, you can go ahead and add a new route to your <code>src/router/index.js</code> file.</p>
+<p><Instruction></p>
+<p>Open <code>src/router/index.js</code> and update the <code>routes</code> array to include the new route:</p>
+<pre class="js{10-13}(path=&quot;.../hackernews-vue-apollo/src/router/index.js&quot;)"><code>routes: [
+  {
+    path: &#39;/&#39;,
+    component: LinkList
+  },
+  {
+    path: &#39;/create&#39;,
+    component: CreateLink
+  },
+  {
+    path: &#39;/login&#39;,
+    component: AppLogin
+  }
+],</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Also import the <code>AppLogin</code> component near top of the same file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/router/index.js&quot;)"><code>import AppLogin from &#39;../components/AppLogin&#39;</code></pre>
+<p></Instruction></p>
+<p>Finally, go ahead and add the <code>AppLink</code> to the <code>AppHeader</code> component that allows users to navigate to the <code>Login</code> page.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/AppHeader.vue</code> and update the file to look like the following:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/appheader.vue&quot;)"><code>&lt;template&gt;
+  &lt;div class=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+    &lt;div class=&quot;flex flex-fixed black&quot;&gt;
+      &lt;div class=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+      &lt;router-link to=&quot;/&quot; class=&quot;ml1 no-underline black&quot;&gt;new&lt;/router-link&gt;
+      &lt;div class=&quot;flex&quot; v-if=&quot;userId&quot;&gt;
+        &lt;div class=&quot;ml1&quot;&gt;|&lt;/div&gt;
+        &lt;router-link to=&quot;/create&quot; class=&quot;ml1 no-underline black&quot;&gt;submit&lt;/router-link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;flex flex-fixed&quot;&gt;
+      &lt;div v-if=&quot;userId&quot; class=&quot;ml1 pointer black&quot; @click=&quot;logout()&quot;&gt;logout&lt;/div&gt;
+      &lt;router-link v-else to=&quot;/login&quot; class=&quot;ml1 no-underline black&quot;&gt;login&lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;../constants/settings&#39;
+
+  export default {
+    name: &#39;AppHeader&#39;,
+    computed: {
+      userId () {
+        return this.$root.$data.userId
+      }
+    },
+    methods: {
+      logout () {
+        localStorage.removeItem(GC_USER_ID)
+        localStorage.removeItem(GC_AUTH_TOKEN)
+        this.$root.$data.userId = localStorage.getItem(GC_USER_ID)
+      }
+    }
+  }
+&lt;/script&gt;</code></pre>
+<p></Instruction></p>
+<p>You first retrieve the <code>userId</code> from <code>this.$root.$data</code>. If the <code>userId</code> is not available, the <em>submit</em>-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.</p>
+<p>You’re also adding a second button on the right side of the <code>AppHeader</code> that users can use to login and logout.</p>
+<p>Here is what the <code>AppLogin</code> and <code>AppHeader</code> components now look like:</p>
+<figure>
+<img src="http://imgur.com/YgAgtTB.png" alt="AppLogin and AppHeader running" /><figcaption>AppLogin and AppHeader running</figcaption>
+</figure>
+<p>Before you can implement the authentication functionality in <code>src/components/AppLogin.vue</code>, you need to prepare the Graphcool project and enable authentication on the server-side.</p>
+<h3 id="enabling-email-and-password-authentication-updating-the-schema">Enabling Email-and-Password Authentication &amp; Updating the Schema</h3>
+<p><Instruction></p>
+<p>In the directory where <code>project.graphcool</code> is located, type the following into the terminal:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">graphcool</span> console</a></code></pre></div>
+<p></Instruction></p>
+<p>This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.</p>
+<p><Instruction></p>
+<p>Select the <em>Integrations</em>-tab on the left side-menu and then click on the <em>Email-Password-Auth</em>-integration.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/FkyzuuM.png" alt="The email-password-auth integration" /><figcaption>The email-password-auth integration</figcaption>
+</figure>
+<p>This will open the popup that allows you to enable Graphcool’s email-based authentication mechanism.</p>
+<p><Instruction></p>
+<p>In the popup, simply click <em>Enable</em>.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://imgur.com/HNdmas3.png" alt="Click enable in the popup" /><figcaption>Click enable in the popup</figcaption>
+</figure>
+<p>Having the <code>Email-and-Password</code> auth provider enabled adds two new mutations to the project’s API:</p>
+<pre class="graphql(nocopy)"><code># 1. Create new user
+createUser(authProvider: { email: { email, password } }): User
+
+# 2. Login existing user
+signinUser(email: { email, password }): SignInUserPayload
+
+# SignInUserPayload bundles information about the `user` and `token`
+type SignInUserPayload {
+  user: User
+  token: String
+}</code></pre>
+<p>Next, you have to make sure that the changes introduced by the authentication provider are reflected in your local project file. You can use the <code>graphcool pull</code> command to update your local schema file with changes that happened remotely.</p>
+<p><Instruction></p>
+<p>Open a terminal window and navigate to the directory where <code>project.graphcool</code> is located. Then run the following command:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">graphcool</span> pull</a></code></pre></div>
+<p></Instruction></p>
+<blockquote>
+<p>Note: Before the remote schema gets fetched, you will be asked to confirm that you want to override the current project file. You can confirm by typing <code>y</code>.</p>
+</blockquote>
+<p>This will bump the schema <code>version</code> to <code>2</code> and update the <code>User</code> type to now also include the <code>email</code> and <code>password</code> fields:</p>
+<pre class="{3,5}graphql(nocopy)"><code>type User @model {
+  createdAt: DateTime!
+  email: String @isUnique
+  id: ID! @isUnique
+  password: String
+  updatedAt: DateTime!
+}</code></pre>
+<p>Next you need to make one more modification to the schema. Generally, when updating the schema of a Graphcool project, you’ve got two ways of doing so:</p>
+<ol type="1">
+<li>Use the web-based <a href="https://console.graph.cool">Graphcool Console</a> and change the schema directly</li>
+<li>Use the Graphcool project file and the CLI to update the schema from your local machine</li>
+</ol>
+<p><Instruction></p>
+<p>Open your project file <code>project.graphcool</code> and update the <code>User</code> and <code>Link</code> types as follows:</p>
+<pre class="graphql{7,15,17}"><code>type Link @model {
+  createdAt: DateTime!
+  description: String!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  url: String!
+  postedBy: User @relation(name: &quot;UsersLinks&quot;)
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  email: String @isUnique
+  updatedAt: DateTime!
+  name: String!
+  password: String
+  links: [Link!]! @relation(name: &quot;UsersLinks&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>You added two things to the schema:</p>
+<ul>
+<li>A new field on the <code>User</code> type to store the <code>name</code> of the user.</li>
+<li>A new relation between the <code>User</code> and the <code>Link</code> type that represents a one-to-many relationship and expresses that one <code>User</code> can be associated with multiple links. The relation manifests itself in the two fields <code>postedBy</code> and <code>links</code>.</li>
+</ul>
+<p><Instruction></p>
+<p>Save the file and execute the following command in the Terminal:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">graphcool</span> push</a></code></pre></div>
+<p></Instruction></p>
+<p>Here is the Terminal output after you issue the command:</p>
+<pre class="sh(nocopy)"><code>$ graphcool push
+ ✔ Your schema was successfully updated. Here are the changes:
+
+  | (*)  The type `User` is updated.
+  ├── (+)  A new field with the name `name` and type `String!` is created.
+  |
+  | (+)  The relation `UsersLinks` is created. It connects the type `Link` with the type `User`.
+
+Your project file project.graphcool was updated. Reload it in your editor if needed.</code></pre>
+<blockquote>
+<p><strong>Note</strong>: You can also use the <code>graphcool status</code> command after having made changes to the schema to preview the potential changes that would be performed with <code>graphcool push</code>.</p>
+</blockquote>
+<p>Perfect, you’re all set now to actually implement the authentication functionality inside your app.</p>
+<h3 id="implementing-the-login-mutations">Implementing the Login Mutations</h3>
+<p><code>createUser</code> and <code>signinUser</code> are two regular GraphQL mutations that you can use in the same way as you did with the <code>createLink</code> mutation from before.</p>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and add the following two definitions to the file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const CREATE_USER_MUTATION = gql`
+  mutation CreateUserMutation($name: String!, $email: String!, $password: String!) {
+    createUser(
+      name: $name,
+      authProvider: {
+        email: {
+          email: $email,
+          password: $password
+        }
+      }
+    ) {
+      id
+    }
+
+    signinUser(email: {
+      email: $email,
+      password: $password
+    }) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`
+
+export const SIGNIN_USER_MUTATION = gql`
+  mutation SigninUserMutation($email: String!, $password: String!) {
+    signinUser(email: {
+      email: $email,
+      password: $password
+    }) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Now, let’s gain a better understanding what’s going on in the two mutations that you just added to the <code>src/constants/graphql.js</code> file.</p>
+<p>The <code>SIGNIN_USER_MUTATION</code> looks very similar to the mutations we saw before. It simply takes the <code>email</code> and <code>password</code> as arguments and returns info about the <code>user</code> as well as a <code>token</code> that you can attach to subsequent requests to authenticate the user. You’ll learn in a bit how to do so.</p>
+<p>The <code>CREATE_USER_MUTATION</code> however is a bit different! Here, we actually define <em>two</em> mutations at once! When you’re doing that, the execution order is always <em>from top to bottom</em>. So, in your case the <code>createUser</code> mutation will be executed <em>before</em> the <code>signinUser</code> mutation. Bundling two mutations like this allows you to sign up and login in a single request!</p>
+<p>All right, all that’s left to do is to call the two mutations inside the <code>AppLogin</code> component!</p>
+<p><Instruction></p>
+<p>Open <code>src/components/AppLogin.vue</code> and implement <code>confirm</code> as follows:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/applogin.vue&quot;)"><code>confirm () {
+  const { name, email, password } = this.$data
+  if (this.login) {
+    this.$apollo.mutate({
+      mutation: SIGNIN_USER_MUTATION,
+      variables: {
+        email,
+        password
+      }
+    }).then((result) =&gt; {
+      const id = result.data.signinUser.user.id
+      const token = result.data.signinUser.token
+      this.saveUserData(id, token)
+    }).catch((error) =&gt; {
+      alert(error)
+    })
+  } else {
+    this.$apollo.mutate({
+      mutation: CREATE_USER_MUTATION,
+      variables: {
+        name,
+        email,
+        password
+      }
+    }).then((result) =&gt; {
+      const id = result.data.signinUser.user.id
+      const token = result.data.signinUser.token
+      this.saveUserData(id, token)
+    }).catch((error) =&gt; {
+      alert(error)
+    })
+  }
+  this.$router.push({path: &#39;/&#39;})
+}</code></pre>
+<p></Instruction></p>
+<p>The code is pretty straightforward. If the user wants to only login, you’re calling the <code>signinUserMutation</code> and pass the provided <code>email</code> and <code>password</code> as arguments. Otherwise you’re using the <code>createUserMutation</code> where you also pass the user’s <code>name</code>. After the mutation is performed, you’re storing the <code>id</code> and <code>token</code> in <code>localStorage</code> and navigating back to the root route.</p>
+<p><Instruction></p>
+<p>Also import the <code>CREATE_USER_MUTATION</code> and <code>SIGNIN_USER_MUTATION</code> constants near top of the <code>script</code> block:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/applogin.vue&quot;)"><code>import { CREATE_USER_MUTATION, SIGNIN_USER_MUTATION } from &#39;../constants/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p>You now need to make a couple more changes to <code>src/main.js</code> to get things working.</p>
+<p><Instruction></p>
+<p>First, import <code>GC_USER_ID</code> near top of <code>src/main.js</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import { GC_USER_ID } from &#39;./constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/main.js</code> make the following change to the bottom of the file:</p>
+<pre class="js{1-2,9-12}(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>// 1
+let userId = localStorage.getItem(GC_USER_ID)
+
+/* eslint-disable no-new */
+new Vue({
+  el: &#39;#app&#39;,
+  provide: apolloProvider.provide(),
+  router,
+  // 2
+  data: {
+    userId
+  },
+  render: h =&gt; h(App)
+})</code></pre>
+<p></Instruction></p>
+<ol type="1">
+<li>You get the current <code>GC_USER_ID</code> from <code>localStorage</code> if there is one</li>
+<li>You set this <code>userId</code> on the <code>$root</code> <code>$data</code> object</li>
+</ol>
+<p>You can now create an account by providing a <code>name</code>, <code>email</code> and <code>password</code>. Once you do so, the <em>submit</em>-button will be rendered again:</p>
+<figure>
+<img src="http://imgur.com/WoWLmDJ.png" alt="Creating an account by providing name, email, and password" /><figcaption>Creating an account by providing name, email, and password</figcaption>
+</figure>
+<h3 id="updating-the-createlink-mutation">Updating the <code>createLink</code>-mutation</h3>
+<p>Since you’re now able to authenticate users and also added a new relation between the <code>Link</code> and <code>User</code> type, you can also make sure that every new link that gets created in the app can store information about the user that posted it. That’s what the <code>postedBy</code> field on <code>Link</code> will be used for.</p>
+<p><Instruction></p>
+<p>Open <code>src/constants/graphql.js</code> and update the definition of <code>CREATE_LINK_MUTATION</code> as follows:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/constants/graphql.js&quot;)"><code>export const CREATE_LINK_MUTATION = gql`
+  mutation CreateLinkMutation($description: String!, $url: String!, $postedById: ID!) {
+    createLink(
+      description: $description,
+      url: $url,
+      postedById: $postedById
+    ) {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>There are two major changes. You first added another argument to the mutation that represents the <code>id</code> of the user that is posting the link. Secondly, you also include the <code>postedBy</code> information in the <em>payload</em> of the mutation.</p>
+<p>Now you need to make sure that the <code>id</code> of the posting user is included when you’re calling the mutation in <code>createLink</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/components/CreateLink.vue</code> and update the implementation of <code>createLink</code> like so:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/createlink.vue&quot;)"><code>createLink () {
+  const postedById = localStorage.getItem(GC_USER_ID)
+  if (!postedById) {
+    console.error(&#39;No user logged in&#39;)
+    return
+  }
+
+  const newDescription = this.description
+  const newUrl = this.url
+  this.description = &#39;&#39;
+  this.url = &#39;&#39;
+
+  this.$apollo.mutate({
+    mutation: CREATE_LINK_MUTATION,
+    variables: {
+      description: newDescription,
+      url: newUrl,
+      postedById
+    },
+    update: (store, { data: { createLink } }) =&gt; {
+      const data = store.readQuery({ query: ALL_LINKS_QUERY })
+      data.allLinks.push(createLink)
+      store.writeQuery({ query: ALL_LINKS_QUERY, data })
+    }
+  }).then((data) =&gt; {
+    this.$router.push({path: &#39;/&#39;})
+  }).catch((error) =&gt; {
+    console.error(error)
+    this.newDescription = newDescription
+    this.newUrl = newUrl
+  })
+}</code></pre>
+<p></Instruction></p>
+<p>For this to work, you also need to import the <code>GC_USER_ID</code> key.</p>
+<p><Instruction></p>
+<p>Add the following import statement near the top of <code>src/components/CreateLink.vue</code>’s <code>script</code> block.</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/components/createlink.vue&quot;)"><code>import { GC_USER_ID } from &#39;../constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p>Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from <code>localStorage</code>. If that succeeds, you’ll pass it to the call to <code>createLinkMutation</code> so that every new <code>Link</code> will from now on store information about the <code>User</code> who created it.</p>
+<p>If you haven’t done so before, go ahead and test the login functionality. Open <code>http://localhost:8080/login</code>. Then click the <em>need to create an account?</em>-button and provide some user data for the user you’re creating. Finally, click the <em>create Account</em>-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the <a href="https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/">data browser</a> or sending the <code>allUsers</code> query in a Playground.</p>
+<h3 id="configuring-apollo-with-the-auth-token">Configuring Apollo with the Auth Token</h3>
+<p>Now that users are able to login and obtain a token that authenticates them against the Graphcool backend, you actually need to make sure that the token gets attached to all requests that are sent to the API.</p>
+<p>Since all the API requests are actually created and sent by the <code>ApolloClient</code> in your app, you need to make sure it knows about the user’s token. Luckily, Apollo provides a nice way for authenticating all requests by using <a href="http://dev.apollodata.com/react/auth.html#Header">middleware</a>.</p>
+<p><Instruction></p>
+<p>Open <code>src/main.js</code> and put the following code <em>between</em> the creation of the <code>httpLink</code> and the instantiation of the <code>ApolloClient</code>:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>const authMiddleware = new ApolloLink((operation, forward) =&gt; {
+  // add the authorization to the headers
+  const token = localStorage.getItem(GC_AUTH_TOKEN)
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : null
+    }
+  })
+
+  return forward(operation)
+})</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then directly import the key that you need to retrieve the token from <code>localStorage</code> on top of the same file:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import { GC_USER_ID, GC_AUTH_TOKEN } from &#39;./constants/settings&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Everything looks fine but there is no <code>ApolloLink</code> (1) and auth middleware is not connected yet (2) to the instance of <code>ApolloClient</code>. Let’s fix this:</p>
+<pre class="js(path=&quot;.../hackernews-vue-apollo/src/main.js&quot;)"><code>import { ApolloClient } from &#39;apollo-client&#39;
+import { HttpLink } from &#39;apollo-link-http&#39;
+import { InMemoryCache } from &#39;apollo-cache-inmemory&#39;
+// 1
+import { ApolloLink } from &#39;apollo-link&#39;
+
+// ...
+
+const apolloClient = new ApolloClient({
+  // 2
+  link: authMiddleware.concat(httpLink),
+  cache: new InMemoryCache(),
+  connectToDevTools: true
+})</code></pre>
+<p></Instruction></p>
+<p>That’s it - now all your API requests will be authenticated if a <code>token</code> is available.</p>
+<blockquote>
+<p>Note: In a real application you would now configure the <a href="https://www.graph.cool/docs/reference/auth/authorization-iegoo0heez/">authorization rules</a> (permissions) of your project to define what kind of operations authenticated and non-authenticated users should be allowed to perform.</p>
+</blockquote>
+</body>
+</html>

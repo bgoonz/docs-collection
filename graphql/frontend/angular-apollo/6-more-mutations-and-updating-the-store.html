@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>More Mutations and Updating the Store</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">More Mutations and Updating the Store</h1>
+</header>
+<p>The next piece of functionality that you’ll implement is the voting feature! Authenticated users are allowed to submit a vote for a link. The most upvoted links will later be displayed on a separate route!</p>
+<h3 id="preparing-the-angular-components">Preparing the Angular Components</h3>
+<p>Once more, the first step to implement this new feature is to prepare your Angular components for the new functionality.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/link-item/link-item.component.html</code> and update it to look like the following:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.html&quot;)"><code>&lt;div class=&quot;flex mt2 items-start&quot;&gt;
+  &lt;div class=&quot;flex items-center&quot;&gt;
+    &lt;span class=&quot;gray&quot;&gt;{{index+1}}.&lt;/span&gt;
+    &lt;div *ngIf=&quot;isAuthenticated&quot; class=&quot;ml1 gray f11 upvote&quot; (click)=&quot;voteForLink()&quot;&gt;▲&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ml1&quot;&gt;
+    &lt;a [href]=&quot;link.url&quot; class=&quot;link&quot;&gt;{{link.description}} ({{link.url}})&lt;/a&gt;
+    &lt;div class=&quot;f6 lh-copy gray&quot;&gt;
+      {{link.votes.length}} votes | by {{link.postedBy ? link.postedBy.name : &#39;Unknown&#39;}}
+      {{humanizeDate(link.createdAt)}}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, update the code in <code>link-item.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>// ...
+
+export class LinkItemComponent implements OnInit, OnDestroy {
+  @Input()
+  link: Link;
+
+  @Input()
+  index: number = 0;
+
+  @Input()
+  isAuthenticated: boolean = false;
+
+  subscriptions: Subscription[] = [];
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+  voteForLink = async () =&gt; {
+    // ... you&#39;ll implement this in chapter 6
+  }
+
+  humanizeDate(date: string) {
+    return timeDifferenceForDate(date);
+  }
+
+  ngOnDestroy(): void {
+    for (let sub of this.subscriptions) {
+      if (sub &amp;&amp; sub.unsubscribe) {
+        sub.unsubscribe();
+      }
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction> Finally, add the following code in <code>login.component.css</code> :</p>
+<pre class="css(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.css&quot;)"><code>.upvote {
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+</code></pre>
+<p></Instruction></p>
+<p>You’re already preparing the <code>LinkItemComponent</code> to render the number of votes for each link and the name of the user that posted it. Plus you’ll render the upvote button if a user is currently logged in - that’s what you’re using the <code>isAuthenticated</code> for. If the <code>Link</code> is not associated with a <code>User</code>, the user’s name will be rendered as <code>Unknown</code>.</p>
+<p>Notice that you’re also using a function called <code>timeDifferenceForDate</code> that gets passed the <code>createdAt</code> information for each link. The function will take the timestamp and convert it to a string that’s more user-friendly, e.g. <code>"3 hours ago"</code>.</p>
+<p>Go ahead and implement the <code>timeDifferenceForDate</code> function next so you can import and use it in the <code>LinkItemComponent</code>.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>utils</code> in the <code>/src/app</code> directory with the following content:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/utils.ts&quot;)"><code>function timeDifference(current: number, previous: number) {
+  const milliSecondsPerMinute = 60 * 1000;
+  const milliSecondsPerHour = milliSecondsPerMinute * 60;
+  const milliSecondsPerDay = milliSecondsPerHour * 24;
+  const milliSecondsPerMonth = milliSecondsPerDay * 30;
+  const milliSecondsPerYear = milliSecondsPerDay * 365;
+
+  const elapsed = current - previous;
+
+  if (elapsed &lt; milliSecondsPerMinute / 3) {
+    return &#39;just now&#39;
+  }
+
+  if (elapsed &lt; milliSecondsPerMinute) {
+    return &#39;less than 1 min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerHour) {
+    return Math.round(elapsed / milliSecondsPerMinute) + &#39; min ago&#39;
+  } else if (elapsed &lt; milliSecondsPerDay) {
+    return Math.round(elapsed / milliSecondsPerHour) + &#39; h ago&#39;
+  } else if (elapsed &lt; milliSecondsPerMonth) {
+    return Math.round(elapsed / milliSecondsPerDay) + &#39; days ago&#39;
+  } else if (elapsed &lt; milliSecondsPerYear) {
+    return Math.round(elapsed / milliSecondsPerMonth) + &#39; mo ago&#39;
+  } else {
+    return Math.round(elapsed / milliSecondsPerYear) + &#39; years ago&#39;
+  }
+}
+
+export function timeDifferenceForDate(date: string) {
+  const now = new Date().getTime();
+  const updated = new Date(date).getTime();
+  return timeDifference(now, updated);
+}
+</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Back in <code>src/app/link-item/link-item.component.ts</code>, import <code>timeDifferenceForDate</code> at the top :</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>import {timeDifferenceForDate} from &#39;../utils&#39;;</code></pre>
+<p></Instruction></p>
+<p>Finally, each <code>Link</code> element will also render its position inside the list, so you have to pass down an <code>index</code> from the <code>LinkListComponent</code> and also know if the user is authenticated through the <code>isAuthenticated</code> property passed down.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/link-list/link-list.component.html</code> and update the rendering of the <code>LinkItemComponent</code> to also include the link’s position and the authentication state:</p>
+<pre class="html(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.html&quot;)"><code>&lt;h4 *ngIf=&quot;loading&quot;&gt;Loading...&lt;/h4&gt;
+&lt;hn-link-item
+  *ngFor=&quot;let link of allLinks;let index=index&quot;
+  [link]=&quot;link&quot;
+  [index]=&quot;index&quot;
+  [isAuthenticated]=&quot;logged&quot;&gt;
+&lt;/hn-link-item&gt;
+</code></pre>
+<p></Instruction></p>
+<p><Instruction> Then, go ahead and update <code>src/app/link-list/link-list.component.ts</code> to look like the following:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.ts&quot;)"><code>export class LinkListComponent implements OnInit, OnDestroy {
+  allLinks: Link[] = [];
+  loading: boolean = true;
+
+  logged: boolean = false;
+
+  subscriptions: Subscription[] = [];
+
+  constructor(private apollo: Apollo, private authService: AuthService) {
+  }
+
+  ngOnInit() {
+
+    this.authService.isAuthenticated
+      .distinctUntilChanged()
+      .subscribe(isAuthenticated =&gt; {
+        this.logged = isAuthenticated
+      });
+
+    const querySubscription = this.apollo.watchQuery&lt;AllLinkQueryResponse&gt;({
+      query: ALL_LINKS_QUERY
+    }).valueChanges.subscribe((response) =&gt; {
+      this.allLinks = response.data.allLinks;
+      this.loading = response.data.loading;
+    });
+
+    this.subscriptions = [...this.subscriptions, querySubscription];
+
+  }
+
+  ngOnDestroy(): void {
+    for (let sub of this.subscriptions) {
+      if (sub &amp;&amp; sub.unsubscribe) {
+        sub.unsubscribe();
+      }
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Notice that the app won’t run at the moment since the <code>votes</code> are not yet included in the query. You’ll fix that next!</p>
+<h3 id="updating-the-schema">Updating the Schema</h3>
+<p>For this new feature, you also need to update the schema again since votes on links will be represented with a custom <code>Vote</code> type.</p>
+<p><Instruction></p>
+<p>Open <code>types.graphql</code> and add the following type:</p>
+<pre class="graphql"><code>type Vote @model {
+  id: ID! @isUnique
+  user: User! @relation(name: &quot;UsersVotes&quot;)
+  link: Link! @relation(name: &quot;VotesOnLink&quot;)
+}</code></pre>
+<p></Instruction></p>
+<p>Each <code>Vote</code> will be associated with the <code>User</code> who created it as well as the <code>Link</code> that it belongs to. You also have to add the other end of the relation.</p>
+<p><Instruction></p>
+<p>Still in <code>types.graphql</code>, add the following field to the <code>User</code> type:</p>
+<pre class="graphql"><code>votes: [Vote!]! @relation(name: &quot;UsersVotes&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now add another field to the <code>Link</code> type:</p>
+<pre class="graphql"><code>votes: [Vote!]! @relation(name: &quot;VotesOnLink&quot;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, open up a terminal window and navigate to the directory where <code>types.graphql</code> is located. Then apply your schema changes by typing the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-angular-apollo/graphcool&quot;)"><code>graphcool-framework deploy</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>With these changes in the schema, you now need to make a couple more changes to <code>src/app/types.ts</code> to reflect these updates in your typescript types. We create the <code>Vote</code> class then update the <code>Link</code> and <code>User</code> class.</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/types.ts&quot;)"><code>export class Link {
+  id?: string;
+  description?: string;
+  url?: string;
+  createdAt?: string;
+  postedBy?: User;
+  votes?: Vote[];
+}
+
+export class User {
+  id?: string;
+  name?: string;
+  email?: string;
+  votes?: Vote[];
+}
+
+export class Vote {
+  id?: string;
+  user?: User;
+  link?: Link;
+}
+</code></pre>
+<p></Instruction></p>
+<p>Awesome! Now that you updated the schema and the typescript types, you can fix the issue that currently prevents you from adequately running the app. It can be resolved by including the information about the links’ votes in the <code>allLinks</code> query that’s defined in <code>/src/app/graphql.ts</code>.</p>
+<p><Instruction></p>
+<p>Open <code>/src/app/graphql.ts</code> and update the definition of <code>ALL_LINKS_QUERY</code> to look as follows:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>export const ALL_LINKS_QUERY = gql`
+  query AllLinksQuery {
+    allLinks {
+      id
+      createdAt
+      url
+      description
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>All you do here is add information about the user who posted a link as well as information about the links’ votes in the query’s payload. You can now rerun the app, and the links will be displayed appropriately.</p>
+<figure>
+<img src="https://i.imgur.com/8WLXSIe.png" alt="Run the app and view the links" /><figcaption>Run the app and view the links</figcaption>
+</figure>
+<p>Let’s now move on and implement the upvote mutation!</p>
+<h3 id="calling-the-mutation">Calling the Mutation</h3>
+<p><Instruction></p>
+<p>Open <code>src/app/graphql.ts</code> and add the following mutation definition to the file:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/graphql.ts&quot;)"><code>export const CREATE_VOTE_MUTATION = gql`
+  mutation CreateVoteMutation($userId: ID!, $linkId: ID!) {
+    createVote(userId: $userId, linkId: $linkId) {
+      id
+      link {
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export interface CreateVoteMutationResponse {
+  loading: boolean;
+  createVote: {
+    id: string;
+    link: Link;
+    user: User;
+  };
+}
+</code></pre>
+<p></Instruction></p>
+<p>This step should feel pretty familiar by now. You’re adding the ability to call the <code>createVoteMutation</code> to the <code>src/app/graphql.ts</code> file and naming it <code>CREATE_VOTE_MUTATION</code>.</p>
+<p><Instruction></p>
+<p>As with the times before, you also need to import this constant near the top of the <code>script</code> block in <code>src/app/link-item/link-item.component.ts</code>. You need to import <code>GC_USER_ID</code> as well:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>import { CREATE_VOTE_MUTATION } from &#39;../app/graphql&#39;
+import { GC_USER_ID } from &#39;../app/constants&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, you need to implement <code>voteForLink</code> as follows in <code>src/app/link-item/link-item.component.ts</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>voteForLink() {
+    const userId = localStorage.getItem(GC_USER_ID);
+    const voterIds = this.link.votes.map(vote =&gt; vote.user.id);
+    if (voterIds.includes(userId)) {
+      alert(`User (${userId}) already voted for this link.`);
+      return
+    }
+    const linkId = this.link.id;
+
+    const mutationSubscription = this.apollo.mutate({
+      mutation: CREATE_VOTE_MUTATION,
+      variables: {
+        userId,
+        linkId
+      }
+    })
+      .subscribe();
+
+    this.subscriptions = [...this.subscriptions, mutationSubscription];
+  }</code></pre>
+<p></Instruction></p>
+<p>Notice that in the first part of the method, you’re checking whether the current user already voted for that link. If that’s the case, you return early from the method and do not execute the mutation.</p>
+<p>You can now go ahead and test the implementation! Click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page, you’ll see the added votes.</p>
+<p>There is still a flaw in the app. Since the <code>votes</code> on a <code>Link</code> don’t get updated right away, a <code>User</code> currently can submit an indefinite number of votes until the page is refreshed. Only then will the protection mechanism be applied and instead of a upvote, the click on the voting button will simply result in the following logging statement in the console: <em>User (cj42qfzwnugfo01955uasit8l) already voted for this link.</em></p>
+<p>But at least you know that the mutation is working. In the next section, you’ll fix the issue and make sure that the cache gets updated directly after each mutation!</p>
+<h3 id="updating-the-cache">Updating the Cache</h3>
+<p>One cool thing about Apollo is that you can manually control the contents of the cache. This is handy, especially after a mutation was performed since this allows you to determine precisely how you want the cache to be updated. Here, you’ll use it to make sure the UI displays the correct number of votes right after the <code>createVote</code> mutation is performed.</p>
+<p>You can implement this functionality by using Apollo’s <a href="https://dev-blog.apollodata.com/apollo-clients-new-imperative-store-api-6cb69318a1e3">imperative store API</a>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/link-item/link-item.component.ts</code> and update the call to <code>CREATE_VOTE_MUTATION</code> inside the <code>voteForLink</code> method as follows:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>const mutationSubscription = this.apollo.mutate({
+      mutation: CREATE_VOTE_MUTATION,
+      variables: {
+        userId,
+        linkId
+      },
+      update: (store, { data: { createVote } }) =&gt; {
+        this.updateStoreAfterVote(store, createVote, linkId)
+      }
+    })
+      .subscribe();</code></pre>
+<p></Instruction></p>
+<p>The <code>update</code> function that you’re adding as an argument to the mutation will be called when the server returns the response. It receives the payload of the mutation (<code>data</code>) and the current cache (<code>store</code>) as arguments. You can then use this input to determine a new state for the cache.</p>
+<p>Notice that you’re already <em>destructuring</em> the server response and retrieving the <code>createVote</code> field from it.</p>
+<p>All right, so now you know what this <code>update</code> function is, but the actual implementation of the <code>updateStoreAfterVote</code> will be done in the parent component of <code>LinkItemComponent</code>, which is <code>LinkListComponent</code>.</p>
+<p><Instruction></p>
+<p>Open <code>src/app/link-list/link-list.component.ts</code> and add the following method inside the <code>LinkListComponent</code>:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-list/link-list.component.ts&quot;)"><code>updateStoreAfterVote (store, createVote, linkId) {
+    // 1
+    const data = store.readQuery({
+      query: ALL_LINKS_QUERY
+    });
+
+    // 2
+    const votedLink = data.allLinks.find(link =&gt; link.id === linkId);
+    votedLink.votes = createVote.link.votes;
+
+    // 3
+    store.writeQuery({ query: ALL_LINKS_QUERY, data })
+  }</code></pre>
+<p></Instruction></p>
+<p>What’s going on here?</p>
+<ol type="1">
+<li>You start by reading the current state of the cached data for the <code>ALL_LINKS_QUERY</code> from the <code>store</code>.</li>
+<li>Now you’re retrieving the link that the user just voted for from that list. You’re also manipulating that link by resetting its <code>votes</code> to the <code>votes</code> that were just returned by the server.</li>
+<li>Finally, you take the modified data and write it back into the store.</li>
+</ol>
+<p><Instruction></p>
+<p>Then in <code>src/app/link-item/link-item.component.ts</code>, don’t forgot to add <code>@Input</code> for the <code>updateStoreAfterVote</code> callback :</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>@Input()
+updateStoreAfterVote: UpdateStoreAfterVoteCallback;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>The <code>UpdateStoreAfterVoteCallback</code> interface is defined as following:</p>
+<pre class="ts(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>interface UpdateStoreAfterVoteCallback {
+  (proxy: DataProxy, mutationResult: FetchResult&lt;CreateVoteMutationResponse&gt;, linkId: string);
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Still in <code>src/app/link-item/link-item.component.ts</code>, you now need to import <code>ALL_LINKS_QUERY</code>:</p>
+<pre class="ts{2-9,5-7,9-10}(path=&quot;.../hackernews-angular-apollo/src/app/link-item/link-item.component.ts&quot;)"><code>import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from &#39;../app/graphql&#39;</code></pre>
+<p></Instruction></p>
+<p>That’s it! The <code>update</code> method will now be executed and ensure that the store gets appropriately updated after a mutation is performed. The store update will trigger a re-render of the component and thus update the UI with the correct information!</p>
+<p>Note that we already implemented this same “optimistic UI updating” within the <code>CreateLink</code> component in an earlier chapter. The app is rounding into shape! 🤓</p>
+</body>
+</html>

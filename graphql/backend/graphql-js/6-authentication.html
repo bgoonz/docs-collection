@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Authentication</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Authentication</h1>
+</header>
+<p>In this section, you’re going to implement signup and login functionality that allows your users to authenticate against your GraphQL server.</p>
+<h3 id="adding-a-user-model">Adding a <code>User</code> model</h3>
+<p>The first thing you need is a way to represent user data in the database. To do so, you can add a <code>User</code> type to your Prisma data model.</p>
+<p>You’ll also want to add a <em>relation</em> between the <code>User</code> and the existing <code>Link</code> type to express that <code>Link</code>s are <em>posted</em> by <code>User</code>s.</p>
+<p><Instruction></p>
+<p>Open <code>prisma/schema.prisma</code> and add the following code, making sure to also update your existing <code>Link</code> model accordingly:</p>
+<p>```graphql{6-7,10-16}(path=“…/hackernews-node/prisma/data model.prisma”) model Link { id Int <span class="citation" data-cites="id">@id</span> <span class="citation" data-cites="default">@default</span>(autoincrement()) createdAt DateTime <span class="citation" data-cites="default">@default</span>(now()) description String url String postedBy User? <span class="citation" data-cites="relation">@relation</span>(fields: [postedById], references: [id]) postedById Int? }</p>
+<p>model User { id Int <span class="citation" data-cites="id">@id</span> <span class="citation" data-cites="default">@default</span>(autoincrement()) name String email String <span class="citation" data-cites="unique">@unique</span> password String links Link[] } ```</p>
+<p></Instruction></p>
+<p>Now we start to see even more how Prisma helps you to reason about your data in a way that is more aligned with how it is represented in the underlying database.</p>
+<h3 id="understanding-relation-fields">Understanding relation fields</h3>
+<p>Notice how you’re adding a new <em>relation field</em> called <code>postedBy</code> to the <code>Link</code> model that points to a <code>User</code> instance. The <code>User</code> model then has a <code>links</code> field that’s a list of <code>Link</code>s.</p>
+<p>To do this, we need to also define the relation by annotating the <code>postedBy</code> field with <a href="https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations#the-relation-attribute">the <code>@relation</code> attribute</a>. This is required for every relation field in your Prisma schema, and all you’re doing is defining what the foreign key of the related table will be. So in this case, we’re adding an extra field to store the <code>id</code> of the <code>User</code> who posts a <code>Link</code>, and then telling Prisma that <code>postedById</code> will be equal to the <code>id</code> field in the <code>User</code> table.</p>
+<p>If this is quite new to you, don’t worry! We’re going to be adding a few of these relational fields and you’ll get the hang of it as you go! For a deeper dive on relations with Prisma, check out these <a href="https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations">docs</a>.</p>
+<h3 id="updating-prisma-client">Updating Prisma Client</h3>
+<p>This is a great time to refresh your memory on the workflow we described for your project at the end of chapter 4!</p>
+<p>After every change you make to the data model, you need to migrate your database and then re-generate Prisma Client.</p>
+<p><Instruction></p>
+<p>In the root directory of the project, run the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-node&quot;)"><code>npx prisma migrate dev --name &quot;add-user-model&quot;</code></pre>
+<p></Instruction></p>
+<p>This command has now generated your second migration inside of <code>prisma/migrations</code>, and you can start to see how this becomes a historical record of how your database evolves over time.</p>
+<p>Your database structure should now be updated to reflect the changes to your data model.</p>
+<p>Finally, you need to re-generate PrismaClient.</p>
+<p><Instruction></p>
+<p>Run the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-node&quot;)"><code>npx prisma generate</code></pre>
+<p></Instruction></p>
+<p>That might feel like a lot of steps, but the workflow will become automatic by the end of this tutorial!</p>
+<p>Your database is ready and Prisma Client is now updated to expose all the CRUD queries for the newly added <code>User</code> model – woohoo! 🎉</p>
+<h3 id="extending-the-graphql-schema">Extending the GraphQL schema</h3>
+<p>Remember back when we were setting up your GraphQL server and discussed the process of schema-driven development? It all starts with extending your schema definition with the new operations that you want to add to the API - in this case a <code>signup</code> and <code>login</code> mutation.</p>
+<p><Instruction></p>
+<p>Open the application schema in <code>src/schema.graphql</code> and update the <code>Mutation</code> type as follows:</p>
+<pre class="graphql{3,4}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Mutation {
+  post(url: String!, description: String!): Link!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+}</code></pre>
+<p></Instruction></p>
+<p>Next, go ahead and add the <code>AuthPayload</code> along with a <code>User</code> type definition to the file.</p>
+<p><Instruction></p>
+<p>Still in <code>src/schema.graphql</code>, add the following type definitions:</p>
+<pre class="graphql(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  links: [Link!]!
+}</code></pre>
+<p></Instruction></p>
+<p>The <code>signup</code> and <code>login</code> mutations behave very similarly: both return information about the <code>User</code> who’s signing up (or logging in) as well as a <code>token</code> which can be used to authenticate subsequent requests against your GraphQL API. This information is bundled in the <code>AuthPayload</code> type.</p>
+<p><Instruction></p>
+<p>Finally, you need to reflect that the relation between <code>User</code> and <code>Link</code> should be bi-directional by adding the <code>postedBy</code> field to the existing <code>Link</code> model definition in <code>schema.graphql</code>:</p>
+<pre class="graphql{5}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Link {
+  id: ID!
+  description: String!
+  url: String!
+  postedBy: User
+}</code></pre>
+<p></Instruction></p>
+<h3 id="implementing-the-resolver-functions">Implementing the resolver functions</h3>
+<p>After extending the schema definition with the new operations, you need to implement resolver functions for them. Before doing so, let’s actually refactor your code a bit to keep it more modular!</p>
+<p>You’ll pull out the resolvers for each type into their own files.</p>
+<p><Instruction></p>
+<p>First, create a new directory called <code>resolvers</code> and add four files to it: <code>Query.js</code>, <code>Mutation.js</code>, <code>User.js</code> and <code>Link.js</code>. You can do so with the following commands:</p>
+<pre class="bash(path=&quot;.../hackernews-node&quot;)"><code>mkdir src/resolvers
+touch src/resolvers/Query.js
+touch src/resolvers/Mutation.js
+touch src/resolvers/User.js
+touch src/resolvers/Link.js</code></pre>
+<p></Instruction></p>
+<p>Next, move the implementation of the <code>feed</code> resolver into <code>Query.js</code>.</p>
+<p><Instruction></p>
+<p>In <code>Query.js</code>, add the following function definition:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/query.js&quot;)"><code>function feed(parent, args, context, info) {
+  return context.prisma.link.findMany()
+}
+
+module.exports = {
+  feed,
+}</code></pre>
+<p></Instruction></p>
+<p>This is pretty straighforward. You’re just reimplementing the same functionality from before with a dedicated function in a different file. The <code>Mutation</code> resolvers are next.</p>
+<h4 id="adding-authentication-resolvers">Adding authentication resolvers</h4>
+<p><Instruction></p>
+<p>Open <code>Mutation.js</code> and add the new <code>login</code> and <code>signup</code> resolvers (you’ll add the <code>post</code> resolver in a bit):</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>async function signup(parent, args, context, info) {
+  // 1
+  const password = await bcrypt.hash(args.password, 10)
+
+  // 2
+  const user = await context.prisma.user.create({ data: { ...args, password } })
+
+  // 3
+  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+
+  // 4
+  return {
+    token,
+    user,
+  }
+}
+
+async function login(parent, args, context, info) {
+  // 1
+  const user = await context.prisma.user.findUnique({ where: { email: args.email } })
+  if (!user) {
+    throw new Error(&#39;No such user found&#39;)
+  }
+
+  // 2
+  const valid = await bcrypt.compare(args.password, user.password)
+  if (!valid) {
+    throw new Error(&#39;Invalid password&#39;)
+  }
+
+  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+
+  // 3
+  return {
+    token,
+    user,
+  }
+}
+
+module.exports = {
+  signup,
+  login,
+  post,
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s use the good ol’ numbered comments again to understand what’s going on here – starting with <code>signup</code>.</p>
+<ol type="1">
+<li>In the <code>signup</code> mutation, the first thing to do is encrypt the <code>User</code>’s password using the <code>bcryptjs</code> library which you’ll install soon.</li>
+<li>The next step is to use your <code>PrismaClient</code> instance (via <code>prisma</code> as we covered in the steps about <code>context</code>) to store the new <code>User</code> record in the database.</li>
+<li>You’re then generating a JSON Web Token which is signed with an <code>APP_SECRET</code>. You still need to create this <code>APP_SECRET</code> and also install the <code>jwt</code> library that’s used here.</li>
+<li>Finally, you return the <code>token</code> and the <code>user</code> in an object that adheres to the shape of an <code>AuthPayload</code> object from your GraphQL schema.</li>
+</ol>
+<p>Now on the <code>login</code> mutation!</p>
+<ol type="1">
+<li>Instead of <em>creating</em> a new <code>User</code> object, you’re now using your <code>PrismaClient</code> instance to retrieve an existing <code>User</code> record by the <code>email</code> address that was sent along as an argument in the <code>login</code> mutation. If no <code>User</code> with that email address was found, you’re returning a corresponding error.</li>
+<li>The next step is to compare the provided password with the one that is stored in the database. If the two don’t match, you’re returning an error as well.</li>
+<li>In the end, you’re returning <code>token</code> and <code>user</code> again.</li>
+</ol>
+<p>Let’s go and finish up the implementation.</p>
+<p><Instruction></p>
+<p>First, add the required dependencies to the project:</p>
+<pre class="bash(path=&quot;.../hackernews-node/&quot;)"><code>npm install jsonwebtoken bcryptjs</code></pre>
+<p></Instruction></p>
+<p>Next, you’ll create a few utilities that are being reused in a few places.</p>
+<p><Instruction></p>
+<p>Create a new file inside the <code>src</code> directory and call it <code>utils.js</code>:</p>
+<pre class="bash(path=&quot;.../hackernews-node/&quot;)"><code>touch src/utils.js</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now, add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/utils.js&quot;)"><code>const jwt = require(&#39;jsonwebtoken&#39;);
+const APP_SECRET = &#39;GraphQL-is-aw3some&#39;;
+
+function getTokenPayload(token) {
+  return jwt.verify(token, APP_SECRET);
+}
+
+function getUserId(req, authToken) {
+  if (req) {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.replace(&#39;Bearer &#39;, &#39;&#39;);
+      if (!token) {
+        throw new Error(&#39;No token found&#39;);
+      }
+      const { userId } = getTokenPayload(token);
+      return userId;
+    }
+  } else if (authToken) {
+    const { userId } = getTokenPayload(authToken);
+    return userId;
+  }
+
+  throw new Error(&#39;Not authenticated&#39;);
+}
+
+module.exports = {
+  APP_SECRET,
+  getUserId
+};</code></pre>
+<p></Instruction></p>
+<p>The <code>APP_SECRET</code> is used to sign the JWTs which you’re issuing for your users.</p>
+<p>The <code>getUserId</code> function is a helper function that you’ll call in resolvers which require authentication (such as <code>post</code>). It first retrieves the <code>Authorization</code> header (which contains the <code>User</code>’s JWT) from the <code>context</code>. It then verifies the JWT and retrieves the <code>User</code>’s ID from it. Notice that if that process is not successful for any reason, the function will throw an <em>exception</em>. You can therefore use it to “protect” the resolvers which require authentication.</p>
+<p><Instruction></p>
+<p>To make everything work, be sure to add the following import statements to the top of <code>Mutation.js</code>:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>const bcrypt = require(&#39;bcryptjs&#39;)
+const jwt = require(&#39;jsonwebtoken&#39;)
+const { APP_SECRET, getUserId } = require(&#39;../utils&#39;)</code></pre>
+<p></Instruction></p>
+<p>Right now, there’s one more minor issue. You’re accessing a <code>request</code> object on the <code>context</code>. However, when initializing the <code>context</code>, you’re really only attaching the <code>prisma</code> instance to it - there’s no <code>request</code> object yet that could be accessed.</p>
+<p><Instruction></p>
+<p>To make the above operations possible, open <code>index.js</code> and adjust the instantiation of the <code>GraphQLServer</code> as follows:</p>
+<pre class="js{1,9,13-17}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const { getUserId } = require(&#39;./utils&#39;);
+
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, &#39;schema.graphql&#39;),
+    &#39;utf8&#39;
+  ),
+  resolvers,
+  context: ({ req }) =&gt; {
+    return {
+      ...req,
+      prisma,
+      userId:
+        req &amp;&amp; req.headers.authorization
+          ? getUserId(req)
+          : null
+    };
+  }
+});</code></pre>
+<p></Instruction></p>
+<p>Instead of attaching an object directly, you’re now creating the <code>context</code> as a function which <em>returns</em> the <code>context</code>. The advantage of this approach is that you can attach the HTTP request that carries the incoming GraphQL query (or mutation) to the <code>context</code> as well. This will allow your resolvers to read the <code>Authorization</code> header and validate if the user who submitted the request is eligible to perform the requested operation.</p>
+<h3 id="requiring-authentication-for-the-post-mutation">Requiring authentication for the <code>post</code> mutation</h3>
+<p>Before you’re going to test your authentication flow, make sure to complete your schema/resolver setup. Right now the <code>post</code> resolver is still missing.</p>
+<p><Instruction></p>
+<p>In <code>Mutation.js</code>, add the following resolver implementation for <code>post</code>:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/mutation.js&quot;)"><code>async function post(parent, args, context, info) {
+  const { userId } = context;
+
+  return await context.prisma.link.create({
+    data: {
+      url: args.url,
+      description: args.description,
+      postedBy: { connect: { id: userId } },
+    }
+  })
+}</code></pre>
+<p></Instruction></p>
+<p>Two things have changed in the implementation compared to the previous implementation in <code>index.js</code>:</p>
+<ol type="1">
+<li>You’re now using the <code>getUserId</code> function to retrieve the ID of the <code>User</code>. This ID is stored in the JWT that’s set at the <code>Authorization</code> header of the incoming HTTP request. Therefore, you know which <code>User</code> is creating the <code>Link</code> here. Recall that an unsuccessful retrieval of the <code>userId</code> will lead to an exception and the function scope is exited before the <code>createLink</code> mutation is invoked. In that case, the GraphQL response will just contain an error indicating that the user was not authenticated.</li>
+<li>You’re then also using that <code>userId</code> to <em>connect</em> the <code>Link</code> to be created with the <code>User</code> who is creating it. This is happening through a <a href="https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/relation-queries#nested-writes">nested write</a>.</li>
+</ol>
+<h4 id="resolving-relations">Resolving relations</h4>
+<p>There’s one more thing you need to do before you can launch the GraphQL server again and test the new functionality: ensuring the relation between <code>User</code> and <code>Link</code> gets properly resolved.</p>
+<p>Notice how we’ve omitted all resolvers for <em>scalar</em> values from the <code>User</code> and <code>Link</code> types? These are following the simple pattern that we saw at the beginning of the tutorial:</p>
+<pre class="(nocopy)"><code>Link: {
+  id: parent =&gt; parent.id,
+  url: parent =&gt; parent.url,
+  description: parent =&gt; parent.description,
+}</code></pre>
+<p>However, we’ve now added two fields to our GraphQL schema that can <em>not</em> be resolved in the same way: <code>postedBy</code> on <code>Link</code> and <code>links</code> on <code>User</code>. The resolvers for these fields need to be explicitly implemented because our GraphQL server can not infer where to get that data from.</p>
+<p><Instruction></p>
+<p>To resolve the <code>postedBy</code> relation, open <code>Link.js</code> and add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/link.js&quot;)"><code>function postedBy(parent, args, context) {
+  return context.prisma.link.findUnique({ where: { id: parent.id } }).postedBy()
+}
+
+module.exports = {
+  postedBy,
+}</code></pre>
+<p></Instruction></p>
+<p>In the <code>postedBy</code> resolver, you’re first fetching the <code>Link</code> from the database using the <code>prisma</code> instance and then invoke <code>postedBy</code> on it. Notice that the resolver needs to be called <code>postedBy</code> because it resolves the <code>postedBy</code> field from the <code>Link</code> type in <code>schema.graphql</code>.</p>
+<p>You can resolve the <code>links</code> relation in a similar way.</p>
+<p><Instruction></p>
+<p>Open <code>User.js</code> and add the following code to it:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/user.js&quot;)"><code>function links(parent, args, context) {
+  return context.prisma.user.findUnique({ where: { id: parent.id } }).links()
+}
+
+module.exports = {
+  links,
+}</code></pre>
+<p></Instruction></p>
+<h4 id="putting-it-all-together">Putting it all together</h4>
+<p>Awesome! The last thing you need to do now is use the new resolver implementations in <code>index.js</code>.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and import the modules which now contain the resolvers at the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const Query = require(&#39;./resolvers/Query&#39;)
+const Mutation = require(&#39;./resolvers/Mutation&#39;)
+const User = require(&#39;./resolvers/User&#39;)
+const Link = require(&#39;./resolvers/Link&#39;)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then, update the definition of the <code>resolvers</code> object to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const resolvers = {
+  Query,
+  Mutation,
+  User,
+  Link
+}</code></pre>
+<p></Instruction></p>
+<p>That’s it, you’re ready to test the authentication flow! 🔓</p>
+<h3 id="testing-the-authentication-flow">Testing the authentication flow</h3>
+<p>The very first thing you’ll do is test the <code>signup</code> mutation and thereby create a new <code>User</code> in the database.</p>
+<p><Instruction></p>
+<p>If you haven’t done so already, stop and restart the server by first killing it with <strong>CTRL+C</strong>, then run <code>node src/index.js</code>. Afterwards, navigate to <code>http://localhost:4000</code> where the GraphQL Playground is running.</p>
+<p></Instruction></p>
+<p>Note that you can “reuse” your Playground from before if you still have it open - it’s only important that you restart the server so the changes you made to the implementation are actually applied.</p>
+<p><Instruction></p>
+<p>Now, send the following mutation to create a new <code>User</code>:</p>
+<pre class="graphql"><code>mutation {
+  signup(name: &quot;Alice&quot;, email: &quot;alice@prisma.io&quot;, password: &quot;graphql&quot;) {
+    token
+    user {
+      id
+    }
+  }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>From the server’s response, copy the authentication <code>token</code> and open another tab in the Playground. Inside that new tab, open the <strong>HTTP HEADERS</strong> pane in the bottom-left corner and specify the <code>Authorization</code> header - similar to what you did with the Prisma Playground before. Replace the <code>__TOKEN__</code> placeholder in the following snippet with the copied token:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">&quot;Authorization&quot;</span><span class="fu">:</span> <span class="st">&quot;Bearer __TOKEN__&quot;</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<p></Instruction></p>
+<p>Whenever you’re now sending a query/mutation from that tab, it will carry the authentication token.</p>
+<p><Instruction></p>
+<p>With the <code>Authorization</code> header in place, send the following to your GraphQL server:</p>
+<pre class="graphql"><code>mutation {
+  post(url: &quot;www.graphqlconf.org&quot;, description: &quot;An awesome GraphQL conference&quot;) {
+    id
+  }
+}</code></pre>
+<p></Instruction></p>
+<figure>
+<img src="https://imgur.com/V1hp4ID.png" alt="carrying the authentication token" /><figcaption>carrying the authentication token</figcaption>
+</figure>
+<p>When your server receives this mutation, it invokes the <code>post</code> resolver and therefore validates the provided JWT. Additionally, the new <code>Link</code> that was created is now connected to the <code>User</code> for which you previously sent the <code>signup</code> mutation.</p>
+<p>To verify everything worked, you can send the following <code>login</code> mutation:</p>
+<pre class="graphql"><code>mutation {
+  login(email: &quot;alice@prisma.io&quot;, password: &quot;graphql&quot;) {
+    token
+    user {
+      email
+      links {
+        url
+        description
+      }
+    }
+  }
+}</code></pre>
+<p>This will return a response similar to this:</p>
+<pre class="json(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;login&quot;: {
+      &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjanBzaHVsazJoM3lqMDk0NzZzd2JrOHVnIiwiaWF0IjoxNTQ1MDYyNTQyfQ.KjGZTxr1jyJH7HcT_0glRInBef37OKCTDl0tZzogekw&quot;,
+      &quot;user&quot;: {
+        &quot;email&quot;: &quot;alice@prisma.io&quot;,
+        &quot;links&quot;: [
+          {
+            &quot;url&quot;: &quot;www.graphqlconf.org&quot;,
+            &quot;description&quot;: &quot;An awesome GraphQL conference&quot;
+          }
+        ]
+      }
+    }
+  }
+}</code></pre>
+</body>
+</html>

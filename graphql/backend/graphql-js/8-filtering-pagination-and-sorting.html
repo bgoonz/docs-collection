@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Filtering, Pagination &amp; Sorting</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Filtering, Pagination &amp; Sorting</h1>
+</header>
+<p>This is an exciting section of the tutorial where you’ll implement some key features of many robust APIs! The goal is to allow clients to constrain the list of <code>Link</code> elements returned by the <code>feed</code> query by providing filtering and pagination parameters.</p>
+<p>Let’s jump in! 🚀</p>
+<h3 id="filtering">Filtering</h3>
+<p>By using <code>PrismaClient</code>, you’ll be able to implement filtering capabilities to your API without too much effort. Similarly to the previous chapters, the heavy-lifting of query resolution will be performed by Prisma. All you need to do is forward incoming queries to it.</p>
+<p>The first step is to think about the filters you want to expose through your API. In your case, the <code>feed</code> query in your API will accept a <em>filter string</em>. The query then should only return the <code>Link</code> elements where the <code>url</code> <em>or</em> the <code>description</code> <em>contain</em> that filter string.</p>
+<p><Instruction></p>
+<p>Go ahead and add the <code>filter</code> string to the <code>feed</code> query in your application schema:</p>
+<pre class="graphql{3}(path=&quot;.../hackernews-node/src/schema.graphql)"><code>type Query {
+  info: String!
+  feed(filter: String): [Link!]!
+}</code></pre>
+<p></Instruction></p>
+<p>Next, you need to update the implementation of the <code>feed</code> resolver to account for the new parameter clients can provide.</p>
+<p><Instruction></p>
+<p>Open <code>src/resolvers/Query.js</code> and update the <code>feed</code> resolver to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/query.js&quot;)"><code>async function feed(parent, args, context, info) {
+  const where = args.filter
+    ? {
+      OR: [
+        { description: { contains: args.filter } },
+        { url: { contains: args.filter } },
+      ],
+    }
+    : {}
+
+  const links = await context.prisma.link.findMany({
+    where,
+  })
+
+  return links
+}</code></pre>
+<p></Instruction></p>
+<p>If no <code>filter</code> string is provided, then the <code>where</code> object will be just an empty object and no filtering conditions will be applied by Prisma Client when it returns the response for the <code>links</code> query.</p>
+<p>In cases where there is a <code>filter</code> carried by the incoming <code>args</code>, you’re constructing a <code>where</code> object that expresses our two filter conditions from above. This <code>where</code> argument is used by Prisma to filter out those <code>Link</code> elements that don’t adhere to the specified conditions.</p>
+<p>That’s it for the filtering functionality! Go ahead and test your filter API - here’s a sample query you can use:</p>
+<pre class="graphql"><code>query {
+  feed(filter: &quot;QL&quot;) {
+    id
+    description
+    url
+    postedBy {
+      id
+      name
+    }
+  }
+}</code></pre>
+<figure>
+<img src="https://imgur.com/QlAXsKO.png" alt="sample query" /><figcaption>sample query</figcaption>
+</figure>
+<h3 id="pagination">Pagination</h3>
+<p>Pagination is a tricky topic in API design. On a high-level, there are two major approaches for tackling it:</p>
+<ul>
+<li><strong>Limit-Offset</strong>: Request a specific <em>chunk</em> of the list by providing the indices of the items to be retrieved (in fact, you’re mostly providing the start index (<em>offset</em>) as well as a count of items to be retrieved (<em>limit</em>)).</li>
+<li><strong>Cursor-based</strong>: This pagination model is a bit more advanced. Every element in the list is associated with a unique ID (the <em>cursor</em>). Clients paginating through the list then provide the cursor of the starting element as well as a count of items to be retrieved.</li>
+</ul>
+<p>Prisma supports both pagination approaches (read more in the <a href="https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/pagination">docs</a>). In this tutorial, you’re going to implement limit-offset pagination.</p>
+<blockquote>
+<p><strong>Note</strong>: You can read more about the ideas behind both pagination approaches <a href="https://dev-blog.apollodata.com/understanding-pagination-rest-graphql-and-relay-b10f835549e7">here</a>.</p>
+</blockquote>
+<p>Limit and offset have different names in the Prisma API:</p>
+<ul>
+<li>The <em>limit</em> is called <code>take</code>, meaning you’re “taking” <code>x</code> elements after a provided start index.</li>
+<li>The <em>start index</em> is called <code>skip</code>, since you’re skipping that many elements in the list before collecting the items to be returned. If <code>skip</code> is not provided, it’s <code>0</code> by default. The pagination then always starts from the beginning of the list.</li>
+</ul>
+<p>So, go ahead and add the <code>skip</code> and <code>take</code> arguments to the <code>feed</code> query.</p>
+<p><Instruction></p>
+<p>Open your application schema and adjust the <code>feed</code> query to accept <code>skip</code> and <code>take</code> arguments:</p>
+<pre class="graphql{3}(path=&quot;.../hackernews-node/src/schema.graphql)"><code>type Query {
+  info: String!
+  feed(filter: String, skip: Int, take: Int): [Link!]!
+}</code></pre>
+<p></Instruction></p>
+<p>Now, on to the resolver implementation.</p>
+<p><Instruction></p>
+<p>In <code>src/resolvers/Query.js</code>, adjust the implementation of the <code>feed</code> resolver:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/query.js&quot;)"><code>async function feed(parent, args, context, info) {
+  const where = args.filter
+    ? {
+      OR: [
+        { description: { contains: args.filter } },
+        { url: { contains: args.filter } },
+      ],
+    }
+    : {}
+
+  const links = await context.prisma.link.findMany({
+    where,
+    skip: args.skip,
+    take: args.take,
+  })
+
+  return links
+}</code></pre>
+<p></Instruction></p>
+<p>Really all that’s changing here is that the invocation of the <code>links</code> query now receives two additional arguments which might be carried by the incoming <code>args</code> object. Again, Prisma will take care of the rest.</p>
+<p>You can test the pagination API with the following query which returns the second <code>Link</code> from the list:</p>
+<pre class="graphql"><code>query {
+  feed(take: 1, skip: 1) {
+    id
+    description
+    url
+  }
+}</code></pre>
+<figure>
+<img src="https://imgur.com/lwGncCX.png" alt="test the pagination API" /><figcaption>test the pagination API</figcaption>
+</figure>
+<h3 id="sorting">Sorting</h3>
+<p>With Prisma, it is possible to return lists of elements that are sorted (<em>ordered</em>) according to specific criteria. For example, you can order the list of <code>Link</code>s alphabetically by their <code>url</code> or <code>description</code>. For the Hacker News API, you’ll leave it up to the client to decide how exactly it should be sorted and thus include all the ordering options from the Prisma API in the API of your GraphQL server. You can do so by creating an <a href="https://graphql.org/graphql-js/mutations-and-input-types/"><code>input</code></a> type and an enum to represent the ordering options.</p>
+<p><Instruction></p>
+<p>Add the following enum definition to <code>schema.graphql</code>:</p>
+<pre class="graphql(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>input LinkOrderByInput {
+  description: Sort
+  url: Sort
+  createdAt: Sort
+}
+
+enum Sort {
+  asc
+  desc
+}</code></pre>
+<p></Instruction></p>
+<p>This represents the various ways that the list of <code>Link</code> elements can be sorted.</p>
+<p><Instruction></p>
+<p>Now, adjust the <code>feed</code> query again to include the <code>orderBy</code> argument:</p>
+<pre class="graphql{3}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Query {
+  info: String!
+  feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): [Link!]!
+}</code></pre>
+<p></Instruction></p>
+<p>The implementation of the resolver is similar to what you just did with the pagination API.</p>
+<p><Instruction></p>
+<p>Update the implementation of the <code>feed</code> resolver in <code>src/resolvers/Query.js</code> and pass the <code>orderBy</code> argument along to Prisma:</p>
+<pre class="js(path=&quot;.../hackernews-node/src/resolvers/query.js&quot;)"><code>async function feed(parent, args, context, info) {
+  const where = args.filter
+    ? {
+      OR: [
+        { description: { contains: args.filter } },
+        { url: { contains: args.filter } },
+      ],
+    }
+    : {}
+
+  const links = await context.prisma.link.findMany({
+    where,
+    skip: args.skip,
+    take: args.take,
+    orderBy: args.orderBy,
+  })
+
+  return links
+}</code></pre>
+<p></Instruction></p>
+<p>Awesome! Here’s a query that sorts the returned links by their creation dates:</p>
+<pre class="graphql"><code>query {
+  feed(orderBy: { createdAt: asc }) {
+    id
+    description
+    url
+  }
+}</code></pre>
+<h3 id="returning-the-total-amount-of-link-elements">Returning the total amount of <code>Link</code> elements</h3>
+<p>The last thing you’re going to implement for your Hacker News API is the information <em>how many</em> <code>Link</code> elements are currently stored in the database. To do so, you’re going to refactor the <code>feed</code> query a bit and create a new type to be returned by your API: <code>Feed</code>.</p>
+<p><Instruction></p>
+<p>Add the new <code>Feed</code> type to your GraphQL schema. Then also adjust the return type of the <code>feed</code> query accordingly:</p>
+<pre class="graphql{3,6-9}(path=&quot;.../hackernews-node/src/schema.graphql&quot;)"><code>type Query {
+  info: String!
+  feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
+}
+
+type Feed {
+  links: [Link!]!
+  count: Int!
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Now, go ahead and adjust the <code>feed</code> resolver again:</p>
+<pre class="js{17-26}(path=&quot;.../hackernews-node/src/resolvers/query.js&quot;)"><code>async function feed(parent, args, context, info) {
+  const where = args.filter
+    ? {
+      OR: [
+        { description: { contains: args.filter } },
+        { url: { contains: args.filter } },
+      ],
+    }
+    : {}
+
+  const links = await context.prisma.link.findMany({
+    where,
+    skip: args.skip,
+    take: args.take,
+    orderBy: args.orderBy,
+  })
+
+  const count = await context.prisma.link.count({ where })
+
+  return {
+    links,
+    count,
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>You can now test the revamped <code>feed</code> query as follows:</p>
+<pre class="graphql"><code>query {
+  feed {
+    count
+    links {
+      id
+      description
+      url
+    }
+  }
+}</code></pre>
+<figure>
+<img src="https://imgur.com/pybtMep.png" alt="test the revamped feed query" /><figcaption>test the revamped feed query</figcaption>
+</figure>
+</body>
+</html>

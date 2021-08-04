@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Core Concepts</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Core Concepts</h1>
+</header>
+<p>In this chapter, you’ll learn about some fundamental language constructs of GraphQL. That includes a first glimpse at the syntax for defining <em>types</em> as well as sending <em>queries</em> and <em>mutations</em>.</p>
+<h3 id="the-schema-definition-language-sdl">The Schema Definition Language (SDL)</h3>
+<p>GraphQL has its own type system that’s used to define the <em>schema</em> of an API. The syntax for writing schemas is called <a href="https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51">Schema Definition Language</a> (SDL).</p>
+<p>Here is an example of how we can use the SDL to define a simple type called <code>Person</code>:</p>
+<pre class="graphql(nocopy)"><code>type Person {
+  name: String!
+  age: Int!
+}</code></pre>
+<p>This type has two <em>fields</em>, they’re called <code>name</code> and <code>age</code> and are respectively of type <code>String</code> and <code>Int</code>. The <code>!</code> following the type means that this field is <em>required</em>.</p>
+<p>It’s also possible to express relationships between types. In the example of a <em>blogging</em> application, a <code>Person</code> could be associated with a <code>Post</code>:</p>
+<pre class="graphql(nocopy)"><code>type Post {
+  title: String!
+  author: Person!
+}</code></pre>
+<p>Conversely, the other end of the relationship needs to be placed on the <code>Person</code> type:</p>
+<pre class="graphql(nocopy)"><code>type Person {
+  name: String!
+  age: Int!
+  posts: [Post!]!
+}</code></pre>
+<p>Note that we just created a <em>one-to-many</em>-relationship between <code>Person</code> and <code>Post</code> since the <code>posts</code> field on <code>Person</code> is actually an <em>array</em> of posts.</p>
+<h3 id="fetching-data-with-queries">Fetching Data with Queries</h3>
+<p>When working with REST APIs, data is loaded from specific endpoints. Each endpoint has a clearly defined structure of the information that it returns. This means that the data requirements of a client are effectively <em>encoded</em> in the URL that it connects to.</p>
+<p>The approach that’s taken in GraphQL is radically different. Instead of having multiple endpoints that return fixed data structures, GraphQL APIs typically only expose <em>a single endpoint</em>. This works because the structure of the data that’s returned is not fixed. Instead, it’s completely flexible and lets the client decide what data is actually needed.</p>
+<p>That means that the client needs to send more <em>information</em> to the server to express its data needs - this information is called a <em>query</em>.</p>
+<p><strong>Note</strong>: Unforunately, we no longer provide the <em>Run in Sandbox</em> feature that is demonstrated in the video at 13:50. We are really sorry for the inconvenience.</p>
+<h4 id="basic-queries">Basic Queries</h4>
+<p>Let’s take a look at an example query that a client could send to a server:</p>
+<pre class="graphql(nocopy)"><code>{
+  allPersons {
+    name
+  }
+}</code></pre>
+<p>The <code>allPersons</code> field in this query is called the <em>root field</em> of the query. Everything that follows the root field, is called the <em>payload</em> of the query. The only field that’s specified in this query’s payload is <code>name</code>.</p>
+<p>This query would return a list of all persons currently stored in the database. Here’s an example response:</p>
+<pre class="js(nocopy)"><code>{
+  &quot;allPersons&quot;: [
+    { &quot;name&quot;: &quot;Johnny&quot; },
+    { &quot;name&quot;: &quot;Sarah&quot; },
+    { &quot;name&quot;: &quot;Alice&quot; }
+  ]
+}</code></pre>
+<p>Notice that each person only has the <code>name</code> in the response, but the <code>age</code> is not returned by the server. That’s exactly because <code>name</code> was the only field that was specified in the query.</p>
+<p>If the client also needed the persons’ <code>age</code>, all it has to do is slightly adjust the query and include the new field in the query’s payload:</p>
+<pre class="graphql"><code>{
+  allPersons {
+    name
+    age
+  }
+}</code></pre>
+<p>One of the major advantages of GraphQL is that it allows for naturally querying <em>nested</em> information. For example, if you wanted to load all the <code>posts</code> that a <code>Person</code> has written, you could simply follow the structure of your types to request this information:</p>
+<pre class="graphql"><code>{
+  allPersons {
+    name
+    age
+    posts {
+      title
+    }
+  }
+}</code></pre>
+<h4 id="queries-with-arguments">Queries with Arguments</h4>
+<p>In GraphQL, each <em>field</em> can have zero or more arguments if that’s specified in the <em>schema</em>. For example, the <code>allPersons</code> field could have a <code>last</code> parameter to only return up to a specific number of persons. Here’s what a corresponding query would look like:</p>
+<pre class="graphql(nocopy)"><code>{
+  allPersons(last: 2) {
+    name
+  }
+}</code></pre>
+<h3 id="writing-data-with-mutations">Writing Data with Mutations</h3>
+<p>Next to requesting information from a server, the majority of applications also need some way of making changes to the data that’s currently stored in the backend. With GraphQL, these changes are made using so-called <em>mutations</em>. There generally are three kinds of mutations:</p>
+<ul>
+<li>creating new data</li>
+<li>updating existing data</li>
+<li>deleting existing data</li>
+</ul>
+<p>Mutations follow the same syntactical structure as queries, but they always need to start with the <code>mutation</code> keyword. Here’s an example for how we might create a new <code>Person</code>:</p>
+<pre class="graphql(nocopy)"><code>mutation {
+  createPerson(name: &quot;Bob&quot;, age: 36) {
+    name
+    age
+  }
+}</code></pre>
+<p>Notice that similar to the query we wrote before, the mutation also has a <em>root field</em> - in this case it’s called <code>createPerson</code>. We also already learned about the concepts of arguments for fields. In this case, the <code>createPerson</code> field takes two arguments that specify the new person’s <code>name</code> and <code>age</code>.</p>
+<p>Like with a query, we’re also able to specify a payload for a mutation in which we can ask for different properties of the new <code>Person</code> object. In our case, we’re asking for the <code>name</code> and the <code>age</code> - though admittedly that’s not super helpful in our example since we obviously already know them as we pass them into the mutation. However, being able to also query information when sending mutations can be a very powerful tool that allows you to retrieve new information from the server in a single roundtrip!</p>
+<p>The server response for the above mutation would look as follows:</p>
+<pre class="js(nocopy)"><code>&quot;createPerson&quot;: {
+  &quot;name&quot;: &quot;Bob&quot;,
+  &quot;age&quot;: 36,
+}</code></pre>
+<p>One pattern you’ll often find is that GraphQL types have unique <em>IDs</em> that are generated by the server when new objects are created. Extending our <code>Person</code> type from before, we could add an <code>id</code> like this:</p>
+<pre class="graphql(nocopy)"><code>type Person {
+  id: ID!
+  name: String!
+  age: Int!
+}</code></pre>
+<p>Now, when a new <code>Person</code> is created, you could directly ask for the <code>id</code> in the payload of the mutation, since that is information that wasn’t available on the client beforehand:</p>
+<pre class="graphql(nocopy)"><code>mutation {
+  createPerson(name: &quot;Alice&quot;, age: 36) {
+    id
+  }
+}</code></pre>
+<h3 id="realtime-updates-with-subscriptions">Realtime Updates with Subscriptions</h3>
+<p>Another important requirement for many applications today is to have a <em>realtime</em> connection to the server in order to get immediately informed about important events. For this use case, GraphQL offers the concept of <em>subscriptions</em>.</p>
+<p>When a client <em>subscribes</em> to an event, it will initiate and hold a steady connection to the server. Whenever that particular event then actually happens, the server pushes the corresponding data to the client. Unlike queries and mutations that follow a typical “<em>request-response</em>-cycle”, subscriptions represent a <em>stream</em> of data sent over to the client.</p>
+<p>Subscriptions are written using the same syntax as queries and mutations. Here’s an example where we subscribe on events happening on the <code>Person</code> type:</p>
+<pre class="graphql(nocopy)"><code>subscription {
+  newPerson {
+    name
+    age
+  }
+}</code></pre>
+<p>After a client sent this subscription to a server, a connection is opened between them. Then, whenever a new mutation is performed that creates a new <code>Person</code>, the server sends the information about this person over to the client:</p>
+<pre class="graphql(nocopy)"><code>{
+  &quot;newPerson&quot;: {
+    &quot;name&quot;: &quot;Jane&quot;,
+    &quot;age&quot;: 23
+  }
+}</code></pre>
+<h3 id="defining-a-schema">Defining a Schema</h3>
+<p>Now that you have a basic understanding of what queries, mutations, and subscriptions look like, let’s put it all together and learn how you can write a schema that would allow you to execute the examples you’ve seen so far.</p>
+<p>The <em>schema</em> is one of the most important concepts when working with a GraphQL API. It specifies the capabilities of the API and defines how clients can request the data. It is often seen as a <em>contract</em> between the server and client.</p>
+<p>Generally, a schema is simply a collection of GraphQL types. However, when writing the schema for an API, there are some special <em>root</em> types:</p>
+<pre class="graphql(nocopy)"><code>type Query { ... }
+type Mutation { ... }
+type Subscription { ... }</code></pre>
+<p>The <code>Query</code>, <code>Mutation</code>, and <code>Subscription</code> types are the <em>entry points</em> for the requests sent by the client. To enable the <code>allPersons</code>-query that we saw before, the <code>Query</code> type would have to be written as follows:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  allPersons: [Person!]!
+}</code></pre>
+<p><code>allPersons</code> is called a <em>root field</em> of the API. Considering again the example where we added the <code>last</code> argument to the <code>allPersons</code> field, we’d have to write the <code>Query</code> as follows:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  allPersons(last: Int): [Person!]!
+}</code></pre>
+<p>Similarly, for the <code>createPerson</code>-mutation, we’ll have to add a root field to the <code>Mutation</code> type:</p>
+<pre class="graphql(nocopy)"><code>type Mutation {
+  createPerson(name: String!, age: Int!): Person!
+}</code></pre>
+<p>Notice that this root field takes two arguments as well, the <code>name</code> and the <code>age</code> of the new <code>Person</code>.</p>
+<p>Finally, for the subscriptions, we’d have to add the <code>newPerson</code> root field:</p>
+<pre class="graphql(nocopy)"><code>type Subscription {
+  newPerson: Person!
+}</code></pre>
+<p>Putting it all together, this is the <em>full</em> schema for all the queries and mutation that you have seen in this chapter:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  allPersons(last: Int): [Person!]!
+  allPosts(last: Int): [Post!]!
+}
+
+type Mutation {
+  createPerson(name: String!, age: Int!): Person!
+  updatePerson(id: ID!, name: String!, age: String!): Person!
+  deletePerson(id: ID!): Person!
+}
+
+type Subscription {
+  newPerson: Person!
+}
+
+type Person {
+  id: ID!
+  name: String!
+  age: Int!
+  posts: [Post!]!
+}
+
+type Post {
+  title: String!
+  author: Person!
+}</code></pre>
+<h3 id="learn-more">Learn more</h3>
+<p>To learn more about the core concepts in GraphQL, be sure to check out the following article series:</p>
+<ul>
+<li><a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e">GraphQL Server Basics (Part I): GraphQL Schemas, TypeDefs &amp; Resolvers Explained</a></li>
+<li><a href="https://www.prisma.io/blog/graphql-server-basics-the-network-layer-51d97d21861">GraphQL Server Basics (Part II): The Network Layer</a></li>
+<li><a href="https://www.prisma.io/blog/graphql-server-basics-demystifying-the-info-argument-in-graphql-resolvers-6f26249f613a">GraphQL Server Basics (Part III): Demystifying the <code>info</code> argument in GraphQL resolvers</a></li>
+</ul>
+</body>
+</html>

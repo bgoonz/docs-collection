@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>As the number of links grow, listing all of them becomes less feasible. It stands to reason you should introduce the ability to only request a number of links and paginate through the result.</p>
+<p>Like filtering, pagination can be achieved in any way that makes sense for the underlying storage.</p>
+<blockquote>
+<p>In this tutorial, you’ll implement a simple pagination approach called limit-offset pagination (similar to what you may know from SQL). This approach does not work with Relay on the frontend, since Relay requires cursor-based pagination via the concept of connections. You can read more about pagination in the <a href="http://graphql.org/learn/pagination/">GraphQL docs</a>. Connections, and the rest of the Relay specification, can be found in the <a href="https://facebook.github.io/relay/docs/graphql-connections.html">Relay docs</a>.</p>
+</blockquote>
+<p>Predictably, you start off from the schema.</p>
+<p><Instruction></p>
+<p>Add two new arguments to enable the client to specify the number of links they require and what index to start from.</p>
+<pre class="graphql(path=&quot;.../hackernews-graphql-java/src/main/resources/schema.graphqls&quot;)"><code>type Query {
+  allLinks(filter: LinkFilter, skip: Int = 0, first: Int = 0): [Link]
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Update the repository method (<code>LinkRepository#getAllLinks</code>) to take and use these new arguments:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkrepository.java&quot;)"><code>public List&lt;Link&gt; getAllLinks(LinkFilter filter, int skip, int first) {
+    Optional&lt;Bson&gt; mongoFilter = Optional.ofNullable(filter).map(this::buildFilter);
+    
+    List&lt;Link&gt; allLinks = new ArrayList&lt;&gt;();
+    FindIterable&lt;Document&gt; documents = mongoFilter.map(links::find).orElseGet(links::find);
+    for (Document doc : documents.skip(skip).limit(first)) {
+        allLinks.add(link(doc));
+    }
+    return allLinks;
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And, of course, update the top-level method in the <code>Query</code> class:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/query.java&quot;)"><code>public List&lt;Link&gt; allLinks(LinkFilter filter, Number skip, Number first) {
+    return linkRepository.getAllLinks(filter, skip.intValue(), first.intValue());
+}</code></pre>
+<p></Instruction></p>
+<p>Note that the parameter type for both <em>must</em> be <code>Number</code> because <code>graphql-java-tools</code> will sometimes try to stuff an <code>Integer</code> and sometimes a <code>BigInteger</code> into it, depending on the context.</p>
+<p>Wasn’t that easy? Jump back to GraphiQL and paginate away!</p>
+<p><img src="http://i.imgur.com/ln7Ltgv.png" alt="Jump back to GraphiQL and paginate away 1" /> <img src="http://i.imgur.com/Vm4TZQd.png" alt="Jump back to GraphiQL and paginate away 2" /></p>
+<p>You can still, of course, get all links:</p>
+<figure>
+<img src="http://i.imgur.com/pCd1e4j.png" alt="Jump back to GraphiQL and paginate away 3" /><figcaption>Jump back to GraphiQL and paginate away 3</figcaption>
+</figure>
+</body>
+</html>

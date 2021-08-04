@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mutations: Creating Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mutations: Creating Links</h1>
+</header>
+<p>In this section, you’ll learn how you can send mutations with Apollo. It’s actually not that different from sending queries and follows the same steps that were mentioned before:</p>
+<ol type="1">
+<li>Write the mutation in a <code>.graphql</code> file.</li>
+<li>Import the mutation and use the <code>apollo</code> service to send the mutation.</li>
+</ol>
+<h3 id="preparing-the-app">Preparing the app</h3>
+<p>Like before, start by creating the route and template where users will be able to add new links.</p>
+<p><Instruction></p>
+<p>From the terminal, use the Ember generator and create a new route:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate route create</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>You will not be needing the route file the generator created, so delete the <code>app/routes/create.js</code> file. You used the ember-cli generator mainly for the template and the route addition to your router.</p>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Replace the code in the <code>app/templates/create.hbs</code> file with the following:</p>
+<pre class="html(path=&quot;.../hackernews-ember-apollo/app/templates/create.hbs&quot;)"><code>&lt;div&gt;
+  &lt;form class=&#39;flex flex-column mt3&#39; {{action &#39;createLink&#39; on=&#39;submit&#39;}}&gt;
+    {{input class=&#39;mb2&#39; type=&#39;text&#39; placeholder=&#39;A description for the link&#39; value=description}}
+    {{input class=&#39;mb2&#39; type=&#39;text&#39; placeholder=&#39;The URL for the link&#39; value=url}}
+    &lt;div class=&#39;flex&#39;&gt;
+      {{input type=&#39;submit&#39; value=&#39;submit&#39;}}
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+<p></Instruction></p>
+<p>This is a standard setup for a form with two <code>input</code> fields where users can provide the <code>url</code> and <code>description</code> of the link they want to create.</p>
+<h3 id="writing-the-mutation">Writing the Mutation</h3>
+<p>But how can you now actually send the mutation? Follow the three steps from before.</p>
+<p>First you need to define the mutation in a <code>.graphql</code> file. You’ll do that in a similar way as with the query before.</p>
+<p><Instruction></p>
+<p>In the <code>app/gql/mutations</code> folder you created before, add a new file named <code>createLink.graphql</code> and add the following code:</p>
+<pre class="graphql(path=&quot;.../hackernews-ember-apollo/app/gql/mutations/createlink.graphql&quot;)"><code>mutation CreateLinkMutation($description: String!, $url: String!) {
+  createLink(description: $description, url: $url) {
+    id
+    createdAt
+    url
+    description
+  }
+}</code></pre>
+<p></Instruction></p>
+<p>Here you are defining the actual GraphQL mutation. It takes two arguments, <code>description</code> and <code>url</code> that you’ll have to provide when calling the mutation. After the link is created, the fields defined are returned.</p>
+<p>Time to wire everything up and see it in action!</p>
+<p><Instruction></p>
+<p>The first thing you will need to do is create a controller for your <code>create</code> route. You can do that using an Ember generator:</p>
+<pre class="bash(path=&quot;.../hackernews-ember-apollo&quot;)"><code>ember generate controller create</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Add the following to the new controller:</p>
+<pre class="js(path=&quot;.../hackernews-ember-apollo/app/controllers/create.js&quot;)"><code>import Ember from &#39;ember&#39;;
+// 1.
+import mutation from ‘hackernews-ember-apollo/gql/mutations/createLink&#39;;
+
+export default Ember.Controller.extend({
+  actions: {
+    // 2.
+    createLink() {
+      // 3.
+      const description = this.get(&#39;description&#39;);
+      const url = this.get(&#39;url&#39;);
+      let variables = { description, url };
+        
+      // 4.
+      return this.get(&#39;apollo&#39;)
+        .mutate(
+          {
+            mutation,
+            variables
+          },
+          &#39;createLink&#39;
+        )
+        .then(() =&gt; {
+          // 5.
+          this.set(&#39;description&#39;, &#39;&#39;);
+          this.set(&#39;url&#39;, &#39;&#39;);
+          this.transitionToRoute(&#39;links&#39;);
+        }).catch(error =&gt; alert(error));
+    }
+  },
+
+  // 6.
+  apollo: Ember.inject.service()
+});</code></pre>
+<p></Instruction></p>
+<p>Let’s walk through what is happening in the controller:</p>
+<ol type="1">
+<li>First, you are importing the mutation that you just defined.</li>
+<li>An action titled <code>createLink</code> is added. Within that action you are:</li>
+<li>Accessing the values from the form and setting those into a <code>variables</code> variable.</li>
+<li>Calling the <code>mutate</code> method on your <code>apollo</code> service and passing in the mutation you wrote earlier along with the variables to save the link.</li>
+<li>After your promise resolves, you are clearing the form and transitioning to the <code>link</code> route.</li>
+<li>Last, and surely not least, you are injecting your <code>apollo</code> service.</li>
+</ol>
+<p>Pretty simple!</p>
+<p>Go ahead and see if the mutation works; run <code>yarn start</code> and you’ll see the following screen:</p>
+<figure>
+<img src="http://i.imgur.com/om3TXDz.png" alt="Run yarn start to test the mutation" /><figcaption>Run yarn start to test the mutation</figcaption>
+</figure>
+<p>Two input fields and a <em>submit</em>-button - not very pretty but functional.</p>
+<p>Enter some data into the fields, e.g.:</p>
+<ul>
+<li><strong>Description</strong>: <code>The best learning resource for GraphQL</code></li>
+<li><strong>URL</strong>: <code>www.howtographql.com</code></li>
+</ul>
+<p>Then click the <em>submit</em>-button. You won’t get any visual feedback in the UI until after the page transitions, but you can still see if the query actually worked by checking the current list of links in a Playground.</p>
+<p>Type <code>graphcool playground</code> into a Terminal and send the following query:</p>
+<pre class="graphql"><code>{
+  allLinks {
+    description
+    url
+  }
+}</code></pre>
+<p>You’ll see the following server response:</p>
+<pre class="(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;allLinks&quot;: [
+      {
+        &quot;description&quot;: &quot;The best learning resource for GraphQL&quot;,
+        &quot;url&quot;: &quot;www.howtographql.com&quot;
+      },
+      // ...
+    ]
+  }
+}</code></pre>
+<p>Awesome! The mutation works, great job! 💪</p>
+</body>
+</html>

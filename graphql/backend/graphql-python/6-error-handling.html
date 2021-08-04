@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error Handling</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Error Handling</h1>
+</header>
+<p>All applications fail, and GraphQL is no different. Some clients may ask for information that’s not available or execute a forbidden action. In this chapter, you’ll understand how GraphQL and Graphene address these issues.</p>
+<h3 id="schema-errors">Schema Errors</h3>
+<p>Being a language with a strong type system, GraphQL can predetermine if a query is valid. All the fields from queries and mutations have a strong type, so requesting and inputting wrong data will generate an error.</p>
+<p>Try it out! In the links query, ask for the <code>cheese</code> field and see how GraphQL returns back an error:</p>
+<figure>
+<img src="https://i.imgur.com/Y00Dk0k.png" alt="ask for the cheese field and see how GraphQL returns back an error" /><figcaption>ask for the cheese field and see how GraphQL returns back an error</figcaption>
+</figure>
+<h3 id="graphene-errors">Graphene Errors</h3>
+<p>On the application level, you can use the <code>GraphQLError</code> class or the good and old <a href="https://docs.python.org/3/tutorial/errors.html">Python exceptions</a>.</p>
+<p>You already used the <code>raise Exception('message')</code> through the code, for example, when checking if the user or link were valid before creating a vote. Let’s try the other one!</p>
+<p><Instruction></p>
+<p>In <code>links/schema.py</code> change the exception to use the <code>GraphQLError</code>:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ...code
+# Add after the imports
+from graphql import GraphQLError
+
+# ...code
+class CreateVote(graphene.Mutation):
+    user = graphene.Field(UserType)
+    link = graphene.Field(LinkType)
+
+    class Arguments:
+        link_id = graphene.Int()
+
+    def mutate(self, info, link_id):
+        user = info.context.user
+        if user.is_anonymous:
+            #1
+            raise GraphQLError(&#39;You must be logged to vote!&#39;)
+
+        link = Link.objects.filter(id=link_id).first()
+        if not link:
+            #2
+            raise Exception(&#39;Invalid Link!&#39;)
+
+        Vote.objects.create(
+            user=user,
+            link=link,
+        )
+
+        return CreateVote(user=user, link=link)</code></pre>
+<p></Instruction></p>
+<p>On <code>#1</code> and <code>#2</code> the code raises an exception – using two different exception classes – but giving the same result, stopping its execution and returning the message between parentheses.</p>
+<p>Try to vote in an invalid link and see what happens:</p>
+<figure>
+<img src="https://i.imgur.com/zWTzRUz.png" alt="vote in an invalid link" /><figcaption>vote in an invalid link</figcaption>
+</figure>
+</body>
+</html>

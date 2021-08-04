@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading Links</h1>
+</header>
+<h3 id="preparing-the-react-components">Preparing the React components</h3>
+<p>The first piece of functionality we’ll implement in the app is loading and displaying a list of <code>Link</code> elements. We’ll walk up our way in the React component hierarchy and start with the component that will render a single link.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>Link.js</code> in the <code>components</code> directory and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/link.js&quot;)"><code>import React from &#39;react&#39;;
+
+const Link = (props) =&gt; {
+  const { link } = props;
+  return (
+    &lt;div&gt;
+      &lt;div&gt;
+        {link.description} ({link.url})
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Link;</code></pre>
+<p></Instruction></p>
+<p>This is a simple React component that expects a <code>link</code> in its <code>props</code> and renders the link’s <code>description</code> and <code>url</code>. Easy as pie! 🍰</p>
+<p>Next, let’s implement the component that renders a list of links.</p>
+<p><Instruction></p>
+<p>Again, in the <code>components</code> directory, go ahead and create a new file called <code>LinkList.js</code>. Then add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import React from &#39;react&#39;;
+import Link from &#39;./Link&#39;;
+
+const LinkList = () =&gt; {
+  const linksToRender = [
+    {
+      id: &#39;1&#39;,
+      description:
+        &#39;Prisma gives you a powerful database toolkit 😎&#39;,
+      url: &#39;https://prisma.io&#39;
+    },
+    {
+      id: &#39;2&#39;,
+      description: &#39;The best GraphQL client&#39;,
+      url: &#39;https://www.apollographql.com/docs/react/&#39;
+    }
+  ];
+
+  return (
+    &lt;div&gt;
+      {linksToRender.map((link) =&gt; (
+        &lt;Link key={link.id} link={link} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};
+
+export default LinkList;</code></pre>
+<p></Instruction></p>
+<p>Here, we’re using local mock data for now to make sure the component setup works. We’ll soon replace this with some actual data loaded from the server - patience, young Padawan!</p>
+<p><Instruction></p>
+<p>To complete the setup, open <code>App.js</code> and replace the current contents with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/app.js&quot;)"><code>import React, { Component } from &#39;react&#39;;
+import LinkList from &#39;./LinkList&#39;;
+
+class App extends Component {
+  render() {
+    return &lt;LinkList /&gt;;
+  }
+}
+
+export default App;</code></pre>
+<p></Instruction></p>
+<p>Run the app to check if everything works so far! The app should now display the two links from the <code>linksToRender</code> array:</p>
+<figure>
+<img src="https://imgur.com/CK8nPPh.png" alt="Run the app to check that it’s working" /><figcaption>Run the app to check that it’s working</figcaption>
+</figure>
+<h3 id="writing-the-graphql-query">Writing the GraphQL query</h3>
+<p>Let’s now load the actual links that are stored in the database. The first thing we need to do for that is define the GraphQL query we want to send to the API.</p>
+<p>Here is what it looks like:</p>
+<pre class="graphql"><code>{
+  feed {
+    id
+    links {
+      id
+      createdAt
+      description
+      url
+    }
+  }
+}</code></pre>
+<p>We could now simply execute this query in a <a href="https://github.com/graphql/graphql-playground">Playground</a> (against the <em>application schema</em>) and retrieve the results from the GraphQL server. But how can we use it inside our JavaScript code?</p>
+<h3 id="queries-with-apollo-client">Queries with Apollo Client</h3>
+<p>The most common (and probably the most flexible) way of making queries with Apollo Client is to use the <code>useQuery</code> hook it provides. With the <code>useQuery</code> hook, all we need to do is pass a GraphQL query document in and Apollo will take care of the fetching and will surface the returned data and any errors for us.</p>
+<p>Open up <code>LinkList.js</code> and add the query to the top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import { useQuery, gql } from &#39;@apollo/client&#39;;
+
+const FEED_QUERY = gql`
+  {
+    feed {
+      id
+      links {
+        id
+        createdAt
+        url
+        description
+      }
+    }
+  }
+`;</code></pre>
+<p></Instruction> <Instruction></p>
+<p>Next, instead of iterating over the hardcoded <code>linksToRender</code> array, pass the <code>FEED_QUERY</code> query document into <code>useQuery</code> and iterate over the returned links.</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>const LinkList = () =&gt; {
+  const { data } = useQuery(FEED_QUERY);
+
+  return (
+    &lt;div&gt;
+      {data &amp;&amp; (
+        &lt;&gt;
+          {data.feed.links.map((link) =&gt; (
+            &lt;Link key={link.id} link={link} /&gt;
+          ))}
+        &lt;/&gt;
+      )}
+    &lt;/div&gt;
+  );
+};</code></pre>
+<p></Instruction></p>
+<p>Let’s take a moment to walk through what’s happening with this new code.</p>
+<p>The <code>FEED_QUERY</code> variable uses <code>gql</code>, a library that uses <a href="https://wesbos.com/tagged-template-literals">tagged template literals</a> to parse the GraphQL query document we define. This query document is then passed into the <code>useQuery</code> hook in the <code>LinkList</code> component.</p>
+<p>This hook returns three items that are relevant for our purposes at this point:</p>
+<ol type="1">
+<li><code>loading</code>: Is <code>true</code> as long as the request is still ongoing and the response hasn’t been received.</li>
+<li><code>error</code>: In case the request fails, this field will contain information about what exactly went wrong.</li>
+<li><code>data</code>: This is the actual data that was received from the server. It has the <code>links</code> property which represents a list of <code>Link</code> elements.</li>
+</ol>
+<blockquote>
+<p>The injected props actually contain even more functionality. You can read more in the <a href="https://www.apollographql.com/docs/react/essentials/queries.html#render-prop">API overview</a>.</p>
+</blockquote>
+<p>When the <code>LinkList</code> component initially renders, there won’t be any information on the <code>data</code> variable. For this reason, we need to check that <code>data</code> is truthy before trying to render any of the links that will come out of it. Once our GraphQL request resolves with some data, the <code>LinkList</code> component will re-render and <code>data</code> will be truthy. Our links are available on <code>data.feed.links</code> which we can map over to render.</p>
+<p>That’s it! You should see the exact same screen as before.</p>
+<blockquote>
+<p><strong>Note</strong>: If the browser on <code>http://localhost:4000</code> only says error and is empty otherwise, you probably forgot to have your server running. Note that for the app to work the server needs to run as well - so you have two running processes in your terminal: One for the server and one for the React app. To start the server, navigate into the <code>server</code> directory and run <code>yarn start</code>.</p>
+</blockquote>
+</body>
+</html>

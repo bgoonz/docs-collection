@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries: Loading Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries: Loading Links</h1>
+</header>
+<h3 id="preparing-the-react-components">Preparing the React components</h3>
+<p>The first piece of functionality that you’ll implement in the app is loading and displaying a list of <code>Link</code> elements. You’ll walk up our way in the React component hierarchy and start with the component that’ll render a single link.</p>
+<p><Instruction></p>
+<p>Create a new file called <code>Link.js</code> in the <code>components</code> directory and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/links.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+
+class Link extends Component {
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;div&gt;{this.props.link.description} ({this.props.link.url})&lt;/div&gt;
+      &lt;/div&gt;
+    )
+  }
+  
+  _voteForLink = async () =&gt; {
+    // ... you&#39;ll implement this in chapter 6  
+  }
+
+}
+
+export default Link</code></pre>
+<p></Instruction></p>
+<p>This is a simple React component that expects a <code>link</code> in its <code>props</code> and renders the link’s <code>description</code> and <code>url</code>. Easy as pie! 🍰</p>
+<p>Next, you’ll implement the component that renders a list of links.</p>
+<p><Instruction></p>
+<p>Again, in the <code>components</code> directory, go ahead and create a new file called <code>LinkList.js</code> and add the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/linklist.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import Link from &#39;./Link&#39;
+
+class LinkList extends Component {
+
+  render() {
+
+    const linksToRender = [{
+      id: &#39;1&#39;,
+      description: &#39;The coolest GraphQL backend 😎&#39;,
+      url: &#39;https://www.graph.cool&#39;
+    }, {
+      id: &#39;2&#39;,
+      description: &#39;Highly performant GraphQL client from Facebook&#39;,
+      url: &#39;https://facebook.github.io/relay/&#39;
+    }]
+
+    return (
+      &lt;div&gt;
+        {linksToRender.map(link =&gt; (
+          &lt;Link key={link.id} link={link}/&gt;
+        ))}
+      &lt;/div&gt;
+    )
+  }
+
+}
+
+export default LinkList</code></pre>
+<p></Instruction></p>
+<p>Here, you’re using mock data for now to make sure the component setup works. You’ll soon replace this with some actual data that’s loaded from the server - patience, young Padawan!</p>
+<p><Instruction></p>
+<p>To complete the setup, open <code>App.js</code> and replace the current contents with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/app.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import LinkList from &#39;./LinkList&#39;
+
+class App extends Component {
+  render() {
+    return (
+      &lt;LinkList /&gt;
+    )
+  }
+}
+
+export default App</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p>Note: The project that was generated by <code>create-react-app</code> uses semicolons and double quotes for strings. All the code that you’re going to write in this tutorial will use <strong>no semicolons</strong> and <strong>single quotes</strong>.</p>
+</blockquote>
+<p>Run the app by calling <code>yarn start</code> to check if everything works so far! The app should now display the two links from the <code>linksToRender</code> array:</p>
+<figure>
+<img src="http://imgur.com/J79QBD7.png" alt="Run the app by calling yarn start" /><figcaption>Run the app by calling <code>yarn start</code></figcaption>
+</figure>
+<h3 id="loading-data-from-the-server">Loading Data from the Server</h3>
+<p>In this section, you’ll learn how you can actually load data from the server instead of rendering the links simply from a local array.</p>
+<p>But before you go and make the required changes, a bit of theory!</p>
+<h4 id="colocation-and-graphql-fragments">Colocation and GraphQL Fragments</h4>
+<p>One of the most powerful concepts of Relay is called <em>colocation</em>. This means that a React component declares its data dependencies right next to (i.e. in the same file) where it’s defined. This happens in the form of <a href="http://graphql.org/learn/queries/#fragments">GraphQL fragments</a>.</p>
+<p>This effectively means that you’ll never write any actual GraphQL queries yourself. This is unlike the approach that’s taken in Apollo, where you’re also able to colocate data dependencies and React components - but are most commonly doing so by writing actual <em>queries</em> instead of <em>fragments</em>.</p>
+<p>But if you’re never writing any queries in Relay, how can the GraphQL server respond with sensible data?</p>
+<p>That’s the cool part about Relay! Under the hood, it will figure out the most efficient way for your React components to fetch the data that’s required for them to render, based on the data dependencies they declared in their fragments.</p>
+<p>You don’t have to worry about fetching the data one bit - all networking and caching logic is abstracted away and you can focus on writing your React components and what data they need! Declarative data fetching ftw 😎</p>
+<h4 id="fragment-containers">Fragment Containers</h4>
+<p>The way to declare the data dependencies alongside your React components is by using the <a href="https://facebook.github.io/relay/docs/fragment-container.html"><code>FragmentContainer</code></a> API.</p>
+<p>The function <code>createFragmentContainer</code> is a higher-order component that takes in two arguments:</p>
+<ol type="1">
+<li>A React component for which you want to declare some data dependencies</li>
+<li>Data dependencies written as a GraphQL fragment and wrapper using the <code>graphql</code> function</li>
+</ol>
+<p>Go ahead and write the fragment containers for the two components that you added before.</p>
+<p><Instruction></p>
+<p>Open <code>Link.js</code> and add the following import to its top:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/link.js&quot;)"><code>import {
+  createFragmentContainer,
+  graphql
+} from &#39;react-relay&#39;</code></pre>
+<p></Instruction></p>
+<p>All that’s done there is importing the required Relay modules that you need to create the fragment container.</p>
+<p><Instruction></p>
+<p>Now also adjust the export at the bottom of the file by replacing the current <code>export default Link</code> statement with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/link.js&quot;)"><code>export default createFragmentContainer(Link, graphql`
+  fragment Link_link on Link {
+    id
+    description
+    url
+  }
+`)</code></pre>
+<p></Instruction></p>
+<p>Here’s where it gets interesting! Let’s examine this part step-by-step:</p>
+<p>You’re using the <code>createFragmentContainer</code> higher-order component and pass in two arguments - exactly as we said before. The first argument is simply the React component, here that’s the <code>Link</code>. The second argument are its data requirements in the form of a GraphQL fragment tagged with the <code>graphql</code> function. The <code>Link</code> component needs access to the <code>description</code> and <code>url</code> of a link item. The <code>id</code> is required so that Relay can uniquely identify the link items when storing and retrieving them in the cache.</p>
+<p>One important note here is that there is a <a href="https://facebook.github.io/relay/docs/fragment-container.html#data-dependencies-with-graphql"><em>naming convention</em></a> for the fragments you’re creating! Each fragment should be named according to the <em>file</em> and the <em>prop</em> that will get injected into the component: <code>&lt;FileName&gt;_&lt;propName&gt;</code></p>
+<p>In your case, the file is called <code>Link.js</code> and the prop in the component should be called <code>link</code>. So you end up with <code>Link_link</code> for the name of the fragment.</p>
+<p>Great work so far! Go and add the fragment container for <code>LinkList</code> as well.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add the same import statement to the top as before:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>import {
+  createFragmentContainer,
+  graphql
+} from &#39;react-relay&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then replace the <code>export default LinkList</code> with the following:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>export default createFragmentContainer(LinkList, graphql`
+  fragment LinkList_viewer on Viewer {
+    allLinks(last: 100, orderBy: createdAt_DESC) @connection(key: &quot;LinkList_allLinks&quot;, filters: []) {
+      edges {
+        node {
+          ...Link_link
+        }
+      }
+    }
+  }
+`)</code></pre>
+<p></Instruction></p>
+<p>Similar to the <code>Link</code> component, you’re passing the <code>LinkList</code> component along with its data requirements into <code>createFragmentContainer</code>. The <code>LinkList</code> needs access to a list of links - here you’re simply asking for the last 100 links to display. In the last chapter of this tutorial, you’ll implement a proper <a href="https://facebook.github.io/relay/docs/pagination-container.html">pagination</a> approach.</p>
+<blockquote>
+<p>Note: In Relay, <em>lists</em> are represented with the concept of <a href="https://facebook.github.io/relay/docs/graphql-connections.html"><em>connections</em></a>. This facilitates the implementation of a <a href="https://facebook.github.io/relay/graphql/connections.htm">cursor-based pagination</a> approach on the client. Relay also requires you to always specify a <em>limit</em> of items that you want to fetch from the server, so you have to pass the <code>first</code> or <code>last</code> argument when fetching items from a connection.</p>
+</blockquote>
+<p>Notice that you’re again following the same naming convention and name the fragment <code>LinkList_viewer</code>. <code>LinkList.js</code> is the name of the file and <code>viewer</code> is the prop that you expect in the component.</p>
+<p>You’re also reusing the <code>Link_link</code> fragment that you wrote in <code>Link.js</code>. That’s because the <code>LinkList</code> is higher in the React component (and Relay container) tree, so it needs to include all the fragments of its children!</p>
+<p>The <a href="https://www.graph.cool/docs/tutorials/relay-modern-connection-directive-ujaesaen0s/"><code>@connection</code></a> directive is required for updating the cache later on - you need it so you can refer to that particular connection (identified by the key <code>LinkList_allLinks</code>) in the cache.</p>
+<p>Finally, you also need to delete the mock data and use the data that’ll be injected by Relay to render the <code>Link</code> elements.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and update <code>render</code> to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklist.js&quot;)"><code>render() {
+  return (
+    &lt;div&gt;
+      {this.props.viewer.allLinks.edges.map(({node}) =&gt;
+          &lt;Link key={node.__id} link={node} /&gt;
+      )}
+    &lt;/div&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<h4 id="rendering-queries">Rendering Queries</h4>
+<p>Now it starts to get interesting! What happens with these fragments? When are they used and what’s the query Relay actually sends to the server?</p>
+<p>Meet the <a href="https://facebook.github.io/relay/docs/query-renderer.html"><code>QueryRenderer</code></a>:</p>
+<blockquote>
+<p><code>QueryRenderer</code> is the root of a Relay tree. It takes a query, fetches the data and calls the <code>render</code> callback with the data.</p>
+</blockquote>
+<p>So, here is where it all adds up. React components are wrapped with GraphQL fragments to become Relay containers. When doing so, they retain the same hierarchical structure as the pure React components and form a <em>tree</em>. At the root of that tree there’s the <code>QueryRenderer</code>, which also is a higher-order component that will take care of composing the actual query.</p>
+<p>So, go and add the <code>QueryRenderer</code> in a new component!</p>
+<p><Instruction></p>
+<p>Create a new file called <code>LinkListPage.js</code> and add the following import to the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import {
+  QueryRenderer,
+  graphql
+} from &#39;react-relay&#39;
+import environment from &#39;../Environment&#39;
+import LinkList from &#39;./LinkList&#39;</code></pre>
+<p></Instruction></p>
+<p>A <code>QueryRenderer</code> needs at least three things when being instantiated:</p>
+<ol type="1">
+<li>A Relay <code>environment</code> which is why you’re importing it here.</li>
+<li>A root <code>query</code> which will be the basis for the query that gets sent to the server.</li>
+<li>A <code>render</code> function that specifies what should be rendered in <em>loading</em>, <em>error</em> and <em>success</em> cases.</li>
+</ol>
+<p>You’ll write the root <code>query</code> first.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkListPage.js</code>, add the following code right after the import statements:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>const LinkListPageQuery = graphql`
+  query LinkListPageQuery {
+    viewer {
+      ...LinkList_viewer
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>Notice how you’re now actually reusing the fragment <code>LinkList_viewer</code> from the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkListPage.js</code>, copy the following code at the bottom of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/linklistpage.js&quot;)"><code>class LinkListPage extends Component {
+
+  render() {
+    return (
+      &lt;QueryRenderer
+        environment={environment}
+        query={LinkListPageQuery}
+        render={({error, props}) =&gt; {
+          if (error) {
+            return &lt;div&gt;{error.message}&lt;/div&gt;
+          } else if (props) {
+            return &lt;LinkList viewer={props.viewer} /&gt;
+          }
+          return &lt;div&gt;Loading&lt;/div&gt;
+        }}
+      /&gt;
+    )
+  }
+
+}
+
+export default LinkListPage</code></pre>
+<p></Instruction></p>
+<p>As discussed before, you’re using the <code>QueryRenderer</code> and provide the three required props. The <code>render</code> function receives the result that’s returned by the server and passes it down to its children.</p>
+<p>Lastly, you need to make sure that the <code>LinkListPage</code> is rendered on the root of your component hierarchy.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and replace its contents so that <code>render</code> returns the <code>LinkListPage</code>:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+import LinkListPage from &#39;./LinkListPage&#39;
+
+class App extends Component {
+  render() {
+    return (
+      &lt;LinkListPage /&gt;
+    )
+  }
+}
+
+export default App</code></pre>
+<p></Instruction></p>
+<h4 id="running-the-app">Running the App</h4>
+<p>If you’re just running the app now, you’ll be disappointed that it throws some errors:</p>
+<pre class="(nocopy)"><code>Failed to compile.
+./src/components/LinkListPage.js
+Module not found: Can&#39;t resolve &#39;./__generated__/LinkListPageQuery.graphql&#39; in &#39;.../hackernews-react-relay/src/components&#39;</code></pre>
+<p>That’s because we’ve skipped the <em>compilation</em> of the GraphQL code that makes for much of Relay’s actual power! You already installed the <code>relay-compiler</code> as a dev dependency, this allows you to add it as a script to <code>package.json</code> as explained <a href="https://facebook.github.io/relay/docs/en/installation-and-setup.html#set-up-relay-compiler">here</a>. However, to keep things a bit more simple in this tutorial you’ll just install it globally for now (feel free to choose the other setup described in the Relay docs).</p>
+<p><Instruction></p>
+<p>In your terminal, install the <code>relay-compiler</code> globally with the following command:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">npm</span> install -g relay-compiler</a></code></pre></div>
+<p></Instruction></p>
+<p>The compiler can be invoked using the <code>relay-compiler</code> command in the terminal where you have to provide two arguments:</p>
+<ol type="1">
+<li><code>--src</code>: The path to all your files that contain <code>graphql</code> code</li>
+<li><code>--schema</code>: The path to your full GraphQL schema that you already downloaded in the previous chapter</li>
+</ol>
+<p><Instruction></p>
+<p>In a terminal, navigate to the project’s root directory and invoke the Relay Compiler with the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>relay-compiler --src ./src --schema ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>Now - when running the <code>relay-compiler</code> you’ll actually see another error message. That’s disappointing, but don’t worry - it’s not your fault this time. This happens because of a <a href="https://github.com/facebook/relay/issues/1835">bug in the Relay Compiler</a> that breaks the compilation when there are non-nullable types on the connection types in the schema. You can work around the issue by manually adjusting it, which is not something you should be doing under normal circumstances but for the purpose of this tutorial it will be fine.</p>
+<p><Instruction></p>
+<p>In fact, we already did the fixes for you. So you now have to copy the contents from the modified schema stored at <a href="https://graphqlbin.com/hn-relay-full.graphql">https://graphqlbin.com/hn-relay-full.graphql</a> into <code>hackernews-react-relay/schema.graphql</code>.</p>
+<p></Instruction></p>
+<p>Now you can run the Relay Compiler again!</p>
+<p><Instruction></p>
+<p>Once again, in a terminal, navigate to the project’s root directory and invoke the Relay Compiler:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>relay-compiler --src ./src --schema ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>The <code>relay-compiler</code> will now scan all files in <code>src</code> and look for <code>graphql</code> code. It then takes this code and generates corresponding Javascript representations for it (which again will be the input for the Babel compilation step). These Javascript representations are stored in <code>./src/__generated__</code>.</p>
+<p>Here’s what the terminal output will look like:</p>
+<pre class="bash(nocopy)"><code>$ relay-compiler --src ./src --schema ./schema.graphql
+HINT: pass --watch to keep watching for changes.
+Parsed default in 0.06s
+
+Writing default
+Writer time: 0.27s [0.08s compiling, 0.19s generating, 0.00s extra]
+Created:
+ - Link_link.flow.js
+ - Link_link.graphql.js
+ - LinkList_viewer.flow.js
+ - LinkList_viewer.graphql.js
+ - LinkListPageQuery.graphql.js
+Unchanged: 0 files
+Written default in 0.33s</code></pre>
+<p>You’ll also notice that the <code>__generated__</code> directory was now created and contains all the files that were generated by the compiler:</p>
+<pre class="bash(nocopy)"><code>.
+└── src
+    └── components
+        └── __generated__
+            ├── LinkListPageQuery.graphql.js
+            ├── LinkList_viewer.flow.js
+            ├── LinkList_viewer.graphql.js
+            ├── Link_link.flow.js
+            └── Link_link.graphql.js</code></pre>
+<p>That’s it, you can now run the app and you’ll see the same links that you initially added with the two mutations in the Playground rendered in the app!</p>
+<p>By the way, if you’re curious to see what the actual query looked like that the <code>QueryRenderer</code> composed for you and that was sent over to the server, you can inspect the <em>Networking</em>-tab of your browser’s dev tools:</p>
+<figure>
+<img src="http://imgur.com/222Prig.png" alt="The query in QueryRenderer" /><figcaption>The query in QueryRenderer</figcaption>
+</figure>
+<p>Awesome! You can now move on to learn about mutations in Relay.</p>
+</body>
+</html>

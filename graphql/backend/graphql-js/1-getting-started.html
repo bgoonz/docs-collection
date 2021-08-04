@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Getting Started</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Getting Started</h1>
+</header>
+<p>In this section, you will set up the project for your GraphQL server and implement your first GraphQL query. At the end, we’ll talk theory for a bit and learn about the <a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e">GraphQL schema</a>.</p>
+<h3 id="creating-the-project">Creating the project</h3>
+<p>This tutorial teaches you how to build a GraphQL server from scratch, so the first thing you need to do is create the directory that’ll hold the files for your GraphQL server!</p>
+<p><Instruction></p>
+<p>Open your terminal, navigate to a location of your choice, and run the following commands:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">mkdir</span> hackernews-node</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="bu">cd</span> hackernews-node</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ex">npm</span> init -y</a></code></pre></div>
+<p></Instruction></p>
+<p>This creates a new directory called <code>hackernews-node</code> and initializes it with a <code>package.json</code> file. <code>package.json</code> is the configuration file for the Node.js app you’re building. It lists all dependencies and other configuration options (such as <em>scripts</em>) needed for the app.</p>
+<h3 id="creating-a-raw-graphql-server">Creating a raw GraphQL server</h3>
+<p>With the project directory in place, you can go ahead and create the entry point for your GraphQL server. This will be a file called <code>index.js</code>, located inside a directory called <code>src</code>.</p>
+<p><Instruction></p>
+<p>In your terminal, first create the <code>src</code> directory and then the empty <code>index.js</code> file:</p>
+<pre class="bash(path=&quot;.../hackernews-node/&quot;)"><code>mkdir src
+touch src/index.js</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p><strong>Note</strong>: The above code block is annotated with a directory name. It indicates <em>where</em> you need to execute the terminal command.</p>
+</blockquote>
+<p>To start the app, you can now execute <code>node src/index.js</code> inside the <code>hackernews-node</code> directory. At the moment, this won’t do anything because <code>index.js</code> is still empty ¯\_(ツ )_/¯</p>
+<p>Let’s go and start building the GraphQL server! The first thing you need to is - surprise - add a dependency to the project.</p>
+<p>First, let’s install two important dependencies that will allow you to create your GraphQL server.</p>
+<p><Instruction></p>
+<p>Run the following command in your terminal:</p>
+<pre class="bash(path=&quot;.../hackernews-node/&quot;)"><code>npm install apollo-server graphql</code></pre>
+<p></Instruction></p>
+<p><a href="https://github.com/apollographql/apollo-server/tree/main/packages/apollo-server"><code>apollo-server</code></a> is a fully-featured GraphQL server. It is based on <a href="https://expressjs.com/">Express.js</a> and a few other libraries to help you build production-ready GraphQL servers.</p>
+<p>Here’s a list of its features:</p>
+<ul>
+<li>GraphQL spec-compliant</li>
+<li>Realtime functionality with GraphQL subscriptions</li>
+<li>Out-of-the-box support for GraphQL Playground</li>
+<li>Extensible via Express middlewares</li>
+<li>Resolves custom directives in your GraphQL schema</li>
+<li>Query performance tracing</li>
+<li>Runs everywhere: Can be deployed via Vercel, Up, AWS Lambda, Heroku etc.</li>
+</ul>
+<p>Perfect, it’s time to write some code 🙌</p>
+<p><Instruction></p>
+<p>Open <code>src/index.js</code> and type the following:</p>
+<pre class="js(path=&quot;../hackernews-node/src/index.js&quot;)"><code>const { ApolloServer } = require(&#39;apollo-server&#39;);
+
+// 1
+const typeDefs = `
+  type Query {
+    info: String!
+  }
+`
+
+// 2
+const resolvers = {
+  Query: {
+    info: () =&gt; `This is the API of a Hackernews Clone`
+  }
+}
+
+// 3
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+})
+
+server
+  .listen()
+  .then(({ url }) =&gt;
+    console.log(`Server is running on ${url}`)
+  );</code></pre>
+<p></Instruction></p>
+<blockquote>
+<p><strong>Note</strong>: This code block is annotated with a file name. It indicates into which file you need to put the code that’s shown. The annotation also links to the corresponding file on GitHub to help you figure out <em>where</em> in the file you need to put it in case you are not sure about that.</p>
+</blockquote>
+<p>All right, let’s understand what’s going on here by walking through the numbered comments:</p>
+<ol type="1">
+<li>The <code>typeDefs</code> constant defines your <em>GraphQL schema</em> (more about this in a bit). Here, it defines a simple <code>Query</code> type with one <em>field</em> called <code>info</code>. This field has the type <code>String!</code>. The exclamation mark in the type definition means that this field is required and can never be <code>null</code>.</li>
+<li>The <code>resolvers</code> object is the actual <em>implementation</em> of the GraphQL schema. Notice how its structure is identical to the structure of the type definition inside <code>typeDefs</code>: <code>Query.info</code>.</li>
+<li>Finally, the schema and resolvers are bundled and passed to <code>ApolloServer</code> which is imported from <code>apollo-server</code>. This tells the server what API operations are accepted and how they should be resolved.</li>
+</ol>
+<p>Go ahead and test your GraphQL server!</p>
+<h3 id="testing-the-graphql-server">Testing the GraphQL server</h3>
+<p><Instruction></p>
+<p>In the root directory of your project, run the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-node/&quot;)"><code>node src/index.js</code></pre>
+<p></Instruction></p>
+<p>As indicated by the terminal output, the server is now running on <code>http://localhost:4000</code>. To test the API of your server, open a browser and navigate to that URL.</p>
+<p>What you’ll then see is a <a href="https://github.com/prisma-labs/graphql-playground">GraphQL Playground</a>, a powerful “GraphQL IDE” that lets you explore the capabilities of your API in an interactive manner.</p>
+<figure>
+<img src="https://imgur.com/9RC6x9S.png" alt="GraphQL Playground" /><figcaption>GraphQL Playground</figcaption>
+</figure>
+<p>By clicking the <strong>DOCS</strong>-button on the right, you can open the API documentation. This documentation is auto-generated based on your schema definition and displays all API operations and data types of your schema.</p>
+<figure>
+<img src="https://imgur.com/81Ho6YM.png" alt="open the API documentation" /><figcaption>open the API documentation</figcaption>
+</figure>
+<p>Let’s go ahead and send your very first GraphQL query. Type the following into the editor pane on the left side:</p>
+<pre class="graphql"><code>query {
+  info
+}</code></pre>
+<p>Now send the query to the server by clicking the <strong>Play</strong>-button in the center (or use the keyboard shortcut <strong>CMD+ENTER</strong> for Mac and <strong>CTRL+ENTER</strong> on Windows and Linux).</p>
+<figure>
+<img src="https://imgur.com/EnW3HE5.png" alt="send the query to the server" /><figcaption>send the query to the server</figcaption>
+</figure>
+<p>Congratulations, you just implemented and successfully tested your first GraphQL query 🎉</p>
+<p>Now, remember when we talked about the definition of the <code>info: String!</code> field and said the exclamation mark means this field could never be <code>null</code>. Well, since you’re implementing the resolver, you are in control of what the value for that field is, right?</p>
+<p>So, what happens if you return <code>null</code> instead of the actual informative string in the resolver implementation? Feel free to try that out!</p>
+<p>In <code>index.js</code>, update the the definition of <code>resolvers</code> as follows:</p>
+<pre class="js{3}(path=&quot;.../hackernews-node/src/index.js&quot;)"><code>const resolvers = {
+  Query: {
+    info: () =&gt; null,
+  }
+}</code></pre>
+<p>To test the results of this, you need to restart the server: First, stop it using <strong>CTRL+C</strong> on your keyboard, then restart it by running <code>node src/index.js</code> again.</p>
+<p>Now, send the query from before again. This time, it returns an error: <code>Error: Cannot return null for non-nullable field Query.info.</code></p>
+<figure>
+<img src="https://imgur.com/VLVE5Vv.png" alt="send the query from before again" /><figcaption>send the query from before again</figcaption>
+</figure>
+<p>What happens here is that the underlying <a href="https://github.com/graphql/graphql-js/"><code>graphql-js</code></a> reference implementation ensures that the return types of your resolvers adhere to the type definitions in your GraphQL schema. Put differently, it protects you from making stupid mistakes!</p>
+<p>This is in fact one of the core benefits of GraphQL in general: it enforces that the API actually behaves in the way that is promised by the schema definition! This way, everyone who has access to the GraphQL schema can always be 100% sure about the API operations and data structures that are returned by the API.</p>
+<h3 id="a-word-on-the-graphql-schema">A word on the GraphQL schema</h3>
+<p>At the core of every GraphQL API, there is a GraphQL schema. So, let’s quickly talk about it.</p>
+<blockquote>
+<p><strong>Note</strong>: In this tutorial, we’ll only scratch the surface of this topic. If you want to go a bit more in-depth and learn more about the GraphQL schema as well as its role in a GraphQL API, be sure to check out <a href="https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e">this</a> excellent article.</p>
+</blockquote>
+<p>GraphQL schemas are usually written in the GraphQL <a href="https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51">Schema Definition Language</a> (SDL). SDL has a type system that allows you to define data structures (just like other strongly typed programming languages such as Java, TypeScript, Swift, Go, etc.).</p>
+<p>How does that help in defining the API for a GraphQL server, though? Every GraphQL schema has three special <em>root types</em>: <code>Query</code>, <code>Mutation</code>, and <code>Subscription</code>. The root types correspond to the three operation types offered by GraphQL: queries, mutations, and subscriptions. The fields on these root types are called <em>root fields</em> and define the available API operations.</p>
+<p>As an example, consider the simple GraphQL schema we used above:</p>
+<pre class="graphql(nocopy)"><code>type Query {
+  info: String!
+}</code></pre>
+<p>This schema only has a single root field, called <code>info</code>. When sending queries, mutations or subscriptions to a GraphQL API, these always need to start with a root field! In this case, we only have one root field, so there’s really only one possible query that’s accepted by the API.</p>
+<p>Let’s now consider a slightly more advanced example:</p>
+<pre class="(nocopy)"><code>type Query {
+  users: [User!]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  createUser(name: String!): User!
+}
+
+type User {
+  id: ID!
+  name: String!
+}</code></pre>
+<p>In this case, we have three root fields: <code>users</code> and <code>user</code> on <code>Query</code> as well as <code>createUser</code> on <code>Mutation</code>. The additional definition of the <code>User</code> type is required because otherwise the schema definition would be incomplete.</p>
+<p>What are the API operations that can be derived from this schema definition? Well, we know that each API operation always needs to start with a root field. However, we haven’t learned yet what it looks like when the <em>type</em> of a root field is itself another <a href="http://graphql.org/learn/schema/#object-types-and-fields">object type</a>. This is the case here, where the types of the root fields are <code>[User!]!</code>, <code>User</code> and <code>User!</code>. In the <code>info</code> example from before, the type of the root field was a <code>String</code>, which is a <a href="http://graphql.org/learn/schema/#scalar-types">scalar type</a>.</p>
+<p>When the type of a root field is an object type, you can further expand the query (or mutation/subscription) with fields of that object type. The expanded part is called <em>selection set</em>.</p>
+<p>Here are the operations that are accepted by a GraphQL API that implements the above schema:</p>
+<pre class="graphql(nocopy)"><code># Query for all users
+query {
+  users {
+    id
+    name
+  }
+}
+
+# Query a single user by their id
+query {
+  user(id: &quot;user-1&quot;) {
+    id
+    name
+  }
+}
+
+# Create a new user
+mutation {
+  createUser(name: &quot;Bob&quot;) {
+    id
+    name
+  }
+}</code></pre>
+<p>There are a few things to note:</p>
+<ul>
+<li>In these examples, we always query <code>id</code> and <code>name</code> of the returned <code>User</code> objects. We could potentially omit either of them. Note, however, when querying an object type, it is required that you query at least one of its fields in a selection set.</li>
+<li>For the fields in the selection set, it doesn’t matter whether the type of the root field is <em>required</em> or a <em>list</em>. In the example schema above, the three root fields all have different <a href="http://graphql.org/learn/schema/#lists-and-non-null">type modifiers</a> (i.e. different combinations of being a list and/or required) for the <code>User</code> type:
+<ul>
+<li>For the <code>users</code> field, the return type <code>[User!]!</code> means it returns a <em>list</em> (which itself cannot be <code>null</code>) of <code>User</code> elements. The list can also not contain elements that are <code>null</code>. So, you’re always guaranteed to either receive an empty list or a list that only contains non-null <code>User</code> objects.</li>
+<li>For the <code>user(id: ID!)</code> field, the return type <code>User</code> means the returned value could be <code>null</code> <em>or</em> a <code>User</code> object.</li>
+<li>For the <code>createUser(name: String!)</code> field, the return type <code>User!</code> means this operation always returns a <code>User</code> object.</li>
+</ul></li>
+</ul>
+<p>Phew, enough theory 😠 Let’s go and write some more code!</p>
+</body>
+</html>

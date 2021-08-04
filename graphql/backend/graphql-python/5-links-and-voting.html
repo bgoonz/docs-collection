@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Links and Voting</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Links and Voting</h1>
+</header>
+<h3 id="attaching-users-to-links">Attaching Users to Links</h3>
+<p>With sign in power, you can now create your <em>own</em> links, posted by you. To make it possible, let’s integrate the Links and Users models:</p>
+<p><Instruction></p>
+<p>In the Link models file, import the Django settings:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/models.py&quot;)"><code>from django.conf import settings
+# ...code</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And add the <code>posted_by</code> field at the very end:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/models.py&quot;)"><code>posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Run the Django commands to reflect the changes in the database:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">python</span> manage.py makemigrations</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">python</span> manage.py migrate</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>In the <code>CreateLink</code> mutation, return the User in the new created field:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ...code
+# Add the following imports
+from users.schema import UserType
+
+
+# ...code
+# Change the CreateLink mutation
+class CreateLink(graphene.Mutation):
+    id = graphene.Int()
+    url = graphene.String()
+    description = graphene.String()
+    posted_by = graphene.Field(UserType)
+
+    class Arguments:
+        url = graphene.String()
+        description = graphene.String()
+
+    def mutate(self, info, url, description):
+        user = info.context.user or None
+
+        link = Link(
+            url=url,
+            description=description,
+            posted_by=user,
+        )
+        link.save()
+
+        return CreateLink(
+            id=link.id,
+            url=link.url,
+            description=link.description,
+            posted_by=link.posted_by,
+        )</code></pre>
+<p></Instruction></p>
+<p>To test it, send a mutation to the server (remember to use the token!):</p>
+<figure>
+<img src="https://i.imgur.com/XBsEwK8.png" alt="send a mutation to the server" /><figcaption>send a mutation to the server</figcaption>
+</figure>
+<p>Neat!</p>
+<h3 id="adding-votes">Adding Votes</h3>
+<p>One of the Hackernews’ features is to vote on links, making ones more popular than others. To create this, you’ll need to create a Vote model and a <code>CreateVote</code> mutation. Let’s begin:</p>
+<p><Instruction></p>
+<p>Add the Vote model in <code>links/models.py</code>:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/models.py&quot;)"><code>class Vote(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    link = models.ForeignKey(&#39;links.Link&#39;, related_name=&#39;votes&#39;, on_delete=models.CASCADE)</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And reflect the changes in the database:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">python</span> manage.py makemigrations</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="ex">python</span> manage.py migrate</a></code></pre></div>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, add a new mutation for voting:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ...code
+# In the same import line, add the Vote model
+from links.models import Link, Vote
+
+
+# ...code
+# Add the CreateVote mutation
+class CreateVote(graphene.Mutation):
+    user = graphene.Field(UserType)
+    link = graphene.Field(LinkType)
+
+    class Arguments:
+        link_id = graphene.Int()
+
+    def mutate(self, info, link_id):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception(&#39;You must be logged to vote!&#39;)
+
+        link = Link.objects.filter(id=link_id).first()
+        if not link:
+            raise Exception(&#39;Invalid Link!&#39;)
+
+        Vote.objects.create(
+            user=user,
+            link=link,
+        )
+
+        return CreateVote(user=user, link=link)
+
+
+# ...code
+# Add the mutation to the Mutation class
+class Mutation(graphene.ObjectType):
+    create_link = CreateLink.Field()
+    create_vote = CreateVote.Field()</code></pre>
+<p></Instruction></p>
+<p>Voting time! Try to vote for the first link:</p>
+<figure>
+<img src="https://i.imgur.com/5NUS0fu.png" alt="vote for the first link" /><figcaption>vote for the first link</figcaption>
+</figure>
+<h3 id="relating-links-and-votes">Relating Links and Votes</h3>
+<p>You can already vote, but you can’t see it! A solution for this is being able to get a list of all the votes and a list of votes from each link. Follow the next steps to accomplish it:</p>
+<p><Instruction></p>
+<p>Add the <code>VoteType</code> and a <code>votes</code> field to get all votes:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ...code
+# Add after the LinkType
+class VoteType(DjangoObjectType):
+    class Meta:
+        model = Vote</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>And add the <code>votes</code> field and the <code>resolve_votes</code> method:</p>
+<pre class="python(path=&quot;.../graphql-python/hackernews/links/schema.py&quot;)"><code># ...code
+# Add the votes field
+class Query(graphene.ObjectType):
+    links = graphene.List(LinkType)
+    votes = graphene.List(VoteType)
+
+    def resolve_links(self, info, **kwargs):
+        return Link.objects.all()
+
+    def resolve_votes(self, info, **kwargs):
+        return Vote.objects.all()</code></pre>
+<p></Instruction></p>
+<p>Awesome! On Insomnia, try to fetch the list of votes:</p>
+<figure>
+<img src="https://i.imgur.com/LJ0CMn6.png" alt="fetch the list of votes" /><figcaption>fetch the list of votes</figcaption>
+</figure>
+<p>To close this chapter, make a query for all the links and see how smoothly the votes become available:</p>
+<figure>
+<img src="https://i.imgur.com/jAlDphd.png" alt="make a query for all the links and see how smoothly the votes become available" /><figcaption>make a query for all the links and see how smoothly the votes become available</figcaption>
+</figure>
+<p>Yay!</p>
+</body>
+</html>

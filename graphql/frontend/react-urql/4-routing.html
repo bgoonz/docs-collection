@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Routing</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Routing</h1>
+</header>
+<p>In this section, you’ll learn how to use <a href="https://github.com/ReactTraining/react-router">react-router 5</a> with urql to add some navigation to your app!</p>
+<h3 id="install-dependencies">Install dependencies</h3>
+<p>First add the required dependencies to the app. Open a terminal, navigate to your project directory and type:</p>
+<p><Instruction></p>
+<pre class="bash(path=&quot;.../hackernews-react-urql&quot;)"><code>yarn add react-router react-router-dom</code></pre>
+<p></Instruction></p>
+<h3 id="create-a-header">Create a Header</h3>
+<p>Before you’ll configure the different routes for your application, you need to create a <code>Header</code> component that users can use to navigate between the different parts of your app.</p>
+<p><Instruction></p>
+<p>Create a new file in <code>src/components</code> and call it <code>Header.js</code>. Then paste the following code inside of it:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/header.js&quot;)"><code>import React from &#39;react&#39;
+import { Link } from &#39;react-router-dom&#39;
+
+const Header = props =&gt; (
+  &lt;div className=&quot;flex pa1 justify-between nowrap orange&quot;&gt;
+    &lt;div className=&quot;flex flex-fixed black&quot;&gt;
+      &lt;div className=&quot;fw7 mr1&quot;&gt;Hacker News&lt;/div&gt;
+      &lt;Link to=&quot;/&quot; className=&quot;ml1 no-underline black&quot;&gt;
+        new
+      &lt;/Link&gt;
+      &lt;div className=&quot;ml1&quot;&gt;|&lt;/div&gt;
+      &lt;Link to=&quot;/create&quot; className=&quot;ml1 no-underline black&quot;&gt;
+        submit
+      &lt;/Link&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default Header</code></pre>
+<p></Instruction></p>
+<p>This simply renders two of <code>react-router-dom</code>’s <code>Link</code> components that users can use to navigate between the <code>LinkList</code> and the <code>CreateLink</code> components.</p>
+<blockquote>
+<p>Don’t get confused by the “other” <code>Link</code> component that is used here. The one that you’re using in the <code>Header</code> has nothing to do with the <code>Link</code> component that you wrote before, they just happen to have the same name. This <a href="https://reacttraining.com/react-router/web/api/Link">Link</a> is exposed by the <code>react-router-dom</code> package and allows you to navigate between routes inside of your application.</p>
+</blockquote>
+<h3 id="setup-routes">Setup routes</h3>
+<p>Let’s set up some routes inside your <code>App</code> component! We will create one route for the main <code>LinkList</code> at <code>/</code>, and one route for <code>CreateLink</code> at <code>/create</code>.</p>
+<p><Instruction></p>
+<p>Open the <code>App.js</code> file and replace it with the following code:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/app.js&quot;)"><code>import React from &#39;react&#39;
+import { Switch, Route } from &#39;react-router-dom&#39;
+
+import Header from &#39;./Header&#39;
+import LinkList from &#39;./LinkList&#39;
+import CreateLink from &#39;./CreateLink&#39;
+
+const App = () =&gt; (
+  &lt;div className=&quot;center w85&quot;&gt;
+    &lt;Header /&gt;
+    &lt;div className=&quot;ph3 pv1 background-gray&quot;&gt;
+      &lt;Switch&gt;
+        &lt;Route exact path=&quot;/&quot; component={LinkList} /&gt;
+        &lt;Route exact path=&quot;/create&quot; component={CreateLink} /&gt;
+      &lt;/Switch&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)
+
+export default App</code></pre>
+<p></Instruction></p>
+<p>You’ve now added the <code>/</code> and <code>/create</code> routes to the app and added the <code>Header</code>.</p>
+<p>Now you’ll need to add an additional Provider component around your app for <code>react-router-dom</code> to work properly.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add the following, new import statement to the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import { BrowserRouter } from &#39;react-router-dom&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Then update <code>ReactDOM.render</code> at the end and wrap the exiting elements there in <code>BrowserRouter</code>:</p>
+<pre class="js{2,6}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>ReactDOM.render(
+  &lt;BrowserRouter&gt;
+    &lt;Provider value={client}&gt;
+      &lt;App /&gt;
+    &lt;/Provider&gt;
+  &lt;/BrowserRouter&gt;,
+  document.getElementById(&#39;root&#39;)
+)</code></pre>
+<p></Instruction></p>
+<p>That’s it. If you run the app again, you can now access two URLs. <code>http://localhost:3000/</code> will render <code>LinkList</code> and <code>http://localhost:3000/create</code> renders the <code>CreateLink</code> component you just wrote in the previous section.</p>
+<figure>
+<img src="https://imgur.com/X9bmkQH.png" alt="Run the app and access it at localhost:3000" /><figcaption>Run the app and access it at localhost:3000</figcaption>
+</figure>
+<h3 id="add-automatic-redirects">Add automatic redirects</h3>
+<p>To wrap up this section, let’s also add an automatic redirect to the <code>CreateLink</code> component. To do that you can use the <code>history</code> prop that <code>react-router</code> passes down to all components that are wrapped in a route.</p>
+<p>We want to use the <code>history.push</code> method to redirect to the <code>LinkList</code> route once the mutation has completed. We can do this by using the promise that <code>executeMutation</code> returns when it’s being called.</p>
+<p><Instruction></p>
+<p>In <code>CreateLink.js</code> update the <code>submit</code> handler to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/createlink.js&quot;)"><code>const submit = React.useCallback(() =&gt; {
+  executeMutation({ url, description }).then(() =&gt; {
+    props.history.push(&#39;/&#39;)
+  })
+}, [executeMutation, url, description, props.history])</code></pre>
+<p></Instruction></p>
+<p>After the mutation was performed, <code>react-router</code> will now navigate back to the <code>LinkList</code> component that’s accessible on the root route: <code>/</code>.</p>
+<blockquote>
+<p><strong>Note</strong>: The <code>LinkList</code> won’t display the newly created <code>Link</code> after the app redirects to it. For now you can simply refresh to see the changes made. You’ll learn how to update the data after the mutation is being triggered in a future chapter!</p>
+</blockquote>
+</body>
+</html>

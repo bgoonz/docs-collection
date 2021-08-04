@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queries</h1>
+</header>
+<h3 id="query-resolvers">Query resolvers</h3>
+<p>To maintain strong typing and intuitive design, it is common to represent GraphQL types with equivalent Java classes, and fields with methods. graphql-java-tools defines two types of classes: <em>data classes</em>, which model the domain and are usually simple POJOs, and <em>resolvers</em>, that model the queries and mutations and contain the resolver functions. Often, both are needed to model a single GraphQL type.</p>
+<p>The schema so far looks like this:</p>
+<pre class="graphql(nocopy)"><code>type Link {
+  url: String!
+  description: String!
+}
+
+type Query {
+  allLinks: [Link]
+}
+
+schema {
+  query: Query
+}</code></pre>
+<p>To model it, two classes are needed: <code>Link</code> and <code>Query</code>.</p>
+<p><Instruction></p>
+<p><code>Link</code> is a POJO (containing no behavior), so create it as follows:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/link.java&quot;)"><code>public class Link {
+    
+    private final String url;
+    private final String description;
+
+    public Link(String url, String description) {
+        this.url = url;
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>You should also create a <code>LinkRepository</code> class that will neatly isolate the concern of saving and loading links from the storage. This also makes future extensions and refactoring a lot easier. For now, the links will only be kept in memory.</p>
+<p><Instruction></p>
+<p>Create <code>LinkRepository</code> as follows</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/linkrepository.java&quot;)"><code>public class LinkRepository {
+    
+    private final List&lt;Link&gt; links;
+
+    public LinkRepository() {
+        links = new ArrayList&lt;&gt;();
+        //add some links to start off with
+        links.add(new Link(&quot;http://howtographql.com&quot;, &quot;Your favorite GraphQL page&quot;));
+        links.add(new Link(&quot;http://graphql.org/learn/&quot;, &quot;The official docks&quot;));
+    }
+
+    public List&lt;Link&gt; getAllLinks() {
+        return links;
+    }
+    
+    public void saveLink(Link link) {
+        links.add(link);
+    }
+}</code></pre>
+<p></Instruction></p>
+<h3 id="returning-links">Returning links</h3>
+<p>Unlike the <code>Link</code> POJO, <code>Query</code> models behavior, as it contains the resolver for the <code>allLinks</code> query.</p>
+<p><Instruction></p>
+<p>Create it as such:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/query.java&quot;)"><code>public class Query implements GraphQLRootResolver {
+    
+    private final LinkRepository linkRepository;
+
+    public Query(LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
+    }
+
+    public List&lt;Link&gt; allLinks() {
+        return linkRepository.getAllLinks();
+    }
+}</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Finally, you can update <code>GraphQLEndpoint</code> to register the resolver properly when generating the schema:</p>
+<pre class="java(path=&quot;.../hackernews-graphql-java/src/main/java/com/howtographql/hackernews/graphqlendpoint.java&quot;)"><code>@WebServlet(urlPatterns = &quot;/graphql&quot;)
+public class GraphQLEndpoint extends SimpleGraphQLServlet {
+
+    public GraphQLEndpoint() {
+        super(buildSchema());
+    }
+
+    private static GraphQLSchema buildSchema() {
+        LinkRepository linkRepository = new LinkRepository();
+        return SchemaParser.newParser()
+                .file(&quot;schema.graphqls&quot;)
+                .resolvers(new Query(linkRepository))
+                .build()
+                .makeExecutableSchema();
+    }
+}</code></pre>
+<p></Instruction></p>
+<p>Notice how the schema-building logic got extracted into a separate method for easier future additions.</p>
+<p>If you now open http://localhost:8080/graphql?query={allLinks{url}} you’ll see your very first GraphQL query executing and giving you the result looking like this:</p>
+<pre class="json(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;allLinks&quot;: [
+      {
+        &quot;url&quot;: &quot;http://howtographql.com&quot;
+      },
+      {
+        &quot;url&quot;: &quot;http://graphql.org/learn/&quot;
+      }
+    ]
+  }
+}</code></pre>
+<p>It is now appropriate to feel good about yourself 😎</p>
+<h3 id="testing-with-graphiql">Testing with GraphiQL</h3>
+<p><a href="https://github.com/graphql/graphiql">GraphiQL</a> is an in-browser IDE allowing you to explore the schema, fire queries/mutations and see the results.</p>
+<p><Instruction></p>
+<p>To add GraphiQL, copy <a href="https://github.com/howtographql/graphql-java/blob/master/src/main/webapp/index.html">the example <code>index.html</code> from GraphiQL’s GitHub repo</a> and replace the paths to <code>graphiql.css</code> and <code>graphiql.js</code> from</p>
+<pre class="html(nocopy)"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;./node_modules/graphiql/graphiql.css&quot; /&gt;
+&lt;script src=&quot;./node_modules/graphiql/graphiql.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>to</p>
+<pre class="html(path=&quot;.../hackernews-graphql-java/src/main/webapp/index.html&quot;)"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;//cdn.jsdelivr.net/npm/graphiql@0.11.2/graphiql.css&quot; /&gt;
+&lt;script src=&quot;//cdn.jsdelivr.net/npm/graphiql@0.11.2/graphiql.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>Save the file to <code>src/main/webapp/index.html</code> (you may as well delete <code>index.jsp</code> that Maven generated), start Jetty and open http://localhost:8080/, and you should be greeted by a cool looking environment where you can test what you’ve build so far.</p>
+<p></Instruction></p>
+<figure>
+<img src="http://i.imgur.com/KlnKaZe.png" alt="Arrow to the Docs button in top right corner" /><figcaption>Arrow to the Docs button in top right corner</figcaption>
+</figure>
+<p>If you type the same query from above into the left panel (notice the auto-completion!), you should get the same result but nicely formatted this time. You can also click <a href="http://localhost:8080/graphql?query=%7BallLinks%7Burl%7D%7D">this link</a>.</p>
+<figure>
+<img src="http://i.imgur.com/jMO6hB9.png" alt="Arrow to play button to run" /><figcaption>Arrow to play button to run</figcaption>
+</figure>
+<p>Keep using GraphiQL to test out queries and mutation as you follow the tutorial.</p>
+</body>
+</html>

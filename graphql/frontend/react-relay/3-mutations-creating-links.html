@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mutations: Creating Links</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mutations: Creating Links</h1>
+</header>
+<p>In this section, you’ll learn how you can send mutations with Relay.</p>
+<h3 id="preparing-the-react-components">Preparing the React components</h3>
+<p>Like before, let’s start by writing the React component where users will be able to add new links.</p>
+<p><Instruction></p>
+<p>Create a new file in the <code>src/components</code> directory and call it <code>CreateLink.js</code>. Then paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-apollo/src/components/createlink.js&quot;)"><code>import React, { Component } from &#39;react&#39;
+
+class CreateLink extends Component {
+
+  state = {
+    description: &#39;&#39;,
+    url: &#39;&#39;
+  }
+
+  render() {
+
+    return (
+      &lt;div&gt;
+        &lt;div className=&#39;flex flex-column mt3&#39;&gt;
+          &lt;input
+            className=&#39;mb2&#39;
+            value={this.state.description}
+            onChange={(e) =&gt; this.setState({ description: e.target.value })}
+            type=&#39;text&#39;
+            placeholder=&#39;A description for the link&#39;
+          /&gt;
+          &lt;input
+            className=&#39;mb2&#39;
+            value={this.state.url}
+            onChange={(e) =&gt; this.setState({ url: e.target.value })}
+            type=&#39;text&#39;
+            placeholder=&#39;The URL for the link&#39;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div
+          className=&#39;button&#39;
+          onClick={() =&gt; this._createLink()}
+        &gt;
+          submit
+        &lt;/div&gt;
+      &lt;/div&gt;
+    )
+
+  }
+
+  _createLink = () =&gt; {
+    // ... you&#39;ll implement this in a bit
+  }
+
+}
+
+export default CreateLink</code></pre>
+<p></Instruction></p>
+<p>This is a standard setup for a React component with two <code>input</code> fields where users can provide the <code>url</code> and <code>description</code> of the <code>Link</code> they want to create. The data that’s typed into these fields is stored in the component’s <code>state</code> and will be used in <code>_createLink</code> when the mutation is sent.</p>
+<p>Great, but how can you now actually implement <code>_createLink</code> and send the mutation?</p>
+<h3 id="writing-the-mutation">Writing the Mutation</h3>
+<p>Mutations were one of the major pain points developers had with Relay Classic. The way that they were implemented was in a declarative and powerful way. However, it was very difficult to actually understand how they worked since there was so much <em>magic</em> going on behind the scenes. As a result, the main concern was that they’re not predictable enough and developers had a hard time reasoning about them.</p>
+<p>That’s why one of the major goals of Relay Modern was also to introduce a new and more approachable mutation API. The Facebook team delivered that and Relay now exposes a more <a href="https://facebook.github.io/relay/docs/mutations.html"><em>imperative</em> API</a> that allows you to manipulate the local store directly (actually, the manipulation happens through a dedicated <em>proxy</em> object, but it’s definitely much more direct than before). You’ll learn about this new API to update the cache in a later chapter - for now we’re only interested in performing a mutation to create a new link.</p>
+<p><Instruction></p>
+<p>To implement the mutation for adding new links, first create a new directory called <code>mutations</code> in <code>src</code> and then create a new file called <code>CreateLinkMutation.js</code> that you put into that new directory. Then paste the following code into it:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/mutations/createlinkmutation.js&quot;)"><code>// 1
+import {
+  commitMutation,
+  graphql,
+} from &#39;react-relay&#39;
+import environment from &#39;../Environment&#39;
+
+// 2
+const mutation = graphql`
+  mutation CreateLinkMutation($input: CreateLinkInput!) {
+    createLink(input: $input) {
+      link {
+        id
+        createdAt
+        url
+        description
+      }
+    }
+  }
+`
+
+// 3
+export default (description, url, callback) =&gt; {
+  // 4
+  const variables = {
+    input: {
+      description,
+      url,
+      clientMutationId: &quot;&quot;
+    },
+  }
+
+  // 5
+  commitMutation(
+    environment,
+    {
+      mutation,
+      variables,
+      // 6
+      onCompleted: () =&gt; {
+        callback()
+      },
+      onError: err =&gt; console.error(err),
+    },
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Let’s quickly walk through the different things that happen here:</p>
+<ol type="1">
+<li>First you need to import the right modules from <code>react-relay</code> as well as the <code>environment</code>.</li>
+<li>Here you write a simple mutation and tag it with the <code>graphql</code> function. This mutation could also be used inside a Playground.</li>
+<li>The module exports a single function that takes in the post’s <code>description</code> and <code>url</code> as well as a <code>callback</code> that will be called when the mutation is completed.</li>
+<li>Here you prepare the <code>input</code> object for the mutation that wraps the <code>description</code> and <code>url</code>. Note that the <code>clientMutationId</code> is required in this case because of a minor limitation in the Graphcool API - it has no function.</li>
+<li>The <code>commitMutation</code> function can be used to send a mutation to the server with Relay Modern. You’re passing the <code>variables</code> that you prepared in the previous steps and execute <code>commitMutation</code> once everything is ready.</li>
+<li>Once the mutation is fully completed, the callback that the caller passed in is invoked.</li>
+</ol>
+<h3 id="calling-the-mutation">Calling the Mutation</h3>
+<p>With the <code>CreateLinkMutation</code> in place, you now need to implement the functionality to actually call it. You’ll do that inside the <code>CreateLink</code> component.</p>
+<p><Instruction></p>
+<p>Open <code>CreatLink.js</code> and implement <code>_createLink</code> like so:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/createlink.js&quot;)"><code>_createLink = () =&gt; {
+  const { description, url } = this.state
+  CreateLinkMutation(description, url, () =&gt; console.log(`Mutation completed`))
+  }</code></pre>
+<p></Instruction></p>
+<p>For this code to work you also need to import the <code>CreateLinkMutation</code> at the top of the file:</p>
+<p><Instruction></p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/createlink.js&quot;)"><code>import CreateLinkMutation from &#39;../mutations/CreateLinkMutation&#39;</code></pre>
+<p></Instruction></p>
+<p>To test the mutation, you now need to render the <code>CreateLink</code> component inside the app’s root component.</p>
+<p><Instruction></p>
+<p>Open <code>App.js</code> and first import the <code>CreateLink</code> component on top of the file:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>import CreateLink from &#39;./CreateLink&#39;</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>Next, still in <code>App.js</code>, update <code>render</code> to look as follows:</p>
+<pre class="js(path=&quot;.../hackernews-react-relay/src/components/app.js&quot;)"><code>render() {
+  return (
+    &lt;CreateLink /&gt;
+  )
+}</code></pre>
+<p></Instruction></p>
+<p>Before you’re running the app to test the mutation, you need to invoke the Relay Compiler again.</p>
+<p><Instruction></p>
+<p>In a terminal, navigate to the project’s root directory and call the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-relay&quot;)"><code>relay-compiler --src ./src --schema ./schema.graphql</code></pre>
+<p></Instruction></p>
+<p>This time, the <code>__generated__</code> directory is created in the <code>mutations</code> folder and contains a Javascript representation for the <code>CreateLinkMutation</code>.</p>
+<p>You can now finally go ahead and test the mutation. Run <code>yarn start</code>, you’ll be greeted with a very simple screen: Two input fields and a <em>submit</em>-button - not very pretty but functional.</p>
+<p>Enter some data into the fields, e.g.:</p>
+<ul>
+<li><strong>Description</strong>: <code>The best learning resource for GraphQL</code></li>
+<li><strong>URL</strong>: <code>www.howtographql.com</code></li>
+</ul>
+<p>Then click the <em>submit</em>-button. You won’t get any visual feedback in the UI, but if you open the browser’s console, you’ll see the string from the log statement that you passed as a <code>callback</code> being printed: <code>Mutation completed</code>.</p>
+<figure>
+<img src="http://imgur.com/T03eeoY.png" alt="Clicking the submit button to see mutation completed" /><figcaption>Clicking the submit button to see mutation completed</figcaption>
+</figure>
+<p>You can validate if the mutation actually worked by checking the current list of links in a Playground.</p>
+<p>Type <code>graphcool playground</code> into a Terminal and send the following query:</p>
+<pre class="graphql"><code>{
+  allLinks {
+    description
+    url
+  }
+}</code></pre>
+<p>You’ll see the following server response:</p>
+<pre class="js(nocopy)"><code>{
+  &quot;data&quot;: {
+    &quot;allLinks&quot;: [
+      {
+        &quot;description&quot;: &quot;The coolest GraphQL backend 😎&quot;,
+        &quot;url&quot;: &quot;https://graph.cool&quot;
+      },
+      {
+        &quot;description&quot;: &quot;Highly performant GraphQL client from Facebook&quot;,
+        &quot;url&quot;: &quot;https://facebook.github.io/relay/&quot;
+      },
+      {
+        &quot;description&quot;: &quot;The best learning resource for GraphQL&quot;,
+        &quot;url&quot;: &quot;www.howtographql.com&quot;
+      }
+    ]
+  }
+}</code></pre>
+<p>Awesome! The mutation works, great job! 💪</p>
+</body>
+</html>

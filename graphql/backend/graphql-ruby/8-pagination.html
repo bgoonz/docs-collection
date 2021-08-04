@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pagination</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pagination</h1>
+</header>
+<p>Another important feature for Hackernews is pagination.</p>
+<p>Fetching all links that were ever posted to the app would soon become too much, besides not being that useful. Instead, we show just a few links at a time, letting the user navigate to pages with older links.</p>
+<blockquote>
+<p>In this tutorial, you’ll implement a simple pagination approach that’s called limit-offset pagination. This method would not work with Relay on the frontend since Relay requires cursor-based pagination using the concept of connections. You can read more about pagination in the GraphQL <a href="http://graphql.org/learn/pagination/">docs</a>.</p>
+</blockquote>
+<p>To make this work you want to have a schema like that:</p>
+<pre class="graphql"><code>type Query {
+  allLinks(filter: LinkFilter, skip: Int, first: Int): [Link!]!
+}</code></pre>
+<p><Instruction></p>
+<p>So, lets add <code>skip</code> and <code>first</code> to <code>LinksSearch</code>:</p>
+<pre class="ruby(path=&quot;.../graphql-ruby/app/graphql/resolvers/links_search.rb&quot;)"><code>require &#39;search_object&#39;
+require &#39;search_object/plugin/graphql&#39;
+
+class Resolvers::LinksSearch
+  # ...code
+
+  option :filter, type: LinkFilter, with: :apply_filter
+  option :first, type: types.Int, with: :apply_first
+  option :skip, type: types.Int, with: :apply_skip
+
+  def apply_first(scope, value)
+    scope.limit(value)
+  end
+
+  def apply_skip(scope, value)
+    scope.offset(value)
+  end
+
+  # ...code
+end</code></pre>
+<p></Instruction></p>
+<p>All done!</p>
+<figure>
+<img src="http://i.imgur.com/oZZnuMG.png" alt="Add skip and first to LinksSearch" /><figcaption>Add skip and first to LinksSearch</figcaption>
+</figure>
+<p>In https://github.com/howtographql/graphql-ruby you can find the final project + a couple of further improvements 😺.</p>
+</body>
+</html>

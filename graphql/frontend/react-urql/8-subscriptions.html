@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Realtime Updates with GraphQL Subscriptions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Realtime Updates with GraphQL Subscriptions</h1>
+</header>
+<p>The last topic that we’ll cover in this tutorial are GraphQL subscriptions. This section is all about bringing realtime functionality to your app using GraphQL subscriptions.</p>
+<h3 id="what-are-graphql-subscriptions">What are GraphQL Subscriptions?</h3>
+<p>Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific <em>event</em> happens. Subscriptions are usually implemented with <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, where the server holds a steady connection to the client. When working with subscriptions, you’re breaking the <em>Request-Response-Cycle</em> that was used for all previous interactions with the API.</p>
+<p>With subscriptions, the client initiates a steady connection with the server by specifying which event it is interested in. Every time this particular event occurs, the server uses the connection to push the expected data to the client.</p>
+<p>This method is really interesting to keep your app up-to-date without refreshing it! We’ll be using subscriptions to display new links and upvotes that other users are making (or that you’re making in another tab or window) while the app is running.</p>
+<h3 id="subscriptions-with-urql">Subscriptions with urql</h3>
+<p>When using urql, you need to add the <code>subscriptionExchange</code> to your Client, to tell it how to handle GraphQL subscriptions. We’ll use it together with the <code>subscriptions-transport-ws</code> package, which exposes a <code>SubscriptionClient</code> that establishes the WebSocket connection.</p>
+<p>Go and add this dependency to your app first.</p>
+<p><Instruction></p>
+<p>Open a terminal and navigate to your project’s root directory. Then execute the following command:</p>
+<pre class="bash(path=&quot;.../hackernews-react-urql&quot;)"><code>yarn add subscriptions-transport-ws</code></pre>
+<p></Instruction></p>
+<p>Let’s now add the <code>subscriptionExchange</code> to your urql Client, which is part of the <code>urql</code> package itself.</p>
+<p><Instruction></p>
+<p>Open <code>index.js</code> and add the following import statements to the file, then modify the Client to include the <code>subscriptionExchange</code>:</p>
+<pre class="js{1-2,6-14,29-31}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import { Provider, Client, dedupExchange, fetchExchange, subscriptionExchange } from &#39;urql&#39;
+import { SubscriptionClient } from &#39;subscription-transport-ws&#39;
+
+// ...
+
+const subscriptionClient = new SubscriptionClient(
+  &quot;ws://localhost:4000&quot;,
+  {
+    reconnect: true,
+    connectionParams: {
+      authToken: getToken()
+    }
+  }
+);
+
+const client = new Client({
+  url: &#39;http://localhost:4000&#39;,
+  fetchOptions: () =&gt; {
+    const token = getToken()
+    return {
+      headers: { authorization: token ? `Bearer ${token}` : &#39;&#39; }
+    }
+  },
+  exchanges: [
+    dedupExchange,
+    cache,
+    fetchExchange,
+    subscriptionExchange({
+      forwardSubscription: operation =&gt; subscriptionClient.request(operation)
+    })
+  ]
+})</code></pre>
+<p></Instruction></p>
+<p>You’re instantiating a <code>SubscriptionClient</code> that knows where to find the subscriptions endpoint. The subscriptions endpoint in this case is similar to the HTTP endpoint, except that it uses the <code>ws</code> instead of the <code>http</code> protocol. Notice that you’re also authenticating the websocket connection with the user’s token.</p>
+<p>Lastly you’re adding the <code>subscriptionExchange</code> to the Client’s config and are passing it a <code>forwardSubscription</code> handler that passes the subscription operation on to your <code>SubscriptionClient</code>.</p>
+<h3 id="subscribing-to-new-votes">Subscribing to new votes</h3>
+<p>For the app to update in realtime when new votes are added to links, you need to subscribe to events that are happening on the <code>Link</code> type. This means that you’ll be writing a subscription definition, which is very similar to a query.</p>
+<p><Instruction></p>
+<p>Open <code>LinkList.js</code> and add the following GraphQL definition at the top. Also import <code>useSubscription</code> from <code>urql</code>:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>import gql from &#39;graphql-tag&#39;
+import { useQuery, useSubscription } from &#39;urql&#39;
+
+const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription {
+    newVote {
+      link {
+        id
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p>This looks very similar to the <code>VoteMutation</code> definition that you’ve written earlier. But instead of sending a mutation or query, you’re subscribing to any new votes and are asking for the updated <code>votes</code> field on the event’s link.</p>
+<p>Now the only thing you’ll need to do is add the subscription to the <code>LinkList</code> component.</p>
+<p><Instruction></p>
+<p>Still in <code>LinkList.js</code> add the <code>useSubscription</code> hook after the existing <code>useQuery</code> hook:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>useSubscription({ query: NEW_VOTES_SUBSCRIPTION })</code></pre>
+<p></Instruction></p>
+<p>This is all that you need to add to subscribe to new votes! You also don’t have to write a new updater function for Graphcache, like you had to for the <code>post</code> mutation, because the normalized cache can simply update the link that the subscription definition asks for.</p>
+<p>The <code>useSubscription</code> hook is actually very similar to <code>useQuery</code> and <code>useMutation</code>. If you’d be using a non-normalized document cache, you could look at each event’s result and manually reconcile it with a query’s result. In this case however, the normalized cache can take care of all updates for us! So you only have to add the hook and don’t have to worry about anything else! 😍</p>
+<h3 id="subscribing-to-new-links">Subscribing to new links</h3>
+<p>Let’s finally add some subscriptions! You’ll add one that automatically displays new links in the <code>LinkList</code> as they’re posted by other users!</p>
+<p>We’ll again write a new subscription definition and add another <code>useSubscription</code> hook.</p>
+<p><Instruction></p>
+<p>In <code>LinkList.js</code> add the following GraphQL definition at the top:</p>
+<pre class="js(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>const NEW_LINKS_SUBSCRIPTION = gql`
+  subscription {
+    newLink {
+      id
+      url
+      description
+      createdAt
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`</code></pre>
+<p></Instruction></p>
+<p><Instruction></p>
+<p>In <code>LinkList.js</code> next to the other <code>useSubscription</code> hook, add the new hook with the subscription for new links:</p>
+<pre class="js{2}(path=&quot;.../hackernews-react-urql/src/components/linklist.js&quot;)"><code>useSubscription({ query: NEW_VOTES_SUBSCRIPTION })
+useSubscription({ query: NEW_LINKS_SUBSCRIPTION })</code></pre>
+<p></Instruction></p>
+<p>Unfortunately in this case, like with the <code>post</code> mutation, new links won’t automatically be added to the currently displayed <code>LinkList</code>. But you can easily fix this by writing another updater function!</p>
+<p><Instruction></p>
+<p>Open in <code>index.js</code> and update the <code>cacheExchange</code>’s config with the following:</p>
+<pre class="js{2,5-20}(path=&quot;.../hackernews-react-urql/src/index.js&quot;)"><code>import { cacheExchange } from &#39;@urql/exchange-graphcache&#39;
+import { FEED_QUERY } from &#39;./components/LinkList&#39;
+
+const cache = cacheExchange({
+  updates: {
+    Mutation: {
+      post: ({ post }, _args, cache) =&gt; {
+        // ...
+      }
+    },
+    Subscription: {
+      newLink: ({ newLink }, _args, cache) =&gt; {
+        const variables = { first: 10, skip: 0, orderBy: &#39;createdAt_DESC&#39; }
+        cache.updateQuery({ query: FEED_QUERY, variables }, data =&gt; {
+          if (data !== null) {
+            data.feed.links.unshift(newLink)
+            data.feed.count++
+            return data
+          } else {
+            return null
+          }
+        })
+      }
+    }
+  }
+})</code></pre>
+<p></Instruction></p>
+<p>This function is essentially identical to the <code>updates.Mutation.post</code> updater function that you’ve written previously. The only difference is the naming of the property on the result. In this case <code>newLink</code> is added to the <code>FEED_QUERY</code> data instead of <code>post</code>.</p>
+<p><strong>And that’s it!</strong> Your app is now ready for realtime and will immediately update links and votes whenevert they’re created by other users.</p>
+<h3 id="what-if-subscriptions-arent-an-option">What if subscriptions aren’t an option?</h3>
+<p>In several cases, it may not be possible for you to add subscriptions to your app. Maybe your GraphQL API doesn’t support them, or maybe you don’t have the infrastructure in place to host WebSocket servers.</p>
+<p>We’d like to demonstrate a couple of methods that you can use to work around <em>not</em> having GraphQL subscriptions in this section.</p>
+<blockquote>
+<p><strong>Note</strong>: We won’t be changing any code in the tutorial’s app here, since we do have subscriptions for this tutorial, but feel free to try these tips and tricks out, if you’d like!</p>
+</blockquote>
+<h4 id="programmatic-refetches">Programmatic Refetches</h4>
+<p>When you have a query you may want to <strong>programmatically refetch</strong> its content to update the cache. Your user may have an update button for this, or a pull-to-refresh gesture, or any number of ways.</p>
+<p>Admittedly this isn’t the most elegant option, but in some cases it is just necessary to tell <code>useQuery</code> to run another network request. You can do this by using the <code>useQuery</code> hook’s <code>executeQuery</code> function.</p>
+<p>In the last section of this tutorial (“Pagination and Cache Updates”) we’ve mentioned the <code>requestPolicy</code> option that <code>useQuery</code> accepts. When you pass <code>requestPolicy: 'cache-and-network'</code> to <code>useQuery</code>, you can force it to send a network request, while also displaying cached data first.</p>
+<p>As it turns out, <code>executeQuery</code> also accepts the <code>requestPolicy</code> option programmatically! You can use this to trigger a programmatic refetch:</p>
+<pre class="js(nocopy)"><code>const [result, executeQuery] = useQuery({
+  query: FEED_QUERY,
+  variables
+})
+
+const refetch = () =&gt; {
+  // refetch from network:
+  executeQuery({ requestPolicy: &#39;network-only&#39; })
+  // refetch from network but keep displaying cached data:
+  executeQuery({ requestPolicy: &#39;cache-and-network&#39; })
+}</code></pre>
+<p>This will cause <code>useQuery</code> to send another network request, which will also update all data in your normalized cache.</p>
+<h4 id="polling">Polling</h4>
+<p>Another option for keeping your app’s data up-to-date is <strong>polling</strong>. With this method you’re refetching queries regularly within an interval.</p>
+<p>You can add polling to any <code>useQuery</code> hook by passing it the <code>pollInterval</code> option. By doing this, every <code>pollInterval</code> milliseconds <code>useQuery</code> will refetch your query.</p>
+<pre class="js(nocopy)"><code>const [result, executeQuery] = useQuery({
+  query: FEED_QUERY,
+  variables,
+  // refetch ever 5seconds:
+  pollInterval: 5000,
+  // necessary so it updates from network:
+  requestPolicy: &#39;cache-and-network&#39;,
+})</code></pre>
+<p>I hope you’ve enjoyed this last section of the tutorial, where you’ve learned how to add subscriptions to your app!</p>
+</body>
+</html>
