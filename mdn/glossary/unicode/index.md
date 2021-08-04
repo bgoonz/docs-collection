@@ -6,8 +6,7 @@ Before Unicode, it was difficult and error-prone to mix languages in the same da
 
 The most common Unicode character encoding on the Web is {{Glossary("UTF-8")}}. Other encodings exist, like UTF-16 or the obsolete UCS-2, but UTF-8 is recommended.
 
-Learn more
-----------
+## Learn more
 
--   {{Interwiki("wikipedia", "Unicode")}} on Wikipedia
--   [The Unicode Standard: A Technical Introduction](https://www.unicode.org/standard/principles.html)
+- {{Interwiki("wikipedia", "Unicode")}} on Wikipedia
+- [The Unicode Standard: A Technical Introduction](https://www.unicode.org/standard/principles.html)

@@ -9,9 +9,16 @@ tags:
   - HTML5
   - Tutorial
 ---
+
 <div>{{CanvasSidebar}}</div>
 
-<p>This sample program demonstrates a number of <a href="/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation">compositing operations</a>. The output looks like this:</p>
+<p>
+  This sample program demonstrates a number of
+  <a
+    href="/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation"
+    >compositing operations</a
+  >. The output looks like this:
+</p>
 
 <p>{{EmbedLiveSample("Compositing_example", "100%", 7250)}}</p>
 
@@ -19,7 +26,8 @@ tags:
 
 <p>This code sets up the global values used by the rest of the program.</p>
 
-<pre class="brush: js">var canvas1 = document.createElement("canvas");
+<pre class="brush: js">
+var canvas1 = document.createElement("canvas");
 var canvas2 = document.createElement("canvas");
 var gco = [ 'source-over','source-in','source-out','source-atop',
             'destination-over','destination-in','destination-out','destination-atop',
@@ -63,7 +71,8 @@ var height = 340;
 
 <p>When the page loads, this code runs to set up and run the example:</p>
 
-<pre class="brush: js">window.onload = function() {
+<pre class="brush: js">
+window.onload = function() {
     // lum in sRGB
     var lum = {
         r: 0.33,
@@ -82,9 +91,13 @@ var height = 340;
 };
 </pre>
 
-<p>And this code, <code>runComposite()</code>, handles the bulk of the work, relying on a number of utility functions to do the hard parts.</p>
+<p>
+  And this code, <code>runComposite()</code>, handles the bulk of the work,
+  relying on a number of utility functions to do the hard parts.
+</p>
 
-<pre class="brush: js">function createCanvas() {
+<pre class="brush: js">
+function createCanvas() {
     var canvas = document.createElement("canvas");
     canvas.style.background = "url("+op_8x8.data+")";
     canvas.style.border = "1px solid #000";
@@ -160,7 +173,8 @@ function runComposite() {
 
 <p>The program relies on a number of utility functions.</p>
 
-<pre class="brush: js">var lightMix = function() {
+<pre class="brush: js">
+var lightMix = function() {
     var ctx = canvas2.getContext("2d");
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
@@ -184,7 +198,8 @@ function runComposite() {
 };
 </pre>
 
-<pre class="brush: js">var colorSphere = function(element) {
+<pre class="brush: js">
+var colorSphere = function(element) {
     var ctx = canvas1.getContext("2d");
     var width = 360;
     var halfWidth = width / 2;
@@ -216,7 +231,8 @@ function runComposite() {
 };
 </pre>
 
-<pre class="brush: js">// HSV (1978) = H: Hue / S: Saturation / V: Value
+<pre class="brush: js">
+// HSV (1978) = H: Hue / S: Saturation / V: Value
 Color = {};
 Color.HSV_RGB = function (o) {
     var H = o.H / 360,
@@ -291,4 +307,5 @@ var createInterlace = function (size, color1, color2) {
     return pattern;
 };
 
-var op_8x8 = createInterlace(8, "#FFF", "#eee");</pre>
+var op_8x8 = createInterlace(8, "#FFF", "#eee");</pre
+>

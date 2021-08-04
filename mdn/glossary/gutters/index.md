@@ -1,6 +1,6 @@
 --- title: Gutters slug: Glossary/Gutters tags: - CSS Grids ---
 
-**Gutters** or *alleys* are spacing between content tracks. These can be created in [CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout) using the {{cssxref("column-gap")}}, {{cssxref("row-gap")}}, or {{cssxref("gap")}} properties.
+**Gutters** or _alleys_ are spacing between content tracks. These can be created in [CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout) using the {{cssxref("column-gap")}}, {{cssxref("row-gap")}}, or {{cssxref("gap")}} properties.
 
 In the example below we have a three-column and two-row track grid, with 20-pixel gaps between column tracks and `20px`-gaps between row tracks.
 
@@ -42,16 +42,15 @@ In terms of grid sizing, gaps act as if they were a regular grid track however n
 
 The grid-gap properties are not the only thing that can cause tracks to space out. Margins, padding or the use of the space distribution properties in [Box Alignment](/en-US/docs/Web/CSS/CSS_Grid_Layout/Box_Alignment_in_CSS_Grid_Layout) can all contribute to the visible gap – therefore the grid-gap properties should not be seen as equal to “the gutter size” unless you know that your design has not introduced any additional space with one of these methods.
 
-Learn More
-----------
+## Learn More
 
 ### Property reference
 
--   {{cssxref("column-gap")}}
--   {{cssxref("row-gap")}}
--   {{cssxref("gap")}}
+- {{cssxref("column-gap")}}
+- {{cssxref("row-gap")}}
+- {{cssxref("gap")}}
 
 ### Further reading
 
--   CSS Grid Layout Guide: *[Basic concepts of grid layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)*
--   [Definition of gutters in the CSS Grid Layout specification](https://drafts.csswg.org/css-grid/#gutters)
+- CSS Grid Layout Guide: _[Basic concepts of grid layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)_
+- [Definition of gutters in the CSS Grid Layout specification](https://drafts.csswg.org/css-grid/#gutters)

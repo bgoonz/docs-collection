@@ -2,25 +2,28 @@
 title: AudioWorkletNode.parameters
 slug: Web/API/AudioWorkletNode/parameters
 tags:
-- API
-- Audio
-- AudioParam
-- AudioWorkletNode
-- Property
-- Reference
-- Web Audio API
+  - API
+  - Audio
+  - AudioParam
+  - AudioWorkletNode
+  - Property
+  - Reference
+  - Web Audio API
 
 browser-compat: api.AudioWorkletNode.parameters
 ---
+
 <div>{{APIRef("Web Audio API")}}</div>
 
-<p class="summary">The read-only <strong><code>parameters</code></strong> property of the
+<p class="summary">
+  The read-only <strong><code>parameters</code></strong> property of the
   {{domxref("AudioWorkletNode")}} interface returns the associated
   {{domxref("AudioParamMap")}} — that is, a <code>Map</code>-like collection of
-  {{domxref("AudioParam")}} objects. They are instantiated during creation of the
-  underlying {{domxref("AudioWorkletProcessor")}} according to its
-  {{domxref("AudioWorkletProcessor.parameterDescriptors", "parameterDescriptors")}} static
-  getter.</p>
+  {{domxref("AudioParam")}} objects. They are instantiated during creation of
+  the underlying {{domxref("AudioWorkletProcessor")}} according to its
+  {{domxref("AudioWorkletProcessor.parameterDescriptors",
+  "parameterDescriptors")}} static getter.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
@@ -28,29 +31,39 @@ browser-compat: api.AudioWorkletNode.parameters
 
 <h3 id="Value">Value</h3>
 
-<p>The {{domxref("AudioParamMap")}} object containing {{domxref("AudioParam")}} instances.
-  They can be automated in the same way as with default <code>AudioNode</code>s, and their
-  calculated values can be used in the {{domxref("AudioWorkletProcessor.process",
-  "process")}} method of your {{domxref("AudioWorkletProcessor")}}.</p>
+<p>
+  The {{domxref("AudioParamMap")}} object containing {{domxref("AudioParam")}}
+  instances. They can be automated in the same way as with default
+  <code>AudioNode</code>s, and their calculated values can be used in the
+  {{domxref("AudioWorkletProcessor.process", "process")}} method of your
+  {{domxref("AudioWorkletProcessor")}}.
+</p>
 
 <h2 id="Examples">Examples</h2>
 
-<p>To demonstrate creation and usage of custom <code>AudioParam</code>s, we'll expand the
-  example from {{domxref("AudioWorkletNode")}} page. There we've created a simple node
-  which outputs white noise. Here, additionally, we'll create a custom gain parameter, so
-  we can directly change volume of the output (although you could use
-  {{domxref("GainNode")}} to achieve this as well).</p>
-
-<p>First, we need to define a custom <code>AudioWorkletProcessor</code>, and register it.
-  Note that this should be done in a separate file.</p>
-
-<p>We expand the processor by adding a static
-  {{domxref("AudioWorkletProcessor.parameterDescriptors", "parameterDescriptors")}}
-  getter. It will be used internally by the <code>AudioWorkletNode</code> constructor to
-  populate its <code>parameters</code> with instantiated <code>AudioParam</code> objects.
+<p>
+  To demonstrate creation and usage of custom <code>AudioParam</code>s, we'll
+  expand the example from {{domxref("AudioWorkletNode")}} page. There we've
+  created a simple node which outputs white noise. Here, additionally, we'll
+  create a custom gain parameter, so we can directly change volume of the output
+  (although you could use {{domxref("GainNode")}} to achieve this as well).
 </p>
 
-<pre class="brush: js">// white-noise-processor.js
+<p>
+  First, we need to define a custom <code>AudioWorkletProcessor</code>, and
+  register it. Note that this should be done in a separate file.
+</p>
+
+<p>
+  We expand the processor by adding a static
+  {{domxref("AudioWorkletProcessor.parameterDescriptors",
+  "parameterDescriptors")}} getter. It will be used internally by the
+  <code>AudioWorkletNode</code> constructor to populate its
+  <code>parameters</code> with instantiated <code>AudioParam</code> objects.
+</p>
+
+<pre class="brush: js">
+// white-noise-processor.js
 class WhiteNoiseProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors () {
     return [{
@@ -80,11 +93,14 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
 registerProcessor('white-noise-processor', WhiteNoiseProcessor)
 </pre>
 
-<p>Next, in our main scripts file we'll load the processor, create an instance of
-  <code>AudioWorkletNode</code> passing it the name of the processor, and connect the node
-  to an audio graph.</p>
+<p>
+  Next, in our main scripts file we'll load the processor, create an instance of
+  <code>AudioWorkletNode</code> passing it the name of the processor, and
+  connect the node to an audio graph.
+</p>
 
-<pre class="brush: js">const audioContext = new AudioContext()
+<pre class="brush: js">
+const audioContext = new AudioContext()
 await audioContext.audioWorklet.addModule('white-noise-processor.js')
 const whiteNoiseNode = new AudioWorkletNode(audioContext, 'white-noise-processor')
 whiteNoiseNode.connect(audioContext.destination)
@@ -92,7 +108,8 @@ whiteNoiseNode.connect(audioContext.destination)
 
 <p>Now we can change the gain on the node like this:</p>
 
-<pre class="brush: js">const gainParam = whiteNoiseNode.parameters.get('customGain')
+<pre class="brush: js">
+const gainParam = whiteNoiseNode.parameters.get('customGain')
 gainParam.setValueAtTime(0, audioContext.currentTime)
 gainParam.linearRampToValueAtTime(0.5, audioContext.currentTime + 0.5)
 </pre>
@@ -109,6 +126,9 @@ gainParam.linearRampToValueAtTime(0.5, audioContext.currentTime + 0.5)
 
 <ul>
   <li><a href="/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a></li>
-  <li><a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">Using the Web Audio
-      API</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API"
+      >Using the Web Audio API</a
+    >
+  </li>
 </ul>

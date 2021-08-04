@@ -1,4 +1,4 @@
---- title: Preflight request slug: Glossary/Preflight\_request tags: - CORS - Glossary - HTTP - Preflight - request ---
+--- title: Preflight request slug: Glossary/Preflight_request tags: - CORS - Glossary - HTTP - Preflight - request ---
 
 A CORS preflight request is a {{Glossary("CORS")}} request that checks to see if the CORS protocol is understood and a server is aware using specific methods and headers.
 
@@ -23,8 +23,7 @@ If the server allows it, then it will respond to the preflight request with an {
 
 The preflight response can be optionally cached for the requests created in the same {{Glossary("URL")}} using {{HTTPHeader("Access-Control-Max-Age")}} header like in the above example.
 
-See also
---------
+## See also
 
--   {{Glossary("CORS")}}
--   {{HTTPMethod("OPTIONS")}}
+- {{Glossary("CORS")}}
+- {{HTTPMethod("OPTIONS")}}

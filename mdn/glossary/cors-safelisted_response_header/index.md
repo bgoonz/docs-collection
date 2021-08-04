@@ -1,16 +1,16 @@
---- title: CORS-safelisted response header slug: Glossary/CORS-safelisted\_response\_header tags: - CORS - Fetch - Glossary - HTTP ---
+--- title: CORS-safelisted response header slug: Glossary/CORS-safelisted_response_header tags: - CORS - Fetch - Glossary - HTTP ---
 
-<span class="seoSummary">A *CORS-safelisted response header* is an [HTTP header](/en-US/docs/Web/HTTP/Headers) in a [CORS](/en-US/docs/Web/HTTP/CORS) response that it is considered *safe* to expose to client scripts. Only safelisted response headers are made available to web pages.</span>
+<span class="seoSummary">A _CORS-safelisted response header_ is an [HTTP header](/en-US/docs/Web/HTTP/Headers) in a [CORS](/en-US/docs/Web/HTTP/CORS) response that it is considered _safe_ to expose to client scripts. Only safelisted response headers are made available to web pages.</span>
 
 By default, the safelist includes the following response headers:
 
--   {{HTTPHeader("Cache-Control")}}
--   {{HTTPHeader("Content-Language")}}
--   {{HTTPHeader("Content-Length")}}
--   {{HTTPHeader("Content-Type")}}
--   {{HTTPHeader("Expires")}}
--   {{HTTPHeader("Last-Modified")}}
--   {{HTTPHeader("Pragma")}}
+- {{HTTPHeader("Cache-Control")}}
+- {{HTTPHeader("Content-Language")}}
+- {{HTTPHeader("Content-Length")}}
+- {{HTTPHeader("Content-Type")}}
+- {{HTTPHeader("Expires")}}
+- {{HTTPHeader("Last-Modified")}}
+- {{HTTPHeader("Pragma")}}
 
 Additional headers can be added to the safelist using {{HTTPHeader("Access-Control-Expose-Headers")}}.
 
@@ -18,8 +18,7 @@ Additional headers can be added to the safelist using {{HTTPHeader("Access-Contr
 
 {{HTTPHeader("Content-Length")}} was not part of the original set of safelisted response headers \[[ref](https://github.com/whatwg/fetch/pull/626)\]
 
-Examples
---------
+## Examples
 
 ### Extending the safelist
 

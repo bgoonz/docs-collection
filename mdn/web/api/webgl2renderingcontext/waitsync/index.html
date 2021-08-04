@@ -2,25 +2,32 @@
 title: WebGL2RenderingContext.waitSync()
 slug: Web/API/WebGL2RenderingContext/waitSync
 tags:
-- API
-- Method
-- Reference
-- WebGL
-- WebGL2
+  - API
+  - Method
+  - Reference
+  - WebGL
+  - WebGL2
 browser-compat: api.WebGL2RenderingContext.waitSync
 ---
+
 <div>{{APIRef("WebGL")}}</div>
 
-<p>The <code><strong>WebGL2RenderingContext.waitSync()</strong></code> method of the <a
-    href="/en-US/docs/Web/API/WebGL_API">WebGL 2 API</a> returns immediately, but waits on
-  the GL server until the given {{domxref("WebGLSync")}} object is signaled.</p>
+<p>
+  The <code><strong>WebGL2RenderingContext.waitSync()</strong></code> method of
+  the <a href="/en-US/docs/Web/API/WebGL_API">WebGL 2 API</a> returns
+  immediately, but waits on the GL server until the given
+  {{domxref("WebGLSync")}} object is signaled.
+</p>
 
-<p>The method is a no-op in the absence of the possibility of synchronizing between
-  multiple GL contexts.</p>
+<p>
+  The method is a no-op in the absence of the possibility of synchronizing
+  between multiple GL contexts.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">void <var>gl</var>.waitSync(<var>sync</var>, <var>flags</var>, <var>timeout</var>);
+<pre class="brush: js">
+void <var>gl</var>.waitSync(<var>sync</var>, <var>flags</var>, <var>timeout</var>);
 </pre>
 
 <h3 id="Parameters">Parameters</h3>
@@ -29,11 +36,16 @@ browser-compat: api.WebGL2RenderingContext.waitSync
   <dt><code>sync</code></dt>
   <dd>A {{domxref("WebGLSync")}} object on which to wait on.</dd>
   <dt>flags</dt>
-  <dd>A {{domxref("GLbitfield")}} specifying a bitwise combination of flags controlling
-    the flushing behavior. Must be <code>0</code> (exists for extensions only).</dd>
+  <dd>
+    A {{domxref("GLbitfield")}} specifying a bitwise combination of flags
+    controlling the flushing behavior. Must be <code>0</code> (exists for
+    extensions only).
+  </dd>
   <dt>timeout</dt>
-  <dd>A {{domxref("GLint64")}} specifying a timeout the server should wait before
-    continuing. Must be <code>gl.TIMEOUT_IGNORED</code>.</dd>
+  <dd>
+    A {{domxref("GLint64")}} specifying a timeout the server should wait before
+    continuing. Must be <code>gl.TIMEOUT_IGNORED</code>.
+  </dd>
 </dl>
 
 <h3 id="Return_value">Return value</h3>
@@ -42,7 +54,8 @@ browser-compat: api.WebGL2RenderingContext.waitSync
 
 <h2 id="Examples">Examples</h2>
 
-<pre class="brush: js">var sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+<pre class="brush: js">
+var sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
 gl.waitSync(sync, 0, gl.TIMEOUT_IGNORED);
 </pre>
 

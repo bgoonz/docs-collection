@@ -3,18 +3,40 @@ title: How to check the security state of an XMLHTTPRequest over SSL
 slug: >-
   Web/API/XMLHttpRequest/How_to_check_the_secruity_state_of_an_XMLHTTPRequest_over_SSL
 ---
-<p>Here is a an example Javascript function that prints the security details of an <a class="internal" href="/en-US/docs/XMLHttpRequest">XMLHTTPRequest</a> sent over SSL. The function is passed the channel property of an XMLHTTPRequest to extract the following information:</p>
+
+<p>
+  Here is a an example Javascript function that prints the security details of
+  an
+  <a class="internal" href="/en-US/docs/XMLHttpRequest">XMLHTTPRequest</a> sent
+  over SSL. The function is passed the channel property of an XMLHTTPRequest to
+  extract the following information:
+</p>
 <ul>
- <li>Was the connection secure?</li>
- <li>Was the used SSL certificate valid and what are its details (owner, expiration, certificate authority, etc.)?</li>
+  <li>Was the connection secure?</li>
+  <li>
+    Was the used SSL certificate valid and what are its details (owner,
+    expiration, certificate authority, etc.)?
+  </li>
 </ul>
 <p>Notes:</p>
 <ol>
- <li>This code requires elevated privileges to run; you can only call it from a browser extension or from a XULRunner application.</li>
- <li>The channel property becomes available only after the request is sent and the connection was established, that is, on readyState <code>LOADED, </code><code>INTERACTIVE</code> or <code>COMPLETED.</code></li>
- <li>By setting the mozBackgroundRequest property of the request object and modifying the example appropriately, you can create your own alert dialog to handle SSL exceptions in your Firefox extension or XULRunner application.</li>
+  <li>
+    This code requires elevated privileges to run; you can only call it from a
+    browser extension or from a XULRunner application.
+  </li>
+  <li>
+    The channel property becomes available only after the request is sent and
+    the connection was established, that is, on readyState <code>LOADED, </code
+    ><code>INTERACTIVE</code> or <code>COMPLETED.</code>
+  </li>
+  <li>
+    By setting the mozBackgroundRequest property of the request object and
+    modifying the example appropriately, you can create your own alert dialog to
+    handle SSL exceptions in your Firefox extension or XULRunner application.
+  </li>
 </ol>
-<pre class="brush: js">// Adapted from the patch for mozTCPSocket error reporting (bug 861196).
+<pre class="brush: js">
+// Adapted from the patch for mozTCPSocket error reporting (bug 861196).
 
 const {Cc,Ci} = require("chrome");
 
@@ -211,10 +233,12 @@ function test(url) {
 }
 </pre>
 <p>Then</p>
-<pre class="brush: js">test("https://addons.mozilla.org");
+<pre class="brush: js">
+test("https://addons.mozilla.org");
 </pre>
 <p>produced the following output in my console:</p>
-<pre>Connection status:
+<pre>
+Connection status:
         succeeded
 Security Info:
         Security state: secure
@@ -225,11 +249,19 @@ Security Info:
         Valid from 7/14/2011 0:00:00 AM
         Valid until 8/20/2013 23:59:59 PM
 </pre>
-<p>And here is the output of making an HTTPS request to a server that uses an expired certificate:</p>
-<pre class="brush: js">test("https://www.appliancetherapy.com/");
+<p>
+  And here is the output of making an HTTPS request to a server that uses an
+  expired certificate:
+</p>
+<pre class="brush: js">
+test("https://www.appliancetherapy.com/");
 </pre>
-<p>Note that the security state has become "insecure" now and there is an error name reported:</p>
-<pre>Connection status:
+<p>
+  Note that the security state has become "insecure" now and there is an error
+  name reported:
+</p>
+<pre>
+Connection status:
         failed: SecurityExpiredCertificateError
 Security Info:
         Security state: insecure

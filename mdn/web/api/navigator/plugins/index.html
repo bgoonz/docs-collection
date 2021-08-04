@@ -10,40 +10,55 @@ tags:
   - Reference
 browser-compat: api.Navigator.plugins
 ---
+
 <p>{{APIRef("HTML DOM")}}{{deprecated_header}}</p>
 
-<p>Returns a {{DOMxRef("PluginArray")}} object, listing the {{DOMxRef("Plugin")}} objects
-  describing the plugins installed in
-  the application.</p>
+<p>
+  Returns a {{DOMxRef("PluginArray")}} object, listing the {{DOMxRef("Plugin")}}
+  objects describing the plugins installed in the application.
+</p>
 
 <div class="note">
-  <p>In Firefox 29 and later, enumeration of the <code>navigator.plugins</code> array may
-    be restricted as a privacy measure. Applications that must check for the presence of a
-    browser plugin should query <code>navigator.plugins</code> or
-    {{DOMxRef("Navigator.mimeTypes", "navigator.mimeTypes")}} by exact name instead of enumerating the
-    <code>navigator.plugins</code> array and comparing every plugin's name. This privacy
-    change does not disable any plugins; it just hides some plugin names from enumeration.
+  <p>
+    In Firefox 29 and later, enumeration of the
+    <code>navigator.plugins</code> array may be restricted as a privacy measure.
+    Applications that must check for the presence of a browser plugin should
+    query <code>navigator.plugins</code> or {{DOMxRef("Navigator.mimeTypes",
+    "navigator.mimeTypes")}} by exact name instead of enumerating the
+    <code>navigator.plugins</code> array and comparing every plugin's name. This
+    privacy change does not disable any plugins; it just hides some plugin names
+    from enumeration.
   </p>
 </div>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">var <var>plugins</var> = navigator.plugins;
+<pre class="brush: js">
+var <var>plugins</var> = navigator.plugins;
 </pre>
 
-<p><code>plugins</code> is {{DOMxRef("PluginArray")}} object used to access
-  {{DOMxRef("Plugin")}} objects either by name or as a list of items.</p>
+<p>
+  <code>plugins</code> is {{DOMxRef("PluginArray")}} object used to access
+  {{DOMxRef("Plugin")}} objects either by name or as a list of items.
+</p>
 
-<p>The returned value is not a JavaScript array, but has the <code>length</code> property
-  and supports accessing individual items using bracket notation
-  (<code>plugins[2]</code>), as well as via <code>item(<var>index</var>)</code> and
-  <code>namedItem(<em>"name"</em>)</code> methods.</p>
+<p>
+  The returned value is not a JavaScript array, but has the
+  <code>length</code> property and supports accessing individual items using
+  bracket notation (<code>plugins[2]</code>), as well as via
+  <code>item(<var>index</var>)</code> and
+  <code>namedItem(<em>"name"</em>)</code> methods.
+</p>
 
 <h2 id="Examples">Examples</h2>
 
-<p>The following example function returns the version of the Shockwave Flash plugin.</p>
+<p>
+  The following example function returns the version of the Shockwave Flash
+  plugin.
+</p>
 
-<pre class="brush:js">function getFlashVersion() {
+<pre class="brush:js">
+function getFlashVersion() {
   var flash = navigator.plugins.namedItem('Shockwave Flash');
   if (typeof flash != 'object') {
     // flash is not present
@@ -60,7 +75,8 @@ browser-compat: api.Navigator.plugins
 
 <p>The following example displays information about the installed plugin(s).</p>
 
-<pre class="brush: js">var pluginsLength = navigator.plugins.length;
+<pre class="brush: js">
+var pluginsLength = navigator.plugins.length;
 
 document.body.innerHTML = pluginsLength + " Plugin(s)&lt;br&gt;"
   + '&lt;table id="pluginTable"&gt;&lt;thead&gt;'
@@ -75,13 +91,17 @@ for(var i = 0; i &lt; pluginsLength; i++) {
   newRow.insertCell().textContent = navigator.plugins[i].filename;
   newRow.insertCell().textContent = navigator.plugins[i].description;
   newRow.insertCell().textContent = navigator.plugins[i].version?navigator.plugins[i].version:"";
-}</pre>
+}</pre
+>
 
 <h2 id="Notes">Notes</h2>
 
-<p>The {{DOMxRef("Plugin")}} object exposes a small interface for getting information
-  about the various plugins installed in your browser. A list of plugins is also available
-  by entering <code>about:plugins</code> in the browser's Location bar.</p>
+<p>
+  The {{DOMxRef("Plugin")}} object exposes a small interface for getting
+  information about the various plugins installed in your browser. A list of
+  plugins is also available by entering <code>about:plugins</code> in the
+  browser's Location bar.
+</p>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -91,6 +111,8 @@ for(var i = 0; i &lt; pluginsLength; i++) {
 
 <p>{{Compat}}</p>
 
-<p>In addition to listing each plugin as a pseudo-array by zero-indexed numeric
-  properties, Firefox provides properties that are the plugin name directly on the <a
-    href="/en-US/docs/Web/API/PluginArray">PluginArray</a> object.</p>
+<p>
+  In addition to listing each plugin as a pseudo-array by zero-indexed numeric
+  properties, Firefox provides properties that are the plugin name directly on
+  the <a href="/en-US/docs/Web/API/PluginArray">PluginArray</a> object.
+</p>

@@ -4,10 +4,9 @@ In any computer programming language, a string is a sequence of {{Glossary("char
 
 In {{Glossary("JavaScript")}}, a String is one of the {{Glossary("Primitive", "primitive values")}} and the {{jsxref("String")}} object is a {{Glossary("wrapper")}} around a String primitive.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "String (computer science)")}} on Wikipedia
--   [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures#string_type)
+- {{Interwiki("wikipedia", "String (computer science)")}} on Wikipedia
+- [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures#string_type)

@@ -4,9 +4,8 @@ Hypertext is text that contains links to other texts, as opposed to a single lin
 
 The term was coined by Ted Nelson around 1965.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Hypertext", "Hypertext")}} on Wikipedia
+- {{interwiki("wikipedia", "Hypertext", "Hypertext")}} on Wikipedia

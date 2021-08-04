@@ -1,6 +1,6 @@
 --- title: HTTPS slug: Glossary/https tags: - Glossary - HTTPS - Infrastructure - Security ---
 
-**HTTPS** (***HyperText Transfer Protocol Secure***) is an encrypted version of the {{Glossary("HTTP")}} protocol. It uses {{Glossary("SSL")}} or {{Glossary("TLS")}} to encrypt all communication between a client and a server. This secure connection allows clients to safely exchange sensitive data with a server, such as when performing banking activities or online shopping.
+**HTTPS** (**_HyperText Transfer Protocol Secure_**) is an encrypted version of the {{Glossary("HTTP")}} protocol. It uses {{Glossary("SSL")}} or {{Glossary("TLS")}} to encrypt all communication between a client and a server. This secure connection allows clients to safely exchange sensitive data with a server, such as when performing banking activities or online shopping.
 
 1.  General knowledge
     1.  {{Interwiki("wikipedia", "HTTPS")}} on Wikipedia

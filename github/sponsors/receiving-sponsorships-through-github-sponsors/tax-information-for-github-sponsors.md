@@ -1,11 +1,11 @@
 ---
 title: Tax information for GitHub Sponsors
-intro: 'Sponsored developers and organizations must submit tax information to {% data variables.product.prodname_dotcom %} and are responsible for evaluating and paying their own taxes.'
+intro: "Sponsored developers and organizations must submit tax information to {% data variables.product.prodname_dotcom %} and are responsible for evaluating and paying their own taxes."
 redirect_from:
   - /articles/tax-information-for-sponsored-developers
   - /github/supporting-the-open-source-community-with-github-sponsors/tax-information-for-sponsored-developers
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Open Source

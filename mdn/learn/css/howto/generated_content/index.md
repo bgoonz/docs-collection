@@ -1,10 +1,10 @@
---- title: Using CSS generated content slug: Learn/CSS/Howto/Generated\_content tags: - Basic - Beginner - CSS - 'CSS:Getting\_Started' - Graphics - Guide - NeedsUpdate - Web ---
+--- title: Using CSS generated content slug: Learn/CSS/Howto/Generated_content tags: - Basic - Beginner - CSS - 'CSS:Getting_Started' - Graphics - Guide - NeedsUpdate - Web ---
 
 {{LearnSidebar}}
 
 <span class="seoSummary">This article describes some ways in which you can use CSS to add content when a document is displayed. You modify your stylesheet to add text content or images.</span>
 
-One of the important advantages of CSS is that it helps you to separate a document's style from its content. However, there are situations where it makes sense to specify certain content as part of the stylesheet, not as part of the document. You can specify text or image content within a stylesheet when that content is closely linked to the document's structure. 
+One of the important advantages of CSS is that it helps you to separate a document's style from its content. However, there are situations where it makes sense to specify certain content as part of the stylesheet, not as part of the document. You can specify text or image content within a stylesheet when that content is closely linked to the document's structure.
 
 **Note**: Content specified in a stylesheet does not become part of the DOM.
 
@@ -12,8 +12,7 @@ Specifying content in a stylesheet can cause complications. For example, you mig
 
 This issue does not arise if the content you specify consists of symbols or images that apply in all languages and cultures.
 
-Examples
---------
+## Examples
 
 ### Text content
 

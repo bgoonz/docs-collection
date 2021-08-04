@@ -1,4 +1,4 @@
---- title: The score slug: Games/Tutorials/2D\_breakout\_game\_Phaser/The\_score tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - scoring ---
+--- title: The score slug: Games/Tutorials/2D_breakout_game_Phaser/The_score tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - scoring ---
 
 {{GamesSidebar}}
 
@@ -10,8 +10,7 @@ This is the **11th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs
 
 We will use a separate variable for storing the score and Phaser's `text()` method to print it out onto the screen.
 
-New variables
--------------
+## New variables
 
 Add two new variables right after the previously defined ones:
 
@@ -19,8 +18,7 @@ Add two new variables right after the previously defined ones:
     var scoreText;
     var score = 0;
 
-Adding score text to the game display
--------------------------------------
+## Adding score text to the game display
 
 Now add this line at the end of the `create()` function:
 
@@ -28,14 +26,13 @@ Now add this line at the end of the `create()` function:
 
 The `text()` method can take four parameters:
 
--   The x and y coordinates to draw the text at.
--   The actual text that will be rendered.
--   The font style to render the text with.
+- The x and y coordinates to draw the text at.
+- The actual text that will be rendered.
+- The font style to render the text with.
 
 The last parameter looks very similar to CSS styling. In our case the score text will be blue, sized at 18 pixels, and use the Arial font.
 
-Updating the score when bricks are destroyed
---------------------------------------------
+## Updating the score when bricks are destroyed
 
 We will increase the number of points every time the ball hits a brick and update the `scoreText` to display the current score. This can be done using the `setText()` method — add the two new lines seen below to the `ballHitBrick()` function:
 
@@ -47,15 +44,13 @@ We will increase the number of points every time the ball hits a brick and updat
 
 That's it for now — reload your `index.html` and check that the score updates on every brick hit.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/n8o6rhrf/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 We now have a scoring system, but what's the point of playing and keeping score if you can't win? Let's see how we can add a victory state, allowing us to [win the game](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Win_the_game).
 

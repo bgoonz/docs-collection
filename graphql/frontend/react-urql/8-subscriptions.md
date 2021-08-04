@@ -2,7 +2,7 @@ The last topic that we’ll cover in this tutorial are GraphQL subscriptions. Th
 
 ### What are GraphQL Subscriptions?
 
-Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific *event* happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. When working with subscriptions, you’re breaking the *Request-Response-Cycle* that was used for all previous interactions with the API.
+Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific _event_ happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. When working with subscriptions, you’re breaking the _Request-Response-Cycle_ that was used for all previous interactions with the API.
 
 With subscriptions, the client initiates a steady connection with the server by specifying which event it is interested in. Every time this particular event occurs, the server uses the connection to push the expected data to the client.
 
@@ -169,7 +169,7 @@ This function is essentially identical to the `updates.Mutation.post` updater fu
 
 In several cases, it may not be possible for you to add subscriptions to your app. Maybe your GraphQL API doesn’t support them, or maybe you don’t have the infrastructure in place to host WebSocket servers.
 
-We’d like to demonstrate a couple of methods that you can use to work around *not* having GraphQL subscriptions in this section.
+We’d like to demonstrate a couple of methods that you can use to work around _not_ having GraphQL subscriptions in this section.
 
 > **Note**: We won’t be changing any code in the tutorial’s app here, since we do have subscriptions for this tutorial, but feel free to try these tips and tricks out, if you’d like!
 

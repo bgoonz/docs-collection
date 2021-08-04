@@ -2,32 +2,36 @@
 title: ReadableStreamDefaultController.close()
 slug: Web/API/ReadableStreamDefaultController/close
 tags:
-- API
-- Method
-- ReadableStreamDefaultController
-- Reference
-- Streams
-- close
+  - API
+  - Method
+  - ReadableStreamDefaultController
+  - Reference
+  - Streams
+  - close
 browser-compat: api.ReadableStreamDefaultController.close
 ---
+
 <div>{{APIRef("Streams")}}</div>
 
-<p class="summary">The <strong><code>close()</code></strong> method of the
-  {{domxref("ReadableStreamDefaultController")}} interface closes the associated stream.
+<p class="summary">
+  The <strong><code>close()</code></strong> method of the
+  {{domxref("ReadableStreamDefaultController")}} interface closes the associated
+  stream.
 </p>
 
 <div>
-  <p>Readers will still be able to read any previously-enqueued chunks from the stream,
-    but once those are read, the stream will become closed. If you want to completely get
-    rid of the stream and discard any enqueued chunks, you'd use
-    {{domxref("ReadableStream.cancel()")}} or
-    {{domxref("ReadableStreamDefaultReader.cancel()")}}.</p>
+  <p>
+    Readers will still be able to read any previously-enqueued chunks from the
+    stream, but once those are read, the stream will become closed. If you want
+    to completely get rid of the stream and discard any enqueued chunks, you'd
+    use {{domxref("ReadableStream.cancel()")}} or
+    {{domxref("ReadableStreamDefaultReader.cancel()")}}.
+  </p>
 </div>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre
-  class="brush: js"><em>readableStreamDefaultController</em>.close();</pre>
+<pre class="brush: js"><em>readableStreamDefaultController</em>.close();</pre>
 
 <h3 id="Parameters">Parameters</h3>
 
@@ -41,24 +45,33 @@ browser-compat: api.ReadableStreamDefaultController.close
 
 <dl>
   <dt>TypeError</dt>
-  <dd>The source object is not a <code>ReadableStreamDefaultController</code>.</dd>
+  <dd>
+    The source object is not a <code>ReadableStreamDefaultController</code>.
+  </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
-<p>In the following simple example, a custom <code>ReadableStream</code> is created using
-  a constructor (see our <a
-    href="https://mdn.github.io/dom-examples/streams/simple-random-stream/">Simple random
-    stream example</a> for the full code). The <code>start()</code> function generates a
-  random string of text every second and enqueues it into the stream. A
+<p>
+  In the following simple example, a custom <code>ReadableStream</code> is
+  created using a constructor (see our
+  <a href="https://mdn.github.io/dom-examples/streams/simple-random-stream/"
+    >Simple random stream example</a
+  >
+  for the full code). The <code>start()</code> function generates a random
+  string of text every second and enqueues it into the stream. A
   <code>cancel()</code> function is also provided to stop the generation if
-  {{domxref("ReadableStream.cancel()")}} is called for any reason.</p>
+  {{domxref("ReadableStream.cancel()")}} is called for any reason.
+</p>
 
-<p>When a button is pressed, the generation is stopped, the stream is closed using
-  {{domxref("ReadableStreamDefaultController.close()")}}, and another function is run,
-  which reads the data back out of the stream.</p>
+<p>
+  When a button is pressed, the generation is stopped, the stream is closed
+  using {{domxref("ReadableStreamDefaultController.close()")}}, and another
+  function is run, which reads the data back out of the stream.
+</p>
 
-<pre class="brush: js">const stream = new ReadableStream({
+<pre class="brush: js">
+const stream = new ReadableStream({
   start(controller) {
     interval = setInterval(() =&gt; {
       let string = randomChars();
@@ -86,7 +99,8 @@ browser-compat: api.ReadableStreamDefaultController.close
     // so we should stop generating strings
     clearInterval(interval);
   }
-});</pre>
+});</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 

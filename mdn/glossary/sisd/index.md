@@ -4,9 +4,8 @@ SISD is short for **Single Instruction/Single Data** which is one {{Interwiki("w
 
 See also {{Glossary("SIMD")}} for a parallel architecture that allows one same operation to be performed on multiple data points.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "SISD")}} on Wikipedia
+- {{Interwiki("wikipedia", "SISD")}} on Wikipedia

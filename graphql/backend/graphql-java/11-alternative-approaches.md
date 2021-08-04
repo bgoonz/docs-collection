@@ -11,11 +11,11 @@ You defined it in the schema:
 and then you created a corresponding POJO:
 
     public class Link {
-        
+
         private final String id;
         private final String url;
         private final String description;
-        
+
         //constructors, getters and setters
         //...
     }
@@ -87,7 +87,7 @@ A few things to note about this code:
 Decorate the interesting bits in `LinkResolver` too:
 
     public class LinkResolver { //1
-        
+
         private final UserRepository userRepository;
 
         LinkResolver(UserRepository userRepository) {
@@ -128,7 +128,7 @@ Finally, to generate the schema from the classes, update `GraphQLEndoint#buildSc
         Query query = new Query(linkRepository); //create or inject the service beans
         LinkResolver linkResolver = new LinkResolver(userRepository);
         Mutation mutation = new Mutation(linkRepository, userRepository, voteRepository);
-        
+
         return new GraphQLSchemaGenerator()
                 .withOperationsFromSingletons(query, linkResolver, mutation) //register the beans
                 .generate(); //done :)
@@ -140,7 +140,7 @@ If you now fire up GraphiQL, you’d get the exact same result as before:
 
 The important points to note:
 
--   You never defined the schema explicitly (meaning you won’t have to update it when the code changes either).
--   You don’t have to separate the logic for manipulating `Link`s into the top level queries (`allLinks` inside `Query`), embedded ones (`postedBy` inside `LinkResolver`) and mutations (`createLink` inside `Mutation`). All the queries and mutations operating on links could have been placed into a single class (e.g. `LinkService`), yet having them separate was not a hurdle either. This implies that your legacy code and best practices can stay untouched.
+- You never defined the schema explicitly (meaning you won’t have to update it when the code changes either).
+- You don’t have to separate the logic for manipulating `Link`s into the top level queries (`allLinks` inside `Query`), embedded ones (`postedBy` inside `LinkResolver`) and mutations (`createLink` inside `Mutation`). All the queries and mutations operating on links could have been placed into a single class (e.g. `LinkService`), yet having them separate was not a hurdle either. This implies that your legacy code and best practices can stay untouched.
 
 This is just a glance at the alternative style of development. There are many more possibilities to explore, so take a look at what [the ecosystem](https://github.com/graphql-java/awesome-graphql-java) has to offer. For more info on `graphql-spqr` check out [the project page](https://github.com/leangen/graphql-spqr), and for a full example see [here](https://github.com/leangen/graphql-spqr-samples).

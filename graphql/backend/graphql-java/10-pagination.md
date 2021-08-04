@@ -16,7 +16,7 @@ Update the repository method (`LinkRepository#getAllLinks`) to take and use thes
 
     public List<Link> getAllLinks(LinkFilter filter, int skip, int first) {
         Optional<Bson> mongoFilter = Optional.ofNullable(filter).map(this::buildFilter);
-        
+
         List<Link> allLinks = new ArrayList<>();
         FindIterable<Document> documents = mongoFilter.map(links::find).orElseGet(links::find);
         for (Document doc : documents.skip(skip).limit(first)) {
@@ -31,7 +31,7 @@ And, of course, update the top-level method in the `Query` class:
         return linkRepository.getAllLinks(filter, skip.intValue(), first.intValue());
     }
 
-Note that the parameter type for both *must* be `Number` because `graphql-java-tools` will sometimes try to stuff an `Integer` and sometimes a `BigInteger` into it, depending on the context.
+Note that the parameter type for both _must_ be `Number` because `graphql-java-tools` will sometimes try to stuff an `Integer` and sometimes a `BigInteger` into it, depending on the context.
 
 Wasn’t that easy? Jump back to GraphiQL and paginate away!
 

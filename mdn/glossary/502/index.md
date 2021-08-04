@@ -6,7 +6,6 @@ A {{Glossary("Server", "server")}} can act as a gateway or proxy (go-between) be
 
 Normally the upstream server is not down (i.e. furnishes no response to the gateway/proxy), but does not understand the same data-exchange protocol as the gateway/proxy. Internet {{Glossary("Protocol", "protocols")}} are quite explicit, and so a 502 usually means that one or both machines were incorrectly or incompletely programmed.
 
-Learn more
-----------
+## Learn more
 
--   [list of HTTP response codes](/en-US/docs/Web/HTTP/Status)
+- [list of HTTP response codes](/en-US/docs/Web/HTTP/Status)

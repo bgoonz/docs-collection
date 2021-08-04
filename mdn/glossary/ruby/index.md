@@ -4,14 +4,13 @@
 
 Ruby is also a method for annotating east Asian text in HTML documents to provide pronunciation information; see the {{HTMLElement("ruby")}} element.
 
-Learn More
-----------
+## Learn More
 
 ### General knowledge
 
--   [Ruby](https://en.wikipedia.org/wiki/Ruby_%28programming_language%29) on Wikipedia
+- [Ruby](https://en.wikipedia.org/wiki/Ruby_%28programming_language%29) on Wikipedia
 
 ### Technical reference
 
--   [Ruby's official web site](https://www.ruby-lang.org)
--   [Ruby On Rails' official web site](https://rubyonrails.org/)
+- [Ruby's official web site](https://www.ruby-lang.org)
+- [Ruby On Rails' official web site](https://rubyonrails.org/)

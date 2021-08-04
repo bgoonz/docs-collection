@@ -30,7 +30,7 @@ Almost good, but `H2` doesn’t know how to store such type in database, so we w
 
 Add column mapper for our `DateTime` type in `DBSchema` object (before the `LinksTable` definition).
 
-    //ads to imports: 
+    //ads to imports:
     import java.sql.Timestamp
 
 
@@ -50,7 +50,7 @@ Add the following code inside `LinksTable` class. Replace the current `*` functi
 
     def * = (id, url, description, createdAt).mapTo[Link]
 
-------------------------------------------------------------------------
+---
 
 In current state the `DBSchema` file should have following content:
 
@@ -73,8 +73,8 @@ In current state the `DBSchema` file should have following content:
         dt => new Timestamp(dt.clicks),
         ts => DateTime(ts.getTime)
       )
-      
-      
+
+
       class LinksTable(tag: Tag) extends Table[Link](tag, "LINKS"){
 
         def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
@@ -179,7 +179,7 @@ In case of derived LinkType, the definition should looks like this:
         ReplaceField("createdAt", Field("createdAt", GraphQLDateTime, resolve = _.value.createdAt))
       )
 
-------------------------------------------------------------------------
+---
 
 After the last changes `GraphQLSchema` file should looks like this:
 

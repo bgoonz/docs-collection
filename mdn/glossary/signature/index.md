@@ -4,7 +4,6 @@ The term **signature** can have several meanings depending on the context. It ma
 
 {{GlossaryDisambiguation}}
 
-Learn more
-----------
+## Learn more
 
--   {{Interwiki("wikipedia", "Signature\_(disambiguation)", "Signature")}} on Wikipedia
+- {{Interwiki("wikipedia", "Signature\_(disambiguation)", "Signature")}} on Wikipedia

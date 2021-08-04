@@ -1,4 +1,4 @@
---- title: Desktop gamepad controls slug: Games/Techniques/Control\_mechanisms/Desktop\_with\_gamepad tags: - Controls - Desktop - Gamepad API - Gamepads - Games - JavaScript - controllers ---
+--- title: Desktop gamepad controls slug: Games/Techniques/Control_mechanisms/Desktop_with_gamepad tags: - Controls - Desktop - Gamepad API - Gamepads - Games - JavaScript - controllers ---
 
 {{GamesSidebar}}
 
@@ -8,13 +8,11 @@ Now we'll look at adding something extra — support for gamepad controls, via t
 
 The Gamepad API gives you the ability to connect a gamepad to your computer and detect pressed buttons directly from the JavaScript code thanks to the browsers implementing such feature. An API exposes all the information you need to hook up your game's logic and successfully control the user interface and gameplay.
 
-API status, browser and hardware support
-----------------------------------------
+## API status, browser and hardware support
 
 The [Gamepad API](/en-US/docs/Web/API/Gamepad_API) is still in Working Draft status, although browser support is already quite good — around 63% global coverage, according to [caniuse.com](https://caniuse.com/#search=gamepad). The list of supported devices is also quite extensive — most popular gamepads (e.g. XBox 360 or PS3) should be suitable for web implementations.
 
-Pure JavaScript approach
-------------------------
+## Pure JavaScript approach
 
 Let's think about implementing pure JavaScript gamepad controls in our [little controls demo](https://github.com/end3r/JavaScript-Game-Controls/) first to see how it would work. First, we need an event listener to listen for the connection of the new device:
 
@@ -100,8 +98,7 @@ You could also create a helper function that would assign proper names to the li
 
 You can see a [live demo](https://end3r.github.io/JavaScript-Game-Controls/) in action — try connecting your gamepad and pressing the buttons.
 
-Phaser approach
----------------
+## Phaser approach
 
 Let's move on to the final Gamepad API implementation in the <a href="https://rogers2.enclavegames.com/demo/" class="external external-icon">Captain Rogers: Battle at Andromeda</a> game we created with Phaser. This is pure JavaScript code however too, so can be used in any other project no matter what framework was used.
 
@@ -200,8 +197,7 @@ The `button.pressed()` function detects the actual button presses:
 
 It loops through pressed buttons and if the button we're looking for is pressed, then the corresponding boolean variable is set to `true`. If we want to check the button is not held already (so it's a new press), then looping through the cached states from the previous frame does the job — if the button was already pressed, then we ignore the new press and set it to `false`.
 
-Implementation
---------------
+## Implementation
 
 We now know what the `GamepadAPI` object looks like and what variables and functions it contain, so let's learn how all this is actually used in the game. To indicate that the gamepad controller is active we can show the user some custom text on the game's main menu screen.
 
@@ -246,8 +242,7 @@ When pressing the `Start` button the relevant function will be called to begin t
 
 ![Gamepad info with all the available keys described and explained.](controls-gamepadinfo.png)
 
-On-screen instructions
-----------------------
+## On-screen instructions
 
 When the game is started, some introductory text is shown that shows you available controls — we are already detecting if the game is launched on desktop or mobile then showing a relevant message for the device, but we can go even further, to allow for the presence of a gamepad:
 
@@ -271,8 +266,7 @@ When the game is started, some introductory text is shown that shows you availab
 
 When on desktop, we can check if the controller is active and show the gamepad controls — if not, then the keyboard controls will be shown.
 
-Gameplay controls
------------------
+## Gameplay controls
 
 We can offer even more flexibility to the player by giving him main and alternative gamepad movement controls:
 
@@ -332,8 +326,7 @@ If the `B` button is pressed, the game is paused:
         this.managePause();
     }
 
-Pause and game over states
---------------------------
+## Pause and game over states
 
 We already learned how to control the whole lifecycle of the game: pausing the gameplay, restarting it, or getting back to the main menu. It works smooth on mobile and desktop, and adding gamepad controls is just as straightforward — in the `update()` function, we check to see if the current state status is `paused` — if so, the relevant actions are enabled:
 
@@ -355,8 +348,7 @@ Similarly, when the `gameover` state status is active, then we can allow the use
 
 When the game over screen is visible, the `Start` button restarts the game while the `Back` button helps us get back to the main menu. The same goes for when the game is paused: the `Start` button unpauses the game and the `Back` button goes back, just like before.
 
-Summary
--------
+## Summary
 
 That's it! We have successfully implemented gamepad controls in our game — try connecting any popular controller like the XBox 360 one and see for yourself how fun it is to avoid the asteroids and shoot the aliens with a gamepad.
 

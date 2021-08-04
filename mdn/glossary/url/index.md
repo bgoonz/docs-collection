@@ -6,17 +6,16 @@ In the context of {{Glossary("HTTP")}}, URLs are called "Web address" or "link".
 
 URLs can also be used for file transfer ({{Glossary("FTP")}}) , emails ({{Glossary("SMTP")}}), and other applications.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "URL")}} on Wikipedia
+- {{Interwiki("wikipedia", "URL")}} on Wikipedia
 
 ### Learn about it
 
--   [Understanding URLs and their structure](/en-US/docs/Learn/Common_questions/What_is_a_URL)
+- [Understanding URLs and their structure](/en-US/docs/Learn/Common_questions/What_is_a_URL)
 
 ### Specifications
 
--   The syntax of URLs is defined in the [URL Living Standard](https://url.spec.whatwg.org/).
+- The syntax of URLs is defined in the [URL Living Standard](https://url.spec.whatwg.org/).

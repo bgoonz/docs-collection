@@ -177,7 +177,7 @@ The following query should now execute successfully:
         id
         createdAt
       }
-    }  
+    }
 
 ### Finding common parts
 
@@ -225,7 +225,7 @@ Add a definition of the interface and change the `LinkType` for the following:
         Field("id", IntType, resolve = _.value.id)
       )
     )
-      
+
     implicit val LinkType = deriveObjectType[Unit, Link](
         Interfaces(IdentifiableType)
     )
@@ -241,6 +241,6 @@ So far so good. We made many changes in this chapter, so if you like you can com
 [DAO.scala](https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-dao-scala)  
 [DBSchema.scala](https://gist.github.com/marioosh/6f75f24bb5e5fd6fc3d46472147c4551#file-dbschema-scala)
 
-------------------------------------------------------------------------
+---
 
 Ok, that’s all for this chapter. In the next one you will learn about relations.

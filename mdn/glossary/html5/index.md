@@ -10,9 +10,8 @@ Any modern site should use the [HTML doctype](/en-US/docs/MDN/Guidelines/Code_gu
 
 Until 2019, the {{glossary("W3C")}} published a competing HTML5 standard with version numbers. In MDN docs and elsewhere on the web therefore, you may find references to other HTML versions, HTML5.1 for example. Since [28 May 2019](https://www.w3.org/blog/news/archives/7753), the WHATWG Living Standard was announced by the W3C as the sole version of HTML.
 
-Learn more
-----------
+## Learn more
 
--   [our HTML documentation](/en-US/docs/Web/HTML)
--   [HTML beginner's learning guides](/en-US/docs/Learn/HTML)
--   [Web APIs](/en-US/docs/Web/API)
+- [our HTML documentation](/en-US/docs/Web/HTML)
+- [HTML beginner's learning guides](/en-US/docs/Learn/HTML)
+- [Web APIs](/en-US/docs/Web/API)

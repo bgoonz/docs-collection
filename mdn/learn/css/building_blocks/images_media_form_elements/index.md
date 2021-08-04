@@ -1,4 +1,4 @@
---- title: Images, media, and form elements slug: Learn/CSS/Building\_blocks/Images\_media\_form\_elements tags: - Beginner - CSS - Forms - Images - Learn - Media - replaced content ---
+--- title: Images, media, and form elements slug: Learn/CSS/Building_blocks/Images_media_form_elements tags: - Beginner - CSS - Forms - Images - Learn - Media - replaced content ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Sizing\_items\_in\_CSS", "Learn/CSS/Building\_blocks/Styling\_tables", "Learn/CSS/Building\_blocks")}}
 
@@ -6,22 +6,20 @@ In this lesson we will take a look at how certain special elements are treated i
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the way that some elements behave unusually when styled with CSS.</td></tr></tbody></table>
 
-Replaced elements
------------------
+## Replaced elements
 
 Images and video are described as **[replaced elements](/en-US/docs/Web/CSS/Replaced_element)**. This means that CSS cannot affect the internal layout of these elements — only their position on the page amongst other elements. As we will see however, there are various things that CSS can do with an image.
 
 Certain replaced elements, such as images and video, are also described as having an **aspect ratio**. This means that it has a size in both the horizontal (x) and vertical (y) dimensions, and will be displayed using the intrinsic dimensions of the file by default.
 
-Sizing images
--------------
+## Sizing images
 
 As you already know from following these lessons, everything in CSS generates a box. If you place an image inside a box that is smaller or larger than the intrinsic dimensions of the image file in either direction, it will either appear smaller than the box, or overflow the box. You need to make a decision about what happens with the overflow.
 
 In the example below we have two boxes, both 200 pixels in size:
 
--   One contains an image which is smaller than 200 pixels — it is smaller than the box and doesn't stretch to fill it.
--   The other is larger than 200 pixels and overflows the box.
+- One contains an image which is smaller than 200 pixels — it is smaller than the box and doesn't stretch to fill it.
+- The other is larger than 200 pixels and overflows the box.
 
 {{EmbedGHLiveSample("css-examples/learn/images/size.html", '100%', 1000)}}
 
@@ -43,8 +41,7 @@ If we use `contain` as a value, the image will be scaled down until it is small 
 
 You could also try the value of `fill`, which will fill the box but not maintain the aspect ratio.
 
-Replaced elements in layout
----------------------------
+## Replaced elements in layout
 
 When using various CSS layout techniques on replaced elements, you may well find that they behave slightly differently from other elements. For example, in a flex or grid layout elements are stretched by default to fill the entire area. Images will not stretch, and instead will be aligned to the start of the grid area or flex container.
 
@@ -63,8 +60,7 @@ To force the image to stretch to fill the grid cell it is in, you'd have to do s
 
 This would, however, stretch the image, so it's probably not what you'd want to do.
 
-Form elements
--------------
+## Form elements
 
 Form elements can be a tricky issue when it comes to styling with CSS. The [Web Forms module](/en-US/docs/Learn/Forms) contains detailed guides to the trickier aspects of styling these, which I will not fully reproduce here. There are, however, a few key basics worth highlighting in this section.
 
@@ -94,7 +90,7 @@ In some browsers, form elements do not inherit font styling by default. Therefor
     textarea {
       font-family : inherit;
       font-size : 100%;
-    } 
+    }
 
 ### Form elements and box-sizing
 
@@ -130,42 +126,39 @@ As a final step, we can wrap up the various properties discussed above into the 
       font-family: inherit;
       font-size: 100%;
       box-sizing: border-box;
-      padding: 0; 
+      padding: 0;
       margin: 0;
     }
 
     textarea {
       overflow: auto;
-    } 
+    }
 
 **Note**: Normalizing stylesheets are used by many developers to create a set of baseline styles to use on all projects. Typically these do similar things to those described above, making sure that anything different across browsers is set to a consistent default before you do your own work on the CSS. They are not as important as they once were, as browsers are typically more consistent than in the past. However if you want to take a look at one example, check out [Normalize.css](https://necolas.github.io/normalize.css/), which is a very popular stylesheet used as a base by many projects.
 
 For further information on styling forms, take a look at the two articles in the HTML section of these guides.
 
--   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
 
-Test your skills!
------------------
+## Test your skills!
 
 We have covered a lot in this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Images and form elements](/en-US/docs/Learn/CSS/Building_blocks/Images_tasks).
 
-Summary
--------
+## Summary
 
 This lesson has highlighted some of the differences you will encounter when working with images, media, and other unusual elements in CSS. In the next article we'll look over a few tips you'll find useful when you have to style HTML tables.
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Sizing\_items\_in\_CSS", "Learn/CSS/Building\_blocks/Styling\_tables", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

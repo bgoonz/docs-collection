@@ -1,4 +1,4 @@
---- title: 2D breakout game using pure JavaScript slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript tags: - 2D - Beginner - Canvas - Games - JavaScript - Tutorial ---
+--- title: 2D breakout game using pure JavaScript slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript tags: - 2D - Beginner - Canvas - Games - JavaScript - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -12,8 +12,7 @@ To get the most out of this series of articles you should already have basic to 
 
 ![Gameplay screen from the game MDN Breakout where you can use your paddle to bounce the ball and destroy the brick field, with keeping the score and lives.](mdn-breakout-gameplay.png)
 
-Lesson details
---------------
+## Lesson details
 
 All the lessons — and the different versions of the [MDN Breakout game](https://breakout.enclavegames.com/lesson10.html) we are building together — are [available on GitHub](https://github.com/end3r/Canvas-gamedev-workshop):
 
@@ -34,9 +33,8 @@ Starting with pure JavaScript is the best way to get a solid knowledge of web ga
 
 **Note**: This series of articles can be used as material for hands-on game development workshops. You can also make use of the [Gamedev Canvas Content Kit](https://github.com/end3r/Gamedev-Canvas-Content-Kit) based on this tutorial if you want to give a talk about game development in general.
 
-Next steps
-----------
+## Next steps
 
 Ok, let's get started! Head to the first chapter— [Create the Canvas and draw on it](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Create_the_Canvas_and_draw_on_it).
 
-{{Next("Games/Workflows/2D\_Breakout\_game\_pure\_JavaScript/Create\_the\_Canvas\_and\_draw\_on\_it")}} 
+{{Next("Games/Workflows/2D\_Breakout\_game\_pure\_JavaScript/Create\_the\_Canvas\_and\_draw\_on\_it")}}

@@ -80,13 +80,13 @@ In the directory where `project.graphcool` is located, type the following into t
 
 This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.
 
-Select the *Integrations*-tab in the left side-menu and then click on the *Email-Password-Auth*-integration.
+Select the _Integrations_-tab in the left side-menu and then click on the _Email-Password-Auth_-integration.
 
 ![The integrations tab](http://i.imgur.com/25iMZtf.png)
 
 This will open the popup that allows you to enable the Graphcool’s email-based authentication mechanism.
 
-In the popup, simply click *Enable*.
+In the popup, simply click _Enable_.
 
 Having the `Email-and-Password` auth provider enabled adds two new mutations to the project’s API:
 
@@ -148,8 +148,8 @@ Open your project file `project.graphcool` and update the `User` and `Link` type
 
 You added two things to the schema:
 
--   A new field on the `User` type to store the `name` of the user.
--   A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
+- A new field on the `User` type to store the `name` of the user.
+- A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
 
 Save the file and execute the following command in the Terminal:
 
@@ -158,7 +158,7 @@ Save the file and execute the following command in the Terminal:
 Here is the Terminal output after you execute the command:
 
     $ graphcool push
-     ✔ Your schema was successfully updated. Here are the changes: 
+     ✔ Your schema was successfully updated. Here are the changes:
 
       | (*)  The type `User` is updated.
       ├── (+)  A new field with the name `name` and type `String!` is created.
@@ -211,7 +211,7 @@ Now add some more imports to your `auth` service:
 And the remaining methods for login, logout, and sign up:
 
     apollo: Ember.inject.service(),
-      
+
     // 1.
     isLoggedIn: Ember.computed('userId', function() {
       return !!this.get('userId');
@@ -348,7 +348,7 @@ Add a new file named `login.hbs` to your `app/templates` directory and add the f
 
 It’s a pretty simple template that brings us full circle with the login/signup functionality.
 
-Go ahead and test the login functionality. Run `yarn start` and open `http://localhost:4200/login`. Then click the *need to create an account?*-button and provide some user data for the user you’re creating. Finally, click the *create Account*-button. If all went well, the app navigates back to the root route and your user was created.
+Go ahead and test the login functionality. Run `yarn start` and open `http://localhost:4200/login`. Then click the _need to create an account?_-button and provide some user data for the user you’re creating. Finally, click the _create Account_-button. If all went well, the app navigates back to the root route and your user was created.
 
 You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
 
@@ -462,7 +462,7 @@ Open `createLink.graphql` and update the definition as follows:
       }
     }
 
-There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the *payload* of the mutation.
+There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the _payload_ of the mutation.
 
 Now you need to make sure that the `id` of the posting user is included when you’re calling the mutation in `createLink`.
 

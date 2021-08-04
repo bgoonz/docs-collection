@@ -11,11 +11,19 @@ tags:
   - webRequest
 browser-compat: webextensions.api.webRequest.StreamFilter.resume
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p>Resumes a request that was previously suspended through a call to {{WebExtAPIRef("webRequest.StreamFilter.suspend()", "suspend()")}}.</p>
+<p>
+  Resumes a request that was previously suspended through a call to
+  {{WebExtAPIRef("webRequest.StreamFilter.suspend()", "suspend()")}}.
+</p>
 
-<p>You can't call this function until after the {{WebExtAPIRef("webRequest.StreamFilter.onstart", "onstart")}} event has fired.</p>
+<p>
+  You can't call this function until after the
+  {{WebExtAPIRef("webRequest.StreamFilter.onstart", "onstart")}} event has
+  fired.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
@@ -38,7 +46,8 @@ browser-compat: webextensions.api.webRequest.StreamFilter.resume
 
 <p>This example uses suspend/resume to delay a web request.</p>
 
-<pre class="brush: js">function listener(details) {
+<pre class="brush: js">
+function listener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
 
   filter.onstart = event =&gt; {
@@ -56,6 +65,7 @@ browser.webRequest.onBeforeRequest.addListener(
   listener,
   {urls: ["https://example.org/"], types: ["main_frame"]},
   ["blocking"]
-);</pre>
+);</pre
+>
 
 <p>{{WebExtExamples}}</p>

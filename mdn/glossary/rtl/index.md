@@ -4,7 +4,7 @@
 
 The opposite of RTL, LTR (Left To Right) is used in other languages, including English (`en`, `en-US`, `en-GB`, etc.), Spanish (`es`), and French (`fr`).
 
--   [MDN Web Docs Glossary](/en-US/docs/Glossary)
-    -   {{Glossary("Localization")}}
-    -   {{Glossary("LTR", "LTR (Left to Right)")}}
-    -   {{Glossary("RTL", "RTL (Right to Left)")}}
+- [MDN Web Docs Glossary](/en-US/docs/Glossary)
+  - {{Glossary("Localization")}}
+  - {{Glossary("LTR", "LTR (Left to Right)")}}
+  - {{Glossary("RTL", "RTL (Right to Left)")}}

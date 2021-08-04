@@ -1,4 +1,4 @@
---- title: Reporting directive slug: Glossary/Reporting\_directive tags: - CSP - HTTP - Policy - Reporting - Security - Violation ---
+--- title: Reporting directive slug: Glossary/Reporting_directive tags: - CSP - HTTP - Policy - Reporting - Security - Violation ---
 
 **{{Glossary("CSP")}} reporting directives** are used in a {{HTTPHeader("Content-Security-Policy")}} header and control the reporting process of CSP violations.
 

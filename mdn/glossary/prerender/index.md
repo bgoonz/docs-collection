@@ -4,7 +4,6 @@ With prerendering, the content is [prefetched](/en-US/docs/Glossary/Prefetch) an
 
     <link rel="prerender" href="https://example.com/content/to/prerender">
 
-See also
---------
+## See also
 
--   [prefetch](/en-US/docs/Glossary/Prefetch)
+- [prefetch](/en-US/docs/Glossary/Prefetch)

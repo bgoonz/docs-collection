@@ -16,9 +16,9 @@ Create a new file in `src` and call it `token.js`. Then paste the following code
 
 You now have two functions that you can use in the upcoming steps to set up authentication:
 
--   the `getToken` funtion returns the token or `null` if the user is not logged in yet.
--   the `setToken` function updates the token in local storage.
--   the `deleteToken` function removes the token from local storage, when logging out.
+- the `getToken` funtion returns the token or `null` if the user is not logged in yet.
+- the `setToken` function updates the token in local storage.
+- the `deleteToken` function removes the token from local storage, when logging out.
 
 > **Warning**: Storing JWTs in `localStorage` is not a safe approach to implement authentication on the frontend. Because this tutorial is focused on GraphQL, we want to keep things simple and therefore are using it here. You can read more about this topic [here](https://www.rdegges.com/2018/please-stop-using-local-storage/).
 
@@ -38,7 +38,7 @@ Create a new file in `src/components` and call it `Login.js`. Then paste the fol
       const [email, setEmail] = React.useState('')
       const [password, setPassword] = React.useState('')
       const [name, setName] = React.useState('')
-      
+
       return (
         <div>
           <h4 className="mv3">{isLogin ? 'Login' : 'Sign Up'}</h4>
@@ -89,8 +89,8 @@ Create a new file in `src/components` and call it `Login.js`. Then paste the fol
 
 Let’s quickly understand the structure of this new component, which can have two major states:
 
--   One state is **for users that already have an account** and only need to login. In this state, the component will only render two `input` fields for the user to provide their `email` and `password`. `isLogin` will be `true` in this case.
--   The second state is for **users that haven’t created an account yet**, and thus still need to sign up. Here, you also render a third `input` field where users can provide their `name`. In this case, `isLogin` will be `false`.
+- One state is **for users that already have an account** and only need to login. In this state, the component will only render two `input` fields for the user to provide their `email` and `password`. `isLogin` will be `true` in this case.
+- The second state is for **users that haven’t created an account yet**, and thus still need to sign up. Here, you also render a third `input` field where users can provide their `name`. In this case, `isLogin` will be `false`.
 
 Later, you’ll add an `onClick` handler to the first button to execute the mutations for the login and signup functionality. You’ve also added an import for `setToken` at the top of the file that will later be used to update the token after the mutation is sent.
 
@@ -235,7 +235,7 @@ Add the `useMutation` hook to the `Login` component:
             }
           });
       }, [executeMutation, props.history, isLogin, email, password, name]);
-        
+
       // ...
     };
 
@@ -266,9 +266,9 @@ Also in `Login.js` and update `div` containing the two buttons as follows:
 
 To summarise what you’ve been coding:
 
--   you’ve added the `LOGIN_MUTATION` and the `SIGNUP_MUTATION`, and added a `useMutation` hook that uses one of them depending on `isLogin`.
--   you’ve implemented a `mutate` handler that calls `executeMutation` with the `Login` form’s variables, stores the token from the result in local storage, and redirects to the homepage
--   and lastly, you added the handler and `disabled` flags to the buttons
+- you’ve added the `LOGIN_MUTATION` and the `SIGNUP_MUTATION`, and added a `useMutation` hook that uses one of them depending on `isLogin`.
+- you’ve implemented a `mutate` handler that calls `executeMutation` with the `Login` form’s variables, stores the token from the result in local storage, and redirects to the homepage
+- and lastly, you added the handler and `disabled` flags to the buttons
 
 > **Note**: Like with queries, depending on what your mutations definitions request, you’ll get different sets of data. That’s why you need to read either from `login` or `signup` on the result `data`.
 

@@ -1,5 +1,4 @@
-CreateUser <span id="createuser"></span>
-----------------------------------------
+## CreateUser <span id="createuser"></span>
 
 We continue our implementation of CreateUser mutation with functions we have written in auth section.
 
@@ -33,8 +32,7 @@ results:
 
 So we successfully created our first user!
 
-Login <span id="login"></span>
-------------------------------
+## Login <span id="login"></span>
 
 For this mutation, first we have to check if user exists in database and given password is correct, then we generate a token for user and give it back to user.
 
@@ -100,8 +98,7 @@ We used the Authenticate function declared above and after that if the username 
 
 To define a custom error in go you need a struct with Error method implemented, here is our error for wrong username or password with it’s Error() method. Again you can try login with username and password from the user we created and get a token.
 
-Refresh Token <span id="refresh-token"></span>
-----------------------------------------------
+## Refresh Token <span id="refresh-token"></span>
 
 This is the last endpoint we need to complete our authentication system, imagine a user has loggedIn in our app and it’s token is going to get expired after minutes we set(when generated the token), now we need a solution to keep our user loggedIn. One solution is to have a endpoint to get tokens that are going to expire and regenerate a new token for that user so that app uses new token. So our endpoint should take a token, Parse the username and generate a new token for that username.
 

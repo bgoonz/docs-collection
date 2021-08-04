@@ -82,7 +82,7 @@ Next, open up a terminal window and navigate to the directory where `project.gra
 Here is what the Terminal output looks like:
 
     $ gc push
-     ✔ Your schema was successfully updated. Here are the changes: 
+     ✔ Your schema was successfully updated. Here are the changes:
 
       | (+)  A new type with the name `Vote` is created.
       |
@@ -179,7 +179,7 @@ You need to now add the `createVote` mutation that you imported. Create a new fi
 
 You can now go and test the implementation! Run `yarn start` and click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page you’ll see the added votes.
 
-There still is a flaw in the app though. Since the `votes` on a `link-post` don’t get updated right away, a user currently can submit an indefinite number of votes until the page is refreshed. Only then the protection mechanism will apply and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: *User (cj42qfzwnugfo01955uasit8l) already voted for this link.*
+There still is a flaw in the app though. Since the `votes` on a `link-post` don’t get updated right away, a user currently can submit an indefinite number of votes until the page is refreshed. Only then the protection mechanism will apply and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: _User (cj42qfzwnugfo01955uasit8l) already voted for this link._
 
 But at least you know that the mutation is working. In the next section, you’ll fix the issue and make sure that the cache gets updated directly after each mutation!
 
@@ -196,11 +196,11 @@ Open the component file for your `link-post` component and update the call to `e
         update: (store, { data: { createVote } }) => {
           // 1.
           const data = store.readQuery({ query: allLinks });
-          
+
           // 2.
           const votedLink = data.allLinks.find(link => link.id === linkId);
           votedLink.votes = createVote.link.votes;
-          
+
           // 3.
           store.writeQuery({ query: allLinks, data });
         }
@@ -214,7 +214,7 @@ Also be sure to import the `allLinks.graphql` query that you are using in the up
 
 The `update` function that you’re adding as an argument to the mutation call will be called when the server returns the response. It receives the payload of the mutation (`data`) and the current cache (`store`) as arguments. You can then use this input to determine a new state of the cache.
 
-Notice that you’re already *destructuring* the server response and retrieving the `createVote` field from it.
+Notice that you’re already _destructuring_ the server response and retrieving the `createVote` field from it.
 
 What’s going in the update function?
 

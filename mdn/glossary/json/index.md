@@ -6,13 +6,12 @@ JSON can represent numbers, booleans, strings, `null`, arrays (ordered sequences
 
 Much like XML, JSON has the ability to store hierarchical data unlike the more traditional CSV format.  Many tools provide translation between these formats such as this online [JSON to CSV Converter](https://json-csv.com) or this alternative [JSON to CSV Converter](https://jsontoexcel.com).
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "JSON", "JSON")}} on Wikipedia
+- {{interwiki("wikipedia", "JSON", "JSON")}} on Wikipedia
 
 ### Technical reference
 
--   {{Link("/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON")}} on MDN
+- {{Link("/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON")}} on MDN

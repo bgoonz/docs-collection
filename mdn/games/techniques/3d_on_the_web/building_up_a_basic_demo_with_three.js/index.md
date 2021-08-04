@@ -1,4 +1,4 @@
---- title: Building up a basic demo with Three.js slug: Games/Techniques/3D\_on\_the\_web/Building\_up\_a\_basic\_demo\_with\_Three.js tags: - 3D - Animation - Beginner - Canvas - Games - Tutorial - WebGL - camera - lighting - rendering - three.js ---
+--- title: Building up a basic demo with Three.js slug: Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js tags: - 3D - Animation - Beginner - Canvas - Games - Tutorial - WebGL - camera - lighting - rendering - three.js ---
 
 {{GamesSidebar}}
 
@@ -6,18 +6,16 @@ A typical 3D scene in a game — even the simplest one — contains standard ite
 
 **Note**: We chose Three because it is one of the most popular [WebGL](/en-US/docs/Web/API/WebGL_API) libraries, and it is easy to get started with. We are not trying to say it is better than any other WebGL library available, and you should feel free to try another library, such as [CopperLicht](https://www.ambiera.com/copperlicht/index.html), [GLGE](http://www.glge.org/), or [PlayCanvas](https://playcanvas.com/).
 
-Environment setup
------------------
+## Environment setup
 
 To start developing with Three.js, you don't need much. You should:
 
--   Make sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
--   Create a directory to store your experiments in.
--   Save a copy of the [latest minimized Three.js library](https://threejs.org/build/three.min.js) inside your directory.
--   Open the [Three.js documentation](https://threejs.org/docs/) in a separate tab — it is useful to refer to.
+- Make sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
+- Create a directory to store your experiments in.
+- Save a copy of the [latest minimized Three.js library](https://threejs.org/build/three.min.js) inside your directory.
+- Open the [Three.js documentation](https://threejs.org/docs/) in a separate tab — it is useful to refer to.
 
-HTML structure
---------------
+## HTML structure
 
 Here's the HTML structure we will use:
 
@@ -45,8 +43,7 @@ It contains some basic information like the document {{htmlelement("title")}}, a
 
 Before reading further, copy this code to a new text file, and save it in your working directory as `index.html`.
 
-Renderer
---------
+## Renderer
 
 A renderer is a tool which displays scenes right in your browser. There are a few different renderers: WebGL is the default, and others you can use are Canvas, SVG, CSS, and DOM. They differ in how everything is rendered, so the WebGL implementation will implement differently than the CSS one. Despite the variety of ways they achieve the goal, the experience will look the same for the user. Thanks to this approach, a fallback can be used, if a desired technology is not supported by the browser.
 
@@ -59,8 +56,7 @@ We are creating a new WebGL renderer, setting its size to fit the whole availabl
 
 Add this code into our second {{htmlelement("script")}} element, just below the JavaScript comment.
 
-Scene
------
+## Scene
 
 A scene is the place where everything happens. When creating new objects in the demo, we add them all inside the scene to become visible on the screen. In three.js, the scene is represented by a `Scene` object. Let's create it, by adding the following line below our previous lines:
 
@@ -68,8 +64,7 @@ A scene is the place where everything happens. When creating new objects in the 
 
 Later, we will be using the `.add()` method, to add objects to this scene.
 
-Camera
-------
+## Camera
 
 We have the rendered scene, but we still need to add a camera to view our handiwork — imagine a movie set without any cameras. The following lines put the camera in place in the 3D coordinate system, and point it in the direction of our scene, so we can finally see something:
 
@@ -81,16 +76,15 @@ Add the above lines to your code, below those previously added.
 
 There are other types of camera available (Cube, Orthographic), but the simplest is Perspective. To initialize it, we have to set its field of view and aspect ratio: the former is used to set how much is seen, and the latter is important for the objects on the screen to have the right proportions when rendered, and not look stretched. Let's explain values we are setting for the code above:
 
--   The value we set for the field of view, 70, is something we can experiment with: the higher the value, the greater the amount of scene the camera will show. Imagine a normal camera view, versus a fish eye effect, which allows a lot more to be seen. The default value is 50.
--   The aspect ratio is set to the current width and height of the window so it will be dynamically adjusted. We could set a fixed ratio — for example 16 ⁄ 9, which is the aspect ratio of a widescreen TV. The default value is 1.
--   The `z` position, with the value of 50 units, is the distance between the camera and the center of the scene on the `z` axis. Here we're moving the camera back, so the objects in the scene can be viewed. 50 feels about right. It's not too near, or too far, and the sizes of the objects allow them to stay on the scene, within the given field of view. The `x` and `y` values, if not specified, will default to 0.
+- The value we set for the field of view, 70, is something we can experiment with: the higher the value, the greater the amount of scene the camera will show. Imagine a normal camera view, versus a fish eye effect, which allows a lot more to be seen. The default value is 50.
+- The aspect ratio is set to the current width and height of the window so it will be dynamically adjusted. We could set a fixed ratio — for example 16 ⁄ 9, which is the aspect ratio of a widescreen TV. The default value is 1.
+- The `z` position, with the value of 50 units, is the distance between the camera and the center of the scene on the `z` axis. Here we're moving the camera back, so the objects in the scene can be viewed. 50 feels about right. It's not too near, or too far, and the sizes of the objects allow them to stay on the scene, within the given field of view. The `x` and `y` values, if not specified, will default to 0.
 
 You should experiment with these values and see how they change what you see in the scene.
 
 **Note**: The distance values (e.g. for the camera z position) are unitless, and can be anything you deem suitable for your scene: millimeters, meters, feet, or miles. It's up to you.
 
-Rendering the scene
--------------------
+## Rendering the scene
 
 Everything is ready, but we still can't see anything. Although we've set-up the renderer, we still need to render everything. Our `render()` function will do this job, with a little help from `requestAnimationFrame()`, which causes the scene to be re-rendered constantly on every frame:
 
@@ -104,8 +98,7 @@ On every new frame the `render` function is invoked, and the `renderer` renders 
 
 Again, add this new code below your previous additions. Try saving the file and opening it in your browser. You should now see a gray window. Congratulations!
 
-Geometry
---------
+## Geometry
 
 Now our scene is properly rendering, we can start adding 3D shapes. To speed up development, Three.js provides a bunch of predefined primitives, which you can use to create shapes instantly in a single line of code. There's cubes, spheres, cylinders, and more complicated shapes available. Detail like drawing required vertices and faces, for a given shape, is handled by the Three framework, so we can focus on higher level coding. Let's start, by defining the geometry for a cube shape, adding the following just above the `render()` function:
 
@@ -113,8 +106,7 @@ Now our scene is properly rendering, we can start adding 3D shapes. To speed up 
 
 In this case, we define a simple cube that is 10 x 10 x 10 units. The geometry itself is not enough though, we also need a material that will be used for our shape.
 
-Material
---------
+## Material
 
 A material is what covers an object, the colors, or textures on its surface. In our case, we will choose a simple blue color to paint our box. There are a number of predefined materials which can be used: Basic, Phong, Lambert. Let's play with the last two later, but for now, the Basic one should be enough:
 
@@ -124,8 +116,7 @@ Add this line below the previously added.
 
 Our material is now ready, what next?
 
-Mesh
-----
+## Mesh
 
 To apply the material to a geometry, a mesh is used. This takes on a shape, and adds the specified material to every face:
 
@@ -133,8 +124,7 @@ To apply the material to a geometry, a mesh is used. This takes on a shape, and 
 
 Again, add this line below the one you previously added.
 
-Adding the cube to the scene
-----------------------------
+## Adding the cube to the scene
 
 We've now created a cube, using the geometry and material defined earlier. The last thing to do is to place the cube to our scene. Add this line below the previous one:
 
@@ -154,8 +144,7 @@ And here's the code we have created so far:
 
 You can also [check it out on GitHub](https://github.com/end3r/MDN-Games-3D/blob/gh-pages/Three.js/cube.html).
 
-More shapes and materials
--------------------------
+## More shapes and materials
 
 Now we will add more shapes to the scene, and explore other shapes, materials, lighting, and more. Let's move the cube to the left, to make space for some friends. Adding the following line just below the previous one:
 
@@ -182,8 +171,7 @@ This time, we are creating a dodecahedron, a shape containing twelve flat faces.
 
 As mentioned above, the new objects currently just look black. To have both, the Phong and Lambert materials properly visible, we need to introduce a source of light.
 
-Lights
-------
+## Lights
 
 There are various types of light sources available in Three.js. The most basic is `PointLight`, which works like a flashlight, shining a spotlight in a defined direction. Add the following lines, below your shape definitions:
 
@@ -197,8 +185,7 @@ We define a white point of light, set its position a little away from the center
 
 This looks a little boring though. In a game, something is usually happening. We might see animations and such. So let's try breathing a little life into these shapes, by animating them!
 
-Animation
----------
+## Animation
 
 We already used rotation, to adjust the position of the cube. We can also scale the shapes, or change their positions. To show animation, we need to make changes to these values inside the render loop, so they update on each frame.
 
@@ -233,8 +220,7 @@ Aside from rotation, and scaling, we can additionally move objects around the sc
 
 This will move the dodecahedron up and down, by applying the `sin()` value to the y axis on each frame, and a little adjustment to make it look cooler. Try changing these values, to see how it affects the animations.
 
-Conclusion
-----------
+## Conclusion
 
 Here's the final code:
 

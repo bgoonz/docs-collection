@@ -1,6 +1,6 @@
 ### Query resolvers
 
-To maintain strong typing and intuitive design, it is common to represent GraphQL types with equivalent Java classes, and fields with methods. graphql-java-tools defines two types of classes: *data classes*, which model the domain and are usually simple POJOs, and *resolvers*, that model the queries and mutations and contain the resolver functions. Often, both are needed to model a single GraphQL type.
+To maintain strong typing and intuitive design, it is common to represent GraphQL types with equivalent Java classes, and fields with methods. graphql-java-tools defines two types of classes: _data classes_, which model the domain and are usually simple POJOs, and _resolvers_, that model the queries and mutations and contain the resolver functions. Often, both are needed to model a single GraphQL type.
 
 The schema so far looks like this:
 
@@ -22,7 +22,7 @@ To model it, two classes are needed: `Link` and `Query`.
 `Link` is a POJO (containing no behavior), so create it as follows:
 
     public class Link {
-        
+
         private final String url;
         private final String description;
 
@@ -45,7 +45,7 @@ You should also create a `LinkRepository` class that will neatly isolate the con
 Create `LinkRepository` as follows
 
     public class LinkRepository {
-        
+
         private final List<Link> links;
 
         public LinkRepository() {
@@ -58,7 +58,7 @@ Create `LinkRepository` as follows
         public List<Link> getAllLinks() {
             return links;
         }
-        
+
         public void saveLink(Link link) {
             links.add(link);
         }
@@ -71,7 +71,7 @@ Unlike the `Link` POJO, `Query` models behavior, as it contains the resolver for
 Create it as such:
 
     public class Query implements GraphQLRootResolver {
-        
+
         private final LinkRepository linkRepository;
 
         public Query(LinkRepository linkRepository) {

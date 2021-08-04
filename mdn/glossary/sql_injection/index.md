@@ -1,4 +1,4 @@
---- title: SQL Injection slug: Glossary/SQL\_Injection tags: - Glossary - Security - Sql - Sql Injection - Webapp ---
+--- title: SQL Injection slug: Glossary/SQL_Injection tags: - Glossary - Security - Sql - Sql Injection - Webapp ---
 
 SQL injection takes advantage of Web apps that fail to validate user input. Hackers can maliciously pass SQL commands through the Web app for execution by a backend database.
 
@@ -6,8 +6,7 @@ SQL injection can gain unauthorized access to a database or to retrieve informat
 
 [![](sql_inj_xss.gif)](https://www.acunetix.com/wp-content/uploads/2010/09/sql_inj_xss.gif)
 
-How It Works
-------------
+## How It Works
 
 ![](updates_loginscreen.png)
 
@@ -23,9 +22,9 @@ If the credentials are correct, then the user is allowed to log in, so it's a ve
 
 Hackers use a simple string called a Magical String, for example:
 
-**Username: *admin***
+**Username: _admin_**
 
-**Password: *anything 'or'1'='1***
+**Password: _anything 'or'1'='1_**
 
 After clicking on the login button, the SQL query will work as follows:
 
@@ -37,12 +36,11 @@ Just take a closer look at the above query's password section.
 
 The password is not 'anything', hence password=anything results in FALSE, but '1'='1' is a TRUE statement and hence returns a TRUE value. Finally, due to the OR operator, the value ( FALSE OR TRUE ) is TRUE, so authentication bypasses successfully. Just due to a simple string (Magical String) the entire database is compromised.
 
-How To Prevent
---------------
+## How To Prevent
 
 Before executing the queries for the user credentials, make some changes like the following:
 
-    $id = $_GET['id'] 
+    $id = $_GET['id']
 
     (1) $id = Stripslashes($id)
 
@@ -50,10 +48,9 @@ Before executing the queries for the user credentials, make some changes like th
 
 So due to (1) each single quote (') in the input string is replaced with double quotes ("), and due to (2) before every (') it adds (/). The revised magical string fails to bypass the authentication, and your database stays secure.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "SQL injection")}} on Wikipedia
--   [Explanation of SQL injection](https://www.owasp.org/index.php/SQL_Injection) on OWASP (Open Web Application Security Project)
+- {{Interwiki("wikipedia", "SQL injection")}} on Wikipedia
+- [Explanation of SQL injection](https://www.owasp.org/index.php/SQL_Injection) on OWASP (Open Web Application Security Project)

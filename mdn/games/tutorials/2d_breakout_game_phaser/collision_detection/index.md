@@ -1,4 +1,4 @@
---- title: Collision detection slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Collision\_detection tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - collision detection ---
+--- title: Collision detection slug: Games/Tutorials/2D_breakout_game_Phaser/Collision_detection tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - collision detection ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **10th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs
 
 <span class="seoSummary">Now onto the next challenge — the collision detection between the ball and the bricks. Luckily enough we can use the physics engine to check collisions not only between single objects (like the ball and the paddle), but also between an object and the group.</span>
 
-Brick/Ball collision detection
-------------------------------
+## Brick/Ball collision detection
 
 The physics engine makes everything a lot easier — we just need to add two simple pieces of code. First, add a new line inside your `update()` function that checks for collision detection between ball and bricks, as shown below:
 
@@ -31,15 +30,13 @@ Thanks to Phaser there are two parameters passed to the function — the first o
 
 You would expect to have to write a lot more calculations of your own to implement collision detection when using [pure JavaScript](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection). That's the beauty of using the framework — you can leave a lot of boring code to Phaser, and focus on the most fun and interesting parts of making a game.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/wwneakwf/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 We can hit the bricks and remove them, which is a nice addition to the gameplay already. It would be even better to count the destroyed bricks increment [the score](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/The_score) as a result.
 

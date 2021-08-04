@@ -1,4 +1,4 @@
---- title: Desktop mouse and keyboard controls slug: Games/Techniques/Control\_mechanisms/Desktop\_with\_mouse\_and\_keyboard tags: - Controls - Desktop - Games - JavaScript - keyboard - mouse ---
+--- title: Desktop mouse and keyboard controls slug: Games/Techniques/Control_mechanisms/Desktop_with_mouse_and_keyboard tags: - Controls - Desktop - Games - JavaScript - keyboard - mouse ---
 
 {{GamesSidebar}}
 
@@ -10,8 +10,7 @@ It's also easier to test control-independent features like gameplay on desktop i
 
 **Note**: the <a href="https://rogers2.enclavegames.com/demo/" class="external external-icon">Captain Rogers: Battle at Andromeda</a> is built with Phaser and managing the controls is Phaser-based, but it could also be done in pure JavaScript. The good thing about using Phaser is that it offers helper variables and functions for easier and faster development, but it's totally up to you which approach you chose.
 
-Pure JavaScript approach
-------------------------
+## Pure JavaScript approach
 
 Let's think about implementing pure JavaScript keyboard/mouse controls in the game first, to see how it would work. First, we'd need an event listener to listen for the pressed keys:
 
@@ -80,8 +79,7 @@ That way instead of using the codes to compare the input in the handler function
 
 You can see this example in action online at [end3r.github.io/JavaScript-Game-Controls](https://end3r.github.io/JavaScript-Game-Controls/) and the full source code can be found at [github.com/end3r/JavaScript-Game-Controls](https://github.com/end3r/JavaScript-Game-Controls/).
 
-Phaser approach
----------------
+## Phaser approach
 
 As I mentioned before, you can write everything on your own, but you can also take advantage of built-in functions in frameworks like Phaser. These will make your life easier and development a lot faster. All the edge cases--differences between browser implementations, etc.--are handled by the framework, so you can focus on the actual task you want to do.
 
@@ -190,7 +188,7 @@ And then in the `update()` function, whenever C is pressed we'll do this:
         this.player.health = this.player.maxHealth;
     }
 
-We can set the health of the player to maximum. Remember: it's a secret, so *don't tell anyone*!
+We can set the health of the player to maximum. Remember: it's a secret, so _don't tell anyone_!
 
 ### How to play
 
@@ -223,8 +221,7 @@ This hides the intro and starts the actual game without us having to set up ano
 
 To make the game fully playable with the keyboard, it should be possible to go back to the main menu, continue playing, or restart the game from the pause and game over screens. It can be done exactly the same as before, by capturing key codes and performing actions. For example, by specifying `Phaser.KeyCode.Backspace` or `Phaser.KeyCode.Delete` you can hook up an action to fire when the `Delete/Backspace` button is pressed.
 
-Summary
--------
+## Summary
 
 Ok, we've dealt with touch, keyboard, and mouse controls. Now let's move on to look at how to set up the game to be controlled using a console gamepad, using the [Gamepad API](/en-US/docs/Web/API/Gamepad_API).
 

@@ -42,7 +42,7 @@ This creates the file `app/graphql/types/link_type.rb` with the following conten
 
 ### Query Resolver
 
-The type is now defined, but the server still doesn’t know how to handle it. To fix that, you will now write your first **[resolver](http://graphql.org/learn/execution/#root-fields-resolvers)**. Resolvers are functions that the GraphQL server uses to fetch the data for a specific query. Each *field* of your GraphQL types needs a corresponding resolver function. When a query arrives at the backend, the server will call those resolver functions that correspond to the fields that are specified in the query.
+The type is now defined, but the server still doesn’t know how to handle it. To fix that, you will now write your first **[resolver](http://graphql.org/learn/execution/#root-fields-resolvers)**. Resolvers are functions that the GraphQL server uses to fetch the data for a specific query. Each _field_ of your GraphQL types needs a corresponding resolver function. When a query arrives at the backend, the server will call those resolver functions that correspond to the fields that are specified in the query.
 
 All [GraphQL queries](http://graphql.org/learn/queries/) start from a root type called **[Query](http://graphql.org/learn/schema/#the-query-and-mutation-types)**.
 
@@ -65,8 +65,8 @@ Now update its content to:
 
 Fields can be resolved in one of two ways:
 
--   method on the type (named as the field), which accepts arguments and can access `object` and `context`
--   [GraphQL::Schema::Resolver](https://graphql-ruby.org/api-doc/1.8.13/GraphQL/Schema/Resolver) - we are going to discuss those in the next chapter
+- method on the type (named as the field), which accepts arguments and can access `object` and `context`
+- [GraphQL::Schema::Resolver](https://graphql-ruby.org/api-doc/1.8.13/GraphQL/Schema/Resolver) - we are going to discuss those in the next chapter
 
 ### Testing With Playground
 

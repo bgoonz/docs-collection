@@ -11,16 +11,22 @@ tags:
   - createPanner
 browser-compat: api.BaseAudioContext.createPanner
 ---
+
 <p>{{ APIRef("Web Audio API") }}</p>
 
-<p>The <code>createPanner()</code> method of the {{ domxref("BaseAudioContext") }}
-  Interface is used to create a new {{domxref("PannerNode")}}, which is used to
-  spatialize an incoming audio stream in 3D space.</p>
+<p>
+  The <code>createPanner()</code> method of the {{ domxref("BaseAudioContext")
+  }} Interface is used to create a new {{domxref("PannerNode")}}, which is used
+  to spatialize an incoming audio stream in 3D space.
+</p>
 
-<p>The panner node is spatialized in relation to the AudioContext's
-  {{domxref("AudioListener") }} (defined by the {{domxref("BaseAudioContext/listener", "AudioContext.listener")}}
-  attribute), which represents the position and orientation of the person listening to the
-  audio.</p>
+<p>
+  The panner node is spatialized in relation to the AudioContext's
+  {{domxref("AudioListener") }} (defined by the
+  {{domxref("BaseAudioContext/listener", "AudioContext.listener")}} attribute),
+  which represents the position and orientation of the person listening to the
+  audio.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
@@ -32,31 +38,43 @@ browser-compat: api.BaseAudioContext.createPanner
 
 <h2 id="Example">Example</h2>
 
-<p>In the following example, you can see an example of how the <code>createPanner()</code>
-  method, {{domxref("AudioListener")}}  and {{domxref("PannerNode")}} would be used to
-  control audio spatialisation. Generally you will define the position in 3D space that
-  your audio listener and panner (source) occupy initially, and then update the position
-  of one or both of these as the application is used. You might be moving a character
-  around inside a game world for example, and wanting delivery of audio to change
-  realistically as your character moves closer to or further away from a music player such
-  as a stereo. In the example you can see this being controlled by the functions
-  <code>moveRight()</code>, <code>moveLeft()</code>, etc., which set new values for the
-  panner position via the <code>PositionPanner()</code> function.</p>
+<p>
+  In the following example, you can see an example of how the
+  <code>createPanner()</code>
+  method, {{domxref("AudioListener")}}  and {{domxref("PannerNode")}} would be
+  used to control audio spatialisation. Generally you will define the position
+  in 3D space that your audio listener and panner (source) occupy initially, and
+  then update the position of one or both of these as the application is used.
+  You might be moving a character around inside a game world for example, and
+  wanting delivery of audio to change realistically as your character moves
+  closer to or further away from a music player such as a stereo. In the example
+  you can see this being controlled by the functions
+  <code>moveRight()</code>, <code>moveLeft()</code>, etc., which set new values
+  for the panner position via the <code>PositionPanner()</code> function.
+</p>
 
-<p>To see a complete implementation, check out our <a
-    href="https://mdn.github.io/webaudio-examples/panner-node/">panner-node example</a>
-  (<a href="https://github.com/mdn/webaudio-examples/tree/master/panner-node">view the
-    source code</a>) — this demo transports you to the 2.5D "Room of metal", where you can
-  play a track on a boom box and then walk around the boom box to see how the sound
-  changes!</p>
+<p>
+  To see a complete implementation, check out our
+  <a href="https://mdn.github.io/webaudio-examples/panner-node/"
+    >panner-node example</a
+  >
+  (<a href="https://github.com/mdn/webaudio-examples/tree/master/panner-node"
+    >view the source code</a
+  >) — this demo transports you to the 2.5D "Room of metal", where you can play
+  a track on a boom box and then walk around the boom box to see how the sound
+  changes!
+</p>
 
-<p>Note how we have used some feature detection to either give the browser the newer
-  property values (like {{domxref("AudioListener.forwardX")}}) for setting position, etc.
-  if it supports those, or older methods (like
-  {{domxref("AudioListener.setOrientation()")}}) if it still supports those but not the
-  new properties.</p>
+<p>
+  Note how we have used some feature detection to either give the browser the
+  newer property values (like {{domxref("AudioListener.forwardX")}}) for setting
+  position, etc. if it supports those, or older methods (like
+  {{domxref("AudioListener.setOrientation()")}}) if it still supports those but
+  not the new properties.
+</p>
 
-<pre class="brush: js">// set up listener and panner position information
+<pre class="brush: js">
+// set up listener and panner position information
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 
@@ -137,14 +155,17 @@ function positionPanner() {
     panner.setPosition(xPos,yPos,zPos);
   }
   pannerData.textContent = `Panner data: X ${xPos} Y ${yPos} Z ${zPos}`;
-}</pre>
+}</pre
+>
 
 <div class="notecard note">
   <h4>Note</h4>
-  <p>In terms of working out what position values to apply to the
-    listener and panner, to make the sound appropriate to what the visuals are doing on
-    screen, there is quite a bit of math involved, but you will soon get used to it with a
-    bit of experimentation.</p>
+  <p>
+    In terms of working out what position values to apply to the listener and
+    panner, to make the sound appropriate to what the visuals are doing on
+    screen, there is quite a bit of math involved, but you will soon get used to
+    it with a bit of experimentation.
+  </p>
 </div>
 
 <h2 id="Specifications">Specifications</h2>
@@ -158,6 +179,9 @@ function positionPanner() {
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">Using the Web Audio API</a>
+  <li>
+    <a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API"
+      >Using the Web Audio API</a
+    >
   </li>
 </ul>

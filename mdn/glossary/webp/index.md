@@ -2,9 +2,8 @@
 
 **WebP** is a lossless and lossy compression image format developed by Google.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [WebP](https://en.wikipedia.org/wiki/WebP) on Wikipedia
+- [WebP](https://en.wikipedia.org/wiki/WebP) on Wikipedia

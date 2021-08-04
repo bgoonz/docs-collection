@@ -1,7 +1,6 @@
 The last topic that we’ll cover in this tutorial is pagination. You’ll implement a simple pagination approach so that users can view the links in smaller chunks rather than having an incredibly long list of `Link` elements.
 
-Preparing the Angular Components
---------------------------------
+## Preparing the Angular Components
 
 Once more, you first need to prepare the Angular components for this new functionality. In fact, we’ll slightly adjust the current routing setup. Here’s the idea: The `LinkListComponent` will be used for two different use cases (and routes). The first one is to display the 10 top voted links. Its second use case is to present new links in a list separated into multiple pages that the user can navigate through.
 
@@ -105,7 +104,7 @@ Open `src/app/graphql.ts` and add three arguments to the `AllLinksQuery` by repl
       loading: boolean;
     }
 
-The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the *offset* where the query will start. If you passed a value of, e.g. `10` to this argument, it means that the first 10 items of the list will not be included in the response. `first` then defines the *limit*, or *how many* elements; you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
+The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the _offset_ where the query will start. If you passed a value of, e.g. `10` to this argument, it means that the first 10 items of the list will not be included in the response. `first` then defines the _limit_, or _how many_ elements; you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
 
 You need to update the references to this query in the `CreateLink` component.
 
@@ -321,7 +320,7 @@ Still in `src/app/link-list/link-list.component.ts` add `count` property and ini
 
       count = 0;
 
-Next, you’ll implement the functionality for the *Previous*- and *Next*-buttons.
+Next, you’ll implement the functionality for the _Previous_- and _Next_-buttons.
 
 In `src/app/link-list/link-list.component.ts`, add the following two methods that will be called when the buttons are pressed:
 

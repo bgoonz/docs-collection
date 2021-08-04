@@ -1,7 +1,6 @@
 One of the most common layers in a web applications is the authentication layer. Our app is no exception. For authentication, we are going to use JWT tokens as the way to authenticate users. Let’s see how it works.
 
-JWT <span id="jwt"></span>
---------------------------
+## JWT <span id="jwt"></span>
 
 [JWT](https://jwt.io/) or Json Web Token is a string containing a hash that helps us authenticate users. Every token is constructed of 3 parts, like `xxxxx.yyyyy.zzzzz`. These three parts are: Header, Payload, and Signature. We won’t go into these three parts, because this is more about JWT and less about our application. You can read more about this [here](https://jwt.io/introduction/). Whenever a user logs in into our application, the server generates a token. Usually, the server includes information, like the username, in the token to be able to recognize the user later on. These tokens get signed by a secret key, so only the issuer (our application) can read the contents of the token. We are going to implement this behavior in our application.
 
@@ -61,8 +60,7 @@ There is a concept called “claims”. We’ll see more about it in rest of the
 
 Let’s talk about what the code above does: \* GenerateToken function will be used whenever we want to generate a token for a user. We save username in the token claims and set the token expiration time to 24 Hours later. \* ParseToken function will be used whenever we receive a token and want to know who sent the request.
 
-User SignUp and Login Functionality <span id="user-signup-and-login-functionality"></span>
-------------------------------------------------------------------------------------------
+## User SignUp and Login Functionality <span id="user-signup-and-login-functionality"></span>
 
 Now we can generate a token for each user. Before generating a token for every user, we need to make sure the user exists in our database. To do this, we just need to query the database to match the user with the given username and password. When a user tries to register we need to insert the username and password in our database.
 
@@ -113,8 +111,7 @@ The Create function is much like the CreateLink function we saw earlier. Let’s
 
 In the next part, we gather the tools we have to detect which user is using the app.
 
-Authentication Middleware <span id="authentication-middleware"></span>
-----------------------------------------------------------------------
+## Authentication Middleware <span id="authentication-middleware"></span>
 
 Every time a request comes to our resolver, we need to know which user is sending the request. To accomplish this, we have to write middleware that’s executed before the request reaches the resolver. This middleware resolves the user from the incoming request and passes this on to the resolver.
 

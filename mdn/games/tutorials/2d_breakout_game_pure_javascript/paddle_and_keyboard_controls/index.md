@@ -1,4 +1,4 @@
---- title: Paddle and keyboard controls slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Paddle\_and\_keyboard\_controls tags: - Beginner - Canvas - Controls - Games - Graphics - JavaScript - Tutorial - keyboard ---
+--- title: Paddle and keyboard controls slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Paddle_and_keyboard_controls tags: - Beginner - Canvas - Controls - Games - Graphics - JavaScript - Tutorial - keyboard ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **4th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">The ball is bouncing off the walls freely and you can watch it indefinitely, but currently there's no interactivity. It's not a game if you cannot control it! So let's add some user interaction: a controllable paddle.</span>
 
-Defining a paddle to hit the ball
----------------------------------
+## Defining a paddle to hit the ball
 
 So, we need a paddle to hit the ball. Let's define a few variables for that. Add the following variables near the top of your code, beside your other variables:
 
@@ -27,15 +26,14 @@ Here we're defining the height and width of the paddle and its starting point o
         ctx.closePath();
     }
 
-Allowing the user to control the paddle
----------------------------------------
+## Allowing the user to control the paddle
 
 We can draw the paddle wherever we want, but it should respond to the user's actions. It's time to implement some keyboard controls. We will need the following:
 
--   Two variables for storing information on whether the left or right control button is pressed.
--   Two event listeners for `keydown` and `keyup` events. We want to run some code to handle the paddle movement when the buttons are pressed.
--   Two functions handling the `keydown` and `keyup` events  the code that will be run when the buttons are pressed.
--   The ability to move the paddle left and right
+- Two variables for storing information on whether the left or right control button is pressed.
+- Two event listeners for `keydown` and `keyup` events. We want to run some code to handle the paddle movement when the buttons are pressed.
+- Two functions handling the `keydown` and `keyup` events  the code that will be run when the buttons are pressed.
+- The ability to move the paddle left and right
 
 Pressed buttons can be defined and initialized with boolean variables like in the example. Add these lines somewhere near the rest of your variables:
 
@@ -105,8 +103,7 @@ The only thing left to do now is call the `drawPaddle()` function from within th
 
     drawPaddle();
 
-Compare your code
------------------
+## Compare your code
 
 Here's the working code for you to compare yours against:
 
@@ -114,8 +111,7 @@ Here's the working code for you to compare yours against:
 
 **Exercise**: Make the paddle move faster or slower, or change its size.
 
-Next steps
-----------
+## Next steps
 
 Now we have something resembling a game. The only trouble now is that you can just continue hitting the ball with the paddle forever. This will all change in the fifth chapter, [Game over](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Game_over), when we start to add in an endgame state for our game.
 

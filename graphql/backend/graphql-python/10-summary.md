@@ -4,10 +4,10 @@ Implementing a Hackernews clone, you were able to go from a simple query to crea
 
 If you want to go deeper into GraphQL, here are some must click links:
 
--   [Learn GraphQL](http://graphql.org/learn/) - learn about GraphQL, how it works, and how to use it.
--   [GraphQL Weekly](https://graphqlweekly.com/) - sign up for an amazing weekly email about GraphQL.
--   [Lessons from 4 Years of GraphQL](https://www.youtube.com/watch?v=zVNrqo9XGOs) - how GraphQL has evolved inside Facebook.
--   [GraphQL Relay Specification](https://relay.dev/docs/guides/graphql-server-specification/) - title self descriptive.
+- [Learn GraphQL](http://graphql.org/learn/) - learn about GraphQL, how it works, and how to use it.
+- [GraphQL Weekly](https://graphqlweekly.com/) - sign up for an amazing weekly email about GraphQL.
+- [Lessons from 4 Years of GraphQL](https://www.youtube.com/watch?v=zVNrqo9XGOs) - how GraphQL has evolved inside Facebook.
+- [GraphQL Relay Specification](https://relay.dev/docs/guides/graphql-server-specification/) - title self descriptive.
 
 Any feedback, please drop me a [tweet](https://twitter.com/jonatasbaldin).
 

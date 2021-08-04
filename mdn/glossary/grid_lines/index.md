@@ -1,4 +1,4 @@
---- title: Grid Lines slug: Glossary/Grid\_Lines tags: - CSS Grids ---
+--- title: Grid Lines slug: Glossary/Grid_Lines tags: - CSS Grids ---
 
 **Grid lines** are created when you define {{glossary("Grid tracks", "tracks")}} in the explicit grid using [CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout). In the following example there is a grid with three column tracks and two row tracks. This gives us 4 column lines and 3 row lines.
 
@@ -41,10 +41,9 @@ Lines can be addressed using their line number. In a left-to-right language such
 
 ![Diagram showing the grid with lines numbered.](1_diagram_numbered_grid_lines.png)
 
-Lines are also created in the *implicit grid* when implicit tracks are created to hold content positioned outside of the *explicit grid*, however these lines cannot be addressed by a number.
+Lines are also created in the _implicit grid_ when implicit tracks are created to hold content positioned outside of the _explicit grid_, however these lines cannot be addressed by a number.
 
-Placing items onto the grid by line number
-------------------------------------------
+## Placing items onto the grid by line number
 
 Having created a grid, you can place items onto the grid by line number. In the following example the item is positioned from column line 1 to column line 3, and from row line 1 to row line 3.
 
@@ -85,10 +84,9 @@ Having created a grid, you can place items onto the grid by line number. In the 
 
 {{ EmbedLiveSample('example\_2', '500', '250') }}
 
-Naming lines
-------------
+## Naming lines
 
-The lines created in the *explicit grid* can be named, by adding the name in square brackets before or after the track sizing information. When placing an item, you can then use these names instead of the line number, as demonstrated below.
+The lines created in the _explicit grid_ can be named, by adding the name in square brackets before or after the track sizing information. When placing an item, you can then use these names instead of the line number, as demonstrated below.
 
     * {box-sizing: border-box;}
 
@@ -127,24 +125,23 @@ The lines created in the *explicit grid* can be named, by adding the name in squ
 
 {{ EmbedLiveSample('example\_3', '500', '250') }}
 
-Learn more
-----------
+## Learn more
 
 ### Property reference
 
--   {{cssxref("grid-template-columns")}}
--   {{cssxref("grid-template-rows")}}
--   {{cssxref("grid-column-start")}}
--   {{cssxref("grid-column-end")}}
--   {{cssxref("grid-column")}}
--   {{cssxref("grid-row-start")}}
--   {{cssxref("grid-row-end")}}
--   {{cssxref("grid-row")}}
+- {{cssxref("grid-template-columns")}}
+- {{cssxref("grid-template-rows")}}
+- {{cssxref("grid-column-start")}}
+- {{cssxref("grid-column-end")}}
+- {{cssxref("grid-column")}}
+- {{cssxref("grid-row-start")}}
+- {{cssxref("grid-row-end")}}
+- {{cssxref("grid-row")}}
 
 ### Further reading
 
--   CSS Grid Layout Guide: *[Basic concepts of grid layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)*
--   CSS Grid Layout Guide: *[Line-based placement with CSS Grid](/en-US/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid)*
--   CSS Grid Layout Guide: *[Layout using named grid lines](/en-US/docs/Web/CSS/CSS_Grid_Layout/Layout_using_Named_Grid_Lines)*
--   CSS Grid Layout Guide: *[CSS Grids, Logical Values and Writing Modes](/en-US/docs/Web/CSS/CSS_Grid_Layout/CSS_Grid_Logical_Values_and_Writing_Modes)*
--   [Definition of Grid Lines in the CSS Grid Layout specification](https://drafts.csswg.org/css-grid/#grid-line-concept)
+- CSS Grid Layout Guide: _[Basic concepts of grid layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)_
+- CSS Grid Layout Guide: _[Line-based placement with CSS Grid](/en-US/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid)_
+- CSS Grid Layout Guide: _[Layout using named grid lines](/en-US/docs/Web/CSS/CSS_Grid_Layout/Layout_using_Named_Grid_Lines)_
+- CSS Grid Layout Guide: _[CSS Grids, Logical Values and Writing Modes](/en-US/docs/Web/CSS/CSS_Grid_Layout/CSS_Grid_Logical_Values_and_Writing_Modes)_
+- [Definition of Grid Lines in the CSS Grid Layout specification](https://drafts.csswg.org/css-grid/#grid-line-concept)

@@ -11,19 +11,35 @@ tags:
   - WebExtensions
 browser-compat: webextensions.api.search.search
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p>Perform a search using the search engine specified, or the default search engine if no search engine is specified.</p>
+<p>
+  Perform a search using the search engine specified, or the default search
+  engine if no search engine is specified.
+</p>
 
-<p>The results will be displayed in a new tab, or if the <code>tabId</code> argument is given, in the tab identified by this.</p>
+<p>
+  The results will be displayed in a new tab, or if the
+  <code>tabId</code> argument is given, in the tab identified by this.
+</p>
 
-<p>To use this function in your extension you must ask for the <code>"search"</code> <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions">manifest permission</a>.</p>
+<p>
+  To use this function in your extension you must ask for the
+  <code>"search"</code>
+  <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions"
+    >manifest permission</a
+  >.
+</p>
 
-<p>To get the installed search engines, use {{WebExtAPIRef("search.get()")}}.</p>
+<p>
+  To get the installed search engines, use {{WebExtAPIRef("search.get()")}}.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:js">browser.search.search(
+<pre class="brush:js">
+browser.search.search(
   searchProperties       // object
 )
 </pre>
@@ -31,23 +47,31 @@ browser-compat: webextensions.api.search.search
 <h3 id="Parameters">Parameters</h3>
 
 <dl class="reference-values">
- <dt><code>searchProperties</code></dt>
- <dd>
- <p><code>object</code>. An object with the following properties:</p>
+  <dt><code>searchProperties</code></dt>
+  <dd>
+    <p><code>object</code>. An object with the following properties:</p>
 
- <dl class="reference-values">
-  <dt><code>query</code></dt>
-  <dd><code>string</code>. The search query.</dd>
-  <dt><code>engine</code>{{optional_inline}}</dt>
-  <dd>
-  <p><code>string</code>. The name of the search engine. If the search engine name you specify doesn't exist, the function throws an error. If this property is omitted the default search engine will be used.</p>
+    <dl class="reference-values">
+      <dt><code>query</code></dt>
+      <dd><code>string</code>. The search query.</dd>
+      <dt><code>engine</code>{{optional_inline}}</dt>
+      <dd>
+        <p>
+          <code>string</code>. The name of the search engine. If the search
+          engine name you specify doesn't exist, the function throws an error.
+          If this property is omitted the default search engine will be used.
+        </p>
+      </dd>
+      <dt><code>tabId</code>{{optional_inline}}</dt>
+      <dd>
+        <p>
+          <code>integer</code>. An optional identifier for the tab you want to
+          execute the search in. If this property is omitted the search results
+          will be displayed in a new tab.
+        </p>
+      </dd>
+    </dl>
   </dd>
-  <dt><code>tabId</code>{{optional_inline}}</dt>
-  <dd>
-  <p><code>integer</code>. An optional identifier for the tab you want to execute the search in. If this property is omitted the search results will be displayed in a new tab.</p>
-  </dd>
- </dl>
- </dd>
 </dl>
 
 <h3 id="Return_value">Return value</h3>
@@ -60,9 +84,13 @@ browser-compat: webextensions.api.search.search
 
 <h2 id="Examples">Examples</h2>
 
-<p>Search using the default search engine. The results will be shown in a new tab:</p>
+<p>
+  Search using the default search engine. The results will be shown in a new
+  tab:
+</p>
 
-<pre class="brush: js no-line-numbers">function search() {
+<pre class="brush: js no-line-numbers">
+function search() {
   browser.search.search({
     query: "styracosaurus"
   });
@@ -73,7 +101,8 @@ browser.browserAction.onClicked.addListener(search);
 
 <p>Search using Wikipedia. The results will be shown in a new tab:</p>
 
-<pre class="brush: js no-line-numbers">function search() {
+<pre class="brush: js no-line-numbers">
+function search() {
   browser.search.search({
     query: "styracosaurus",
     engine: "Wikipedia (en)"
@@ -85,7 +114,8 @@ browser.browserAction.onClicked.addListener(search);
 
 <p>Search using Wikipedia. The results will be shown in the active tab:</p>
 
-<pre class="brush: js no-line-numbers">function search(tab) {
+<pre class="brush: js no-line-numbers">
+function search(tab) {
   browser.search.search({
     query: "styracosaurus",
     engine: "Wikipedia (en)",

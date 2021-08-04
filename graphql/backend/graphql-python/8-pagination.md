@@ -1,6 +1,6 @@
 Imagine that your Hackernews has thousands of created links – that would be awesome for you – but the clients making the request wouldn’t be happy. Retrieving too much data on a single request is unpractical and may even break your app. Pagination exists to solve this problem, allowing the client to specify how many items it wants.
 
-The simple way defined in the GraphQL [pagination](http://graphql.org/learn/pagination/) documentation is to slice the results using two parameters: `first`, which returns the first *n* items and `skip`, which skips the first *n* items.
+The simple way defined in the GraphQL [pagination](http://graphql.org/learn/pagination/) documentation is to slice the results using two parameters: `first`, which returns the first _n_ items and `skip`, which skips the first _n_ items.
 
 Let’s implement it in the links query.
 

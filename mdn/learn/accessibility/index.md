@@ -4,14 +4,13 @@
 
 Learning some HTML, CSS, and JavaScript is useful if you want to become a web developer. Beyond mechanical use, it's important to learn how to use these technologies **responsibly** so that all readers might use your creations on the web. To help you achieve this, this module will cover general best practices (which are demonstrated throughout the [HTML](/en-US/docs/Learn/HTML), [CSS](/en-US/docs/Learn/CSS), and [JavaScript](/en-US/docs/Learn/JavaScript) topics), [cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing), and some tips on enforcing accessibility from the start. We'll cover accessibility in special detail.
 
-Overview
---------
+## Overview
 
 When someone describes a site as "accessible," they mean that any user can use all its features and content, regardless of how the user accesses the web — even and especially users with physical or mental impairments.
 
--   Sites should be accessible to keyboard, mouse, and touch screen users, and any other way users access the web, including screen readers and voice assistants like Alexa and Google Home.
--   Applications should be understandable and usable by people regardless of auditory, visual, physical, or cognitive abilities.
--   Sites should also not cause harm: web features like motion can cause migraines or epileptic seizures.
+- Sites should be accessible to keyboard, mouse, and touch screen users, and any other way users access the web, including screen readers and voice assistants like Alexa and Google Home.
+- Applications should be understandable and usable by people regardless of auditory, visual, physical, or cognitive abilities.
+- Sites should also not cause harm: web features like motion can cause migraines or epileptic seizures.
 
 **By default, HTML is accessible, if used correctly.** Web accessibility involves ensuring that content remains accessible, regardless of who and how the web is accessed.
 
@@ -25,15 +24,13 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 To get the most out of this module, it would be a good idea to either work through at least the first two modules of the [HTML](/en-US/docs/Learn/HTML), [CSS](/en-US/docs/Learn/CSS), and [JavaScript](/en-US/docs/Learn/JavaScript) topics, or perhaps even better, work through the relevant parts of the accessibility module as you work through the related technology topics.
 
 **Note**: If you are working on a computer/tablet/other devices where you don't have the ability to create your own files, you can try out most of the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)  
 This article starts off the module with a good look at what accessibility is — this includes what groups of people we need to consider and why, what tools different people use to interact with the web, and how we can make accessibility part of our web development workflow.
@@ -53,16 +50,14 @@ Another category of content that can create accessibility problems is multimedia
 [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)  
 With web access on mobile devices being so popular, and popular platforms such as iOS and Android having fully-fledged accessibility tools, it is important to consider the accessibility of your web content on these platforms. This article looks at mobile-specific accessibility considerations.
 
-Assessments
------------
+## Assessments
 
 [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)  
 In the assessment for this module, we present to you a simple site with several accessibility issues that you need to diagnose and fix.
 
-See also
---------
+## See also
 
--   [Start Building Accessible Web Applications Today](https://egghead.io/courses/start-building-accessible-web-applications-today) — an excellent series of video tutorials by Marcy Sutton.
--   [Deque University resources](https://dequeuniversity.com/resources/) — includes code examples, screen reader references, and other useful resources.
--   [WebAIM resources](https://webaim.org/resources/) — includes guides, checklists, tools, and more.
--   [Web Accessibility Evaluation Tools List](https://www.w3.org/WAI/ER/tools/) — includes a list of web accessibility evaluation tools.
+- [Start Building Accessible Web Applications Today](https://egghead.io/courses/start-building-accessible-web-applications-today) — an excellent series of video tutorials by Marcy Sutton.
+- [Deque University resources](https://dequeuniversity.com/resources/) — includes code examples, screen reader references, and other useful resources.
+- [WebAIM resources](https://webaim.org/resources/) — includes guides, checklists, tools, and more.
+- [Web Accessibility Evaluation Tools List](https://www.w3.org/WAI/ER/tools/) — includes a list of web accessibility evaluation tools.

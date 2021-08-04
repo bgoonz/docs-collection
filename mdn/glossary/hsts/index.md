@@ -4,9 +4,8 @@
 
 In other words, it tells the browser that changing the protocol from HTTP to HTTPS in a URL  works (and is more secure) and asks the browser to do it for every request.
 
-Learn more
-----------
+## Learn more
 
--   {{HTTPHeader("Strict-Transport-Security")}}
--   OWASP Article: [HTTP Strict Transport Security](https://www.owasp.org/index.php/HTTP_Strict_Transport_Security)
--   Wikipedia: {{interwiki("wikipedia", "HTTP Strict Transport Security")}}
+- {{HTTPHeader("Strict-Transport-Security")}}
+- OWASP Article: [HTTP Strict Transport Security](https://www.owasp.org/index.php/HTTP_Strict_Transport_Security)
+- Wikipedia: {{interwiki("wikipedia", "HTTP Strict Transport Security")}}

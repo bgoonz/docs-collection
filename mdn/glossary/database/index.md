@@ -4,7 +4,7 @@
 
 In web development, most databases use the relational database management system (RDBMS) to organize data and programming in {{glossary("SQL")}}. Some databases, however, don't follow the former mechanism to organized data, which called NoSQL.
 
-Some famous server-side RDBMS are *MySQL*(or *MariaDB* which is a fork of it), *SQL Server*, and *Oracle Database*. On the other hand, some famous NoSQL examples are *MongoDB*, *Cassandra*, and *Redis*.
+Some famous server-side RDBMS are _MySQL_(or _MariaDB_ which is a fork of it), _SQL Server_, and _Oracle Database_. On the other hand, some famous NoSQL examples are _MongoDB_, _Cassandra_, and _Redis_.
 
 Browsers also have their own database system called {{glossary("IndexedDB")}}.
 

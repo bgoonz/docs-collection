@@ -1,4 +1,4 @@
---- title: Character encoding slug: Glossary/character\_encoding tags: - Composing - Glossary ---
+--- title: Character encoding slug: Glossary/character_encoding tags: - Composing - Glossary ---
 
 An encoding defines a mapping between bytes and text. A sequence of bytes allows for different textual interpretations. By specifying a particular encoding (such as UTF-8), we specify how the sequence of bytes is to be interpreted.
 
@@ -8,10 +8,9 @@ For example, in HTML we normally declare a character encoding of UTF-8, using th
 
 This ensures that you can use characters from just about any human language in your HTML document, and they will display reliably.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Character encoding on W3C](https://www.w3.org/International/articles/definitions-characters/)
--   {{Interwiki("wikipedia", "Character encoding")}} on Wikipedia
+- [Character encoding on W3C](https://www.w3.org/International/articles/definitions-characters/)
+- {{Interwiki("wikipedia", "Character encoding")}} on Wikipedia

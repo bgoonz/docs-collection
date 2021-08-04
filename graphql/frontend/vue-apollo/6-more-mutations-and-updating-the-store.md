@@ -236,7 +236,7 @@ Notice that in the first part of the method, you’re checking whether the curre
 
 You can now go ahead and test the implementation! Click the upvote button on a link. You’re not getting any UI feedback yet, but after refreshing the page you’ll see the added votes.
 
-There is still a flaw in the app. Since the `votes` on a `Link` don’t get updated right away, a `User` currently can submit an indefinite number of votes until the page is refreshed. Only then will the protection mechanism be applied and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: *User (cj42qfzwnugfo01955uasit8l) already voted for this link.*
+There is still a flaw in the app. Since the `votes` on a `Link` don’t get updated right away, a `User` currently can submit an indefinite number of votes until the page is refreshed. Only then will the protection mechanism be applied and instead of an upvote, the click on the voting button will simply result in the following logging statement in the console: _User (cj42qfzwnugfo01955uasit8l) already voted for this link._
 
 But at least you know that the mutation is working. In the next section, you’ll fix the issue and make sure that the cache gets updated directly after each mutation!
 
@@ -261,7 +261,7 @@ Open `src/components/LinkItem.vue` and update the call to `CREATE_VOTE_MUTATION`
 
 The `update` function that you’re adding as an argument to the mutation will be called when the server returns the response. It receives the payload of the mutation (`data`) and the current cache (`store`) as arguments. You can then use this input to determine a new state for the cache.
 
-Notice that you’re already *destructuring* the server response and retrieving the `createVote` field from it.
+Notice that you’re already _destructuring_ the server response and retrieving the `createVote` field from it.
 
 All right, so now you know what this `update` function is, next you will need to implement the `updateStoreAfterVote` method.
 

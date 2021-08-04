@@ -1,8 +1,8 @@
 GraphQL promises a clear and concise way to:
 
--   describe and manipulate data
--   fetch exactly and only the data that is required
--   receive a predictable result.
+- describe and manipulate data
+- fetch exactly and only the data that is required
+- receive a predictable result.
 
 Throughout the tutorials, you have learned how to can take advantage of these strengths in your own project, but many areas are still left to you to explore on your own. How to deal with dynamic data structures? How to protect against malicious queries? The always hard topic of caching, etc. Hopefully what you learned on this site makes a good basis to find further answers yourself.
 

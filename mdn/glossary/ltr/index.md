@@ -4,20 +4,19 @@
 
 The opposite of LTR, {{Glossary("RTL")}} (Right To Left) is used in other common languages, including Arabic (`ar`) and Hebrew (`he`).
 
-Technical reference
--------------------
+## Technical reference
 
--   [Localization and internationalization](/en-US/docs/Web/Localization)
+- [Localization and internationalization](/en-US/docs/Web/Localization)
 
--   [MDN Web Docs Glossary](/en-US/docs/Glossary)
-    -   {{Glossary("locale")}}
-    -   {{Glossary("LTR")}}
-    -   {{Glossary("RTL")}}
--   [HTML global attributes](/en-US/docs/Web/HTML/Global_attributes)
-    -   {{htmlattrxref("dir")}}
-    -   {{htmlattrxref("lang")}}
--   [CSS](/en-US/docs/Web/CSS)
-    -   {{cssxref(":dir")}}
-    -   {{cssxref("direction")}}
-    -   {{cssxref("unicode-bidi")}}
-    -   {{cssxref("writing-mode")}}
+- [MDN Web Docs Glossary](/en-US/docs/Glossary)
+  - {{Glossary("locale")}}
+  - {{Glossary("LTR")}}
+  - {{Glossary("RTL")}}
+- [HTML global attributes](/en-US/docs/Web/HTML/Global_attributes)
+  - {{htmlattrxref("dir")}}
+  - {{htmlattrxref("lang")}}
+- [CSS](/en-US/docs/Web/CSS)
+  - {{cssxref(":dir")}}
+  - {{cssxref("direction")}}
+  - {{cssxref("unicode-bidi")}}
+  - {{cssxref("writing-mode")}}

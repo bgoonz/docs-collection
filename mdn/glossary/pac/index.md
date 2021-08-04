@@ -8,15 +8,14 @@ A Proxy Auto-Configuration file (**PAC file**) is a file which contains a funct
 
     ret = FindProxyForURL(url, host)
 
-See [Proxy Auto-Configuration (PAC) file](/en-US/docs/Mozilla/Projects/Necko/Proxy_Auto-Configuration_(PAC)_file) for details about how these are used and how to create new ones.
+See [Proxy Auto-Configuration (PAC) file](</en-US/docs/Mozilla/Projects/Necko/Proxy_Auto-Configuration_(PAC)_file>) for details about how these are used and how to create new ones.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [PAC](https://en.wikipedia.org/wiki/Proxy_auto-config "Read about PAC files on Wikipedia") on Wikipedia
+- [PAC](https://en.wikipedia.org/wiki/Proxy_auto-config "Read about PAC files on Wikipedia") on Wikipedia
 
 ### Technical reference
 
--   [Proxy Auto-Configuration file](/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file) on MDN
+- [Proxy Auto-Configuration file](/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file) on MDN

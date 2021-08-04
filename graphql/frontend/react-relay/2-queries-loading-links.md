@@ -15,9 +15,9 @@ Create a new file called `Link.js` in the `components` directory and add the fol
           </div>
         )
       }
-      
+
       _voteForLink = async () => {
-        // ... you'll implement this in chapter 6  
+        // ... you'll implement this in chapter 6
       }
 
     }
@@ -91,9 +91,9 @@ But before you go and make the required changes, a bit of theory!
 
 #### Colocation and GraphQL Fragments
 
-One of the most powerful concepts of Relay is called *colocation*. This means that a React component declares its data dependencies right next to (i.e. in the same file) where it’s defined. This happens in the form of [GraphQL fragments](http://graphql.org/learn/queries/#fragments).
+One of the most powerful concepts of Relay is called _colocation_. This means that a React component declares its data dependencies right next to (i.e. in the same file) where it’s defined. This happens in the form of [GraphQL fragments](http://graphql.org/learn/queries/#fragments).
 
-This effectively means that you’ll never write any actual GraphQL queries yourself. This is unlike the approach that’s taken in Apollo, where you’re also able to colocate data dependencies and React components - but are most commonly doing so by writing actual *queries* instead of *fragments*.
+This effectively means that you’ll never write any actual GraphQL queries yourself. This is unlike the approach that’s taken in Apollo, where you’re also able to colocate data dependencies and React components - but are most commonly doing so by writing actual _queries_ instead of _fragments_.
 
 But if you’re never writing any queries in Relay, how can the GraphQL server respond with sensible data?
 
@@ -135,7 +135,7 @@ Here’s where it gets interesting! Let’s examine this part step-by-step:
 
 You’re using the `createFragmentContainer` higher-order component and pass in two arguments - exactly as we said before. The first argument is simply the React component, here that’s the `Link`. The second argument are its data requirements in the form of a GraphQL fragment tagged with the `graphql` function. The `Link` component needs access to the `description` and `url` of a link item. The `id` is required so that Relay can uniquely identify the link items when storing and retrieving them in the cache.
 
-One important note here is that there is a [*naming convention*](https://facebook.github.io/relay/docs/fragment-container.html#data-dependencies-with-graphql) for the fragments you’re creating! Each fragment should be named according to the *file* and the *prop* that will get injected into the component: `<FileName>_<propName>`
+One important note here is that there is a [_naming convention_](https://facebook.github.io/relay/docs/fragment-container.html#data-dependencies-with-graphql) for the fragments you’re creating! Each fragment should be named according to the _file_ and the _prop_ that will get injected into the component: `<FileName>_<propName>`
 
 In your case, the file is called `Link.js` and the prop in the component should be called `link`. So you end up with `Link_link` for the name of the fragment.
 
@@ -164,7 +164,7 @@ Then replace the `export default LinkList` with the following:
 
 Similar to the `Link` component, you’re passing the `LinkList` component along with its data requirements into `createFragmentContainer`. The `LinkList` needs access to a list of links - here you’re simply asking for the last 100 links to display. In the last chapter of this tutorial, you’ll implement a proper [pagination](https://facebook.github.io/relay/docs/pagination-container.html) approach.
 
-> Note: In Relay, *lists* are represented with the concept of [*connections*](https://facebook.github.io/relay/docs/graphql-connections.html). This facilitates the implementation of a [cursor-based pagination](https://facebook.github.io/relay/graphql/connections.htm) approach on the client. Relay also requires you to always specify a *limit* of items that you want to fetch from the server, so you have to pass the `first` or `last` argument when fetching items from a connection.
+> Note: In Relay, _lists_ are represented with the concept of [_connections_](https://facebook.github.io/relay/docs/graphql-connections.html). This facilitates the implementation of a [cursor-based pagination](https://facebook.github.io/relay/graphql/connections.htm) approach on the client. Relay also requires you to always specify a _limit_ of items that you want to fetch from the server, so you have to pass the `first` or `last` argument when fetching items from a connection.
 
 Notice that you’re again following the same naming convention and name the fragment `LinkList_viewer`. `LinkList.js` is the name of the file and `viewer` is the prop that you expect in the component.
 
@@ -194,7 +194,7 @@ Meet the [`QueryRenderer`](https://facebook.github.io/relay/docs/query-renderer.
 
 > `QueryRenderer` is the root of a Relay tree. It takes a query, fetches the data and calls the `render` callback with the data.
 
-So, here is where it all adds up. React components are wrapped with GraphQL fragments to become Relay containers. When doing so, they retain the same hierarchical structure as the pure React components and form a *tree*. At the root of that tree there’s the `QueryRenderer`, which also is a higher-order component that will take care of composing the actual query.
+So, here is where it all adds up. React components are wrapped with GraphQL fragments to become Relay containers. When doing so, they retain the same hierarchical structure as the pure React components and form a _tree_. At the root of that tree there’s the `QueryRenderer`, which also is a higher-order component that will take care of composing the actual query.
 
 So, go and add the `QueryRenderer` in a new component!
 
@@ -212,7 +212,7 @@ A `QueryRenderer` needs at least three things when being instantiated:
 
 1.  A Relay `environment` which is why you’re importing it here.
 2.  A root `query` which will be the basis for the query that gets sent to the server.
-3.  A `render` function that specifies what should be rendered in *loading*, *error* and *success* cases.
+3.  A `render` function that specifies what should be rendered in _loading_, _error_ and _success_ cases.
 
 You’ll write the root `query` first.
 
@@ -280,7 +280,7 @@ If you’re just running the app now, you’ll be disappointed that it throws so
     ./src/components/LinkListPage.js
     Module not found: Can't resolve './__generated__/LinkListPageQuery.graphql' in '.../hackernews-react-relay/src/components'
 
-That’s because we’ve skipped the *compilation* of the GraphQL code that makes for much of Relay’s actual power! You already installed the `relay-compiler` as a dev dependency, this allows you to add it as a script to `package.json` as explained [here](https://facebook.github.io/relay/docs/en/installation-and-setup.html#set-up-relay-compiler). However, to keep things a bit more simple in this tutorial you’ll just install it globally for now (feel free to choose the other setup described in the Relay docs).
+That’s because we’ve skipped the _compilation_ of the GraphQL code that makes for much of Relay’s actual power! You already installed the `relay-compiler` as a dev dependency, this allows you to add it as a script to `package.json` as explained [here](https://facebook.github.io/relay/docs/en/installation-and-setup.html#set-up-relay-compiler). However, to keep things a bit more simple in this tutorial you’ll just install it globally for now (feel free to choose the other setup described in the Relay docs).
 
 In your terminal, install the `relay-compiler` globally with the following command:
 
@@ -338,7 +338,7 @@ You’ll also notice that the `__generated__` directory was now created and cont
 
 That’s it, you can now run the app and you’ll see the same links that you initially added with the two mutations in the Playground rendered in the app!
 
-By the way, if you’re curious to see what the actual query looked like that the `QueryRenderer` composed for you and that was sent over to the server, you can inspect the *Networking*-tab of your browser’s dev tools:
+By the way, if you’re curious to see what the actual query looked like that the `QueryRenderer` composed for you and that was sent over to the server, you can inspect the _Networking_-tab of your browser’s dev tools:
 
 ![The query in QueryRenderer](http://imgur.com/222Prig.png)
 

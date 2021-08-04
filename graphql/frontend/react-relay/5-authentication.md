@@ -146,7 +146,7 @@ Open `Header.js` and update `render` to look as follows:
       )
     }
 
-You first retrieve the `userId` from local storage. If the `userId` is not available, the *submit*-button won’t be rendered any more. That way you make sure only authenticated users can create new links.
+You first retrieve the `userId` from local storage. If the `userId` is not available, the _submit_-button won’t be rendered any more. That way you make sure only authenticated users can create new links.
 
 You’re also adding a second button to the right of the `Header` that users can use to login and logout.
 
@@ -168,13 +168,13 @@ In the directory where `project.graphcool` is located, type the following into t
 
 This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.
 
-Select the *Integrations*-tab in the left side-menu and then click on the *Email-Password-Auth*-integration.
+Select the _Integrations_-tab in the left side-menu and then click on the _Email-Password-Auth_-integration.
 
 ![The email-password-auth integration](http://imgur.com/FkyzuuM.png)
 
 This will open the popup that allows you to enable the Graphcool’s email-based authentication mechanism.
 
-In the popup, simply click *Enable*.
+In the popup, simply click _Enable_.
 
 ![Click enable in the popup](http://imgur.com/HNdmas3.png)
 
@@ -245,13 +245,13 @@ Create a new file in `src/mutations` and call it `CreateUserMutation.js`. Then c
 
 Let’s quickly understand what’s going in the code that you just added.
 
-You’re again defining a `mutation` by using the `graphql` function. The template string that you’re tagging with `graphql` actually contains *two* mutations at once!
+You’re again defining a `mutation` by using the `graphql` function. The template string that you’re tagging with `graphql` actually contains _two_ mutations at once!
 
-The first mutation is used to *create* a new `User`. It takes the `SignupUserInput` as an argument, which is essentially a wrapper object for the user’s `name`, `email` and `password`.
+The first mutation is used to _create_ a new `User`. It takes the `SignupUserInput` as an argument, which is essentially a wrapper object for the user’s `name`, `email` and `password`.
 
-The second mutation is used to *log in* the user and will return a `token` that you can attach to all subsequent requests and thus authenticate the user against the API.
+The second mutation is used to _log in_ the user and will return a `token` that you can attach to all subsequent requests and thus authenticate the user against the API.
 
-When these two mutations are sent to the server, it will execute them *synchronously* from *top to bottom*. This means that the server will first *create* the user and then directly *log them in* so that you don’t have to send an additional request to obtain the user’s authentication token. Neat!
+When these two mutations are sent to the server, it will execute them _synchronously_ from _top to bottom_. This means that the server will first _create_ the user and then directly _log them in_ so that you don’t have to send an additional request to obtain the user’s authentication token. Neat!
 
 To send the mutation, you need to use the `commitMutation` function again and pass it the `mutation`, the `environment` and the right user input.
 
@@ -259,7 +259,7 @@ Still in `CreateUserMutation.js`, add the following snippet below the code you j
 
     export default (name, email, password, callback) => {
       const variables = {
-        // 1 
+        // 1
         createUserInput: {
           name,
           authProvider: {
@@ -389,7 +389,7 @@ In a terminal, navigate to the project’s root directory and execute the follow
 
     relay-compiler --src ./src --schema ./schema.graphql
 
-You can now create an account by providing a `name`, `email` and `password`. Once you did that, the *submit*-button will be rendered again:
+You can now create an account by providing a `name`, `email` and `password`. Once you did that, the _submit_-button will be rendered again:
 
 ![Creating an account by providing name, email, and password](http://imgur.com/WoWLmDJ.png)
 
@@ -457,7 +457,7 @@ Add the following import statement to the top of `CreateLink.js`.
 
 Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from `localStorage`. If that succeeds, you’ll pass it to the call to `createLinkMutation` so that every new `Link` will from now on store information about the `User` who created it.
 
-If you haven’t done so before, go ahead and test the login functionality. Run `yarn start` and open `http://localhost:3000/login`. Then click the *need to create an account?*-button and provide some user data for the user you’re creating. Finally, click the *create Account*-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
+If you haven’t done so before, go ahead and test the login functionality. Run `yarn start` and open `http://localhost:3000/login`. Then click the _need to create an account?_-button and provide some user data for the user you’re creating. Finally, click the _create Account_-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
 
 ### Configuring Relay with the Auth Token
 

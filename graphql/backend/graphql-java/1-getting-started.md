@@ -18,8 +18,8 @@ It is important to note that the resolver functions are an integral part of the 
 
 The schema can be defined in two ways:
 
--   programmatically - where type definitions are assembled manually in code
--   using the [Schema Definition Language](http://graphql.org/learn/schema/#type-language) (SDL) - where the schema is generated from a textual language-independent description you’ve seen in the previous chapters with the resolver functions then wired dynamically
+- programmatically - where type definitions are assembled manually in code
+- using the [Schema Definition Language](http://graphql.org/learn/schema/#type-language) (SDL) - where the schema is generated from a textual language-independent description you’ve seen in the previous chapters with the resolver functions then wired dynamically
 
 Both approaches have merit, and come down to a matter of preference. The former collocates the fields and their associated resolves, while the latter makes a clear cut between data and behavior. We’ll use SDL for the most part of this track as it allows for succinct examples.
 
@@ -112,7 +112,7 @@ Add the following plugin configuration (just below the Jetty plugin) to set Java
 
 > You can run the app just by executing `mvn jetty:run` in the directory where `pom.xml` is located, and Jetty will start on port 8080.
 
-But opening it at this moment won’t bring you much joy, as the server still isn’t configured to *do* anything.
+But opening it at this moment won’t bring you much joy, as the server still isn’t configured to _do_ anything.
 
 To remedy this, start by creating a class called `GraphQLEndpoint`, this will be the servlet exposing the API. All classes in [the sample project](https://github.com/howtographql/graphql-java) are placed in the package called `com.howtographql.hackernews`, so you may wish to create such a package inside `src/main/java` at this moment. `GraphQLEndpoint` should look as follows:
 

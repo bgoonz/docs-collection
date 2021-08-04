@@ -1,4 +1,4 @@
---- title: Adobe Flash slug: Glossary/Adobe\_Flash tags: - Adobe - CodingScripting - Flash - Glossary - Infrastructure ---
+--- title: Adobe Flash slug: Glossary/Adobe_Flash tags: - Adobe - CodingScripting - Flash - Glossary - Infrastructure ---
 
 Flash is a deprecated technology developed by Adobe for viewing expressive web applications, multimedia content, and streaming media. Adobe Flash can run from supporting {{Glossary("Browser","web browsers")}} via a browser plug-in.
 

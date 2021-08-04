@@ -2,7 +2,7 @@
 
 It’s important to understand how the Django project structure works before moving on.
 
-In the last chapter, you created a *Django Project*, which holds everything related to your application. However, Django separates the project into *apps*. Think about apps as a [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns). You will have two apps, one for Users and one for the Links.
+In the last chapter, you created a _Django Project_, which holds everything related to your application. However, Django separates the project into _apps_. Think about apps as a [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns). You will have two apps, one for Users and one for the Links.
 
 Another essential decision is about the database. Django works out of the box with [SQLite](https://www.sqlite.org/) – a file based database – which you will use. On production systems, you should have a more robust database, such as [PostgreSQL](https://www.postgresql.org/).
 
@@ -42,7 +42,7 @@ Enter the Django shell with the command `python manage.py shell` and create some
 
 ### Creating your first Type and Schema
 
-In GraphQL, a *Type* is an object that may contain multiple *fields*. Each field is calculated through *resolvers*, that returns a value. A collection of types is called a *schema*. Every schema has a special type called *query* for getting data from the server and *mutation* for sending data to the server.
+In GraphQL, a _Type_ is an object that may contain multiple _fields_. Each field is calculated through _resolvers_, that returns a value. A collection of types is called a _schema_. Every schema has a special type called _query_ for getting data from the server and _mutation_ for sending data to the server.
 
 This is a simple overview of the concepts, but it should be enough to go through the tutorial. You can read more about it [here](http://graphql.org/learn/schema/).
 

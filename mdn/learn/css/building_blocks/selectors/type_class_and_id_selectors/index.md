@@ -1,4 +1,4 @@
---- title: 'Type, class, and ID selectors' slug: Learn/CSS/Building\_blocks/Selectors/Type\_Class\_and\_ID\_Selectors tags: - Beginner - CSS - Class - Learn - Selectors - id ---
+--- title: 'Type, class, and ID selectors' slug: Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors tags: - Beginner - CSS - Class - Learn - Selectors - id ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors", "Learn/CSS/Building\_blocks/Selectors/Attribute\_selectors", "Learn/CSS/Building\_blocks")}}
 
@@ -6,17 +6,15 @@ In this lesson, we examine some of the simplest selectors, which you will probab
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn about the different CSS selectors we can use to apply CSS to a document.</td></tr></tbody></table>
 
-Type selectors
---------------
+## Type selectors
 
-A **type selector** is sometimes referred to as a *tag name selector* or *element selector* because it selects an HTML tag/element in your document. In the example below, we have used the `span`, `em` and `strong` selectors.
+A **type selector** is sometimes referred to as a _tag name selector_ or _element selector_ because it selects an HTML tag/element in your document. In the example below, we have used the `span`, `em` and `strong` selectors.
 
 **Try adding a CSS rule to select the `<h1>` element and change its color to blue.**
 
 {{EmbedGHLiveSample("css-examples/learn/selectors/type.html", '100%', 1100)}}
 
-The universal selector
-----------------------
+## The universal selector
 
 The universal selector is indicated by an asterisk (`*`). It selects everything in the document (or inside the parent element if it is being chained together with another element and a descendant combinator). In the following example, we use the universal selector to remove the margins on all elements. Instead of the default styling added by the browser — which spaces out headings and paragraphs with margins — everything is close together.
 
@@ -26,7 +24,7 @@ This kind of behavior can sometimes be seen in "reset stylesheets", which strip 
 
 ### Using the universal selector to make your selectors easier to read
 
-One use of the universal selector is to make selectors easier to read and more obvious in terms of what they are doing. For example, if we wanted to select any descendant elements of an `<article>` element that are the first child of their parent, including direct children, and make them bold, we could use the {{cssxref(":first-child")}} pseudo-class. We will learn more about this in the lesson on [pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements), as a descendant selector along with the `<article>` element selector: 
+One use of the universal selector is to make selectors easier to read and more obvious in terms of what they are doing. For example, if we wanted to select any descendant elements of an `<article>` element that are the first child of their parent, including direct children, and make them bold, we could use the {{cssxref(":first-child")}} pseudo-class. We will learn more about this in the lesson on [pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements), as a descendant selector along with the `<article>` element selector:
 
     article :first-child {
       font-weight: bold;
@@ -34,16 +32,15 @@ One use of the universal selector is to make selectors easier to read and more o
 
 However, this selector could be confused with `article:first-child`, which will select any `<article>` element that is the first child of another element.
 
-To avoid this confusion, we can add the universal selector to the `:first-child` pseudo-class, so it is more obvious what the selector is doing. It is selecting *any* element which is the first-child of an `<article>` element, or the first-child of any descendant element of `<article>`:
+To avoid this confusion, we can add the universal selector to the `:first-child` pseudo-class, so it is more obvious what the selector is doing. It is selecting _any_ element which is the first-child of an `<article>` element, or the first-child of any descendant element of `<article>`:
 
     article *:first-child {
       font-weight: bold;
-    } 
+    }
 
 Although both do the same thing, the readability is significantly improved.
 
-Class selectors
----------------
+## Class selectors
 
 The class selector starts with a dot (`.`) character. It will select everything in the document with that class applied to it. In the live example below we have created a class called `highlight`, and have applied it to several places in my document. All of the elements that have the class applied are highlighted.
 
@@ -67,8 +64,7 @@ We can tell the browser that we only want to match the element if it has two cla
 
 {{EmbedGHLiveSample("css-examples/learn/selectors/class-many.html", '100%', 900)}}
 
-ID selectors
-------------
+## ID selectors
 
 An ID selector begins with a `#` rather than a dot character, but is used in the same way as a class selector. However, an ID can be used only once per page, and elements can only have a single `id` value applied to them. It can select an element that has the `id` set on it, and you can precede the ID with a type selector to only target the element if both the element and ID match. You can see both of these uses in the following example:
 
@@ -78,22 +74,20 @@ An ID selector begins with a `#` rather than a dot character, but is used in the
 
 **Note**: As we learned in the lesson on specificity, an ID has high specificity. It will overrule most other selectors. In most cases, it is preferable to add a class to an element instead of an ID. However, if using the ID is the only way to target the element — perhaps because you do not have access to the markup and cannot edit it — this will work.
 
-In the next article
--------------------
+## In the next article
 
 We'll continue exploring selectors by looking at [attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors).
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors", "Learn/CSS/Building\_blocks/Selectors/Attribute\_selectors", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

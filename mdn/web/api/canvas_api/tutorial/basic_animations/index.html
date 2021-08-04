@@ -9,59 +9,137 @@ tags:
   - Intermediate
   - Tutorial
 ---
-<div>{{CanvasSidebar}} {{PreviousNext("Web/API/Canvas_API/Tutorial/Compositing", "Web/API/Canvas_API/Tutorial/Advanced_animations")}}</div>
 
-<div class="summary">
-<p>Since we're using JavaScript to control {{HTMLElement("canvas")}} elements, it's also very easy to make (interactive) animations. In this chapter we will take a look at how to do some basic animations.</p>
+<div>
+  {{CanvasSidebar}} {{PreviousNext("Web/API/Canvas_API/Tutorial/Compositing",
+  "Web/API/Canvas_API/Tutorial/Advanced_animations")}}
 </div>
 
-<p>Probably the biggest limitation is, that once a shape gets drawn, it stays that way. If we need to move it we have to redraw it and everything that was drawn before it. It takes a lot of time to redraw complex frames and the performance depends highly on the speed of the computer it's running on.</p>
+<div class="summary">
+  <p>
+    Since we're using JavaScript to control {{HTMLElement("canvas")}} elements,
+    it's also very easy to make (interactive) animations. In this chapter we
+    will take a look at how to do some basic animations.
+  </p>
+</div>
+
+<p>
+  Probably the biggest limitation is, that once a shape gets drawn, it stays
+  that way. If we need to move it we have to redraw it and everything that was
+  drawn before it. It takes a lot of time to redraw complex frames and the
+  performance depends highly on the speed of the computer it's running on.
+</p>
 
 <h2 id="Basic_animation_steps">Basic animation steps</h2>
 
 <p>These are the steps you need to take to draw a frame:</p>
 
 <ol>
-	<li><strong>Clear the canvas</strong><br>
-	Unless the shapes you'll be drawing fill the complete canvas (for instance a backdrop image), you need to clear any shapes that have been drawn previously. The easiest way to do this is using the {{domxref("CanvasRenderingContext2D.clearRect", "clearRect()")}} method.</li>
-	<li><strong>Save the canvas state</strong><br>
-	If you're changing any setting (such as styles, transformations, etc.) which affect the canvas state and you want to make sure the original state is used each time a frame is drawn, you need to save that original state.</li>
-	<li><strong>Draw animated shapes</strong><br>
-	The step where you do the actual frame rendering.</li>
-	<li><strong>Restore the canvas state</strong><br>
-	If you've saved the state, restore it before drawing a new frame.</li>
+  <li>
+    <strong>Clear the canvas</strong><br />
+    Unless the shapes you'll be drawing fill the complete canvas (for instance a
+    backdrop image), you need to clear any shapes that have been drawn
+    previously. The easiest way to do this is using the
+    {{domxref("CanvasRenderingContext2D.clearRect", "clearRect()")}} method.
+  </li>
+  <li>
+    <strong>Save the canvas state</strong><br />
+    If you're changing any setting (such as styles, transformations, etc.) which
+    affect the canvas state and you want to make sure the original state is used
+    each time a frame is drawn, you need to save that original state.
+  </li>
+  <li>
+    <strong>Draw animated shapes</strong><br />
+    The step where you do the actual frame rendering.
+  </li>
+  <li>
+    <strong>Restore the canvas state</strong><br />
+    If you've saved the state, restore it before drawing a new frame.
+  </li>
 </ol>
 
 <h2 id="Controlling_an_animation">Controlling an animation</h2>
 
-<p>Shapes are drawn to the canvas by using the canvas methods directly or by calling custom functions. In normal circumstances, we only see these results appear on the canvas when the script finishes executing. For instance, it isn't possible to do an animation from within a <code>for</code> loop.</p>
+<p>
+  Shapes are drawn to the canvas by using the canvas methods directly or by
+  calling custom functions. In normal circumstances, we only see these results
+  appear on the canvas when the script finishes executing. For instance, it
+  isn't possible to do an animation from within a <code>for</code> loop.
+</p>
 
-<p>That means we need a way to execute our drawing functions over a period of time. There are two ways to control an animation like this.</p>
+<p>
+  That means we need a way to execute our drawing functions over a period of
+  time. There are two ways to control an animation like this.
+</p>
 
 <h3 id="Scheduled_updates">Scheduled updates</h3>
 
-<p>First there's the {{domxref("WindowOrWorkerGlobalScope/setInterval", "window.setInterval()")}}, {{domxref("WindowOrWorkerGlobalScope/setTimeout", "window.setTimeout()")}}, and {{domxref("window.requestAnimationFrame()")}} functions, which can be used to call a specific function over a set period of time.</p>
+<p>
+  First there's the {{domxref("WindowOrWorkerGlobalScope/setInterval",
+  "window.setInterval()")}}, {{domxref("WindowOrWorkerGlobalScope/setTimeout",
+  "window.setTimeout()")}}, and {{domxref("window.requestAnimationFrame()")}}
+  functions, which can be used to call a specific function over a set period of
+  time.
+</p>
 
 <dl>
-	<dt>{{domxref("WindowOrWorkerGlobalScope/setInterval", "setInterval(function, delay)")}}</dt>
-	<dd>Starts repeatedly executing the function specified by <code>function</code> every <code>delay</code> milliseconds.</dd>
-	<dt>{{domxref("WindowOrWorkerGlobalScope/setTimeout", "setTimeout(function, delay)")}}</dt>
-	<dd>Executes the function specified by <code>function</code> in <code>delay</code> milliseconds.</dd>
-	<dt>{{domxref("Window.requestAnimationFrame()", "requestAnimationFrame(callback)")}}</dt>
-	<dd>Tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint.</dd>
+  <dt>
+    {{domxref("WindowOrWorkerGlobalScope/setInterval", "setInterval(function,
+    delay)")}}
+  </dt>
+  <dd>
+    Starts repeatedly executing the function specified by
+    <code>function</code> every <code>delay</code> milliseconds.
+  </dd>
+  <dt>
+    {{domxref("WindowOrWorkerGlobalScope/setTimeout", "setTimeout(function,
+    delay)")}}
+  </dt>
+  <dd>
+    Executes the function specified by <code>function</code> in
+    <code>delay</code> milliseconds.
+  </dd>
+  <dt>
+    {{domxref("Window.requestAnimationFrame()",
+    "requestAnimationFrame(callback)")}}
+  </dt>
+  <dd>
+    Tells the browser that you wish to perform an animation and requests that
+    the browser call a specified function to update an animation before the next
+    repaint.
+  </dd>
 </dl>
 
-<p>If you don't want any user interaction you can use the <code>setInterval()</code> function which repeatedly executes the supplied code. If we wanted to make a game, we could use keyboard or mouse events to control the animation and use <code>setTimeout()</code>. By setting {{domxref("EventListener")}}s, we catch any user interaction and execute our animation functions.</p>
+<p>
+  If you don't want any user interaction you can use the
+  <code>setInterval()</code> function which repeatedly executes the supplied
+  code. If we wanted to make a game, we could use keyboard or mouse events to
+  control the animation and use <code>setTimeout()</code>. By setting
+  {{domxref("EventListener")}}s, we catch any user interaction and execute our
+  animation functions.
+</p>
 
 <div class="note">
-<p>In the examples below, we'll use the {{domxref("window.requestAnimationFrame()")}} method to control the animation. The <code>requestAnimationFrame</code> method provides a smoother and more efficient way for animating by calling the animation frame when the system is ready to paint the frame. The number of callbacks is usually 60 times per second and may be reduced to a lower rate when running in background tabs. For more information about the animation loop, especially for games, see the article <a href="/en-US/docs/Games/Anatomy">Anatomy of a video game</a> in our <a href="/en-US/docs/Games">Game development zone</a>.</p>
+  <p>
+    In the examples below, we'll use the
+    {{domxref("window.requestAnimationFrame()")}} method to control the
+    animation. The <code>requestAnimationFrame</code> method provides a smoother
+    and more efficient way for animating by calling the animation frame when the
+    system is ready to paint the frame. The number of callbacks is usually 60
+    times per second and may be reduced to a lower rate when running in
+    background tabs. For more information about the animation loop, especially
+    for games, see the article
+    <a href="/en-US/docs/Games/Anatomy">Anatomy of a video game</a> in our
+    <a href="/en-US/docs/Games">Game development zone</a>.
+  </p>
 </div>
 
 <h2 id="An_animated_solar_system">An animated solar system</h2>
 
 <p>This example animates a small model of our solar system.</p>
 
-<pre class="brush: js">var sun = new Image();
+<pre class="brush: js">
+var sun = new Image();
 var moon = new Image();
 var earth = new Image();
 function init() {
@@ -111,16 +189,22 @@ init();
 </pre>
 
 <div class="hidden">
-<pre class="brush: html">&lt;canvas id="canvas" width="300" height="300"&gt;&lt;/canvas&gt;</pre>
+  <pre class="brush: html">
+&lt;canvas id="canvas" width="300" height="300"&gt;&lt;/canvas&gt;</pre
+  >
 </div>
 
-<p>{{EmbedLiveSample("An_animated_solar_system", "310", "310", "canvas_animation1.png")}}</p>
+<p>
+  {{EmbedLiveSample("An_animated_solar_system", "310", "310",
+  "canvas_animation1.png")}}
+</p>
 
 <h2 id="An_animated_clock">An animated clock</h2>
 
 <p>This example draws an animated clock, showing your current time.</p>
 
-<pre class="brush: js">function clock() {
+<pre class="brush: js">
+function clock() {
   var now = new Date();
   var ctx = document.getElementById('canvas').getContext('2d');
   ctx.save();
@@ -217,19 +301,34 @@ init();
   window.requestAnimationFrame(clock);
 }
 
-window.requestAnimationFrame(clock);</pre>
+window.requestAnimationFrame(clock);</pre
+>
 
 <div class="hidden">
-<pre class="brush: html">&lt;canvas id="canvas" width="150" height="150"&gt;&lt;/canvas&gt;</pre>
+  <pre class="brush: html">
+&lt;canvas id="canvas" width="150" height="150"&gt;&lt;/canvas&gt;</pre
+  >
 </div>
 
-<p>{{EmbedLiveSample("An_animated_clock", "180", "180", "canvas_animation2.png")}}</p>
+<p>
+  {{EmbedLiveSample("An_animated_clock", "180", "180",
+  "canvas_animation2.png")}}
+</p>
 
 <h2 id="A_looping_panorama">A looping panorama</h2>
 
-<p>In this example, a panorama is scrolled left-to-right. We're using <a href="https://commons.wikimedia.org/wiki/File:Capitan_Meadows,_Yosemite_National_Park.jpg">an image of Yosemite National Park</a> we took from Wikipedia, but you could use any image that's larger than the canvas.</p>
+<p>
+  In this example, a panorama is scrolled left-to-right. We're using
+  <a
+    href="https://commons.wikimedia.org/wiki/File:Capitan_Meadows,_Yosemite_National_Park.jpg"
+    >an image of Yosemite National Park</a
+  >
+  we took from Wikipedia, but you could use any image that's larger than the
+  canvas.
+</p>
 
-<pre class="brush: js">var img = new Image();
+<pre class="brush: js">
+var img = new Image();
 
 // User Variables - customize these to change the image being scrolled, its
 // direction, and the speed.
@@ -316,15 +415,23 @@ function draw() {
 }
 </pre>
 
-<p>Below is the {{HTMLElement("canvas")}} in which the image is scrolled. Note that the width and height specified here must match the values of the <code>CanvasXZSize</code> and <code>CanvasYSize</code> variables in the JavaScript code.</p>
+<p>
+  Below is the {{HTMLElement("canvas")}} in which the image is scrolled. Note
+  that the width and height specified here must match the values of the
+  <code>CanvasXZSize</code> and <code>CanvasYSize</code> variables in the
+  JavaScript code.
+</p>
 
-<pre class="brush: html">&lt;canvas id="canvas" width="800" height="200"&gt;&lt;/canvas&gt;</pre>
+<pre class="brush: html">
+&lt;canvas id="canvas" width="800" height="200"&gt;&lt;/canvas&gt;</pre
+>
 
 <p>{{EmbedLiveSample("A_looping_panorama", "830", "230")}}</p>
 
 <h2 id="Mouse_Following_Animation">Mouse Following Animation</h2>
 
-<pre class="brush: html">&lt;!DOCTYPE html&gt;
+<pre class="brush: html">
+&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
     &lt;head&gt;
         &lt;meta charset="UTF-8"&gt;
@@ -451,18 +558,23 @@ function draw() {
 <h5 id="Output">Output</h5>
 
 <table class="standard-table">
-	<tbody>
-		<tr>
-			<td>
-			<p><a href="https://kunalverma94.github.io/gallery/gags/beyblade.html"><img alt="beyblade" src="beyblade.jpg"></a></p>
-			</td>
-		</tr>
-	</tbody>
+  <tbody>
+    <tr>
+      <td>
+        <p>
+          <a href="https://kunalverma94.github.io/gallery/gags/beyblade.html"
+            ><img alt="beyblade" src="beyblade.jpg"
+          /></a>
+        </p>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Snake_Game">Snake Game</h2>
 
-<pre class="brush: html">&lt;!DOCTYPE html&gt;
+<pre class="brush: html">
+&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 
 &lt;head&gt;
@@ -578,11 +690,13 @@ function draw() {
         opacity: 0
     }
 &lt;/style&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;</pre
+>
 
 <p>Javascript</p>
 
-<pre class="brush: js">function tmz() {
+<pre class="brush: js">
+function tmz() {
         var e = new Date(t),
             i = new Date,
             n = Math.abs(i.getMinutes() - e.getMinutes()),
@@ -689,16 +803,30 @@ function draw() {
 <h5 id="Output2">Output</h5>
 
 <a href="https://kunalverma94.github.io/pokemon/snake.html">
-  <img alt="Snake game" src="snake.jpg">
+  <img alt="Snake game" src="snake.jpg" />
 </a>
 
 <h2 id="Other_examples">Other examples</h2>
 
 <dl>
-	<dt><a href="/en-US/docs/Web/API/Canvas_API/A_basic_ray-caster">A basic ray-caster</a></dt>
-	<dd>A good example of how to do animations using keyboard controls.</dd>
-	<dt><a href="/en-US/docs/Web/API/Canvas_API/Tutorial/Advanced_animations">Advanced animations</a></dt>
-	<dd>We will have a look at some advanced animation techniques and physics in the next chapter.</dd>
+  <dt>
+    <a href="/en-US/docs/Web/API/Canvas_API/A_basic_ray-caster"
+      >A basic ray-caster</a
+    >
+  </dt>
+  <dd>A good example of how to do animations using keyboard controls.</dd>
+  <dt>
+    <a href="/en-US/docs/Web/API/Canvas_API/Tutorial/Advanced_animations"
+      >Advanced animations</a
+    >
+  </dt>
+  <dd>
+    We will have a look at some advanced animation techniques and physics in the
+    next chapter.
+  </dd>
 </dl>
 
-<p>{{PreviousNext("Web/API/Canvas_API/Tutorial/Compositing", "Web/API/Canvas_API/Tutorial/Advanced_animations")}}</p>
+<p>
+  {{PreviousNext("Web/API/Canvas_API/Tutorial/Compositing",
+  "Web/API/Canvas_API/Tutorial/Advanced_animations")}}
+</p>

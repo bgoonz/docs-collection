@@ -2,35 +2,48 @@
 title: Document.createTreeWalker()
 slug: Web/API/Document/createTreeWalker
 tags:
-- API
-- DOM
-- DOM Reference
-- Document
-- Method
+  - API
+  - DOM
+  - DOM Reference
+  - Document
+  - Method
 browser-compat: api.Document.createTreeWalker
 ---
+
 <div>{{ApiRef("Document")}}</div>
 
-<p>The <strong><code>Document.createTreeWalker()</code></strong> creator method returns a
-  newly created {{domxref("TreeWalker")}} object.</p>
+<p>
+  The <strong><code>Document.createTreeWalker()</code></strong> creator method
+  returns a newly created {{domxref("TreeWalker")}} object.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js"><em>document</em>.createTreeWalker(<em>root</em>[, <em>whatToShow</em>[, <em>filter</em>[, <em>expandEntityReferences</em>]]]);
+<pre
+  class="brush: js"
+><em>document</em>.createTreeWalker(<em>root</em>[, <em>whatToShow</em>[, <em>filter</em>[, <em>expandEntityReferences</em>]]]);
 </pre>
 
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
   <dt><code>root </code></dt>
-  <dd>A root {{domxref("Node")}} of this {{domxref("TreeWalker")}} traversal. Typically
-    this will be an element owned by the document.</dd>
+  <dd>
+    A root {{domxref("Node")}} of this {{domxref("TreeWalker")}} traversal.
+    Typically this will be an element owned by the document.
+  </dd>
   <dt><code>whatToShow</code> {{optional_inline}}</dt>
-  <dd>A <code>unsigned long</code> representing a bitmask created by combining the
+  <dd>
+    A <code>unsigned long</code> representing a bitmask created by combining the
     constant properties of
-    <code><a href="https://www.w3.org/TR/DOM-Level-2-Traversal-Range/traversal.html#Traversal-NodeFilter">NodeFilter</a></code>.
-    It is a convenient way of filtering for certain types of node. It defaults to
-    <code>0xFFFFFFFF</code> representing the <code>SHOW_ALL</code> constant.
+    <code
+      ><a
+        href="https://www.w3.org/TR/DOM-Level-2-Traversal-Range/traversal.html#Traversal-NodeFilter"
+        >NodeFilter</a
+      ></code
+    >. It is a convenient way of filtering for certain types of node. It
+    defaults to <code>0xFFFFFFFF</code> representing the
+    <code>SHOW_ALL</code> constant.
     <table class="standard-table">
       <tbody>
         <tr>
@@ -40,20 +53,28 @@ browser-compat: api.Document.createTreeWalker
         </tr>
         <tr>
           <td><code>NodeFilter.SHOW_ALL</code></td>
-          <td><code>-1</code> (that is the max value of <code>unsigned long</code>)</td>
+          <td>
+            <code>-1</code> (that is the max value of
+            <code>unsigned long</code>)
+          </td>
           <td>Shows all nodes.</td>
         </tr>
         <tr>
           <td><code>NodeFilter.SHOW_ATTRIBUTE</code> {{deprecated_inline}}</td>
           <td><code>2</code></td>
-          <td>Shows attribute {{domxref("Attr")}} nodes. This is meaningful only when
-            creating a {{domxref("TreeWalker")}} with an {{domxref("Attr")}} node as its
-            root; in this case, it means that the attribute node will appear in the first
-            position of the iteration or traversal. Since attributes are never children of
-            other nodes, they do not appear when traversing over the document tree.</td>
+          <td>
+            Shows attribute {{domxref("Attr")}} nodes. This is meaningful only
+            when creating a {{domxref("TreeWalker")}} with an
+            {{domxref("Attr")}} node as its root; in this case, it means that
+            the attribute node will appear in the first position of the
+            iteration or traversal. Since attributes are never children of other
+            nodes, they do not appear when traversing over the document tree.
+          </td>
         </tr>
         <tr>
-          <td><code>NodeFilter.SHOW_CDATA_SECTION</code> {{deprecated_inline}}</td>
+          <td>
+            <code>NodeFilter.SHOW_CDATA_SECTION</code> {{deprecated_inline}}
+          </td>
           <td><code>8</code></td>
           <td>Shows {{domxref("CDATASection")}} nodes.</td>
         </tr>
@@ -88,7 +109,9 @@ browser-compat: api.Document.createTreeWalker
           <td>Legacy, no more usable.</td>
         </tr>
         <tr>
-          <td><code>NodeFilter.SHOW_ENTITY_REFERENCE</code> {{deprecated_inline}}</td>
+          <td>
+            <code>NodeFilter.SHOW_ENTITY_REFERENCE</code> {{deprecated_inline}}
+          </td>
           <td><code>16</code></td>
           <td>Legacy, no more usable.</td>
         </tr>
@@ -111,13 +134,19 @@ browser-compat: api.Document.createTreeWalker
     </table>
   </dd>
   <dt><code>filter</code> {{optional_inline}}</dt>
-  <dd>A {{domxref("NodeFilter")}}, that is an object with a method
-    <code>acceptNode</code>, which is called by the {{domxref("TreeWalker")}} to determine
-    whether or not to accept a node that has passed the <code>whatToShow</code> check.
+  <dd>
+    A {{domxref("NodeFilter")}}, that is an object with a method
+    <code>acceptNode</code>, which is called by the {{domxref("TreeWalker")}} to
+    determine whether or not to accept a node that has passed the
+    <code>whatToShow</code> check.
   </dd>
-  <dt><code>expandEntityReferences</code> {{optional_inline}} {{deprecated_inline}}</dt>
-  <dd>A boolean flag indicating if when discarding an
-    entity reference its whole sub-tree must be discarded at the same time.
+  <dt>
+    <code>expandEntityReferences</code> {{optional_inline}}
+    {{deprecated_inline}}
+  </dt>
+  <dd>
+    A boolean flag indicating if when discarding an entity reference its whole
+    sub-tree must be discarded at the same time.
   </dd>
 </dl>
 
@@ -127,13 +156,16 @@ browser-compat: api.Document.createTreeWalker
 
 <h2 id="Example">Example</h2>
 
-<p>The following example goes through all nodes in the body, reduces the set of nodes to
-  elements, passes through as acceptable each node (it could reduce the set in the
-  <code>acceptNode()</code> method instead), and then makes use of tree walker iterator
-  that is created to advance through the nodes (now all elements) and push them into an
-  array.</p>
+<p>
+  The following example goes through all nodes in the body, reduces the set of
+  nodes to elements, passes through as acceptable each node (it could reduce the
+  set in the <code>acceptNode()</code> method instead), and then makes use of
+  tree walker iterator that is created to advance through the nodes (now all
+  elements) and push them into an array.
+</p>
 
-<pre class="brush: js">var treeWalker = document.createTreeWalker(
+<pre class="brush: js">
+var treeWalker = document.createTreeWalker(
   document.body,
   NodeFilter.SHOW_ELEMENT,
   { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },

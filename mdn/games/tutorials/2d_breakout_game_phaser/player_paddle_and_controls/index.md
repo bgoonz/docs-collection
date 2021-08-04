@@ -1,4 +1,4 @@
---- title: Player paddle and controls slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Player\_paddle\_and\_controls tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
+--- title: Player paddle and controls slug: Games/Tutorials/2D_breakout_game_Phaser/Player_paddle_and_controls tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **7th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs/
 
 <span class="seoSummary">We have the ball moving and bouncing off the walls, but it quickly gets boring — there's no interactivity! We need a way to introduce gameplay, so in this article we'll create a paddle to move around and hit the ball with.</span>
 
-Rendering the paddle
---------------------
+## Rendering the paddle
 
 From the framework point of view the paddle is very similar to the ball — we need to add a variable to represent it, load the relevant image asset, and then do the magic.
 
@@ -59,8 +58,7 @@ The first parameter is one of the objects we are interested in — the ball — 
 
 Now it works as expected.
 
-Controlling the paddle
-----------------------
+## Controlling the paddle
 
 The next problem is that we can't move the paddle. To do that we can use the system's default input (mouse or touch, depending on platform) and set the paddle position to where the `input` position is. Add the following new line to the `update()` function, as shown:
 
@@ -75,8 +73,7 @@ Now on every new frame the paddle's `x` position will adjust accordingly to the 
 
 If you haven't already done so, reload your `index.html` and try it out!
 
-Position the ball
------------------
+## Position the ball
 
 We have the paddle working as expected, so let's position the ball on it. It's very similar to positioning the paddle — we need to have it placed in the middle of the screen horizontally and at the bottom vertically with a little offset from the bottom. To place it exactly as we want it we will set the anchor to the exact middle of the ball. Find the existing `ball = game.add.`<span class="call function">`sprite( ... )` line, and replace it with the following two lines:</span>
 
@@ -89,15 +86,13 @@ The velocity stays almost the same — we're just changing the second parameter'
 
 Now the ball will start right from the middle of the paddle.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/ogqza0ye/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 We can move the paddle and bounce the ball off it, but what's the point if the ball is bouncing off the bottom edge of the screen anyway? Let's introduce the possibility of losing — also known as [game over](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Game_over) logic.
 

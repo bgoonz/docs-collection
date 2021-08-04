@@ -1,9 +1,8 @@
 --- title: IDL slug: Glossary/IDL tags: - CodingScripting - Glossary - IDL - Interface description language ---
 
-An **IDL** (*Interface Description Language*) is a generic language used to specified objects' interfaces apart from any specific programming language.
+An **IDL** (_Interface Description Language_) is a generic language used to specified objects' interfaces apart from any specific programming language.
 
-Content versus IDL attributes
------------------------------
+## Content versus IDL attributes
 
 In HTML, most attributes have two faces: the **content attribute** and the **IDL attribute**.
 
@@ -17,14 +16,13 @@ IDL attributes are not always strings; for example, `input.maxlength` is a numbe
 
 IDL attributes can [reflect other types](https://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#reflecting-content-attributes-in-idl-attributes) such as unsigned long, URLs, booleans, etc. Unfortunately, there are no clear rules and the way IDL attributes behave in conjunction with their corresponding content attributes depends on the attribute. Most of the time, it will follow [the rules laid out in the specification](https://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#reflecting-content-attributes-in-idl-attributes), but sometimes it doesn't. HTML specifications try to make this as developer-friendly as possible, but for various reasons (mostly historical), some attributes behave oddly (`select.size`, for example) and you should read the specifications to understand how exactly they behave.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Interface description language", "IDL")}} on Wikipedia
--   [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
+- {{interwiki("wikipedia", "Interface description language", "IDL")}} on Wikipedia
+- [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
 
 ### Technical reference
 
--   [Interface Definition Language](https://www.eecs.berkeley.edu/~messer/netappc/Supplements/10-idl.pdf)
+- [Interface Definition Language](https://www.eecs.berkeley.edu/~messer/netappc/Supplements/10-idl.pdf)

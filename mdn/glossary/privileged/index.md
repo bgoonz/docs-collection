@@ -1,14 +1,13 @@
 --- title: Privileged slug: Glossary/Privileged tags: - Glossary - Security ---
 
-Users are said to be **privileged** when they are granted additional rights to a system, or given ultimate access to content in a higher priority level when compared to normal users. 
+Users are said to be **privileged** when they are granted additional rights to a system, or given ultimate access to content in a higher priority level when compared to normal users.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Privilege (computing)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Privilege (computing)")}} on Wikipedia
 
 ### Learn about it
 
--   [Information Security Tutorial](/en-US/docs/Web/Security/Information_Security_Basics)
+- [Information Security Tutorial](/en-US/docs/Web/Security/Information_Security_Basics)

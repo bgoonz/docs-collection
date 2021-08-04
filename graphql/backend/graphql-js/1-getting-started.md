@@ -10,7 +10,7 @@ Open your terminal, navigate to a location of your choice, and run the following
     cd hackernews-node
     npm init -y
 
-This creates a new directory called `hackernews-node` and initializes it with a `package.json` file. `package.json` is the configuration file for the Node.js app you’re building. It lists all dependencies and other configuration options (such as *scripts*) needed for the app.
+This creates a new directory called `hackernews-node` and initializes it with a `package.json` file. `package.json` is the configuration file for the Node.js app you’re building. It lists all dependencies and other configuration options (such as _scripts_) needed for the app.
 
 ### Creating a raw GraphQL server
 
@@ -21,7 +21,7 @@ In your terminal, first create the `src` directory and then the empty `index.js`
     mkdir src
     touch src/index.js
 
-> **Note**: The above code block is annotated with a directory name. It indicates *where* you need to execute the terminal command.
+> **Note**: The above code block is annotated with a directory name. It indicates _where_ you need to execute the terminal command.
 
 To start the app, you can now execute `node src/index.js` inside the `hackernews-node` directory. At the moment, this won’t do anything because `index.js` is still empty ¯\\\_(ツ )\_/¯
 
@@ -37,13 +37,13 @@ Run the following command in your terminal:
 
 Here’s a list of its features:
 
--   GraphQL spec-compliant
--   Realtime functionality with GraphQL subscriptions
--   Out-of-the-box support for GraphQL Playground
--   Extensible via Express middlewares
--   Resolves custom directives in your GraphQL schema
--   Query performance tracing
--   Runs everywhere: Can be deployed via Vercel, Up, AWS Lambda, Heroku etc.
+- GraphQL spec-compliant
+- Realtime functionality with GraphQL subscriptions
+- Out-of-the-box support for GraphQL Playground
+- Extensible via Express middlewares
+- Resolves custom directives in your GraphQL schema
+- Query performance tracing
+- Runs everywhere: Can be deployed via Vercel, Up, AWS Lambda, Heroku etc.
 
 Perfect, it’s time to write some code 🙌
 
@@ -77,12 +77,12 @@ Open `src/index.js` and type the following:
         console.log(`Server is running on ${url}`)
       );
 
-> **Note**: This code block is annotated with a file name. It indicates into which file you need to put the code that’s shown. The annotation also links to the corresponding file on GitHub to help you figure out *where* in the file you need to put it in case you are not sure about that.
+> **Note**: This code block is annotated with a file name. It indicates into which file you need to put the code that’s shown. The annotation also links to the corresponding file on GitHub to help you figure out _where_ in the file you need to put it in case you are not sure about that.
 
 All right, let’s understand what’s going on here by walking through the numbered comments:
 
-1.  The `typeDefs` constant defines your *GraphQL schema* (more about this in a bit). Here, it defines a simple `Query` type with one *field* called `info`. This field has the type `String!`. The exclamation mark in the type definition means that this field is required and can never be `null`.
-2.  The `resolvers` object is the actual *implementation* of the GraphQL schema. Notice how its structure is identical to the structure of the type definition inside `typeDefs`: `Query.info`.
+1.  The `typeDefs` constant defines your _GraphQL schema_ (more about this in a bit). Here, it defines a simple `Query` type with one _field_ called `info`. This field has the type `String!`. The exclamation mark in the type definition means that this field is required and can never be `null`.
+2.  The `resolvers` object is the actual _implementation_ of the GraphQL schema. Notice how its structure is identical to the structure of the type definition inside `typeDefs`: `Query.info`.
 3.  Finally, the schema and resolvers are bundled and passed to `ApolloServer` which is imported from `apollo-server`. This tells the server what API operations are accepted and how they should be resolved.
 
 Go ahead and test your GraphQL server!
@@ -145,7 +145,7 @@ At the core of every GraphQL API, there is a GraphQL schema. So, let’s quickly
 
 GraphQL schemas are usually written in the GraphQL [Schema Definition Language](https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51) (SDL). SDL has a type system that allows you to define data structures (just like other strongly typed programming languages such as Java, TypeScript, Swift, Go, etc.).
 
-How does that help in defining the API for a GraphQL server, though? Every GraphQL schema has three special *root types*: `Query`, `Mutation`, and `Subscription`. The root types correspond to the three operation types offered by GraphQL: queries, mutations, and subscriptions. The fields on these root types are called *root fields* and define the available API operations.
+How does that help in defining the API for a GraphQL server, though? Every GraphQL schema has three special _root types_: `Query`, `Mutation`, and `Subscription`. The root types correspond to the three operation types offered by GraphQL: queries, mutations, and subscriptions. The fields on these root types are called _root fields_ and define the available API operations.
 
 As an example, consider the simple GraphQL schema we used above:
 
@@ -173,9 +173,9 @@ Let’s now consider a slightly more advanced example:
 
 In this case, we have three root fields: `users` and `user` on `Query` as well as `createUser` on `Mutation`. The additional definition of the `User` type is required because otherwise the schema definition would be incomplete.
 
-What are the API operations that can be derived from this schema definition? Well, we know that each API operation always needs to start with a root field. However, we haven’t learned yet what it looks like when the *type* of a root field is itself another [object type](http://graphql.org/learn/schema/#object-types-and-fields). This is the case here, where the types of the root fields are `[User!]!`, `User` and `User!`. In the `info` example from before, the type of the root field was a `String`, which is a [scalar type](http://graphql.org/learn/schema/#scalar-types).
+What are the API operations that can be derived from this schema definition? Well, we know that each API operation always needs to start with a root field. However, we haven’t learned yet what it looks like when the _type_ of a root field is itself another [object type](http://graphql.org/learn/schema/#object-types-and-fields). This is the case here, where the types of the root fields are `[User!]!`, `User` and `User!`. In the `info` example from before, the type of the root field was a `String`, which is a [scalar type](http://graphql.org/learn/schema/#scalar-types).
 
-When the type of a root field is an object type, you can further expand the query (or mutation/subscription) with fields of that object type. The expanded part is called *selection set*.
+When the type of a root field is an object type, you can further expand the query (or mutation/subscription) with fields of that object type. The expanded part is called _selection set_.
 
 Here are the operations that are accepted by a GraphQL API that implements the above schema:
 
@@ -205,10 +205,10 @@ Here are the operations that are accepted by a GraphQL API that implements the a
 
 There are a few things to note:
 
--   In these examples, we always query `id` and `name` of the returned `User` objects. We could potentially omit either of them. Note, however, when querying an object type, it is required that you query at least one of its fields in a selection set.
--   For the fields in the selection set, it doesn’t matter whether the type of the root field is *required* or a *list*. In the example schema above, the three root fields all have different [type modifiers](http://graphql.org/learn/schema/#lists-and-non-null) (i.e. different combinations of being a list and/or required) for the `User` type:
-    -   For the `users` field, the return type `[User!]!` means it returns a *list* (which itself cannot be `null`) of `User` elements. The list can also not contain elements that are `null`. So, you’re always guaranteed to either receive an empty list or a list that only contains non-null `User` objects.
-    -   For the `user(id: ID!)` field, the return type `User` means the returned value could be `null` *or* a `User` object.
-    -   For the `createUser(name: String!)` field, the return type `User!` means this operation always returns a `User` object.
+- In these examples, we always query `id` and `name` of the returned `User` objects. We could potentially omit either of them. Note, however, when querying an object type, it is required that you query at least one of its fields in a selection set.
+- For the fields in the selection set, it doesn’t matter whether the type of the root field is _required_ or a _list_. In the example schema above, the three root fields all have different [type modifiers](http://graphql.org/learn/schema/#lists-and-non-null) (i.e. different combinations of being a list and/or required) for the `User` type:
+  - For the `users` field, the return type `[User!]!` means it returns a _list_ (which itself cannot be `null`) of `User` elements. The list can also not contain elements that are `null`. So, you’re always guaranteed to either receive an empty list or a list that only contains non-null `User` objects.
+  - For the `user(id: ID!)` field, the return type `User` means the returned value could be `null` _or_ a `User` object.
+  - For the `createUser(name: String!)` field, the return type `User!` means this operation always returns a `User` object.
 
 Phew, enough theory 😠 Let’s go and write some more code!

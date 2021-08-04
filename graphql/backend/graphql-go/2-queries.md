@@ -1,12 +1,10 @@
 In the previous section we setup up the server, Now we try to implement a Query that we defined in `schema.graphqls`.
 
-What Is A Query <span id="what-is-a-query"></span>
---------------------------------------------------
+## What Is A Query <span id="what-is-a-query"></span>
 
 a query in graphql is asking for data, you use a query and specify what you want and graphql will return it back to you.
 
-Simple Query <span id="simple-query"></span>
---------------------------------------------
+## Simple Query <span id="simple-query"></span>
 
 open `schema.resolvers.go` file and take a look at Links function,
 

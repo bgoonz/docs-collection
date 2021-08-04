@@ -1,11 +1,10 @@
---- title: 2D collision detection slug: Games/Techniques/2D\_collision\_detection tags: - 2D - Games - JavaScript - collision detection ---
+--- title: 2D collision detection slug: Games/Techniques/2D_collision_detection tags: - 2D - Games - JavaScript - collision detection ---
 
 {{GamesSidebar}}
 
 Algorithms to detect collision in 2D games depend on the type of shapes that can collide (e.g. Rectangle to Rectangle, Rectangle to Circle, Circle to Circle). Generally you will have a simple generic shape that covers the entity known as a "hitbox" so even though collision may not be pixel perfect, it will look good enough and be performant across multiple entities. This article provides a review of the most common techniques used to provide collision detection in 2D games.
 
-Axis-Aligned Bounding Box
--------------------------
+## Axis-Aligned Bounding Box
 
 One of the simpler forms of collision detection is between two rectangles that are axis aligned — meaning no rotation. The algorithm works by ensuring there is no gap between any of the 4 sides of the rectangles. Any gap means a collision does not exist.
 
@@ -60,8 +59,7 @@ One of the simpler forms of collision detection is between two rectangles that a
 
 **Note**: [Another example without Canvas or external libraries](https://jsfiddle.net/jlr7245/217jrozd/3/).
 
-Circle Collision
-----------------
+## Circle Collision
 
 Another simple shape for collision detection is between two circles. This algorithm works by taking the centre points of the two circles and ensuring the distance between the centre points are less than the two radii added together.
 
@@ -142,8 +140,7 @@ Another simple shape for collision detection is between two circles. This algori
 
 **Note**:  [Here is another example without Canvas or external libraries.](https://jsfiddle.net/jlr7245/teb4znk0/20/)
 
-Separating Axis Theorem
------------------------
+## Separating Axis Theorem
 
 This is a collision algorithm that can detect a collision between any two \*convex\* polygons. It's more complicated to implement than the above methods but is more powerful. The complexity of an algorithm like this means we will need to consider performance optimization, covered in the next section.
 
@@ -155,8 +152,7 @@ Implementing SAT is out of scope for this page so see the recommended tutorials 
 4.  [SAT (Separating Axis Theorem)](http://www.dyn4j.org/2010/01/sat/)
 5.  [Separating Axis Theorem](https://programmerart.weebly.com/separating-axis-theorem.html)
 
-Collision Performance
----------------------
+## Collision Performance
 
 While some of these algorithms for collision detection are simple enough to calculate, it can be a waste of cycles to test \*every\* entity with every other entity. Usually games will split collision into two phases, broad and narrow.
 

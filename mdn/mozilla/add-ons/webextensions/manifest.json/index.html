@@ -9,49 +9,94 @@ tags:
   - manifest.json
 browser-compat: webextensions.manifest
 ---
+
 <p>{{AddonSidebar}}</p>
 
 <div class="notecard note">
-<p>This article describes manifest.json for web extensions. If you are looking for information about the manifest.json in PWAs, check out the <a href="/en-US/docs/Web/Manifest">Web App Manifest</a> article.</p>
+  <p>
+    This article describes manifest.json for web extensions. If you are looking
+    for information about the manifest.json in PWAs, check out the
+    <a href="/en-US/docs/Web/Manifest">Web App Manifest</a> article.
+  </p>
 </div>
 
-<p>The <code>manifest.json</code> file is the only file that every extension using WebExtension APIs must contain.</p>
+<p>
+  The <code>manifest.json</code> file is the only file that every extension
+  using WebExtension APIs must contain.
+</p>
 
-<p>Using <code>manifest.json</code>, you specify basic metadata about your extension such as the name and version, and can also specify aspects of your extension's functionality (such as background scripts, content scripts, and browser actions).</p>
+<p>
+  Using <code>manifest.json</code>, you specify basic metadata about your
+  extension such as the name and version, and can also specify aspects of your
+  extension's functionality (such as background scripts, content scripts, and
+  browser actions).
+</p>
 
-<p>It is a <a href="/en-US/docs/Glossary/JSON">JSON</a>-formatted file, with one exception: it is allowed to contain "<code>//</code>"-style comments.</p>
+<p>
+  It is a <a href="/en-US/docs/Glossary/JSON">JSON</a>-formatted file, with one
+  exception: it is allowed to contain "<code>//</code>"-style comments.
+</p>
 
 <h2 id="List_of_manifest.json_keys">List of manifest.json keys</h2>
 
 <p><code>manifest.json</code> keys are listed below:</p>
 
-<div class="index">{{ListSubpages("/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json")}}</div>
+<div class="index">
+  {{ListSubpages("/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json")}}
+</div>
 
-<h3 class="index" id="Notes_about_manifest.json_keys">Notes about manifest.json keys</h3>
+<h3 class="index" id="Notes_about_manifest.json_keys">
+  Notes about manifest.json keys
+</h3>
 
 <ul>
- <li><code>"manifest_version"</code>, <code>"version"</code>, and <code>"name"</code> are the only mandatory keys.</li>
- <li><code>"default_locale"</code> must be present if the "<code>_locales</code>" directory is present, and must be absent otherwise.</li>
- <li><code>"browser_specific_settings"</code> is not supported in Google Chrome.</li>
+  <li>
+    <code>"manifest_version"</code>, <code>"version"</code>, and
+    <code>"name"</code> are the only mandatory keys.
+  </li>
+  <li>
+    <code>"default_locale"</code> must be present if the "<code>_locales</code>"
+    directory is present, and must be absent otherwise.
+  </li>
+  <li>
+    <code>"browser_specific_settings"</code> is not supported in Google Chrome.
+  </li>
 </ul>
 
-<h3 id="Accessing_manifest.json_keys_at_runtime">Accessing manifest.json keys at runtime</h3>
+<h3 id="Accessing_manifest.json_keys_at_runtime">
+  Accessing manifest.json keys at runtime
+</h3>
 
-<p>You can access your extension's manifest from the extension's JavaScript using the {{WebExtAPIRef("runtime.getManifest()")}} function:</p>
+<p>
+  You can access your extension's manifest from the extension's JavaScript using
+  the {{WebExtAPIRef("runtime.getManifest()")}} function:
+</p>
 
-<pre class="brush: js no-line-numbers">browser.runtime.getManifest().version;</pre>
+<pre class="brush: js no-line-numbers">
+browser.runtime.getManifest().version;</pre
+>
 
 <h2 id="Example">Example</h2>
 
 <p>The block below shows the basic syntax for some common manifest keys.</p>
 
 <div class="notecard note">
-<p><strong>Note:</strong> This is not intended to be used as a copy-paste-ready example. Selecting the keys you'll need depends on the extension you are developing.</p>
+  <p>
+    <strong>Note:</strong> This is not intended to be used as a copy-paste-ready
+    example. Selecting the keys you'll need depends on the extension you are
+    developing.
+  </p>
 </div>
 
-<p>For complete example extensions, see <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples">Example extensions</a>.</p>
+<p>
+  For complete example extensions, see
+  <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples"
+    >Example extensions</a
+  >.
+</p>
 
-<pre class="brush: json;">{
+<pre class="brush: json;">
+{
   "browser_specific_settings": {
     "gecko": {
       "id": "addon@example.com",
@@ -123,11 +168,18 @@ browser-compat: webextensions.manifest
   },
 
   "web_accessible_resources": ["images/my-image.png"]
-}</pre>
+}</pre
+>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
-<p>For a full overview of all manifest keys and their sub-keys, see the<a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_compatibility_for_manifest.json"> full <code>manifest.json</code> browser compatibility table</a>.</p>
+<p>
+  For a full overview of all manifest keys and their sub-keys, see the<a
+    href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_compatibility_for_manifest.json"
+  >
+    full <code>manifest.json</code> browser compatibility table</a
+  >.
+</p>
 
 <p>{{Compat}}</p>
 

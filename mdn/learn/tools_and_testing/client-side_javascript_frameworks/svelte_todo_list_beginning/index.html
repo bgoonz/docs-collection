@@ -12,28 +12,60 @@ tags:
   - client-side
   - state
 ---
-<div>{{LearnSidebar}}<br>
-{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}</div>
 
-<p class="summary">Now that we have a basic understanding of how things work in Svelte, we can start building our example app: a todo list. In this article we will first have a look at the desired functionality of our app, then we'll create a <code>Todos.svelte</code> component and put static markup and styles in place, leaving everything ready to start developing our To-Do list app features, which we'll go on to in subsequent articles.</p>
+<div>
+  {{LearnSidebar}}<br />
+  {{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props",
+  "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
+</div>
 
-<p class="summary">We want our users to be able to browse, add and delete tasks, and also to mark them as complete. This will be the basic functionality that we'll be developing in this tutorial series, plus we'll look at some more advanced concepts along the way too.</p>
+<p class="summary">
+  Now that we have a basic understanding of how things work in Svelte, we can
+  start building our example app: a todo list. In this article we will first
+  have a look at the desired functionality of our app, then we'll create a
+  <code>Todos.svelte</code> component and put static markup and styles in place,
+  leaving everything ready to start developing our To-Do list app features,
+  which we'll go on to in subsequent articles.
+</p>
+
+<p class="summary">
+  We want our users to be able to browse, add and delete tasks, and also to mark
+  them as complete. This will be the basic functionality that we'll be
+  developing in this tutorial series, plus we'll look at some more advanced
+  concepts along the way too.
+</p>
 
 <table class="learn-box standard-table">
- <tbody>
-  <tr>
-   <th scope="row">Prerequisites:</th>
-   <td>
-    <p>At minimum, it is recommended that you are familiar with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and have knowledge of the <a href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line">terminal/command line</a>.</p>
+  <tbody>
+    <tr>
+      <th scope="row">Prerequisites:</th>
+      <td>
+        <p>
+          At minimum, it is recommended that you are familiar with the core
+          <a href="/en-US/docs/Learn/HTML">HTML</a>,
+          <a href="/en-US/docs/Learn/CSS">CSS</a>, and
+          <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and
+          have knowledge of the
+          <a
+            href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
+            >terminal/command line</a
+          >.
+        </p>
 
-    <p>You'll need a terminal with node + npm installed to compile and build your app.</p>
-   </td>
-  </tr>
-  <tr>
-   <th scope="row">Objective:</th>
-   <td>To learn how to create a Svelte component, render it inside another component, pass data into it using props, and save its state.</td>
-  </tr>
- </tbody>
+        <p>
+          You'll need a terminal with node + npm installed to compile and build
+          your app.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Objective:</th>
+      <td>
+        To learn how to create a Svelte component, render it inside another
+        component, pass data into it using props, and save its state.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Code_along_with_us">Code along with us</h2>
@@ -42,7 +74,9 @@ tags:
 
 <p>Clone the github repo (if you haven't already done it) with:</p>
 
-<pre class="brush: bash">git clone https://github.com/opensas/mdn-svelte-tutorial.git</pre>
+<pre class="brush: bash">
+git clone https://github.com/opensas/mdn-svelte-tutorial.git</pre
+>
 
 <p>Then to get to the current app state, run</p>
 
@@ -50,88 +84,152 @@ tags:
 
 <p>Or directly download the folder's content:</p>
 
-<pre class="brush: bash">npx degit opensas/mdn-svelte-tutorial/02-starting-our-todo-app</pre>
+<pre class="brush: bash">
+npx degit opensas/mdn-svelte-tutorial/02-starting-our-todo-app</pre
+>
 
-<p>Remember to run <code>npm install &amp;&amp; npm run dev</code> to start your app in development mode.</p>
+<p>
+  Remember to run <code>npm install &amp;&amp; npm run dev</code> to start your
+  app in development mode.
+</p>
 
 <h3 id="REPL">REPL</h3>
 
 <p>To code along with us using the REPL, start at</p>
 
-<p><a href="https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2">https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2</a></p>
+<p>
+  <a
+    href="https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2"
+    >https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2</a
+  >
+</p>
 
 <h2 id="Todo_list_app_features">Todo list app features</h2>
 
 <p>This is how our Todo list app wil look like once it's ready:</p>
 
-<p><img alt="typical todo list app, with a title of 'what needs to be done', an input to enter more todos, and a list of todos with checkboxes" src="01-todo-list-app.png"></p>
+<p>
+  <img
+    alt="typical todo list app, with a title of 'what needs to be done', an input to enter more todos, and a list of todos with checkboxes"
+    src="01-todo-list-app.png"
+  />
+</p>
 
 <p>Using this UI our user will be able to:</p>
 
 <ul>
- <li>Browse their tasks.</li>
- <li>Mark tasks as completed/pending without deleting them.</li>
- <li>Remove tasks.</li>
- <li>Add new tasks.</li>
- <li>Filter tasks by status: all tasks, active tasks, or completed tasks.</li>
- <li>Edit tasks.</li>
- <li>Mark all tasks as active/completed.</li>
- <li>Remove all completed tasks.</li>
+  <li>Browse their tasks.</li>
+  <li>Mark tasks as completed/pending without deleting them.</li>
+  <li>Remove tasks.</li>
+  <li>Add new tasks.</li>
+  <li>Filter tasks by status: all tasks, active tasks, or completed tasks.</li>
+  <li>Edit tasks.</li>
+  <li>Mark all tasks as active/completed.</li>
+  <li>Remove all completed tasks.</li>
 </ul>
 
 <h2 id="Building_our_first_component">Building our first component</h2>
 
-<p>Let's create a <code>Todos.svelte</code> component — this will contain our list of todos.</p>
+<p>
+  Let's create a <code>Todos.svelte</code> component — this will contain our
+  list of todos.
+</p>
 
 <ol>
- <li>
-  <p>Create a new folder — <code>src/components</code>.</p>
+  <li>
+    <p>Create a new folder — <code>src/components</code>.</p>
 
-  <div class="notecard note">
-  <p><strong>Note</strong>: you can put your components anywhere inside the <code>src</code> folder, but the <code>components</code> folder is a recognized convention to follow, allowing you to find your components easily.</p>
-  </div>
- </li>
- <li>
-  <p>Create a file named <code>src/components/Todos.svelte</code> with the following content:</p>
+    <div class="notecard note">
+      <p>
+        <strong>Note</strong>: you can put your components anywhere inside the
+        <code>src</code> folder, but the <code>components</code> folder is a
+        recognized convention to follow, allowing you to find your components
+        easily.
+      </p>
+    </div>
+  </li>
+  <li>
+    <p>
+      Create a file named <code>src/components/Todos.svelte</code> with the
+      following content:
+    </p>
 
-  <pre class="brush: html">&lt;h1&gt;Svelte To-Do list&lt;/h1&gt;</pre>
- </li>
- <li>
-  <p>Change the <code>title</code> element in <code>public/index.html</code> to contain the text <em>Svelte To-do list</em>:</p>
+    <pre class="brush: html">&lt;h1&gt;Svelte To-Do list&lt;/h1&gt;</pre>
+  </li>
+  <li>
+    <p>
+      Change the <code>title</code> element in <code>public/index.html</code> to
+      contain the text <em>Svelte To-do list</em>:
+    </p>
 
-  <pre class="brush: html">&lt;title&gt;Svelte To-Do list&lt;/title&gt;</pre>
- </li>
- <li>
-  <p>Open <code>src/App.svelte</code> and replace its contents with the following:</p>
+    <pre class="brush: html">&lt;title&gt;Svelte To-Do list&lt;/title&gt;</pre>
+  </li>
+  <li>
+    <p>
+      Open <code>src/App.svelte</code> and replace its contents with the
+      following:
+    </p>
 
-  <pre class="brush: html">&lt;script&gt;
+    <pre class="brush: html">
+&lt;script&gt;
   import Todos from './components/Todos.svelte'
 &lt;/script&gt;
 
-&lt;Todos /&gt;</pre>
- </li>
- <li>
-  <p>In development mode, Svelte will issue a warning in the browser console when specifying a prop that doesn't exist in the component; in this case we have a <code>name</code> prop being specified when we instantiate the <code>App</code> component inside <code>src/main.js</code>, which isn't used inside <code>App</code>. The console should currently give you a message along the lines of "&lt;App&gt; was created with unknown prop 'name'". To get rid of this, remove the <code>name</code> prop from <code>src/main.js</code>; it should now look like so:</p>
+&lt;Todos /&gt;</pre
+    >
+  </li>
+  <li>
+    <p>
+      In development mode, Svelte will issue a warning in the browser console
+      when specifying a prop that doesn't exist in the component; in this case
+      we have a <code>name</code> prop being specified when we instantiate the
+      <code>App</code> component inside <code>src/main.js</code>, which isn't
+      used inside <code>App</code>. The console should currently give you a
+      message along the lines of "&lt;App&gt; was created with unknown prop
+      'name'". To get rid of this, remove the <code>name</code> prop from
+      <code>src/main.js</code>; it should now look like so:
+    </p>
 
-  <pre class="brush: js">import App from './App.svelte'
+    <pre class="brush: js">
+import App from './App.svelte'
 
 const app = new App({
   target: document.body
 })
 
-export default app</pre>
- </li>
+export default app</pre
+    >
+  </li>
 </ol>
 
-<p>Now if you check your testing server URL you'll see our <code>Todos.svelte</code> component being rendered:</p>
+<p>
+  Now if you check your testing server URL you'll see our
+  <code>Todos.svelte</code> component being rendered:
+</p>
 
-<p><img alt="basic component rendering which a title that says 'Svelte to-do list'" src="02-todos-component-rendered.png" style="border-style: solid; border-width: 1px; display: block; margin: 0 auto;"></p>
+<p>
+  <img
+    alt="basic component rendering which a title that says 'Svelte to-do list'"
+    src="02-todos-component-rendered.png"
+    style="
+      border-style: solid;
+      border-width: 1px;
+      display: block;
+      margin: 0 auto;
+    "
+  />
+</p>
 
 <h2 id="Adding_static_markup">Adding static markup</h2>
 
-<p>For the moment we will start with a static markup representation of our app, so you can see what it will look like. Copy and paste the following into our <code>Todos.svelte</code> component file, replacing the existing content:</p>
+<p>
+  For the moment we will start with a static markup representation of our app,
+  so you can see what it will look like. Copy and paste the following into our
+  <code>Todos.svelte</code> component file, replacing the existing content:
+</p>
 
-<pre class="brush: html">&lt;!-- Todos.svelte --&gt;
+<pre class="brush: html">
+&lt;!-- Todos.svelte --&gt;
 &lt;div class="todoapp stack-large"&gt;
 
   &lt;!-- NewTodo --&gt;
@@ -250,66 +348,137 @@ export default app</pre>
     &lt;button type="button" class="btn btn__primary"&gt;Remove completed&lt;/button&gt;
   &lt;/div&gt;
 
-&lt;/div&gt;</pre>
+&lt;/div&gt;</pre
+>
 
 <p>Check the rendered out again, and you'll see something like this:</p>
 
-<p><img alt="A todo list app, but unstyled, with a title of `what needs to be done`, inputs, checkboxes, etc." src="03-unstyled-todo-app.png" style="border-style: solid; border-width: 1px;"></p>
+<p>
+  <img
+    alt="A todo list app, but unstyled, with a title of `what needs to be done`, inputs, checkboxes, etc."
+    src="03-unstyled-todo-app.png"
+    style="border-style: solid; border-width: 1px"
+  />
+</p>
 
-<p>The HTML markup above is not very nicely styled and it's also functionally useless. Nevertheless, let's have a look at the markup and see how it relates to our desired features:</p>
+<p>
+  The HTML markup above is not very nicely styled and it's also functionally
+  useless. Nevertheless, let's have a look at the markup and see how it relates
+  to our desired features:
+</p>
 
 <ul>
- <li>A label and a text box for entering new tasks.</li>
- <li>Three buttons to filter by task status.</li>
- <li>A label showing the total number of tasks and the completed tasks.</li>
- <li>An unordered list, which holds a list item for each task.</li>
- <li>When the task is being edited, the list item has an input and two button to cancel or save modifications.</li>
- <li>If the task is not being edited, there's a checkbox to set the completed status, and two buttons to edit or delete the task.</li>
- <li>Finally there are two buttons to check/uncheck all task and to remove completed tasks.</li>
+  <li>A label and a text box for entering new tasks.</li>
+  <li>Three buttons to filter by task status.</li>
+  <li>A label showing the total number of tasks and the completed tasks.</li>
+  <li>An unordered list, which holds a list item for each task.</li>
+  <li>
+    When the task is being edited, the list item has an input and two button to
+    cancel or save modifications.
+  </li>
+  <li>
+    If the task is not being edited, there's a checkbox to set the completed
+    status, and two buttons to edit or delete the task.
+  </li>
+  <li>
+    Finally there are two buttons to check/uncheck all task and to remove
+    completed tasks.
+  </li>
 </ul>
 
-<p>In subsequent articles we'll get all these features working, and more besides.</p>
+<p>
+  In subsequent articles we'll get all these features working, and more besides.
+</p>
 
-<h3 id="Accessibility_features_of_the_todo_list">Accessibility features of the todo list</h3>
+<h3 id="Accessibility_features_of_the_todo_list">
+  Accessibility features of the todo list
+</h3>
 
 <p>You may notice some unusual attributes here. For example:</p>
 
-<pre class="brush: html">&lt;button class="btn toggle-btn" aria-pressed="true"&gt;
+<pre class="brush: html">
+&lt;button class="btn toggle-btn" aria-pressed="true"&gt;
   &lt;span class="visually-hidden"&gt;Show&lt;/span&gt;
   &lt;span&gt;All&lt;/span&gt;
   &lt;span class="visually-hidden"&gt;tasks&lt;/span&gt;
-&lt;/button&gt;</pre>
+&lt;/button&gt;</pre
+>
 
-<p>Here, <code>aria-pressed</code> tells assistive technology (like screen readers) that the button can be in one of two states: <code>pressed</code> or <code>unpressed</code>. Think of these as analogs for on and off. Setting a value of <code>true</code> means that the button is pressed by default.</p>
+<p>
+  Here, <code>aria-pressed</code> tells assistive technology (like screen
+  readers) that the button can be in one of two states: <code>pressed</code> or
+  <code>unpressed</code>. Think of these as analogs for on and off. Setting a
+  value of <code>true</code> means that the button is pressed by default.
+</p>
 
-<p>The class <code>visually-hidden</code> has no effect yet, because we have not included any CSS. Once we have put our styles in place, though, any element with this class will be hidden from sighted users and still available to screen reader users — this is because these words are not needed by sighted users; they are there to provide more information about what the button does for screenreader users that do not have the extra visual context to help them.</p>
+<p>
+  The class <code>visually-hidden</code> has no effect yet, because we have not
+  included any CSS. Once we have put our styles in place, though, any element
+  with this class will be hidden from sighted users and still available to
+  screen reader users — this is because these words are not needed by sighted
+  users; they are there to provide more information about what the button does
+  for screenreader users that do not have the extra visual context to help them.
+</p>
 
 <p>Further down, you can find the following <code>&lt;ul&gt;</code> element:</p>
 
-<pre class="brush: html">&lt;ul role="list" className="todo-list stack-large" aria-labelledby="list-heading"&gt;</pre>
+<pre class="brush: html">
+&lt;ul role="list" className="todo-list stack-large" aria-labelledby="list-heading"&gt;</pre
+>
 
-<p>The <code>role</code> attribute helps assistive technology explain what kind of semantic value an element has — or what its purpose is. A <code>&lt;ul&gt;</code> is treated like a list by default, but the styles we're about to add will break that functionality. This role will restore the "list" meaning to the <code>&lt;ul&gt;</code>  element. If you want to learn more about why this is necessary, you can check out Scott O'Hara’s article, “Fixing Lists”.</p>
+<p>
+  The <code>role</code> attribute helps assistive technology explain what kind
+  of semantic value an element has — or what its purpose is. A
+  <code>&lt;ul&gt;</code> is treated like a list by default, but the styles
+  we're about to add will break that functionality. This role will restore the
+  "list" meaning to the <code>&lt;ul&gt;</code>  element. If you want to learn
+  more about why this is necessary, you can check out Scott O'Hara’s article,
+  “Fixing Lists”.
+</p>
 
-<p>The <code>aria-labelledby</code> attribute tells assistive technologies that we're treating our <code>&lt;h2&gt;</code> with an <code>id</code> of <code>list-heading</code> as the label that describes the purpose of the list beneath it. Making this association gives the list a more informative context, which could help screen reader users better understand the purpose of it.</p>
+<p>
+  The <code>aria-labelledby</code> attribute tells assistive technologies that
+  we're treating our <code>&lt;h2&gt;</code> with an <code>id</code> of
+  <code>list-heading</code> as the label that describes the purpose of the list
+  beneath it. Making this association gives the list a more informative context,
+  which could help screen reader users better understand the purpose of it.
+</p>
 
-<p>This seems like a good time to talk about how Svelte deals with accessibility; let's do that now.</p>
+<p>
+  This seems like a good time to talk about how Svelte deals with accessibility;
+  let's do that now.
+</p>
 
 <h2 id="Svelte_accessibility_support">Svelte accessibility support</h2>
 
-<p>Svelte has a special emphasis on accessibility. The intention is to encourage developers to write more accessible code "by default". Being a compiler, Svelte can statically analyze our HTML templates to provide accessibility warnings when components are being compiled.</p>
+<p>
+  Svelte has a special emphasis on accessibility. The intention is to encourage
+  developers to write more accessible code "by default". Being a compiler,
+  Svelte can statically analyze our HTML templates to provide accessibility
+  warnings when components are being compiled.
+</p>
 
-<p>Accessibility (shortened to a11y) isn't always easy to get right, but Svelte will help by warning you if you write inaccessible markup.</p>
+<p>
+  Accessibility (shortened to a11y) isn't always easy to get right, but Svelte
+  will help by warning you if you write inaccessible markup.
+</p>
 
-<p>For example, if we add an <code>&lt;img&gt;</code> element to our <code>todos.svelte</code> component without its corresponding <code>alt</code> prop:</p>
+<p>
+  For example, if we add an <code>&lt;img&gt;</code> element to our
+  <code>todos.svelte</code> component without its corresponding
+  <code>alt</code> prop:
+</p>
 
-<pre class="brush: html">&lt;h1&gt;Svelte To-Do list&lt;/h1&gt;
+<pre class="brush: html">
+&lt;h1&gt;Svelte To-Do list&lt;/h1&gt;
 
 &lt;img height="32" width="88" src="https://www.w3.org/WAI/wcag2A"&gt;
 </pre>
 
 <p>The compiler will issue the following warning:</p>
 
-<pre class="brush: bash">(!) Plugin svelte: A11y: &lt;img&gt; element should have an alt attribute
+<pre class="brush: bash">
+(!) Plugin svelte: A11y: &lt;img&gt; element should have an alt attribute
 src/components/Todos.svelte
 1: &lt;h1&gt;Svelte To-Do list&lt;/h1&gt;
 2:
@@ -317,25 +486,48 @@ src/components/Todos.svelte
    ^
 created public/build/bundle.js in 220ms
 
-[2020-07-15 04:07:43] waiting for changes...</pre>
+[2020-07-15 04:07:43] waiting for changes...</pre
+>
 
-<p>Moreover, our editor can display this warning even before calling the compiler:</p>
+<p>
+  Moreover, our editor can display this warning even before calling the
+  compiler:
+</p>
 
-<p><img alt="A code editor window showing an image tag, with a popup error message saying that the element should have an alt attribute" src="04-svelte-accessibility-support.png"></p>
+<p>
+  <img
+    alt="A code editor window showing an image tag, with a popup error message saying that the element should have an alt attribute"
+    src="04-svelte-accessibility-support.png"
+  />
+</p>
 
-<p>You can tell Svelte to ignore this warning for the next block of markup with a <a href="https://svelte.dev/docs#Comments">comment</a> beginning with <code>svelte-ignore</code>, like this:</p>
+<p>
+  You can tell Svelte to ignore this warning for the next block of markup with a
+  <a href="https://svelte.dev/docs#Comments">comment</a> beginning with
+  <code>svelte-ignore</code>, like this:
+</p>
 
-<pre class="brush: html">&lt;!-- svelte-ignore a11y-missing-attribute --&gt;
+<pre class="brush: html">
+&lt;!-- svelte-ignore a11y-missing-attribute --&gt;
 &lt;img height="32" width="88" src="https://www.w3.org/WAI/wcag2A"&gt;
 </pre>
 
 <div class="notecard note">
-<p><strong>Note</strong>: With VSCode you can automatically add this ignore comment by clicking on the <em>Quick fix...</em> link or pressing <kbd>Ctrl</kbd> + <kbd>.</kbd>.</p>
+  <p>
+    <strong>Note</strong>: With VSCode you can automatically add this ignore
+    comment by clicking on the <em>Quick fix...</em> link or pressing
+    <kbd>Ctrl</kbd> + <kbd>.</kbd>.
+  </p>
 </div>
 
-<p>If you want to globally disable this warning you can add this <code>onwarn</code> handler to your <code>rollup.config.js</code> file inside the configuration for the <code>Svelte</code> plugin, like this:</p>
+<p>
+  If you want to globally disable this warning you can add this
+  <code>onwarn</code> handler to your <code>rollup.config.js</code> file inside
+  the configuration for the <code>Svelte</code> plugin, like this:
+</p>
 
-<pre class="brush: js">plugins: [
+<pre class="brush: js">
+plugins: [
   svelte({
     dev: !production,
     css: css =&gt; {
@@ -357,19 +549,43 @@ created public/build/bundle.js in 220ms
 ]
 </pre>
 
-<p>By design, these warnings are implemented in the compiler itself, and not as a plug-in that you may choose to add to your project. The idea is to check for a11y issues in your markup by default and let you opt-out of specific warnings.</p>
+<p>
+  By design, these warnings are implemented in the compiler itself, and not as a
+  plug-in that you may choose to add to your project. The idea is to check for
+  a11y issues in your markup by default and let you opt-out of specific
+  warnings.
+</p>
 
 <div class="notecard note">
-<p><strong>Note</strong>: you should only disable these warnings if you have good reasons to do so, for example while building a quick prototype. It's important to be a good web citizen and make your pages accessible to the broadest possible userbase.</p>
+  <p>
+    <strong>Note</strong>: you should only disable these warnings if you have
+    good reasons to do so, for example while building a quick prototype. It's
+    important to be a good web citizen and make your pages accessible to the
+    broadest possible userbase.
+  </p>
 </div>
 
-<p>The accessibility rules checked by Svelte are taken from <a href="https://github.com/jsx-eslint/eslint-plugin-jsx-a11y#supported-rules">eslint-plugin-jsx-a11y</a>, a plugin for eslint that provides static checks for many accessibility rules on JSX elements. Svelte aims to implement all of them in its compiler, and most of them have already been ported to Svelte. On GitHub you can see <a href="https://github.com/sveltejs/svelte/issues/820">which accessibility checks are still missing</a>. You can check the meaning of each rule by clicking on its link.</p>
+<p>
+  The accessibility rules checked by Svelte are taken from
+  <a href="https://github.com/jsx-eslint/eslint-plugin-jsx-a11y#supported-rules"
+    >eslint-plugin-jsx-a11y</a
+  >, a plugin for eslint that provides static checks for many accessibility
+  rules on JSX elements. Svelte aims to implement all of them in its compiler,
+  and most of them have already been ported to Svelte. On GitHub you can see
+  <a href="https://github.com/sveltejs/svelte/issues/820"
+    >which accessibility checks are still missing</a
+  >. You can check the meaning of each rule by clicking on its link.
+</p>
 
 <h2 id="Styling_our_markup">Styling our markup</h2>
 
-<p>Let's make the todo list look a little better. Replace the contents of the file <code>public/global.css</code> with the following:</p>
+<p>
+  Let's make the todo list look a little better. Replace the contents of the
+  file <code>public/global.css</code> with the following:
+</p>
 
-<pre class="brush: css">/* RESETS */
+<pre class="brush: css">
+/* RESETS */
 *,
 *::before,
 *::after {
@@ -666,97 +882,318 @@ body {
 }
 .c-cb &gt; input[type="checkbox"]:checked + label::after {
   opacity: 1;
-}</pre>
+}</pre
+>
 
 <p>With our markup styled, everything now looks better:</p>
 
-<p><img alt="Our todo list app, styled, with a title of 'what needs to be done', an input to enter more todos, and a list of todos with checkboxes" src="05-styled-todo-app.png"></p>
+<p>
+  <img
+    alt="Our todo list app, styled, with a title of 'what needs to be done', an input to enter more todos, and a list of todos with checkboxes"
+    src="05-styled-todo-app.png"
+  />
+</p>
 
 <h2 id="The_code_so_far">The code so far</h2>
 
 <h3 id="Git_2">Git</h3>
 
-<p>To see the state of the code as it should be at the end of this article, access your copy of our repo like this:</p>
+<p>
+  To see the state of the code as it should be at the end of this article,
+  access your copy of our repo like this:
+</p>
 
 <pre class="brush: bash">cd mdn-svelte-tutorial/03-adding-dynamic-behavior</pre>
 
 <p>Or directly download the folder's content:</p>
 
-<pre class="brush: bash">npx degit opensas/mdn-svelte-tutorial/03-adding-dynamic-behavior</pre>
+<pre class="brush: bash">
+npx degit opensas/mdn-svelte-tutorial/03-adding-dynamic-behavior</pre
+>
 
-<p>Remember to run <code>npm install &amp;&amp; npm run dev</code> to start your app in development mode.</p>
+<p>
+  Remember to run <code>npm install &amp;&amp; npm run dev</code> to start your
+  app in development mode.
+</p>
 
 <h3 id="REPL_2">REPL</h3>
 
 <p>To see the current state of the code in a REPL, visit:</p>
 
-<p><a href="https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2">https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2</a></p>
+<p>
+  <a
+    href="https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2"
+    >https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2</a
+  >
+</p>
 
 <h2 id="Summary">Summary</h2>
 
-<p>With our markup and styling in place our Todo list app is starting to take shape, and we have everything ready so that we can start to focus on the features we have to implement.</p>
+<p>
+  With our markup and styling in place our Todo list app is starting to take
+  shape, and we have everything ready so that we can start to focus on the
+  features we have to implement.
+</p>
 
-<p>{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}</p>
+<p>
+  {{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props",
+  "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
+</p>
 
 <h2 id="In_this_module">In this module</h2>
 
 <ul>
- <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction">Introduction to client-side frameworks</a></li>
- <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features">Framework main features</a></li>
- <li>React
-  <ul>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started">Getting started with React</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning">Beginning our React todo list</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components">Componentizing our React app</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state">React interactivity: Events and state</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering">React interactivity: Editing, filtering, conditional rendering</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility">Accessibility in React</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources">React resources</a></li>
-  </ul>
- </li>
- <li>Ember
-  <ul>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started">Getting started with Ember</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization">Ember app structure and componentization</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state">Ember interactivity: Events, classes and state</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer">Ember Interactivity: Footer functionality, conditional rendering</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing">Routing in Ember</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources">Ember resources and troubleshooting</a></li>
-  </ul>
- </li>
- <li>Vue
-  <ul>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started">Getting started with Vue</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component">Creating our first Vue component</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists">Rendering a list of Vue components</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models">Adding a new todo form: Vue events, methods, and models</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling">Styling Vue components with CSS</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties">Using Vue computed properties</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering">Vue conditional rendering: editing existing todos</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management">Focus management with Vue refs</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources">Vue resources</a></li>
-  </ul>
- </li>
- <li>Svelte
-  <ul>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started">Getting started with Svelte</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning">Starting our Svelte Todo list app</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props">Dynamic behavior in Svelte: working with variables and props</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components">Componentizing our Svelte app</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility">Advanced Svelte: Reactivity, lifecycle, accessibility</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores">Working with Svelte stores</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript">TypeScript support in Svelte</a></li>
-   <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next">Deployment and next steps</a></li>
-  </ul>
- </li>
- <li>Angular
-   <ul>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started">Getting started with Angular</a></li>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning">Beginning our Angular todo list app</a></li>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling">Styling our Angular app</a></li>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component">Creating an item component</a></li>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering">Filtering our to-do items</a></li>
-    <li><a href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building">Building Angular applications and further resources</a></li>
-   </ul>
- </li>
+  <li>
+    <a
+      href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction"
+      >Introduction to client-side frameworks</a
+    >
+  </li>
+  <li>
+    <a
+      href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features"
+      >Framework main features</a
+    >
+  </li>
+  <li>
+    React
+    <ul>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started"
+          >Getting started with React</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning"
+          >Beginning our React todo list</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components"
+          >Componentizing our React app</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state"
+          >React interactivity: Events and state</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering"
+          >React interactivity: Editing, filtering, conditional rendering</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility"
+          >Accessibility in React</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources"
+          >React resources</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Ember
+    <ul>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started"
+          >Getting started with Ember</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization"
+          >Ember app structure and componentization</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state"
+          >Ember interactivity: Events, classes and state</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer"
+          >Ember Interactivity: Footer functionality, conditional rendering</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing"
+          >Routing in Ember</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources"
+          >Ember resources and troubleshooting</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Vue
+    <ul>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started"
+          >Getting started with Vue</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component"
+          >Creating our first Vue component</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists"
+          >Rendering a list of Vue components</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models"
+          >Adding a new todo form: Vue events, methods, and models</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling"
+          >Styling Vue components with CSS</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties"
+          >Using Vue computed properties</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering"
+          >Vue conditional rendering: editing existing todos</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management"
+          >Focus management with Vue refs</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources"
+          >Vue resources</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Svelte
+    <ul>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started"
+          >Getting started with Svelte</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning"
+          >Starting our Svelte Todo list app</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props"
+          >Dynamic behavior in Svelte: working with variables and props</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components"
+          >Componentizing our Svelte app</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility"
+          >Advanced Svelte: Reactivity, lifecycle, accessibility</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores"
+          >Working with Svelte stores</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript"
+          >TypeScript support in Svelte</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next"
+          >Deployment and next steps</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Angular
+    <ul>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started"
+          >Getting started with Angular</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning"
+          >Beginning our Angular todo list app</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling"
+          >Styling our Angular app</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component"
+          >Creating an item component</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering"
+          >Filtering our to-do items</a
+        >
+      </li>
+      <li>
+        <a
+          href="/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building"
+          >Building Angular applications and further resources</a
+        >
+      </li>
+    </ul>
+  </li>
 </ul>

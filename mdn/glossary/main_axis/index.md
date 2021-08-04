@@ -1,11 +1,11 @@
---- title: Main Axis slug: Glossary/Main\_Axis tags: - CSS - Glossary - Main axis - flexbox ---
+--- title: Main Axis slug: Glossary/Main_Axis tags: - CSS - Glossary - Main axis - flexbox ---
 
 The main axis in {{glossary("flexbox")}} is defined by the direction set by the {{cssxref("flex-direction")}} property. There are four possible values for `flex-direction`. These are:
 
--   `row`
--   `row-reverse`
--   `column`
--   `column-reverse`
+- `row`
+- `row-reverse`
+- `column`
+- `column-reverse`
 
 Should you choose `row` or `row-reverse` then your main axis will run along the row in the inline direction.
 
@@ -17,20 +17,19 @@ Choose `column` or `column-reverse` and your main axis will run top to bottom of
 
 On the main axis you can control the sizing of flex items by adding any available space to the items themselves, by way of `flex` properties on the items. Or, you can control the space between and around items by using the `justify-content` property.
 
-Learn more
-----------
+## Learn more
 
 ### Property reference
 
--   {{cssxref("flex-basis")}}
--   {{cssxref("flex-direction")}}
--   {{cssxref("flex-grow")}}
--   {{cssxref("flex-shrink")}}
--   {{cssxref("justify-content")}}
--   {{cssxref("flex")}}
+- {{cssxref("flex-basis")}}
+- {{cssxref("flex-direction")}}
+- {{cssxref("flex-grow")}}
+- {{cssxref("flex-shrink")}}
+- {{cssxref("justify-content")}}
+- {{cssxref("flex")}}
 
 ### Further reading
 
--   CSS Flexbox Guide: *[Basic Concepts of Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)*
--   CSS Flexbox Guide: *[Aligning items in a flex container](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)*
--   CSS Flexbox Guide: *[Controlling Ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)*
+- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
+- CSS Flexbox Guide: _[Aligning items in a flex container](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)_
+- CSS Flexbox Guide: _[Controlling Ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)_

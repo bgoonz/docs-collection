@@ -2,9 +2,8 @@
 
 A **cache** (web cache or HTTP cache) is a component that stores HTTP responses temporarily so that it can be used for subsequent HTTP requests as long as it meets certain conditions.
 
-Learn More
-----------
+## Learn More
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Web cache")}} on Wikipedia
+- {{interwiki("wikipedia", "Web cache")}} on Wikipedia

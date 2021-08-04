@@ -4,11 +4,10 @@
 
 RTCP periodically transmits control packets to all of an RTP session's participants, using the same mechanism that is being used to transmit the data packets. That underlying protocol handles the multiplexing of the data and control packets and may use separate network ports for each type of packet.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Introduction to the Real-time Transport Protocol](/en-US/docs/Web/API/WebRTC_API/Intro_to_RTP)
--   {{interwiki("wikipedia", "RTP Control Protocol")}}
--   {{RFC(3550, 6, "RFC 3550 Section 6")}}
+- [Introduction to the Real-time Transport Protocol](/en-US/docs/Web/API/WebRTC_API/Intro_to_RTP)
+- {{interwiki("wikipedia", "RTP Control Protocol")}}
+- {{RFC(3550, 6, "RFC 3550 Section 6")}}

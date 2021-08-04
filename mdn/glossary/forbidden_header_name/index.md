@@ -1,4 +1,4 @@
---- title: Forbidden header name slug: Glossary/Forbidden\_header\_name tags: - Fetch - Glossary - HTTP - Headers - forbidden ---
+--- title: Forbidden header name slug: Glossary/Forbidden_header_name tags: - Fetch - Glossary - HTTP - Headers - forbidden ---
 
 A **forbidden header name** is the name of any [HTTP header](/en-US/docs/Web/HTTP/Headers) that cannot be modified programmatically; specifically, an HTTP **request** header name (in contrast with a {{Glossary("Forbidden response header name")}}).
 
@@ -6,29 +6,29 @@ Modifying such headers is forbidden because the user agent retains full control 
 
 Forbidden header names start with `Proxy-` or `Sec-`, or are one of the following names:
 
--   `Accept-Charset`
--   `Accept-Encoding`
--   `Access-Control-Request-Headers`
--   `Access-Control-Request-Method`
--   `Connection`
--   `Content-Length`
--   `Cookie`
--   `Cookie2`
--   `Date`
--   `DNT`
--   `Expect`
--   `Feature-Policy`
--   `Host`
--   `Keep-Alive`
--   `Origin`
--   `Proxy-`
--   `Sec-`
--   `Referer`
--   `TE`
--   `Trailer`
--   `Transfer-Encoding`
--   `Upgrade`
--   `Via`
+- `Accept-Charset`
+- `Accept-Encoding`
+- `Access-Control-Request-Headers`
+- `Access-Control-Request-Method`
+- `Connection`
+- `Content-Length`
+- `Cookie`
+- `Cookie2`
+- `Date`
+- `DNT`
+- `Expect`
+- `Feature-Policy`
+- `Host`
+- `Keep-Alive`
+- `Origin`
+- `Proxy-`
+- `Sec-`
+- `Referer`
+- `TE`
+- `Trailer`
+- `Transfer-Encoding`
+- `Upgrade`
+- `Via`
 
 #### Note
 

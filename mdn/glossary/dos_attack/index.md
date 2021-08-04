@@ -1,4 +1,4 @@
---- title: DoS attack slug: Glossary/DOS\_attack tags: - Glossary - Security ---
+--- title: DoS attack slug: Glossary/DOS_attack tags: - Glossary - Security ---
 
 DoS (Denial of Service) is a network attack that prevents legitimate use of {{glossary("server")}} resources by flooding the server with requests.
 
@@ -10,17 +10,16 @@ There are also Distributed Denial of Service (DDoS) Attacks in which a multitude
 
 DoS attacks are more of a category than a particular kind of attack. Here is a non-exhaustive list of DoS attack types:
 
--   bandwidth attack
--   service request flood
--   SYN flooding attack
--   ICMP flood attack
--   peer-to-peer attack
--   permanent DoS attack
--   application level flood attack
+- bandwidth attack
+- service request flood
+- SYN flooding attack
+- ICMP flood attack
+- peer-to-peer attack
+- permanent DoS attack
+- application level flood attack
 
-Learn more
-----------
+## Learn more
 
--   {{interwiki("wikipedia", "Denial-of-service\_attack", "Denial-of-service attack")}} on Wikipedia
--   [Denial-of-service on OWASP](https://www.owasp.org/index.php/Denial_of_Service)
--   {{Glossary("Distributed Denial of Service","DDoS")}}
+- {{interwiki("wikipedia", "Denial-of-service\_attack", "Denial-of-service attack")}} on Wikipedia
+- [Denial-of-service on OWASP](https://www.owasp.org/index.php/Denial_of_Service)
+- {{Glossary("Distributed Denial of Service","DDoS")}}

@@ -1,9 +1,8 @@
---- title: Local variable slug: Glossary/Local\_variable tags: - CodingScripting - Glossary - NeedsContent ---
+--- title: Local variable slug: Glossary/Local_variable tags: - CodingScripting - Glossary - NeedsContent ---
 
 A {{glossary("variable")}} whose name is bound to its {{glossary("value")}} only within a {{Glossary("local scope")}}.
 
-Example
--------
+## Example
 
     var global = 5; //is a global variable
 

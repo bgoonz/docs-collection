@@ -4,23 +4,22 @@
 
 These features are especially useful for one of the most common areas in which DTLS comes into play: {{Glossary("WebRTC")}}. All of the WebRTC related protocols are required to encrypt their communications using DTLS; this includes {{Glossary("SCTP")}}, {{Glossary("SRTP")}}, and {{Glossary("STUN")}}.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Datagram Transport Layer Security")}} on Wikipedia
+- {{Interwiki("wikipedia", "Datagram Transport Layer Security")}} on Wikipedia
 
 ### Specifications
 
--   {{RFC(6347, "Datagram Transport Layer Security Version 1.2")}}
--   [Datagram Transport Layer Security Protocol Version 1.3 *draft specification*](https://datatracker.ietf.org/doc/html/draft-ietf-tls-dtls13)
+- {{RFC(6347, "Datagram Transport Layer Security Version 1.2")}}
+- [Datagram Transport Layer Security Protocol Version 1.3 _draft specification_](https://datatracker.ietf.org/doc/html/draft-ietf-tls-dtls13)
 
 ### Related specifications
 
--   {{RFC(5763, "Framework for Establishing a Secure Real-time Transport Protocol (SRTP) Security Context Using DTLS")}}
--   {{RFC(5764, "DTLS Extension to Establish Keys for the Secure Real-time Transport Protocol (SRTP)")}}
--   {{RFC(6083, "DTLS for Stream Control Transmission Protocol (SCTP)")}}
--   {{RFC(8261, "Datagram Transport Layer Security (DTLS) Encapsulation of SCTP Packets")}}
--   {{RFC(7350, "Datagram Transport Layer Security (DTLS) as Transport for Session Traversal Utilities for NAT (STUN)")}}
--   {{RFC(7925, "TLS / DTLS Profiles for the Internet of Things")}}
+- {{RFC(5763, "Framework for Establishing a Secure Real-time Transport Protocol (SRTP) Security Context Using DTLS")}}
+- {{RFC(5764, "DTLS Extension to Establish Keys for the Secure Real-time Transport Protocol (SRTP)")}}
+- {{RFC(6083, "DTLS for Stream Control Transmission Protocol (SCTP)")}}
+- {{RFC(8261, "Datagram Transport Layer Security (DTLS) Encapsulation of SCTP Packets")}}
+- {{RFC(7350, "Datagram Transport Layer Security (DTLS) as Transport for Session Traversal Utilities for NAT (STUN)")}}
+- {{RFC(7925, "TLS / DTLS Profiles for the Internet of Things")}}

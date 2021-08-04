@@ -8,13 +8,12 @@ Special characters needing encoding are: `':'`, `'/'`, `'?'`, `'#'`, `'['`, `']'
 
 Depending on the context, the character `' '` is translated to a `'+'` (like in the percent-encoding version used in an `application/x-www-form-urlencoded` message), or in `'%20'` like on URLs.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   Definition of [percent-encoding](https://en.wikipedia.org/wiki/Percent-encoding) in Wikipedia.
+- Definition of [percent-encoding](https://en.wikipedia.org/wiki/Percent-encoding) in Wikipedia.
 
 ### Technical knowledge
 
--   {{RFC(3986)}}, section 2.1, where this encoding is defined.
+- {{RFC(3986)}}, section 2.1, where this encoding is defined.

@@ -1,4 +1,4 @@
---- title: Bézier curve slug: Glossary/Bézier\_curve tags: - Bézier curve - Glossary - Graphics - Reference ---
+--- title: Bézier curve slug: Glossary/Bézier_curve tags: - Bézier curve - Glossary - Graphics - Reference ---
 
 A **Bézier curve** (pronounced \[bezje\]) is a mathematically described curve used in computer graphics and animation. In {{Glossary("vector image", "vector images")}}, they are used to model smooth curves that can be scaled indefinitely.
 
@@ -8,15 +8,14 @@ To draw the curve, two imaginary lines are drawn, one from P<sub>0</sub> to P<su
 
 ![Drawing a Bézier curve](bézier_3_big.gif)
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Bézier curve on Wikipedia](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
+- [Bézier curve on Wikipedia](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
 
 ### Learn about it
 
--   [Cubic Bézier timing functions in CSS](/en-US/docs/Web/CSS/easing-function#the_cubic-bezier()_class_of_timing_functions)
--   {{SVGAttr("keySplines")}} SVG attribute
--   [Cubic Bézier Generator](/en-US/docs/Web/CSS/Tools/Cubic_Bezier_Generator)
+- [Cubic Bézier timing functions in CSS](</en-US/docs/Web/CSS/easing-function#the_cubic-bezier()_class_of_timing_functions>)
+- {{SVGAttr("keySplines")}} SVG attribute
+- [Cubic Bézier Generator](/en-US/docs/Web/CSS/Tools/Cubic_Bezier_Generator)

@@ -1,23 +1,20 @@
---- title: 3D games on the Web slug: Games/Techniques/3D\_on\_the\_web tags: - Games - Graphics - NeedsContent - NeedsExample - WebGL - WebVR - three.js ---
+--- title: 3D games on the Web slug: Games/Techniques/3D_on_the_web tags: - Games - Graphics - NeedsContent - NeedsExample - WebGL - WebVR - three.js ---
 
 {{GamesSidebar}}
 
 For rich gaming experiences on the web, the weapon of choice is WebGL, which is rendered on HTML {{htmlelement("canvas")}}. WebGL is basically an OpenGL ES 2.0 for the Web — it's a JavaScript API providing tools to build rich interactive animations and of course, also games. You can generate and render dynamic 3D graphics with JavaScript that is hardware accelerated.
 
-Documentation and browser support
----------------------------------
+## Documentation and browser support
 
 The [WebGL](/en-US/docs/Web/API/WebGL_API) project documentation and specification is maintained by the [Khronos Group](https://www.khronos.org/), not the W3C as with most of the web APIs. Support on modern browsers is very good, even on mobile, so you don't have to worry about that too much. The main browsers are all supporting WebGL and all you need to focus on is optimizing the performance on the devices you use.
 
 There's an ongoing effort on releasing WebGL 2.0 (based on OpenGL ES 3.0) in the near future, which will bring many improvements and will help developers build games for the modern web using current, powerful hardware.
 
-Explaining the basic 3D theory
-------------------------------
+## Explaining the basic 3D theory
 
 The basics of 3D theory centers around shapes represented in a 3D space, with a coordinate system being used to calculate their positions. See our [Explaining basic 3D theory](/en-US/docs/Games/Techniques/3D_on_the_web/Basic_theory) article for all the information you need.
 
-Advanced concepts
------------------
+## Advanced concepts
 
 You can do a lot more with WebGL. There are some advanced concepts which you should dive into and learn more about — like shaders, collision detection, or the latest hot topic: virtual reality on the web.
 
@@ -29,8 +26,8 @@ It's worth mentioning shaders, which are a separate story on their own. Shaders 
 
 It's hard to imagine a game without collision detection — we always need to work out when something is hitting something else. We have information available for you to learn from:
 
--   [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection)
--   [3D collision detection](/en-US/docs/Games/Techniques/3D_collision_detection)
+- [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection)
+- [3D collision detection](/en-US/docs/Games/Techniques/3D_collision_detection)
 
 ### WebVR
 
@@ -38,8 +35,7 @@ The concept of virtual reality is not new, but it's storming onto the web thanks
 
 There's also the [Building up a basic demo with A-Frame](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame) article showing you how easy it is to build 3D environments for virtual reality using the [A-Frame](https://aframe.io/) framework.
 
-The rise of libraries and frameworks
-------------------------------------
+## The rise of libraries and frameworks
 
 Coding raw WebGL is fairly complex, but you'll want to get to grips with it in the long run, as your projects get more advanced (see our [WebGL documentation](/en-US/docs/Web/API/WebGL_API) to get started.) For real-world projects you'll probably also make use of a framework to speed up development and help you manage the project you're working on. Using a framework for 3D games also helps optimize the performance as a lot is taken care of by the tools you use, so you can focus on building the game itself.
 
@@ -67,8 +63,7 @@ Both [Unity](https://unity3d.com/) and [Unreal](https://www.unrealengine.com/) c
 
 ![](shapes.png)
 
-Where to go next
-----------------
+## Where to go next
 
 With this article we just scratched the surface of what's possible with currently available technologies. You can build immersive, beautiful and fast 3D games on the Web using WebGL, and the libraries and frameworks build on top of it.
 
@@ -78,22 +73,22 @@ You can find all the source code for this series [demos on GitHub](https://end3r
 
 ### APIs
 
--   [Canvas API](/en-US/docs/Web/API/Canvas_API)
--   [WebGL API](/en-US/docs/Web/API/WebGL_API)
--   [WebVR API](/en-US/docs/Web/API/WebVR_API)
+- [Canvas API](/en-US/docs/Web/API/Canvas_API)
+- [WebGL API](/en-US/docs/Web/API/WebGL_API)
+- [WebVR API](/en-US/docs/Web/API/WebVR_API)
 
 ### Frameworks
 
--   [Three.js](https://threejs.org/)
--   [Whitestorm.js](https://github.com/WhitestormJS/whs.js) (based on Three.js)
--   [PlayCanvas](https://playcanvas.com/)
--   [Babylon.js](https://www.babylonjs.com/)
--   [A-Frame](https://aframe.io/)
+- [Three.js](https://threejs.org/)
+- [Whitestorm.js](https://github.com/WhitestormJS/whs.js) (based on Three.js)
+- [PlayCanvas](https://playcanvas.com/)
+- [Babylon.js](https://www.babylonjs.com/)
+- [A-Frame](https://aframe.io/)
 
 ### Tutorials
 
--   [Building up a basic demo with Three.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js)
--   [Building up a basic demo with Whitestorm.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Whitestorm.js)
--   [Building up a basic demo with PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas)
--   [Building up a basic demo with Babylon.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js)
--   [Building up a basic demo with A-Frame](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame)
+- [Building up a basic demo with Three.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js)
+- [Building up a basic demo with Whitestorm.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Whitestorm.js)
+- [Building up a basic demo with PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas)
+- [Building up a basic demo with Babylon.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js)
+- [Building up a basic demo with A-Frame](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame)

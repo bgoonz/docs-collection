@@ -1,4 +1,4 @@
---- title: Document directive slug: Glossary/Document\_directive tags: - CSP - Directive - Document - Glossary - HTTP - Security ---
+--- title: Document directive slug: Glossary/Document_directive tags: - CSP - Directive - Document - Glossary - HTTP - Security ---
 
 **{{Glossary("CSP")}} document directives** are used in a {{HTTPHeader("Content-Security-Policy")}} header and govern the properties of a document or [worker](/en-US/docs/Web/API/Web_Workers_API) environment to which a policy applies.
 

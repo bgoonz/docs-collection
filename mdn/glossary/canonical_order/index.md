@@ -1,4 +1,4 @@
---- title: Canonical order slug: Glossary/Canonical\_order tags: - Canonical order - CodingScripting - Glossary ---
+--- title: Canonical order slug: Glossary/Canonical_order tags: - Canonical order - CodingScripting - Glossary ---
 
 In CSS, canonical order is used to refer to the order in which separate values need to be specified (or {{Glossary("parse", "parsed")}}) or are to be {{Glossary("serialization", "serialized")}} as part of a CSS property value. It is defined by the formal {{Glossary("syntax")}} of the property and normally refers to the order in which longhand values should be specified as part of a single shorthand value.
 
@@ -15,8 +15,7 @@ For example, {{cssxref("background")}} shorthand property values are made up of 
 
 Furthermore, its syntax defines, that if a value for the {{cssxref("background-size")}} is given, it **must** be specified **after** the value for the {{cssxref("background-position")}}, separated by a slash. Other values may appear in any order.
 
-Learn more
-----------
+## Learn more
 
--   [What does “canonical order” mean with respect to CSS properties?](https://stackoverflow.com/questions/28963536/what-does-canonical-order-mean-with-respect-to-css-properties) on Stack Overflow provides useful further discussion.
--   The [description of the formal syntax used for CSS values](/en-US/docs/Web/CSS/Value_definition_syntax) on MDN
+- [What does “canonical order” mean with respect to CSS properties?](https://stackoverflow.com/questions/28963536/what-does-canonical-order-mean-with-respect-to-css-properties) on Stack Overflow provides useful further discussion.
+- The [description of the formal syntax used for CSS values](/en-US/docs/Web/CSS/Value_definition_syntax) on MDN

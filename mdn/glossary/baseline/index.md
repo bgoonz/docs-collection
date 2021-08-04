@@ -6,13 +6,12 @@ The descenders of characters like g and p extend below this line. {{Glossary("gl
 
 East Asian scripts have no baseline. Their glyphs are placed in a square box without ascenders or descenders.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Baseline](https://en.wikipedia.org/wiki/Baseline_(typography)) on Wikipedia
+- [Baseline](<https://en.wikipedia.org/wiki/Baseline_(typography)>) on Wikipedia
 
 ### Technical reference
 
--   [CSS Box Alignment](/en-US/docs/Web/CSS/CSS_Box_Alignment#types_of_alignment) on MDN
+- [CSS Box Alignment](/en-US/docs/Web/CSS/CSS_Box_Alignment#types_of_alignment) on MDN

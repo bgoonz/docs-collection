@@ -1,23 +1,20 @@
---- title: 2D maze game with device orientation slug: Games/Tutorials/HTML5\_Gamedev\_Phaser\_Device\_Orientation tags: - Canvas - Device Orientation API - Game Development - HTML5 - Phaser - Vibration API ---
+--- title: 2D maze game with device orientation slug: Games/Tutorials/HTML5_Gamedev_Phaser_Device_Orientation tags: - Canvas - Device Orientation API - Game Development - HTML5 - Phaser - Vibration API ---
 
 {{GamesSidebar}}
 
 In this tutorial we’ll go through the process of building an HTML5 mobile game that uses the [Device Orientation](/en-US/docs/Web/Apps/Fundamentals/gather_and_modify_data/responding_to_device_orientation_changes) and [Vibration](/en-US/docs/Web/API/Vibration_API) **APIs** to enhance the gameplay and is built using the <a href="https://phaser.io/" class="external external-icon">Phaser</a> framework. Basic JavaScript knowledge is recommended to get the most from this tutorial.
 
-Example game
-------------
+## Example game
 
 By the end of the tutorial you will have a fully functional demo game: [Cyber Orb](https://orb.enclavegames.com/). It will look something like this:
 
 ![A 2D game board featuring a small yellow ball. There is a large black hole for the ball to escape down, and a number of barriers blocking the ball from escaping.](cyber-orb.png)
 
-Phaser framework
-----------------
+## Phaser framework
 
 [Phaser](https://phaser.io/) is a framework for building desktop and mobile HTML5 games. It’s quite new, but growing rapidly thanks to the passionate community involved in the development process. You can check it out [on GitHub](https://github.com/photonstorm/phaser) where it’s open sourced, read the [online documentation](http://docs.phaser.io/) and go through the big collection of [examples](https://examples.phaser.io/). The Phaser framework provides you with a set of tools that will speed up development and help handle generic tasks needed to complete the game, so you can focus on the game idea itself.
 
-Starting with the project
--------------------------
+## Starting with the project
 
 You can see [Cyber Orb source code](https://github.com/EnclaveGames/Cyber-Orb) on GitHub. The folder structure is quite straightforward: the starting point is the `index.html` file where we initialize the framework and set up an {{htmlelement("canvas")}} to render the game on.
 
@@ -25,12 +22,11 @@ You can see [Cyber Orb source code](https://github.com/EnclaveGames/Cyber-Orb) o
 
 You can open the index file in your favorite browser to launch the game and try it. There are also three folders in the directory:
 
--   `img`: All the images that we will use in the game.
--   `src`: The JavaScript files with all the source code of the game defined inside.
--   `audio:` The sound files used in the game.
+- `img`: All the images that we will use in the game.
+- `src`: The JavaScript files with all the source code of the game defined inside.
+- `audio:` The sound files used in the game.
 
-Setting up the Canvas
----------------------
+## Setting up the Canvas
 
 We will be rendering our game on Canvas, but we won't do it manually — this will be taken care of by the framework. Let’s set it up: our starting point is the `index.html` file with the following content. You can create this yourself if you want to follow along:
 
@@ -80,8 +76,7 @@ Back to game states: the line below is adding a new state called `Boot` to the g
 
 The first value is the name of the state and the second one is the object we want to assign to it. The `start` method is starting the given state and making it active. Let's see what the states are actually.
 
-Managing game states
---------------------
+## Managing game states
 
 The states in Phaser are separate parts of the game logic; in our case we’re loading them from independent JavaScript files for better maintainability. The basic states used in this game are: `Boot`, `Preloader`, `MainMenu`, `Howto` and `Game`. `Boot` will take care of initializing a few settings, `Preloader` will load all of the assets like graphics and audio, `MainMenu` is the menu with the start button, `Howto` shows the "how to play" instructions and the `Game` state lets you actually play the game. Let's quickly go though the content of those states.
 
@@ -154,14 +149,14 @@ The `MainMenu` state shows the main menu of the game, where you can start playin
 
 To create a new button there's `add.button` method with the following list of optional arguments:
 
--   Top absolute position on Canvas in pixels.
--   Left absolute position on Canvas in pixels.
--   Name of the image asset the button is using.
--   Function that will be executed when someone clicks the button.
--   The execution context.
--   Frame from the image asset used as the button's "hover" state.
--   Frame from the image asset used as the button's "normal" or "out" state.
--   Frame from the image asset used as the button's "click" or "down" state.
+- Top absolute position on Canvas in pixels.
+- Left absolute position on Canvas in pixels.
+- Name of the image asset the button is using.
+- Function that will be executed when someone clicks the button.
+- The execution context.
+- Frame from the image asset used as the button's "hover" state.
+- Frame from the image asset used as the button's "normal" or "out" state.
+- Frame from the image asset used as the button's "click" or "down" state.
 
 The `anchor.set` is setting up the anchor point on the button for which all the calculations of the position are applied. In our case it's anchored half the way from the left edge and at the start of the top edge, so it can be easily horizontally centered on the screen without the need to know its width.
 
@@ -202,14 +197,14 @@ The `Game` state from the `Game.js` file is where all the magic happens. All the
 
 The `create` and `update` functions are framework-specific, while others will be our own creations:
 
--   `initLevels` initializes the level data.
--   `showLevel` prints the level data on the screen.
--   `updateCounter` updates the time spent playing each level and records the total time spent playing the game..
--   `managePause` pauses and resumes the game.
--   `manageAudio` turns the audio on and off.
--   `wallCollision` is executed when the ball hits the walls or other objects.
--   `handleOrientation` is the function bound to the event responsible for the Device Orientation API, providing the motion controls when the game is running on a mobile device with appropriate hardware.
--   `finishLevel` loads a new level when the current level is completed, or finished the game if the final level is completed.
+- `initLevels` initializes the level data.
+- `showLevel` prints the level data on the screen.
+- `updateCounter` updates the time spent playing each level and records the total time spent playing the game..
+- `managePause` pauses and resumes the game.
+- `manageAudio` turns the audio on and off.
+- `wallCollision` is executed when the ball hits the walls or other objects.
+- `handleOrientation` is the function bound to the event responsible for the Device Orientation API, providing the motion controls when the game is running on a mobile device with appropriate hardware.
+- `finishLevel` loads a new level when the current level is completed, or finished the game if the final level is completed.
 
 #### Adding the ball and its motion mechanics
 
@@ -424,13 +419,11 @@ If the current level is equal to the maximum number of levels (in this case 5), 
 
 If the current level is lower than 5, all the necessary variables are reset and the next level is loaded.
 
-Ideas for new features
-----------------------
+## Ideas for new features
 
 This is merely a working demo of a game that could have lots of additional features. We can for example add power-ups to collect along the way that will make our ball roll faster, stop the timer for a few seconds or give the ball special powers to go through obstacles. There’s also room for the traps which will slow the ball down or make it more difficult to reach the hole. You can create more levels of increasing difficulty. You can even implement achievements, leaderboards and medals for different actions in the game. There are endless possibilities — they only depend on your imagination.
 
-Summary
--------
+## Summary
 
 I hope this tutorial will help you dive into 2D game development and inspire you to create awesome games on your own. You can play the demo game [Cyber Orb](https://orb.enclavegames.com/) and check out its [source code on GitHub](https://github.com/EnclaveGames/Cyber-Orb).
 

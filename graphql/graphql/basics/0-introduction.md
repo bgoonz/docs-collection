@@ -2,13 +2,13 @@
 
 > APIs have become ubiquitous components of software infrastructures. In short, an **API** defines how a **client** can load data from a **server**.
 
-At its core, GraphQL enables *declarative data fetching* where a client can specify exactly what data it needs from an API. Instead of multiple endpoints that return fixed data structures, a GraphQL server only exposes a single endpoint and responds with precisely the data a client asked for.
+At its core, GraphQL enables _declarative data fetching_ where a client can specify exactly what data it needs from an API. Instead of multiple endpoints that return fixed data structures, a GraphQL server only exposes a single endpoint and responds with precisely the data a client asked for.
 
 ### GraphQL - A Query Language for APIs
 
 Most applications today have the need to fetch data from a server where that data is stored in a database. It’s the responsibility of the API to provide an interface to the stored data that fits an application’s needs.
 
-GraphQL is often confused with being a database technology. This is a misconception, GraphQL is a *query language* for APIs - not databases. In that sense it’s database agnostic and effectively can be used in any context where an API is used.
+GraphQL is often confused with being a database technology. This is a misconception, GraphQL is a _query language_ for APIs - not databases. In that sense it’s database agnostic and effectively can be used in any context where an API is used.
 
 ### A more efficient Alternative to REST
 
@@ -30,13 +30,13 @@ Continuous deployment has become a standard for many companies, rapid iterations
 
 ### History, Context & Adoption
 
-#### GraphQL is *not* only for React Developers
+#### GraphQL is _not_ only for React Developers
 
 Facebook started using GraphQL in 2012 in their native mobile apps. Interestingly though, GraphQL has mostly been picked up to be used in the context of web technologies and has gained only little traction in the native mobile space.
 
 The first time Facebook publicly spoke about GraphQL was at [React.js Conf 2015](https://www.youtube.com/watch?v=9sc8Pyc51uU) and shortly after announced their [plans to open source](https://facebook.github.io/react/blog/2015/05/01/graphql-introduction.html) it. Because Facebook always used to speak about GraphQL in the context of [React](https://facebook.github.io/react/), it took a while for non-React developers to understand that GraphQL was by no means a technology that was limited to usage with React.
 
-![Screenshot of YouTube video where Dan Schafer & Jing Chen publicly introduce GraphQL React.JS Conf 2015](http://imgur.com/0mbF21w.png) *[Dan Schafer](https://twitter.com/dlschafer) & [Jing Chen](https://twitter.com/jingc?lang=en) publicly introduce GraphQL React.JS Conf 2015. [Watch video](https://www.youtube.com/watch?v=9sc8Pyc51uU).*
+![Screenshot of YouTube video where Dan Schafer & Jing Chen publicly introduce GraphQL React.JS Conf 2015](http://imgur.com/0mbF21w.png) _[Dan Schafer](https://twitter.com/dlschafer) & [Jing Chen](https://twitter.com/jingc?lang=en) publicly introduce GraphQL React.JS Conf 2015. [Watch video](https://www.youtube.com/watch?v=9sc8Pyc51uU)._
 
 #### A rapidly growing Community
 
@@ -44,6 +44,6 @@ In fact, GraphQL is a technology that can be used everywhere a client communicat
 
 Today, GraphQL is used in production by [lots of different companies](http://graphql.org/users/) such as GitHub, Twitter, Yelp and Shopify - to name only a few.
 
-![GitHub, Twitter, Yelp, Shopify. and more logos](https://imgur.com/2RYRYB3.png) *Despite being such a young technology, GraphQL has already been widely adopted. Learn [who else](http://graphql.org/users/) is using GraphQL in production.*
+![GitHub, Twitter, Yelp, Shopify. and more logos](https://imgur.com/2RYRYB3.png) _Despite being such a young technology, GraphQL has already been widely adopted. Learn [who else](http://graphql.org/users/) is using GraphQL in production._
 
 There are entire conferences dedicated to GraphQL such as [GraphQL Conf](https://graphqlconf.org/) and more resources like the [GraphQL Weekly](https://graphqlweekly.com/) newsletter.

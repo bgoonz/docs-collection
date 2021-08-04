@@ -4,7 +4,7 @@ In this section, you’re going to implement signup and login functionality that
 
 The first thing you need is a way to represent user data in the database. To do so, you can add a `User` type to your Prisma data model.
 
-You’ll also want to add a *relation* between the `User` and the existing `Link` type to express that `Link`s are *posted* by `User`s.
+You’ll also want to add a _relation_ between the `User` and the existing `Link` type to express that `Link`s are _posted_ by `User`s.
 
 Open `prisma/schema.prisma` and add the following code, making sure to also update your existing `Link` model accordingly:
 
@@ -16,7 +16,7 @@ Now we start to see even more how Prisma helps you to reason about your data in 
 
 ### Understanding relation fields
 
-Notice how you’re adding a new *relation field* called `postedBy` to the `Link` model that points to a `User` instance. The `User` model then has a `links` field that’s a list of `Link`s.
+Notice how you’re adding a new _relation field_ called `postedBy` to the `Link` model that points to a `User` instance. The `User` model then has a `links` field that’s a list of `Link`s.
 
 To do this, we need to also define the relation by annotating the `postedBy` field with [the `@relation` attribute](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations#the-relation-attribute). This is required for every relation field in your Prisma schema, and all you’re doing is defining what the foreign key of the related table will be. So in this case, we’re adding an extra field to store the `id` of the `User` who posts a `Link`, and then telling Prisma that `postedById` will be equal to the `id` field in the `User` table.
 
@@ -171,7 +171,7 @@ Let’s use the good ol’ numbered comments again to understand what’s going 
 
 Now on the `login` mutation!
 
-1.  Instead of *creating* a new `User` object, you’re now using your `PrismaClient` instance to retrieve an existing `User` record by the `email` address that was sent along as an argument in the `login` mutation. If no `User` with that email address was found, you’re returning a corresponding error.
+1.  Instead of _creating_ a new `User` object, you’re now using your `PrismaClient` instance to retrieve an existing `User` record by the `email` address that was sent along as an argument in the `login` mutation. If no `User` with that email address was found, you’re returning a corresponding error.
 2.  The next step is to compare the provided password with the one that is stored in the database. If the two don’t match, you’re returning an error as well.
 3.  In the end, you’re returning `token` and `user` again.
 
@@ -222,7 +222,7 @@ Now, add the following code to it:
 
 The `APP_SECRET` is used to sign the JWTs which you’re issuing for your users.
 
-The `getUserId` function is a helper function that you’ll call in resolvers which require authentication (such as `post`). It first retrieves the `Authorization` header (which contains the `User`’s JWT) from the `context`. It then verifies the JWT and retrieves the `User`’s ID from it. Notice that if that process is not successful for any reason, the function will throw an *exception*. You can therefore use it to “protect” the resolvers which require authentication.
+The `getUserId` function is a helper function that you’ll call in resolvers which require authentication (such as `post`). It first retrieves the `Authorization` header (which contains the `User`’s JWT) from the `context`. It then verifies the JWT and retrieves the `User`’s ID from it. Notice that if that process is not successful for any reason, the function will throw an _exception_. You can therefore use it to “protect” the resolvers which require authentication.
 
 To make everything work, be sure to add the following import statements to the top of `Mutation.js`:
 
@@ -254,7 +254,7 @@ To make the above operations possible, open `index.js` and adjust the instantiat
       }
     });
 
-Instead of attaching an object directly, you’re now creating the `context` as a function which *returns* the `context`. The advantage of this approach is that you can attach the HTTP request that carries the incoming GraphQL query (or mutation) to the `context` as well. This will allow your resolvers to read the `Authorization` header and validate if the user who submitted the request is eligible to perform the requested operation.
+Instead of attaching an object directly, you’re now creating the `context` as a function which _returns_ the `context`. The advantage of this approach is that you can attach the HTTP request that carries the incoming GraphQL query (or mutation) to the `context` as well. This will allow your resolvers to read the `Authorization` header and validate if the user who submitted the request is eligible to perform the requested operation.
 
 ### Requiring authentication for the `post` mutation
 
@@ -277,13 +277,13 @@ In `Mutation.js`, add the following resolver implementation for `post`:
 Two things have changed in the implementation compared to the previous implementation in `index.js`:
 
 1.  You’re now using the `getUserId` function to retrieve the ID of the `User`. This ID is stored in the JWT that’s set at the `Authorization` header of the incoming HTTP request. Therefore, you know which `User` is creating the `Link` here. Recall that an unsuccessful retrieval of the `userId` will lead to an exception and the function scope is exited before the `createLink` mutation is invoked. In that case, the GraphQL response will just contain an error indicating that the user was not authenticated.
-2.  You’re then also using that `userId` to *connect* the `Link` to be created with the `User` who is creating it. This is happening through a [nested write](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/relation-queries#nested-writes).
+2.  You’re then also using that `userId` to _connect_ the `Link` to be created with the `User` who is creating it. This is happening through a [nested write](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/relation-queries#nested-writes).
 
 #### Resolving relations
 
 There’s one more thing you need to do before you can launch the GraphQL server again and test the new functionality: ensuring the relation between `User` and `Link` gets properly resolved.
 
-Notice how we’ve omitted all resolvers for *scalar* values from the `User` and `Link` types? These are following the simple pattern that we saw at the beginning of the tutorial:
+Notice how we’ve omitted all resolvers for _scalar_ values from the `User` and `Link` types? These are following the simple pattern that we saw at the beginning of the tutorial:
 
     Link: {
       id: parent => parent.id,
@@ -291,7 +291,7 @@ Notice how we’ve omitted all resolvers for *scalar* values from the `User` and
       description: parent => parent.description,
     }
 
-However, we’ve now added two fields to our GraphQL schema that can *not* be resolved in the same way: `postedBy` on `Link` and `links` on `User`. The resolvers for these fields need to be explicitly implemented because our GraphQL server can not infer where to get that data from.
+However, we’ve now added two fields to our GraphQL schema that can _not_ be resolved in the same way: `postedBy` on `Link` and `links` on `User`. The resolvers for these fields need to be explicitly implemented because our GraphQL server can not infer where to get that data from.
 
 To resolve the `postedBy` relation, open `Link.js` and add the following code to it:
 

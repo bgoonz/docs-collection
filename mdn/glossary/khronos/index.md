@@ -4,8 +4,7 @@
 
 The organization maintains standards such as {{Glossary("OpenGL")}} and the {{domxref("WebGL API")}}.
 
-Learn more
-----------
+## Learn more
 
--   {{interwiki("wikipedia", "Khronos\_Group", "The Khronos Group")}} on Wikipedia
--   [The Khronos Group web site](https://www.khronos.org/)
+- {{interwiki("wikipedia", "Khronos\_Group", "The Khronos Group")}} on Wikipedia
+- [The Khronos Group web site](https://www.khronos.org/)

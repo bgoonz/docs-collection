@@ -11,26 +11,34 @@ tags:
   - webkitMatchesSelector
 browser-compat: api.Element.matches
 ---
+
 <p>{{APIRef("DOM")}}</p>
 
-<p>The <strong><code>matches()</code></strong> method checks to see if the
+<p>
+  The <strong><code>matches()</code></strong> method checks to see if the
   {{domxref("Element")}} would be selected by the provided
-  <code><var>selectorString</var></code> -- in other words -- checks if the element "is"
-  the selector.</p>
+  <code><var>selectorString</var></code> -- in other words -- checks if the
+  element "is" the selector.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">var <var>result</var> = <var>element</var>.matches(<var>selectorString</var>);
+<pre class="brush: js">
+var <var>result</var> = <var>element</var>.matches(<var>selectorString</var>);
 </pre>
 
 <h3 id="Parameters">Parameters</h3>
 
-<p><code><var>selectorString</var></code> is a string representing the selector to test.
+<p>
+  <code><var>selectorString</var></code> is a string representing the selector
+  to test.
 </p>
 
 <h3 id="Return_value">Return value</h3>
 
-<p><code><var>result</var></code> is a boolean value.</p>
+<p>
+  <code><var>result</var></code> is a boolean value.
+</p>
 
 <h3 id="Exceptions">Exceptions</h3>
 
@@ -41,7 +49,8 @@ browser-compat: api.Element.matches
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: html">&lt;ul id="birds"&gt;
+<pre class="brush: html">
+&lt;ul id="birds"&gt;
   &lt;li&gt;Orange-winged parrot&lt;/li&gt;
   &lt;li class="endangered"&gt;Philippine eagle&lt;/li&gt;
   &lt;li&gt;Great white pelican&lt;/li&gt;
@@ -58,16 +67,22 @@ browser-compat: api.Element.matches
 &lt;/script&gt;
 </pre>
 
-<p>This will log "The Philippine eagle is endangered!" to the console, since the element
-  has indeed a <code>class</code> attribute with value <code>endangered</code>.</p>
+<p>
+  This will log "The Philippine eagle is endangered!" to the console, since the
+  element has indeed a <code>class</code> attribute with value
+  <code>endangered</code>.
+</p>
 
 <h2 id="Polyfill">Polyfill</h2>
 
-<p>For browsers that do not support <code>Element.matches()</code> or
+<p>
+  For browsers that do not support <code>Element.matches()</code> or
   <code>Element.matchesSelector()</code>, but include support for
-  <code>document.querySelectorAll()</code>, a polyfill exists:</p>
+  <code>document.querySelectorAll()</code>, a polyfill exists:
+</p>
 
-<pre class="brush: js">if (!Element.prototype.matches) {
+<pre class="brush: js">
+if (!Element.prototype.matches) {
   Element.prototype.matches =
       Element.prototype.matchesSelector ||
       Element.prototype.mozMatchesSelector ||
@@ -80,12 +95,16 @@ browser-compat: api.Element.matches
         while (--i &gt;= 0 &amp;&amp; matches.item(i) !== this) {}
         return i &gt; -1;
       };
-}</pre>
+}</pre
+>
 
-<p>However, given the practicality of supporting older browsers, the following should
-  suffice for most (if not all) practical cases (i.e. IE9+ support).</p>
+<p>
+  However, given the practicality of supporting older browsers, the following
+  should suffice for most (if not all) practical cases (i.e. IE9+ support).
+</p>
 
-<pre class="brush: js">if (!Element.prototype.matches) {
+<pre class="brush: js">
+if (!Element.prototype.matches) {
   Element.prototype.matches = Element.prototype.msMatchesSelector ||
                               Element.prototype.webkitMatchesSelector;
 }
@@ -103,11 +122,12 @@ browser-compat: api.Element.matches
 
 <ul>
   <li>
-    <a href="/en-US/docs/Learn/CSS/Building_blocks/Selectors">The syntax of
-      Selectors</a>
+    <a href="/en-US/docs/Learn/CSS/Building_blocks/Selectors"
+      >The syntax of Selectors</a
+    >
   </li>
   <li>
-    Other methods that take selectors: {{domxref("element.querySelector()")}} and
-    {{domxref("element.closest()")}}.
+    Other methods that take selectors: {{domxref("element.querySelector()")}}
+    and {{domxref("element.closest()")}}.
   </li>
 </ul>

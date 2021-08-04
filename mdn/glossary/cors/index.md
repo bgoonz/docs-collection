@@ -4,13 +4,12 @@
 
 The [same-origin security policy](/en-US/docs/Web/Security/Same-origin_policy) forbids cross-origin access to resources. But CORS gives web servers the ability to say they want to opt into allowing cross-origin access to their resources.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Cross-Origin Resource Sharing (CORS)](/en-US/docs/Web/HTTP/CORS) on MDN
--   {{Interwiki("wikipedia", "Cross-origin resource sharing")}} on Wikipedia
+- [Cross-Origin Resource Sharing (CORS)](/en-US/docs/Web/HTTP/CORS) on MDN
+- {{Interwiki("wikipedia", "Cross-origin resource sharing")}} on Wikipedia
 
 ### CORS headers
 
@@ -43,6 +42,6 @@ Indicates where a fetch originates from.
 
 ### Technical reference
 
--   [Fetch specification](https://fetch.spec.whatwg.org)
+- [Fetch specification](https://fetch.spec.whatwg.org)
 
 {{QuickLinksWithSubpages("/en-US/docs/Glossary")}}

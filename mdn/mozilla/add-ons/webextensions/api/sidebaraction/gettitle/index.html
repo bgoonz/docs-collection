@@ -12,17 +12,30 @@ tags:
   - sidebarAction
 browser-compat: webextensions.api.sidebarAction.getTitle
 ---
+
 <div>{{AddonSidebar()}}</div>
 
 <p>Gets the sidebar's title.</p>
 
-<p>Just as you can set the title on a per-tab basis using {{WebExtAPIRef("sidebarAction.setTitle()")}}, so you can retrieve a tab-specific title by passing the tab's ID into this function.</p>
+<p>
+  Just as you can set the title on a per-tab basis using
+  {{WebExtAPIRef("sidebarAction.setTitle()")}}, so you can retrieve a
+  tab-specific title by passing the tab's ID into this function.
+</p>
 
-<p>This is an asynchronous function that returns a <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>.</p>
+<p>
+  This is an asynchronous function that returns a
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise</a
+    ></code
+  >.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:js">var gettingTitle = browser.sidebarAction.getTitle(
+<pre class="brush:js">
+var gettingTitle = browser.sidebarAction.getTitle(
   details               // object
 )
 </pre>
@@ -30,26 +43,46 @@ browser-compat: webextensions.api.sidebarAction.getTitle
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
- <dt><code>details</code></dt>
- <dd><code>object</code>. An object with the following properties:</dd>
- <dd>
- <dl class="reference-values">
-  <dt><code>tabId</code>{{optional_inline}}</dt>
-  <dd><code>integer</code>. Get the title for the sidebar specific to the given tab.</dd>
-  <dt><code>windowId</code> {{optional_inline}}</dt>
-  <dd><code>integer</code>. Get the title for the sidebar specific to the given window.</dd>
- </dl>
- </dd>
+  <dt><code>details</code></dt>
+  <dd><code>object</code>. An object with the following properties:</dd>
+  <dd>
+    <dl class="reference-values">
+      <dt><code>tabId</code>{{optional_inline}}</dt>
+      <dd>
+        <code>integer</code>. Get the title for the sidebar specific to the
+        given tab.
+      </dd>
+      <dt><code>windowId</code> {{optional_inline}}</dt>
+      <dd>
+        <code>integer</code>. Get the title for the sidebar specific to the
+        given window.
+      </dd>
+    </dl>
+  </dd>
 </dl>
 
 <ul>
- <li>If <code>windowId</code> and <code>tabId</code> are both supplied, the function fails and the promise it returns is rejected.</li>
- <li>If <code>windowId</code> and <code>tabId</code> are both omitted, the global title is returned.</li>
+  <li>
+    If <code>windowId</code> and <code>tabId</code> are both supplied, the
+    function fails and the promise it returns is rejected.
+  </li>
+  <li>
+    If <code>windowId</code> and <code>tabId</code> are both omitted, the global
+    title is returned.
+  </li>
 </ul>
 
 <h3 id="Return_value">Return value</h3>
 
-<p>A <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code> that will be fulfilled with a string containing the sidebar's title.</p>
+<p>
+  A
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise</a
+    ></code
+  >
+  that will be fulfilled with a string containing the sidebar's title.
+</p>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
@@ -57,9 +90,13 @@ browser-compat: webextensions.api.sidebarAction.getTitle
 
 <h2 id="Examples">Examples</h2>
 
-<p>This code switches the title between "this" and "that" each time the user clicks the browser action</p>
+<p>
+  This code switches the title between "this" and "that" each time the user
+  clicks the browser action
+</p>
 
-<pre class="brush: js">function toggleTitle(title) {
+<pre class="brush: js">
+function toggleTitle(title) {
   if (title == "this") {
     browser.sidebarAction.setTitle({title: "that"});
   } else {
@@ -75,15 +112,29 @@ browser.browserAction.onClicked.addListener(() =&gt; {
 
 <p>{{WebExtExamples}}</p>
 
-<div class="note"><strong>Acknowledgements</strong>
+<div class="note">
+  <strong>Acknowledgements</strong>
 
-<p>This API is based on Opera's <a class="external external-icon" href="https://dev.opera.com/extensions/sidebar-action-api/"><code>chrome.sidebarAction</code></a> API.</p>
+  <p>
+    This API is based on Opera's
+    <a
+      class="external external-icon"
+      href="https://dev.opera.com/extensions/sidebar-action-api/"
+      ><code>chrome.sidebarAction</code></a
+    >
+    API.
+  </p>
 
-<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+  <p>
+    Microsoft Edge compatibility data is supplied by Microsoft Corporation and
+    is included here under the Creative Commons Attribution 3.0 United States
+    License.
+  </p>
 </div>
 
 <div class="hidden">
-<pre>// Copyright 2015 The Chromium Authors. All rights reserved.
+  <pre>
+// Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -110,5 +161,6 @@ browser.browserAction.onClicked.addListener(() =&gt; {
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
+</pre
+  >
 </div>

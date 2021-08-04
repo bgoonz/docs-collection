@@ -17,15 +17,14 @@ A CSS rule is a set of {{Glossary("CSS Property","properties")}} associated with
 
 "Cascading" refers to the rules that govern how selectors are prioritized to change a page's appearance. This is a very important feature, since a complex website can have thousands of CSS rules.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Learn CSS](/en-US/docs/Learn/CSS)
--   {{interwiki("wikipedia", "CSS")}} on Wikipedia
+- [Learn CSS](/en-US/docs/Learn/CSS)
+- {{interwiki("wikipedia", "CSS")}} on Wikipedia
 
 ### Technical reference
 
--   [The CSS documentation on MDN](/en-US/docs/Web/CSS)
--   [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)
+- [The CSS documentation on MDN](/en-US/docs/Web/CSS)
+- [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)

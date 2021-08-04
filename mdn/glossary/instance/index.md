@@ -2,9 +2,8 @@
 
 An {{glossary("object")}} created by a {{glossary("constructor")}} is an instance of that constructor.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Instance (computer science)", "Instance")}} on Wikipedia
+- {{interwiki("wikipedia", "Instance (computer science)", "Instance")}} on Wikipedia

@@ -1,9 +1,8 @@
---- title: Building up a basic demo with PlayCanvas editor slug: Games/Techniques/3D\_on\_the\_web/Building\_up\_a\_basic\_demo\_with\_PlayCanvas/editor tags: - 3D - Animation - Beginner - Canvas - Games - Lightning - Online - PlayCanvas - Tutorial - WebGL - camera - editor - rendering ---
+--- title: Building up a basic demo with PlayCanvas editor slug: Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas/editor tags: - 3D - Animation - Beginner - Canvas - Games - Lightning - Online - PlayCanvas - Tutorial - WebGL - camera - editor - rendering ---
 
 <span class="seoSummary">Instead of coding everything from scratch you can also use the online **PlayCanvas editor**. This can be a more pleasant working environment if you are not someone who likes to code.</span>
 
-Creating an account
--------------------
+## Creating an account
 
 The PlayCanvas Editor is free — all you have to do to begin with is [register](https://login.playcanvas.com/signup) your account and login:
 
@@ -11,10 +10,9 @@ The PlayCanvas Editor is free — all you have to do to begin with is [register]
 
 When you first sign up, you are taken straight into the editor and given a simple starter tutorial involving editing a 3D rolling ball game. You can finish this before you continue our tutorial if you like. When you are ready to continue with our tutorial, go to your canvas homepage — for example mine is `https://playcanvas.com/end3r`. Here's what the page looks like — you can create projects and manage them, change their settings etc.
 
-Creating a new project
-----------------------
+## Creating a new project
 
-Start a brand new project by clicking on the *New* button:
+Start a brand new project by clicking on the _New_ button:
 
 ![PlayCanvas Editor - Panel](playcanvas-editor-panel.png)
 
@@ -22,22 +20,21 @@ The resulting dialog box will show a few different options. There are starter ki
 
 1.  We want to start small, so we will use the empty project — click on the Blank Project option and enter a name for it (we are using "MDN Games demo".)
 2.  Enter a description if you want — it is optional.
-3.  Click *Create* to have it created.
+3.  Click _Create_ to have it created.
 
 ![PlayCanvas Editor - New project](playcanvas-editor-newproject.png)
 
-Next you'll see your project's page — there's not much yet. By clicking the *Editor* button we'll launch the online PlayCanvas editor where we'll create our scene with the shapes. Do this now.
+Next you'll see your project's page — there's not much yet. By clicking the _Editor_ button we'll launch the online PlayCanvas editor where we'll create our scene with the shapes. Do this now.
 
 ![PlayCanvas Editor - Project](playcanvas-editor-project.png)
 
-Creating the scene
-------------------
+## Creating the scene
 
 Here's how the scene looks initially in the editor. Even though it's a blank new project we don't have to start entirely from scratch — the camera and directional light are prepared already, so you don't have to worry about them.
 
 ![PlayCanvas Editor - Scene](playcanvas-editor-scene.png)
 
-Now onto the creative part. To add an entity to the scene you have to click on the big plus button located in the top left area of the editor, next to the Hierarchy text. When hovering over that button with your mouse the label will say 'Add Entity' — that's exactly what we want to do. An Entity is any object used in the scene — it cna be an object like a box, cylinder or cone, but it can also be a camera, light or sound source. After clicking the button you'll see a dropdown list containing a lot of various entities to choose from. Go ahead and click *Box* — it will be added to the scene.
+Now onto the creative part. To add an entity to the scene you have to click on the big plus button located in the top left area of the editor, next to the Hierarchy text. When hovering over that button with your mouse the label will say 'Add Entity' — that's exactly what we want to do. An Entity is any object used in the scene — it cna be an object like a box, cylinder or cone, but it can also be a camera, light or sound source. After clicking the button you'll see a dropdown list containing a lot of various entities to choose from. Go ahead and click _Box_ — it will be added to the scene.
 
 ![PlayCanvas Editor - New box](playcanvas-editor-newbox.png)
 
@@ -45,15 +42,15 @@ The box is created with the default values — width, height and depth are set t
 
 ![PlayCanvas Editor - Box](playcanvas-editor-box.png)
 
-To add some colors to the scene we need a new material that will be used on the newly created box. Click on the plus button in the *Assets* tab, and click on the *Material* option in the dropdown list that appears to create a new material.
+To add some colors to the scene we need a new material that will be used on the newly created box. Click on the plus button in the _Assets_ tab, and click on the _Material_ option in the dropdown list that appears to create a new material.
 
 ![PlayCanvas Editor - New material](playcanvas-editor-newmaterial.png)
 
-Click on your new material in the assets tab and its entity inspector will appear on the right hand side of the display. Now edit the *Name* text field to give it a unique name (we've chosen *boxMaterial*). A unique name will help us remember what this material is for — we will add more later!
+Click on your new material in the assets tab and its entity inspector will appear on the right hand side of the display. Now edit the _Name_ text field to give it a unique name (we've chosen _boxMaterial_). A unique name will help us remember what this material is for — we will add more later!
 
 ![PlayCanvas Editor - Box material](playcanvas-editor-boxmaterial.png)
 
-To change its color we'll use the *Diffuse* option in the entity inspector. Click *Diffuse*, then select the colored box next to the Color label — it will open a color wheel. From here you can click your desired color or enter it in the bottom text field as a hex value. We've chosen a blue color with a hex value of `0095DD` — enter this code in the text field and press return for it to be accepted.
+To change its color we'll use the _Diffuse_ option in the entity inspector. Click _Diffuse_, then select the colored box next to the Color label — it will open a color wheel. From here you can click your desired color or enter it in the bottom text field as a hex value. We've chosen a blue color with a hex value of `0095DD` — enter this code in the text field and press return for it to be accepted.
 
 **Note**: Yes, you read that right — you need to enter the hex value without the hash/pound symbol.
 
@@ -75,20 +72,19 @@ This looks great! Let's add more shapes to the scene to make it look more intere
 
 ![PlayCanvas Editor - Boxrender](playcanvas-editor-boxrender.png)
 
-Adding more shapes
-------------------
+## Adding more shapes
 
 To make way for more shapes, move the box to the left to make some room for the next shape. You can do this by giving it an X position value of -2.
 
-Adding other shapes involves a very similar process to adding the box. Click on the Root folder in the hierarchy panel (to make sure that the new shape appears in the root, and not as a child of the Box) then Click on the big *Add Entity* (plus) button and select cylinder from the dropdown list — it will add a new cylinder shape to the scene.
+Adding other shapes involves a very similar process to adding the box. Click on the Root folder in the hierarchy panel (to make sure that the new shape appears in the root, and not as a child of the Box) then Click on the big _Add Entity_ (plus) button and select cylinder from the dropdown list — it will add a new cylinder shape to the scene.
 
 ![PlayCanvas Editor - Cylinder](playcanvas-editor-cylinder.png)Now follow the same steps as we did before when coloring the cube:
 
--   Create a new material using the *Add Asset* (plus) button.
--   Make sure the New Material in the Assets panel is selected, to bring up the entity inspector.
--   Give the material a new name, along the lines of `cylinderMaterial`.
--   Click diffuse, then click the color picker — give it an orange color (we used FF9500.)
--   Drag and drop the `cylinderMaterial` icon onto the cylinder object on the screen to apply that color.
+- Create a new material using the _Add Asset_ (plus) button.
+- Make sure the New Material in the Assets panel is selected, to bring up the entity inspector.
+- Give the material a new name, along the lines of `cylinderMaterial`.
+- Click diffuse, then click the color picker — give it an orange color (we used FF9500.)
+- Drag and drop the `cylinderMaterial` icon onto the cylinder object on the screen to apply that color.
 
 ![PlayCanvas Editor - Cylinder material](playcanvas-editor-cylindermaterial.png)
 
@@ -96,8 +92,7 @@ Follow the same approach again to add a cone to the scene, giving it a grayish c
 
 ![PlayCanvas Editor - Cone](playcanvas-editor-cone.png)
 
-Animating our scene
--------------------
+## Animating our scene
 
 Animating 3D models might be considered an [advanced](https://developer.playcanvas.com/en/tutorials/intermediate/animation-blending/) thing to do, but all we want to do is to control a few properties of a given object — we can use a script component to do that. Click on the plus button in the Assets panel, select the Script option, and name your new script file `boxAnimation.js`.
 
@@ -132,7 +127,7 @@ In the line above `this.entity` refers to the object to which the script will be
 
 1.  Save the changes using the Save button in the top right of the code editor, then return to the main editor tab. Here, follow these steps:
 2.  Be sure you have the box selected on the scene.
-3.  Click on *Add component*, then *Script* in the entity inspector.
+3.  Click on _Add component_, then _Script_ in the entity inspector.
 4.  At the bottom of the screen you can see the list of scripts available — for now there's only `boxAnimation.js` — clicking it will add the animation script to the box object.
 
 ![PlayCanvas Editor - Box script](playcanvas-editor-boxscript.png)
@@ -175,14 +170,12 @@ The position of the cone will be animated on each frame by being passed the `Mat
 
 Add the `coneAnimation.js` script to the cone object, as before.
 
-Test the demo out
------------------
+## Test the demo out
 
 Launch the demo to see the effects — all the shapes should animate. Congratulations, you've completed the tutorial!
 
 ![PlayCanvas Editor - Shapes](playcanvas-editor-shapes.png)
 
-Summary
--------
+## Summary
 
 Now you can check the [PlayCanvas engine](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas/engine) article if you haven't seen it yet, go back to the [Building up a basic demo with PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas) page, or go back a level higher to the main [3D Games on the Web](/en-US/docs/Games/Techniques/3D_on_the_web) page.

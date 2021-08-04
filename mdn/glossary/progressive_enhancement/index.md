@@ -1,4 +1,4 @@
---- title: Progressive Enhancement slug: Glossary/Progressive\_Enhancement tags: - Accessibility - Design - Glossary ---
+--- title: Progressive Enhancement slug: Glossary/Progressive_Enhancement tags: - Accessibility - Design - Glossary ---
 
 **Progressive enhancement** is a design philosophy that provides a baseline of essential content and functionality to as many users as possible, while delivering the best possible experience only to users of the most modern browsers that can run all the required code.
 
@@ -8,9 +8,8 @@ Special notice should be taken of accessibility. Acceptable alternatives should 
 
 Progressive enhancement is a useful technique that allows web developers to focus on developing the best possible websites while making those websites work on multiple unknown user agents. {{Glossary("Graceful degradation")}} is related but is not the same thing and is often seen as going in the opposite direction to progressive enhancement. In reality both approaches are valid and can often complement one another.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Progressive enhancement")}} on Wikipedia
+- {{Interwiki("wikipedia", "Progressive enhancement")}} on Wikipedia

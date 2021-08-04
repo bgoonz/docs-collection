@@ -2,9 +2,9 @@ In this tutorial you learned how to handle [GraphQL](http://graphql.org/) in a [
 
 We covered:
 
--   defining a GraphQL schema
--   connecting types
--   manipulating data via GraphQL mutation
--   handling complex querying
+- defining a GraphQL schema
+- connecting types
+- manipulating data via GraphQL mutation
+- handling complex querying
 
 In https://github.com/howtographql/graphql-ruby you can find the final project + a couple of further improvements 😺.

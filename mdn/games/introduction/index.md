@@ -2,19 +2,17 @@
 
 {{GamesSidebar}}
 
-The modern web has quickly become a viable platform not only for creating stunning, high quality games, but also for distributing those games. 
+The modern web has quickly become a viable platform not only for creating stunning, high quality games, but also for distributing those games.
 
 The range of games that can be created is on par with desktop and native OS counterparts. With modern Web technologies and a recent browser, it's entirely possible to make stunning, top-notch games for the Web. And we're not talking about simple card games or multi-player social games that have in the olden days been done using Flash®. We're talking about kick-ass 3D action shooters, RPGs, and more. Thanks to massive performance improvements in [JavaScript](/en-US/docs/Web/JavaScript) just-in-time compiler technology and new APIs, you can build games that run in the browser (or on [HTML5](/en-US/docs/Web/Guide/HTML/HTML5)-powered devices like those based on [Firefox OS](/en-US/docs/Glossary/Firefox_OS)) without making compromises.
 
-The HTML5 game platform
------------------------
+## The HTML5 game platform
 
 You can truly think of the Web as a better target platform for your game. As we like to say, "the Web is the platform." Let's take a look at the core of the Web platform:
 
 <table><thead><tr class="header"><th>Function</th><th>Technology</th></tr></thead><tbody><tr class="odd"><td><strong>Audio</strong></td><td><a href="/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a></td></tr><tr class="even"><td><strong>Graphics</strong></td><td><a href="/en-US/docs/Web/API/WebGL_API">WebGL</a> (<a href="https://www.khronos.org/opengles/">OpenGL ES</a> 2.0)</td></tr><tr class="odd"><td><strong>Input</strong></td><td><a href="/en-US/docs/Web/API/Touch_events">Touch events</a>, <a href="/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API">Gamepad API</a>, device sensors, <a href="/en-US/docs/Web/API/WebRTC_API">WebRTC</a>, <a href="/en-US/docs/Web/API/Fullscreen_API">Full Screen API</a>, <a href="/en-US/docs/Web/API/Pointer_Lock_API">Pointer Lock API</a></td></tr><tr class="even"><td><strong>Language</strong></td><td><a href="/en-US/docs/Web/JavaScript">JavaScript</a> (or C/C++ using <a href="https://github.com/kripken/emscripten/wiki">Emscripten</a> to compile to JavaScript)</td></tr><tr class="odd"><td><strong>Networking</strong></td><td><a href="/en-US/docs/Web/API/WebRTC_API">WebRTC</a> and/or <a href="/en-US/docs/Web/API/WebSockets_API">WebSockets</a></td></tr><tr class="even"><td><strong>Storage</strong></td><td><a href="/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> or the "cloud"</td></tr><tr class="odd"><td><strong>Web</strong></td><td><a href="/en-US/docs/Web/HTML">HTML</a>, <a href="/en-US/docs/Web/CSS">CSS</a>, <a href="/en-US/docs/Web/SVG">SVG</a>, <a href="/en-US/docs/Social_API">Social API</a> (and much more!)</td></tr></tbody></table>
 
-The business case
------------------
+## The business case
 
 As a game developer, whether you're an individual or a large game studio, you want to know why it makes sense to target the Web with your next game project. Let's look at how the Web can help you.
 
@@ -27,8 +25,7 @@ As a game developer, whether you're an individual or a large game studio, you wa
 6.  You get to manage your customer relationship more closely, in your own way. No more having customer feedback filtered through an app store's limited mechanisms. Engage with your customers the way you want to, without a middleman.
 7.  Your players can play your game anywhere, anytime. Because the Web is ubiquitous, your customers can check their game's status on their phones, tablets, their home laptops, their work desktops, or anything else.
 
-Web technologies for game developers
-------------------------------------
+## Web technologies for game developers
 
 For the tech folks, let's dig into the APIs the Web brings to the table that cater to game developers. Here's a thorough list to give you a taste of what the Web can do for you:
 

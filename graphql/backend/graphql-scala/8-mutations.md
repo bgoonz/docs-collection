@@ -23,10 +23,10 @@ But wait… until now we’ve been using `type` not `input`. So what is this? `i
 
 Let’s try to implement mutation in the following order:
 
--   Define case classes for inputs
--   Define InputObjectType’s for those classes,
--   Define ObjectType responsible for all Mutations
--   Tell a Schema to use this object.
+- Define case classes for inputs
+- Define InputObjectType’s for those classes,
+- Define ObjectType responsible for all Mutations
+- Tell a Schema to use this object.
 
 ### Create case classes
 
@@ -90,7 +90,7 @@ Add to `DAO` the following function:
       }
 
     }
-      
+
 
 ### Add Mutation to Schema
 
@@ -232,6 +232,6 @@ The current state of files changed in this chapter:
 [DAO.scala](https://gist.github.com/marioosh/316468a9ac5e1179e226a3191f03fab8#file-dao-scala)  
 [GraphQLSchema.scala](https://gist.github.com/marioosh/316468a9ac5e1179e226a3191f03fab8#file-graphqlschema-scala)
 
-------------------------------------------------------------------------
+---
 
 Now you know how to send data to the server. You will use this knowledge when we implement authentication and authorization logic in the next chapter.

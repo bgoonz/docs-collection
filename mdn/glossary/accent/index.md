@@ -4,8 +4,7 @@ An **accent** is a typically bright color that contrasts with the more utilitari
 
 On the web, an accent is sometimes used in {{HTMLElement("input")}} elements for the active portion of the control, for instance the background of a checked [checkbox](/en-US/docs/Web/HTML/Element/input/checkbox).
 
-Learn more
-----------
+## Learn more
 
 ### CSS related to the accent
 
@@ -13,6 +12,6 @@ You can set the color of the accent for a given element by setting the element's
 
 ### HTML elements that may have an accent
 
--   `<input type="checkbox">`
--   `<input type="radio">`
--   `<input type="range">`
+- `<input type="checkbox">`
+- `<input type="radio">`
+- `<input type="range">`

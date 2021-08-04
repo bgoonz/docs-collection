@@ -10,15 +10,20 @@ tags:
   - TextEncoder
 browser-compat: api.TextEncoder
 ---
+
 <p>{{APIRef("Encoding API")}}</p>
 
-<p><code><strong>TextEncoder</strong></code> takes a stream of code points as input and emits a stream of UTF-8 bytes.</p>
+<p>
+  <code><strong>TextEncoder</strong></code> takes a stream of code points as
+  input and emits a stream of UTF-8 bytes.
+</p>
 
 <p>{{AvailableInWorkers}}</p>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">const encoder = new TextEncoder()
+<pre class="brush: js">
+const encoder = new TextEncoder()
 const view = encoder.encode('€')
 console.log(view); // Uint8Array(3) [226, 130, 172]
 </pre>
@@ -26,35 +31,60 @@ console.log(view); // Uint8Array(3) [226, 130, 172]
 <h2 id="Constructor">Constructor</h2>
 
 <dl>
- <dt>{{DOMxRef("TextEncoder.TextEncoder", "TextEncoder()")}}</dt>
- <dd>Returns a newly constructed <code>TextEncoder</code> that will generate a byte stream with UTF-8 encoding.</dd>
+  <dt>{{DOMxRef("TextEncoder.TextEncoder", "TextEncoder()")}}</dt>
+  <dd>
+    Returns a newly constructed <code>TextEncoder</code> that will generate a
+    byte stream with UTF-8 encoding.
+  </dd>
 </dl>
 
 <h2 id="Properties">Properties</h2>
 
-<p><em>The <code>TextEncoder</code> interface doesn't inherit any property.</em></p>
+<p>
+  <em>The <code>TextEncoder</code> interface doesn't inherit any property.</em>
+</p>
 
 <dl>
- <dt>{{DOMxRef("TextEncoder.prototype.encoding")}}{{ReadOnlyInline}}</dt>
- <dd>Always returns "<code>utf-8</code>".</dd>
+  <dt>{{DOMxRef("TextEncoder.prototype.encoding")}}{{ReadOnlyInline}}</dt>
+  <dd>Always returns "<code>utf-8</code>".</dd>
 </dl>
 
 <h2 id="Methods">Methods</h2>
 
-<p><em>The <code>TextEncoder</code> interface doesn't inherit any method</em>.</p>
+<p>
+  <em>The <code>TextEncoder</code> interface doesn't inherit any method</em>.
+</p>
 
 <dl>
- <dt>{{DOMxRef("TextEncoder.prototype.encode()")}}</dt>
- <dd>Takes a {{domxref("USVString")}} as input, and returns a {{jsxref("Uint8Array")}} containing UTF-8 encoded text.</dd>
- <dt>{{DOMxRef("TextEncoder.prototype.encodeInto()")}}</dt>
- <dd>Takes a {{domxref("USVString")}} to encode and a destination {{jsxref("Uint8Array")}} to put resulting UTF-8 encoded text into, and returns a dictionary object indicating the progress of the encoding. This is potentially more performant than the older <code>encode()</code> method.</dd>
+  <dt>{{DOMxRef("TextEncoder.prototype.encode()")}}</dt>
+  <dd>
+    Takes a {{domxref("USVString")}} as input, and returns a
+    {{jsxref("Uint8Array")}} containing UTF-8 encoded text.
+  </dd>
+  <dt>{{DOMxRef("TextEncoder.prototype.encodeInto()")}}</dt>
+  <dd>
+    Takes a {{domxref("USVString")}} to encode and a destination
+    {{jsxref("Uint8Array")}} to put resulting UTF-8 encoded text into, and
+    returns a dictionary object indicating the progress of the encoding. This is
+    potentially more performant than the older <code>encode()</code> method.
+  </dd>
 </dl>
 
 <h2 id="Polyfill">Polyfill</h2>
 
-<p>The below polyfill is compliant with the standard and therefore only supports UTF-8. It is designed to work in IE5 "out of the box". However, in IE5-IE9, it will return a regular Array instead of a TypedArray. In those cases a polyfill might be impractical for large strings. Finally, note that you should run the below code through a minifier (especially closure compiler) to turn sequences like <code>0x1e &lt;&lt; 3</code> into <code>0xf0</code>. These sequences are not already precomputed because they serve to aesthetically illustrate how the polyfill works.</p>
+<p>
+  The below polyfill is compliant with the standard and therefore only supports
+  UTF-8. It is designed to work in IE5 "out of the box". However, in IE5-IE9, it
+  will return a regular Array instead of a TypedArray. In those cases a polyfill
+  might be impractical for large strings. Finally, note that you should run the
+  below code through a minifier (especially closure compiler) to turn sequences
+  like <code>0x1e &lt;&lt; 3</code> into <code>0xf0</code>. These sequences are
+  not already precomputed because they serve to aesthetically illustrate how the
+  polyfill works.
+</p>
 
-<pre class="brush: js">if (typeof TextEncoder === "undefined") {
+<pre class="brush: js">
+if (typeof TextEncoder === "undefined") {
     TextEncoder=function TextEncoder(){};
     TextEncoder.prototype.encode = function encode(str) {
         "use strict";
@@ -114,7 +144,15 @@ console.log(view); // Uint8Array(3) [226, 130, 172]
 }
 </pre>
 
-<p><small>Source: <a href="https://github.com/anonyco/FastestSmallestTextEncoderDecoder" rel="noopener">https://github.com/anonyco/FastestSmallestTextEncoderDecoder</a></small></p>
+<p>
+  <small
+    >Source: <a
+      href="https://github.com/anonyco/FastestSmallestTextEncoderDecoder"
+      rel="noopener"
+      >https://github.com/anonyco/FastestSmallestTextEncoderDecoder</a
+    ></small
+  >
+</p>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -127,6 +165,12 @@ console.log(view); // Uint8Array(3) [226, 130, 172]
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li>The {{DOMxRef("TextDecoder")}} interface describing the inverse operation.</li>
- <li><a href="https://nodejs.org/api/util.html#util_class_util_textencoder">Node.js supports global export from v11.0.0</a></li>
+  <li>
+    The {{DOMxRef("TextDecoder")}} interface describing the inverse operation.
+  </li>
+  <li>
+    <a href="https://nodejs.org/api/util.html#util_class_util_textencoder"
+      >Node.js supports global export from v11.0.0</a
+    >
+  </li>
 </ul>

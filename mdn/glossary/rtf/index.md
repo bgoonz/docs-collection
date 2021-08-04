@@ -4,13 +4,12 @@ RTF (Rich Text Format) is a plain-text-based file format with support for format
 
 Three programmers in the Microsoft Word team created RTF in the 1980s, and Microsoft continued to develop the format until 2008. However, many word-processing programs can still read and write RTF.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Rich Text Format")}} on Wikipedia
+- {{Interwiki("wikipedia", "Rich Text Format")}} on Wikipedia
 
 ### Technical reference
 
--   [final specification from Microsoft](https://www.microsoft.com/en-us/download/details.aspx?id=10725)
+- [final specification from Microsoft](https://www.microsoft.com/en-us/download/details.aspx?id=10725)

@@ -1,15 +1,14 @@
---- title: 'Test Your Skills: Fundamental layout comprehension' slug: Learn/CSS/CSS\_layout/Fundamental\_Layout\_Comprehension tags: - Assessment - Beginner - CSS - Layout - Learn ---
+--- title: 'Test Your Skills: Fundamental layout comprehension' slug: Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension tags: - Assessment - Beginner - CSS - Layout - Learn ---
 
 {{LearnSidebar}}
 
 If you have worked through this module then you will have already covered the basics of what you need to know to do CSS layout today, and to work with older CSS as well. This task will test some of your knowledge by way of developing a simple webpage layout using a variety of techniques.
 
-**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.  
-  
+**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.
+
 If you get stuck, then ask us for help — see the {{anch("Assessment or further help")}} section at the bottom of this page.
 
-Project Brief
--------------
+## Project Brief
 
 You have been provided with some raw HTML, basic CSS, and images — now you need to create a layout for the design, which should look just like the image below.
 
@@ -39,15 +38,14 @@ You now need to implement your layout. The tasks you need to achieve are:
 
 You will not need to edit the HTML in order to achieve this layout and the techniques you should use are:
 
--   Positioning
--   Float
--   Flexbox
--   CSS Grid Layout
+- Positioning
+- Float
+- Flexbox
+- CSS Grid Layout
 
 There are a few ways in which you could achieve some of these tasks, and there often isn’t a single right or wrong way to do things. Try a few different approaches and see which works best. Make notes as you experiment.
 
-Assessment or further help
---------------------------
+## Assessment or further help
 
 You can practice these examples in the Interactive Editors mentioned above.
 
@@ -55,23 +53,22 @@ If you would like your work assessed, or are stuck and want to ask for help:
 
 1.  Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/). You can write the code yourself, or use the starting point files linked to in the above sections.
 2.  Write a post asking for assessment and/or help at the <a href="https://discourse.mozilla.org/c/mdn/learn" class="external external-icon">MDN Discourse forum Learning category</a>. Your post should include:
-    -   A descriptive title such as "Assessment wanted for Fundamental Layout Comprehension".
-    -   Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-    -   A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-    -   A link to the actual task or assessment page, so we can find the question you want help with.
+    - A descriptive title such as "Assessment wanted for Fundamental Layout Comprehension".
+    - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+    - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+    - A link to the actual task or assessment page, so we can find the question you want help with.
 
-In this module
---------------
+## In this module
 
--   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
--   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
--   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
--   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
--   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
--   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
--   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
--   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
--   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
--   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
--   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
--   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

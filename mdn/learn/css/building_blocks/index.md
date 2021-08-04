@@ -1,4 +1,4 @@
---- title: CSS building blocks slug: Learn/CSS/Building\_blocks tags: - Beginner - CSS - Learn - building blocks ---
+--- title: CSS building blocks slug: Learn/CSS/Building_blocks tags: - Beginner - CSS - Learn - building blocks ---
 
 {{LearnSidebar}}
 
@@ -12,8 +12,7 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should have:
 
@@ -24,8 +23,7 @@ Before starting this module, you should have:
 
 **Note**: If you are working on a computer/tablet/another device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 This module contains the following articles, which cover the most essential parts of the CSS language. Along the way you'll come across plenty of exercises to allow you to test your understanding.
 
@@ -35,13 +33,13 @@ The aim of this lesson is to develop your understanding of some of the most fund
 [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)  
 There are a wide variety of CSS selectors available, allowing for fine-grained precision when selecting elements to style. In this article and its sub-articles, we'll run through the different types in great detail, seeing how they work. The sub-articles are as follows:
 
--   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
--   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
--   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
--   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+- [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+- [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+- [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+- [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 
 [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)  
-Everything in CSS has a box around it, and understanding these boxes is key to being able to create layouts with CSS, or to align items with other items. In this lesson, we will take a proper look at the CSS *Box Model*, in order that you can move onto more complex layout tasks with an understanding of how it works and the terminology that relates to it.
+Everything in CSS has a box around it, and understanding these boxes is key to being able to create layouts with CSS, or to align items with other items. In this lesson, we will take a proper look at the CSS _Box Model_, in order that you can move onto more complex layout tasks with an understanding of how it works and the terminology that relates to it.
 
 [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)  
 In this lesson we will take a look at some of the creative things you can do with CSS backgrounds and borders. From adding gradients, background images, and rounded corners, backgrounds and borders are the answer to a lot of styling questions in CSS.
@@ -70,8 +68,7 @@ Sometimes when writing CSS you will encounter an issue where your CSS doesn't se
 [Organizing your CSS](/en-US/docs/Learn/CSS/Building_blocks/Organizing)  
 As you start to work on larger stylesheets and big projects you will discover that maintaining a huge CSS file can be challenging. In this article, we will take a brief look at some best practices for writing your CSS to make it easily maintainable, and some of the solutions you will find in use by others to help improve maintainability.
 
-Assessments
------------
+## Assessments
 
 Want to test your CSS skills? The following assessments will test your understanding of the CSS covered in the guides above.
 
@@ -84,8 +81,7 @@ If you want to make the right impression, writing a letter on nice letterheaded 
 [A cool looking box](/en-US/docs/Learn/CSS/Building_blocks/A_cool_looking_box)  
 Here you'll get some practice in using background and border styling to create an eye-catching box.
 
-See also
---------
+## See also
 
 [Advanced styling effects](/en-US/docs/Learn/CSS/Building_blocks/Advanced_styling_effects)  
 This article acts as a box of tricks, providing an introduction to some interesting advanced styling features such as box shadows, blend modes, and filters.

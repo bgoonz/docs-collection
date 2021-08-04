@@ -6,15 +6,15 @@ GraphQL and Elixir go really well together, and this part of the tutorial will h
 
 In this chapter you’ll learn how to build your very own GraphQL server using the following technologies:
 
--   Server
-    -   Elixir: The programming language https://elixir-lang.org/
-    -   Phoenix: Web framework in Elixir http://www.phoenixframework.org/
-    -   Absinthe: GraphQL implementation for Elixir that will handle running GraphQL queries submitted via Phoenix. http://absinthe-graphql.org/
--   Testing
-    -   [GraphiQL](https://github.com/graphql/graphiql): Extremely useful tool for quickly testing GraphQL apis. By the end of this tutorial you should be able to update your previous frontend code to replace the Graphcool endpoint and point to your new server instead, but until then it’ll be easier for us to test the api through GraphiQL. Among other things, it:
-        -   Generates a comprehensive documentation of all your available queries and mutations.
-        -   Provides a text editor where you can build requests, with syntax highlighting and autocomplete.
-        -   Displays the server’s responses.
+- Server
+  - Elixir: The programming language https://elixir-lang.org/
+  - Phoenix: Web framework in Elixir http://www.phoenixframework.org/
+  - Absinthe: GraphQL implementation for Elixir that will handle running GraphQL queries submitted via Phoenix. http://absinthe-graphql.org/
+- Testing
+  - [GraphiQL](https://github.com/graphql/graphiql): Extremely useful tool for quickly testing GraphQL apis. By the end of this tutorial you should be able to update your previous frontend code to replace the Graphcool endpoint and point to your new server instead, but until then it’ll be easier for us to test the api through GraphiQL. Among other things, it:
+    - Generates a comprehensive documentation of all your available queries and mutations.
+    - Provides a text editor where you can build requests, with syntax highlighting and autocomplete.
+    - Displays the server’s responses.
 
 You can find the maintainers and an active community of users and contributors in the \#absinthe-graphql channel in the [Elixir](https://elixir-slackin.herokuapp.com/) Slack.
 
@@ -22,20 +22,20 @@ You can find the maintainers and an active community of users and contributors i
 
 A GraphQL server should be able to:
 
--   Receive requests following the GraphQL format, for example:
+- Receive requests following the GraphQL format, for example:
 
 <!-- -->
 
     { "query": "query { allLinks { url } }" }
 
--   Connect to any necessary databases or services responsible for storing/fetching the actual data.
--   Return a GraphQL response with the requested data, such as this:
+- Connect to any necessary databases or services responsible for storing/fetching the actual data.
+- Return a GraphQL response with the requested data, such as this:
 
 <!-- -->
 
     { "data": { "allLinks": { "url": "http://graphql.org/" } } }
 
--   Validate incoming requests against the schema definition and supported format. For example, if a query is made with an unknown field, the response should be something like:
+- Validate incoming requests against the schema definition and supported format. For example, if a query is made with an unknown field, the response should be something like:
 
 <!-- -->
 

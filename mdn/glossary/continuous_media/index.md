@@ -1,4 +1,4 @@
---- title: Continuous Media slug: Glossary/Continuous\_Media tags: - Glossary - Media ---
+--- title: Continuous Media slug: Glossary/Continuous_Media tags: - Glossary - Media ---
 
 <span class="seoSummary">Continuous media is data where there is a timing relationship between source and destination. The most common examples of continuous media are audio and motion video. Continuous media can be real-time (interactive), where there is a "tight" timing relationship between source and sink, or streaming (playback), where the relationship is less strict.</span>
 

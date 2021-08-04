@@ -6,9 +6,8 @@ In {{Glossary("JavaScript")}}, for example, you can serialize an object to a {{G
 
 {{Glossary("CSS")}} values are serialized by calling the function {{domxref("CSSStyleDeclaration.getPropertyValue()")}}.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Serialization](https://en.wikipedia.org/wiki/Serialization) on Wikipedia
+- [Serialization](https://en.wikipedia.org/wiki/Serialization) on Wikipedia

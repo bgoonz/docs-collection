@@ -6,7 +6,7 @@ Let’s jump in! 🚀
 
 By using `PrismaClient`, you’ll be able to implement filtering capabilities to your API without too much effort. Similarly to the previous chapters, the heavy-lifting of query resolution will be performed by Prisma. All you need to do is forward incoming queries to it.
 
-The first step is to think about the filters you want to expose through your API. In your case, the `feed` query in your API will accept a *filter string*. The query then should only return the `Link` elements where the `url` *or* the `description` *contain* that filter string.
+The first step is to think about the filters you want to expose through your API. In your case, the `feed` query in your API will accept a _filter string_. The query then should only return the `Link` elements where the `url` _or_ the `description` _contain_ that filter string.
 
 Go ahead and add the `filter` string to the `feed` query in your application schema:
 
@@ -60,8 +60,8 @@ That’s it for the filtering functionality! Go ahead and test your filter API -
 
 Pagination is a tricky topic in API design. On a high-level, there are two major approaches for tackling it:
 
--   **Limit-Offset**: Request a specific *chunk* of the list by providing the indices of the items to be retrieved (in fact, you’re mostly providing the start index (*offset*) as well as a count of items to be retrieved (*limit*)).
--   **Cursor-based**: This pagination model is a bit more advanced. Every element in the list is associated with a unique ID (the *cursor*). Clients paginating through the list then provide the cursor of the starting element as well as a count of items to be retrieved.
+- **Limit-Offset**: Request a specific _chunk_ of the list by providing the indices of the items to be retrieved (in fact, you’re mostly providing the start index (_offset_) as well as a count of items to be retrieved (_limit_)).
+- **Cursor-based**: This pagination model is a bit more advanced. Every element in the list is associated with a unique ID (the _cursor_). Clients paginating through the list then provide the cursor of the starting element as well as a count of items to be retrieved.
 
 Prisma supports both pagination approaches (read more in the [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/pagination)). In this tutorial, you’re going to implement limit-offset pagination.
 
@@ -69,8 +69,8 @@ Prisma supports both pagination approaches (read more in the [docs](https://www.
 
 Limit and offset have different names in the Prisma API:
 
--   The *limit* is called `take`, meaning you’re “taking” `x` elements after a provided start index.
--   The *start index* is called `skip`, since you’re skipping that many elements in the list before collecting the items to be returned. If `skip` is not provided, it’s `0` by default. The pagination then always starts from the beginning of the list.
+- The _limit_ is called `take`, meaning you’re “taking” `x` elements after a provided start index.
+- The _start index_ is called `skip`, since you’re skipping that many elements in the list before collecting the items to be returned. If `skip` is not provided, it’s `0` by default. The pagination then always starts from the beginning of the list.
 
 So, go ahead and add the `skip` and `take` arguments to the `feed` query.
 
@@ -120,7 +120,7 @@ You can test the pagination API with the following query which returns the secon
 
 ### Sorting
 
-With Prisma, it is possible to return lists of elements that are sorted (*ordered*) according to specific criteria. For example, you can order the list of `Link`s alphabetically by their `url` or `description`. For the Hacker News API, you’ll leave it up to the client to decide how exactly it should be sorted and thus include all the ordering options from the Prisma API in the API of your GraphQL server. You can do so by creating an [`input`](https://graphql.org/graphql-js/mutations-and-input-types/) type and an enum to represent the ordering options.
+With Prisma, it is possible to return lists of elements that are sorted (_ordered_) according to specific criteria. For example, you can order the list of `Link`s alphabetically by their `url` or `description`. For the Hacker News API, you’ll leave it up to the client to decide how exactly it should be sorted and thus include all the ordering options from the Prisma API in the API of your GraphQL server. You can do so by creating an [`input`](https://graphql.org/graphql-js/mutations-and-input-types/) type and an enum to represent the ordering options.
 
 Add the following enum definition to `schema.graphql`:
 
@@ -180,7 +180,7 @@ Awesome! Here’s a query that sorts the returned links by their creation dates:
 
 ### Returning the total amount of `Link` elements
 
-The last thing you’re going to implement for your Hacker News API is the information *how many* `Link` elements are currently stored in the database. To do so, you’re going to refactor the `feed` query a bit and create a new type to be returned by your API: `Feed`.
+The last thing you’re going to implement for your Hacker News API is the information _how many_ `Link` elements are currently stored in the database. To do so, you’re going to refactor the `feed` query a bit and create a new type to be returned by your API: `Feed`.
 
 Add the new `Feed` type to your GraphQL schema. Then also adjust the return type of the `feed` query accordingly:
 

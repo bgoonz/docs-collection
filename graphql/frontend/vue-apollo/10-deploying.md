@@ -1,7 +1,6 @@
 Finally, let’s learn how to easily deploy VueJS applications with [Surge.sh](http://surge.sh/).
 
-Installing and running Surge
-----------------------------
+## Installing and running Surge
 
 First, you need to install Surge globally.
 

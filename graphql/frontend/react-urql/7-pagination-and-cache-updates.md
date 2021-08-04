@@ -2,8 +2,7 @@ In this section of the tutorial we’ll cover pagination. You’ll implement a s
 
 You also haven’t implemented any cache updates yet, which we’ll also cover. With cache updates you can update the cache when a new post is created, which will cause your app to automatically render the new data.
 
-Preparing the React Components
-------------------------------
+## Preparing the React Components
 
 Like in every other section, let’s first prepare the React components for the new pagination feature. In fact, we’ll just slightly adjust the current routing setup. We’ll reuse the existing `LinkList` component for two slightly different use-cases and routes.
 
@@ -45,7 +44,7 @@ You’ve set up a redirect that sends the user from the homepage to the `/new/1`
 
 Before moving on, quickly add a new navigation item to the `Header` component that brings the user to the `/top` route.
 
-Open `Header.js` add the new link to `/top` *between* the `/` and the `/search` links:
+Open `Header.js` add the new link to `/top` _between_ the `/` and the `/search` links:
 
     <div className="fw7 mr1">Hacker News</div>
     <Link to="/" className="ml1 no-underline black">
@@ -90,9 +89,9 @@ Open `LinkList.js` and add three arguments to the `FeedQuery` by replacing the `
 
 The query now accepts arguments that you’ll use to implement pagination and ordering. The file is also now exporting `FEED_QUERY` because you’ll be needing it in a later step to implement some cache updates.
 
--   `skip` defines the *offset* where the query will start. If you for instance passed a value of `10` for this argument, it means that the first 10 items of the list will not be included in the response.
--   `first` then defines the *limit*, or *how many* elements, you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
--   `orderBy` defines how the returned list should be sorted.
+- `skip` defines the _offset_ where the query will start. If you for instance passed a value of `10` for this argument, it means that the first 10 items of the list will not be included in the response.
+- `first` then defines the _limit_, or _how many_ elements, you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
+- `orderBy` defines how the returned list should be sorted.
 
 To actually pass the variables into the `useQuery` hook’s variables argument you’ll now create a small memo hook that returns the `variables` object.
 
@@ -101,7 +100,7 @@ Still in `LinkList.js`, add the following code before the `useQuery` hook inside
     const LinkList = props => {
       const isNewPage = props.location.pathname.includes('new')
       const page = parseInt(props.match.params.page, 10)
-      
+
       const variables = React.useMemo(() => ({
         skip: isNewPage ? (page - 1) * 10 : 0,
         first: isNewPage ? 10 : 100,
@@ -110,7 +109,7 @@ Still in `LinkList.js`, add the following code before the `useQuery` hook inside
 
       const [result] = useQuery({ query: FEED_QUERY, variables })
       const { data, fetching, error } = result
-      
+
       // ...
     }
 
@@ -126,9 +125,9 @@ In `LinkList.js` replace the `index` prop that you’re passing to the `Link` el
       const isNewPage = props.location.pathname.includes('new')
       const page = parseInt(props.match.params.page, 10)
       // ...
-      
+
       const pageIndex = isNewPage ? (page - 1) * 10 : 0
-      
+
       return (
         <div>
           {linksToRender.map((link, index) => (
@@ -150,7 +149,7 @@ Once again in `LinkList.js` modify the `LinkList` component:
       const isNewPage = props.location.pathname.includes('new')
       const page = parseInt(props.match.params.page, 10)
       // ...
-      
+
       const nextPage = React.useCallback(() => {
         if (page <= data.feed.count / 10) {
           props.history.push(`/new/${page + 1}`);
@@ -162,7 +161,7 @@ Once again in `LinkList.js` modify the `LinkList` component:
           props.history.push(`/new/${page - 1}`);
         }
       }, [props.history, page]);
-      
+
       return (
         <React.Fragment>
           <div>
@@ -213,10 +212,10 @@ One simple way to fix this is to pass a different “request policy” to `useQu
 
 There are several request policies that tell the `cacheExchange` in your urql Client how to treat cached data:
 
--   `cache-first` prevents a network request, when the query’s result has already been cached.
--   `cache-only` prevents a network request, even when the query’s result has never been cached.
--   `network-only` always sends a network request to get a query’s result and ignores the cache.
--   `cache-and-network` returns a query’s cached result but then also makes a network request.
+- `cache-first` prevents a network request, when the query’s result has already been cached.
+- `cache-only` prevents a network request, even when the query’s result has never been cached.
+- `network-only` always sends a network request to get a query’s result and ignores the cache.
+- `cache-and-network` returns a query’s cached result but then also makes a network request.
 
 As you can see, you could use the last request policy, `cache-and-network`, to update the `/new/1` page automatically from your GraphQL API, when you’re redirected to it from `/create`, like so:
 

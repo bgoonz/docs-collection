@@ -4,14 +4,13 @@ WebVTT (Web Video Text Tracks) is a {{Glossary("W3C")}} specification for a file
 
 WebVTT files provide metadata that is time-aligned with audio or video content like captions or subtitles for video content, text video descriptions, chapters for content navigation, and more.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "WebVTT")}} on Wikipedia
+- {{Interwiki("wikipedia", "WebVTT")}} on Wikipedia
 
 ### Technical reference
 
--   [WebVTT](/en-US/docs/Web/API/WebVTT_API) on MDN
--   [Specification](https://www.w3.org/TR/webvtt1/)
+- [WebVTT](/en-US/docs/Web/API/WebVTT_API) on MDN
+- [Specification](https://www.w3.org/TR/webvtt1/)

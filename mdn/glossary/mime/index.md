@@ -4,9 +4,8 @@
 
 See also [MIME-Type](/en-US/docs/Glossary/MIME_type)
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [MIME](https://en.wikipedia.org/wiki/MIME) on Wikipedia
+- [MIME](https://en.wikipedia.org/wiki/MIME) on Wikipedia

@@ -6,8 +6,7 @@ Most of the time, a primitive value is represented directly at the lowest level 
 
 All primitives are **immutable**, i.e., they cannot be altered. It is important not to confuse a primitive itself with a variable assigned a primitive value. The variable may be reassigned a new value, but the existing value can not be changed in the ways that objects, arrays, and functions can be altered.
 
-Example
--------
+## Example
 
 This example will help you understand that primitive values are **immutable.**
 
@@ -30,26 +29,24 @@ This example will help you understand that primitive values are **immutable.**
 
 A primitive can be replaced, but it can't be directly altered.
 
-Primitive wrapper objects in JavaScript
----------------------------------------
+## Primitive wrapper objects in JavaScript
 
 Except for `null` and `undefined`, all primitive values have object equivalents that wrap around the primitive values:
 
--   {{jsxref("String")}} for the string primitive.
--   {{jsxref("Number")}} for the number primitive.
--   {{jsxref("BigInt")}} for the bigint primitive.
--   {{jsxref("Boolean")}} for the boolean primitive.
--   {{jsxref("Symbol")}} for the symbol primitive.
+- {{jsxref("String")}} for the string primitive.
+- {{jsxref("Number")}} for the number primitive.
+- {{jsxref("BigInt")}} for the bigint primitive.
+- {{jsxref("Boolean")}} for the boolean primitive.
+- {{jsxref("Symbol")}} for the symbol primitive.
 
 The wrapper's [`valueOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf) method returns the primitive value.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Introduction to JavaScript data types](/en-US/docs/Web/JavaScript/Data_structures)
--   {{Interwiki("wikipedia", "Primitive data type")}} on Wikipedia
+- [Introduction to JavaScript data types](/en-US/docs/Web/JavaScript/Data_structures)
+- {{Interwiki("wikipedia", "Primitive data type")}} on Wikipedia
 
 1.  [Glossary](/en-US/docs/Glossary)
     1.  {{Glossary("JavaScript")}}

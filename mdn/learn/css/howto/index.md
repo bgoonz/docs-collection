@@ -4,8 +4,7 @@
 
 This page rounds up questions and answers, and other material on the MDN site that can help you to solve common CSS problems.
 
-Styling boxes
--------------
+## Styling boxes
 
 [How do I add a drop-shadow to an element?](/en-US/docs/Learn/CSS/Howto/Add_a_shadow)  
 Shadows can be added to boxes with the {{cssxref("box-shadow")}} property. This tutorial explains how it works and shows an example.
@@ -21,11 +20,10 @@ The {{cssxref("opacity")}} property and color values with an alpha channel can b
 
 ### Box styling lessons and guides
 
--   [The Box Model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
--   [Styling backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
+- [The Box Model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
+- [Styling backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 
-CSS and text
-------------
+## CSS and text
 
 [How do I add a drop-shadow to text?](/en-US/docs/Learn/CSS/Howto/Add_a_text_shadow)  
 Shadows can be added to text with the {{cssxref("text-shadow")}} property. This tutorial explains how it works and shows an example.
@@ -41,23 +39,22 @@ Combinators can help you to precisely target elements based on where they are in
 
 ### Text styling lessons and guides
 
--   [How to style text](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
--   [How to customize a list of elements](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
--   [How to style links](/en-US/docs/Learn/CSS/Styling_text/Styling_links)
--   [CSS Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
+- [How to style text](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+- [How to customize a list of elements](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
+- [How to style links](/en-US/docs/Learn/CSS/Styling_text/Styling_links)
+- [CSS Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
 
-CSS Layout
-----------
+## CSS Layout
 
 [How do I center an item?](/en-US/docs/Learn/CSS/Howto/Center_an_item)  
 Centering an item inside another box horizontally and vertically used to be tricky, however Flexbox now makes it simple.
 
 ### Layout guides
 
--   [Using CSS Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
--   [Using CSS multi-column layouts](/en-US/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts)
--   [Using CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
--   [Using CSS generated content](/en-US/docs/Learn/CSS/Howto/Generated_content)
+- [Using CSS Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+- [Using CSS multi-column layouts](/en-US/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts)
+- [Using CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
+- [Using CSS generated content](/en-US/docs/Learn/CSS/Howto/Generated_content)
 
 #### The CSS Layout Cookbook
 

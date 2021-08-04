@@ -2,36 +2,44 @@
 title: SourceBuffer.removeAsync()
 slug: Web/API/SourceBuffer/removeAsync
 tags:
-- API
-- Audio
-- MSE
-- Media
-- Media Source Extensions
-- Method
-- Experimental
-- Non-standard
-- Reference
-- SourceBuffer
-- Video
-- removeAsync
+  - API
+  - Audio
+  - MSE
+  - Media
+  - Media Source Extensions
+  - Method
+  - Experimental
+  - Non-standard
+  - Reference
+  - SourceBuffer
+  - Video
+  - removeAsync
 browser-compat: api.SourceBuffer.removeAsync
 ---
-<div>{{APIRef("Media Source Extensions")}}{{non-standard_header}}{{SeeCompatTable}}</div>
 
-<p>The <code><strong>removeAsync()</strong></code> method of the
-    {{domxref("SourceBuffer")}} interface starts the process of asynchronously removing
-    from the <code>SourceBuffer</code> media segments found within a specific time
-    range. A {{jsxref("Promise")}} is returned, which is fulfilled when the buffers
-  in the specified time range have been removed.</p>
+<div>
+  {{APIRef("Media Source Extensions")}}{{non-standard_header}}{{SeeCompatTable}}
+</div>
 
-<p>This method can only be called when {{domxref("SourceBuffer.updating", "updating")}} is
-  <code>false</code>. If that's not the case, call {{domxref("SourceBuffer.abort",
-  "abort()")}} instead.</p>
+<p>
+  The <code><strong>removeAsync()</strong></code> method of the
+  {{domxref("SourceBuffer")}} interface starts the process of asynchronously
+  removing from the <code>SourceBuffer</code> media segments found within a
+  specific time range. A {{jsxref("Promise")}} is returned, which is fulfilled
+  when the buffers in the specified time range have been removed.
+</p>
+
+<p>
+  This method can only be called when {{domxref("SourceBuffer.updating",
+  "updating")}} is <code>false</code>. If that's not the case, call
+  {{domxref("SourceBuffer.abort", "abort()")}} instead.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
 <pre
-  class="brush: js"><em>removePromise</em> = <em>sourceBuffer</em>.removeAsync(<em>start</em>, <em>end</em>);</pre>
+  class="brush: js"
+><em>removePromise</em> = <em>sourceBuffer</em>.removeAsync(<em>start</em>, <em>end</em>);</pre>
 
 <h3 id="Parameters">Parameters</h3>
 
@@ -44,15 +52,22 @@ browser-compat: api.SourceBuffer.removeAsync
 
 <h3 id="Return_value">Return value</h3>
 
-<p>A {{jsxref("Promise")}} whose fulfillment handler is executed once the buffers in the
-  specified time range have been removed from the <code>SourceBuffer</code>.</p>
+<p>
+  A {{jsxref("Promise")}} whose fulfillment handler is executed once the buffers
+  in the specified time range have been removed from the
+  <code>SourceBuffer</code>.
+</p>
 
 <h2 id="Example">Example</h2>
 
-<p>This example establishes an asynchronous function, <code>emptySourceBuffer()</code>,
-  which clears the contents of the specified <code>SourceBuffer</code>.</p>
+<p>
+  This example establishes an asynchronous function,
+  <code>emptySourceBuffer()</code>, which clears the contents of the specified
+  <code>SourceBuffer</code>.
+</p>
 
-<pre class="brush: js">async function emptySourceBuffer(msBuffer) {
+<pre class="brush: js">
+async function emptySourceBuffer(msBuffer) {
   await msBuffer.removeAsync(0, Infinity).catch(function(e) {
     handleException(e);
   }
@@ -61,7 +76,10 @@ browser-compat: api.SourceBuffer.removeAsync
 
 <h2 id="Specifications">Specifications</h2>
 
-<p>This feature is not part of any specification. It is not on track to become a standard.</p>
+<p>
+  This feature is not part of any specification. It is not on track to become a
+  standard.
+</p>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
@@ -70,8 +88,11 @@ browser-compat: api.SourceBuffer.removeAsync
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/API/Media_Source_Extensions_API">Media Source Extensions
-      API</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/Media_Source_Extensions_API"
+      >Media Source Extensions API</a
+    >
+  </li>
   <li>{{domxref("SourceBuffer.remove()")}}</li>
   <li>{{domxref("MediaSource")}}</li>
   <li>{{domxref("SourceBufferList")}}</li>

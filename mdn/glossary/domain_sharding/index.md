@@ -1,4 +1,4 @@
---- title: Domain sharding slug: Glossary/Domain\_sharding tags: - DNS - Glossary - HTTP - Reference - Web Performance - latency ---
+--- title: Domain sharding slug: Glossary/Domain_sharding tags: - DNS - Glossary - HTTP - Reference - Web Performance - latency ---
 
 Browsers limit the number of active connections for each domain. To enable concurrent downloads of assets exceeding that limit, **domain sharding** splits content across multiple subdomains. When multiple domains are used to serve multiple assets, browsers are able to download more resources simultaneously, resulting in a faster page load time and improved user experience.
 
@@ -8,9 +8,8 @@ The initial response from an HTTP request is generally an HTML file listing othe
 
 HTTP2 supports unlimited concurrent requests making domain sharding an obsolete requirement when HTTP/2 is enabled.
 
-See also
---------
+## See also
 
--   [Transport Layer Security (TLS)](/en-US/docs/Archive/Security/SSL_and_TLS)
--   [DNS](/en-US/docs/Glossary/DNS)
--   [HTTP/2](/en-US/docs/Glossary/HTTP_2)
+- [Transport Layer Security (TLS)](/en-US/docs/Archive/Security/SSL_and_TLS)
+- [DNS](/en-US/docs/Glossary/DNS)
+- [HTTP/2](/en-US/docs/Glossary/HTTP_2)

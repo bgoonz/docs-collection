@@ -1,11 +1,10 @@
---- title: Bounding volume collision detection with THREE.js slug: &gt;- Games/Techniques/3D\_collision\_detection/Bounding\_volume\_collision\_detection\_with\_THREE.js tags: - 3D - Games - JavaScript - WebGL - bounding boxes - collision detection - three.js ---
+--- title: Bounding volume collision detection with THREE.js slug: &gt;- Games/Techniques/3D_collision_detection/Bounding_volume_collision_detection_with_THREE.js tags: - 3D - Games - JavaScript - WebGL - bounding boxes - collision detection - three.js ---
 
 {{GamesSidebar}}
 
 This article shows how to implement **collision detection between bounding boxes and spheres using the Three.js** library. It is assumed that before reading this you have read our [3D collision detection](/en-US/docs/Games/Techniques/3D_collision_detection) introductory article first, and have basic knowledge about Three.js.
 
-Using `Box3` and `Sphere`
--------------------------
+## Using `Box3` and `Sphere`
 
 Three.js has objects that represent **mathematical volumes** and shapes — for 3D AABB and bounding spheres we can use the **`Box3`** and **`Sphere`** objects. Once instantiated, they have methods available to do intersection tests against other volumes.
 
@@ -24,7 +23,7 @@ To create a **`Box3` instance**, we need to provide the **lower and upper bounda
 
 **Note**: The `boundingBox` property takes the `Geometry` itself as reference, and not the `Mesh`. So any transformations such as scale, position, etc. applied to the `Mesh` will be ignored while computing the calculating box.
 
-A more simple alternative that fixes the previous issue is to set those boundaries later on with `Box3.setFromObject`, which will compute the dimensions taking into account a 3D entity's **transformations *and* any child meshes** as well.
+A more simple alternative that fixes the previous issue is to set those boundaries later on with `Box3.setFromObject`, which will compute the dimensions taking into account a 3D entity's **transformations _and_ any child meshes** as well.
 
     var knot = new THREE.Mesh(
       new THREE.TorusKnotGeometry(0.5, 0.1),
@@ -65,7 +64,7 @@ The **`Box3.intersectsBox`** method is available for performing this test.
 
     knotBbox.intersectsBox(otherBox);
 
-**Note**: This is different from the `Box3.containsBox` method, which checks whether the Box3 *fully* wraps another one.
+**Note**: This is different from the `Box3.containsBox` method, which checks whether the Box3 _fully_ wraps another one.
 
 #### `Sphere` vs. `Sphere`
 
@@ -95,14 +94,13 @@ Unfortunately this test is not implemented in Three.js, but we can patch Sphere 
 
 We have prepared some [live demos](https://mozdevs.github.io/gamedev-js-3d-aabb/) to demonstrate these techniques, with [source code](https://github.com/mozdevs/gamedev-js-3d-aabb) to examine.
 
--   [Point vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_point.html)
--   [Box vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_box.html)
--   [Sphere vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_sphere.html)
+- [Point vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_point.html)
+- [Box vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_box.html)
+- [Sphere vs. Box and Sphere](https://mozdevs.github.io/gamedev-js-3d-aabb/raw_sphere.html)
 
 ![](screen_shot_2015-10-20_at_15.19.16.png)
 
-Using `BoxHelper`
------------------
+## Using `BoxHelper`
 
 As an alternative to using raw `Box3` and `Sphere` objects, Three.js has a useful object to make handling **bounding boxes easier: `BoxHelper`** (previously `BoundingBoxHelper`, which has been deprecated). This helper takes a `Mesh` and calculates a bounding box volume for it (including its child meshes). This results in a new box `Mesh` representing the bounding box, which shows the bounding box's shape, and can passed to the previously seen `setFromObject` method in order to have a bounding box matching the `Mesh`.
 
@@ -110,9 +108,9 @@ As an alternative to using raw `Box3` and `Sphere` objects, Three.js has a usefu
 
 The advantages of using this helper are:
 
--   It has an `update()` method that will **resize** its bounding box Mesh if the linked Mesh rotates or changes its dimensions, and update its **position**.
--   It **takes into account the child meshes** when computing the size of the bounding box, so the original mesh and all its children are wrapped.
--   We can easily debug collisions by **rendering** the `Mesh`es that `BoxHelper` creates. By default they are created with a `LineBasicMaterial` material (a three.js material for drawing wireframe-style geometries).
+- It has an `update()` method that will **resize** its bounding box Mesh if the linked Mesh rotates or changes its dimensions, and update its **position**.
+- It **takes into account the child meshes** when computing the size of the bounding box, so the original mesh and all its children are wrapped.
+- We can easily debug collisions by **rendering** the `Mesh`es that `BoxHelper` creates. By default they are created with a `LineBasicMaterial` material (a three.js material for drawing wireframe-style geometries).
 
 The main disadvantage is that it **only creates box bounding volumes**, so if you need spheres vs AABB tests you need to create your own `Sphere` objects.
 

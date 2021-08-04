@@ -1,8 +1,8 @@
 --- title: Array slug: Glossary/array tags: - Array - CodingScripting - Glossary - JavaScript - programming ---
 
-An *array* is an ordered collection of data (either {{Glossary("primitive")}} or {{Glossary("object")}} depending upon the language). Arrays are used to store multiple values in a single variable. This is compared to a variable that can store only one value. 
+An _array_ is an ordered collection of data (either {{Glossary("primitive")}} or {{Glossary("object")}} depending upon the language). Arrays are used to store multiple values in a single variable. This is compared to a variable that can store only one value.
 
-Each item in an array has a number attached to it, called a numeric index, that allows you to access it. In JavaScript, arrays start at index zero and can be manipulated with various {{Glossary("Method", "methods")}}. 
+Each item in an array has a number attached to it, called a numeric index, that allows you to access it. In JavaScript, arrays start at index zero and can be manipulated with various {{Glossary("Method", "methods")}}.
 
 What an array in JavaScript looks like:
 
@@ -10,13 +10,12 @@ What an array in JavaScript looks like:
     let catNamesArray = ["Jacqueline", "Sophia", "Autumn"];
     //Arrays in JavaScript can hold different types of data, as shown above.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Array data structure", "Array")}} on Wikipedia
+- {{Interwiki("wikipedia", "Array data structure", "Array")}} on Wikipedia
 
 ### Technical reference
 
--   JavaScript {{jsxref("Array")}} on MDN
+- JavaScript {{jsxref("Array")}} on MDN

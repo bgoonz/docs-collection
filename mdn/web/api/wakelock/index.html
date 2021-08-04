@@ -9,24 +9,44 @@ tags:
   - screen
 browser-compat: api.WakeLock
 ---
-<div>{{draft}}{{securecontext_header}}{{DefaultAPISidebar("Screen Wake Lock API")}}</div>
 
-<p class="summary">The <strong><code>WakeLock</code></strong> interface of the {{domxref('Screen Wake Lock API')}} prevents device screens from dimming or locking when an application needs to keep running.</p>
+<div>
+  {{draft}}{{securecontext_header}}{{DefaultAPISidebar("Screen Wake Lock API")}}
+</div>
 
-<p>The system wake lock is exposed through the global {{domxref('Navigator.wakelock')}} property.</p>
+<p class="summary">
+  The <strong><code>WakeLock</code></strong> interface of the {{domxref('Screen
+  Wake Lock API')}} prevents device screens from dimming or locking when an
+  application needs to keep running.
+</p>
+
+<p>
+  The system wake lock is exposed through the global
+  {{domxref('Navigator.wakelock')}} property.
+</p>
 
 <h2 id="Methods">Methods</h2>
 
 <dl>
- <dt><code>{{domxref("WakeLock.request", "request")}}</code></dt>
- <dd>Requests a {{domxref("WakeLockSentinel")}} object, which returns a {{jsxref("Promise")}} that resolves with a {{domxref("WakeLockSentinel")}} object.</dd>
+  <dt><code>{{domxref("WakeLock.request", "request")}}</code></dt>
+  <dd>
+    Requests a {{domxref("WakeLockSentinel")}} object, which returns a
+    {{jsxref("Promise")}} that resolves with a {{domxref("WakeLockSentinel")}}
+    object.
+  </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
-<p>The following asynchronous function requests a {{domxref("WakeLockSentinel")}} object. The {{domxref("WakeLock.request")}} method is wrapped in a <code>try...catch</code> statement to account for if the browser refuses the request for any reason.</p>
+<p>
+  The following asynchronous function requests a {{domxref("WakeLockSentinel")}}
+  object. The {{domxref("WakeLock.request")}} method is wrapped in a
+  <code>try...catch</code> statement to account for if the browser refuses the
+  request for any reason.
+</p>
 
-<pre class="brush: js">try {
+<pre class="brush: js">
+try {
   const wakeLock = await navigator.wakeLock.request('screen');
 } catch (err) {
   // the wake lock request fails - usually system related, such being low on battery

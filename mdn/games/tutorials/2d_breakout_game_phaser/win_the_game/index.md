@@ -1,4 +1,4 @@
---- title: Win the game slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Win\_the\_game tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - winning ---
+--- title: Win the game slug: Games/Tutorials/2D_breakout_game_Phaser/Win_the_game tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - winning ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **12th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs
 
 <span class="seoSummary">Implementing winning in our game is quite easy: if you happen to destroy all the bricks, then you win.</span>
 
-How to win?
------------
+## How to win?
 
 Add the following new code into your `ballHitBrick()` function:
 
@@ -32,15 +31,13 @@ Add the following new code into your `ballHitBrick()` function:
 
 We loop through the bricks in the group using `bricks.children`, checking for the aliveness of each with each brick's `.alive() `method. If there are no more bricks left alive, then we show a winning message, restarting the game once the alert is dismissed.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/u8waa4Lx/1/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Both losing and winning are implemented, so the core gameplay of our game is finished. Now let's add something extra — we'll give the player three [lives](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Extra_lives) instead of one.
 

@@ -52,4 +52,4 @@ Now when you try to submit a link with invalid arguments you get an error.
 
 ![a link with invalid arguments you get an error](http://i.imgur.com/e5ZgK9c.png)
 
-*You can learn more about GraphQL errors [here](http://blog.rstankov.com/graphql-mutations-and-form-errors/).*
+_You can learn more about GraphQL errors [here](http://blog.rstankov.com/graphql-mutations-and-form-errors/)._

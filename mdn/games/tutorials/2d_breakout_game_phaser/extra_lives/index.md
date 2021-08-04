@@ -1,4 +1,4 @@
---- title: Extra lives slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Extra\_lives tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - lives ---
+--- title: Extra lives slug: Games/Tutorials/2D_breakout_game_Phaser/Extra_lives tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - lives ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **13th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs
 
 <span class="seoSummary">We can make the game enjoyable for longer by adding lives. In this article we'll implement a lives system, so that the player can continue playing until they have lost three lives, not just one.</span>
 
-New variables
--------------
+## New variables
 
 Add the following new variables below the existing ones in your code:
 
@@ -19,8 +18,7 @@ Add the following new variables below the existing ones in your code:
 
 These respectively will store the number of lives, the text label that displays the number of lives that remain, and a text label that will be shown on screen when the player loses one of their lives.
 
-Defining the new text labels
-----------------------------
+## Defining the new text labels
 
 Defining the texts look like something we already did in [the score](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/The_score) lesson. Add the following lines below the existing `scoreText` definition inside your `create()` function:
 
@@ -51,8 +49,7 @@ We can now use this variable when styling our text labels — update your code s
 
 This way changing the font in one variable will apply the changes to every place it is used.
 
-The lives handling code
------------------------
+## The lives handling code
 
 To implement lives in our game, let's first change the ball's function bound to the `onOutOfBounds` event. Instead of executing an anonymous function and showing the alert right away :
 
@@ -89,20 +86,17 @@ Instead of instantly printing out the alert when you lose a life, we first subtr
 
 When the number of available lives reaches zero, the game is over and the game over alert message will be shown.
 
-Events
-------
+## Events
 
 You have probably noticed the `add()` and `addOnce()` method calls in the above two code blocks and wondered how they differ. The difference is that the `add()` method binds the given function and causes it to be executed every time the event occurs, while `addOnce()` is useful when you want to have the bound function executed only once and then unbound so it is not executed again. In our case, on every `outOfBounds` event the `ballLeaveScreen` will be executed, but when the ball leaves the screen we only want to remove the message from the screen once.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/yk1c5n0b/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Lives made the game more forgiving — if you lose one life, you still have two more left and can continue to play. Now let's expand the look and feel of the game by adding [animations and tweens](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Animations_and_tweens).
 

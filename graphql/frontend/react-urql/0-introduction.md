@@ -8,22 +8,22 @@ In the previous tutorials, you learned about major concepts and benefits of Grap
 
 You’re going to build a simple clone of [Hackernews](https://news.ycombinator.com/). Here’s a list of the features the app will have:
 
--   Display a list of links
--   Search the list of links
--   Users can authenticate
--   Authenticated users can create new links
--   Authenticated users can upvote links (one vote per link and user)
--   Realtime updates when other users upvote a link or create a new one
+- Display a list of links
+- Search the list of links
+- Users can authenticate
+- Authenticated users can create new links
+- Authenticated users can upvote links (one vote per link and user)
+- Realtime updates when other users upvote a link or create a new one
 
 In this track, you’ll use the following technologies for building the app:
 
--   Frontend:
-    -   [React](https://facebook.github.io/react/): Frontend framework for building user interfaces
-    -   [urql](https://github.com/FormidableLabs/urql): Flexible and extensible GraphQL client for React
-    -   <span class="citation" data-cites="urql/exchange-graphcache">\[@urql/exchange-graphcache\]</span>(https://github.com/FormidableLabs/urql-exchange-graphcache): A normalized cache implementation for urql
--   Backend:
-    -   [`graphql-yoga`](https://github.com/prisma/graphql-yoga/): Fully-featured GraphQL Server with focus on easy setup, performance & great developer experience
-    -   [Prisma](https://www.prisma.io/): Open-source GraphQL API layer that turns your database into a GraphQL API
+- Frontend:
+  - [React](https://facebook.github.io/react/): Frontend framework for building user interfaces
+  - [urql](https://github.com/FormidableLabs/urql): Flexible and extensible GraphQL client for React
+  - <span class="citation" data-cites="urql/exchange-graphcache">\[@urql/exchange-graphcache\]</span>(https://github.com/FormidableLabs/urql-exchange-graphcache): A normalized cache implementation for urql
+- Backend:
+  - [`graphql-yoga`](https://github.com/prisma/graphql-yoga/): Fully-featured GraphQL Server with focus on easy setup, performance & great developer experience
+  - [Prisma](https://www.prisma.io/): Open-source GraphQL API layer that turns your database into a GraphQL API
 
 You’ll create the React project with [`create-react-app`](https://github.com/facebookincubator/create-react-app), a popular command-line tool that gives you a blank project with all required build configuration already setup.
 
@@ -41,7 +41,7 @@ Chances are that you’re writing a somewhat larger application where you want t
 
 The most common question heard from people that are getting started with GraphQL on the frontend is which GraphQL client they should use. We’ll try to provide a few hints that’ll help you decide which of these clients is the right one for your next project!
 
-[Relay](https://facebook.github.io/relay/) is Facebook’s homegrown GraphQL client that they open-sourced alongside GraphQL in 2015. It incorporates all the learnings that Facebook gathered since they started using GraphQL in 2012. Relay is heavily optimized for performance and comes with an opinionated structure that helps you manage a high level of complexity with ease. An interesting side-note is that Relay itself actually started out as a *routing* framework that eventually got combined with data loading responsibilities. It thus evolved into a powerful data management solution that can be used in JavaScript apps to interface with GraphQL APIs.
+[Relay](https://facebook.github.io/relay/) is Facebook’s homegrown GraphQL client that they open-sourced alongside GraphQL in 2015. It incorporates all the learnings that Facebook gathered since they started using GraphQL in 2012. Relay is heavily optimized for performance and comes with an opinionated structure that helps you manage a high level of complexity with ease. An interesting side-note is that Relay itself actually started out as a _routing_ framework that eventually got combined with data loading responsibilities. It thus evolved into a powerful data management solution that can be used in JavaScript apps to interface with GraphQL APIs.
 
 The performance benefits of Relay come at the cost of a notable learning curve. Relay is a pretty complex framework and understanding all its bits and pieces does require some time to really get into it. The overall situation in that respect has improved with the release of the 1.0 version, called [Relay Modern](http://facebook.github.io/relay/docs/en/introduction-to-relay.html), but if you’re looking for something to customize or easy to get started with, Relay might not be the right choice just yet.
 

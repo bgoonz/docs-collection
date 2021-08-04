@@ -1,4 +1,4 @@
---- title: Bounce off the walls slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Bounce\_off\_the\_walls tags: - Animation - Beginner - Canvas - Example - Games - Graphics - Tutorial - collision - detection ---
+--- title: Bounce off the walls slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Bounce_off_the_walls tags: - Animation - Beginner - Canvas - Example - Games - Graphics - Tutorial - collision - detection ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **3rd step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">It is nice to see our ball moving, but it quickly disappears from the screen, limiting the fun we can have with it! To overcome that we will implement some very simple collision detection (which will be explained [later](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection) in more detail) to make the ball bounce off the four edges of the Canvas.</span>
 
-Simple collision detection
---------------------------
+## Simple collision detection
 
 To detect the collision we will check whether the ball is touching (colliding with) the wall, and if so, we will change the direction of its movement accordingly.
 
@@ -78,8 +77,7 @@ This is because we're calculating the collision point of the wall and the center
 
 When the distance between the center of the ball and the edge of the wall is exactly the same as the radius of the ball, it will change the movement direction. Subtracting the radius from one edge's width and adding it onto the other gives us the impression of the proper collision detection — the ball bounces off the walls as it should do.
 
-Compare your code
------------------
+## Compare your code
 
 Lets again check the finished code for this part against what you've got, and have a play:
 
@@ -87,8 +85,7 @@ Lets again check the finished code for this part against what you've got, and ha
 
 **Exercise**: try changing the color of the ball to a random color every time it hits the wall.
 
-Next steps
-----------
+## Next steps
 
 We've now got to the stage where our ball is both moving and staying on the game board. In the fourth chapter we'll look at implementing a controllable paddle — see [Paddle and keyboard controls](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Paddle_and_keyboard_controls).
 

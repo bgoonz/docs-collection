@@ -6,13 +6,12 @@ Web {{glossary("browser","browsers")}} need software called a layout engine to i
 
 Since all Firefox OS apps are Web apps, Firefox OS uses Gecko as its app runtime as well.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Gecko (software)", "Gecko")}} on Wikipedia
+- {{interwiki("wikipedia", "Gecko (software)", "Gecko")}} on Wikipedia
 
 ### Technical Reference
 
--   [The Gecko documentation on MDN](/en-US/docs/Mozilla/Gecko)
+- [The Gecko documentation on MDN](/en-US/docs/Mozilla/Gecko)

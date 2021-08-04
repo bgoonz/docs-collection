@@ -1,6 +1,6 @@
 ### Attaching Users to Links
 
-With sign in power, you can now create your *own* links, posted by you. To make it possible, let’s integrate the Links and Users models:
+With sign in power, you can now create your _own_ links, posted by you. To make it possible, let’s integrate the Links and Users models:
 
 In the Link models file, import the Django settings:
 

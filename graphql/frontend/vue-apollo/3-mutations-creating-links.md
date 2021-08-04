@@ -120,14 +120,14 @@ You should now see the following screen:
 
 ![The app running at localhost:8080](http://imgur.com/KXMe1MG.png)
 
-Two input fields and a *submit*-button - not very pretty, but functional.
+Two input fields and a _submit_-button - not very pretty, but functional.
 
 Enter some data into the fields, e.g.:
 
--   **Description**: `The best learning resource for GraphQL`
--   **URL**: `www.howtographql.com`
+- **Description**: `The best learning resource for GraphQL`
+- **URL**: `www.howtographql.com`
 
-Then click the *submit*-button. You won’t get any visual feedback in the UI, but let’s see if the query actually worked by checking the current list of links in a Playground.
+Then click the _submit_-button. You won’t get any visual feedback in the UI, but let’s see if the query actually worked by checking the current list of links in a Playground.
 
 Type `graphcool playground` into a Terminal and send the following query:
 

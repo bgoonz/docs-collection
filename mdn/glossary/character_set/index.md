@@ -1,4 +1,4 @@
---- title: Character set slug: Glossary/character\_set tags: - Glossary - character encoding - character set ---
+--- title: Character set slug: Glossary/character_set tags: - Glossary - character encoding - character set ---
 
 <span class="seoSummary">A **character set** is an encoding system to let computers know how to recognize {{Glossary("Character")}}, including letters, numbers, punctuation marks, and whitespace.</span>
 

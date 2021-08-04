@@ -1,4 +1,4 @@
---- title: Load the assets and print them on screen slug: &gt;- Games/Tutorials/2D\_breakout\_game\_Phaser/Load\_the\_assets\_and\_print\_them\_on\_screen tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Sprites - Tutorial ---
+--- title: Load the assets and print them on screen slug: &gt;- Games/Tutorials/2D_breakout_game_Phaser/Load_the_assets_and_print_them_on_screen tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Sprites - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **3rd step** out of 16 in the [Gamedev Phaser tutorial](/en-US/docs/
 
 <span class="seoSummary">Our game will feature a ball rolling around the screen, bouncing off a paddle, and destroying bricks to earn points — familiar, huh? In this article we'll look at how to add sprites into our gameworld.</span>
 
-Having a ball
--------------
+## Having a ball
 
 Let's start by creating a JavaScript variable to represent our ball. Add the following line between the game initialization code (our `var game...` block) and the `preload()` function:
 
@@ -17,8 +16,7 @@ Let's start by creating a JavaScript variable to represent our ball. Add the fol
 
 **Note**: For the sake of this tutorial, we will use global variables. The purpose of the tutorial is to teach Phaser-specific approaches to game development rather than dwelling on subjective best approaches.
 
-Loading the ball sprite
------------------------
+## Loading the ball sprite
 
 Loading images and printing them on our canvas is a lot easier using Phaser than using pure JavaScript. To load the asset, we will use the `game` object created by Phaser, executing its `load.image()` method. Add the following new line just inside the `preload()` function, at the bottom:
 
@@ -39,15 +37,13 @@ Now, to show it on the screen we will use another Phaser method called `add.spri
 
 This will add the ball to the game and render it on the screen. The first two parameters are the x and y coordinates of the canvas where you want it added, and the third one is the name of the asset we defined earlier. That's it — if you load your `index.html` file you will see the image already loaded and rendered on the canvas!
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson for yourself in the live demo below, and play with it to better understand how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/98xrv9x5/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Printing out the ball was easy; next, we'll try [moving the ball](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Move_the_ball) on screen.
 

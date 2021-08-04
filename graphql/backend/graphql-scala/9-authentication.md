@@ -24,7 +24,7 @@ A custom `ExceptionHandler` needs a partial function which converts the type of 
 
 In `GraphQLServer` add the following function:
 
-    //add to imports: 
+    //add to imports:
     import com.howtographql.scala.sangria.models.{AuthenticationException, AuthorizationException}
     import sangria.execution.{ExceptionHandler => EHandler, _}
 
@@ -172,7 +172,7 @@ Create a file named `AuthMiddleware.scala` with the following code:
       }
     }
 
-The main logic you can see in the `beforeField` function body. Firstly (*1*) it tries to read `Authorized` FieldTag and if it exists run `ensureAuthenticated` function from our context (*2*). If nothing bad happens Sangria will continue execution of a query (*3*)
+The main logic you can see in the `beforeField` function body. Firstly (_1_) it tries to read `Authorized` FieldTag and if it exists run `ensureAuthenticated` function from our context (_2_). If nothing bad happens Sangria will continue execution of a query (_3_)
 
 The last step is to add this middleware to the executor.
 
@@ -227,7 +227,7 @@ the current state of files you can find under link below:
 
 And the repository with entire project you can find [under this link](https://github.com/marioosh/howtographql_tutorial_code).
 
-------------------------------------------------------------------------
+---
 
 ### The last words
 

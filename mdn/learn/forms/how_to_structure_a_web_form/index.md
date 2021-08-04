@@ -1,4 +1,4 @@
---- title: How to structure a web form slug: Learn/Forms/How\_to\_structure\_a\_web\_form tags: - Beginner - CodingScripting - Example - Forms - Guide - HTML - Learn - Structure - Web ---
+--- title: How to structure a web form slug: Learn/Forms/How_to_structure_a_web_form tags: - Beginner - CodingScripting - Example - Forms - Guide - HTML - Learn - Structure - Web ---
 
 {{LearnSidebar}}
 
@@ -10,8 +10,7 @@ With the basics out of the way, we'll now look in more detail at the elements us
 
 The flexibility of forms makes them one of the most complex structures in [HTML](/en-US/docs/Learn/HTML); you can build any kind of basic form using dedicated form elements and attributes. Using correct structure when building an HTML form will help ensure that the form is both usable and [accessible](/en-US/docs/Learn/Accessibility).
 
-The &lt;form&gt; element
-------------------------
+## The &lt;form&gt; element
 
 The {{HTMLElement("form")}} element formally defines a form and attributes that determine the form's behavior. Each time you want to create an HTML form, you must start it by using this element, nesting all the contents inside. Many assistive technologies and browser plugins can discover {{HTMLElement("form")}} elements and implement special hooks to make them easier to use.
 
@@ -23,8 +22,7 @@ It's always possible to use a form control outside of a {{HTMLElement("form")}} 
 
 Let's move forward and cover the structural elements you'll find nested in a form.
 
-The &lt;fieldset&gt; and &lt;legend&gt; elements
-------------------------------------------------
+## The &lt;fieldset&gt; and &lt;legend&gt; elements
 
 The {{HTMLElement("fieldset")}} element is a convenient way to create groups of widgets that share the same purpose, for styling and semantic purposes. You can label a {{HTMLElement("fieldset")}} by including a {{HTMLElement("legend")}} element just below the opening {{HTMLElement("fieldset")}} tag. The text content of the {{HTMLElement("legend")}} formally describes the purpose of the {{HTMLElement("fieldset")}} it is included inside.
 
@@ -58,8 +56,7 @@ The use case in this example is one of the most important. Each time you have a 
 
 Because of its influence over assistive technology, the {{HTMLElement("fieldset")}} element is one of the key elements for building accessible forms; however it is your responsibility not to abuse it. If possible, each time you build a form, try to [listen to how a screen reader](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility#screenreaders) interprets it. If it sounds odd, try to improve the form structure.
 
-The &lt;label&gt; element
--------------------------
+## The &lt;label&gt; element
 
 As we saw in the previous article, The {{HTMLElement("label")}} element is the formal way to define a label for an HTML form widget. This is the most important element if you want to build accessible forms — when implemented properly, screenreaders will speak a form element's label along with any related instructions, as well as it being useful for sighted users. Take this example, which we saw in the previous article:
 
@@ -81,7 +78,7 @@ If there is no label, or if the form control is neither implicitly or explicitly
 
 Another advantage of properly set up labels is that you can click or tap the label to activate the corresponding widget. This is useful for controls like text inputs, where you can click the label as well as the input to focus it, but it is especially useful for radio buttons and checkboxes — the hit area of such a control can be very small, so it is useful to make it as easy to activate as possible.
 
-For example, clicking on the "I like cherry" label text in the example below will toggle the selected state of the *taste\_cherry* checkbox:
+For example, clicking on the "I like cherry" label text in the example below will toggle the selected state of the _taste_cherry_ checkbox:
 
     <form>
       <p>
@@ -128,20 +125,19 @@ Let's consider this example:
 
 {{EmbedLiveSample("Multiple\_labels", 120, 120)}}
 
-The paragraph at the top states a rule for required elements. The rule must be included *before* it is used so that sighted users and users of assistive technologies such as screen readers can learn what it means before they encounter a required element. While this helps inform users what an asterisk means, it can not be relied upon. A screen reader will speak an asterisk as "*star*"  when encountered. When hovered by a sighted mouse user, "*required*" should appear,  which is achieved by use of the `title` attribute. Titles being read aloud depend on the screen reader's settings, so it is more reliable to also include the `aria-label` attribute, which is always read by screen readers.
+The paragraph at the top states a rule for required elements. The rule must be included _before_ it is used so that sighted users and users of assistive technologies such as screen readers can learn what it means before they encounter a required element. While this helps inform users what an asterisk means, it can not be relied upon. A screen reader will speak an asterisk as "_star_"  when encountered. When hovered by a sighted mouse user, "_required_" should appear,  which is achieved by use of the `title` attribute. Titles being read aloud depend on the screen reader's settings, so it is more reliable to also include the `aria-label` attribute, which is always read by screen readers.
 
 The above variants increase in effectiveness as you go through them:
 
--   In the first example, the label is not read out at all with the input — you just get "edit text blank", plus the actual labels are read out separately. The multiple `<label>` elements confuse the screenreader.
--   In the second example, things are a bit clearer — the label read out along with the input is "name star name edit text required", and the labels are still read out separately. Things are still a bit confusing, but it's a bit better this time because the `<input>` has a label associated with it.
--   The third example is best — the actual label is read out all together, and the label read out with the input is "name required edit text".
+- In the first example, the label is not read out at all with the input — you just get "edit text blank", plus the actual labels are read out separately. The multiple `<label>` elements confuse the screenreader.
+- In the second example, things are a bit clearer — the label read out along with the input is "name star name edit text required", and the labels are still read out separately. Things are still a bit confusing, but it's a bit better this time because the `<input>` has a label associated with it.
+- The third example is best — the actual label is read out all together, and the label read out with the input is "name required edit text".
 
 **Note**: You might get slightly different results, depending on your screenreader. This was tested in VoiceOver (and NVDA behaves similarly). We'd love to hear about your experiences too.
 
 **Note**: You can find this example on GitHub as [required-labels.html](https://github.com/mdn/learning-area/blob/master/html/forms/html-form-structure/required-labels.html) ([see it live also](https://mdn.github.io/learning-area/html/forms/html-form-structure/required-labels.html)). don't test the example with 2 or 3 of the versions uncommented — screenreaders will definitely get confused if you have multiple labels AND multiple inputs with the same ID!
 
-Common HTML structures used with forms
---------------------------------------
+## Common HTML structures used with forms
 
 Beyond the structures specific to web forms, it's good to remember that form markup is just HTML. This means that you can use all the power of HTML to structure a web form.
 
@@ -221,8 +217,8 @@ Let's put these ideas into practice and build a slightly more involved form — 
             </p>
         </section>
 
-6.  The second `<section>` of our form is the payment information. We have three distinct controls along with their labels, each contained inside a `<p>`. The first is a drop-down menu ({{htmlelement("select")}}) for selecting credit card type. The second is an `<input>` element of type `tel`, for entering a credit card number; while we could have used the `number` type, we don't want the number's spinner UI. The last one is an `<input>` element of type `date`, for entering the expiration date of the card; this one will come up with a date picker widget in supporting browsers, and fall back to a normal text input in non-supporting browsers. These newer input types are reintroduced in [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types).  
-      
+6.  The second `<section>` of our form is the payment information. We have three distinct controls along with their labels, each contained inside a `<p>`. The first is a drop-down menu ({{htmlelement("select")}}) for selecting credit card type. The second is an `<input>` element of type `tel`, for entering a credit card number; while we could have used the `number` type, we don't want the number's spinner UI. The last one is an `<input>` element of type `date`, for entering the expiration date of the card; this one will come up with a date picker widget in supporting browsers, and fall back to a normal text input in non-supporting browsers. These newer input types are reintroduced in [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types).
+
     Enter the following below the previous section:
 
         <section>
@@ -266,39 +262,35 @@ You can see the finished form in action below (also find it on GitHub — see ou
 
 {{EmbedLiveSample("A\_payment\_form","100%",620, "", "Learn/Forms/How\_to\_structure\_a\_web\_form/Example")}}
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find a further test to verify that you've retained this information before you move on — see [Test your skills: Form structure](/en-US/docs/Learn/Forms/Test_your_skills:_Form_structure).
 
-Summary
--------
+## Summary
 
 You now have all the knowledge you'll need to properly structure your web forms. We will cover many of the features introduced here in the next few articles, with the next article looking in more detail at using all the different types of form widgets you'll want to use to collect information from your users.
 
-See also
---------
+## See also
 
--   [A List Apart: *Sensible Forms: A Form Usability Checklist*](https://www.alistapart.com/articles/sensibleforms/)
+- [A List Apart: _Sensible Forms: A Form Usability Checklist_](https://www.alistapart.com/articles/sensibleforms/)
 
 {{PreviousMenuNext("Learn/Forms/Your\_first\_form", "Learn/Forms/Basic\_native\_form\_controls", "Learn/Forms")}}
 
-In this module
---------------
+## In this module
 
--   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
--   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
--   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
--   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
--   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
--   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
--   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
--   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
--   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
--   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
--   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
--   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

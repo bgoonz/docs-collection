@@ -2,30 +2,37 @@
 title: CanvasRenderingContext2D.stroke()
 slug: Web/API/CanvasRenderingContext2D/stroke
 tags:
-- API
-- Canvas
-- CanvasRenderingContext2D
-- Method
-- Reference
+  - API
+  - Canvas
+  - CanvasRenderingContext2D
+  - Method
+  - Reference
 browser-compat: api.CanvasRenderingContext2D.stroke
 ---
+
 <div>{{APIRef}}</div>
 
-<p>The
-  <code><strong>CanvasRenderingContext2D</strong></code><strong><code>.stroke()</code></strong>
-  method of the Canvas 2D API strokes (outlines) the current or given path with the
-  current stroke style.</p>
+<p>
+  The <code><strong>CanvasRenderingContext2D</strong></code
+  ><strong><code>.stroke()</code></strong> method of the Canvas 2D API strokes
+  (outlines) the current or given path with the current stroke style.
+</p>
 
-<p>Strokes are aligned to the center of a path; in other words, half of the stroke is
-  drawn on the inner side, and half on the outer side.</p>
+<p>
+  Strokes are aligned to the center of a path; in other words, half of the
+  stroke is drawn on the inner side, and half on the outer side.
+</p>
 
-<p>The stroke is drawn using the <a
-    href="https://en.wikipedia.org/wiki/Nonzero-rule">non-zero winding rule</a>, which
-  means that path intersections will still get filled.</p>
+<p>
+  The stroke is drawn using the
+  <a href="https://en.wikipedia.org/wiki/Nonzero-rule">non-zero winding rule</a
+  >, which means that path intersections will still get filled.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">void <em>ctx</em>.stroke();
+<pre class="brush: js">
+void <em>ctx</em>.stroke();
 void <em>ctx</em>.stroke(<em>path</em>);
 </pre>
 
@@ -40,17 +47,21 @@ void <em>ctx</em>.stroke(<em>path</em>);
 
 <h3 id="A_simple_stroked_rectangle">A simple stroked rectangle</h3>
 
-<p>This example creates a rectangle using the <code>rect()</code> method, and then draws
-  it to the canvas using <code>stroke()</code>.</p>
+<p>
+  This example creates a rectangle using the <code>rect()</code> method, and
+  then draws it to the canvas using <code>stroke()</code>.
+</p>
 
 <h4 id="HTML">HTML</h4>
 
-<pre class="brush: html">&lt;canvas id="canvas"&gt;&lt;/canvas&gt;
+<pre class="brush: html">
+&lt;canvas id="canvas"&gt;&lt;/canvas&gt;
 </pre>
 
 <h4 id="JavaScript">JavaScript</h4>
 
-<pre class="brush: js; highlight:[4]">const canvas = document.getElementById('canvas');
+<pre class="brush: js; highlight:[4]">
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 ctx.rect(10, 10, 150, 100);
 ctx.stroke();
@@ -62,10 +73,13 @@ ctx.stroke();
 
 <h3 id="Re-stroking_paths">Re-stroking paths</h3>
 
-<p>Typically, you'll want to call {{domxref("CanvasRenderingContext2D.beginPath()",
-  "beginPath()")}} for each new thing you want to stroke. If you don't, the previous
-  sub-paths will remain part of the current path, and get stroked every time you call the
-  <code>stroke()</code> method. In some cases, however, this may be the desired effect.
+<p>
+  Typically, you'll want to call
+  {{domxref("CanvasRenderingContext2D.beginPath()", "beginPath()")}} for each
+  new thing you want to stroke. If you don't, the previous sub-paths will remain
+  part of the current path, and get stroked every time you call the
+  <code>stroke()</code> method. In some cases, however, this may be the desired
+  effect.
 </p>
 
 <h4 id="HTML_2">HTML</h4>
@@ -74,10 +88,13 @@ ctx.stroke();
 
 <h4 id="JavaScript_2">JavaScript</h4>
 
-<p>This code strokes the first path three times, the second path two times, and the third
-  path only once.</p>
+<p>
+  This code strokes the first path three times, the second path two times, and
+  the third path only once.
+</p>
 
-<pre class="brush: js; highlight:[9,16,23]">const canvas = document.getElementById('canvas');
+<pre class="brush: js; highlight:[9,16,23]">
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // First sub-path
@@ -108,10 +125,12 @@ ctx.stroke();
 
 <h3 id="Stroking_and_filling">Stroking and filling</h3>
 
-<p>If you want to both stroke and fill a path, the order in which you perform these
-  actions will determine the result. In this example, the square on the left is drawn with
-  the stroke on top of the fill. The square on the right is drawn with the fill on top of
-  the stroke.</p>
+<p>
+  If you want to both stroke and fill a path, the order in which you perform
+  these actions will determine the result. In this example, the square on the
+  left is drawn with the stroke on top of the fill. The square on the right is
+  drawn with the fill on top of the stroke.
+</p>
 
 <h4 id="HTML_3">HTML</h4>
 
@@ -119,7 +138,8 @@ ctx.stroke();
 
 <h4 id="JavaScript_3">JavaScript</h4>
 
-<pre class="brush: js">const canvas = document.getElementById('canvas');
+<pre class="brush: js">
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 ctx.lineWidth = 16;
@@ -135,7 +155,8 @@ ctx.stroke();
 ctx.beginPath();
 ctx.rect(175, 25, 100, 100);
 ctx.stroke();
-ctx.fill();</pre>
+ctx.fill();</pre
+>
 
 <h4 id="Result_3">Result</h4>
 
@@ -152,5 +173,7 @@ ctx.fill();</pre>
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li>The interface defining this method: {{domxref("CanvasRenderingContext2D")}}</li>
+  <li>
+    The interface defining this method: {{domxref("CanvasRenderingContext2D")}}
+  </li>
 </ul>

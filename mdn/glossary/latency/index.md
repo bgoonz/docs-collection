@@ -4,9 +4,8 @@
 
 Latency can be a factor in any kind of data flow, but is most commonly discussed in terms of network latency (the time it takes for a packet of data to travel from source to destination) and media codec latency (the time it takes for the source data to be encoded or decoded and reach the consumer of the resulting data).
 
-Learn more
-----------
+## Learn more
 
--   [Understanding Latency](/en-US/docs/Web/Performance/Understanding_latency)
+- [Understanding Latency](/en-US/docs/Web/Performance/Understanding_latency)
 
- 
+

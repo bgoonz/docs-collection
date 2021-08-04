@@ -2,16 +2,14 @@
 
 Abstraction in {{Glossary("computer programming")}} is a way to reduce complexity and allow efficient design and implementation in complex software systems. It hides the technical complexity of systems behind simpler {{Glossary("API", "APIs")}}.
 
-Advantages of Data Abstraction
-------------------------------
+## Advantages of Data Abstraction
 
--   Helps the user to avoid writing low level code.
--   Avoids code duplication and increases reusability.
--   Can change internal implementation of class independently without affecting the user.
--   Helps to increase security of an application or program as only important details are provided to the user.
+- Helps the user to avoid writing low level code.
+- Avoids code duplication and increases reusability.
+- Can change internal implementation of class independently without affecting the user.
+- Helps to increase security of an application or program as only important details are provided to the user.
 
-Example
--------
+## Example
 
     class ImplementAbstraction {
       // method to set values of internal members
@@ -32,9 +30,8 @@ Example
     // a = 10
     // b = 20
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Abstraction (computer science)", "Abstraction")}} on Wikipedia
+- {{interwiki("wikipedia", "Abstraction (computer science)", "Abstraction")}} on Wikipedia

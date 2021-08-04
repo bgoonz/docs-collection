@@ -2,8 +2,7 @@
 
 PHP (a recursive initialism for PHP: Hypertext Preprocessor) is an open-source server-side scripting language that can be embedded into HTML to build web applications and dynamic websites.
 
-Examples
---------
+## Examples
 
 ### Basic syntax
 

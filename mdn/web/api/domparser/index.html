@@ -12,47 +12,65 @@ tags:
   - Reference
 browser-compat: api.DOMParser
 ---
+
 <p>{{APIRef("DOM")}}</p>
 
-<p><span class="seoSummary">The <strong><code>DOMParser</code></strong> interface provides
-    the ability to parse {{Glossary("XML")}} or {{Glossary("HTML")}} source code from a
-    string into a DOM {{domxref("Document")}}.</span></p>
+<p>
+  <span class="seoSummary"
+    >The <strong><code>DOMParser</code></strong> interface provides the ability
+    to parse {{Glossary("XML")}} or {{Glossary("HTML")}} source code from a
+    string into a DOM {{domxref("Document")}}.</span
+  >
+</p>
 
-<p>You can perform the opposite operation—converting a DOM tree into XML or HTML
-  source—using the {{domxref("XMLSerializer")}} interface.</p>
+<p>
+  You can perform the opposite operation—converting a DOM tree into XML or HTML
+  source—using the {{domxref("XMLSerializer")}} interface.
+</p>
 
-<p>In the case of an HTML document, you can also replace portions of the DOM with new DOM
-  trees built from HTML by setting the value of the {{domxref("Element.innerHTML")}} and
-  {{domxref("Element.outerHTML", "outerHTML")}} properties. These properties can also be
-  read to fetch HTML fragments corresponding to the corresponding DOM subtree.</p>
+<p>
+  In the case of an HTML document, you can also replace portions of the DOM with
+  new DOM trees built from HTML by setting the value of the
+  {{domxref("Element.innerHTML")}} and {{domxref("Element.outerHTML",
+  "outerHTML")}} properties. These properties can also be read to fetch HTML
+  fragments corresponding to the corresponding DOM subtree.
+</p>
 
-<p>Note that {{domxref("XMLHttpRequest")}} can parse XML and HTML directly
-  from a URL-addressable resource, returning a <code>Document</code> in its
-  {{domxref("XMLHttpRequest.response", "response")}} property.</p>
+<p>
+  Note that {{domxref("XMLHttpRequest")}} can parse XML and HTML directly from a
+  URL-addressable resource, returning a <code>Document</code> in its
+  {{domxref("XMLHttpRequest.response", "response")}} property.
+</p>
 
 <h2 id="Constructor">Constructor</h2>
 
 <dl>
- <dt>{{domxref("DOMParser.DOMParser","DOMParser()")}}</dt>
- <dd>Creates a new <code>DOMParser</code> object.</dd>
+  <dt>{{domxref("DOMParser.DOMParser","DOMParser()")}}</dt>
+  <dd>Creates a new <code>DOMParser</code> object.</dd>
 </dl>
 
 <h2 id="Methods">Methods</h2>
 
 <dl>
- <dt>{{domxref("DOMParser.parseFromString()")}}</dt>
- <dd>Parses a string using either the HTML parser or the XML parser, returning an {{domxref("HTMLDocument")}} or {{domxref("XMLDocument")}}.</dd>
+  <dt>{{domxref("DOMParser.parseFromString()")}}</dt>
+  <dd>
+    Parses a string using either the HTML parser or the XML parser, returning an
+    {{domxref("HTMLDocument")}} or {{domxref("XMLDocument")}}.
+  </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
 <h3>Parsing XML, SVG, and HTML</h3>
 
-<p>This example shows how to parse XML, SVG, and HTML. Note that a MIME type of
-<code>text/html</code> will invoke the HTML parser, and any of the other MIME types
-that are accepted by this method will invoke the XML parser.</p>
+<p>
+  This example shows how to parse XML, SVG, and HTML. Note that a MIME type of
+  <code>text/html</code> will invoke the HTML parser, and any of the other MIME
+  types that are accepted by this method will invoke the XML parser.
+</p>
 
-<pre class="brush: js">const parser = new DOMParser();
+<pre class="brush: js">
+const parser = new DOMParser();
 
 const xmlString = "&lt;warning&gt;Beware of the tiger&lt;/warning&gt;";
 const doc1 = parser.parseFromString(xmlString, "application/xml");
@@ -87,9 +105,14 @@ console.log(doc3.body.firstChild.textContent);
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/Guide/Parsing_and_serializing_XML">Parsing and serializing XML</a>
+  <li>
+    <a href="/en-US/docs/Web/Guide/Parsing_and_serializing_XML"
+      >Parsing and serializing XML</a
+    >
   </li>
   <li>{{domxref("XMLHttpRequest")}}</li>
   <li>{{domxref("XMLSerializer")}}</li>
-  <li>{{jsxref("JSON.parse()")}} - counterpart for {{jsxref("JSON")}} documents.</li>
+  <li>
+    {{jsxref("JSON.parse()")}} - counterpart for {{jsxref("JSON")}} documents.
+  </li>
 </ul>

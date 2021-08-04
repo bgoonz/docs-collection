@@ -2,27 +2,32 @@
 title: WritableStreamDefaultWriter.ready
 slug: Web/API/WritableStreamDefaultWriter/ready
 tags:
-- API
-- Method
-- Ready
-- Reference
-- Streams
-- Streams API
-- WritableStream
-- WritableStreamDefaultWriter
+  - API
+  - Method
+  - Ready
+  - Reference
+  - Streams
+  - Streams API
+  - WritableStream
+  - WritableStreamDefaultWriter
 browser-compat: api.WritableStreamDefaultWriter.ready
 ---
+
 <p>{{SeeCompatTable}}{{APIRef("Streams")}}</p>
 
-<p>The <strong><code>ready</code></strong> read-only property of the
-  {{domxref("WritableStreamDefaultWriter")}} interface returns a {{jsxref("Promise")}}
-  that resolves when the desired size of the stream's internal queue transitions from
-  non-positive to positive, signaling that it is no longer applying backpressure.</p>
+<p>
+  The <strong><code>ready</code></strong> read-only property of the
+  {{domxref("WritableStreamDefaultWriter")}} interface returns a
+  {{jsxref("Promise")}} that resolves when the desired size of the stream's
+  internal queue transitions from non-positive to positive, signaling that it is
+  no longer applying backpressure.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre
-  class="brush: js">var <em>promise</em> = <em>writableStreamDefaultWriter</em>.ready;</pre>
+<pre class="brush: js">
+var <em>promise</em> = <em>writableStreamDefaultWriter</em>.ready;</pre
+>
 
 <h3 id="Value">Value</h3>
 
@@ -30,13 +35,17 @@ browser-compat: api.WritableStreamDefaultWriter.ready
 
 <h2 id="Example">Example</h2>
 
-<p>The following example shows two uses of the <code>ready</code> property. The first uses
-  <code>ready</code> to ensure that the <code>WritableStream</code> is done writing and
-  thus able to receive data before sending a binary chunk. The second also checks whether
-  the the <code>WritableStream</code> is done writing, but this time because the writing
-  must be finished before the writer can be closed.</p>
+<p>
+  The following example shows two uses of the <code>ready</code> property. The
+  first uses <code>ready</code> to ensure that the
+  <code>WritableStream</code> is done writing and thus able to receive data
+  before sending a binary chunk. The second also checks whether the the
+  <code>WritableStream</code> is done writing, but this time because the writing
+  must be finished before the writer can be closed.
+</p>
 
-<pre class="brush: js">function sendMessage(message, writableStream) {
+<pre class="brush: js">
+function sendMessage(message, writableStream) {
   // defaultWriter is of type WritableStreamDefaultWriter
   var defaultWriter = writableStream.getWriter();
   var encoder = new TextEncoder();
@@ -67,7 +76,8 @@ browser-compat: api.WritableStreamDefaultWriter.ready
       });
     });
   });
-}</pre>
+}</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 

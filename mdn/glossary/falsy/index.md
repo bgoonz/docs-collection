@@ -22,7 +22,7 @@ The {{jsxref("Number")}} negative zero (so, also `-0.0`, etc., and `-0x0`).
 
 The {{jsxref("BigInt")}} zero (so, also `0x0n`). Note that there is no {{jsxref("BigInt")}} negative zero — the negation of `0n` is `0n`.
 
-`""`, `''`, ``` `` ```
+`""`, `''`, ` `` `
 
 Empty [string](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) value.
 
@@ -44,10 +44,9 @@ Objects are falsy if and only if they have the [\[\[IsHTMLDDA\]\]](https://tc39.
 
 That slot only exists in {{domxref("document.all")}} and cannot be set using JavaScript.
 
-Examples
---------
+## Examples
 
-Examples of *falsy* values in JavaScript (which are coerced to false in Boolean contexts, and thus *bypass* the `if` block):
+Examples of _falsy_ values in JavaScript (which are coerced to false in Boolean contexts, and thus _bypass_ the `if` block):
 
     if (false)
     if (null)
@@ -68,10 +67,9 @@ If the first object is falsy, it returns that object
     0 && "dog"
     // ↪ 0
 
-Learn more
-----------
+## Learn more
 
--   {{Glossary("Truthy")}}
--   {{Glossary("Boolean")}}
+- {{Glossary("Truthy")}}
+- {{Glossary("Boolean")}}
 
 {{QuickLinksWithSubpages("/en-US/docs/Glossary")}}

@@ -6,8 +6,7 @@ Conceptually hoisting is often presented as the compiler "splitting variable dec
 
 **Note:** The term hoisting is not used in any normative specification prose prior to [ECMAScript® 2015 Language Specification](https://www.ecma-international.org/ecma-262/6.0/index.html). Hoisting was thought up as a general way of thinking about how execution contexts (specifically the creation and execution phases) work in JavaScript.
 
-Learn more
-----------
+## Learn more
 
 ### Technical example
 
@@ -77,5 +76,5 @@ For information and examples see [`let` &gt; temporal dead zone](/en-US/docs/Web
 
 ### Technical reference
 
--   [var statement](/en-US/docs/Web/JavaScript/Reference/Statements/var) — MDN
--   [function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function) — MDN
+- [var statement](/en-US/docs/Web/JavaScript/Reference/Statements/var) — MDN
+- [function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function) — MDN

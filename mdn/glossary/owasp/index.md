@@ -2,9 +2,8 @@
 
 **OWASP** (Open Web Application Security Project) is a non-profit organization and worldwide network that works for security in Free Software, especially on the Web.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Official website](https://www.owasp.org)
+- [Official website](https://www.owasp.org)

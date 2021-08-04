@@ -2,14 +2,13 @@
 
 <span class="seoSummary">In {{Glossary("HTML")}}, a **tag** is used for creating an {{Glossary("element")}}.</span> The name of an HTML element is the name used in angle brackets such as `<p>` for paragraph. Note that the end tag's name is preceded by a slash character, `</p>`, and that in {{glossary("empty element", "empty elements")}}, the end tag is neither required nor allowed. If {{Glossary("attribute", "attributes")}} are not mentioned, default values are used in each case.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "HTML element")}} on Wikipedia
--   [HTML elements syntax](https://html.spec.whatwg.org/multipage/syntax.html#elements-2) on {{glossary("WHATWG")}}
+- {{Interwiki("wikipedia", "HTML element")}} on Wikipedia
+- [HTML elements syntax](https://html.spec.whatwg.org/multipage/syntax.html#elements-2) on {{glossary("WHATWG")}}
 
 ### Technical reference
 
--   [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML)
+- [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML)

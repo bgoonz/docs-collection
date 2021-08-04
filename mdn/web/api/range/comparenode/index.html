@@ -13,10 +13,13 @@ tags:
   - compareNode
 browser-compat: api.Range.compareNode
 ---
+
 <p>{{APIRef("DOM")}}{{deprecated_header}}{{Non-standard_Header}}</p>
 
-<p>The <strong><code>Range.compareNode()</code></strong> returns a constant indicating the
-  position of the {{DOMxRef("Node")}}.</p>
+<p>
+  The <strong><code>Range.compareNode()</code></strong> returns a constant
+  indicating the position of the {{DOMxRef("Node")}}.
+</p>
 
 <p>The possible values are:</p>
 
@@ -28,22 +31,29 @@ browser-compat: api.Range.compareNode
   <dt><code>NODE_BEFORE_AND_AFTER</code> (<code>2</code>)</dt>
   <dd>Node starts before and ends after the Range</dd>
   <dt><code>NODE_INSIDE</code> (<code>3</code>)</dt>
-  <dd>Node starts after and ends before the Range, i.e. the Node is completely selected by
-    the Range.</dd>
+  <dd>
+    Node starts after and ends before the Range, i.e. the Node is completely
+    selected by the Range.
+  </dd>
 </dl>
 
 <div class="notecard warning">
-  <p><strong>Warning:</strong> This method <a
-      href="/en-US/docs/Mozilla/Firefox/Releases/3/Site_compatibility">has been
-      removed</a> from <a href="/en-US/docs/Mozilla/Firefox/Releases/3">Gecko 1.9</a> and
-    will not exist in future versions of Firefox, which was the only browser implementing
-    it; you should switch to {{DOMxRef("Range.compareBoundaryPoints()")}} as soon as
-    possible.</p>
+  <p>
+    <strong>Warning:</strong> This method
+    <a href="/en-US/docs/Mozilla/Firefox/Releases/3/Site_compatibility"
+      >has been removed</a
+    >
+    from <a href="/en-US/docs/Mozilla/Firefox/Releases/3">Gecko 1.9</a> and will
+    not exist in future versions of Firefox, which was the only browser
+    implementing it; you should switch to
+    {{DOMxRef("Range.compareBoundaryPoints()")}} as soon as possible.
+  </p>
 </div>
 
 <p>The following function can be used as replacement:</p>
 
-<pre class="brush: js;">function rangeCompareNode(range, node) {
+<pre class="brush: js;">
+function rangeCompareNode(range, node) {
   var nodeRange = node.ownerDocument.createRange();
   try {
     nodeRange.selectNode(node);
@@ -67,7 +77,9 @@ browser-compat: api.Range.compareNode
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js"><em>returnValue</em> = <em>range</em>.compareNode( <em>referenceNode</em> );
+<pre
+  class="brush: js"
+><em>returnValue</em> = <em>range</em>.compareNode( <em>referenceNode</em> );
 </pre>
 
 <h3 id="Parameters">Parameters</h3>
@@ -79,15 +91,18 @@ browser-compat: api.Range.compareNode
 
 <h2 id="Example">Example</h2>
 
-<pre class="eval">range = document.createRange();
+<pre class="eval">
+range = document.createRange();
 range.selectNode(document.getElementsByTagName("div").item(0));
 returnValue = range.compareNode(document.getElementsByTagName("p").item(0));
 </pre>
 
 <h2 id="Notes">Notes</h2>
 
-<p>This method is obsolete; you should use the W3C DOM
-  {{DOMxRef("Range.compareBoundaryPoints()")}} method.</p>
+<p>
+  This method is obsolete; you should use the W3C DOM
+  {{DOMxRef("Range.compareBoundaryPoints()")}} method.
+</p>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -100,5 +115,9 @@ returnValue = range.compareNode(document.getElementsByTagName("p").item(0));
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/API/Document_Object_Model">The DOM interfaces index</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/Document_Object_Model"
+      >The DOM interfaces index</a
+    >
+  </li>
 </ul>

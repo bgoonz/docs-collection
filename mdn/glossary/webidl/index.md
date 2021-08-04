@@ -4,12 +4,11 @@
 
 WebIDL is used in nearly every API {{Glossary("specification")}} for the Web, and due to its standard format and syntax, the programmers who create Web browsers can more easily ensure that their browsers are compatible with one another, regardless of how they choose to write the code to implement the API.
 
-Learn more
-----------
+## Learn more
 
 ### Technical reference
 
--   [Specification](https://www.w3.org/TR/WebIDL/)
--   [Information contained in a WebIDL file](/en-US/docs/MDN/Contribute/Howto/Write_an_API_reference/Information_contained_in_a_WebIDL_file)
--   [WebIDL bindings](/en-US/docs/Mozilla/WebIDL_bindings)
--   {{interwiki("wikipedia", "WebIDL")}}
+- [Specification](https://www.w3.org/TR/WebIDL/)
+- [Information contained in a WebIDL file](/en-US/docs/MDN/Contribute/Howto/Write_an_API_reference/Information_contained_in_a_WebIDL_file)
+- [WebIDL bindings](/en-US/docs/Mozilla/WebIDL_bindings)
+- {{interwiki("wikipedia", "WebIDL")}}

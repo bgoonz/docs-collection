@@ -1,4 +1,4 @@
---- title: Animations and tweens slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Animations\_and\_tweens tags: - 2D - Animation - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - tween ---
+--- title: Animations and tweens slug: Games/Tutorials/2D_breakout_game_Phaser/Animations_and_tweens tags: - 2D - Animation - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - tween ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **14th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs
 
 <span class="seoSummary">To make the game look more juicy and alive we can use animations and tweens. This will result in a better, more entertaining experience. Let's explore how to implement Phaser animations and tweens in our game.</span>
 
-Animations
-----------
+## Animations
 
 In Phaser, animations, involve taking a spritesheet from an external source and displaying the sprites sequentially. As an example, we will make the ball wobble when it hits something.
 
@@ -21,8 +20,7 @@ Next, we will load the spritesheet — put the following line at the bottom of y
 
 Instead of loading a single image of the ball we can load the whole spritesheet — a collection of different images. We will show the sprites sequentially to create the illusion of animation. The `spritesheet()` method's two extra parameters determine the width and height of each single frame in the given spritesheet file, indicating to the program how to chop it up to get the individual frames.
 
-Loading the animation
----------------------
+## Loading the animation
 
 Next up, go into your create() function, find the line that loads the ball sprite, and below it put the call to `animations.add()` seen below:
 
@@ -31,12 +29,11 @@ Next up, go into your create() function, find the line that loads the ball sprit
 
 To add an animation to the object we use the `animations.add()` method, which contains the following parameters
 
--   The name we chose for the animation
--   An array defining the order in which to display the frames during the animation. If you look again at the `wobble.png` image, you'll see there are three frames. Phaser extracts these and stores references to them in an array — positions 0, 1, and 2. The above array says that we are displaying frame 0, then 1, then 0, etc.
--   The framerate, in fps. Since we are running the animation at 24fps and there are 9 frames, the animation will display just under three times per second.
+- The name we chose for the animation
+- An array defining the order in which to display the frames during the animation. If you look again at the `wobble.png` image, you'll see there are three frames. Phaser extracts these and stores references to them in an array — positions 0, 1, and 2. The above array says that we are displaying frame 0, then 1, then 0, etc.
+- The framerate, in fps. Since we are running the animation at 24fps and there are 9 frames, the animation will display just under three times per second.
 
-Applying the animation when the ball hits the paddle
-----------------------------------------------------
+## Applying the animation when the ball hits the paddle
 
 In the `arcade.collide()` method call that handles the collision between the ball and the paddle (the first line inside `update()`, see below) we can add an extra parameter that specifies a function to be executed every time the collision happens, in the same fashion as the `ballHitBrick()` function. Update the first line inside `update()` as shown below:
 
@@ -54,8 +51,7 @@ Then we can create the `ballHitPaddle()` function (having `ball` and `paddle` as
 
 The animation is played every time the ball hits the paddle. You can add the `animations.play()` call inside the `ballHitBrick()` function too, if you feel it would make the game look better.
 
-Tweens
-------
+## Tweens
 
 Whereas animations play external sprites sequentially, tweens smoothly animate properties of an object in the gameworld, such as width or opacity.
 
@@ -81,15 +77,13 @@ That's the expanded version of the tween definition, but we can also use the sho
 
 This tween will double the brick's scale in half a second using Elastic easing, will start automatically, and have a delay of 100 milliseconds.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/9o4pakrb/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Animations and tweens look very nice, but we can add even more to our game — in the next section we'll look at handling [button](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Buttons) inputs.
 

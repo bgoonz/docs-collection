@@ -80,7 +80,7 @@ Here is what it looks like:
       }
     }
 
-You could now simply execute this query in a [Playground](https://github.com/graphql/graphql-playground) (against the *application schema*) and retrieve the results from your GraphQL server. But let’s see how to run this query in your React app with urql!
+You could now simply execute this query in a [Playground](https://github.com/graphql/graphql-playground) (against the _application schema_) and retrieve the results from your GraphQL server. But let’s see how to run this query in your React app with urql!
 
 ### Queries with urql
 
@@ -174,10 +174,10 @@ Still in `LinkList.js`, delete the `linksToRender` mock data and then update the
     const LinkList = () => {
       const [result] = useQuery({ query: FEED_QUERY })
       const { data, fetching, error } = result
-      
+
       if (fetching) return <div>Fetching</div>
       if (error) return <div>Error</div>
-      
+
       const linksToRender = data.feed.links
 
       return (
@@ -197,7 +197,7 @@ The properties of the `result` from the hook tell us more about the state of you
 
 That’s it! You should see the exact same screen as before! 🤩 And to summarize, in this section you’ve:
 
--   created a `Link` and `LinkList`
--   added a `useQuery` hook to load some feed data from your GraphQL API
+- created a `Link` and `LinkList`
+- added a `useQuery` hook to load some feed data from your GraphQL API
 
 > **Note**: If the browser on `http://localhost:4000` only says error and is empty otherwise, you probably forgot to have your server running. Note that for the app to work the server needs to run as well - so you have two running processes in your terminal: One for the server and one for the React app. To start the server, navigate into the `server` directory and run `yarn start`.

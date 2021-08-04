@@ -1,6 +1,6 @@
 --- title: WebRTC slug: Glossary/WebRTC tags: - CodingScripting - Glossary - Infrastructure - JavaScript - P2P - VoIP - Web - WebRTC ---
 
-<span class="seoSummary">**WebRTC** (*Web Real-Time Communication*) is an {{Glossary("API")}} that can be used by video-chat, voice-calling, and P2P-file-sharing Web apps.</span>
+<span class="seoSummary">**WebRTC** (_Web Real-Time Communication_) is an {{Glossary("API")}} that can be used by video-chat, voice-calling, and P2P-file-sharing Web apps.</span>
 
 WebRTC consists mainly of these parts:
 
@@ -13,9 +13,8 @@ An interface to configure video chat or voice calls.
 {{domxref("RTCDataChannel")}}  
 Provides a method to set up a {{Glossary("P2P", "peer-to-peer")}} data pathway between browsers.
 
-Learn more
-----------
+## Learn more
 
--   {{Interwiki("wikipedia", "WebRTC")}} on Wikipedia
--   [WebRTC API on MDN](/en-US/docs/Web/API/WebRTC_API)
--   [Browser support for WebRTC](https://caniuse.com/rtcpeerconnection)
+- {{Interwiki("wikipedia", "WebRTC")}} on Wikipedia
+- [WebRTC API on MDN](/en-US/docs/Web/API/WebRTC_API)
+- [Browser support for WebRTC](https://caniuse.com/rtcpeerconnection)

@@ -8,33 +8,49 @@ tags:
   - Web Performance
 browser-compat: api.PerformanceEntry.duration
 ---
+
 <div>{{APIRef("Performance Timeline API")}}</div>
 
-<p>The <strong><code>duration</code></strong> property returns a
+<p>
+  The <strong><code>duration</code></strong> property returns a
   {{domxref("DOMHighResTimeStamp","timestamp")}} that is the duration of the
-  {{domxref("PerformanceEntry","performance entry")}}.</p>
+  {{domxref("PerformanceEntry","performance entry")}}.
+</p>
 
 <p>{{AvailableInWorkers}}</p>
 
-<p>The value returned by this property depends on the performance entry's
-  {{domxref("PerformanceEntry.entryType","type")}}:</p>
+<p>
+  The value returned by this property depends on the performance entry's
+  {{domxref("PerformanceEntry.entryType","type")}}:
+</p>
 
 <ul>
-  <li>"<code>frame</code>" - returns a {{domxref("DOMHighResTimeStamp","timestamp")}}
-    indicating the difference between the <code>startTime</code>s of two successive
-    frames.</li>
-  <li>"<code>mark</code>" - returns "<code>0</code>" (a mark has no duration).</li>
-  <li>"<code>measure</code>" - returns the {{domxref("DOMHighResTimeStamp","timestamp")}}
-    that is the duration of the measure.</li>
-  <li>"<code>navigation</code>" - returns the
-    {{domxref("DOMHighResTimeStamp","timestamp")}} that is the difference between the
-    {{domxref("PerformanceNavigationTiming.loadEventEnd")}} and
-    {{domxref("PerformanceEntry.startTime")}} properties, respectively.</li>
-  <li>"<code>resource</code>" - returns the difference between the resource's
+  <li>
+    "<code>frame</code>" - returns a
+    {{domxref("DOMHighResTimeStamp","timestamp")}} indicating the difference
+    between the <code>startTime</code>s of two successive frames.
+  </li>
+  <li>
+    "<code>mark</code>" - returns "<code>0</code>" (a mark has no duration).
+  </li>
+  <li>
+    "<code>measure</code>" - returns the
+    {{domxref("DOMHighResTimeStamp","timestamp")}} that is the duration of the
+    measure.
+  </li>
+  <li>
+    "<code>navigation</code>" - returns the
+    {{domxref("DOMHighResTimeStamp","timestamp")}} that is the difference
+    between the {{domxref("PerformanceNavigationTiming.loadEventEnd")}} and
+    {{domxref("PerformanceEntry.startTime")}} properties, respectively.
+  </li>
+  <li>
+    "<code>resource</code>" - returns the difference between the resource's
     {{domxref("PerformanceResourceTiming/responseEnd","responseEnd")}}
     {{domxref("DOMHighResTimeStamp","timestamp")}} and its
     {{domxref("PerformanceEntry.startTime","startTime")}}
-    {{domxref("DOMHighResTimeStamp","timestamp")}}.</li>
+    {{domxref("DOMHighResTimeStamp","timestamp")}}.
+  </li>
 </ul>
 
 <p>This property is {{readonlyInline}}.</p>
@@ -45,23 +61,31 @@ browser-compat: api.PerformanceEntry.duration
 
 <h3 id="Return_Value">Return value</h3>
 
-<p>A {{domxref("DOMHighResTimeStamp")}} representing the duration of the
-  {{domxref("PerformanceEntry","performance entry")}}. If the duration concept doesn't
-  apply for a particular performance metric, the browser may choose to return a duration
-  of 0.</p>
+<p>
+  A {{domxref("DOMHighResTimeStamp")}} representing the duration of the
+  {{domxref("PerformanceEntry","performance entry")}}. If the duration concept
+  doesn't apply for a particular performance metric, the browser may choose to
+  return a duration of 0.
+</p>
 
-<p class="note">Note: if the performance entry has an
-  {{domxref("PerformanceEntry.entryType","entryType")}} of "<code>resource</code>" (i.e.
-  the entry is a {{domxref("PerformanceResourceTiming")}} object), this property returns
-  the difference between the {{domxref("PerformanceResourceTiming.responseEnd")}} and
-  {{domxref("PerformanceEntry.startTime")}}
-  {{domxref("DOMHighResTimeStamp","timestamps")}}.</p>
+<p class="note">
+  Note: if the performance entry has an
+  {{domxref("PerformanceEntry.entryType","entryType")}} of
+  "<code>resource</code>" (i.e. the entry is a
+  {{domxref("PerformanceResourceTiming")}} object), this property returns the
+  difference between the {{domxref("PerformanceResourceTiming.responseEnd")}}
+  and {{domxref("PerformanceEntry.startTime")}}
+  {{domxref("DOMHighResTimeStamp","timestamps")}}.
+</p>
 
 <h2 id="Example">Example</h2>
 
-<p>The following example shows the use of the <code>duration</code> property.</p>
+<p>
+  The following example shows the use of the <code>duration</code> property.
+</p>
 
-<pre class="brush: js">function run_PerformanceEntry() {
+<pre class="brush: js">
+function run_PerformanceEntry() {
   log("PerformanceEntry support ...");
 
   if (performance.mark === undefined) {

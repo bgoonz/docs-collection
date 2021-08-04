@@ -1,4 +1,4 @@
---- title: WebVR — Virtual Reality for the Web slug: Games/Techniques/3D\_on\_the\_web/WebVR tags: - 3D - Games - WebGL - WebVR ---
+--- title: WebVR — Virtual Reality for the Web slug: Games/Techniques/3D_on_the_web/WebVR tags: - 3D - Games - WebGL - WebVR ---
 
 {{GamesSidebar}}
 
@@ -6,8 +6,7 @@ The concept of virtual reality in itself isn't new, but now we have the technolo
 
 **Note**: WebVR API is replaced by [WebXR Device API](/en-US/docs/Web/API/WebXR_Device_API). WebVR was never ratified as a standard, was implemented and enabled by default in very few browsers and supported a small number of devices.
 
-VR devices
-----------
+## VR devices
 
 With the popularity of Oculus Rift and a lot of other devices in production coming soon to the market, the future looks bright — we already have sufficient technology to make the VR experience "good enough" for playing games. There are many devices to chose from: desktop ones like Oculus Rift or HTC Vive, through consoles with Playstation VR (which admittedly doesn't support WebVR at this time), to mobile experiences like Gear VR or Google Cardboard.
 
@@ -15,8 +14,7 @@ With the popularity of Oculus Rift and a lot of other devices in production comi
 
 **Note**: For more information, read our [WebVR Concepts](/en-US/docs/Web/API/WebVR_API/Concepts) article.
 
-The WebVR API
--------------
+## The WebVR API
 
 The [WebVR API](/en-US/docs/Web/API/WebVR_API) is the central API for capturing information on VR Devices connected to a computer and headset position/orientation/velocity/acceleration information, and converting that into useful data you can use in your games and other applications.
 
@@ -86,8 +84,7 @@ The `gPositionSensor` variable holds the {{domxref("PositionSensorVRDevice")}} �
 
 For a full explanation and more details of the demo this is taken from, see [Using the WebVR API](/en-US/docs/Web/API/WebVR_API/Using_the_WebVR_API).
 
-Tools and techniques
---------------------
+## Tools and techniques
 
 The first WebVR experiments and demos used Three.js as it's probably the most popular 3D engine for the web. See the [VREffect](https://github.com/mrdoob/three.js/blob/master/examples/js/effects/VREffect.js) and [VRControls](https://github.com/mrdoob/three.js/blob/master/examples/js/controls/VRControls.js) functions available on the Three.js github to help you implement and handle WebVR with Three.js.
 
@@ -99,15 +96,13 @@ There's also a markup framework called [A-Frame](https://aframe.io/) that offers
 
 Immersion is more important than gameplay or graphics - you have to feel you're "inside" the experience. It's not easy to achieve, but it doesn't require realistic images. Quite the contrary as having a basic shapes flying around in high framerate can make a lot. Remember: experimenting is key - see what works for your game in particular.
 
-The future of WebVR
--------------------
+## The future of WebVR
 
 It's happening — consumer devices are reaching the market right now, and we already have JavaScript APIs to support them on the Web. All we need now is a stable specification, good UX and UI, better hardware and more tools and libraries — and all of that is on the horizon. It's the perfect time to dive in and experiment with WebVR.
 
-See also
---------
+## See also
 
--   [WebVR API](/en-US/docs/Web/API/WebVR_API)
--   [WebVR concepts](/en-US/docs/Web/API/WebVR_API/Concepts)
--   [Using the WebVR API](/en-US/docs/Web/API/WebVR_API/Using_the_WebVR_API)
--   [Building up a basic demo with A-Frame](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame)
+- [WebVR API](/en-US/docs/Web/API/WebVR_API)
+- [WebVR concepts](/en-US/docs/Web/API/WebVR_API/Concepts)
+- [Using the WebVR API](/en-US/docs/Web/API/WebVR_API/Using_the_WebVR_API)
+- [Building up a basic demo with A-Frame](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame)

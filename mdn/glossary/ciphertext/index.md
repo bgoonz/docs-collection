@@ -2,9 +2,8 @@
 
 In {{glossary("cryptography")}}, a ciphertext is a scrambled message that conveys information but is not legible unless {{glossary("decryption","decrypted")}} with the right {{glossary("cipher")}} and the right secret (usually a {{glossary("key")}}), reproducing the original {{glossary("cleartext")}}. A ciphertext's security, and therefore the secrecy of the contained information, depends on using a secure cipher and keeping the key secret.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Ciphertext")}} on Wikipedia
+- {{Interwiki("wikipedia", "Ciphertext")}} on Wikipedia

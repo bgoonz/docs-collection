@@ -1,4 +1,4 @@
---- title: Synthetic monitoring slug: Glossary/Synthetic\_monitoring tags: - Glossary - RUM - Reference - Synthetic monitoring - Web Performance ---
+--- title: Synthetic monitoring slug: Glossary/Synthetic_monitoring tags: - Glossary - RUM - Reference - Synthetic monitoring - Web Performance ---
 
 <span class="seoSummary">**Synthetic monitoring** involves monitoring the performance of a page in a 'laboratory' environment, typically with automation tooling in an environment that is as consistent as possible.</span> With a consistent baseline, synthetic monitoring is good for measuring the effects of code changes on performance. However, it doesn't necessarily reflect what users are experiencing.
 
@@ -6,9 +6,8 @@ Synthetic Monitoring involves deploying scripts to simulate the path an end-user
 
 Unlike [RUM](/en-US/docs/Glossary/Real_User_Monitoring), synthetic monitoring provides a narrow view of performance that doesn't account for user differences, making it useful in getting basic data about an application's performance and spot-checking performance in development environments. Combined with other tools, such as network throttling, can provide excellent insight into potential problem areas.
 
-See also
---------
+## See also
 
--   [Real User Monitoring (RUM)](/en-US/docs/Glossary/Real_User_Monitoring)
--   [Real User Monitoring (RUM) versus Synthetic Monitoring](/en-US/docs/Web/Performance/Rum-vs-Synthetic)
--   [Beacon](/en-US/docs/Glossary/beacon)
+- [Real User Monitoring (RUM)](/en-US/docs/Glossary/Real_User_Monitoring)
+- [Real User Monitoring (RUM) versus Synthetic Monitoring](/en-US/docs/Web/Performance/Rum-vs-Synthetic)
+- [Beacon](/en-US/docs/Glossary/beacon)

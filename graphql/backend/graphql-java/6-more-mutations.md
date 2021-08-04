@@ -1,5 +1,4 @@
-Voting for links
-----------------
+## Voting for links
 
 With the authentication part done, it’s time to introduce a new feature into the system - voting! The user is supposed to be able to vote for the links they like, so that later the links can be ordered by popularity. Almost like the real Hackernews!
 

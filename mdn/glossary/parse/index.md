@@ -10,9 +10,8 @@ When the browser encounters CSS styles, it parses the text into the CSS Object M
 
 JavaScript parsing is done during {{glossary("compile time")}} or whenever the {{glossary("parser")}} is invoked, such as during a call to a method.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Parse](https://en.wikipedia.org/wiki/Parsing) on Wikipedia
+- [Parse](https://en.wikipedia.org/wiki/Parsing) on Wikipedia

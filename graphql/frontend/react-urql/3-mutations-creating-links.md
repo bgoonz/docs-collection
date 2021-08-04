@@ -6,7 +6,7 @@ In this section, you’ll learn how you can send mutations with urql. It’s act
 
 The difference between `useQuery` and `useMutation` are minor. While `useQuery` accepts multiple options, including `query` and `variables`, the `useMutation` hook accepts the mutation definition as its only argument. It still returns an array of `[state, executeMutation]`. The `executeMutation` function accepts variables as its first argument and returns a promise of the mutation result. The `state` part of the array will be updated with the mutation’s state and `data` as well.
 
-### Why do the promise *and* the `state` both exist?
+### Why do the promise _and_ the `state` both exist?
 
 As you can tell the `useMutation` hook still returns `[state, executeMutation]` very similar to `useQuery` which returns `[state, executeQuery]`. In both cases, the `state` part is updated with the current mutation’s or query’s result. The difference is that `useQuery` eagerly executes the queries you pass to it, and the `useMutation` hook only executes once you call `executeMutation`.
 
@@ -25,7 +25,7 @@ Create a new file in the `src/components` directory and call it `CreateLink.js`.
     const CreateLink = props => {
       const [description, setDescription] = React.useState('')
       const [url, setUrl] = React.useState('')
-      
+
       const submit = React.useCallback(() => {
         // ... you'll implement this 🔜
       }, [])
@@ -98,11 +98,11 @@ Then add the `useMutation` hook to the `CreateLink` component and implement a ha
       const [url, setUrl] = React.useState('')
 
       const [state, executeMutation] = useMutation(POST_MUTATION)
-      
+
       const submit = React.useCallback(() => {
         executeMutation({ url, description })
       }, [executeMutation, url, description])
-      
+
       // ...
     }
 
@@ -144,8 +144,8 @@ Two input fields and a “Submit” button. Not pretty, but functional.
 
 Enter some data into the fields, e.g.:
 
--   **Description**: `The best learning resource for GraphQL`
--   **URL**: `www.howtographql.com`
+- **Description**: `The best learning resource for GraphQL`
+- **URL**: `www.howtographql.com`
 
 Then submit! You won’t get any visual feedback in the UI apart from the button switching to its disabled state, but let’s see if the query actually worked by checking the current list of links in a Playground.
 

@@ -1,26 +1,25 @@
---- title: Audio for Web games slug: Games/Techniques/Audio\_for\_Web\_Games tags: - Audio - Games - Web Audio API - audio sprites - spatialization - syncing tracks ---
+--- title: Audio for Web games slug: Games/Techniques/Audio_for_Web_Games tags: - Audio - Games - Web Audio API - audio sprites - spatialization - syncing tracks ---
 
 {{GamesSidebar}}
 
 Audio is an important part of any game; it adds feedback and atmosphere. Web-based audio is maturing fast, but there are still many browser differences to navigate. We often need to decide which audio parts are essential to our games' experience and which are nice to have but not essential, and devise a strategy accordingly. This article provides a detailed guide to implementing audio for web games, looking at what works currently across as wide a range of platforms as possible.
 
-Mobile audio caveats
---------------------
+## Mobile audio caveats
 
 By far the most difficult platforms to provide web audio support for are mobile platforms. Unfortunately these are also the platforms that people often use to play games. There are a couple of differences between desktop and mobile browsers that may have caused browser vendors to make choices that can make web audio difficult for game developers to work with. Let's look at these now.
 
 ### Autoplay
 
-Browser autoplay policy now affects desktop *and* mobile browsers. There is further information about it [here from the Google Developers site](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes).
+Browser autoplay policy now affects desktop _and_ mobile browsers. There is further information about it [here from the Google Developers site](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes).
 
 It is worth noting that autoplay with sound is allowed if:
 
--   the User has interacted with the domain.
--   on mobile the user has [added the site to their home screen](/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen).
+- the User has interacted with the domain.
+- on mobile the user has [added the site to their home screen](/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen).
 
 Many browsers will ignore any requests made by your game to automatically play audio; instead playback for audio needs to be started by a user-initiated event, such as a click or tap. This means you will have to structure your audio playback to take account of that. This is usually mitigated against by loading the audio in advance and priming it on a user-initiated event.
 
-For more passive audio auto play, for example background music that starts as soon as a game loads, one trick is to detect *any* user initiated event and start playback then. For other more active sounds that are to be used during the game we could consider priming them as soon as something like a *Start* button is pressed.
+For more passive audio auto play, for example background music that starts as soon as a game loads, one trick is to detect _any_ user initiated event and start playback then. For other more active sounds that are to be used during the game we could consider priming them as soon as something like a _Start_ button is pressed.
 
 To prime audio like this we want to play a part of it; for this reason it is useful to include a moment of silence at the end of your audio sample. Jumping to, playing, and then pausing that silence will mean we can now use JavaScript to play that file at arbitrary points. You can find out more about [best practices with the autoplay policy here](/en-US/docs/Web/API/Web_Audio_API/Best_practices#autoplay_policy).
 
@@ -60,8 +59,7 @@ There's a [full compatibility chart for mobile and desktop HTMLMediaElement supp
 
 **Note**: Volume changeability is tested with our [volume test example](https://jsfiddle.net/7ta12vw4/).
 
-Mobile workarounds
-------------------
+## Mobile workarounds
 
 Although mobile browsers can present problems, there are ways to work around the issues detailed above.
 
@@ -195,7 +193,7 @@ To see this in action, let's lay out some separate tracks:
       <p class="sourced">All tracks sourced from <a href="https://jplayer.org/">jplayer.org</a></p>
     </section>
 
-All of these tracks are the same tempo and are designed to be synchronized with each other, so we need to make sure they are loaded and available to the api *before* we are able to play them. We can do this with JavaScript's `async`/`await` functionality.
+All of these tracks are the same tempo and are designed to be synchronized with each other, so we need to make sure they are loaded and available to the api _before_ we are able to play them. We can do this with JavaScript's `async`/`await` functionality.
 
 Once they are available to play, we need to make sure they start at the correct point that other tracks might be playing at, so they sync up.
 
@@ -319,20 +317,19 @@ The [`pannerNode`](/en-US/docs/Web/API/PannerNode) harnesses the positional capa
 
 We can relate:
 
--   The position of objects
--   The direction and movement of objects
--   The environment (cavernous, underwater, etc.)
+- The position of objects
+- The direction and movement of objects
+- The environment (cavernous, underwater, etc.)
 
 This is especially useful in a three-dimensional environment rendered using WebGL, where the Web Audio API makes it possible to tie audio to the objects and viewpoints.
 
-See also
---------
+## See also
 
--   [Web Audio API on MDN](/en-US/docs/Web/API/Web_Audio_API)
--   [`<audio>` on MDN](/en-US/docs/Web/HTML/Element/audio)
--   [Developing Game Audio with the Web Audio API (HTML5Rocks)](https://www.html5rocks.com/en/tutorials/webaudio/games/)
--   [Mixing Positional Audio and WebGL (HTML5Rocks)](https://www.html5rocks.com/en/tutorials/webaudio/positional_audio/)
--   [Songs of Diridum: Pushing the Web Audio API to Its Limits](https://hacks.mozilla.org/2013/10/songs-of-diridum-pushing-the-web-audio-api-to-its-limits/)
--   [Making HTML5 Audio Actually Work on Mobile](https://pupunzi.open-lab.com/2013/03/13/making-html5-audio-actually-work-on-mobile/)
--   [Audio Sprites (and fixes for iOS)](https://remysharp.com/2010/12/23/audio-sprites/)  
-     
+- [Web Audio API on MDN](/en-US/docs/Web/API/Web_Audio_API)
+- [`<audio>` on MDN](/en-US/docs/Web/HTML/Element/audio)
+- [Developing Game Audio with the Web Audio API (HTML5Rocks)](https://www.html5rocks.com/en/tutorials/webaudio/games/)
+- [Mixing Positional Audio and WebGL (HTML5Rocks)](https://www.html5rocks.com/en/tutorials/webaudio/positional_audio/)
+- [Songs of Diridum: Pushing the Web Audio API to Its Limits](https://hacks.mozilla.org/2013/10/songs-of-diridum-pushing-the-web-audio-api-to-its-limits/)
+- [Making HTML5 Audio Actually Work on Mobile](https://pupunzi.open-lab.com/2013/03/13/making-html5-audio-actually-work-on-mobile/)
+- [Audio Sprites (and fixes for iOS)](https://remysharp.com/2010/12/23/audio-sprites/)  
+

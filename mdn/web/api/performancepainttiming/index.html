@@ -11,27 +11,51 @@ tags:
   - Web Performance
 browser-compat: api.PerformancePaintTiming
 ---
+
 <p>{{APIRef("Performance Timeline API")}}</p>
 
-<p>The <strong><code>PerformancePaintTiming</code></strong> interface of the <a href="/en-US/docs/Web/API/Paint_Timing_API">Paint Timing API</a> provides timing information about "paint" (also called "render") operations during web page construction. "Paint" refers to conversion of the render tree to on-screen pixels.</p>
+<p>
+  The <strong><code>PerformancePaintTiming</code></strong> interface of the
+  <a href="/en-US/docs/Web/API/Paint_Timing_API">Paint Timing API</a> provides
+  timing information about "paint" (also called "render") operations during web
+  page construction. "Paint" refers to conversion of the render tree to
+  on-screen pixels.
+</p>
 
-<p>An application can register a {{domxref("PerformanceObserver")}} for "<code>paint</code>" {{domxref("PerformanceEntry","performance entry types")}} and the observer can retrieve the times that paint events occur. Use this information to help identify areas that take too long to provide a good user experience.</p>
+<p>
+  An application can register a {{domxref("PerformanceObserver")}} for
+  "<code>paint</code>" {{domxref("PerformanceEntry","performance entry types")}}
+  and the observer can retrieve the times that paint events occur. Use this
+  information to help identify areas that take too long to provide a good user
+  experience.
+</p>
 
 <p>{{InheritanceDiagram}}</p>
 
 <h2 id="Properties">Properties</h2>
 
-<p>This interface has no properties but it extends the following {{domxref("PerformanceEntry")}} properties (for "<code>paint</code>" {{domxref ("PerformanceEntry.entryType","performance entry types")}}) by qualifying and constraining the properties as follows:</p>
+<p>
+  This interface has no properties but it extends the
+  following {{domxref("PerformanceEntry")}} properties (for "<code>paint</code>"
+  {{domxref ("PerformanceEntry.entryType","performance entry types")}}) by
+  qualifying and constraining the properties as follows:
+</p>
 
 <dl>
- <dt>{{domxref("PerformanceEntry.entryType")}}</dt>
- <dd>Returns "<code>paint</code>".</dd>
- <dt>{{domxref("PerformanceEntry.name")}}</dt>
- <dd>Returns either <code>"first-paint"</code> or <code>"first-contentful-paint"</code>.</dd>
- <dt>{{domxref("PerformanceEntry.startTime")}}</dt>
- <dd>Returns the {{domxref("DOMHighResTimeStamp","timestamp")}} when the paint occurred.</dd>
- <dt>{{domxref("PerformanceEntry.duration")}}</dt>
- <dd>Returns 0.</dd>
+  <dt>{{domxref("PerformanceEntry.entryType")}}</dt>
+  <dd>Returns "<code>paint</code>".</dd>
+  <dt>{{domxref("PerformanceEntry.name")}}</dt>
+  <dd>
+    Returns either <code>"first-paint"</code> or
+    <code>"first-contentful-paint"</code>.
+  </dd>
+  <dt>{{domxref("PerformanceEntry.startTime")}}</dt>
+  <dd>
+    Returns the {{domxref("DOMHighResTimeStamp","timestamp")}} when the paint
+    occurred.
+  </dd>
+  <dt>{{domxref("PerformanceEntry.duration")}}</dt>
+  <dd>Returns 0.</dd>
 </dl>
 
 <h2 id="Methods">Methods</h2>
@@ -40,7 +64,8 @@ browser-compat: api.PerformancePaintTiming
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">function showPaintTimings() {
+<pre class="brush: js">
+function showPaintTimings() {
   if (window.performance) {
     let performance = window.performance;
     let performanceEntries = performance.getEntriesByType('paint');
@@ -50,12 +75,15 @@ browser-compat: api.PerformancePaintTiming
   } else {
     console.log('Performance timing isn\'t supported.');
   }
-}</pre>
+}</pre
+>
 
 <p>The code above produces console output something like the following:</p>
 
-<pre class="brush: bash">The time to first-paint was 2785.915 milliseconds.
-The time to first-contentful-paint was 2787.460 milliseconds.</pre>
+<pre class="brush: bash">
+The time to first-paint was 2785.915 milliseconds.
+The time to first-contentful-paint was 2787.460 milliseconds.</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 

@@ -8,27 +8,25 @@ One common application of Base64 encoding on the web is to encode binary data  
 
 In JavaScript there are two functions respectively for decoding and encoding Base64 strings:
 
--   `btoa()`: creates a Base64-encoded ASCII string from a "string" of binary data ("btoa" should be read as "binary to ASCII").
--   `atob()`: decodes a Base64-encoded string("atob" should be read as "ASCII to binary").
+- `btoa()`: creates a Base64-encoded ASCII string from a "string" of binary data ("btoa" should be read as "binary to ASCII").
+- `atob()`: decodes a Base64-encoded string("atob" should be read as "ASCII to binary").
 
 The algorithm used by `atob()` and `btoa()` is specified in [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648), section 4.
 
 Note that `btoa()` expects to be passed binary data, and will throw an exception if the given string contains any characters whose UTF-16 representation occupies more than one byte. For more details, see the documentation for `btoa()`.
 
-Encoded size increase
----------------------
+## Encoded size increase
 
 Each Base64 digit represents exactly 6 bits of data. So, three 8-bits bytes of the input string/binary file (3×8 bits = 24 bits) can be represented by four 6-bit Base64 digits (4×6 = 24 bits).
 
-This means that the Base64 version of a string or file will be at least 133% the size of its source (a ~33% increase). The increase may be larger if the encoded data is small. For example, the string `"a"` with `length === 1` gets encoded to `"YQ=="` with `length === 4` — a 300% increase.
+This means that the Base64 version of a string or file will be at least 133% the size of its source (a ~33% increase). The increase may be larger if the encoded data is small. For example, the string `"a"` with `length === 1` gets encoded to `"YQ=="` with `length === 4` — a 300% increase.
 
-The "Unicode Problem"
----------------------
+## The "Unicode Problem"
 
 Since [`DOMString`](/en-US/docs/Web/API/DOMString "/en-US/docs/Web/API/DOMString")s are 16-bit-encoded strings, in most browsers calling `window.btoa` on a Unicode string will cause a `Character Out Of Range` exception if a character exceeds the range of a 8-bit ASCII-encoded character. There are two possible methods to solve this problem:
 
--   the first one is to escape the whole string and then encode it;
--   the second one is to convert the UTF-16 [`DOMString`](/en-US/docs/Web/API/DOMString "/en-US/docs/Web/API/DOMString") to an UTF-8 array of characters and then encode it.
+- the first one is to escape the whole string and then encode it;
+- the second one is to convert the UTF-16 [`DOMString`](/en-US/docs/Web/API/DOMString "/en-US/docs/Web/API/DOMString") to an UTF-8 array of characters and then encode it.
 
 Here are the two possible methods.
 

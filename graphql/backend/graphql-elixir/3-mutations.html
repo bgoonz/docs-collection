@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Mutations</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">Mutations</h1>
-</header>
-<h3 id="mutation-for-creating-links">Mutation for creating links</h3>
-<p>Setting up mutations is as easy as queries, and you’ll follow basically the same process. Create a root mutation object in your <code>lib/community_web/schema.ex</code> file and add a <code>:create_link</code> field to it with a couple of arguments.</p>
-<pre class="elixir(path=&quot;.../graphql-elixir/lib/community_web/schema.ex&quot;)"><code>mutation do
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Mutations</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Mutations</h1>
+    </header>
+    <h3 id="mutation-for-creating-links">Mutation for creating links</h3>
+    <p>
+      Setting up mutations is as easy as queries, and you’ll follow basically
+      the same process. Create a root mutation object in your
+      <code>lib/community_web/schema.ex</code> file and add a
+      <code>:create_link</code> field to it with a couple of arguments.
+    </p>
+    <pre
+      class="
+        elixir(path=&quot;.../graphql-elixir/lib/community_web/schema.ex&quot;)
+      "
+    ><code>mutation do
   @desc &quot;Create a new link&quot;
   field :create_link, :link do
     arg :url, non_null(:string)
@@ -27,9 +49,16 @@
     resolve &amp;NewsResolver.create_link/3
   end
 end</code></pre>
-<h3 id="resolvers-with-arguments">Resolvers with arguments</h3>
-<p>As before you’ll need to actually write the <code>create_link</code> function inside the news resolver.</p>
-<pre class="elixir(path=&quot;.../graphql-elixir/blob/master/lib/community/web/resolvers/news_resolver.ex&quot;)"><code>def create_link(_root, args, _info) do
+    <h3 id="resolvers-with-arguments">Resolvers with arguments</h3>
+    <p>
+      As before you’ll need to actually write the
+      <code>create_link</code> function inside the news resolver.
+    </p>
+    <pre
+      class="
+        elixir(path=&quot;.../graphql-elixir/blob/master/lib/community/web/resolvers/news_resolver.ex&quot;)
+      "
+    ><code>def create_link(_root, args, _info) do
   # TODO: add detailed error message handling later
   case News.create_link(args) do
     {:ok, link} -&gt;
@@ -38,11 +67,28 @@ end</code></pre>
       {:error, &quot;could not create link&quot;}
   end
 end</code></pre>
-<p>Note that in this case you need to access the arguments that were passed with the mutation. The second resolver parameter is exactly what you need for this, not only for mutations but for any other time you want to access this data (such as for queries with arguments, which you’ll also build later).</p>
-<p>The generator you used earlier created a function for you <code>Community.News.create_link/1</code> that will insert a news article in the DB. In this resolver you can simply hand off all database or business specific concerns to that function, and let the resolver handle anything that might be GraphQL specific. Although this indirection may seem unnecessary now it becomes incredibly useful as your app grows and other parts of it also need to create links.</p>
-<h3 id="testing-with-playground">Testing with Playground</h3>
-<p>To test, just restart the server again and use the new mutation with GraphiQL:</p>
-<pre class="graphql"><code>mutation {
+    <p>
+      Note that in this case you need to access the arguments that were passed
+      with the mutation. The second resolver parameter is exactly what you need
+      for this, not only for mutations but for any other time you want to access
+      this data (such as for queries with arguments, which you’ll also build
+      later).
+    </p>
+    <p>
+      The generator you used earlier created a function for you
+      <code>Community.News.create_link/1</code> that will insert a news article
+      in the DB. In this resolver you can simply hand off all database or
+      business specific concerns to that function, and let the resolver handle
+      anything that might be GraphQL specific. Although this indirection may
+      seem unnecessary now it becomes incredibly useful as your app grows and
+      other parts of it also need to create links.
+    </p>
+    <h3 id="testing-with-playground">Testing with Playground</h3>
+    <p>
+      To test, just restart the server again and use the new mutation with
+      GraphiQL:
+    </p>
+    <pre class="graphql"><code>mutation {
   createLink(
     url: &quot;http://npmjs.com/package/graphql-tools&quot;,
     description: &quot;Best Tools!&quot;,
@@ -52,10 +98,14 @@ end</code></pre>
     description
   }
 }</code></pre>
-<figure>
-<img src="http://i.imgur.com/pHNRZlG.png" alt="Testing with Playground" /><figcaption>Testing with Playground</figcaption>
-</figure>
-<p>If you run your <code>allLinks</code> query again you’ll now see we have a new link.</p>
-<h3 id="more-content-coming-soon">More content coming soon!</h3>
-</body>
+    <figure>
+      <img src="http://i.imgur.com/pHNRZlG.png" alt="Testing with Playground" />
+      <figcaption>Testing with Playground</figcaption>
+    </figure>
+    <p>
+      If you run your <code>allLinks</code> query again you’ll now see we have a
+      new link.
+    </p>
+    <h3 id="more-content-coming-soon">More content coming soon!</h3>
+  </body>
 </html>

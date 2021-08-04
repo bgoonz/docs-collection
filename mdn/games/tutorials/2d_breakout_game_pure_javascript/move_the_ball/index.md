@@ -1,4 +1,4 @@
---- title: Move the ball slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Move\_the\_ball tags: - 2D - Beginner - Canvas - Games - JavaScript - Loop - Tutorial - movement ---
+--- title: Move the ball slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Move_the_ball tags: - 2D - Beginner - Canvas - Games - JavaScript - Loop - Tutorial - movement ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **2nd step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">You already know how to draw a ball from working through the previous article, so now let's make it move. Technically, we will be painting the ball on the screen, clearing it and then painting it again in a slightly different position every frame to make the impression of movement — just like how movement works with the movies.</span>
 
-Defining a drawing loop
------------------------
+## Defining a drawing loop
 
 To keep constantly updating the canvas drawing on each frame, we need to define a drawing function that will run over and over again, with a different set of variable values each time to change sprite positions, etc. You can run a function over and over again using a JavaScript timing function such as {{domxref("WindowOrWorkerGlobalScope/setInterval", "setInterval()")}} or {{domxref("window.requestAnimationFrame()", "requestAnimationFrame()")}}.
 
@@ -30,8 +29,7 @@ Thanks to the infinite nature of `setInterval` the `draw()` function will be cal
 
 Try your updated code now — the ball should be repainted on every frame.
 
-Making it move
---------------
+## Making it move
 
 You won't notice the ball being repainted constantly at the moment, as it's not moving. Let's change that. First, instead of a hardcoded position at (50,50) we will define a starting point at the bottom center part of the Canvas in variables called `x` and `y`, then use those to define the position the circle is drawn at.
 
@@ -71,8 +69,7 @@ Save your code again and try it in your browser. This works ok, although it appe
 
 ![](ball-trail.png)
 
-Clearing the canvas before each frame
--------------------------------------
+## Clearing the canvas before each frame
 
 The ball is leaving a trail because we're painting a new circle on every frame without removing the previous one. Don't worry, because there's a method to clear canvas content: {{domxref("CanvasRenderingContext2D.clearRect()","clearRect()")}}. This method takes four parameters: the x and y coordinates of the top left corner of a rectangle, and the x and y coordinates of the bottom right corner of a rectangle. The whole area covered by this rectangle will be cleared of any content previously painted there.
 
@@ -91,8 +88,7 @@ Add the following highlighted new line to the `draw()` function:
 
 Save your code and try again, and this time you'll see the ball move without a trail. Every 10 milliseconds the canvas is cleared, the blue circle (our ball) will be drawn on a given position and the `x` and `y` values will be updated for the next frame.
 
-Cleaning up our code
---------------------
+## Cleaning up our code
 
 We will be adding more and more commands to the `draw()` function in the next few articles, so it's good to keep it as simple and clean as possible. Let's start by moving the ball drawing code to a separate function.
 
@@ -113,8 +109,7 @@ Replace the existing draw() function with the following two functions:
         y += dy;
     }
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this article for yourself in the live demo below, and play with it to understand better how it works:
 
@@ -122,8 +117,7 @@ You can check the finished code for this article for yourself in the live demo b
 
 Exercise: try changing the speed of the moving ball, or the direction it moves in.
 
-Next steps
-----------
+## Next steps
 
 We've drawn our ball and gotten it moving, but it keeps disappearing off the edge of the canvas. In the third chapter we'll explore how to make it [bounce off the walls](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Bounce_off_the_walls).
 

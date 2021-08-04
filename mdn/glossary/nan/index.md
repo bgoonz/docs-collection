@@ -6,13 +6,12 @@ For example, NaNs can represent infinity, result of division by zero, missing va
 
 Practically speaking, if I divide two variables in a {{glossary("JavaScript")}} program, the result may be NaN, which is predefined in JavaScript as "undefined". Hence this division may break the program. Now, if this computation was a small part of a much larger algorithm, it would be really painful to figure out where the error actually occurs. Fortunately, since the result will be NaN and I know my divisor may turn out to be 0, I can set up testing conditions that prevent any such computations in the first place or notify me of where they happen.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "NaN")}} on Wikipedia
+- {{Interwiki("wikipedia", "NaN")}} on Wikipedia
 
 ### Technical information
 
--   [NaN in JavaScript](/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN)
+- [NaN in JavaScript](/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN)

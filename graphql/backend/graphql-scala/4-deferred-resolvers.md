@@ -6,7 +6,7 @@ Let’s implement one for the `Link` entity:
 
 In `GraphQLSchema` file add a fetcher for `Link` entity. Place it before `QueryType` declaration and don’t forget about imports:
 
-    //in import section: 
+    //in import section:
     import sangria.execution.deferred.Fetcher
 
     //in the body:
@@ -85,7 +85,7 @@ Add an implicit hasId in `GraphQLSchema`
     //add just below LinkType declaration
     implicit val linkHasId = HasId[Link, Int](_.id)
 
-------------------------------------------------------------------------
+---
 
 After the last changes, our `GraphQLSchema` file content should looks like the this:
 

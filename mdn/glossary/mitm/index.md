@@ -6,14 +6,13 @@ Comparing this to physical mail: If you're writing letters to each other, the ma
 
 In physical mail and in online communication, MITM attacks are tough to defend. A few tips:
 
--   Don't just ignore certificate warnings. You could be connecting to a phishing server or an imposter server.
--   Sensitive sites without HTTPS encryption on public Wi-Fi networks aren't trustworthy.
--   Check for HTTPS in your address bar and ensure encryption is in-place before logging in.
+- Don't just ignore certificate warnings. You could be connecting to a phishing server or an imposter server.
+- Sensitive sites without HTTPS encryption on public Wi-Fi networks aren't trustworthy.
+- Check for HTTPS in your address bar and ensure encryption is in-place before logging in.
 
-Learn more
-----------
+## Learn more
 
--   OWASP: [Manipulator-in-the-middle attack](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack)
--   PortSwigger: [Latest manipulator-in-the-middle attacks news](https://portswigger.net/daily-swig/mitm)
--   Wikipedia: [Man-in-the-middle attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)
--   The {{HTTPHeader("Public-Key-Pins")}} header ({{Glossary("HPKP")}}) can significantly decrease the risk of MITM by instructing browsers to require a whitelisted certificate for all subsequent connections to that website.
+- OWASP: [Manipulator-in-the-middle attack](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack)
+- PortSwigger: [Latest manipulator-in-the-middle attacks news](https://portswigger.net/daily-swig/mitm)
+- Wikipedia: [Man-in-the-middle attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)
+- The {{HTTPHeader("Public-Key-Pins")}} header ({{Glossary("HPKP")}}) can significantly decrease the risk of MITM by instructing browsers to require a whitelisted certificate for all subsequent connections to that website.

@@ -1,6 +1,6 @@
 As fun as it may be, your GraphQL API is unlikely to be of much use if it doesn’t connect to other systems, be it databases, third-party APIs or alike.
 
-> One of the beauties of the architecture imposed by GraphQL (remember all that *single responsibility* stuff?) is that introducing third-party connectors is both trivial for the developer (you) and completely transparent for the client.
+> One of the beauties of the architecture imposed by GraphQL (remember all that _single responsibility_ stuff?) is that introducing third-party connectors is both trivial for the developer (you) and completely transparent for the client.
 
 Since resolvers are responsible for fetching the value of a single field, it is easy to imagine that, within a single query response, values could be coming from multiple storages and third-party APIs at the same time, without the client ever being affected.
 
@@ -17,7 +17,7 @@ Take this opportunity to add the `id` field to the `Link` type as you’ll need 
 Analogously, refactor the `Link` class to add the new field:
 
     public class Link {
-        
+
         private final String id; //the new field
         private final String url;
         private final String description;
@@ -43,7 +43,7 @@ Analogously, refactor the `Link` class to add the new field:
         public String getDescription() {
             return description;
         }
-        
+
     }
 
 ### Connecting Mongo DB

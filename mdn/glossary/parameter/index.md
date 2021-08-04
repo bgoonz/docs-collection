@@ -2,11 +2,11 @@
 
 A parameter is a named variable passed into a {{Glossary("function")}}. Parameter variables are used to import {{Glossary("argument","arguments")}} into functions.
 
-Note the difference between *parameters* and *arguments*:
+Note the difference between _parameters_ and _arguments_:
 
--   Function parameters are the names listed in the function's definition.
--   Function {{Glossary("argument","arguments")}} are the real values passed to the function.
--   Parameters are initialized to the values of the arguments supplied.
+- Function parameters are the names listed in the function's definition.
+- Function {{Glossary("argument","arguments")}} are the real values passed to the function.
+- Parameters are initialized to the values of the arguments supplied.
 
 Two kinds of parameters:
 
@@ -16,14 +16,13 @@ the most common kind; they pass values into functions. Depending on programming 
 output/return parameters  
 primarily return multiple values from a function, but not recommended since they cause confusion
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   <a href="https://en.wikipedia.org/wiki/Parameter_%28computer_programming%29#Parameters_and_arguments" class="external external-icon">Difference between <em>parameter</em> and <em>argument</em></a> on Wikipedia
+- <a href="https://en.wikipedia.org/wiki/Parameter_%28computer_programming%29#Parameters_and_arguments" class="external external-icon">Difference between <em>parameter</em> and <em>argument</em></a> on Wikipedia
 
 ### Technical reference
 
--   [Function declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function)
--   [Function expression](/en-US/docs/Web/JavaScript/Reference/Operators/function)
+- [Function declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function)
+- [Function expression](/en-US/docs/Web/JavaScript/Reference/Operators/function)

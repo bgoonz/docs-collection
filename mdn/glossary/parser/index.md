@@ -4,9 +4,8 @@ A **parser** is the module of a compiler or interpreter that {{glossary("parse",
 
 More generally, it's a piece of software that parses text and transforms its content to another representation.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Parser](https://en.wikipedia.org/wiki/Parsing#Parser) on Wikipedia
+- [Parser](https://en.wikipedia.org/wiki/Parsing#Parser) on Wikipedia

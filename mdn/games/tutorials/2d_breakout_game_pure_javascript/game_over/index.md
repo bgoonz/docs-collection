@@ -1,4 +1,4 @@
---- title: Game over slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Game\_over tags: - Beginner - Canvas - Games - Graphics - JavaScript - Tutorial - game over ---
+--- title: Game over slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Game_over tags: - Beginner - Canvas - Games - Graphics - JavaScript - Tutorial - game over ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **5th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">It's fun to watch the ball bouncing off the walls and be able to move the paddle around, but other than that the game does nothing and doesn't have any progression or end goal. It would be good from the gameplay point of view to be able to lose. The logic behind losing in breakout is simple. If you miss the ball with the paddle and let it reach the bottom edge of the screen, then it's game over.</span>
 
-Implementing game over
-----------------------
+## Implementing game over
 
 Let's try to implement game over in our game. Here's the piece of code from the third lesson where we made the ball bounce off the walls:
 
@@ -41,8 +40,7 @@ Then replace the second if statement with the following:
         clearInterval(interval); // Needed for Chrome to end game
     }
 
-Letting the paddle hit the ball
--------------------------------
+## Letting the paddle hit the ball
 
 The last thing to do in this lesson is to create some kind of collision detection between the ball and the paddle, so it can bounce off it and get back into the play area. The easiest thing to do is to check whether the center of the ball is between the left and right edges of the paddle. Update the last bit of code you modified again, to the following:
 
@@ -61,8 +59,7 @@ The last thing to do in this lesson is to create some kind of collision detectio
 
 If the ball hits the bottom edge of the Canvas we need to check whether it hits the paddle . if yes, then it bounces off just like you'd expect; if not then the game is over as before.
 
-Compare your code
------------------
+## Compare your code
 
 Here's the working code for you to compare yours against:
 
@@ -70,8 +67,7 @@ Here's the working code for you to compare yours against:
 
 **Exercise**: make the ball move faster when it hits the paddle.
 
-Next steps
-----------
+## Next steps
 
 We're doing quite well so far and our game is starting to feel a lot more worth playing now you can lose! But it is still missing something. Let's move on  to the sixth chapter — [Build the brick field](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Build_the_brick_field) — and create some bricks for the ball to destroy.
 

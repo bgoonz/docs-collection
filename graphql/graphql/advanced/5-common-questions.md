@@ -1,12 +1,12 @@
 ### Is GraphQL a Database Technology?
 
-No. GraphQL is often confused with being a database technology. This is a misconception, GraphQL is a *query language* for APIs - not databases. In that sense it’s database agnostic and can be used with any kind of database or even no database at all.
+No. GraphQL is often confused with being a database technology. This is a misconception, GraphQL is a _query language_ for APIs - not databases. In that sense it’s database agnostic and can be used with any kind of database or even no database at all.
 
 ### Is GraphQL only for React / Javascript Developers?
 
 No. GraphQL is an API technology so it can be used in any context where an API is required.
 
-On the *backend*, a GraphQL server can be implemented in any programming language that can be used to build a web server. Next to Javascript, there are popular reference implementations for Ruby, Python, Scala, Java, Clojure, Go and .NET.
+On the _backend_, a GraphQL server can be implemented in any programming language that can be used to build a web server. Next to Javascript, there are popular reference implementations for Ruby, Python, Scala, Java, Clojure, Go and .NET.
 
 Since a GraphQL API is usually operated over HTTP, any client that can speak HTTP is able to query data from a GraphQL server.
 
@@ -14,7 +14,7 @@ Since a GraphQL API is usually operated over HTTP, any client that can speak HTT
 
 ### How to do Server-side Caching?
 
-One common concern with GraphQL, especially when comparing it to REST, are the difficulties to maintain server-side cache. With REST, it’s easy to cache the data for each endpoint, since it’s sure that the *structure* of the data will not change.
+One common concern with GraphQL, especially when comparing it to REST, are the difficulties to maintain server-side cache. With REST, it’s easy to cache the data for each endpoint, since it’s sure that the _structure_ of the data will not change.
 
 With GraphQL on the other hand, it’s not clear what a client will request next, so putting a caching layer right behind the API doesn’t make a lot of sense.
 
@@ -22,7 +22,7 @@ Server-side caching still is a challenge with GraphQL. More info about caching c
 
 ### How to do Authentication and Authorization?
 
-Authentication and authorization are often confused. *Authentication* describes the process of claiming an *identity*. That’s what you do when you log in to a service with a username and password, you authenticate yourself. *Authorization* on the other hand describes *permission rules* that specify the access rights of individual users and user groups to certain parts of the system.
+Authentication and authorization are often confused. _Authentication_ describes the process of claiming an _identity_. That’s what you do when you log in to a service with a username and password, you authenticate yourself. _Authorization_ on the other hand describes _permission rules_ that specify the access rights of individual users and user groups to certain parts of the system.
 
 Authentication in GraphQL can be implemented with common patterns such as [OAuth](https://oauth.net/).
 

@@ -1,21 +1,21 @@
 In this section, you’ll learn how you can bring realtime functionality into your app by implementing GraphQL subscriptions. The goal is to implement two subscriptions to be exposed by your GraphQL server:
 
--   Send realtime updates to subscribed clients when a new `Link` element is *created*
--   Send realtime updates to subscribed clients when an existing `Link` element is *upvoted*
+- Send realtime updates to subscribed clients when a new `Link` element is _created_
+- Send realtime updates to subscribed clients when an existing `Link` element is _upvoted_
 
 ### What are GraphQL subscriptions?
 
-Subscriptions are a GraphQL feature that allows a server to send data to its clients when a specific *event* happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket). In that setup, the server maintains a steady connection to its subscribed client. This also breaks the “Request-Response-Cycle” that were used for all previous interactions with the API.
+Subscriptions are a GraphQL feature that allows a server to send data to its clients when a specific _event_ happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket). In that setup, the server maintains a steady connection to its subscribed client. This also breaks the “Request-Response-Cycle” that were used for all previous interactions with the API.
 
-Instead, the client initially opens up a long-lived connection to the server by sending a *subscription query* that specifies which *event* it is interested in. Every time this particular event happens, the server uses the connection to push the event data to the subscribed client(s).
+Instead, the client initially opens up a long-lived connection to the server by sending a _subscription query_ that specifies which _event_ it is interested in. Every time this particular event happens, the server uses the connection to push the event data to the subscribed client(s).
 
 ### Implementing GraphQL subscriptions
 
-We will be using `PubSub` from the `apollo-server` library that we have already been using for our GraphQL server to implement subscriptions to the following *events*:
+We will be using `PubSub` from the `apollo-server` library that we have already been using for our GraphQL server to implement subscriptions to the following _events_:
 
--   A new model is **created**
--   An existing model **updated**
--   An existing model is **deleted**
+- A new model is **created**
+- An existing model **updated**
+- An existing model is **deleted**
 
 You will do this by first adding an instance of `PubSub` to the context, just as we did with `PrismaClient`, and then calling its methods in the resolvers that handle each of the above events.
 
@@ -181,7 +181,7 @@ Now observe the Playground where the subscription was running:
 
 #### Implementing a `vote` mutation
 
-The next feature to be added is a voting feature which lets users *upvote* certain links. The very first step here is to extend your Prisma data model to represent votes in the database.
+The next feature to be added is a voting feature which lets users _upvote_ certain links. The very first step here is to extend your Prisma data model to represent votes in the database.
 
 Open `prisma/schema.prisma` and adjust it to look as follows:
 
@@ -293,7 +293,7 @@ Here is what’s going on:
 
 1.  Similar to what you’re doing in the `post` resolver, the first step is to validate the incoming JWT with the `getUserId` helper function. If it’s valid, the function will return the `userId` of the `User` who is making the request. If the JWT is not valid, the function will throw an exception.
 2.  To protect against those pesky “double voters” (or honest folks who accidentally click twice), you need to check if the vote already exists or not. First, you try to fetch a vote with the same `linkId` and `userId`. If the vote exists, it will be stored in the `vote` variable, resulting in the boolean `true` from your call to `Boolean(vote)` – throwing an error kindly telling the user that they already voted.
-3.  If that `Boolean(vote)` call returns `false`, the `vote.create` method will be used to create a new `Vote` that’s *connected* to the `User` and the `Link`.
+3.  If that `Boolean(vote)` call returns `false`, the `vote.create` method will be used to create a new `Vote` that’s _connected_ to the `User` and the `Link`.
 
 Also, don’t forget to adjust the export statement to include the `vote` resolver in the module:
 
@@ -306,9 +306,9 @@ Also, don’t forget to adjust the export statement to include the `vote` resolv
 
 You also need to account for the new relations in your GraphQL schema:
 
--   `votes` on `Link`
--   `user` on `Vote`
--   `link` on `Vote`
+- `votes` on `Link`
+- `user` on `Vote`
+- `link` on `Vote`
 
 Similar to before, you need to implement resolvers for these.
 

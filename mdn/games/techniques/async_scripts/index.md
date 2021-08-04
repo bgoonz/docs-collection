@@ -1,11 +1,10 @@
---- title: Async scripts for asm.js slug: Games/Techniques/Async\_scripts tags: - Games - JavaScript - asm.js - async ---
+--- title: Async scripts for asm.js slug: Games/Techniques/Async_scripts tags: - Games - JavaScript - asm.js - async ---
 
 {{GamesSidebar}}
 
 <span class="seoSummary">Every medium or large game should compile [asm.js](/en-US/docs/Games/Tools/asm.js) code as part of an async script to give the browser the maximum flexibility to optimize the compilation process. In Gecko, async compilation allows the JavaScript engine to compile the asm.js off the main thread when the game is loading and cache the generated machine code so that the game doesn't need to be compiled on subsequent loads (starting in Firefox 28). To see the difference, toggle `javascript.options.parallel_parsing` in `about:config`.</span>
 
-Putting async into action
--------------------------
+## Putting async into action
 
 Getting async compilation is easy: when writing your JavaScript, just use the `async` attribute like so:
 
@@ -19,8 +18,7 @@ or, to do the same thing via script:
 
 (Scripts created from script default to `async`.) The default HTML shell Emscripten generates produces the latter.
 
-When is async not async?
-------------------------
+## When is async not async?
 
 Two common situations in which a script is \*not\* async (as [defined by the HTML spec](https://www.w3.org/TR/html5/scripting-1.html)) are:
 

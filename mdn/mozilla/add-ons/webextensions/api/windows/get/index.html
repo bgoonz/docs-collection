@@ -13,15 +13,27 @@ tags:
   - get
 browser-compat: webextensions.api.windows.get
 ---
+
 <div><span class="diff_add">{{AddonSidebar()}}</span></div>
 
-<p>Gets details about a window, given its ID. The details are passed into a callback.</p>
+<p>
+  Gets details about a window, given its ID. The details are passed into a
+  callback.
+</p>
 
-<p>This is an asynchronous function that returns a <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>.</p>
+<p>
+  This is an asynchronous function that returns a
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise</a
+    ></code
+  >.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:js">var getting = browser.windows.get(
+<pre class="brush:js">
+var getting = browser.windows.get(
   windowId,              // integer
   getInfo                // optional object
 )
@@ -30,27 +42,63 @@ browser-compat: webextensions.api.windows.get
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
- <dt><code>windowId</code></dt>
- <dd><code>integer</code>. The ID of the window object you want returned.</dd>
- <dt><code>getInfo</code>{{optional_inline}}</dt>
- <dd><code>object</code>. Contains options to filter the type of window.
- <dl class="reference-values">
-  <dt><code>populate</code>{{optional_inline}}</dt>
-  <dd><code>boolean</code>. If <code>true</code>, the {{WebExtAPIRef('windows.Window')}} object will have a <code>tabs</code> property that contains a list of {{WebExtAPIRef('tabs.Tab')}} objects representing the tabs open in the window. The <code>Tab</code> objects only contain the <code>url</code>, <code>title</code> and <code>favIconUrl</code> properties if the extension's manifest file includes the <code>"tabs"</code> permission or a matching <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions">host permission</a>.</dd>
-  <dt><code>windowTypes</code>{{optional_inline}}</dt>
-  <dd><code>array</code> of {{WebExtAPIRef('windows.WindowType')}} objects. If set, the {{WebExtAPIRef('windows.Window')}} returned will be filtered based on its type. If unset the default filter is set to <code>['normal', 'panel', 'popup']</code>, with <code>'panel'</code> window types limited to the extension's own windows.</dd>
- </dl>
- </dd>
+  <dt><code>windowId</code></dt>
+  <dd><code>integer</code>. The ID of the window object you want returned.</dd>
+  <dt><code>getInfo</code>{{optional_inline}}</dt>
+  <dd>
+    <code>object</code>. Contains options to filter the type of window.
+    <dl class="reference-values">
+      <dt><code>populate</code>{{optional_inline}}</dt>
+      <dd>
+        <code>boolean</code>. If <code>true</code>, the
+        {{WebExtAPIRef('windows.Window')}} object will have a
+        <code>tabs</code> property that contains a list of
+        {{WebExtAPIRef('tabs.Tab')}} objects representing the tabs open in the
+        window. The <code>Tab</code> objects only contain the <code>url</code>,
+        <code>title</code> and <code>favIconUrl</code> properties if the
+        extension's manifest file includes the <code>"tabs"</code> permission or
+        a matching
+        <a
+          href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions"
+          >host permission</a
+        >.
+      </dd>
+      <dt><code>windowTypes</code>{{optional_inline}}</dt>
+      <dd>
+        <code>array</code> of {{WebExtAPIRef('windows.WindowType')}} objects. If
+        set, the {{WebExtAPIRef('windows.Window')}} returned will be filtered
+        based on its type. If unset the default filter is set to
+        <code>['normal', 'panel', 'popup']</code>, with
+        <code>'panel'</code> window types limited to the extension's own
+        windows.
+      </dd>
+    </dl>
+  </dd>
 </dl>
 
-<div class="note"><strong>Note:</strong>
+<div class="note">
+  <strong>Note:</strong>
 
-<p>If supplied, the <code>windowTypes</code> component of <code>getInfo</code> is ignored. The use of <code>windowTypes</code> has been deprecated as of Firefox 62.</p>
+  <p>
+    If supplied, the <code>windowTypes</code> component of
+    <code>getInfo</code> is ignored. The use of <code>windowTypes</code> has
+    been deprecated as of Firefox 62.
+  </p>
 </div>
 
 <h3 id="Return_value">Return value</h3>
 
-<p>A <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code> that will be fulfilled with a {{WebExtAPIRef('windows.Window')}} object containing the details of the window. If any error occurs, the promise will be rejected with an error message.</p>
+<p>
+  A
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise</a
+    ></code
+  >
+  that will be fulfilled with a {{WebExtAPIRef('windows.Window')}} object
+  containing the details of the window. If any error occurs, the promise will be
+  rejected with an error message.
+</p>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
@@ -58,13 +106,29 @@ browser-compat: webextensions.api.windows.get
 
 <h2 id="Examples">Examples</h2>
 
-<p>This example gets the current window and logs the URLs of the tabs it contains. Note that you'll need the "tabs" <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions">permission</a> or matching <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions">host permissions</a> to access tab URLs.</p>
+<p>
+  This example gets the current window and logs the URLs of the tabs it
+  contains. Note that you'll need the "tabs"
+  <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions"
+    >permission</a
+  >
+  or matching
+  <a
+    href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions"
+    >host permissions</a
+  >
+  to access tab URLs.
+</p>
 
 <div class="note">
-<p><strong>Note</strong>: This example is a bit unrealistic: in this situation you would more probably use {{WebExtAPIRef("windows.getCurrent()")}}.</p>
+  <p>
+    <strong>Note</strong>: This example is a bit unrealistic: in this situation
+    you would more probably use {{WebExtAPIRef("windows.getCurrent()")}}.
+  </p>
 </div>
 
-<pre class="brush: js">function logTabs(windowInfo) {
+<pre class="brush: js">
+function logTabs(windowInfo) {
   for (tabInfo of windowInfo.tabs) {
     console.log(tabInfo.url);
   }
@@ -82,15 +146,32 @@ browser.browserAction.onClicked.addListener((tab) =&gt; {
 
 <p>{{WebExtExamples}}</p>
 
-<div class="note"><strong>Acknowledgements</strong>
+<div class="note">
+  <strong>Acknowledgements</strong>
 
-<p>This API is based on Chromium's <a href="https://developer.chrome.com/extensions/windows#method-get"><code>chrome.windows</code></a> API. This documentation is derived from <a href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/windows.json"><code>windows.json</code></a> in the Chromium code.</p>
+  <p>
+    This API is based on Chromium's
+    <a href="https://developer.chrome.com/extensions/windows#method-get"
+      ><code>chrome.windows</code></a
+    >
+    API. This documentation is derived from
+    <a
+      href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/windows.json"
+      ><code>windows.json</code></a
+    >
+    in the Chromium code.
+  </p>
 
-<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+  <p>
+    Microsoft Edge compatibility data is supplied by Microsoft Corporation and
+    is included here under the Creative Commons Attribution 3.0 United States
+    License.
+  </p>
 </div>
 
 <div class="hidden">
-<pre>// Copyright 2015 The Chromium Authors. All rights reserved.
+  <pre>
+// Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -117,5 +198,6 @@ browser.browserAction.onClicked.addListener((tab) =&gt; {
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
+</pre
+  >
 </div>

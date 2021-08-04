@@ -6,19 +6,19 @@ In the previous tutorials, you learned about major concepts and benefits of Grap
 
 You’re going to build a simple clone of [Hackernews](https://news.ycombinator.com/). Here’s a list of the features the app will have:
 
--   Display a list of links
--   Search the list of links
--   Users can authenticate
--   Authenticated users can create new links
--   Authenticated users can upvote links (one vote per link and user)
+- Display a list of links
+- Search the list of links
+- Users can authenticate
+- Authenticated users can create new links
+- Authenticated users can upvote links (one vote per link and user)
 
 In this track, you’ll use the following technologies for building the app:
 
--   Frontend:
-    -   [Ember](https://emberjs.com/): A framework for creating ambitious web applications.
-    -   [Apollo Client](http://dev.apollodata.com/): Fully-featured, production ready caching GraphQL client.
--   Backend:
-    -   [Graphcool](https://www.graph.cool/): Flexible backend platform combining GraphQL + Serverless
+- Frontend:
+  - [Ember](https://emberjs.com/): A framework for creating ambitious web applications.
+  - [Apollo Client](http://dev.apollodata.com/): Fully-featured, production ready caching GraphQL client.
+- Backend:
+  - [Graphcool](https://www.graph.cool/): Flexible backend platform combining GraphQL + Serverless
 
 You’ll create the Ember project with [ember-cli](http://ember-cli.com/), the command line interface for ambitious web applications. `ember-cli` will start you off with a blank project with all required build configuration already setup.
 

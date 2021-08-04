@@ -100,12 +100,12 @@ Also create a new file named `allLinksSearch.graphql` in your `app/gql/queries` 
 
 This query looks similar to the `allLinks` query that’s used in many places. However, this time it takes in an argument called `searchText` and specifies a `filter` object that will be used to specify conditions on the links that you want to retrieve.
 
-In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its `url` contains the provided `searchText` *or* its `description` contains the provided `searchText`. Both conditions can be combined using the `OR` operator.
+In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its `url` contains the provided `searchText` _or_ its `description` contains the provided `searchText`. Both conditions can be combined using the `OR` operator.
 
-Perfect, the query is defined! But this time you actually want to load the data every time the user hits the *search*-button which is what the `executeSearch` method is handling. You are getting the `searchText` the user provided, running a `queryOnce` method on your Apollo client, and setting the results to your model.
+Perfect, the query is defined! But this time you actually want to load the data every time the user hits the _search_-button which is what the `executeSearch` method is handling. You are getting the `searchText` the user provided, running a `queryOnce` method on your Apollo client, and setting the results to your model.
 
 Notice that you aren’t using the `query` method, but are instead using `queryOnce`. The difference is subtle, but important. `ember-apollo-client`s `query` method, by default, sets an internal Apollo subscription. This allows the client to be notified if another component calls your server and receives results that would need to update the data in your store.
 
 Basically, by default, `ember-apollo-client` is trying to help you prevent stale data, if possible. The `queryOnce` method does not setup that internal Apollo subscription. Since you don’t care about being notified when a detail on your search results changes, you are using `queryOnce`.
 
-Go ahead and test the app by running `yarn start` in a Terminal and navigating to `http://localhost:4200/search`. Then type a search string into the text field, click the *search*-button and verify the links that are returned fit the filter conditions.
+Go ahead and test the app by running `yarn start` in a Terminal and navigating to `http://localhost:4200/search`. Then type a search string into the text field, click the _search_-button and verify the links that are returned fit the filter conditions.

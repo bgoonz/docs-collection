@@ -2,9 +2,8 @@
 
 **WebM** is royalty-free and is an open web video format natively supported in Mozilla Firefox.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [WebM](https://en.wikipedia.org/wiki/WebM) on Wikipedia
+- [WebM](https://en.wikipedia.org/wiki/WebM) on Wikipedia

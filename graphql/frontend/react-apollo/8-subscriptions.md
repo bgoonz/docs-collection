@@ -2,7 +2,7 @@ This section is all about bringing realtime functionality into the app by using 
 
 ### What are GraphQL Subscriptions?
 
-Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific *event* happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. This means when working with subscriptions, we’re breaking the *Request-Response* cycle that is typically used for interactions with the API. Instead, the client now initiates a steady connection with the server by specifying which event it is interested in. Every time this particular event then happens, the server uses the connection to push the expected data to the client.
+Subscriptions are a GraphQL feature allowing the server to send data to its clients when a specific _event_ happens. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. This means when working with subscriptions, we’re breaking the _Request-Response_ cycle that is typically used for interactions with the API. Instead, the client now initiates a steady connection with the server by specifying which event it is interested in. Every time this particular event then happens, the server uses the connection to push the expected data to the client.
 
 ### Subscriptions with Apollo
 
@@ -24,7 +24,7 @@ Open `index.js` and add the following imports to the top of the file:
 
 Let’s now create a new `WebSocketLink` that represents the WebSocket connection. We’ll use `split` for proper “routing” of the requests and update the constructor call of `ApolloClient` like so:
 
-\`\``js{1-9, 11-21}(path=".../hackernews-react-apollo/src/index.js") const wsLink = new WebSocketLink({   uri:`ws://localhost:4000/graphql\`, options: { reconnect: true, connectionParams: { authToken: localStorage.getItem(AUTH\_TOKEN) } } });
+\`\``js{1-9, 11-21}(path=".../hackernews-react-apollo/src/index.js") const wsLink = new WebSocketLink({ uri:`ws://localhost:4000/graphql\`, options: { reconnect: true, connectionParams: { authToken: localStorage.getItem(AUTH_TOKEN) } } });
 
 const link = split( ({ query }) =&gt; { const { kind, operation } = getMainDefinition(query); return ( kind === ‘OperationDefinition’ && operation === ‘subscription’ ); }, wsLink, authLink.concat(httpLink) );
 
@@ -34,9 +34,9 @@ We’re instantiating a `WebSocketLink` that knows about the **subscriptions** e
 
 [`split`](https://github.com/apollographql/apollo-link/blob/98eeb1deb0363384f291822b6c18cdc2c97e5bdb/packages/apollo-link/src/link.ts#L33) is used to “route” a request to a specific middleware link. It takes three arguments, the first one is a `test` function which returns a boolean. The remaining two arguments are again of type `ApolloLink`. If `test` returns `true`, the request will be forwarded to the link passed as the second argument. If `false`, to the third one.
 
-In our case, the `test` function is checking whether the requested operation is a *subscription*. If it is, it will be forwarded to the `wsLink`, otherwise (if it’s a *query* or *mutation*), the `authLink.concat(httpLink)` will take care of it:
+In our case, the `test` function is checking whether the requested operation is a _subscription_. If it is, it will be forwarded to the `wsLink`, otherwise (if it’s a _query_ or _mutation_), the `authLink.concat(httpLink)` will take care of it:
 
-![Apollo Link](https://cdn-images-1.medium.com/max/720/1*KwnMO21k0d3UbyKWnlbeJg.png) *Picture taken from [Apollo Link: The modular GraphQL network stack](https://dev-blog.apollodata.com/apollo-link-the-modular-graphql-network-stack-3b6d5fcf9244) by [Evans Hauser](https://twitter.com/EvansHauser)*
+![Apollo Link](https://cdn-images-1.medium.com/max/720/1*KwnMO21k0d3UbyKWnlbeJg.png) _Picture taken from [Apollo Link: The modular GraphQL network stack](https://dev-blog.apollodata.com/apollo-link-the-modular-graphql-network-stack-3b6d5fcf9244) by [Evans Hauser](https://twitter.com/EvansHauser)_
 
 ### Subscribing to New links
 

@@ -4,11 +4,10 @@
 
 <span class="seoSummary">This page lists a number of impressive web technology demos for you to get inspiration from, and generally have fun with. A testament to what can be done with JavaScript, WebGL, and related technologies.</span> The first two sections list playable games, while the second is a catch-all area to list demos that aren't necessarily interactive/games.
 
-Free/demo games
----------------
+## Free/demo games
 
 [Beloola](http://www.beloola.com)  
-WebVR platform to connect passionate people. Experience both available on 2D screens and on VR HMDs (*Settings / Switch to VR mode*).
+WebVR platform to connect passionate people. Experience both available on 2D screens and on VR HMDs (_Settings / Switch to VR mode_).
 
 [Tanx](https://playcanv.as/p/aP0oxhUr)  
 A multiplayer tank battle game, created with [PlayCanvas](https://playcanvas.com/).
@@ -80,10 +79,9 @@ A canvas 2D single-player shooter in the style of Atari's classic Asteroids arca
 A new take on Star Castle, Cinematronics' classic 1980 arcade game, built with canvas 2D.
 
 [Classic Platformer ](https://maximumroulette.com/applications/visual-typescript-game-engine/single-player/app.html)  
-Canvas 2D game based on \`Visual-ts game engine\` - physics based on Matter.js 
+Canvas 2D game based on \`Visual-ts game engine\` - physics based on Matter.js
 
-Commercial games
-----------------
+## Commercial games
 
 [Oort Online](http://oortonline.com/)  
 A MMO exploration, building, and battle game (currently in development.)
@@ -91,7 +89,7 @@ A MMO exploration, building, and battle game (currently in development.)
 [A Wizard's Lizard](http://www.wizardslizard.com/)  
 Top down Zelda-esque exploration/RPG.
 
-[QbQbQb](http://qbqbqb.rezoner.net/)   
+[QbQbQb](http://qbqbqb.rezoner.net/)  
 A sci-fi themed arcade puzzle game.
 
 **[Bullet Force](https://www.crazygames.com/game/bullet-force-multiplayer)**  
@@ -109,8 +107,7 @@ HTML5 and canvas implementation of Settlers of Catan.
 [Pyramid Solitaire Ancient Egypt](https://www.solitaireparadise.com/games_list/pyramid_solitaire_ancient_egypt.html)  
 Pyramid solitaire app ported to WebAssembly with Emscripten
 
-Assorted demos
---------------
+## Assorted demos
 
 [WaveGL](https://greweb.me/wavegl/)  
 WebGL visualizer for sound sources.

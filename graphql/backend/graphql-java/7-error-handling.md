@@ -2,13 +2,13 @@ At this point, it is likely you’ve already seen an error showing up GraphiQL, 
 
 GraphQL puts an accent on consistency and predictability and, in that tone, the response from a GraphQL server always has a predictable structure, consisting the 3 fields:
 
--   The `data` field, where the result of the operation is stored
--   The `errors` field, where all the errors accumulated during the execution of the operation are kept
--   An optional `extensions` field with arbitrary contents, usually meta-data about the response
+- The `data` field, where the result of the operation is stored
+- The `errors` field, where all the errors accumulated during the execution of the operation are kept
+- An optional `extensions` field with arbitrary contents, usually meta-data about the response
 
 Any GraphQL server will automatically handle syntactical and validation errors and inform the client appropriately, but the exceptions encountered in the resolver functions usually require application-specific handling. With your current stack, error handling can be customized on a few different levels.
 
-At the highest level, `graphql-java-servlet` exposes a method (called `isClientError`) that decides whether an error’s message is to be sent to the client verbatim or if it is to be obscured by a generic *server error* message. By default, only syntactical and validation errors will be sent as they are. This is a reasonable default, as exception messages and stack traces can potentially reveal a lot of information best kept hidden from public view. Yet, non-informative error messages (or even too numerous messages) can have severe negative impact on the API’s usability.
+At the highest level, `graphql-java-servlet` exposes a method (called `isClientError`) that decides whether an error’s message is to be sent to the client verbatim or if it is to be obscured by a generic _server error_ message. By default, only syntactical and validation errors will be sent as they are. This is a reasonable default, as exception messages and stack traces can potentially reveal a lot of information best kept hidden from public view. Yet, non-informative error messages (or even too numerous messages) can have severe negative impact on the API’s usability.
 
 Check out the default behavior in GraphiQL by first asking for an non-existent `address` field of a link:
 
@@ -28,7 +28,7 @@ To forward the data-fetching exception messages, while still hiding the correspo
     import graphql.ExceptionWhileDataFetching;
 
     public class SanitizedError extends ExceptionWhileDataFetching {
-        
+
         public SanitizedError(ExceptionWhileDataFetching inner) {
             super(inner.getException());
         }
@@ -64,4 +64,4 @@ To use a custom execution strategy, change `GraphQLEndpoint`’s constructor to 
 
     public GraphQLEndpoint() {
         super(buildSchema(), new CustomExecutionStrategy());
-    } 
+    }

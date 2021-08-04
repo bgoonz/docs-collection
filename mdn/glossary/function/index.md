@@ -75,10 +75,9 @@ An **Immediately Invoked Function Expressions** ({{glossary("IIFE")}}) is a func
 
 If you'd like to know more about IIFEs, check out the following page on Wikipedia : [Immediately Invoked Function Expression](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression)
 
-Learn more
-----------
+## Learn more
 
 ### Technical reference
 
--   [Functions](/en-US/docs/Web/JavaScript/Guide/Functions)
--   [Arrow Functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+- [Functions](/en-US/docs/Web/JavaScript/Guide/Functions)
+- [Arrow Functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)

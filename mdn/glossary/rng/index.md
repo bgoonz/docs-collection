@@ -6,20 +6,19 @@ PRNGs can be used for a variety of applications, such as games.
 
 A cryptographically secure PRNG is a PRNG with certain extra properties making it suitable for use in cryptography. These include:
 
--   that it's computationally unfeasible for an attacker (without knowledge of the seed) to predict its output
--   that if an attacker can work out its current state, this should not enable the attacker to work out previously emitted numbers.
+- that it's computationally unfeasible for an attacker (without knowledge of the seed) to predict its output
+- that if an attacker can work out its current state, this should not enable the attacker to work out previously emitted numbers.
 
 Most PRNGs are not cryptographically secure.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Pseudorandom number generator")}} on Wikipedia
--   {{jsxref("Math.random()")}}, a built-in JavaScript PRNG function. Note that this is not a cryptographically secure PRNG.
--   {{domxref("Crypto.getRandomValues()")}}: this is intended to provide cryptographically secure numbers.
+- {{Interwiki("wikipedia", "Pseudorandom number generator")}} on Wikipedia
+- {{jsxref("Math.random()")}}, a built-in JavaScript PRNG function. Note that this is not a cryptographically secure PRNG.
+- {{domxref("Crypto.getRandomValues()")}}: this is intended to provide cryptographically secure numbers.
 
--   {{domxref("Crypto/getRandomValues")}}
--   {{jsxref("Math.random()")}}
--   {{domxref("Crypto.getRandomValues()")}}
+- {{domxref("Crypto/getRandomValues")}}
+- {{jsxref("Math.random()")}}
+- {{domxref("Crypto.getRandomValues()")}}

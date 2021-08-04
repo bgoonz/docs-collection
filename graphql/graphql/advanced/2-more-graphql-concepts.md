@@ -1,6 +1,6 @@
 ### Enhancing Reusability with Fragments
 
-*Fragments* are a handy feature to help to improve the structure and reusability of your GraphQL code. A fragment is a collection of fields on a specific type.
+_Fragments_ are a handy feature to help to improve the structure and reusability of your GraphQL code. A fragment is a collection of fields on a specific type.
 
 Let’s assume we have the following type:
 
@@ -43,7 +43,7 @@ This query is equivalent to writing:
 
 ### Parameterizing Fields with Arguments
 
-In GraphQL type definitions, each field can take zero or more *arguments*. Similar to arguments that are passed into functions in typed programming languages, each argument needs to have a *name* and a *type*. In GraphQL, it’s also possible to specify *default values* for arguments.
+In GraphQL type definitions, each field can take zero or more _arguments_. Similar to arguments that are passed into functions in typed programming languages, each argument needs to have a _name_ and a _type_. In GraphQL, it’s also possible to specify _default values_ for arguments.
 
 As an example, let’s consider a part of the schema that we saw in the beginning:
 
@@ -114,14 +114,14 @@ The SDL offers a couple of language features that weren’t discussed in the pre
 
 In GraphQL, there are two different kinds of types.
 
--   *Scalar* types represent concrete units of data. The GraphQL spec has five predefined scalars: as `String`, `Int`, `Float`, `Boolean`, and `ID`.
--   *Object* types have *fields* that express the properties of that type and are composable. Examples of object types are the `User` or `Post` types we saw in the previous section.
+- _Scalar_ types represent concrete units of data. The GraphQL spec has five predefined scalars: as `String`, `Int`, `Float`, `Boolean`, and `ID`.
+- _Object_ types have _fields_ that express the properties of that type and are composable. Examples of object types are the `User` or `Post` types we saw in the previous section.
 
 In every GraphQL schema, you can define your own scalar and object types. An often cited example for a custom scalar would be a `Date` type where the implementation needs to define how that type is validated, serialized, and deserialized.
 
 #### Enums
 
-GraphQL allows you to define *enumerations* types (short *enums*), a language feature to express the semantics of a type that has a fixed set of values. We could thus define a type called `Weekday` to represent all the days of a week:
+GraphQL allows you to define _enumerations_ types (short _enums_), a language feature to express the semantics of a type that has a fixed set of values. We could thus define a type called `Weekday` to represent all the days of a week:
 
     enum Weekday {
       MONDAY
@@ -137,7 +137,7 @@ Note that technically enums are special kinds of scalar types.
 
 #### Interface
 
-An *interface* can be used to describe a type in an abstract way. It allows you to specify a set of fields that any concrete type, which *implements* this interface, needs to have. In many GraphQL schemas, every type is required to have an `id` field. Using interfaces, this requirement can be expressed by defining an interface with this field and then making sure that all custom types implement it:
+An _interface_ can be used to describe a type in an abstract way. It allows you to specify a set of fields that any concrete type, which _implements_ this interface, needs to have. In many GraphQL schemas, every type is required to have an `id` field. Using interfaces, this requirement can be expressed by defining an interface with this field and then making sure that all custom types implement it:
 
     interface Node {
       id: ID!
@@ -151,7 +151,7 @@ An *interface* can be used to describe a type in an abstract way. It allows you 
 
 #### Union Types
 
-*Union types* can be used to express that a type should be *either* of a collection of other types. They are best understood by means of an example. Let’s consider the following types:
+_Union types_ can be used to express that a type should be _either_ of a collection of other types. They are best understood by means of an example. Let’s consider the following types:
 
     type Adult {
       name: String!
@@ -163,13 +163,13 @@ An *interface* can be used to describe a type in an abstract way. It allows you 
       school: String!
     }
 
-Now, we could define a `Person` type to be the *union* of `Adult` and `Child`:
+Now, we could define a `Person` type to be the _union_ of `Adult` and `Child`:
 
     union Person = Adult | Child
 
 This brings up a different problem: In a GraphQL query where we ask to retrieve information about a `Child` but only have a `Person` type to work with, how do we know whether we can actually access this field?
 
-The answer to this is called *conditional fragments*:
+The answer to this is called _conditional fragments_:
 
     {
       allPersons {

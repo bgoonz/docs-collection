@@ -1,4 +1,4 @@
---- title: What is CSS? slug: Learn/CSS/First\_steps/What\_is\_CSS tags: - Beginner - CSS - Introduction to CSS - Learn - Modules - Specifications - Syntax ---
+--- title: What is CSS? slug: Learn/CSS/First_steps/What_is_CSS tags: - Beginner - CSS - Introduction to CSS - Learn - Modules - Specifications - Syntax ---
 
 {{LearnSidebar}}
 
@@ -18,8 +18,7 @@ For more on browser/default styles, check out the following video:
 
 {{EmbedYouTube("spK\_S0HfzFw")}}
 
-What is CSS for?
-----------------
+## What is CSS for?
 
 As we have mentioned before, CSS is a language for specifying how documents are presented to users — how they are styled, laid out, etc.
 
@@ -31,8 +30,7 @@ A **document** is usually a text file structured using a markup language — {{G
 
 CSS can be used for very basic document text styling — for example changing the [color](/en-US/docs/Web/CSS/color_value) and [size](/en-US/docs/Web/CSS/font-size) of headings and links. It can be used to create layout — for example [turning a single column of text into a layout](/en-US/docs/Web/CSS/Layout_cookbook/Column_layouts) with a main content area and a sidebar for related information. It can even be used for effects such as [animation](/en-US/docs/Web/CSS/CSS_Animations). Have a look at the links in this paragraph for specific examples.
 
-CSS syntax
-----------
+## CSS syntax
 
 CSS is a rule-based language — you define rules specifying groups of styles that should be applied to particular elements or groups of elements on your web page. For example "I want the main heading on my page to be shown as large red text."
 
@@ -43,7 +41,7 @@ The following code shows a very simple CSS rule that would achieve the styling d
         font-size: 5em;
     }
 
-The rule opens with a {{Glossary("CSS Selector", "selector")}} . This *selects* the HTML element that we are going to style. In this case we are styling level one headings ({{htmlelement("h1")}}).
+The rule opens with a {{Glossary("CSS Selector", "selector")}} . This _selects_ the HTML element that we are going to style. In this case we are styling level one headings ({{htmlelement("h1")}}).
 
 We then have a set of curly braces `{ }`. Inside those will be one or more **declarations**, which take the form of **property** and **value** pairs. Each pair specifies a property of the element(s) we are selecting, then a value that we'd like to give the property.
 
@@ -62,14 +60,13 @@ A CSS stylesheet will contain many such rules, written one after the other.
 
 You will find that you quickly learn some values, whereas others you will need to look up. The individual property pages on MDN give you a quick way to look up properties and their values when you forget, or want to know what else you can use as a value.
 
-**Note**: You can find links to all the CSS property pages (along with other CSS features) listed on the MDN [CSS reference](/en-US/docs/Web/CSS/Reference). Alternatively, you should get used to searching for "mdn *css-feature-name*" in your favorite search engine whenever you need to find out more information about a CSS feature. For example, try searching for "mdn color" and "mdn font-size"!
+**Note**: You can find links to all the CSS property pages (along with other CSS features) listed on the MDN [CSS reference](/en-US/docs/Web/CSS/Reference). Alternatively, you should get used to searching for "mdn _css-feature-name_" in your favorite search engine whenever you need to find out more information about a CSS feature. For example, try searching for "mdn color" and "mdn font-size"!
 
-CSS Modules
------------
+## CSS Modules
 
-As there are so many things that you could style using CSS, the language is broken down into *modules*. You'll see reference to these modules as you explore MDN and many of the documentation pages are organized around a particular module. For example, you could take a look at the MDN reference to the [Backgrounds and Borders](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders) module to find out what its purpose is, and what different properties and other features it contains. You will also find links to the *CSS Specification* that defines the technology (see below).
+As there are so many things that you could style using CSS, the language is broken down into _modules_. You'll see reference to these modules as you explore MDN and many of the documentation pages are organized around a particular module. For example, you could take a look at the MDN reference to the [Backgrounds and Borders](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders) module to find out what its purpose is, and what different properties and other features it contains. You will also find links to the _CSS Specification_ that defines the technology (see below).
 
-At this stage you don't need to worry too much about how CSS is structured, however it can make it easier to find information if, for example, you are aware that a certain property is likely to be found among other similar things and are therefore probably in the same specification. 
+At this stage you don't need to worry too much about how CSS is structured, however it can make it easier to find information if, for example, you are aware that a certain property is likely to be found among other similar things and are therefore probably in the same specification.
 
 For a specific example, let's go back to the Backgrounds and Borders module — you might think that it makes logical sense for the `background-color` and `border-color` properties to be defined in this module. And you'd be right.
 
@@ -77,33 +74,29 @@ For a specific example, let's go back to the Backgrounds and Borders module — 
 
 All web standards technologies (HTML, CSS, JavaScript, etc.) are defined in giant documents called specifications (or "specs"), which are published by standards organizations (such as the {{glossary("W3C")}}, {{glossary("WHATWG")}}, {{glossary("ECMA")}}, or {{glossary("Khronos")}}) and define precisely how those technologies are supposed to behave.
 
-CSS is no different — it is developed by a group within the W3C called the [CSS Working Group](https://www.w3.org/Style/CSS/). This group is made of representatives of browser vendors and other companies who have an interest in CSS. There are also other people, known as *invited experts*, who act as independent voices; they are not linked to a member organization.
+CSS is no different — it is developed by a group within the W3C called the [CSS Working Group](https://www.w3.org/Style/CSS/). This group is made of representatives of browser vendors and other companies who have an interest in CSS. There are also other people, known as _invited experts_, who act as independent voices; they are not linked to a member organization.
 
 New CSS features are developed, or specified, by the CSS Working Group. Sometimes because a particular browser is interested in having some capability, other times because web designers and developers are asking for a feature, and sometimes because the Working Group itself has identified a requirement. CSS is constantly developing, with new features becoming available. However, a key thing about CSS is that everyone works very hard to never change things in a way that would break old websites. A website built in 2000, using the limited CSS available then, should still be usable in a browser today!
 
 As a newcomer to CSS, it is likely that you will find the CSS specs overwhelming — they are intended for engineers to use to implement support for the features in user agents, not for web developers to read to understand CSS. Many experienced developers would much rather refer to MDN documentation or other tutorials. It is however worth knowing that they exist, understanding the relationship between the CSS you are using, browser support (see below), and the specs.
 
-Browser support information
----------------------------
+## Browser support information
 
 Once CSS has been specified then it is only useful for us in developing web pages if one or more browsers have implemented it. This means that the code has been written to turn the instruction in our CSS file into something that can be output to the screen. We'll look at this process more in the lesson [How CSS works](/en-US/docs/Learn/CSS/First_steps/How_CSS_works). It is unusual for all browsers to implement a feature at the same time, and so there is usually a gap where you can use some part of CSS in some browsers and not in others. For this reason, being able to check implementation status is useful.
 
 The browser support status is shown on every MDN property page in a section named "Browser compatibility" (use this to check if the property can be used on your website). For example, the compatibility section for the CSS `font-family` property is reproduced below.
 
-Browser compatibility
----------------------
+## Browser compatibility
 
 {{Compat("css.properties.font-family")}}
 
-What's next
------------
+## What's next
 
 Now that you have some understanding of what CSS is, let's move on to [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started), where you can start to write some CSS yourself.
 
 {{NextMenu("Learn/CSS/First\_steps/Getting\_started", "Learn/CSS/First\_steps")}}
 
-In this module
---------------
+## In this module
 
 1.  [What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)
 2.  [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)

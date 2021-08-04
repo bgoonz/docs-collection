@@ -25,11 +25,10 @@ Browsers will prefetch content when the prefetch `<link>` tag directs it to, giv
 
      <link rel="prefetch" href="https://www.example.com/solutions" />
 
-See also
---------
+## See also
 
--   defer
--   async
--   [preload](/en-US/docs/Web/HTML/Preloading_content)
--   [page prediction](/en-US/docs/Glossary/Page_prediction)
--   [lazy loading](/en-US/docs/Web/Performance/Lazy_loading)
+- defer
+- async
+- [preload](/en-US/docs/Web/HTML/Preloading_content)
+- [page prediction](/en-US/docs/Glossary/Page_prediction)
+- [lazy loading](/en-US/docs/Web/Performance/Lazy_loading)

@@ -1,4 +1,4 @@
---- title: Session Hijacking slug: Glossary/Session\_Hijacking tags: - Glossary - Security - session hijacking ---
+--- title: Session Hijacking slug: Glossary/Session_Hijacking tags: - Glossary - Security - session hijacking ---
 
 **Session hijacking** occurs when an attacker takes over a valid session between two computers. The attacker steals a valid session ID in order to break into the system and snoop data.
 
@@ -8,12 +8,12 @@ Most authentication occurs only at the start of a {{glossary("TCP")}} session. I
 
 ### Session hijacking occurs because
 
--   no account lockout for invalid session IDs
--   weak session-ID generation algorithm
--   insecure handling
--   indefinite session expiration time
--   short session IDs
--   transmission in plain text
+- no account lockout for invalid session IDs
+- weak session-ID generation algorithm
+- insecure handling
+- indefinite session expiration time
+- short session IDs
+- transmission in plain text
 
 ### Session hijacking process
 
@@ -25,16 +25,15 @@ Most authentication occurs only at the start of a {{glossary("TCP")}} session. I
 
 ### Protection against session hijacking
 
--   create a secure communication channel with SSH (secure shell)
--   pass authentication cookies over HTTPS connection
--   implement logout functionality so the user can end the session
--   generate the session ID after successful login
--   pass encrypted data between the users and the web server
--   use a string or long random number as a session key
+- create a secure communication channel with SSH (secure shell)
+- pass authentication cookies over HTTPS connection
+- implement logout functionality so the user can end the session
+- generate the session ID after successful login
+- pass encrypted data between the users and the web server
+- use a string or long random number as a session key
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Session hijacking")}} on Wikipedia
+- {{Interwiki("wikipedia", "Session hijacking")}} on Wikipedia

@@ -1,18 +1,16 @@
---- title: Game monetization slug: Games/Publishing\_games/Game\_monetization tags: - Games - HTML5 - JavaScript - Monetization - advertisements - branding - iap - licensing ---
+--- title: Game monetization slug: Games/Publishing_games/Game_monetization tags: - Games - HTML5 - JavaScript - Monetization - advertisements - branding - iap - licensing ---
 
 {{GamesSidebar}}
 
 When you've spent your time building a game, [distributing](/en-US/docs/Games/Publishing_games/Game_distribution) it and [promoting](/en-US/docs/Games/Publishing_games/Game_promotion) it you should consider earning some money out of it. If your work is a serious endeavour on the path to becoming an independent game developer able to make a living, read on and see what your options are. The technology is mature enough; now it's just about choosing the right approach.
 
-Paid games
-----------
+## Paid games
 
 The first, most obvious choice that may come to your mind might be selling the games the way it is done for huge AAA titles — with a fixed, up front price. Even though the digital market is key and you don't need to print covers and put your game in a physical store in boxes, to earn decent money on selling your games for a fixed price you have to invest your time and money in marketing. Only the best games will break even or earn more than they cost to make, and you still need a lot of luck for that.
 
 How much you charge for your game depends on the market, quality of your game and a lot of other small factors. An arcade iOS title can be sold for 0.99 USD, but a longer RPG-style desktop game on Steam can cost 20 USD; both prices are ok. You have to follow the market and do your own research — learning from your mistakes quickly is important.
 
-In-app purchases
-----------------
+## In-app purchases
 
 Instead of having people pay for your game up front, you can offer a free game with in-app purchases (IAPs.) In this case the game can be acquired without spending a dime — give the game to the players, but offer in-game currency, bonuses or benefits for real money. Specific examples can include bonus levels, better weapons or spells, or refilling the energy needed to play. Designing a good IAP system is an art of it's own.
 
@@ -26,8 +24,7 @@ Games that feature IAPs are often referred to a **freemium** — a freemium game
 
 Add-ons and downloadable content are a good way to provide extra value to an already released game, but remember that you'll have to offer decent, entertaining content to attract people to buy it. A totally new set of levels with new characters, weapons and story is a good material for DLC, but to have enough sales the game itself has to be popular, or else there won't be any players interested in spending their hard earned money on it.
 
-Advertisements
---------------
+## Advertisements
 
 Instead of actively selling the games you can also try to get yourself a passive income — showing adverts and relying on previous activities related to [promoting](/en-US/docs/Games/Publishing_games/Game_promotion) your game may benefit, but your game has to be addictive, which isn't as easy as it sounds. You still need to plan it out, and at some point you'll need a bit of luck too. If your game goes viral and people start sharing it, you can get a lot of downloads and money out of adverts.
 
@@ -35,8 +32,7 @@ There are many companies offering advert systems — you sign up and allow them 
 
 Video ads are getting more and more popular, especially in the form of a pre-roll — they are shown at the beginning of your game while it's still loading. And on the topic of where to put the advertisements in your game it really depends on you. It should be as subtle as possible so as to not annoy the players too much, but visible enough to make them click it or at least take notice. Adding adverts between game sessions on game over screens is a popular approach.
 
-Licensing
----------
+## Licensing
 
 There's an approach that can work as a monetization model on it's own, and that's selling licenses for distribution of your game. There are more and more portals interested in showing your games on their websites. They follow various strategies to earn money via your games, but you don't have to worry about all that as selling the license is usually a one-time deal. You get the money and they can get creative with using your game to make money.
 
@@ -66,8 +62,7 @@ Publishers taking your games for revenue share, and/or licensing may require imp
 
 You can sell rights to use your game for branding, or do it yourself. In the first case it's almost like non-exclusive licensing, but the client will usually buy rights for the code and implement their own graphics. In the second case it's like a freelance deal, but you're reusing the code and adding graphics provided by the client, sometimes implementing them as they instruct you. As an example if you've got a game where a player taps items of food, you could change the food to the client's products to give them advertising. Prices in this model vary greatly depending on the brand, client, and amount of work you put in.
 
-Other non-game focused monetization strategies
-----------------------------------------------
+## Other non-game focused monetization strategies
 
 There are other ways you can earn money when building HTML5 games, and it doesn't even have to be game-related.
 
@@ -87,7 +82,6 @@ You can sell t-shirts, [stickers](https://www.stickermule.com/user/1070634890/st
 
 When all else fails you can try putting a donate button on your game's page and asking for support from the community. Sometimes it works, but only if the player knows you and feels that it will help you in your situation. That's why carefully managing your community is so important. It worked with the [js13kGames](https://js13kgames.com/) competition — every participant got a free t-shirt, and some even gave back a few bucks to help keep it going in years to come.
 
-Summary
--------
+## Summary
 
 There are many ways to earn money — everything that applies to the "normal" AAA gaming world can be, more or less, applied to casual HTML5 games. You might however also focus on selling licenses, doing branding, or earning on a revenue share basis from the advertisements. It's totally up to you which path you're going to follow.

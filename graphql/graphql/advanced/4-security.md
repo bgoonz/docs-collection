@@ -4,8 +4,7 @@ Since clients have the possibility to craft very complex queries, our servers mu
 
 There are a few strategies to mitigate these risks. We will cover them in this chapter in order from the simplest to the most complex, and look at their pros and cons.
 
-Timeout
--------
+## Timeout
 
 The first strategy and the simplest one is using a timeout to defend against large queries. This strategy is the simplest since it does not require the server to know anything about the incoming queries. All the server knows is the maximum time allowed for a query.
 
@@ -13,16 +12,15 @@ For example, a server configured with a 5 seconds timeout would stop the executi
 
 ### Timeout Pros
 
--   Simple to implement.
--   Most strategies will still use a timeout as a final protection.
+- Simple to implement.
+- Most strategies will still use a timeout as a final protection.
 
 ### Timeout Cons
 
--   Damage can already be done even when the timeout kicks in.
--   Sometimes hard to implement. Cutting connections after a certain time may result in strange behaviours.
+- Damage can already be done even when the timeout kicks in.
+- Sometimes hard to implement. Cutting connections after a certain time may result in strange behaviours.
 
-Maximum Query Depth
--------------------
+## Maximum Query Depth
 
 As we covered earlier, clients using GraphQL may craft any complex query they want. Since GraphQL schemas are often cyclic graphs, this means a client could craft a query like this one:
 
@@ -64,14 +62,13 @@ Using `graphql-ruby` with the max query depth setting, we get the following resu
 
 ### Maximum Query Depth Pros
 
--   Since the AST of the document is analyzed statically, the query does not even execute, which adds no load on your GraphQL server.
+- Since the AST of the document is analyzed statically, the query does not even execute, which adds no load on your GraphQL server.
 
 ### Maximum Query Depth Cons
 
--   Depth alone is often not enough to cover all abusive queries. For example, a query requesting an enormous amount of nodes on the root will be very expensive but unlikely to be blocked by a query depth analyzer.
+- Depth alone is often not enough to cover all abusive queries. For example, a query requesting an enormous amount of nodes on the root will be very expensive but unlikely to be blocked by a query depth analyzer.
 
-Query Complexity
-----------------
+## Query Complexity
 
 Sometimes, the depth of a query is not enough to truly know how large or expensive a GraphQL query will be. In a lot of cases, certain fields in our schema are known to be more complex to compute than others.
 
@@ -99,17 +96,16 @@ What if the `posts` field is actually much more complex than the `author` field?
 
 ### Query Complexity Pros
 
--   Covers more cases than a simple query depth.
--   Reject queries before executing them by statically analyzing the complexity.
+- Covers more cases than a simple query depth.
+- Reject queries before executing them by statically analyzing the complexity.
 
 ### Query Complexity Cons
 
--   Hard to implement perfectly.
--   If complexity is estimated by developers, how do we keep it up to date? How do we find the costs in the first place?
--   Mutations are hard to estimate. What if they have a side effect that is hard to measure, like queuing a background job?
+- Hard to implement perfectly.
+- If complexity is estimated by developers, how do we keep it up to date? How do we find the costs in the first place?
+- Mutations are hard to estimate. What if they have a side effect that is hard to measure, like queuing a background job?
 
-Throttling
-----------
+## Throttling
 
 The solutions we’ve seen so far are great to stop abusive queries from taking your servers down. The problem with using them alone like this is that they will stop large queries, but won’t stop clients that are making a lot of medium sized queries!
 
@@ -167,8 +163,7 @@ The principles are the same as our time throttle, but now communicating these li
 
 The GitHub public API actually uses this approach to throttle their clients. Take a look at how they express these limits to users: https://developer.github.com/v4/guides/resource-limitations/.
 
-Summary
--------
+## Summary
 
 GraphQL is great to use for clients because it gives them so much more power. But that power also gives them the possibility to abuse your GraphQL server with very expensive queries.
 

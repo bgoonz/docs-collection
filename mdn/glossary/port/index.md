@@ -4,9 +4,8 @@ For a computer connected to a network with an {{Glossary("IP address")}}, a **po
 
 For example, the default port for the {{Glossary("HTTP")}} protocol is 80 and the default port for the HTTPS protocol is 443, so a {{Glossary("HTTP")}} server waits for requests on those ports. Each Internet protocol is associated with a default port: {{Glossary("SMTP")}} (25), {{Glossary("POP3")}} (110), {{Glossary("IMAP")}} (143), {{Glossary("IRC")}} (194), and so on.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Port (computer networking)" , "Port")}} on Wikipedia
+- {{Interwiki("wikipedia", "Port (computer networking)" , "Port")}} on Wikipedia

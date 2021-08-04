@@ -89,8 +89,8 @@ Create a new file in `src/components` and call it `Login.js`. Then paste the fol
 
 Let’s quickly understand the structure of this new component, which can have two major states:
 
--   One state is **for users that already have an account** and only need to login. In this state, the component will only render two `input` fields for the user to provide their `email` and `password`. Notice that `formState.login` will be `true` in this case.
--   The second state is for **users that haven’t created an account yet**, and thus still need to sign up. Here, we render a third `input` field where users can provide their `name`. In this case, `formState.login` will be `false`.
+- One state is **for users that already have an account** and only need to login. In this state, the component will only render two `input` fields for the user to provide their `email` and `password`. Notice that `formState.login` will be `true` in this case.
+- The second state is for **users that haven’t created an account yet**, and thus still need to sign up. Here, we render a third `input` field where users can provide their `name`. In this case, `formState.login` will be `false`.
 
 In the `onClick` handler in the submit button, we’ll eventually call the appropriate mutations for these two actions.
 
@@ -240,7 +240,7 @@ Open `Login.js` and add the following two definitions to the top of the file:
       }
     `;
 
-Both mutations look very similar to the mutations we’ve already seen. They take a number of arguments and return the `token` that we can attach to subsequent requests to authenticate the user (i.e. indicate that a request is made *on behalf* of that user). You’ll learn 🔜 how to do so.
+Both mutations look very similar to the mutations we’ve already seen. They take a number of arguments and return the `token` that we can attach to subsequent requests to authenticate the user (i.e. indicate that a request is made _on behalf_ of that user). You’ll learn 🔜 how to do so.
 
 Next, find the `div` element that has the class names `flex mt3` and replace it with the following:
 
@@ -311,7 +311,7 @@ Now that users are able to log in and obtain a token that authenticates them aga
 
 Since all the API requests are actually created and sent by the `ApolloClient` instance at the root of our app, we need to make sure it knows about the user’s token! Luckily, Apollo provides a nice way for authenticating all requests by using the concept of [middleware](http://dev.apollodata.com/react/auth.html#Header), implemented as an [Apollo Link](https://github.com/apollographql/apollo-link).
 
-Open `index.js` and put the following code *between* the creation of the `httpLink` and the instantiation of `ApolloClient`:
+Open `index.js` and put the following code _between_ the creation of the `httpLink` and the instantiation of `ApolloClient`:
 
     const authLink = setContext((_, { headers }) => {
       const token = localStorage.getItem(AUTH_TOKEN);

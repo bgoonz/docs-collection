@@ -14,10 +14,9 @@ Asynchronous software design expands upon the concept by building code that allo
 
 There are a number of programming techniques for implementing asynchronous software. See the article [Asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous) for an introduction to them.
 
-Learn more
-----------
+## Learn more
 
 ### Technical reference
 
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data) (Learning Area)
--   {{glossary("Synchronous")}}
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data) (Learning Area)
+- {{glossary("Synchronous")}}

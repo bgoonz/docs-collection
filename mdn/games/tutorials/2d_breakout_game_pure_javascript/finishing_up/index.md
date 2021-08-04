@@ -1,4 +1,4 @@
---- title: Finishing up slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Finishing\_up tags: - Beginner - Canvas - Games - JavaScript - Tutorial - lives - requestAnimationFrame ---
+--- title: Finishing up slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Finishing_up tags: - Beginner - Canvas - Games - JavaScript - Tutorial - lives - requestAnimationFrame ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **10th and final step** of the [Gamedev Canvas tutorial](/en-US/docs
 
 <span class="seoSummary">There's always room for improvements in any game we write. For example, we can offer more than one life to the player. They could make a mistake or two and still be able to finish the game. We could also improve our code rendering.</span>
 
-Giving the player some lives
-----------------------------
+## Giving the player some lives
 
 Implementing lives is quite straightforward. Let's first add a variable to store the number of lives in the same place where we declared our other variables:
 
@@ -53,8 +52,7 @@ Now you need to add a call to `drawLives()` inside the `draw()` function and add
 
     drawLives();
 
-Improving rendering with requestAnimationFrame()
-------------------------------------------------
+## Improving rendering with requestAnimationFrame()
 
 Now let's work on something that is not connected to the game mechanics, but to the way it is being rendered. {{domxref("window.requestAnimationFrame", "requestAnimationFrame")}} helps the browser render the game better than the fixed framerate we currently have implemented using {{domxref("WindowOrWorkerGlobalScope/setInterval", "setInterval()")}}. Replace the following line:
 
@@ -74,8 +72,7 @@ Then, at the very bottom of the `draw()` function (just before the closing curly
 
 The `draw()` function is now getting executed again and again within a `requestAnimationFrame()` loop, but instead of the fixed 10 milliseconds frame rate, we are giving control of the framerate back to the browser. It will sync the framerate accordingly and render the shapes only when needed. This produces a more efficient, smoother animation loop than the older `setInterval()` method.
 
-Compare your code
------------------
+## Compare your code
 
 That's all — the final version of the game is ready and set to go !
 
@@ -83,8 +80,7 @@ That's all — the final version of the game is ready and set to go !
 
 **Exercise**: change the number of lives and the angle the ball bounces off the paddle.
 
-Game over - for now!
---------------------
+## Game over - for now!
 
 You've finished all the lessons - congratulations! By this point, you should now know the basics of canvas manipulation and the logic behind simple 2D games. Now it's a good time to learn some frameworks and continue game development. You can check out this series' counterpart, [2D breakout game using Phaser](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser) or the [Cyber Orb built in Phaser](/en-US/docs/Games/Tutorials/HTML5_Gamedev_Phaser_Device_Orientation) tutorial. You can also look through the [Games section on MDN](/en-US/docs/Games) for inspiration and more knowledge.
 

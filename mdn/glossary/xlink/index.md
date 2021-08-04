@@ -10,11 +10,11 @@ XLink is used in [SVG](/en-US/docs/Web/SVG), [MathML](/en-US/docs/Web/MathML), a
 
 ### Specifications
 
--   <a href="https://www.w3.org/TR/xlink/" class="external">XLink 1.0</a>
--   <a href="https://www.w3.org/TR/xlink11/" class="external">XLink 1.1</a> (currently a Working Draft)
+- <a href="https://www.w3.org/TR/xlink/" class="external">XLink 1.0</a>
+- <a href="https://www.w3.org/TR/xlink11/" class="external">XLink 1.1</a> (currently a Working Draft)
 
 ### See also
 
--   [XML](/en-US/docs/Web/XML)
--   [Code snippets:getAttributeNS](/en-US/docs/Web/API/Element/getAttributeNS) - a wrapper for dealing with some browsers not supporting this DOM method
--   [Code snippets:xml:base function](/en-US/docs/Archive/Add-ons/Code_snippets/XML/base_function) - a rough attempt to find a full XLink-based on an xlink:href attribute (or &lt;xi:include href=&gt;) and its or an ancestor's xml:base.
+- [XML](/en-US/docs/Web/XML)
+- [Code snippets:getAttributeNS](/en-US/docs/Web/API/Element/getAttributeNS) - a wrapper for dealing with some browsers not supporting this DOM method
+- [Code snippets:xml:base function](/en-US/docs/Archive/Add-ons/Code_snippets/XML/base_function) - a rough attempt to find a full XLink-based on an xlink:href attribute (or &lt;xi:include href=&gt;) and its or an ancestor's xml:base.

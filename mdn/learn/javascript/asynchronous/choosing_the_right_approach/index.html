@@ -16,54 +16,91 @@ tags:
   - setTimeout
   - timeouts
 ---
+
 <div>{{LearnSidebar}}</div>
 
-<div>{{PreviousMenu("Learn/JavaScript/Asynchronous/Async_await", "Learn/JavaScript/Asynchronous")}}</div>
+<div>
+  {{PreviousMenu("Learn/JavaScript/Asynchronous/Async_await",
+  "Learn/JavaScript/Asynchronous")}}
+</div>
 
-<p>To finish this module off, we'll provide a brief discussion of the different coding techniques and features we've discussed throughout, looking at which one you should use when, with recommendations and reminders of common pitfalls where appropriate. We'll probably add to this resource as time goes on.</p>
+<p>
+  To finish this module off, we'll provide a brief discussion of the different
+  coding techniques and features we've discussed throughout, looking at which
+  one you should use when, with recommendations and reminders of common pitfalls
+  where appropriate. We'll probably add to this resource as time goes on.
+</p>
 
 <table class="learn-box standard-table">
- <tbody>
-  <tr>
-   <th scope="row">Prerequisites:</th>
-   <td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals.</td>
-  </tr>
-  <tr>
-   <th scope="row">Objective:</th>
-   <td>To be able to make a sound choice of when to use different asynchronous programming techniques.</td>
-  </tr>
- </tbody>
+  <tbody>
+    <tr>
+      <th scope="row">Prerequisites:</th>
+      <td>
+        Basic computer literacy, a reasonable understanding of JavaScript
+        fundamentals.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Objective:</th>
+      <td>
+        To be able to make a sound choice of when to use different asynchronous
+        programming techniques.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Asynchronous_callbacks">Asynchronous callbacks</h2>
 
-<p>Generally found in old-style APIs, involves a function being passed into another function as a parameter, which is then invoked when an asynchronous operation has been completed, so that the callback can in turn do something with the result. This is the precursor to promises; it's not as efficient or flexible. Use only when necessary.</p>
+<p>
+  Generally found in old-style APIs, involves a function being passed into
+  another function as a parameter, which is then invoked when an asynchronous
+  operation has been completed, so that the callback can in turn do something
+  with the result. This is the precursor to promises; it's not as efficient or
+  flexible. Use only when necessary.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
- </thead>
- <tbody>
-  <tr>
-   <td>No</td>
-   <td>Yes (recursive callbacks)</td>
-   <td>Yes (nested callbacks)</td>
-   <td>No</td>
-  </tr>
- </tbody>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No</td>
+      <td>Yes (recursive callbacks)</td>
+      <td>Yes (nested callbacks)</td>
+      <td>No</td>
+    </tr>
+  </tbody>
 </table>
 
 <h3 id="Code_example">Code example</h3>
 
-<p>An example that loads a resource via the <a href="/en-US/docs/Web/API/XMLHttpRequest"><code>XMLHttpRequest</code> API</a> (<a href="https://mdn.github.io/learning-area/javascript/asynchronous/introducing/xhr-async-callback.html">run it live</a>, and <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/introducing/xhr-async-callback.html">see the source</a>):</p>
+<p>
+  An example that loads a resource via the
+  <a href="/en-US/docs/Web/API/XMLHttpRequest"
+    ><code>XMLHttpRequest</code> API</a
+  >
+  (<a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/introducing/xhr-async-callback.html"
+    >run it live</a
+  >, and
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/introducing/xhr-async-callback.html"
+    >see the source</a
+  >):
+</p>
 
-<pre class="brush: js">function loadAsset(url, type, callback) {
+<pre class="brush: js">
+function loadAsset(url, type, callback) {
   let xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.responseType = type;
@@ -83,78 +120,149 @@ function displayImage(blob) {
   document.body.appendChild(image);
 }
 
-loadAsset('coffee.jpg', 'blob', displayImage);</pre>
+loadAsset('coffee.jpg', 'blob', displayImage);</pre
+>
 
 <h3 id="Pitfalls">Pitfalls</h3>
 
 <ul>
- <li>Nested callbacks can be cumbersome and hard to read (i.e. "callback hell").</li>
- <li>Failure callbacks need to be called once for each level of nesting, whereas with promises you can just use a single <code>.catch()</code> block to handle the errors for the entire chain.</li>
- <li>Async callbacks just aren't very graceful.</li>
- <li>Promise callbacks are always called in the strict order they are placed in the event queue; async callbacks aren't.</li>
- <li>Async callbacks lose full control of how the function will be executed when passed to a third-party library.</li>
+  <li>
+    Nested callbacks can be cumbersome and hard to read (i.e. "callback hell").
+  </li>
+  <li>
+    Failure callbacks need to be called once for each level of nesting, whereas
+    with promises you can just use a single <code>.catch()</code> block to
+    handle the errors for the entire chain.
+  </li>
+  <li>Async callbacks just aren't very graceful.</li>
+  <li>
+    Promise callbacks are always called in the strict order they are placed in
+    the event queue; async callbacks aren't.
+  </li>
+  <li>
+    Async callbacks lose full control of how the function will be executed when
+    passed to a third-party library.
+  </li>
 </ul>
 
 <h3 id="Browser_compatibility">Browser compatibility</h3>
 
-<p>Really good general support, although the exact support for callbacks in APIs depends on the particular API. Refer to the reference documentation for the API you're using for more specific support info.</p>
+<p>
+  Really good general support, although the exact support for callbacks in APIs
+  depends on the particular API. Refer to the reference documentation for the
+  API you're using for more specific support info.
+</p>
 
 <h3 id="Further_information">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing">Introducing asynchronous JavaScript</a>, in particular <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#async_callbacks">Async callbacks</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing"
+      >Introducing asynchronous JavaScript</a
+    >, in particular
+    <a
+      href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#async_callbacks"
+      >Async callbacks</a
+    >
+  </li>
 </ul>
 
 <h2 id="setTimeout">setTimeout()</h2>
 
-<p><code><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">setTimeout()</a></code> is a method that allows you to run a function after an arbitrary amount of time has passed.</p>
+<p>
+  <code
+    ><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout"
+      >setTimeout()</a
+    ></code
+  >
+  is a method that allows you to run a function after an arbitrary amount of
+  time has passed.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>Yes</td>
-   <td>Yes (recursive timeouts)</td>
-   <td>Yes (nested timeouts)</td>
-   <td>No</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td>Yes (recursive timeouts)</td>
+      <td>Yes (nested timeouts)</td>
+      <td>No</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_2">Code example</h3>
 
-<p>Here the browser will wait two seconds before executing the anonymous function, then will display the alert message (<a href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/simple-settimeout.html">see it running live</a>, and <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/simple-settimeout.html">see the source code</a>):</p>
+<p>
+  Here the browser will wait two seconds before executing the anonymous
+  function, then will display the alert message (<a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/simple-settimeout.html"
+    >see it running live</a
+  >, and
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/simple-settimeout.html"
+    >see the source code</a
+  >):
+</p>
 
-<pre class="brush: js">let myGreeting = setTimeout(function() {
+<pre class="brush: js">
+let myGreeting = setTimeout(function() {
   alert('Hello, Mr. Universe!');
-}, 2000)</pre>
+}, 2000)</pre
+>
 
 <h3 id="Pitfalls_2">Pitfalls</h3>
 
-<p>You can use recursive <code>setTimeout()</code> calls to run a function repeatedly in a similar fashion to <code>setInterval()</code>, using code like this:</p>
+<p>
+  You can use recursive <code>setTimeout()</code> calls to run a function
+  repeatedly in a similar fashion to <code>setInterval()</code>, using code like
+  this:
+</p>
 
-<pre class="brush: js">let i = 1;
+<pre class="brush: js">
+let i = 1;
 setTimeout(function run() {
   console.log(i);
   i++;
 
   setTimeout(run, 100);
-}, 100);</pre>
+}, 100);</pre
+>
 
-<p>There is a difference between recursive <code>setTimeout()</code> and <code>setInterval()</code>:</p>
+<p>
+  There is a difference between recursive <code>setTimeout()</code> and
+  <code>setInterval()</code>:
+</p>
 
 <ul>
- <li>Recursive <code>setTimeout()</code> guarantees at least the specified amount of time (100ms in this example) will elapse between the executions; the code will run and then wait 100 milliseconds before it runs again. The interval will be the same regardless of how long the code takes to run.</li>
- <li>With <code>setInterval()</code>, the interval we choose <em>includes</em> the time taken to execute the code we want to run in. Let's say that the code takes 40 milliseconds to run — the interval then ends up being only 60 milliseconds.</li>
+  <li>
+    Recursive <code>setTimeout()</code> guarantees at least the specified amount
+    of time (100ms in this example) will elapse between the executions; the code
+    will run and then wait 100 milliseconds before it runs again. The interval
+    will be the same regardless of how long the code takes to run.
+  </li>
+  <li>
+    With <code>setInterval()</code>, the interval we choose
+    <em>includes</em> the time taken to execute the code we want to run in.
+    Let's say that the code takes 40 milliseconds to run — the interval then
+    ends up being only 60 milliseconds.
+  </li>
 </ul>
 
-<p>When your code has the potential to take longer to run than the time interval you’ve assigned, it’s better to use recursive <code>setTimeout()</code> — this will keep the time interval constant between executions regardless of how long the code takes to execute, and you won't get errors.</p>
+<p>
+  When your code has the potential to take longer to run than the time interval
+  you’ve assigned, it’s better to use recursive <code>setTimeout()</code> — this
+  will keep the time interval constant between executions regardless of how long
+  the code takes to execute, and you won't get errors.
+</p>
 
 <h3 id="Browser_compatibility_2">Browser compatibility</h3>
 
@@ -163,48 +271,105 @@ setTimeout(function run() {
 <h3 id="Further_information_2">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a>, in particular <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#settimeout()">setTimeout()</a></li>
- <li><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">setTimeout() reference</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals"
+      >Cooperative asynchronous JavaScript: Timeouts and intervals</a
+    >, in particular
+    <a
+      href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#settimeout()"
+      >setTimeout()</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout"
+      >setTimeout() reference</a
+    >
+  </li>
 </ul>
 
 <h2 id="setInterval">setInterval()</h2>
 
-<p><code><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval">setInterval()</a></code> is a method that allows you to run a function repeatedly with a set interval of time between each execution. Not as efficient as <code><a href="/en-US/docs/Web/API/window/requestAnimationFrame">requestAnimationFrame()</a></code>, but allows you to choose a running rate/frame rate.</p>
+<p>
+  <code
+    ><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval"
+      >setInterval()</a
+    ></code
+  >
+  is a method that allows you to run a function repeatedly with a set interval
+  of time between each execution. Not as efficient as
+  <code
+    ><a href="/en-US/docs/Web/API/window/requestAnimationFrame"
+      >requestAnimationFrame()</a
+    ></code
+  >, but allows you to choose a running rate/frame rate.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>No</td>
-   <td>Yes</td>
-   <td>No (unless they are the same)</td>
-   <td>No</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No (unless they are the same)</td>
+      <td>No</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_3">Code example</h3>
 
-<p>The following function creates a new <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date()</a></code> object, extracts a time string out of it using <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleTimeString">toLocaleTimeString()</a></code>, and then displays it in the UI. We then run it once per second using <code>setInterval()</code>, creating the effect of a digital clock that updates once per second (<a href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/setinterval-clock.html">see this live</a>, and also <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/setinterval-clock.html">see the source</a>):</p>
+<p>
+  The following function creates a new
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date"
+      >Date()</a
+    ></code
+  >
+  object, extracts a time string out of it using
+  <code
+    ><a
+      href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleTimeString"
+      >toLocaleTimeString()</a
+    ></code
+  >, and then displays it in the UI. We then run it once per second using
+  <code>setInterval()</code>, creating the effect of a digital clock that
+  updates once per second (<a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/setinterval-clock.html"
+    >see this live</a
+  >, and also
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/setinterval-clock.html"
+    >see the source</a
+  >):
+</p>
 
-<pre class="brush: js">function displayTime() {
+<pre class="brush: js">
+function displayTime() {
    let date = new Date();
    let time = date.toLocaleTimeString();
    document.getElementById('demo').textContent = time;
 }
 
-const createClock = setInterval(displayTime, 1000);</pre>
+const createClock = setInterval(displayTime, 1000);</pre
+>
 
 <h3 id="Pitfalls_3">Pitfalls</h3>
 
 <ul>
- <li>The frame rate isn't optimized for the system the animation is running on, and can be somewhat inefficient. Unless you need to choose a specific (slower) framerate, it is generally better to use <code>requestAnimationFrame()</code>.</li>
+  <li>
+    The frame rate isn't optimized for the system the animation is running on,
+    and can be somewhat inefficient. Unless you need to choose a specific
+    (slower) framerate, it is generally better to use
+    <code>requestAnimationFrame()</code>.
+  </li>
 </ul>
 
 <h3 id="Browser_compatibility_3">Browser compatibility</h3>
@@ -214,37 +379,73 @@ const createClock = setInterval(displayTime, 1000);</pre>
 <h3 id="Further_information_3">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a>, in particular <a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval">setInterval()</a></li>
- <li><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval">setInterval() reference</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals"
+      >Cooperative asynchronous JavaScript: Timeouts and intervals</a
+    >, in particular
+    <a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval"
+      >setInterval()</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval"
+      >setInterval() reference</a
+    >
+  </li>
 </ul>
 
 <h2 id="requestAnimationFrame">requestAnimationFrame()</h2>
 
-<p><code><a href="/en-US/docs/Web/API/window/requestAnimationFrame">requestAnimationFrame()</a></code> is a method that allows you to run a function repeatedly, and efficiently, at the best framerate available given the current browser/system. You should, if at all possible, use this instead of <code>setInterval()</code>/recursive <code>setTimeout()</code>, unless you need a specific framerate.</p>
+<p>
+  <code
+    ><a href="/en-US/docs/Web/API/window/requestAnimationFrame"
+      >requestAnimationFrame()</a
+    ></code
+  >
+  is a method that allows you to run a function repeatedly, and efficiently, at
+  the best framerate available given the current browser/system. You should, if
+  at all possible, use this instead of <code>setInterval()</code>/recursive
+  <code>setTimeout()</code>, unless you need a specific framerate.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>No</td>
-   <td>Yes</td>
-   <td>No (unless it is the same one)</td>
-   <td>No</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No (unless it is the same one)</td>
+      <td>No</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_4">Code example</h3>
 
-<p>A simple animated spinner; you can find this <a href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/simple-raf-spinner.html">example live on GitHub</a> (see the <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/simple-raf-spinner.html">source code</a> also):</p>
+<p>
+  A simple animated spinner; you can find this
+  <a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/simple-raf-spinner.html"
+    >example live on GitHub</a
+  >
+  (see the
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/simple-raf-spinner.html"
+    >source code</a
+  >
+  also):
+</p>
 
-<pre class="brush: js">const spinner = document.querySelector('div');
+<pre class="brush: js">
+const spinner = document.querySelector('div');
 let rotateCount = 0;
 let startTime = null;
 let rAF;
@@ -265,12 +466,18 @@ function draw(timestamp) {
     rAF = requestAnimationFrame(draw);
 }
 
-draw();</pre>
+draw();</pre
+>
 
 <h3 id="Pitfalls_4">Pitfalls</h3>
 
 <ul>
- <li>You can't choose a specific framerate with <code>requestAnimationFrame()</code>. If you need to run your animation at a slower framerate, you'll need to use <code>setInterval()</code> or recursive <code>setTimeout()</code>.</li>
+  <li>
+    You can't choose a specific framerate with
+    <code>requestAnimationFrame()</code>. If you need to run your animation at a
+    slower framerate, you'll need to use <code>setInterval()</code> or recursive
+    <code>setTimeout()</code>.
+  </li>
 </ul>
 
 <h3 id="Browser_compatibility_4">Browser compatibility</h3>
@@ -280,37 +487,70 @@ draw();</pre>
 <h3 id="Further_information_4">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a>, in particular <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#requestanimationframe()">requestAnimationFrame()</a></li>
- <li><a href="/en-US/docs/Web/API/window/requestAnimationFrame">requestAnimationFrame() reference</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals"
+      >Cooperative asynchronous JavaScript: Timeouts and intervals</a
+    >, in particular
+    <a
+      href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#requestanimationframe()"
+      >requestAnimationFrame()</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/window/requestAnimationFrame"
+      >requestAnimationFrame() reference</a
+    >
+  </li>
 </ul>
 
 <h2 id="Promises">Promises</h2>
 
-<p><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promises</a> are a JavaScript feature that allows you to run asynchronous operations and wait until it is definitely complete before running another operation based on its result. Promises are the backbone of modern asynchronous JavaScript.</p>
+<p>
+  <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+    >Promises</a
+  >
+  are a JavaScript feature that allows you to run asynchronous operations and
+  wait until it is definitely complete before running another operation based on
+  its result. Promises are the backbone of modern asynchronous JavaScript.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>No</td>
-   <td>No</td>
-   <td>Yes</td>
-   <td>See <code>Promise.all()</code>, below</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>See <code>Promise.all()</code>, below</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_5">Code example</h3>
 
-<p>The following code fetches an image from the server and displays it inside an {{htmlelement("img")}} element; <a href="https://mdn.github.io/learning-area/javascript/asynchronous/promises/simple-fetch-chained.html">see it live also</a>, and see also <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/simple-fetch-chained.html">the source code</a>:</p>
+<p>
+  The following code fetches an image from the server and displays it inside an
+  {{htmlelement("img")}} element;
+  <a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/promises/simple-fetch-chained.html"
+    >see it live also</a
+  >, and see also
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/simple-fetch-chained.html"
+    >the source code</a
+  >:
+</p>
 
-<pre class="brush: js">fetch('coffee.jpg')
+<pre class="brush: js">
+fetch('coffee.jpg')
 .then(response =&gt; response.blob())
 .then(myBlob =&gt; {
   let objectURL = URL.createObjectURL(myBlob);
@@ -320,13 +560,18 @@ draw();</pre>
 })
 .catch(e =&gt; {
   console.log('There has been a problem with your fetch operation: ' + e.message);
-});</pre>
+});</pre
+>
 
 <h3 id="Pitfalls_5">Pitfalls</h3>
 
-<p>Promise chains can be complex and hard to parse. If you nest a number of promises, you can end up with similar troubles to callback hell. For example:</p>
+<p>
+  Promise chains can be complex and hard to parse. If you nest a number of
+  promises, you can end up with similar troubles to callback hell. For example:
+</p>
 
-<pre class="brush: js">remotedb.allDocs({
+<pre class="brush: js">
+remotedb.allDocs({
   include_docs: true,
   attachments: true
 }).then(function (result) {
@@ -338,11 +583,16 @@ draw();</pre>
       if (err.name == 'conflict') {
         localdb.get(element.doc._id).then(function (resp) {
           localdb.remove(resp._id, resp._rev).then(function (resp) {
-// et cetera...</pre>
+// et cetera...</pre
+>
 
-<p>It is better to use the chaining power of promises to go with a flatter, easier to parse structure:</p>
+<p>
+  It is better to use the chaining power of promises to go with a flatter,
+  easier to parse structure:
+</p>
 
-<pre class="brush: js">remotedb.allDocs(...).then(function (resultOfAllDocs) {
+<pre class="brush: js">
+remotedb.allDocs(...).then(function (resultOfAllDocs) {
   return localdb.put(...);
 }).then(function (resultOfPut) {
   return localdb.get(...);
@@ -350,11 +600,13 @@ draw();</pre>
   return localdb.put(...);
 }).catch(function (err) {
   console.log(err);
-});</pre>
+});</pre
+>
 
 <p>or even:</p>
 
-<pre class="brush: js">remotedb.allDocs(...)
+<pre class="brush: js">
+remotedb.allDocs(...)
 .then(resultOfAllDocs =&gt; {
   return localdb.put(...);
 })
@@ -364,9 +616,16 @@ draw();</pre>
 .then(resultOfGet =&gt; {
   return localdb.put(...);
 })
-.catch(err =&gt; console.log(err));</pre>
+.catch(err =&gt; console.log(err));</pre
+>
 
-<p>That covers a lot of the basics. For a much more complete treatment, see the excellent <a href="https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html">We have a problem with promises</a>, by Nolan Lawson.</p>
+<p>
+  That covers a lot of the basics. For a much more complete treatment, see the
+  excellent
+  <a href="https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html"
+    >We have a problem with promises</a
+  >, by Nolan Lawson.
+</p>
 
 <h3 id="Browser_compatibility_5">Browser compatibility</h3>
 
@@ -375,38 +634,67 @@ draw();</pre>
 <h3 id="Further_information_5">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises">Graceful asynchronous programming with Promises</a></li>
- <li><a href="/en-US/docs/Web/JavaScript/Guide/Using_promises">Using promises</a></li>
- <li><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise reference</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises"
+      >Graceful asynchronous programming with Promises</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/JavaScript/Guide/Using_promises">Using promises</a>
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise reference</a
+    >
+  </li>
 </ul>
 
 <h2 id="Promise.all">Promise.all()</h2>
 
-<p>A JavaScript feature that allows you to wait for multiple promises to complete before then running a further operation based on the results of all the other promises.</p>
+<p>
+  A JavaScript feature that allows you to wait for multiple promises to complete
+  before then running a further operation based on the results of all the other
+  promises.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>No</td>
-   <td>No</td>
-   <td>No</td>
-   <td>Yes</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_6">Code example</h3>
 
-<p>The following example fetches several resources from the server, and uses <code>Promise.all()</code> to wait for all of them to be available before then displaying all of them — <a href="https://mdn.github.io/learning-area/javascript/asynchronous/promises/promise-all.html">see it live</a>, and see the <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/promise-all.html">source code</a>:</p>
+<p>
+  The following example fetches several resources from the server, and uses
+  <code>Promise.all()</code> to wait for all of them to be available before then
+  displaying all of them —
+  <a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/promises/promise-all.html"
+    >see it live</a
+  >, and see the
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/promise-all.html"
+    >source code</a
+  >:
+</p>
 
-<pre class="brush: js">function fetchAndDecode(url, type) {
+<pre class="brush: js">
+function fetchAndDecode(url, type) {
   // Returning the top level promise, so the result of the entire chain is returned out of the function
   return fetch(url).then(response =&gt; {
     // Depending on what type of file is being fetched, use the relevant function to decode its contents
@@ -446,12 +734,18 @@ Promise.all([coffee, tea, description]).then(values =&gt; {
   let para = document.createElement('p');
   para.textContent = descText;
   document.body.appendChild(para);
-});</pre>
+});</pre
+>
 
 <h3 id="Pitfalls_6">Pitfalls</h3>
 
 <ul>
- <li>If a <code>Promise.all()</code> rejects, then one or more of the promises you are feeding into it inside its array parameter must be rejecting, or might not be returning promises at all. You need to check each one to see what they returned. </li>
+  <li>
+    If a <code>Promise.all()</code> rejects, then one or more of the promises
+    you are feeding into it inside its array parameter must be rejecting, or
+    might not be returning promises at all. You need to check each one to see
+    what they returned. 
+  </li>
 </ul>
 
 <h3 id="Browser_compatibility_6">Browser compatibility</h3>
@@ -461,37 +755,62 @@ Promise.all([coffee, tea, description]).then(values =&gt; {
 <h3 id="Further_information_6">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises#running_code_in_response_to_multiple_promises_fulfilling">Running code in response to multiple promises fulfilling</a></li>
- <li><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all">Promise.all() reference</a></li>
+  <li>
+    <a
+      href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises#running_code_in_response_to_multiple_promises_fulfilling"
+      >Running code in response to multiple promises fulfilling</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+      >Promise.all() reference</a
+    >
+  </li>
 </ul>
 
 <h2 id="Asyncawait">Async/await</h2>
 
-<p>Syntactic sugar built on top of promises that allows you to run asynchronous operations using syntax that's more like writing synchronous callback code.</p>
+<p>
+  Syntactic sugar built on top of promises that allows you to run asynchronous
+  operations using syntax that's more like writing synchronous callback code.
+</p>
 
 <table class="standard-table">
- <caption>Useful for...</caption>
- <thead>
-  <tr>
-   <th scope="col">Single delayed operation</th>
-   <th scope="col">Repeating operation</th>
-   <th scope="col">Multiple sequential operations</th>
-   <th scope="col">Multiple simultaneous operations</th>
-  </tr>
-  <tr>
-   <td>No</td>
-   <td>No</td>
-   <td>Yes</td>
-   <td>Yes (in combination with <code>Promise.all()</code>)</td>
-  </tr>
- </thead>
+  <caption>
+    Useful for...
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Single delayed operation</th>
+      <th scope="col">Repeating operation</th>
+      <th scope="col">Multiple sequential operations</th>
+      <th scope="col">Multiple simultaneous operations</th>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes (in combination with <code>Promise.all()</code>)</td>
+    </tr>
+  </thead>
 </table>
 
 <h3 id="Code_example_7">Code example</h3>
 
-<p>The following example is a refactor of the simple promise example we saw earlier that fetches and displays an image, written using async/await (<a href="https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-refactored-fetch.html">see it live</a>, and see the <a href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-refactored-fetch.html">source code</a>):</p>
+<p>
+  The following example is a refactor of the simple promise example we saw
+  earlier that fetches and displays an image, written using async/await (<a
+    href="https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-refactored-fetch.html"
+    >see it live</a
+  >, and see the
+  <a
+    href="https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-refactored-fetch.html"
+    >source code</a
+  >):
+</p>
 
-<pre class="brush: js">async function myFetch() {
+<pre class="brush: js">
+async function myFetch() {
   let response = await fetch('coffee.jpg');
   let myBlob = await response.blob();
 
@@ -501,13 +820,29 @@ Promise.all([coffee, tea, description]).then(values =&gt; {
   document.body.appendChild(image);
 }
 
-myFetch();</pre>
+myFetch();</pre
+>
 
 <h3 id="Pitfalls_7">Pitfalls</h3>
 
 <ul>
- <li>You can't use the <code>await</code> operator inside a non-<code>async</code> function, or in the top level context of your code. This can sometimes result in an extra function wrapper needing to be created, which can be slightly frustrating in some circumstances. But it is worth it most of the time.</li>
- <li>Browser support for async/await is not as good as that for promises. If you want to use async/await but are concerned about older browser support, you could consider using the <a href="https://babeljs.io/">BabelJS</a> library — this allows you to write your applications using the latest JavaScript and let Babel figure out what changes if any are needed for your user’s browsers.</li>
+  <li>
+    You can't use the <code>await</code> operator inside a non-<code
+      >async</code
+    >
+    function, or in the top level context of your code. This can sometimes
+    result in an extra function wrapper needing to be created, which can be
+    slightly frustrating in some circumstances. But it is worth it most of the
+    time.
+  </li>
+  <li>
+    Browser support for async/await is not as good as that for promises. If you
+    want to use async/await but are concerned about older browser support, you
+    could consider using the <a href="https://babeljs.io/">BabelJS</a> library —
+    this allows you to write your applications using the latest JavaScript and
+    let Babel figure out what changes if any are needed for your user’s
+    browsers.
+  </li>
 </ul>
 
 <h3 id="Browser_compatibility_7">Browser compatibility</h3>
@@ -517,20 +852,60 @@ myFetch();</pre>
 <h3 id="Further_information_7">Further information</h3>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Async_await">Making asynchronous programming easier with async and await</a></li>
- <li><a href="/en-US/docs/Web/JavaScript/Reference/Statements/async_function">Async function reference</a></li>
- <li><a href="/en-US/docs/Web/JavaScript/Reference/Operators/await">Await operator reference</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Async_await"
+      >Making asynchronous programming easier with async and await</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+      >Async function reference</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/JavaScript/Reference/Operators/await"
+      >Await operator reference</a
+    >
+  </li>
 </ul>
 
-<p>{{PreviousMenu("Learn/JavaScript/Asynchronous/Async_await", "Learn/JavaScript/Asynchronous")}}</p>
+<p>
+  {{PreviousMenu("Learn/JavaScript/Asynchronous/Async_await",
+  "Learn/JavaScript/Asynchronous")}}
+</p>
 
 <h2 id="In_this_module">In this module</h2>
 
 <ul>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Concepts">General asynchronous programming concepts</a></li>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing">Introducing asynchronous JavaScript</a></li>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a></li>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises">Graceful asynchronous programming with Promises</a></li>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Async_await">Making asynchronous programming easier with async and await</a></li>
- <li><a href="/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach">Choosing the right approach</a></li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Concepts"
+      >General asynchronous programming concepts</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Introducing"
+      >Introducing asynchronous JavaScript</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals"
+      >Cooperative asynchronous JavaScript: Timeouts and intervals</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Promises"
+      >Graceful asynchronous programming with Promises</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Learn/JavaScript/Asynchronous/Async_await"
+      >Making asynchronous programming easier with async and await</a
+    >
+  </li>
+  <li>
+    <a
+      href="/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach"
+      >Choosing the right approach</a
+    >
+  </li>
 </ul>

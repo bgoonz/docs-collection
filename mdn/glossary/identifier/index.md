@@ -6,12 +6,11 @@ In {{glossary("JavaScript")}}, identifiers are case-sensitive and can contain {{
 
 An identifier differs from a string in that a {{glossary("string")}} is data, while an identifier is part of the code. In JavaScript, there is no way to convert identifiers to strings, but sometimes it is possible to parse strings into identifiers.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Identifier\#In\_computer\_science", "Identifier")}} on Wikipedia
+- {{interwiki("wikipedia", "Identifier\#In\_computer\_science", "Identifier")}} on Wikipedia
 
 1.  [Glossary](/en-US/docs/Glossary)
     1.  {{glossary("Identifier")}}

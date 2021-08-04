@@ -4,8 +4,7 @@ In programming languages such as JavaScript, a wrapper is a function that is int
 
 For example, SDK Libraries for AWS are examples of wrappers.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 

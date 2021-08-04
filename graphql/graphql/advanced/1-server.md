@@ -1,7 +1,6 @@
 GraphQL is often explained as a frontend-focused API technology because it enables clients to get data in a much nicer way than before. But the API itself is, of course, implemented on the server side. There are a lot of benefits to be had on the server as well because GraphQL enables the server developer to focus on describing the data available rather than implementing and optimizing specific endpoints.
 
-GraphQL execution
------------------
+## GraphQL execution
 
 GraphQL doesn’t just specify a way to describe schemas and a query language to retrieve data from those schemas, but an actual execution algorithm for how those queries are transformed into results. This algorithm is quite simple at its core: The query is traversed field by field, executing “resolvers” for each field. So, let’s say we have the following schema:
 
@@ -54,8 +53,7 @@ One thing to note is that most GraphQL server implementations will provide “de
 
 Read more in-depth about GraphQL execution in the [“GraphQL Explained” post](https://dev-blog.apollodata.com/graphql-explained-5844742f195e) on the Apollo blog.
 
-Batched Resolving
------------------
+## Batched Resolving
 
 One thing you might notice about the execution strategy above is that it’s somewhat naive. For example, if you have a resolver that fetches from a backend API or database, that backend might get called many times during the execution of one query. Let’s imagine we wanted to get the authors of several posts, like so:
 

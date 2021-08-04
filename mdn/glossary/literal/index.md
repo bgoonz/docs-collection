@@ -1,17 +1,16 @@
 --- title: Literal slug: Glossary/Literal tags: - Literal - JavaScript - Glossary ---
 
-**Literals** represent values in JavaScript. These are fixed values—not variables—that you *literally* provide in your script.
+**Literals** represent values in JavaScript. These are fixed values—not variables—that you _literally_ provide in your script.
 
--   [Array literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#array_literals)
--   [Boolean literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#boolean_literals)
--   [Floating-point literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#floating-point_literals)
--   [Numeric literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#numeric_literals)
--   [Object literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#object_literals)
--   [RegExp literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#regexp_literals)
--   [String literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#string_literals)
+- [Array literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#array_literals)
+- [Boolean literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#boolean_literals)
+- [Floating-point literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#floating-point_literals)
+- [Numeric literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#numeric_literals)
+- [Object literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#object_literals)
+- [RegExp literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#regexp_literals)
+- [String literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#string_literals)
 
-Examples
---------
+## Examples
 
 ### String literals
 
@@ -47,9 +46,8 @@ The following is an example of an object literal. The first element of the `car`
     console.log(car.getCar);  // Honda
     console.log(car.special); // BMW
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Literal (computer programming)", "Literal")}} on Wikipedia
+- {{interwiki("wikipedia", "Literal (computer programming)", "Literal")}} on Wikipedia

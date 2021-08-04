@@ -8,15 +8,15 @@ But in certain cases, `null` is not as "primitive" as it first seems! Every Obje
 
     typeof null === 'object' // true
 
--   **[Glossary](/en-US/docs/Glossary)**
-    -   {{Glossary("JavaScript")}}
-    -   {{Glossary("string")}}
-    -   {{Glossary("number")}}
-    -   {{Glossary("bigint")}}
-    -   {{Glossary("boolean")}}
-    -   {{Glossary("null")}}
-    -   {{Glossary("undefined")}}
-    -   {{Glossary("symbol")}}
--   [JavaScript data types](/en-US/docs/Web/JavaScript/Data_structures)
--   The JavaScript global object: {{jsxref("null")}}
--   {{Interwiki("wikipedia", "Null pointer")}} on Wikipedia
+- **[Glossary](/en-US/docs/Glossary)**
+  - {{Glossary("JavaScript")}}
+  - {{Glossary("string")}}
+  - {{Glossary("number")}}
+  - {{Glossary("bigint")}}
+  - {{Glossary("boolean")}}
+  - {{Glossary("null")}}
+  - {{Glossary("undefined")}}
+  - {{Glossary("symbol")}}
+- [JavaScript data types](/en-US/docs/Web/JavaScript/Data_structures)
+- The JavaScript global object: {{jsxref("null")}}
+- {{Interwiki("wikipedia", "Null pointer")}} on Wikipedia

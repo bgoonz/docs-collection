@@ -12,7 +12,7 @@ Take this query for instance:
         links(ids: [2, 3]){
           id
           url
-        }  
+        }
     }
 
 What must we do? Firstly add to DAO the functions that give us a link by one or more ID’s.
@@ -30,7 +30,7 @@ Open the file `DAO.scala` and add the following functions:
 Also don’t forget to add the following imports:
 
     import com.howtographql.scala.sangria.models.Link
-    import scala.concurrent.Future 
+    import scala.concurrent.Future
 
 Next, we have to add the fields to the main `Query` object and set the functions above as resolvers.
 
@@ -79,15 +79,15 @@ You can make a similar change for the `links` field too. After these changes `Gr
 
       implicit val LinkType = deriveObjectType[Unit, Link]()
 
-      
+
       val Id = Argument("id", IntType)
       val Ids = Argument("ids", ListInputType(IntType))
-      
+
       val QueryType = ObjectType(
         "Query",
         fields[MyContext, Unit](
           Field("allLinks", ListType(LinkType), resolve = c => c.ctx.dao.allLinks),
-          Field("link", 
+          Field("link",
             OptionType(LinkType),
             arguments = Id :: Nil,
             resolve = c => c.ctx.dao.getLink(c.arg(Id))

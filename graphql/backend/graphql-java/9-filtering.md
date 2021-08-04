@@ -1,5 +1,4 @@
-Filtering
----------
+## Filtering
 
 As you have seen in earlier chapters, queries and mutations can take input via arguments. Since arguments have no inherent semantics attached, and mean whatever you define them to mean, you can easily implement common features like filtering by simply designating arguments to be used for this purpose.
 

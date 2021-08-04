@@ -4,13 +4,12 @@ A viewport represents a polygonal (normally rectangular) area in computer graphi
 
 The portion of the viewport that is currently visible is called the **{{Glossary("visual viewport")}}**. This can be smaller than the layout viewport, such as when the user has pinched-zoomed. The {{Glossary("layout viewport")}} remains the same, but the visual viewport became smaller.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Visual Viewport API](/en-US/docs/Web/API/Visual_Viewport_API)
--   {{Interwiki("wikipedia", "Viewport")}} on Wikipedia
--   [A tale of two viewports](https://www.quirksmode.org/mobile/viewports.html) (Quirksmode)
--   {{Glossary("Visual viewport")}} in the MDN Glossary
--   {{Glossary("Layout viewport")}} in the MDN Glossary
+- [Visual Viewport API](/en-US/docs/Web/API/Visual_Viewport_API)
+- {{Interwiki("wikipedia", "Viewport")}} on Wikipedia
+- [A tale of two viewports](https://www.quirksmode.org/mobile/viewports.html) (Quirksmode)
+- {{Glossary("Visual viewport")}} in the MDN Glossary
+- {{Glossary("Layout viewport")}} in the MDN Glossary

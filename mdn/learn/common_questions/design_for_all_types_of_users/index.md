@@ -1,21 +1,18 @@
---- title: How can we design for all types of users? slug: Learn/Common\_questions/Design\_for\_all\_types\_of\_users tags: - Accessibility - Beginner - Design - Example - Intro - Mobile - NeedsActiveLearning ---
+--- title: How can we design for all types of users? slug: Learn/Common_questions/Design_for_all_types_of_users tags: - Accessibility - Beginner - Design - Example - Intro - Mobile - NeedsActiveLearning ---
 
 This article provides basic tips to help you design websites for any kind of user.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>You should first read <a href="/en-US/docs/Learn/Common_questions/What_is_accessibility">What is accessibility?</a>, since we don't cover accessibility in detail here.</td></tr><tr class="even"><td>Objective:</td><td>Universal design means design for everybody, regardless of disabilities or technical constraints. This article lists the most important quick-wins for universal design.</td></tr></tbody></table>
 
-Summary
--------
+## Summary
 
 When you're building a website, one top issue to consider is [Universal Design](https://en.wikipedia.org/wiki/Universal_design): accommodating all users regardless of disability, technical constraints, culture, location, and so on.
 
-Active Learning
----------------
+## Active Learning
 
-*There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started).*
+_There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started)._
 
-Dig deeper
-----------
+## Dig deeper
 
 ### Color contrast
 
@@ -49,7 +46,7 @@ Yet, for many years Internet Explorer adamantly displayed 16 pixels as 16 pixels
 
 #### Relative units
 
-Also called *proportional units,* relative units are computed relative to a parent element. Relative units are friendlier to accessibility because they respect the settings on the user's system.
+Also called _proportional units,_ relative units are computed relative to a parent element. Relative units are friendlier to accessibility because they respect the settings on the user's system.
 
 Relative units are expressed in `em`, `%` and `rem`:
 
@@ -111,8 +108,8 @@ Because you don't know when a browser is going to come around and refuse to zoom
 
 We would advise the following:
 
--   Describe fonts in `rem` units, most browsers will be very happy with them;
--   Let older browsers display fonts with their own internal engine. Browser's engines will ignore any property or value in the CSS if they can't cope with them, so that your website is still usable if not true to your designer's vision. Older browsers are on the way out anyway.
+- Describe fonts in `rem` units, most browsers will be very happy with them;
+- Let older browsers display fonts with their own internal engine. Browser's engines will ignore any property or value in the CSS if they can't cope with them, so that your website is still usable if not true to your designer's vision. Older browsers are on the way out anyway.
 
 **Note:** Your mileage may vary. If you have to cater to older browsers, you'll have to use `em`s and do a bit more math.
 
@@ -155,9 +152,9 @@ Websites often include stuff besides plain text.
 
 Images can be either decorative or informative, but there's no guarantee that your users can see them. For example,
 
--   Visually impaired users rely on a screen reader, which can only handle text.
--   Your readers may be using a very strict intranet that blocks images originating from a {{Glossary("CDN")}}.
--   Your readers may have disabled images to save bandwidth, especially on mobile devices (see below).
+- Visually impaired users rely on a screen reader, which can only handle text.
+- Your readers may be using a very strict intranet that blocks images originating from a {{Glossary("CDN")}}.
+- Your readers may have disabled images to save bandwidth, especially on mobile devices (see below).
 
 Decorative images  
 They're just for decoration and don't convey any real information. They could most often be replaced by a background image. Make sure they feature an empty `alt` attribute: `<img src="deco.gif" alt="">` so they don't clog up the text.
@@ -183,5 +180,5 @@ Subtitles only work if somebody watches the video. Many users don't have time, o
 
 Some users may choose to display images, but still have limited bandwidth available, especially in developing countries and on mobile devices. If you want a successful website, please compress your images. There are various tools to help you, either online or local:
 
--   **Installed software.** [ImageOptim](https://imageoptim.com/) (Mac), [OptiPNG](http://optipng.sourceforge.net/) (all platforms), [PNGcrush](http://pmt.sourceforge.net/pngcrush/) (DOS, Unix/Linux)
--   **Online tools.** Yahoo's [smushit!](http://smush.it/), Dynamic drive's [Online Image Optimizer](https://tools.dynamicdrive.com/imageoptimizer/) (which can convert automatically from one format to another if it's more bandwidth-efficient)
+- **Installed software.** [ImageOptim](https://imageoptim.com/) (Mac), [OptiPNG](http://optipng.sourceforge.net/) (all platforms), [PNGcrush](http://pmt.sourceforge.net/pngcrush/) (DOS, Unix/Linux)
+- **Online tools.** Yahoo's [smushit!](http://smush.it/), Dynamic drive's [Online Image Optimizer](https://tools.dynamicdrive.com/imageoptimizer/) (which can convert automatically from one format to another if it's more bandwidth-efficient)

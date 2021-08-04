@@ -17,7 +17,7 @@ A **Symbol** value represents a unique identifier. For example:
     // Even if we create many symbols with the same description,
     // they are different values.
 
-**Note:** If you are familiar with Ruby (or another language) that also has a feature called *"symbols"*, please don’t be misled. JavaScript symbols are different.
+**Note:** If you are familiar with Ruby (or another language) that also has a feature called _"symbols"_, please don’t be misled. JavaScript symbols are different.
 
 Symbol type is a new feature in ECMAScript 2015. There is no ECMAScript 5 equivalent for Symbol.
 
@@ -53,11 +53,11 @@ Examples of well-known symbols are: {{jsxref("Symbol.iterator")}} for array-like
 
 They are listed in the specification in the [Well-known symbols](https://tc39.github.io/ecma262/#sec-well-known-symbols) table:
 
--   `Symbol.hasInstance`
--   `Symbol.isConcatSpreadable`
--   `Symbol.iterator`
--   `Symbol.toPrimitive`
--   …and so on.
+- `Symbol.hasInstance`
+- `Symbol.isConcatSpreadable`
+- `Symbol.iterator`
+- `Symbol.toPrimitive`
+- …and so on.
 
 ### Global symbol registry
 
@@ -67,19 +67,18 @@ The method `Symbol.for(tokenString)` returns a symbol value from the registry, a
 
     Symbol.keyFor(Symbol.for("tokenString")) === "tokenString" // true
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Symbol (programming)")}} on Wikipedia
--   [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)
--   [Symbols in ECMAScript 6](https://2ality.com/2014/12/es6-symbols.html)
--   {{jsxref("Symbol")}} in the MDN JS reference
--   {{jsxref("Object.getOwnPropertySymbols()")}}
+- {{Interwiki("wikipedia", "Symbol (programming)")}} on Wikipedia
+- [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)
+- [Symbols in ECMAScript 6](https://2ality.com/2014/12/es6-symbols.html)
+- {{jsxref("Symbol")}} in the MDN JS reference
+- {{jsxref("Object.getOwnPropertySymbols()")}}
 
--   [MDN Web Docs Glossary](/en-US/docs/Glossary)
-    -   {{Glossary("JavaScript")}}
-    -   {{Glossary("Primitive")}}
--   {{jsxref("Symbol")}}
--   [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)
+- [MDN Web Docs Glossary](/en-US/docs/Glossary)
+  - {{Glossary("JavaScript")}}
+  - {{Glossary("Primitive")}}
+- {{jsxref("Symbol")}}
+- [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)

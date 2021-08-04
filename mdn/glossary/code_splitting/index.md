@@ -1,4 +1,4 @@
---- title: Code splitting slug: Glossary/Code\_splitting tags: - Glossary - Reference - Web Performance - code splitting - latency ---
+--- title: Code splitting slug: Glossary/Code_splitting tags: - Glossary - Reference - Web Performance - code splitting - latency ---
 
 <span class="seoSummary">**Code splitting** is the splitting of code into various bundles or components which can then be loaded on demand or in parallel.</span>
 
@@ -6,10 +6,9 @@ As an application grows in complexity or is maintained, CSS and JavaScripts file
 
 Code splitting is a feature supported by bundlers like [Webpack](https://webpack.js.org/) and [Browserify](http://browserify.org/) which can create multiple bundles that can be dynamically loaded at runtime.
 
-See also
---------
+## See also
 
--   Bundling
--   [Lazy loading](/en-US/docs/Web/Performance/Lazy_loading)
--   [HTTP/2](/en-US/docs/Glossary/HTTP_2)
--   [Tree shaking](/en-US/docs/Glossary/Tree_shaking)
+- Bundling
+- [Lazy loading](/en-US/docs/Web/Performance/Lazy_loading)
+- [HTTP/2](/en-US/docs/Glossary/HTTP_2)
+- [Tree shaking](/en-US/docs/Glossary/Tree_shaking)

@@ -10,31 +10,70 @@ tags:
   - minDecibels
 browser-compat: api.AnalyserNode.minDecibels
 ---
+
 <p>{{ APIRef("Web Audio API") }}</p>
 
-<p class="summary">The <strong><code>minDecibels</code></strong> property of the {{ domxref("AnalyserNode") }} interface is a double value representing the minimum power value in the scaling range for the FFT analysis data, for conversion to unsigned byte values — basically, this specifies the minimum value for the range of results when using <code>getByteFrequencyData()</code>.</p>
+<p class="summary">
+  The <strong><code>minDecibels</code></strong> property of the {{
+  domxref("AnalyserNode") }} interface is a double value representing the
+  minimum power value in the scaling range for the FFT analysis data, for
+  conversion to unsigned byte values — basically, this specifies the minimum
+  value for the range of results when using <code>getByteFrequencyData()</code>.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">var <em>curValue</em> = <em>analyserNode</em>.minDecibels;
+<pre class="brush: js">
+var <em>curValue</em> = <em>analyserNode</em>.minDecibels;
 <em>analyserNode</em>.minDecibels = <em>newValue</em>;
 </pre>
 
 <h3 id="Value">Value</h3>
 
-<p>A double, representing the minimum <a href="https://en.wikipedia.org/wiki/Decibel" title="Decibel on Wikipedia">decibel</a> value for scaling the FFT analysis data, where <code>0</code> dB is the loudest possible sound, <code>-10</code> dB is a 10th of that, etc. The default value is <code>-100</code> dB.</p>
+<p>
+  A double, representing the minimum
+  <a href="https://en.wikipedia.org/wiki/Decibel" title="Decibel on Wikipedia"
+    >decibel</a
+  >
+  value for scaling the FFT analysis data, where <code>0</code> dB is the
+  loudest possible sound, <code>-10</code> dB is a 10th of that, etc. The
+  default value is <code>-100</code> dB.
+</p>
 
-<p>When getting data from <code>getByteFrequencyData()</code>, any frequencies with an amplitude of <code>minDecibels</code> or lower will be returned as <code>0</code>.</p>
+<p>
+  When getting data from <code>getByteFrequencyData()</code>, any frequencies
+  with an amplitude of <code>minDecibels</code> or lower will be returned as
+  <code>0</code>.
+</p>
 
 <div class="note">
-<p><strong>Note</strong>: If a value greater than <code>AnalyserNode.maxDecibels</code> is set, an <code>INDEX_SIZE_ERR</code> exception is thrown.</p>
+  <p>
+    <strong>Note</strong>: If a value greater than
+    <code>AnalyserNode.maxDecibels</code> is set, an
+    <code>INDEX_SIZE_ERR</code> exception is thrown.
+  </p>
 </div>
 
 <h2 id="Example">Example</h2>
 
-<p>The following example shows basic usage of an {{domxref("AudioContext")}} to create an <code>AnalyserNode</code>, then {{domxref("window.requestAnimationFrame()","requestAnimationFrame")}} and {{htmlelement("canvas")}} to collect frequency data repeatedly and draw a "winamp bargraph style" output of the current audio input. For more complete applied examples/information, check out our <a href="https://mdn.github.io/voice-change-o-matic/">Voice-change-O-matic</a> demo (see <a href="https://github.com/mdn/voice-change-o-matic/blob/gh-pages/scripts/app.js#L128-L205">app.js lines 128–205</a> for relevant code).</p>
+<p>
+  The following example shows basic usage of an {{domxref("AudioContext")}} to
+  create an <code>AnalyserNode</code>, then
+  {{domxref("window.requestAnimationFrame()","requestAnimationFrame")}} and
+  {{htmlelement("canvas")}} to collect frequency data repeatedly and draw a
+  "winamp bargraph style" output of the current audio input. For more complete
+  applied examples/information, check out our
+  <a href="https://mdn.github.io/voice-change-o-matic/">Voice-change-O-matic</a>
+  demo (see
+  <a
+    href="https://github.com/mdn/voice-change-o-matic/blob/gh-pages/scripts/app.js#L128-L205"
+    >app.js lines 128–205</a
+  >
+  for relevant code).
+</p>
 
-<pre class="brush: js">var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+<pre class="brush: js">
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 var analyser = audioCtx.createAnalyser();
 analyser.minDecibels = -90;
 analyser.maxDecibels = -10;
@@ -70,7 +109,8 @@ function draw() {
   }
 };
 
-draw();</pre>
+draw();</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -83,5 +123,9 @@ draw();</pre>
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">Using the Web Audio API</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API"
+      >Using the Web Audio API</a
+    >
+  </li>
 </ul>

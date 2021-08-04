@@ -2,15 +2,14 @@
 
 A **Web browser** or **browser** is a program that retrieves and displays pages from the {{Glossary("World Wide Web","Web")}}, and lets users access further pages through {{Glossary("hyperlink","hyperlinks")}}. A browser is the most familiar type of {{Glossary("user agent")}}.
 
-Learn more
-----------
+## Learn more
 
 ### Download a browser
 
--   [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/)
--   [Google Chrome](https://www.google.com/chrome/)
--   [Microsoft Edge](https://www.microsoft.com/en-us/edge)
--   [Opera Browser](https://www.opera.com/)
+- [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/)
+- [Google Chrome](https://www.google.com/chrome/)
+- [Microsoft Edge](https://www.microsoft.com/en-us/edge)
+- [Opera Browser](https://www.opera.com/)
 
 1.  [MDN Web Docs Glossary](/en-US/docs/Glossary)
     1.  {{Glossary("user agent")}}

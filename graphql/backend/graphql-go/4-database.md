@@ -1,7 +1,6 @@
 Before we jump into implementing GraphQL schema we need to setup database to save users and links, This is not supposed to be tutorial about databases in go but here is what we are going to do: \* Setup MySQL \* Create MySQL database \* Define our models and create migrations
 
-Setup MySQL <span id="setup-mysql"></span>
-------------------------------------------
+## Setup MySQL <span id="setup-mysql"></span>
 
 If you have docker you can run [Mysql image](https://hub.docker.com/_/mysql) from docker and use it.
 
@@ -10,8 +9,7 @@ If you have docker you can run [Mysql image](https://hub.docker.com/_/mysql) fro
     CONTAINER ID        IMAGE                                                               COMMAND                  CREATED             STATUS              PORTS                  NAMES
     8fea71529bb2        mysql:latest                                                        "docker-entrypoint.s…"   2 hours ago         Up 2 hours          3306/tcp, 33060/tcp    mysql
 
-Create MySQL database <span id="create-mysql-database"></span>
---------------------------------------------------------------
+## Create MySQL database <span id="create-mysql-database"></span>
 
 You have already started `mysql` instance in the previous step. Now we will need to create our `hackernews` database in that instance. To create the database run these commands.
 
@@ -29,8 +27,7 @@ Now we are inside `mysql` repl. To create the database, run this command:
 
 `CREATE DATABASE hackernews;`
 
-Models and migrations <span id="models-and-migrations"></span>
---------------------------------------------------------------
+## Models and migrations <span id="models-and-migrations"></span>
 
 We need to create migrations for our app so every time our app runs it creates tables it needs to work properly, we are going to use [golang-migrate](https://github.com/golang-migrate/migrate) package. Create a folder structure for our database files in the project root directory:
 

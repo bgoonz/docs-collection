@@ -1,42 +1,40 @@
---- title: The box model slug: Learn/CSS/Building\_blocks/The\_box\_model tags: - Beginner - CSS - Learn - border - box model - display - margin - padding ---
+--- title: The box model slug: Learn/CSS/Building_blocks/The_box_model tags: - Beginner - CSS - Learn - border - box model - display - margin - padding ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors/Combinators", "Learn/CSS/Building\_blocks/Backgrounds\_and\_borders", "Learn/CSS/Building\_blocks")}}
 
-Everything in CSS has a box around it, and understanding these boxes is key to being able to create layouts with CSS, or to align items with other items. In this lesson, we will take a proper look at the CSS *Box Model* so that you can build more complex layout tasks with an understanding of how it works and the terminology that relates to it.
+Everything in CSS has a box around it, and understanding these boxes is key to being able to create layouts with CSS, or to align items with other items. In this lesson, we will take a proper look at the CSS _Box Model_ so that you can build more complex layout tasks with an understanding of how it works and the terminology that relates to it.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn about the CSS Box Model, what makes up the box model and how to switch to the alternate model.</td></tr></tbody></table>
 
-Block and inline boxes
-----------------------
+## Block and inline boxes
 
 In CSS we broadly have two types of boxes — **block boxes** and **inline boxes**. These characteristics refer to how the box behaves in terms of page flow, and in relation to other boxes on the page:
 
 If a box is defined as a block, it will behave in the following ways:
 
--   The box will break onto a new line.
--   The box will extend in the inline direction to fill the space available in its container. In most cases this means that the box will become as wide as its container, filling up 100% of the space available.
--   The {{cssxref("width")}} and {{cssxref("height")}} properties are respected.
--   Padding, margin and border will cause other elements to be pushed away from the box
+- The box will break onto a new line.
+- The box will extend in the inline direction to fill the space available in its container. In most cases this means that the box will become as wide as its container, filling up 100% of the space available.
+- The {{cssxref("width")}} and {{cssxref("height")}} properties are respected.
+- Padding, margin and border will cause other elements to be pushed away from the box
 
 Unless we decide to change the display type to inline, elements such as headings (e.g. `<h1>`) and `<p>` all use `block` as their outer display type by default.
 
 If a box has an outer display type of `inline`, then:
 
--   The box will not break onto a new line.
--   The {{cssxref("width")}} and {{cssxref("height")}} properties will not apply.
--   Vertical padding, margins, and borders will apply but will not cause other inline boxes to move away from the box.
--   Horizontal padding, margins, and borders will apply and will cause other inline boxes to move away from the box.
+- The box will not break onto a new line.
+- The {{cssxref("width")}} and {{cssxref("height")}} properties will not apply.
+- Vertical padding, margins, and borders will apply but will not cause other inline boxes to move away from the box.
+- Horizontal padding, margins, and borders will apply and will cause other inline boxes to move away from the box.
 
 The `<a>` element, used for links, `<span>`, `<em>` and `<strong>` are all examples of elements that will display inline by default.
 
 The type of box applied to an element is defined by {{cssxref("display")}} property values such as `block` and `inline`, and relates to the **outer** value of `display`.
 
-Aside: Inner and outer display types
-------------------------------------
+## Aside: Inner and outer display types
 
-At this point, we'd better also explain **inner** and **outer** display types. As mentioned above, boxes in CSS have an *outer* display type, which details whether the box is block or inline.
+At this point, we'd better also explain **inner** and **outer** display types. As mentioned above, boxes in CSS have an _outer_ display type, which details whether the box is block or inline.
 
-Boxes also have an *inner* display type, however, which dictates how elements inside that box are laid out. By default, the elements inside a box are laid out in **[normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)**, which means that they behave just like any other block and inline elements (as explained above).
+Boxes also have an _inner_ display type, however, which dictates how elements inside that box are laid out. By default, the elements inside a box are laid out in **[normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)**, which means that they behave just like any other block and inline elements (as explained above).
 
 We can, however, change the inner display type by using `display` values like `flex`. If we set `display: flex;` on an element, the outer display type is `block`, but the inner display type is changed to `flex`. Any direct children of this box will become flex items and will be laid out according to the rules set out in the [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox) spec, which you'll learn about later on.
 
@@ -44,10 +42,9 @@ We can, however, change the inner display type by using `display` values like `f
 
 When you move on to learn about CSS Layout in more detail, you will encounter `flex`, and various other inner values that your boxes can have, for example `grid`.
 
-Block and inline layout, however, is the default way that things on the web behave — as we said above, it is sometimes referred to as *normal flow*, because without any other instruction, our boxes lay out as block or inline boxes.
+Block and inline layout, however, is the default way that things on the web behave — as we said above, it is sometimes referred to as _normal flow_, because without any other instruction, our boxes lay out as block or inline boxes.
 
-Examples of different display types
------------------------------------
+## Examples of different display types
 
 Let's move on and have a look at some examples. Below we have three different HTML elements, all of which have an outer display type of `block`. The first is a paragraph, which has a border added in CSS. The browser renders this as a block box, so the paragraph begins on a new line, and expands to the full width available to it.
 
@@ -55,7 +52,7 @@ The second is a list, which is laid out using `display: flex`. This establishes 
 
 Below this, we have a block-level paragraph, inside which are two `<span>` elements. These elements would normally be `inline`, however, one of the elements has a class of block, and we have set it to `display: block`.
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/block.html", '100%', 1050)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/block.html", '100%', 1050)}}
 
 We can see how `inline` elements behave in this next example. The `<span>` elements in the first paragraph are inline by default and so do not force line breaks.
 
@@ -65,25 +62,24 @@ Finally, we have two paragraphs both set to `display: inline`. The inline flex c
 
 **In the example, you can change `display: inline` to `display: block` or `display: inline-flex` to `display: flex` to toggle between these display modes.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/inline.html", '100%', 1000)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/inline.html", '100%', 1000)}}
 
-You will encounter things like flex layout later in these lessons; the key thing to remember for now is that changing the value of the `display` property can change whether the outer display type of a box is block or inline, which changes the way it displays alongside other elements in the layout. 
+You will encounter things like flex layout later in these lessons; the key thing to remember for now is that changing the value of the `display` property can change whether the outer display type of a box is block or inline, which changes the way it displays alongside other elements in the layout.
 
 In the rest of the lesson, we will concentrate on the outer display type.
 
-What is the CSS box model?
---------------------------
+## What is the CSS box model?
 
-The CSS box model as a whole applies to block boxes. Inline boxes use just *some* of the behavior defined in the box model. The model defines how the different parts of a box — margin, border, padding, and content — work together to create a box that you can see on a page. To add some additional complexity, there is a standard and an alternate box model.
+The CSS box model as a whole applies to block boxes. Inline boxes use just _some_ of the behavior defined in the box model. The model defines how the different parts of a box — margin, border, padding, and content — work together to create a box that you can see on a page. To add some additional complexity, there is a standard and an alternate box model.
 
 ### Parts of a box
 
 Making up a block box in CSS we have the:
 
--   **Content box**: The area where your content is displayed, which can be sized using properties like {{cssxref("width")}} and {{cssxref("height")}}.
--   **Padding box**: The padding sits around the content as white space; its size can be controlled using {{cssxref("padding")}} and related properties.
--   **Border box**: The border box wraps the content and any padding. Its size and style can be controlled using {{cssxref("border")}} and related properties.
--   **Margin box**: The margin is the outermost layer, wrapping the content, padding, and border as whitespace between this box and other elements. Its size can be controlled using {{cssxref("margin")}} and related properties.
+- **Content box**: The area where your content is displayed, which can be sized using properties like {{cssxref("width")}} and {{cssxref("height")}}.
+- **Padding box**: The padding sits around the content as white space; its size can be controlled using {{cssxref("padding")}} and related properties.
+- **Border box**: The border box wraps the content and any padding. Its size and style can be controlled using {{cssxref("border")}} and related properties.
+- **Margin box**: The margin is the outermost layer, wrapping the content, padding, and border as whitespace between this box and other elements. Its size can be controlled using {{cssxref("margin")}} and related properties.
 
 The below diagram shows these layers:
 
@@ -91,7 +87,7 @@ The below diagram shows these layers:
 
 ### The standard CSS box model
 
-In the standard box model, if you give a box a `width` and a `height` attribute, this defines the width and height of the *content box*. Any padding and border is then added to that width and height to get the total size taken up by the box. This is shown in the image below.
+In the standard box model, if you give a box a `width` and a `height` attribute, this defines the width and height of the _content box_. Any padding and border is then added to that width and height to get the total size taken up by the box. This is shown in the image below.
 
 If we assume that a box has the following CSS defining `width`, `height`, `margin`, `border`, and `padding`:
 
@@ -103,7 +99,7 @@ If we assume that a box has the following CSS defining `width`, `height`, `margi
       border: 5px solid black;
     }
 
-The *actual* space taken up by the box will be 410px wide (350 + 25 + 25 + 5 + 5) and 210px high (150 + 25 + 25 + 5 + 5).
+The _actual_ space taken up by the box will be 410px wide (350 + 25 + 25 + 5 + 5) and 210px high (150 + 25 + 25 + 5 + 5).
 
 ![Showing the size of the box when the standard box model is being used.](standard-box-model.png)
 
@@ -119,7 +115,7 @@ By default, browsers use the standard box model. If you want to turn on the alte
 
     .box {
       box-sizing: border-box;
-    } 
+    }
 
 If you want all of your elements to use the alternative box model, and this is a common choice among developers, set the `box-sizing` property on the `<html>` element, then set all other elements to inherit that value, as seen in the snippet below. If you want to understand the thinking behind this, see [the CSS Tricks article on box-sizing](https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/).
 
@@ -132,14 +128,13 @@ If you want all of your elements to use the alternative box model, and this is a
 
 **Note**: An interesting bit of history — Internet Explorer used to default to the alternative box model, with no mechanism available to switch.
 
-Playing with box models
------------------------
+## Playing with box models
 
 In the below example, you can see two boxes. Both have a class of `.box`, which gives them the same `width`, `height`, `margin`, `border`, and `padding`. The only difference is that the second box has been set to use the alternative box model.
 
 **Can you change the size of the second box (by adding CSS to the `.alternate` class) to make it match the first box in width and height?**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/box-models.html", '100%', 1000)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/box-models.html", '100%', 1000)}}
 
 **Note**: You can find a solution for this task [here](https://github.com/mdn/css-examples/blob/master/learn/solutions.md#the-box-model).
 
@@ -149,8 +144,7 @@ Your [browser developer tools](/en-US/docs/Learn/Common_questions/What_are_brows
 
 ![Inspecting the box model of an element using Firefox DevTools](box-model-devtools.png)
 
-Margins, padding, and borders
------------------------------
+## Margins, padding, and borders
 
 You've already seen the {{cssxref("margin")}}, {{cssxref("padding")}}, and {{cssxref("border")}} properties at work in the example above. The properties used in that example are **shorthands** and allow us to set all four sides of the box at once. These shorthands also have equivalent longhand properties, which allow control over the different sides of the box individually.
 
@@ -162,14 +156,14 @@ The margin is an invisible space around your box. It pushes other elements away 
 
 We can control all margins of an element at once using the {{cssxref("margin")}} property, or each side individually using the equivalent longhand properties:
 
--   {{cssxref("margin-top")}}
--   {{cssxref("margin-right")}}
--   {{cssxref("margin-bottom")}}
--   {{cssxref("margin-left")}}
+- {{cssxref("margin-top")}}
+- {{cssxref("margin-right")}}
+- {{cssxref("margin-bottom")}}
+- {{cssxref("margin-left")}}
 
 **In the example below, try changing the margin values to see how the box is pushed around due to the margin creating or removing space (if it is a negative margin) between this element and the containing element.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/margin.html", '100%', 700)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/margin.html", '100%', 700)}}
 
 #### Margin collapsing
 
@@ -179,7 +173,7 @@ In the example below, we have two paragraphs. The top paragraph has a `margin-bo
 
 **You can test this by setting the `margin-top` of paragraph two to 0. The visible margin between the two paragraphs will not change — it retains the 50 pixels set in the `bottom-margin` of paragraph one. If you set it to -10px, you'll see that the overall margin becomes 40px — it subtracts from the 50px.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/margin-collapse.html", '100%', 700)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/margin-collapse.html", '100%', 700)}}
 
 There are a number of rules that dictate when margins do and do not collapse. For further information see the detailed page on [mastering margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). The main thing to remember for now is that margin collapsing is a thing that happens. If you are creating space with margins and don't get the space you expect, this is probably what is happening.
 
@@ -193,35 +187,35 @@ You can set the width, style, or color of all four borders at once using the {{c
 
 To set the properties of each side individually, you can use:
 
--   {{cssxref("border-top")}}
--   {{cssxref("border-right")}}
--   {{cssxref("border-bottom")}}
--   {{cssxref("border-left")}}
+- {{cssxref("border-top")}}
+- {{cssxref("border-right")}}
+- {{cssxref("border-bottom")}}
+- {{cssxref("border-left")}}
 
 To set the width, style, or color of all sides, use the following:
 
--   {{cssxref("border-width")}}
--   {{cssxref("border-style")}}
--   {{cssxref("border-color")}}
+- {{cssxref("border-width")}}
+- {{cssxref("border-style")}}
+- {{cssxref("border-color")}}
 
 To set the width, style, or color of a single side, you can use one of the more granular longhand properties:
 
--   {{cssxref("border-top-width")}}
--   {{cssxref("border-top-style")}}
--   {{cssxref("border-top-color")}}
--   {{cssxref("border-right-width")}}
--   {{cssxref("border-right-style")}}
--   {{cssxref("border-right-color")}}
--   {{cssxref("border-bottom-width")}}
--   {{cssxref("border-bottom-style")}}
--   {{cssxref("border-bottom-color")}}
--   {{cssxref("border-left-width")}}
--   {{cssxref("border-left-style")}}
--   {{cssxref("border-left-color")}}
+- {{cssxref("border-top-width")}}
+- {{cssxref("border-top-style")}}
+- {{cssxref("border-top-color")}}
+- {{cssxref("border-right-width")}}
+- {{cssxref("border-right-style")}}
+- {{cssxref("border-right-color")}}
+- {{cssxref("border-bottom-width")}}
+- {{cssxref("border-bottom-style")}}
+- {{cssxref("border-bottom-color")}}
+- {{cssxref("border-left-width")}}
+- {{cssxref("border-left-style")}}
+- {{cssxref("border-left-color")}}
 
 **In the example below, we have used various shorthands and longhands to create borders. Have a play around with the different properties to check that you understand how they work. The MDN pages for the border properties give you information about the different styles of border you can choose from.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/border.html", '100%', 700)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/border.html", '100%', 700)}}
 
 ### Padding
 
@@ -229,41 +223,39 @@ The padding sits between the border and the content area. Unlike margins, you ca
 
 We can control the padding on all sides of an element using the {{cssxref("padding")}} property, or on each side individually using the equivalent longhand properties:
 
--   {{cssxref("padding-top")}}
--   {{cssxref("padding-right")}}
--   {{cssxref("padding-bottom")}}
--   {{cssxref("padding-left")}}
+- {{cssxref("padding-top")}}
+- {{cssxref("padding-right")}}
+- {{cssxref("padding-bottom")}}
+- {{cssxref("padding-left")}}
 
 **If you change the values for padding on the class `.box` in the example below, you can see that this changes where the text begins in relation to the box.**
 
 **You can also change the padding on the class `.container,` which will make space between the container and the box. Padding can be changed on any element, and will make space between its border and whatever is inside the element.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/padding.html", '100%', 600)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/padding.html", '100%', 600)}}
 
-The box model and inline boxes
-------------------------------
+## The box model and inline boxes
 
 All of the above applies fully to block boxes. Some of the properties can apply to inline boxes too, such as those created by a `<span>` element.
 
 In the example below, we have a `<span>` inside a paragraph and have applied a `width`, `height`, `margin`, `border`, and `padding` to it. You can see that the width and height are ignored. The vertical margin, padding, and border are respected but they do not change the relationship of other content to our inline box and so the padding and border overlaps other words in the paragraph. Horizontal padding, margins, and borders are respected and will cause other content to move away from the box.
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/inline-box-model.html", '100%', 600)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/inline-box-model.html", '100%', 600)}}
 
-Using display: inline-block
----------------------------
+## Using display: inline-block
 
 There is a special value of `display`, which provides a middle ground between `inline` and `block`. This is useful for situations where you do not want an item to break onto a new line, but do want it to respect `width` and `height` and avoid the overlapping seen above.
 
 An element with `display: inline-block` does a subset of the block things we already know about:
 
--   The `width` and `height` properties are respected.
--   `padding`, `margin`, and `border` will cause other elements to be pushed away from the box.
+- The `width` and `height` properties are respected.
+- `padding`, `margin`, and `border` will cause other elements to be pushed away from the box.
 
 It does not, however, break onto a new line, and will only become larger than its content if you explicitly add `width` and `height` properties.
 
 **In this next example, we have added `display: inline-block` to our `<span>` element. Try changing this to `display: block` or removing the line completely to see the difference in display models.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/inline-block.html", '100%', 700)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/inline-block.html", '100%', 700)}}
 
 Where this can be useful is when you want to give a link a larger hit area by adding `padding`. `<a>` is an inline element like `<span>`; you can use `display: inline-block` to allow padding to be set on it, making it easier for a user to click the link.
 
@@ -271,15 +263,13 @@ You see this fairly frequently in navigation bars. The navigation below is displ
 
 **Add `display: inline-block` to the rule with the `.links-list a` selector, and you will see how it fixes this issue by causing the padding to be respected by other elements.**
 
-{{EmbedGHLiveSample("css-examples/learn/box-model/inline-block-nav.html", '100%', 600)}} 
+{{EmbedGHLiveSample("css-examples/learn/box-model/inline-block-nav.html", '100%', 600)}}
 
-Test your skills!
------------------
+## Test your skills!
 
 We have covered a lot in this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: The Box Model](/en-US/docs/Learn/CSS/Building_blocks/Box_Model_Tasks).
 
-Summary
--------
+## Summary
 
 That's most of what you need to understand about the box model. You may want to return to this lesson in the future if you ever find yourself confused about how big boxes are in your layout.
 
@@ -287,15 +277,14 @@ In the next lesson, we will take a look at how [backgrounds and borders](/en-US/
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors/Combinators", "Learn/CSS/Building\_blocks/Backgrounds\_and\_borders", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  The box model \[this article\]
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

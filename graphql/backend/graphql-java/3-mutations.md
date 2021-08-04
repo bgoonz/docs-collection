@@ -20,13 +20,13 @@ Also, update the schema entry to contain the mutation root:
 Next off, create the root mutation resolver class (similar to the `Query` class you already have):
 
     public class Mutation implements GraphQLRootResolver {
-        
+
         private final LinkRepository linkRepository;
 
         public Mutation(LinkRepository linkRepository) {
             this.linkRepository = linkRepository;
         }
-        
+
         public Link createLink(String url, String description) {
             Link newLink = new Link(url, description);
             linkRepository.saveLink(newLink);

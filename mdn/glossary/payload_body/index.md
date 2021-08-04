@@ -1,6 +1,6 @@
---- title: Payload body slug: Glossary/Payload\_body tags: - HTTP - HTTP Header ---
+--- title: Payload body slug: Glossary/Payload_body tags: - HTTP - HTTP Header ---
 
-The HTTP message *payload body* is the *information* ("payload") part of the data that is sent in the HTTP Message Body (if any), prior to {{HTTPHeader("Transfer-Encoding","transfer encoding")}} being applied. If transfer encoding is not used, the *payload body* and *message body* are the same thing!
+The HTTP message *payload body* is the *information* ("payload") part of the data that is sent in the HTTP Message Body (if any), prior to {{HTTPHeader("Transfer-Encoding","transfer encoding")}} being applied. If transfer encoding is not used, the _payload body_ and _message body_ are the same thing!
 
 For example, in this response the message body contains only the payload body: "Mozilla Developer Network":
 
@@ -9,7 +9,7 @@ For example, in this response the message body contains only the payload body: "
 
     Mozilla Developer Network
 
-By contrast, the below response uses *transfer encoding* to encode the payload body into chunks. The payload body (information) sent is still "Mozilla Developer Network", but the message body includes additional data to separate the chunks:
+By contrast, the below response uses _transfer encoding_ to encode the payload body into chunks. The payload body (information) sent is still "Mozilla Developer Network", but the message body includes additional data to separate the chunks:
 
     HTTP/1.1 200 OK
     Content-Type: text/plain

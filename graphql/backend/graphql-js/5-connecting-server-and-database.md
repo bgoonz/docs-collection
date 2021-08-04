@@ -6,7 +6,7 @@ The first thing you need to do is import your generated Prisma Client library an
 
 #### The GraphQL `context` resolver argument
 
-Remember how we said earlier that all GraphQL resolver functions *always* receive four arguments? To accomplish this step, you’ll need to get to know another one – the `context` argument!
+Remember how we said earlier that all GraphQL resolver functions _always_ receive four arguments? To accomplish this step, you’ll need to get to know another one – the `context` argument!
 
 The `context` argument is a plain JavaScript object that every resolver in the resolver chain can read from and write to. Thus, it is basically a means for resolvers to communicate. A really helpful feature is that you can already write to the `context` at the moment when the GraphQL server itself is being initialized.
 

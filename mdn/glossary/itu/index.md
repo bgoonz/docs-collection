@@ -4,13 +4,12 @@
 
 In the Internet Age, the ITU's role of establishing standards for video and audio data formats used for streaming, teleconferencing, and other purposes. For example, the ITU and the Moving Picture Experts Group (MPEG) worked together to develop and publish, as well as to maintain, the various MPEG specifications, such as MPEG-2 (ITU H.262), AVC (ITU H.264), and HEVC (ITU H.265).
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [ITU web site](https://www.itu.int/)
+- [ITU web site](https://www.itu.int/)
 
 ### Learn about it
 
--   [ITU history portal](https://www.itu.int/en/history/Pages/ITUsHistory.aspx)
+- [ITU history portal](https://www.itu.int/en/history/Pages/ITUsHistory.aspx)

@@ -11,24 +11,43 @@ tags:
   - onnotificationclick
 browser-compat: api.ServiceWorkerGlobalScope.onnotificationclick
 ---
+
 <p>{{APIRef("Service Workers API")}}</p>
 
-<p>The <strong>ServiceWorkerGlobalScope.onnotificationclick</strong> property is an event handler called whenever the {{Event("notificationclick")}} event is dispatched on the {{domxref("ServiceWorkerGlobalScope")}} object, that is when a user clicks on a displayed notification spawned by {{domxref("ServiceWorkerRegistration.showNotification()")}}.</p>
+<p>
+  The <strong>ServiceWorkerGlobalScope.onnotificationclick</strong> property is
+  an event handler called whenever the {{Event("notificationclick")}} event is
+  dispatched on the {{domxref("ServiceWorkerGlobalScope")}} object, that is when
+  a user clicks on a displayed notification spawned by
+  {{domxref("ServiceWorkerRegistration.showNotification()")}}.
+</p>
 
-<p>Notifications created on the main thread or in workers which aren't service workers using the {{domxref("Notification.Notification","Notification()")}} constructor will instead receive a {{Event("click")}} event on the <code>Notification</code> object itself.</p>
+<p>
+  Notifications created on the main thread or in workers which aren't service
+  workers using the {{domxref("Notification.Notification","Notification()")}}
+  constructor will instead receive a {{Event("click")}} event on the
+  <code>Notification</code> object itself.
+</p>
 
 <div class="note">
-<p><strong>Note</strong>: Trying to create a notification inside the {{domxref("ServiceWorkerGlobalScope")}} using the {{domxref("Notification.Notification","Notification()")}} constructor will throw an error.</p>
+  <p>
+    <strong>Note</strong>: Trying to create a notification inside the
+    {{domxref("ServiceWorkerGlobalScope")}} using the
+    {{domxref("Notification.Notification","Notification()")}} constructor will
+    throw an error.
+  </p>
 </div>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">ServiceWorkerGlobalScope.onnotificationclick = function(NotificationEvent) { ... };
+<pre class="brush: js">
+ServiceWorkerGlobalScope.onnotificationclick = function(NotificationEvent) { ... };
 </pre>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">self.onnotificationclick = function(event) {
+<pre class="brush: js">
+self.onnotificationclick = function(event) {
   console.log('On notification click: ', event.notification.tag);
   event.notification.close();
 

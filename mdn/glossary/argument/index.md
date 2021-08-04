@@ -2,13 +2,12 @@
 
 An **argument** is a {{glossary("value")}} ({{Glossary("primitive")}} or {{Glossary("object")}}) passed as input to a {{Glossary("function")}}.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Parameter\_(computer\_programming)", "Difference between Parameter and Argument")}} on Wikipedia
+- {{Interwiki("wikipedia", "Parameter\_(computer\_programming)", "Difference between Parameter and Argument")}} on Wikipedia
 
 ### Technical reference
 
--   The {{jsxref("Functions/arguments","arguments")}} object in {{glossary("JavaScript")}}
+- The {{jsxref("Functions/arguments","arguments")}} object in {{glossary("JavaScript")}}

@@ -1,11 +1,10 @@
---- title: Visual JS GE slug: Games/Visual\_JS\_GE tags: - Canvas - JavaScript - Server - game engine ---
+--- title: Visual JS GE slug: Games/Visual_JS_GE tags: - Canvas - JavaScript - Server - game engine ---
 
 {{GamesSidebar}}
 
 <span class="seoSummary">**Visual-js **GameEngine is a small but comprehensive canvas/websocket-based game engine with GUI source editor only for Windows. The server is based on Node.js vs MySql, the client made in four variant on a JavaScript frameworks for 2d canvas JS , three.js , webGL2 vs glmatrix and 2d canvas with matter.js in typescript to complete the stack.</span>
 
-Installation and setup
-----------------------
+## Installation and setup
 
 First of all download Visual-js from [bitbucket](https://bitbucket.org/nikola_l/visual-js/). Extract the package into your root folder.
 
@@ -36,8 +35,7 @@ You will find `config.js` in the `server_instance` folder: All Node.js applicati
 
     };
 
-local node.js application tools (uses in developer mode only)
--------------------------------------------------------------
+## local node.js application tools (uses in developer mode only)
 
 The following section provides information about the tools involved in Visual-JS game engine.
 
@@ -45,7 +43,7 @@ The following section provides information about the tools involved in Visual-JS
 
 Found at `server_instance/editor.js`.
 
-### build\_from\_editor\_to\_visual\_js
+### build_from_editor_to_visual_js
 
 Found at `server_instance/build_from_editor_to_visual_js_file.js`. This is a Node.js app for local use.
 
@@ -69,13 +67,12 @@ RESOURCE objects contain the path data for all your images. The actual image obj
 
 Only for Windows users. Contains the following tools.
 
--   <span id="Visual_JS.exe_Version_1.0_comes_with_source_editor_.">Visual\_JS.exe Version 1.0 — comes with source editor.</span>
--   <span id="ML_SYS.exe_-_Multilanguage_tool_for_string_Labels_._(Smart_xml_operation_-_No_empty_tags_)">ML\_SYS.exe — Multilanguage tool for string labels (smart XML operation; no empty tags).</span>
--   <span id="CriptingJS.exe_-_Based_on_javascriptobfuscator.com_API">ScriptingJS.exe — Based on javascriptobfuscator.com API.</span>
--   <span id="MakeLib.exe_-_Need_fot_bug_fixing">MakeLib.exe — Needed for font bug fixing.</span>
+- <span id="Visual_JS.exe_Version_1.0_comes_with_source_editor_.">Visual_JS.exe Version 1.0 — comes with source editor.</span>
+- <span id="ML_SYS.exe_-_Multilanguage_tool_for_string_Labels_._(Smart_xml_operation_-_No_empty_tags_)">ML_SYS.exe — Multilanguage tool for string labels (smart XML operation; no empty tags).</span>
+- <span id="CriptingJS.exe_-_Based_on_javascriptobfuscator.com_API">ScriptingJS.exe — Based on javascriptobfuscator.com API.</span>
+- <span id="MakeLib.exe_-_Need_fot_bug_fixing">MakeLib.exe — Needed for font bug fixing.</span>
 
-Video tutorials
----------------
+## Video tutorials
 
 {{EmbedYouTube("kxUBPDhB-3I")}}
 

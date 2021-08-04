@@ -6,8 +6,7 @@
 
 <span class="seoSummary">[Asm.js](http://asmjs.org/) is a specification defining a subset of JavaScript that is highly optimizable. This article looks at exactly what is permitted in the asm.js subset, what improvements it confers, where and how you can make use of it, and further resources and examples.</span>
 
-What is asm.js, exactly?
-------------------------
+## What is asm.js, exactly?
 
 It is a very small, strict subset of JavaScript that only allows things like \`while\`, \`if\`, numbers, top-level named functions, and other simple constructs. It does not allow objects, strings, closures, and basically anything that requires heap allocation. Asm.js code resembles C in many ways, but it's still completely valid JavaScript that will run in all current engines. It pushes JS engines to optimize this kind of code, and gives compilers like [Emscripten](https://github.com/kripken/emscripten) a clear definition of what kind of code to generate. We will show what asm.js code looks like and explain how it helps and how you can use it.
 
@@ -17,7 +16,6 @@ It also makes it easy for people writing compilers that want to generate high-pe
 
 Additionally, if an engine chooses to specially recognize asm.js code, there even more optimizations that can be made. Firefox is the only browser to do this right now.
 
-asm.js language summary
------------------------
+## asm.js language summary
 
 asm.js is an intermediate programming language.  asm.js has a very predictable performance rate because it is limited to an extremely restricted subset of JavaScript that provides only strictly-typed integers, floats, arithmetic, function calls, and heap accesses.  The performance characteristics are closer to native code than that of standard JavaScript.  Using a subset of JavaScript asm.js is already supported by major web browsers.   Since asm.js runs in a browser it depends heavily on the browser and the hardware.

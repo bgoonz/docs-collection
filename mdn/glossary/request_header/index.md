@@ -1,6 +1,6 @@
---- title: Request header slug: Glossary/Request\_header tags: - Glossary - WebMechanics ---
+--- title: Request header slug: Glossary/Request_header tags: - Glossary - WebMechanics ---
 
-A **request header** is an {{glossary("HTTP header")}} that can be used in an HTTP request to provide information about the request context, so that the server can tailor the response. For example, the {{HTTPHeader("Accept", "Accept-\*")}} headers indicate the allowed and preferred formats of the response. Other headers can be used to supply authentication credentials (e.g.  {{HTTPHeader("Authorization")}}), to control caching, or to get information about the user agent or referrer, etc. 
+A **request header** is an {{glossary("HTTP header")}} that can be used in an HTTP request to provide information about the request context, so that the server can tailor the response. For example, the {{HTTPHeader("Accept", "Accept-\*")}} headers indicate the allowed and preferred formats of the response. Other headers can be used to supply authentication credentials (e.g.  {{HTTPHeader("Authorization")}}), to control caching, or to get information about the user agent or referrer, etc.
 
 Not all headers that can appear in a request are referred to as *request headers* by the specification. For example, the {{HTTPHeader("Content-Type")}} header is referred to as a {{glossary("representation header")}}.
 
@@ -21,10 +21,9 @@ The HTTP message below shows a few request headers after a {{HTTPMethod("GET")}
     If-None-Match: "c561c68d0ba92bbeb8b0fff2a9199f722e3a621a"
     Cache-Control: max-age=0
 
-Learn more
-----------
+## Learn more
 
 ### Technical knowledge
 
--   [List of all HTTP headers](/en-US/docs/Web/HTTP/Headers)
--   [RFC 7231, section 5: Request header fields](https://datatracker.ietf.org/doc/html/rfc7231#section-5)
+- [List of all HTTP headers](/en-US/docs/Web/HTTP/Headers)
+- [RFC 7231, section 5: Request header fields](https://datatracker.ietf.org/doc/html/rfc7231#section-5)

@@ -2,22 +2,22 @@
 
 In this tutorial, you are going to create a [Hackernews](https://news.ycombinator.com) clone using Django and Graphene. The platform will have the following features:
 
--   List of Users and Links
--   Users creation and authentication
--   Users can create Links and vote on them
+- List of Users and Links
+- Users creation and authentication
+- Users can create Links and vote on them
 
 ### Creating your local environment
 
 Before starting, make sure you have Python 3.6 installed. If not, you can download it [here](https://www.python.org/downloads/). The installation is pretty straightforward on any supported operating system.
 
-When working with Python, you will use *Virtual Environment*: a tool for keeping all the project’s dependencies isolated from your system – or other projects.
+When working with Python, you will use _Virtual Environment_: a tool for keeping all the project’s dependencies isolated from your system – or other projects.
 
 In the terminal, create a new virtual environment and activate it:
 
     python3.6 -m venv venv
     source venv/bin/activate
 
-You’ll notice your prompt changed to `(venv) ...`. It means you are *inside* your virtual environment, every Python package will be installed there. If you want to leave it, just type `deactivate`. Make sure to *always* have the virtual environment activated.
+You’ll notice your prompt changed to `(venv) ...`. It means you are _inside_ your virtual environment, every Python package will be installed there. If you want to leave it, just type `deactivate`. Make sure to _always_ have the virtual environment activated.
 
 ### Installing Django and Graphene
 

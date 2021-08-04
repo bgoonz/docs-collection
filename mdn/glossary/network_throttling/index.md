@@ -1,4 +1,4 @@
---- title: Network throttling slug: Glossary/Network\_throttling tags: - Glossary - RUM - Reference - Synthetic monitoring - Web Performance ---
+--- title: Network throttling slug: Glossary/Network_throttling tags: - Glossary - RUM - Reference - Synthetic monitoring - Web Performance ---
 
 **Network throttling** is an intentional slowing down of internet speed. In web performance, network throttling, or network condition emulation, it is used to emulate low bandwidth conditions experienced by likely a large segment of a site's target user base.
 
@@ -6,9 +6,8 @@ It’s important not to overlook network conditions users experience on mobile.
 
 Browser developer tools generally have network throttling options, to allow you to test your app under slow network conditions. Firefox's developer tools for example have a drop-down menu available in both the [Network Monitor](/en-US/docs/Tools/Network_Monitor) and [Responsive Design Mode](/en-US/docs/Tools/Responsive_Design_Mode) containing network speed options (e.g. wifi, good 3G, 2G...)
 
-See also
---------
+## See also
 
--   [Synthetic monitoring](/en-US/docs/Glossary/Synthetic_monitoring)
+- [Synthetic monitoring](/en-US/docs/Glossary/Synthetic_monitoring)
 
--   {{ListSubpages("/en-US/docs/Glossary")}}
+- {{ListSubpages("/en-US/docs/Glossary")}}

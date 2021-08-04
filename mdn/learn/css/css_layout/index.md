@@ -1,4 +1,4 @@
---- title: CSS layout slug: Learn/CSS/CSS\_layout tags: - Beginner - CSS - Floating - Grids - Guide - Landing - Layout - Learn - Module - Multiple column - Positioning - alignment - flexbox - float - table ---
+--- title: CSS layout slug: Learn/CSS/CSS_layout tags: - Beginner - CSS - Floating - Grids - Guide - Landing - Layout - Learn - Module - Multiple column - Positioning - alignment - flexbox - float - table ---
 
 {{LearnSidebar}}
 
@@ -10,8 +10,7 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should already:
 
@@ -21,8 +20,7 @@ Before starting this module, you should already:
 
 **Note**: If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 These articles will provide instruction on the fundamental layout tools and techniques available in CSS. At the end of the lessons is an assessment to help you check your understanding of layout methods, by laying out a webpage.
 
@@ -30,7 +28,7 @@ These articles will provide instruction on the fundamental layout tools and tech
 This article will recap some of the CSS layout features we've already touched upon in previous modules — such as different {{cssxref("display")}} values — and introduce some of the concepts we'll be covering throughout this module.
 
 [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)  
-Elements on webpages lay themselves out according to *normal flow* - until we do something to change that. This article explains the basics of normal flow as a grounding for learning how to change it.
+Elements on webpages lay themselves out according to _normal flow_ - until we do something to change that. This article explains the basics of normal flow as a grounding for learning how to change it.
 
 [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)  
 [Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox) is a one-dimensional layout method for laying out items in rows or columns. Items flex to fill additional space and shrink to fit into smaller spaces. This article explains all the fundamentals. After studying this guide you can [test your flexbox skills](/en-US/docs/Learn/CSS/CSS_layout/Flexbox_skills) to check your understanding before moving on.
@@ -62,8 +60,7 @@ In this module we recommend using Flexbox and Grid as the main layout methods fo
 [Assessment: Fundamental layout comprehension](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)  
 An assessment to test your knowledge of different layout methods by laying out a webpage.
 
-See also
---------
+## See also
 
 [Practical positioning examples](/en-US/docs/Learn/CSS/CSS_layout/Practical_positioning_examples)  
 This article shows how to build some real world examples to illustrate what kinds of things you can do with positioning.

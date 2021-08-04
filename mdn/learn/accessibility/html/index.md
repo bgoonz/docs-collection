@@ -8,8 +8,7 @@ A great deal of web content can be made accessible just by making sure the corre
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML (see <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an understanding of <a href="/en-US/docs/Learn/Accessibility/What_is_accessibility">what accessibility is</a>.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with the features of HTML that have accessibility benefits and how to use them appropriately in your web documents.</td></tr></tbody></table>
 
-HTML and accessibility
-----------------------
+## HTML and accessibility
 
 As you learn more about HTML — read more resources, look at more examples, etc. — you'll keep seeing a common theme: the importance of using semantic HTML (sometimes called POSH, or Plain Old Semantic HTML). This means using the correct HTML elements for their intended purpose as much as possible.
 
@@ -33,8 +32,7 @@ Let's get on and look at accessible HTML in more detail.
 
 **Note**: It is a good idea to have a screen reader set up on your local computer so that you can do some testing of the examples shown below. See our [Screen readers guide](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility#screenreaders) for more details.
 
-Good semantics
---------------
+## Good semantics
 
 We've already talked about the importance of proper semantics, and why we should use the right HTML element for the job. This cannot be ignored, as it is one of the main places that accessibility is badly broken if not handled properly.
 
@@ -105,9 +103,9 @@ There are other issues too beyond accessibility — it is harder to style the co
 
 The language you use can also affect accessibility. In general, you should use clear language that is not overly complex and doesn't use unnecessary jargon or slang terms. This not only benefits people with cognitive or other disabilities; it benefits readers for whom the text is not written in their first language, younger people ... everyone, in fact! Apart from this, you should try to avoid using language and characters that don't get read out clearly by the screen reader. For example:
 
--   Don't use dashes if you can avoid it. Instead of writing 5–7, write 5 to 7.
--   Expand abbreviations — instead of writing Jan, write January.
--   Expand acronyms, at least once or twice. Instead of writing HTML in the first instance, write Hypertext Markup Language.
+- Don't use dashes if you can avoid it. Instead of writing 5–7, write 5 to 7.
+- Expand abbreviations — instead of writing Jan, write January.
+- Expand acronyms, at least once or twice. Instead of writing HTML in the first instance, write Hypertext Markup Language.
 
 ### Page layouts
 
@@ -294,8 +292,8 @@ Adding such advantages back in takes a bit of work (you can see an example in ou
 
 Basically, the {{htmlattrxref("tabindex")}} attribute is primarily intended to allow tabbable elements to have a custom tab order (specified in positive numerical order), instead of just being tabbed through in their default source order. This is nearly always a bad idea, as it can cause major confusion. Use it only if you really need to, for example, if the layout shows things in a very different visual order to the source code, and you want to make things work more logically. There are two other options for `tabindex`:
 
--   `tabindex="0"` — as indicated above, this value allows elements that are not normally tabbable to become tabbable. This is the most useful value of `tabindex`.
--   `tabindex="-1"` — this allows not normally tabbable elements to receive focus programmatically, e.g., via JavaScript, or as the target of links. 
+- `tabindex="0"` — as indicated above, this value allows elements that are not normally tabbable to become tabbable. This is the most useful value of `tabindex`.
+- `tabindex="-1"` — this allows not normally tabbable elements to receive focus programmatically, e.g., via JavaScript, or as the target of links.
 
 Whilst the above addition allows us to tab to the buttons, it does not allow us to activate them via the Enter/Return key. To do that, we had to add the following bit of JavaScript trickery:
 
@@ -352,8 +350,7 @@ You can find a nice explanation of the importance of proper text labels, and how
 
 {{EmbedYouTube("YhlAVlfH0rQ")}}
 
-Accessible data tables
-----------------------
+## Accessible data tables
 
 A basic data table can be written with very simple markup, for example:
 
@@ -384,13 +381,12 @@ But this has problems — there is no way for a screen reader user to associate 
 
 Now have a look at our [punk bands table example](https://github.com/mdn/learning-area/blob/master/css/styling-boxes/styling-tables/punk-bands-complete.html) — you can see a few accessibility aids at work here:
 
--   Table headers are defined using {{htmlelement("th")}} elements — you can also specify if they are headers for rows or columns using the `scope` attribute. This gives you complete groups of data that can be consumed by screen readers as single units.
--   The {{htmlelement("caption")}} element and `<table>` `summary` attribute both do similar jobs — they act as alt text for a table, giving a screen reader user a useful quick summary of the table's contents. The `<caption>` element is generally preferred as it makes it's content accessible to sighted users too, who might also find it useful. You don't really need both.
+- Table headers are defined using {{htmlelement("th")}} elements — you can also specify if they are headers for rows or columns using the `scope` attribute. This gives you complete groups of data that can be consumed by screen readers as single units.
+- The {{htmlelement("caption")}} element and `<table>` `summary` attribute both do similar jobs — they act as alt text for a table, giving a screen reader user a useful quick summary of the table's contents. The `<caption>` element is generally preferred as it makes it's content accessible to sighted users too, who might also find it useful. You don't really need both.
 
 **Note**: See our [HTML table advanced features and accessibility](/en-US/docs/Learn/HTML/Tables/Advanced) article for more details about accessible data tables.
 
-Text alternatives
------------------
+## Text alternatives
 
 Whereas textual content is inherently accessible, the same cannot necessarily be said for multimedia content — image and video content cannot be seen by visually-impaired people, and audio content cannot be heard by hearing-impaired people. We cover video and audio content in detail in the [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia), but for this article we'll look at accessibility for the humble {{htmlelement("img")}} element.
 
@@ -465,14 +461,13 @@ The reason to use an empty `alt` instead of not including it is because many scr
 
 **Note**: if possible you should use CSS to display images that are only decorative.
 
-More on links
--------------
+## More on links
 
 Links ( the `<a>` element with an `href` attribute ), depending on how they are used, can help or harm accessibility. By default, links are accessible in appearance. They can improve accessibility by helping a user quickly navigate to different sections of a document. They can also harm accessibility if their accessible styling is removed or if JavaScript causes them to behave in unexpected ways.
 
 ### Link styling
 
-By default, links are visually different from other text in both color and [text-decoration](/en-US/docs/Web/CSS/text-decoration), with links being blue and underlined by default, purple and underlined if visited, and with a [focus-ring](/en-US/docs/Web/CSS/:focus) when they receive keyboard focus. 
+By default, links are visually different from other text in both color and [text-decoration](/en-US/docs/Web/CSS/text-decoration), with links being blue and underlined by default, purple and underlined if visited, and with a [focus-ring](/en-US/docs/Web/CSS/:focus) when they receive keyboard focus.
 
 Color should not be used as the sole method of distinguishing links from non-linking content. Link text color, like all text, has to be significantly different from the background color ([a 4.5:1 contrast](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast)). In addition, links should visually be significantly different from non-linking text. With a minimum contrast requirement of 3:1 between link text and surrounding text and between default, visited, and focus/active states and a 4:5 contrast between all those state colors and the background color.
 
@@ -498,10 +493,10 @@ People experiencing low vision conditions, who are navigating with the aid of sc
 
 If an icon is used in place of text to signify this kind of links behavior, make sure it includes an {{HTMLAttrxRef("alt", "img", "alternate description", "true")}}.
 
--   [WebAIM: Links and Hypertext - Hypertext Links](https://webaim.org/techniques/hypertext/hypertext_links)
--   [MDN Understanding WCAG, Guideline 3.2 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Understandable#guideline_3.2_—_predictable_make_web_pages_appear_and_operate_in_predictable_ways)
--   [G200: Opening new windows and tabs from a link only when necessary | W3C Techniques for WCAG 2.0](https://www.w3.org/TR/WCAG20-TECHS/G200.html)
--   [G201: Giving users advanced warning when opening a new window | W3C Techniques for WCAG 2.0](https://www.w3.org/TR/WCAG20-TECHS/G201.html)
+- [WebAIM: Links and Hypertext - Hypertext Links](https://webaim.org/techniques/hypertext/hypertext_links)
+- [MDN Understanding WCAG, Guideline 3.2 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Understandable#guideline_3.2_—_predictable_make_web_pages_appear_and_operate_in_predictable_ways)
+- [G200: Opening new windows and tabs from a link only when necessary | W3C Techniques for WCAG 2.0](https://www.w3.org/TR/WCAG20-TECHS/G200.html)
+- [G201: Giving users advanced warning when opening a new window | W3C Techniques for WCAG 2.0](https://www.w3.org/TR/WCAG20-TECHS/G201.html)
 
 ### Skip links
 
@@ -509,10 +504,10 @@ A skip link, also known as skipnav, is an `a` element placed as close as possibl
 
 Skip links are especially useful for people who navigate with the aid of assistive technology such as switch control, voice command, or mouth sticks/head wands, where the act of moving through repetitive links can be a laborious task.
 
--   [WebAIM: "Skip Navigation" Links](https://webaim.org/techniques/skipnav/)
--   [How–to: Use Skip Navigation links - The A11Y Project](https://www.a11yproject.com/posts/2013-05-11-skip-nav-links/)
--   [MDN Understanding WCAG, Guideline 2.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Operable#guideline_2.4_%e2%80%94_navigable_provide_ways_to_help_users_navigate_find_content_and_determine_where_they_are)
--   [Understanding Success Criterion 2.4.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-skip.html)
+- [WebAIM: "Skip Navigation" Links](https://webaim.org/techniques/skipnav/)
+- [How–to: Use Skip Navigation links - The A11Y Project](https://www.a11yproject.com/posts/2013-05-11-skip-nav-links/)
+- [MDN Understanding WCAG, Guideline 2.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Operable#guideline_2.4_%e2%80%94_navigable_provide_ways_to_help_users_navigate_find_content_and_determine_where_they_are)
+- [Understanding Success Criterion 2.4.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-skip.html)
 
 ### Proximity
 
@@ -520,27 +515,24 @@ Large amounts of interactive content—including anchors—placed in close visua
 
 Spacing may be created using CSS properties such as {{CSSxRef("margin")}}.
 
--   [Hand tremors and the giant-button-problem - Axess Lab](https://axesslab.com/hand-tremors/)
+- [Hand tremors and the giant-button-problem - Axess Lab](https://axesslab.com/hand-tremors/)
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? See [Test your skills: HTML Accessibility](/en-US/docs/Learn/Accessibility/Test_your_skills:_HTML_accessibility) to verify that you've retained this information before you move on.
 
-Summary
--------
+## Summary
 
 You should now be well-versed in writing accessible HTML for most occasions. Our WAI-ARIA basics article will help to fill gaps in this knowledge, but this article has taken care of the basics. Next up we'll explore CSS and JavaScript, and how accessibility is affected by their good or bad use.
 
 {{PreviousMenuNext("Learn/Accessibility/What\_is\_Accessibility","Learn/Accessibility/CSS\_and\_JavaScript", "Learn/Accessibility")}}
 
-In this module
---------------
+## In this module
 
--   [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
--   [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
--   [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
--   [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
--   [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
--   [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
--   [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)
+- [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
+- [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
+- [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+- [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+- [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
+- [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
+- [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)

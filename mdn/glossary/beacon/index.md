@@ -4,7 +4,6 @@ A web **beacon** is a small object, such as a 1 pixel gif, embedded in markup, u
 
 There is a [W3C Draft Beacon Specification](https://w3c.github.io/beacon/) to standardize the beacon as an interface to asynchronously transfer HTTP data from User Agent to a web server prior to page load without negative performance impact.
 
-See also
---------
+## See also
 
--   [Real User Monitoring (RUM)](/en-US/docs/Glossary/Real_User_Monitoring)
+- [Real User Monitoring (RUM)](/en-US/docs/Glossary/Real_User_Monitoring)

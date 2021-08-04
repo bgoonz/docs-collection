@@ -13,13 +13,18 @@ tags:
   - setTitle
 browser-compat: webextensions.api.pageAction.setTitle
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p>Sets the title of the page action. The title is displayed in a tooltip when the user hovers over the page action.</p>
+<p>
+  Sets the title of the page action. The title is displayed in a tooltip when
+  the user hovers over the page action.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:js">browser.pageAction.setTitle(
+<pre class="brush:js">
+browser.pageAction.setTitle(
   details // object
 )
 </pre>
@@ -27,17 +32,29 @@ browser-compat: webextensions.api.pageAction.setTitle
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
- <dt><code>details</code></dt>
- <dd><code>object</code>.</dd>
- <dd>
- <dl class="reference-values">
-  <dt><code>tabId</code></dt>
-  <dd><code>integer</code>. The ID of the tab whose title you want to set.</dd>
-  <dt><code>title</code></dt>
-  <dd><code>string</code> or <code>null</code>. The tooltip text.</dd>
-  <dd>If <code>null</code> is passed here, the title is reset to the title that was specified in the <code><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action">page_action</a></code> manifest key.</dd>
- </dl>
- </dd>
+  <dt><code>details</code></dt>
+  <dd><code>object</code>.</dd>
+  <dd>
+    <dl class="reference-values">
+      <dt><code>tabId</code></dt>
+      <dd>
+        <code>integer</code>. The ID of the tab whose title you want to set.
+      </dd>
+      <dt><code>title</code></dt>
+      <dd><code>string</code> or <code>null</code>. The tooltip text.</dd>
+      <dd>
+        If <code>null</code> is passed here, the title is reset to the title
+        that was specified in the
+        <code
+          ><a
+            href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action"
+            >page_action</a
+          ></code
+        >
+        manifest key.
+      </dd>
+    </dl>
+  </dd>
 </dl>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
@@ -46,9 +63,13 @@ browser-compat: webextensions.api.pageAction.setTitle
 
 <h2 id="Examples">Examples</h2>
 
-<p>Whenever a tab is updated, show the page action for that tab, and set its title to show the tab's ID:</p>
+<p>
+  Whenever a tab is updated, show the page action for that tab, and set its
+  title to show the tab's ID:
+</p>
 
-<pre class="brush: js">browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) =&gt; {
+<pre class="brush: js">
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) =&gt; {
   browser.pageAction.show(tabId);
   browser.pageAction.setTitle({
     tabId: tabId,
@@ -59,15 +80,32 @@ browser-compat: webextensions.api.pageAction.setTitle
 
 <p>{{WebExtExamples}}</p>
 
-<div class="note"><strong>Acknowledgements</strong>
+<div class="note">
+  <strong>Acknowledgements</strong>
 
-<p>This API is based on Chromium's <a href="https://developer.chrome.com/extensions/pageAction#method-setTitle"><code>chrome.pageAction</code></a> API. This documentation is derived from <a href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json"><code>page_action.json</code></a> in the Chromium code.</p>
+  <p>
+    This API is based on Chromium's
+    <a href="https://developer.chrome.com/extensions/pageAction#method-setTitle"
+      ><code>chrome.pageAction</code></a
+    >
+    API. This documentation is derived from
+    <a
+      href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json"
+      ><code>page_action.json</code></a
+    >
+    in the Chromium code.
+  </p>
 
-<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+  <p>
+    Microsoft Edge compatibility data is supplied by Microsoft Corporation and
+    is included here under the Creative Commons Attribution 3.0 United States
+    License.
+  </p>
 </div>
 
 <div class="hidden">
-<pre>// Copyright 2015 The Chromium Authors. All rights reserved.
+  <pre>
+// Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -94,5 +132,6 @@ browser-compat: webextensions.api.pageAction.setTitle
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
+</pre
+  >
 </div>

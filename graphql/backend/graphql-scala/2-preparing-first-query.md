@@ -169,16 +169,16 @@ It’s one of the most important files in entire backend server so let’s analy
     {
     query: {},
     variables: {},
-    operationName: ""    
+    operationName: ""
     }
 
 `query` is a query itself, `variables` is additional data for that query. In GraphQL you can send the query and arguments separately. You can also set name for the query, it’s what the third object is for. Imagine that query is like a function, usually you’re using anonymous functions, but for logging or other purposes you could add names. It’s send as `operationName`.
 
--   **4** We’re extracting `query` from request at this point.
--   When we have the query, we have to parse it. Sangria provides `QueryParser.parse` (**5**) function we can use in this case. When it fails, the server will respond with status 400 and error description in the body of response. After successful parsing, we’re also trying to extract the other two keys `operationName`(**6**) and `variables`(**7**). At the end all those three objects are passed to the execution function (**8**).
--   **9** `Executor.execute` is the most important call in this class because it’s the point where the query is executed. If the executor responds with success, the result is sent back to the client. In all other cases, the server will respond with status code 4xx and some kind of explanation of what was wrong with the query. The Executor needs some data to fulfill the request. Three of them are `query`(**11**), `operationName`(**13**) and `variables`(**14**) which are read from the request. The last two are: `GraphQLSchema.SchemaDefinition` and `MyContext(dao)`.
--   **12** `MyContext` is a context object mentioned in the section above. In our example you can see that the context is built with the DAO object within.
--   `GraphQLSchema.SchemaDefinition` is the last object we have to explain here. It contains our Schema - what we are able to query for. It also interprets how data is fetched and which data source it could use (i.e. one or more databases, REST call to the other server…). In short our `SchemaDefinition` file defines what we want to expose. There are defined types (from GraphQL point of view) and shape of the schema a client is able to query for. Because this file is still missing we will create it in the next step.
+- **4** We’re extracting `query` from request at this point.
+- When we have the query, we have to parse it. Sangria provides `QueryParser.parse` (**5**) function we can use in this case. When it fails, the server will respond with status 400 and error description in the body of response. After successful parsing, we’re also trying to extract the other two keys `operationName`(**6**) and `variables`(**7**). At the end all those three objects are passed to the execution function (**8**).
+- **9** `Executor.execute` is the most important call in this class because it’s the point where the query is executed. If the executor responds with success, the result is sent back to the client. In all other cases, the server will respond with status code 4xx and some kind of explanation of what was wrong with the query. The Executor needs some data to fulfill the request. Three of them are `query`(**11**), `operationName`(**13**) and `variables`(**14**) which are read from the request. The last two are: `GraphQLSchema.SchemaDefinition` and `MyContext(dao)`.
+- **12** `MyContext` is a context object mentioned in the section above. In our example you can see that the context is built with the DAO object within.
+- `GraphQLSchema.SchemaDefinition` is the last object we have to explain here. It contains our Schema - what we are able to query for. It also interprets how data is fetched and which data source it could use (i.e. one or more databases, REST call to the other server…). In short our `SchemaDefinition` file defines what we want to expose. There are defined types (from GraphQL point of view) and shape of the schema a client is able to query for. Because this file is still missing we will create it in the next step.
 
 ### Define GraphQLSchema
 
@@ -222,9 +222,9 @@ Sangria cannot reuse case classes defined in our domain, it needs its own object
 
 It will give the same result as the example I used in the code above. When you want to use macro-way to define objects don’t forget to import `sangria.macros.derive._`
 
--   **2** `val QueryType` is a top level object of our schema. As you can see, the top level object has a name `Query` and it (along with nested objects) will be visible in the graphiql console that we will include later in this chapter. In `fields` definition I’ve added only one `Field` at the moment
+- **2** `val QueryType` is a top level object of our schema. As you can see, the top level object has a name `Query` and it (along with nested objects) will be visible in the graphiql console that we will include later in this chapter. In `fields` definition I’ve added only one `Field` at the moment
 
-      Field("allLinks", ListType(LinkType), resolve = c => c.ctx.dao.allLinks)
+  Field("allLinks", ListType(LinkType), resolve = c => c.ctx.dao.allLinks)
 
 The snippet above defines a GraphQL field with name `allLinks`. It’s a list (ListType) of link items (LinkType). AS you can see it’s a definition of a query we want to provide in this chapter. Resolver needs a `allLinks` function in `DAO` object so we have to implement it now.
 
@@ -235,7 +235,7 @@ Add a `allLinks` function to the `DAO` object, the current state of this file sh
     import slick.jdbc.H2Profile.api._
 
     class DAO(db: Database) {
-      def allLinks = db.run(Links.result) 
+      def allLinks = db.run(Links.result)
     }
 
 ### GraphiQL console

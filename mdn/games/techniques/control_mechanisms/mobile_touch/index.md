@@ -1,4 +1,4 @@
---- title: Mobile touch controls slug: Games/Techniques/Control\_mechanisms/Mobile\_touch tags: - Controls - Games - JavaScript - Mobile - pointer - touch ---
+--- title: Mobile touch controls slug: Games/Techniques/Control_mechanisms/Mobile_touch tags: - Controls - Games - JavaScript - Mobile - pointer - touch ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ The future of mobile gaming is definitely web, and many developers choose the [m
 
 **Note**: The game <a href="https://rogers2.enclavegames.com/demo/" class="external external-icon">Captain Rogers: Battle at Andromeda</a> is built with Phaser and managing the controls is Phaser-based, but it could also be done in pure JavaScript. The good thing about using Phaser is that it offers helper variables and functions for easier and faster development, but it's entirely up to you which approach you to choose.
 
-Pure JavaScript approach
-------------------------
+## Pure JavaScript approach
 
 We could implement touch events on our own — setting up event listeners and assigning relevant functions to them would be quite straightforward:
 
@@ -21,10 +20,10 @@ We could implement touch events on our own — setting up event listeners and as
 
 This way, touching the game's {{htmlelement("canvas")}} on the mobile screen would emit events, and thus we could manipulate the game in any way we want (for example, moving the space ship around). The events are as follows:
 
--   [touchstart](/en-US/docs/Web/API/GlobalEventHandlers/ontouchstart) is fired when the user puts a finger on the screen.
--   [touchmove](/en-US/docs/Web/API/GlobalEventHandlers/ontouchmove) is fired when they move the finger on the screen while touching it
--   [touchend](/en-US/docs/Web/API/GlobalEventHandlers/ontouchend) is fired when the user stops touching the screen
--   [touchcancel](/en-US/docs/Web/API/GlobalEventHandlers/ontouchcancel) is fired when a touch is cancelled, for example when the user moves their finger outside of the screen.
+- [touchstart](/en-US/docs/Web/API/GlobalEventHandlers/ontouchstart) is fired when the user puts a finger on the screen.
+- [touchmove](/en-US/docs/Web/API/GlobalEventHandlers/ontouchmove) is fired when they move the finger on the screen while touching it
+- [touchend](/en-US/docs/Web/API/GlobalEventHandlers/ontouchend) is fired when the user stops touching the screen
+- [touchcancel](/en-US/docs/Web/API/GlobalEventHandlers/ontouchcancel) is fired when a touch is cancelled, for example when the user moves their finger outside of the screen.
 
 **Note**: The [touch events](/en-US/docs/Web/API/Touch_events) reference article provides more examples and information.
 
@@ -32,7 +31,7 @@ This way, touching the game's {{htmlelement("canvas")}} on the mobile screen wou
 
 Let's implement the mobile support in a [little demo](https://github.com/end3r/JavaScript-Game-Controls/) available on GitHub, so we can move the player's ship by touching the screen on a mobile device.
 
-We will use two events: `touchstart `and,`touchmove` both handled by one function. Why? The function `touchHandler` will assign proper variables to the ship's position so that we can use it for both cases: when the player touches the screen but doesn't move it (`touchstart`), and when the finger is moved on the screen (`touchmove`):
+We will use two events: `touchstart `and,`touchmove` both handled by one function. Why? The function `touchHandler` will assign proper variables to the ship's position so that we can use it for both cases: when the player touches the screen but doesn't move it (`touchstart`), and when the finger is moved on the screen (`touchmove`):
 
     document.addEventListener("touchstart", touchHandler);
     document.addEventListener("touchmove", touchHandler);
@@ -54,8 +53,7 @@ If the touch occurs (`touches` object is not empty), then we will have all the i
 
 To see if it's working correctly we can output the `x` and `y` positions using the `output` element. The `preventDefault()` function is needed to prevent the browser from moving — without it you'd have the default behavior, and the Canvas would be dragged around the page, which would show the browser scroll bars and look messy.
 
-Touch events in Phaser
-----------------------
+## Touch events in Phaser
 
 We don't have to do this on our own; frameworks like Phaser offer systems for managing touch events for us — see [managing the touch events](https://phaser.io/docs/2.6.1/Phaser.Touch.html).
 
@@ -65,7 +63,7 @@ A [pointer](https://phaser.io/docs/2.6.1/Phaser.Pointer.html) represents a singl
 
 You can add more pointers to the game by using; `this.game.input.addPointer` up to ten pointers can be managed simultaneously. The most recently used pointer is available in the `this.game.input.activePointer` object — the most recent finger active on the screen.
 
-If you need to access a specific pointer, they are all available at, `this.game.input.pointer1``this.game.input.pointer2`, etc. They are assigned dynamically, so if you put three fingers on the screen, then, `pointer1``pointer2`, and `pointer3` will be active. Removing the second finger, for example, won't affect the other two, and setting it back again will use the first available property, so `pointer2` will be used again.
+If you need to access a specific pointer, they are all available at, ` this.game.input.pointer1``this.game.input.pointer2 `, etc. They are assigned dynamically, so if you put three fingers on the screen, then, ` pointer1``pointer2 `, and `pointer3` will be active. Removing the second finger, for example, won't affect the other two, and setting it back again will use the first available property, so `pointer2` will be used again.
 
 You can quickly get the coordinates of the most recently active pointer via the `this.game.input.x` and `this.game.input.y` variables.
 
@@ -140,8 +138,7 @@ The stick being pressed can be handled during the gameplay in the `update` funct
 
 We can adjust the player's velocity based on the current angle of the stick and move him appropriately.
 
-Summary
--------
+## Summary
 
 That covers adding touch controls for mobile; in the next article we'll see how to add keyboard and mouse support.
 

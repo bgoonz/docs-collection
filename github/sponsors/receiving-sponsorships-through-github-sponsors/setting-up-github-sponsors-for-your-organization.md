@@ -1,13 +1,13 @@
 ---
 title: Setting up GitHub Sponsors for your organization
-intro: 'Your organization can join {% data variables.product.prodname_sponsors %} to receive payments for your work.'
+intro: "Your organization can join {% data variables.product.prodname_sponsors %} to receive payments for your work."
 redirect_from:
   - /articles/setting-up-github-sponsorship-for-your-organization
   - /articles/receiving-sponsorships-as-a-sponsored-organization
   - /github/supporting-the-open-source-community-with-github-sponsors/setting-up-github-sponsors-for-your-organization
-permissions: 'Organization owners can set up {% data variables.product.prodname_sponsors %} for an organization.'
+permissions: "Organization owners can set up {% data variables.product.prodname_sponsors %} for an organization."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
@@ -25,8 +25,7 @@ After you receive an invitation for your organization to join {% data variables.
 To join {% data variables.product.prodname_sponsors %} as an individual contributor outside an organization, see "[Setting up {% data variables.product.prodname_sponsors %} for your user account](/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-user-account)."
 
 {% data reusables.sponsors.navigate-to-github-sponsors %}
-{% data reusables.sponsors.view-eligible-accounts %}
-3. To the right of your organization, click **Join the waitlist**.
+{% data reusables.sponsors.view-eligible-accounts %} 3. To the right of your organization, click **Join the waitlist**.
 {% data reusables.sponsors.contact-info %}
 {% data reusables.sponsors.accept-legal-terms %}
 
@@ -88,5 +87,6 @@ Before your organization can become a sponsored organization, you must enable 2F
 {% data reusables.sponsors.github-review-app %}
 
 ## Further reading
+
 - "[About {% data variables.product.prodname_sponsors %}](/sponsors/getting-started-with-github-sponsors/about-github-sponsors)"
 - "[Receiving sponsorships through {% data variables.product.prodname_sponsors %}](/sponsors/receiving-sponsorships-through-github-sponsors)"

@@ -2,7 +2,7 @@ This section is all about bringing realtime functionality into the app by using 
 
 ### What are GraphQL Subscriptions?
 
-Subscriptions are a GraphQL feature that allows the server to send data to the clients when a specific event happens on the backend. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. That is, the *Request-Response-Cycle* that we used for all previous interactions with the API is not used for subscriptions. Instead, the client initially opens up a steady connection to the server by specifying which event it is interested in. Every time this particular event happens, the server uses the connection to push the data that’s related to the event to the client.
+Subscriptions are a GraphQL feature that allows the server to send data to the clients when a specific event happens on the backend. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. That is, the _Request-Response-Cycle_ that we used for all previous interactions with the API is not used for subscriptions. Instead, the client initially opens up a steady connection to the server by specifying which event it is interested in. Every time this particular event happens, the server uses the connection to push the data that’s related to the event to the client.
 
 ### Subscriptions with Apollo
 
@@ -64,15 +64,15 @@ To get access to this endpoint, open up a terminal and navigate to the directory
 
 > The endpoints for the Subscription API generally are of the form: `wss://subscriptions.graph.cool/v1/<project-id>`.
 >
-> Notice that if your project is not running in the “default” Graphcool [region](https://blog.graph.cool/new-regions-and-improved-performance-7bbc0a35c880), you need to add the your project’s region to the endpoint like so: `wss://subscriptions.ap-northeast-1.graph.cool/v1/<project-id>` (for regoin *Asia Pacific*) or `wss://subscriptions.us-west-2.graph.cool/v1/<project-id>` (for *US West*).
+> Notice that if your project is not running in the “default” Graphcool [region](https://blog.graph.cool/new-regions-and-improved-performance-7bbc0a35c880), you need to add the your project’s region to the endpoint like so: `wss://subscriptions.ap-northeast-1.graph.cool/v1/<project-id>` (for regoin _Asia Pacific_) or `wss://subscriptions.us-west-2.graph.cool/v1/<project-id>` (for _US West_).
 
 ### Subscribing to new Links
 
 For the app to update in realtime when new links are created, you need to subscribe to events that are happening on the `Link` type. There generally are three kinds of events you can subscribe to:
 
--   a new `Link` is *created*
--   an existing `Link` is *updated*
--   an existing `Link` is *deleted*
+- a new `Link` is _created_
+- an existing `Link` is _updated_
+- an existing `Link` is _deleted_
 
 First, you need to add a subscription to `src/constants/graphql.js`:
 
@@ -198,7 +198,7 @@ Open `src/components/LinkList.vue` and add the following object to the `subscrib
       document: NEW_VOTES_SUBSCRIPTION,
       updateQuery: (previous, { subscriptionData }) => {
         if (!subscriptionData.data.Vote) return
-         
+
         const votedLinkIndex = previous.allLinks.findIndex(link => link.id === subscriptionData.data.Vote.node.link.id)
         const link = subscriptionData.data.Vote.node.link
         const newAllLinks = previous.allLinks.slice()

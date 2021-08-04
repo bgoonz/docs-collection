@@ -4,9 +4,8 @@ In the context of **{{glossary("object","objects")}}**, this is an **{{glossary(
 
 In computing, a reference is a value that indirectly accesses data to retrieve a variable or a record in a computer's memory or other storage device.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Reference (computer science)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Reference (computer science)")}} on Wikipedia

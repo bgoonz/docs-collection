@@ -4,9 +4,8 @@
 
 The system can be any kind of product or application that an end user is meant to interact with. UX studies undertaken on a web page for example can demonstrate whether it is easy for users to understand the page, navigate to different areas, and complete common tasks, and where such processes could have less friction.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "User experience")}} on Wikipedia
+- {{Interwiki("wikipedia", "User experience")}} on Wikipedia

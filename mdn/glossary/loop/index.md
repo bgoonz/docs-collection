@@ -2,8 +2,7 @@
 
 A loop is a sequence of instructions that is continually repeated until a certain condition is met in {{Glossary("computer programming")}}. An example would be the process of getting an item of data and changing it, and then making sure some {{Glossary("conditional", "condition")}} is checked such as, if a counter has reached a prescribed number.
 
-Examples
---------
+## Examples
 
 ### For loop
 
@@ -13,9 +12,9 @@ Examples
      execute code block
     }
 
--   Statement 1 is executed once before the code block is run.
--   Statement 2 defines the condition needed to execute the code block.
--   Statement 3 is executed every time the code block is run.
+- Statement 1 is executed once before the code block is run.
+- Statement 2 defines the condition needed to execute the code block.
+- Statement 3 is executed every time the code block is run.
 
 #### Example:
 
@@ -26,9 +25,9 @@ Examples
 
 For the above example, the syntax is as follows:
 
--   Statement 1 sets the variable for the loop (var i = 0).
--   Statement 2 sets the loop condition (i &lt; 10).
--   Statement 3 increases the value of i (i++) each time the code block is run.
+- Statement 1 sets the variable for the loop (var i = 0).
+- Statement 2 sets the loop condition (i &lt; 10).
+- Statement 3 increases the value of i (i++) each time the code block is run.
 
 ### While loop
 
@@ -38,7 +37,7 @@ For the above example, the syntax is as follows:
      execute code block
     }
 
--   The code block will continue to loop as long as the condition is true.
+- The code block will continue to loop as long as the condition is true.
 
 #### Example:
 
@@ -51,7 +50,7 @@ For the above example, the syntax is as follows:
 
 For the above example, the syntax is as follows:
 
--   The code block will continue to run as long as the variable (i) is less than 5.
+- The code block will continue to run as long as the variable (i) is less than 5.
 
 1.  General knowledge
     1.  {{interwiki("wikipedia", "Control\_flow\#Loops","Control flow")}} on Wikipedia

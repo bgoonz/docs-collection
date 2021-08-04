@@ -2,34 +2,44 @@
 title: CanvasRenderingContext2D.setTransform()
 slug: Web/API/CanvasRenderingContext2D/setTransform
 tags:
-- API
-- Canvas
-- CanvasRenderingContext2D
-- Method
-- Reference
+  - API
+  - Canvas
+  - CanvasRenderingContext2D
+  - Method
+  - Reference
 browser-compat: api.CanvasRenderingContext2D.setTransform
 ---
+
 <div>{{APIRef}}</div>
 
-<p>The
-  <code><strong>CanvasRenderingContext2D</strong></code><strong><code>.setTransform()</code></strong>
-  method of the Canvas 2D API resets (overrides) the current transformation to the
-  identity matrix, and then invokes a transformation described by the arguments of this
-  method. This lets you scale, rotate, translate (move), and skew the context.</p>
+<p>
+  The <code><strong>CanvasRenderingContext2D</strong></code
+  ><strong><code>.setTransform()</code></strong> method of the Canvas 2D API
+  resets (overrides) the current transformation to the identity matrix, and then
+  invokes a transformation described by the arguments of this method. This lets
+  you scale, rotate, translate (move), and skew the context.
+</p>
 
 <div class="notecard note">
-  <p><strong>Note:</strong> See also the {{domxref("CanvasRenderingContext2D.transform()",
-    "transform()")}} method; instead of overriding the current transform matrix, it
-    multiplies it with a given one.</p>
+  <p>
+    <strong>Note:</strong> See also the
+    {{domxref("CanvasRenderingContext2D.transform()", "transform()")}} method;
+    instead of overriding the current transform matrix, it multiplies it with a
+    given one.
+  </p>
 </div>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js"><em>ctx</em>.setTransform(<em>a</em>, <em>b</em>, <em>c</em>, <em>d</em>, <em>e</em>, <em>f</em>);
+<pre
+  class="brush: js"
+><em>ctx</em>.setTransform(<em>a</em>, <em>b</em>, <em>c</em>, <em>d</em>, <em>e</em>, <em>f</em>);
 ctx.setTransform(<em>matrix</em>);
 </pre>
 
-<p>The transformation matrix is described by: <math>
+<p>
+  The transformation matrix is described by:
+  <math>
     <semantics>
       <mrow>
         <mo>[</mo>
@@ -70,16 +80,21 @@ ctx.setTransform(<em>matrix</em>);
         </mtable>
         <mo>]</mo>
       </mrow>
-      <annotation encoding="TeX">\left[ \begin{array}{ccc} a &amp; c &amp; e \\ b &amp; d
-        &amp; f \\ 0 &amp; 0 &amp; 1 \end{array} \right]</annotation>
+      <annotation encoding="TeX"
+        >\left[ \begin{array}{ccc} a &amp; c &amp; e \\ b &amp; d &amp; f \\ 0
+        &amp; 0 &amp; 1 \end{array} \right]</annotation
+      >
     </semantics>
-  </math></p>
+  </math>
+</p>
 
 <h3 id="Parameters">Parameters</h3>
 
-<p><code>setTransform()</code> has two types of parameter that it can accept. The older
-  type consists of several parameters representing the individual components of the
-  transformation matrix to set:</p>
+<p>
+  <code>setTransform()</code> has two types of parameter that it can accept. The
+  older type consists of several parameters representing the individual
+  components of the transformation matrix to set:
+</p>
 
 <dl>
   <dt><code>a</code> (<code>m11</code>)</dt>
@@ -96,25 +111,32 @@ ctx.setTransform(<em>matrix</em>);
   <dd>Vertical translation (moving).</dd>
 </dl>
 
-<p>The newer type consists of a single parameter, <code>matrix</code>, representing a 2D
-  transformation matrix to set (technically, a <code>DOMMatrixInit</code> object; any
-  object will do as long as it contains the above components as properties).</p>
+<p>
+  The newer type consists of a single parameter, <code>matrix</code>,
+  representing a 2D transformation matrix to set (technically, a
+  <code>DOMMatrixInit</code> object; any object will do as long as it contains
+  the above components as properties).
+</p>
 
 <h2 id="Examples">Examples</h2>
 
 <h3 id="Skewing_a_shape">Skewing a shape</h3>
 
-<p>This example skews a rectangle both vertically (<code>.2</code>) and horizontally
-  (<code>.8</code>). Scaling and translation remain unchanged.</p>
+<p>
+  This example skews a rectangle both vertically (<code>.2</code>) and
+  horizontally (<code>.8</code>). Scaling and translation remain unchanged.
+</p>
 
 <h4 id="HTML">HTML</h4>
 
-<pre class="brush: html">&lt;canvas id="canvas"&gt;&lt;/canvas&gt;
+<pre class="brush: html">
+&lt;canvas id="canvas"&gt;&lt;/canvas&gt;
 </pre>
 
 <h4 id="JavaScript">JavaScript</h4>
 
-<pre class="brush: js; highlight:[4]">const canvas = document.getElementById('canvas');
+<pre class="brush: js; highlight:[4]">
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 ctx.setTransform(1, .2, .8, 1, 0, 0);
@@ -125,33 +147,42 @@ ctx.fillRect(0, 0, 100, 100);
 
 <p>{{ EmbedLiveSample('Skewing_a_shape', 700, 180) }}</p>
 
-<h3 id="Retrieving_and_passing_a_DOMMatrix_object">Retrieving and passing a DOMMatrix
-  object</h3>
+<h3 id="Retrieving_and_passing_a_DOMMatrix_object">
+  Retrieving and passing a DOMMatrix object
+</h3>
 
-<p>In the following example, we have two {{htmlelement("canvas")}} elements. We apply a
-  transform to the first one's context using the first type of <code>setTransform()</code>
-  and draw a square on it, then retrieve the matrix from it using
-  {{domxref("CanvasRenderingContext2D.getTransform()")}}.</p>
+<p>
+  In the following example, we have two {{htmlelement("canvas")}} elements. We
+  apply a transform to the first one's context using the first type of
+  <code>setTransform()</code> and draw a square on it, then retrieve the matrix
+  from it using {{domxref("CanvasRenderingContext2D.getTransform()")}}.
+</p>
 
-<p>We then apply the retrieved matrix directly to the second canvas context by passing the
-  <code>DOMMatrix</code> object directly to <code>setTransform()</code> (i.e. the second
-  type), and draw a circle on it.</p>
+<p>
+  We then apply the retrieved matrix directly to the second canvas context by
+  passing the <code>DOMMatrix</code> object directly to
+  <code>setTransform()</code> (i.e. the second type), and draw a circle on it.
+</p>
 
 <h4 id="HTML_2">HTML</h4>
 
-<pre class="brush: html">&lt;canvas width="240"&gt;&lt;/canvas&gt;
+<pre class="brush: html">
+&lt;canvas width="240"&gt;&lt;/canvas&gt;
 &lt;canvas width="240"&gt;&lt;/canvas&gt;
 </pre>
 
 <h4 id="CSS">CSS</h4>
 
-<pre class="brush: css">canvas {
+<pre class="brush: css">
+canvas {
   border: 1px solid black;
-}</pre>
+}</pre
+>
 
 <h4 id="JavaScript_2">JavaScript</h4>
 
-<pre class="brush: js">const canvases = document.querySelectorAll('canvas');
+<pre class="brush: js">
+const canvases = document.querySelectorAll('canvas');
 const ctx1 = canvases[0].getContext('2d');
 const ctx2 = canvases[1].getContext('2d');
 
@@ -164,11 +195,15 @@ console.log(storedTransform);
 ctx2.setTransform(storedTransform);
 ctx2.beginPath();
 ctx2.arc(50, 50, 50, 0, 2 * Math.PI);
-ctx2.fill();</pre>
+ctx2.fill();</pre
+>
 
 <h4 id="Result_2">Result</h4>
 
-<p>{{ EmbedLiveSample('Retrieving_and_passing_a_DOMMatrix_object', "100%", 180) }}</p>
+<p>
+  {{ EmbedLiveSample('Retrieving_and_passing_a_DOMMatrix_object', "100%", 180)
+  }}
+</p>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -181,6 +216,8 @@ ctx2.fill();</pre>
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li>The interface defining this method: {{domxref("CanvasRenderingContext2D")}}</li>
+  <li>
+    The interface defining this method: {{domxref("CanvasRenderingContext2D")}}
+  </li>
   <li>{{domxref("CanvasRenderingContext2D.transform()")}}</li>
 </ul>

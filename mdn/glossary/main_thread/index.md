@@ -1,4 +1,4 @@
---- title: Main thread slug: Glossary/Main\_thread tags: - Glossary - Reference - Web Performance ---
+--- title: Main thread slug: Glossary/Main_thread tags: - Glossary - Reference - Web Performance ---
 
 The **main thread** is where a browser processes user events and paints. By default, the browser uses a single thread to run all the JavaScript in your page, as well as to perform layout, reflows, and garbage collection. This means that long-running JavaScript functions can block the thread, leading to an unresponsive page and a bad user experience.
 

@@ -26,9 +26,8 @@ However, the following code is valid due to the variable being declared outside 
     console.log("Outside function");
     console.log(x);
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Scope (computer science)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Scope (computer science)")}} on Wikipedia

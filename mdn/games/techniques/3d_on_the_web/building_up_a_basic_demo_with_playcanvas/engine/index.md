@@ -1,4 +1,4 @@
---- title: Building up a basic demo with the PlayCanvas engine slug: Games/Techniques/3D\_on\_the\_web/Building\_up\_a\_basic\_demo\_with\_PlayCanvas/engine tags: - 3D - Animation - Beginner - Canvas - Games - PlayCanvas - Tutorial - WebGL - camera - engine - lighting - rendering ---
+--- title: Building up a basic demo with the PlayCanvas engine slug: Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas/engine tags: - 3D - Animation - Beginner - Canvas - Games - PlayCanvas - Tutorial - WebGL - camera - engine - lighting - rendering ---
 
 {{GamesSidebar}}
 
@@ -10,18 +10,16 @@ That's quite an impressive list of features — let's see some in action.
 
 We will try putting together a simple demo first — a cube rendered on the screen. If you have already worked through our [Building up a basic demo with Three.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js) article (or you are familiar with other 3D libraries) you'll notice that PlayCanvas works on similar concepts: camera, light and objects.
 
-Environment setup
------------------
+## Environment setup
 
 To start developing with PlayCanvas, you don't need much. You should start off by:
 
--   Making sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
--   Creating a directory to store your experiments in.
--   Saving a copy of the [latest PlayCanvas engine](https://code.playcanvas.com/playcanvas-latest.js) inside your directory.
--   Opening the [PlayCanvas documentation](https://developer.playcanvas.com/en/user-manual/) in a separate tab — it is useful to refer to.
+- Making sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
+- Creating a directory to store your experiments in.
+- Saving a copy of the [latest PlayCanvas engine](https://code.playcanvas.com/playcanvas-latest.js) inside your directory.
+- Opening the [PlayCanvas documentation](https://developer.playcanvas.com/en/user-manual/) in a separate tab — it is useful to refer to.
 
-HTML structure
---------------
+## HTML structure
 
 Here's the HTML structure we will use.
 
@@ -49,8 +47,7 @@ It contains some basic information like the document {{htmlelement("title")}}, a
 
 Before reading on, copy this code to a new text file and save it in your working directory as `index.html`.
 
-PlayCanvas application
-----------------------
+## PlayCanvas application
 
 To begin developing our game we have to create the PlayCanvas application first (using the given {{htmlelement("canvas")}} element), and then start the update loop. Add the following code to the bottom of your second {{htmlelement("script")}} element:
 
@@ -64,8 +61,7 @@ Next, we'll set the Canvas to fill the window, and automatically change its reso
     app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
     app.setCanvasResolution(pc.RESOLUTION_AUTO);
 
-Camera
-------
+## Camera
 
 Now when the setup code is in place we need to think about implementing the standard scene components: camera, lights and objects. Let's start with the camera — add these lines to your code, below the previous ones.
 
@@ -87,8 +83,7 @@ Then it adds a `camera` component to it with the light gray `clearColor` — the
 
 Try saving the file and loading it in your browser. You should now see a gray window. Congratulations!
 
-Geometry
---------
+## Geometry
 
 Now the scene is properly rendering we can start adding 3D shapes to it. To speed up development PlayCanvas provides a bunch of predefined primitives that you can use to create shapes instantly in a single line of code. There are cubes, spheres, cylinders and more complicated shapes available. Drawing everything for given shape is taken care of by the engine, so we can focus on the high level coding. Let's start by defining the geometry for a cube shape — add the following new code below your previous additions:
 
@@ -101,8 +96,7 @@ It will create an `Entity` with the `box` model component and add it to the root
 
 The cube is visible, but it is completely. To make it look better we need to shine some light onto it.
 
-Lights
-------
+## Lights
 
 The basic light types in PlayCanvas are directional and ambient. The first type is a directional light placed somewhere on the scene while the second one reflects the light from the first type, so it looks more natural; this can be set globally. Again, add the new code below your previous additions.
 
@@ -117,8 +111,7 @@ It will create a light `Entity` component and add it to the scene. We can rotate
 
 The code above assign a dark grey ambient light for the whole scene. The box look better now, but it could get some colors to look even better - for that we need to create material for it.
 
-Material
---------
+## Material
 
 The basic PlayCanvas material is called [PhongMaterial](https://developer.playcanvas.com/en/api/pc.PhongMaterial.html) — add the following lines below the previous code.
 
@@ -143,8 +136,7 @@ And here's the code we have created so far:
 
 You can also [check it out on GitHub](https://github.com/end3r/MDN-Games-3D/blob/gh-pages/PlayCanvas/cube.html).
 
-More shapes
------------
+## More shapes
 
 Now we will add more shapes to the scene. Let's move the cube 2 units to the left to make space for some friends — add the following line just below the previous code:
 
@@ -190,8 +182,7 @@ Here's how it should look right now:
 
 This works, but it is a bit boring. In a game something is usually happening — we can see animations and such — so let's try to breathe a little life into those shapes by animating them.
 
-Animation
----------
+## Animation
 
 We already used `translate` or `rotate` to adjust the position of the shapes; we could also change their positions directly with `setPosition`, or scale them. To show actual animation, we need to make changes to these values inside the rendering loop, so they are updated on every frame. There's a special `update` event that we can use for that — add the following code just below the previous additions:
 
@@ -229,8 +220,7 @@ Beside rotation and scaling we can also move objects around the scene. Add the f
 
 This will move the `cone` up and down by applying the `sin` value to the `y` axis on each frame, with a little bit of adjustment to make it look cooler. Try changing the value to see how it affects the animation.
 
-Conclusion
-----------
+## Conclusion
 
 Here's the final code listing, along with a viewable live example:
 
@@ -238,7 +228,6 @@ Here's the final code listing, along with a viewable live example:
 
 You can also [see it on GitHub](https://github.com/end3r/MDN-Games-3D/blob/gh-pages/PlayCanvas/shapes.html) and [fork the repository](https://github.com/end3r/MDN-Games-3D/) if you want to play with it yourself locally. Now you know the basics of PlayCanvas engine; happy experimentation!
 
-Summary
--------
+## Summary
 
 Now you can continue reading the [PlayCanvas editor](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas/editor) article, go back to the [Building up a basic demo with PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas) page, or go back a level higher to the main [3D Games on the Web](/en-US/docs/Games/Techniques/3D_on_the_web) page.

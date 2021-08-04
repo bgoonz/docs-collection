@@ -4,10 +4,9 @@
 
 Computers may make use of DTMF when dialing a modem, or when sending commands to a menu system for teleconferencing or other purposes.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Dual-tone multi-frequency signaling")}} on Wikipedia
--   {{interwiki("wikipedia", "Pulse dialing")}} on Wikipedia
+- {{interwiki("wikipedia", "Dual-tone multi-frequency signaling")}} on Wikipedia
+- {{interwiki("wikipedia", "Pulse dialing")}} on Wikipedia

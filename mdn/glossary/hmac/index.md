@@ -4,13 +4,12 @@
 
 HMAC is used to ensure both integrity and authentication.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Hash-based message authentication code", "HMAC")}} on Wikipedia
+- {{Interwiki("wikipedia", "Hash-based message authentication code", "HMAC")}} on Wikipedia
 
 ### Technical reference
 
--   [RFC 2104](https://www.ietf.org/rfc/rfc2104.txt) on IETF
+- [RFC 2104](https://www.ietf.org/rfc/rfc2104.txt) on IETF

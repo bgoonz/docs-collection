@@ -2,11 +2,11 @@ The goal of this chapter is to add realtime functionality to the app using [Grap
 
 ### What are GraphQL Subscriptions?
 
-GraphQL subscriptions allow you to add event-based realtime functionality to your app. A client can *subscribe* to specific events that are happening on the server-side. Then, whenenever that event actually happens, the server will send the corresponding data over to the client.
+GraphQL subscriptions allow you to add event-based realtime functionality to your app. A client can _subscribe_ to specific events that are happening on the server-side. Then, whenenever that event actually happens, the server will send the corresponding data over to the client.
 
 Events usually refer to mutations, so typically we’re talking about events where data was created, updated or deleted.
 
-Subscriptions are somewhat different from queries and mutations, since they don’t follow a *request-response-cycle* but instead represent a *stream* of data. The most common way to implement subscriptions is by using WebSockets, where the server maintains a steady connection to the subscribed clients that it uses to send over the data upon each event.
+Subscriptions are somewhat different from queries and mutations, since they don’t follow a _request-response-cycle_ but instead represent a _stream_ of data. The most common way to implement subscriptions is by using WebSockets, where the server maintains a steady connection to the subscribed clients that it uses to send over the data upon each event.
 
 ### Subscriptions with Relay Modern
 
@@ -22,8 +22,8 @@ However, in order to get `requestSubscription` to work, you also need to configu
 
 Graphcool generally exposes two different GraphQL APIs whose type definitions slitghly vary:
 
--   Simple API: Intuitive API to provide CRUD-style capabilities for all model types
--   Relay API: Adheres to the requirements that Relay has for a GraphQL schema
+- Simple API: Intuitive API to provide CRUD-style capabilities for all model types
+- Relay API: Adheres to the requirements that Relay has for a GraphQL schema
 
 Currently, subscriptions are only supported for the Simple API. However, you can still use subscriptions with the Relay API by making some manual adjustments to the `schema.graphql` which you feed into the `relay-compiler`.
 
@@ -78,13 +78,13 @@ Open `Environment.js` and replace the current created of `network` with the foll
 
 Let’s quickly understand what’s going on there:
 
-1.  Instead of passing a closure directly into `Network.create()`, you just pull out the code of that closure and store it in a variable called `fetchQuery`. Note that you’ll have to replace `__PROJECT_ID__` again with your actual project ID.  
+1.  Instead of passing a closure directly into `Network.create()`, you just pull out the code of that closure and store it in a variable called `fetchQuery`. Note that you’ll have to replace `__PROJECT_ID__` again with your actual project ID.
 2.  Here you define the second function called `setupSubscription` that the `Network` needs in order to be able to talk to the subscriptions endpoint. You’re using the `SubscriptionClient` in that function to initiate and maintain a connection to the given endpoint. The `config` that’s passed into the function carries the subscription query which determines what event the client wants to subscribe to and what data it wants to receive. Note that again you need to replace the placeholder for `__PROJECT_ID__` with the actual ID of your Graphcool project. Also, you need to replace the placeholder for `__REGION__` with the AWS region that your graphcool API endpoint is served from.
 3.  Finally, we take `fetchQuery` (which is the same code as before but stored in a variable) and `setupSubscription` and use them to create the `Network`, which then will be used to instantiate the Relay `Environment`.
 
 > If you’re not sure what your Graphcool project ID is that you need to replace the `__PROJECT_ID__`, you can open `project.graphcool` and check its frontmatter or execute `graphcool endpoints` in a terminal to see the endpoints for the Relay API and Subscriptions API.
 
-> To find the `__REGION__` your endpoint is served from, go to your Graphcool console. Click the **Endpoints**-button in the bottom-left corner, go to `Subscriptions API` and replace `__REGION__` with the region mentioned there (example: ‘wss://subscriptions.`ap-northeast-1`.graph.cool/v1/**PROJECT\_ID**’)
+> To find the `__REGION__` your endpoint is served from, go to your Graphcool console. Click the **Endpoints**-button in the bottom-left corner, go to `Subscriptions API` and replace `__REGION__` with the region mentioned there (example: ‘wss://subscriptions.`ap-northeast-1`.graph.cool/v1/**PROJECT_ID**’)
 
 For this code to work, you of course also need to import the `SubscriptionClient`. Add the following statement to the top of the file:
 
@@ -113,13 +113,13 @@ First, create a new directory inside `src` and call it `subscriptions`. Then cre
             id
             user {
               id
-            }    
+            }
             link {
               id
               _votesMeta {
                 count
               }
-            }    
+            }
           }
         }
       }

@@ -4,12 +4,11 @@
 
 CSS offers several features that allow you to tweak your document's styles—or even offer different styles—according to the media **type** (such as screen or print, to name two) or media **capabilities** (such as width, resolution, or other values) of the viewer's device.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Using media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
+- [Using media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
 
 ### Technical reference
 

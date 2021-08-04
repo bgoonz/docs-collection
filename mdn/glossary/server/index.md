@@ -6,14 +6,13 @@ Services are provided generally over local area networks or wide area networks s
 
 For example:
 
--   An Internet-connected Web server is sending a {{glossary("HTML")}} file to your browser software so that you can read this page
--   Local area network server for file, name, mail, print, and fax
--   Minicomputers, mainframes, and super computers at data centers
+- An Internet-connected Web server is sending a {{glossary("HTML")}} file to your browser software so that you can read this page
+- Local area network server for file, name, mail, print, and fax
+- Minicomputers, mainframes, and super computers at data centers
 
-Learn More
-----------
+## Learn More
 
 ### General knowledge
 
--   [Introduction to servers](/en-US/docs/Learn/Common_questions/What_is_a_web_server)
--   {{Interwiki("wikipedia", "Server (computing)")}} on Wikipedia
+- [Introduction to servers](/en-US/docs/Learn/Common_questions/What_is_a_web_server)
+- {{Interwiki("wikipedia", "Server (computing)")}} on Wikipedia

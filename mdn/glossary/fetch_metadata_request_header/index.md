@@ -1,4 +1,4 @@
---- title: Fetch metadata request header slug: Glossary/Fetch\_metadata\_request\_header tags: - Fetch Metadata Request Headers - Glossary ---
+--- title: Fetch metadata request header slug: Glossary/Fetch_metadata_request_header tags: - Fetch Metadata Request Headers - Glossary ---
 
 A **fetch metadata request header** is an {{Glossary("Request header", "HTTP request header")}} that provides additional information about the context from which the request originated. This allows the server to make decisions about whether a request should be allowed based on where the request came from and how the resource will be used.
 
@@ -8,16 +8,15 @@ These headers are prefixed with `Sec-`, and hence have {{Glossary("Forbidden hea
 
 The fetch metadata request headers are:
 
--   {{HTTPHeader("Sec-Fetch-Site")}}
--   {{HTTPHeader("Sec-Fetch-Mode")}}
--   {{HTTPHeader("Sec-Fetch-User")}}
--   {{HTTPHeader("Sec-Fetch-Dest")}}
+- {{HTTPHeader("Sec-Fetch-Site")}}
+- {{HTTPHeader("Sec-Fetch-Mode")}}
+- {{HTTPHeader("Sec-Fetch-User")}}
+- {{HTTPHeader("Sec-Fetch-Dest")}}
 
-See also
---------
+## See also
 
--   [Protect your resources from web attacks with Fetch Metadata](https://web.dev/fetch-metadata/) (web.dev)
--   [Fetch Metadata Request Headers playground](https://secmetadata.appspot.com/) (secmetadata.appspot.com)
+- [Protect your resources from web attacks with Fetch Metadata](https://web.dev/fetch-metadata/) (web.dev)
+- [Fetch Metadata Request Headers playground](https://secmetadata.appspot.com/) (secmetadata.appspot.com)
 
 1.  Fetch Me
     1.  [List of all HTTP headers](/en-US/docs/Web/HTTP/Headers)

@@ -2,7 +2,7 @@ This section is all about bringing real-time functionality into the app by using
 
 ### What are GraphQL Subscriptions?
 
-Subscriptions are a GraphQL feature that allows the server to send data to the clients when a specific event happens on the backend. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. That is, the *Request-Response-Cycle* that we used for all previous interactions with the API is not used for subscriptions. Instead, the client initially opens up a steady connection to the server by specifying which event it is interested in. Every time this particular event happens, the server uses the connection to push the data that’s related to the event to the client.
+Subscriptions are a GraphQL feature that allows the server to send data to the clients when a specific event happens on the backend. Subscriptions are usually implemented with [WebSockets](https://en.wikipedia.org/wiki/WebSocket), where the server holds a steady connection to the client. That is, the _Request-Response-Cycle_ that we used for all previous interactions with the API is not used for subscriptions. Instead, the client initially opens up a steady connection to the server by specifying which event it is interested in. Every time this particular event happens, the server uses the connection to push the data that’s related to the event to the client.
 
 ### Subscriptions with Apollo
 
@@ -67,9 +67,9 @@ You’re instantiating a `WebSocketLink` that knows the endpoint for the Subscri
 
 [`split`](https://github.com/apollographql/apollo-link/blob/98eeb1deb0363384f291822b6c18cdc2c97e5bdb/packages/apollo-link/src/link.ts#L33) is used to “route” a request to a specific middleware link. It takes three arguments, the first one is a `test` function returning a boolean, the remaining two are again of type `ApolloLink`. If that boolean is true, the request will be forwarded to the link passed as the second argument. If false, to the third one.
 
-In your case, the `test` function is checking whether the requested operation is a *subscription*. If this is the case, it will be forwarded to the `wsLink`, otherwise (if it’s a *query* or *mutation*), the `httpLinkWithAuthToken` will take care of it:
+In your case, the `test` function is checking whether the requested operation is a _subscription_. If this is the case, it will be forwarded to the `wsLink`, otherwise (if it’s a _query_ or _mutation_), the `httpLinkWithAuthToken` will take care of it:
 
-![Apollo Link](https://cdn-images-1.medium.com/max/720/1*KwnMO21k0d3UbyKWnlbeJg.png) *Picture taken from [Apollo Link: The modular GraphQL network stack](https://dev-blog.apollodata.com/apollo-link-the-modular-graphql-network-stack-3b6d5fcf9244) by [Evans Hauser](https://twitter.com/EvansHauser)*
+![Apollo Link](https://cdn-images-1.medium.com/max/720/1*KwnMO21k0d3UbyKWnlbeJg.png) _Picture taken from [Apollo Link: The modular GraphQL network stack](https://dev-blog.apollodata.com/apollo-link-the-modular-graphql-network-stack-3b6d5fcf9244) by [Evans Hauser](https://twitter.com/EvansHauser)_
 
 Now you need to replace the placeholder `__SUBSCRIPTION_API_ENDPOINT__` with the endpoint for the Subscriptions API.
 
@@ -77,15 +77,15 @@ Now you need to replace the placeholder `__SUBSCRIPTION_API_ENDPOINT__` with the
 
 To get access to this endpoint, open up a terminal and navigate to the `server` directory. Then type the `graphcool-framework info` command and copy the endpoint for the `Subscriptions API` and replace the placeholder with it.
 
-Notice that if you service isn’t running in the “default” Graphcool [region](https://blog.graph.cool/new-regions-and-improved-performance-7bbc0a35c880) (*EU West*), you need to add your service’s region to the endpoint like so: `wss://subscriptions.ap-northeast-1.graph.cool/v1/__SERVICE_ID__` (for region *Asia Pacific*) or `wss://subscriptions.us-west-2.graph.cool/v1/__SERVICE_ID__` (for *US West*).
+Notice that if you service isn’t running in the “default” Graphcool [region](https://blog.graph.cool/new-regions-and-improved-performance-7bbc0a35c880) (_EU West_), you need to add your service’s region to the endpoint like so: `wss://subscriptions.ap-northeast-1.graph.cool/v1/__SERVICE_ID__` (for region _Asia Pacific_) or `wss://subscriptions.us-west-2.graph.cool/v1/__SERVICE_ID__` (for _US West_).
 
 ### Subscribing to new Links
 
 For the app to update in real-time when new links are created, you need to subscribe to events that are happening on the `Link` type. There are three kinds of events you can subscribe to:
 
--   a new `Link` is *created*
--   an existing `Link` is *updated*
--   an existing `Link` is *deleted*
+- a new `Link` is _created_
+- an existing `Link` is _updated_
+- an existing `Link` is _deleted_
 
 First, you need to add a subscription to `src/app/graphql.ts`:
 

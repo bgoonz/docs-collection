@@ -11,9 +11,19 @@ tags:
   - webRequest
 browser-compat: webextensions.api.webRequest.StreamFilter.onstart
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p><span class="summary">An event handler that will be called when the stream is opened and is about to begin delivering data.</span> From this point on, the extension may use filter functions like {{WebExtAPIRef("webRequest.StreamFilter.write()", "write()")}}, {{WebExtAPIRef("webRequest.StreamFilter.disconnect()", "disconnect()")}}, or {{WebExtAPIRef("webRequest.StreamFilter.close()", "close()")}}.</p>
+<p>
+  <span class="summary"
+    >An event handler that will be called when the stream is opened and is about
+    to begin delivering data.</span
+  >
+  From this point on, the extension may use filter functions like
+  {{WebExtAPIRef("webRequest.StreamFilter.write()", "write()")}},
+  {{WebExtAPIRef("webRequest.StreamFilter.disconnect()", "disconnect()")}}, or
+  {{WebExtAPIRef("webRequest.StreamFilter.close()", "close()")}}.
+</p>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
@@ -23,7 +33,8 @@ browser-compat: webextensions.api.webRequest.StreamFilter.onstart
 
 <p>This example will replace the page content with "replacement text":</p>
 
-<pre class="brush: js line-numbers  language-js">function listener(details) {
+<pre class="brush: js line-numbers language-js">
+function listener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
 
   filter.onstart = event =&gt; {
@@ -38,6 +49,7 @@ browser.webRequest.onBeforeRequest.addListener(
   listener,
   {urls: [&quot;https://example.org/&quot;], types: [&quot;main_frame&quot;]},
   [&quot;blocking&quot;]
-);</pre>
+);</pre
+>
 
 <p>{{WebExtExamples}}</p>

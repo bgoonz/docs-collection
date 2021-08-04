@@ -1,7 +1,6 @@
 The last topic that we’ll cover in this tutorial is pagination. We’ll implement a simple pagination approach so that users are able to view the links in smaller chunks rather than having an extremely long list of `Link` elements.
 
-Preparing the React Components
-------------------------------
+## Preparing the React Components
 
 Once more, we first need to prepare the React components for this new functionality. In fact, we’ll make a slight adjustment to the current routing setup. The idea is that the `LinkList` component will be used for two different purposes (and routes). The first one is to display the top ten voted links and the second use case is to display new links in a list separated into multiple pages that the user can navigate through.
 
@@ -48,7 +47,7 @@ The main route `/` now redirects to the first page of the route where new posts 
 
 Before moving on, quickly add a new navigation item to the `Header` component that brings the user to the `/top` route.
 
-Open `Header.js` and add the following lines *between* the `/` and the `/search` routes:
+Open `Header.js` and add the following lines _between_ the `/` and the `/search` routes:
 
     <Link to="/top" className="ml1 no-underline black">
       top
@@ -88,7 +87,7 @@ Open `LinkList.js` and add three arguments to the `FeedQuery` by replacing the `
       }
     `;
 
-The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the *offset* where the query will start. For example, if we passed a value of **10** for this argument, it means that the first 10 items of the list will not be included in the response. `take` then defines the *limit* or *how many* elements we want to load from that list. If we pass in `10` for `skip` and `5` for `take`, we’ll receive items 10 to 15 from the list. `orderBy` defines how the returned list should be sorted.
+The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the _offset_ where the query will start. For example, if we passed a value of **10** for this argument, it means that the first 10 items of the list will not be included in the response. `take` then defines the _limit_ or _how many_ elements we want to load from that list. If we pass in `10` for `skip` and `5` for `take`, we’ll receive items 10 to 15 from the list. `orderBy` defines how the returned list should be sorted.
 
 But how can we pass the variables when using the `useQuery` hook which is fetching the data under the hood? The key is that we need to pass these variables in when we make the call to `useQuery`.
 
@@ -268,13 +267,13 @@ Through the changes that we made to the `FEED_QUERY`, we’ll notice that the `u
 
 With that information, open `Link.js` and update the `update` function on the `useMutation` hook:
 
-\`\`\`js{5-7, 16-20, 40-44}(path=“…/hackernews-react-apollo/src/components/Link.js”) import { AUTH\_TOKEN, LINKS\_PER\_PAGE } from ‘../constants’;
+\`\`\`js{5-7, 16-20, 40-44}(path=“…/hackernews-react-apollo/src/components/Link.js”) import { AUTH_TOKEN, LINKS_PER_PAGE } from ‘../constants’;
 
 // …
 
-const take = LINKS\_PER\_PAGE; const skip = 0; const orderBy = { createdAt: ‘desc’ };
+const take = LINKS_PER_PAGE; const skip = 0; const orderBy = { createdAt: ‘desc’ };
 
-const \[vote\] = useMutation(VOTE\_MUTATION, { variables: { linkId: link.id }, update(cache, { data: { vote } }) { const { feed } = cache.readQuery({ query: FEED\_QUERY, variables: { take, skip, orderBy } });
+const \[vote\] = useMutation(VOTE_MUTATION, { variables: { linkId: link.id }, update(cache, { data: { vote } }) { const { feed } = cache.readQuery({ query: FEED_QUERY, variables: { take, skip, orderBy } });
 
     const updatedLinks = feed.links.map((feedLink) => {
       if (feedLink.id === link.id) {

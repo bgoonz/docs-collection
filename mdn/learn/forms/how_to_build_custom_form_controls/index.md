@@ -1,4 +1,4 @@
---- title: How to build custom form controls slug: Learn/Forms/How\_to\_build\_custom\_form\_controls tags: - Advanced - Example - Forms - Guide - HTML - Web ---
+--- title: How to build custom form controls slug: Learn/Forms/How_to_build_custom_form_controls tags: - Advanced - Example - Forms - Guide - HTML - Web ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In this article, we will discuss how to build a custom control. To that end, we 
 
 **Note:** We'll focus on building the control, not on how to make the code generic and reusable; that would involve some non-trivial JavaScript code and DOM manipulation in an unknown context, and that is out of the scope of this article.
 
-Design, structure, and semantics
---------------------------------
+## Design, structure, and semantics
 
 Before building a custom control, you should start by figuring out exactly what you want. This will save you some precious time. In particular, it's important to clearly define all the states of your control. To do this, it's good to start with an existing control whose states and behavior are well known, so that you can mimic those as much as possible.
 
@@ -21,33 +20,38 @@ This screenshot shows the three main states of our control: the normal state (on
 
 In terms of behavior, we are recreating a native HTML element. Therefore it should have the same behaviors and semantics as the native HTML element. We require our control to be usable with a mouse as well as with a keyboard, and comprehensible to a screen reader, just like any native control. Let's start by defining how the control reaches each state:
 
-The control is in its normal state when:  
--   the page loads.
--   the control was active and the user clicks anywhere outside it.
--   the control was active and the user moves the focus to another control using the keyboard (e.g. the Tab key).
+The control is in its normal state when:
 
-The control is in its active state when:  
--   the user clicks on it or touches it on a touch screen.
--   the user hits the tab key and it gains focus.
--   the control was in its open state and the user clicks on it.
+- the page loads.
+- the control was active and the user clicks anywhere outside it.
+- the control was active and the user moves the focus to another control using the keyboard (e.g. the Tab key).
 
-The control is in its open state when:  
--   the control is in any other state than open and the user clicks on it.
+The control is in its active state when:
+
+- the user clicks on it or touches it on a touch screen.
+- the user hits the tab key and it gains focus.
+- the control was in its open state and the user clicks on it.
+
+The control is in its open state when:
+
+- the control is in any other state than open and the user clicks on it.
 
 Once we know how to change states, it is important to define how to change the control's value:
 
-The value changes when:  
--   the user clicks on an option when the control is in the open state.
--   the user hits the up or down arrow keys when the control is in its active state.
+The value changes when:
 
-The value does not change when:  
--   the user hits the up arrow key when the first option is selected.
--   the user hits the down arrow key when the last option is selected.
+- the user clicks on an option when the control is in the open state.
+- the user hits the up or down arrow keys when the control is in its active state.
+
+The value does not change when:
+
+- the user hits the up arrow key when the first option is selected.
+- the user hits the down arrow key when the last option is selected.
 
 Finally, let's define how the control's options will behave:
 
--   When the control is opened, the selected option is highlighted
--   When the mouse is over an option, the option is highlighted and the previously highlighted option is returned to its normal state
+- When the control is opened, the selected option is highlighted
+- When the mouse is over an option, the option is highlighted and the previously highlighted option is returned to its normal state
 
 For the purposes of our example, we'll stop with that; however, if you're a careful reader, you'll notice that some behaviors are missing. For example, what do you think will happen if the user hits the tab key while the control is in its open state? The answer is... nothing. OK, the right behavior seems obvious but the fact is, because it's not defined in our specs, it is very easy to overlook this behavior. This is especially true in a team environment when the people who design the control's behavior are different from the ones who implement it.
 
@@ -57,18 +61,17 @@ We have to think a little further: what about the escape key? Pressing Esc key c
 
 In our example, the missing specifications are obvious so we will handle them, but it can be a real problem for exotic new controls. When it comes to standardized elements, of which the {{htmlelement('select')}} is one, the specification authors spent an inordinate amount of time specifying all interactions for every use case for every input device. Creating new controls is not that easy, especially if you are creating something that has not been done before, and therefore which nobody has the slightest idea of what the expected behaviors and interactions are. At least select has been done before, so we know how it should behave!
 
-Designing new interactions is generally only an option for very large industry players who have enough reach that an interaction they create can become a standard. For example, Apple introduced the scroll wheel with the iPod in 2001. They had the market share to successfully introduce a completely new way of interacting with a device, something most device companies can't do. 
+Designing new interactions is generally only an option for very large industry players who have enough reach that an interaction they create can become a standard. For example, Apple introduced the scroll wheel with the iPod in 2001. They had the market share to successfully introduce a completely new way of interacting with a device, something most device companies can't do.
 
 It is best not to invent new user interactions. For any interaction you do add, it is vital to spend time in the design stage; if you define a behavior poorly, or forget to define one, it will be very hard to redefine it once the users have gotten used to it. If you have doubts, ask for the opinions of others, and if you have the budget for it, do not hesitate to [perform user tests](https://en.wikipedia.org/wiki/Usability_testing). This process is called UX Design. If you want to learn more about this topic, you should check out the following helpful resources:
 
--   [UXMatters.com](https://www.uxmatters.com/)
--   [UXDesign.com](http://uxdesign.com/)
--   [The UX Design section of SmashingMagazine](https://uxdesign.smashingmagazine.com/)
+- [UXMatters.com](https://www.uxmatters.com/)
+- [UXDesign.com](http://uxdesign.com/)
+- [The UX Design section of SmashingMagazine](https://uxdesign.smashingmagazine.com/)
 
 **Note:** Also, in most systems there is a way to open the {{HTMLElement("select")}} element with the keyboard to look at all the available choices (this is the same as clicking the {{HTMLElement("select")}} element with a mouse). This is achieved with Alt + Down  on Windows. We didn't implement this in our example, but it would be easy to do so, as the mechanism has already been implemented for the `click` event.
 
-Defining the HTML structure and (some) semantics
-------------------------------------------------
+## Defining the HTML structure and (some) semantics
 
 Now that the control's basic functionality has been decided upon, it's time to start building it. The first step is to define its HTML structure and to give it some basic semantics. Here is what we need to rebuild a {{HTMLElement("select")}} element:
 
@@ -98,8 +101,7 @@ Note the use of class names; these identify each relevant part regardless of the
 
 Class names, however, provide no semantic value. In this current state, the screen reader user only "sees" an unordered list. We will add ARIA semantics in a bit.
 
-Creating the look and feel using CSS
-------------------------------------
+## Creating the look and feel using CSS
 
 Now that we have a structure, we can start designing our control. The whole point of building this custom control is to be able to style it exactly how we want. To that end, we will split our CSS work into two parts: the first part will be the CSS rules absolutely necessary to make our control behave like a {{HTMLElement("select")}} element, and the second part will consist of the fancy styles used to make it look the way we want.
 
@@ -269,8 +271,7 @@ Open state
 
 [Check out the source code](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls/Example_1)
 
-Bringing your control to life with JavaScript
----------------------------------------------
+## Bringing your control to life with JavaScript
 
 Now that our design and structure are ready, we can write the JavaScript code to make the control actually work.
 
@@ -280,13 +281,13 @@ Now that our design and structure are ready, we can write the JavaScript code to
 
 Before starting, it's important to remember **JavaScript in the browser is an unreliable technology**. Custom controls rely on JavaScript to tie everything together. However, there are cases in which JavaScript isn't able to run in the browser:
 
--   The user has turned off JavaScript: This is unusual; very few people turn off JavaScript nowadays.
--   The script did not load: This is one of the most common cases, especially in the mobile world where the network is not very reliable.
--   The script is buggy: You should always consider this possibility.
--   The script is in conflict with a third party script: This can happen with tracking scripts or any bookmarklets the user uses.
--   The script is in conflict with, or is affected by, a browser extension (such as Firefox's [NoScript](https://addons.mozilla.org/fr/firefox/addon/noscript/) extension or Chrome's [NotScripts](https://chrome.google.com/webstore/detail/notscripts/odjhifogjcknibkahlpidmdajjpkkcfn) extension).
--   The user is using a legacy browser, and one of the features you require is not supported: This will happen frequently when you make use of cutting-edge APIs.
--   The user is interacting with the content before the JavaScript has been fully downloaded, parsed, and executed.
+- The user has turned off JavaScript: This is unusual; very few people turn off JavaScript nowadays.
+- The script did not load: This is one of the most common cases, especially in the mobile world where the network is not very reliable.
+- The script is buggy: You should always consider this possibility.
+- The script is in conflict with a third party script: This can happen with tracking scripts or any bookmarklets the user uses.
+- The script is in conflict with, or is affected by, a browser extension (such as Firefox's [NoScript](https://addons.mozilla.org/fr/firefox/addon/noscript/) extension or Chrome's [NotScripts](https://chrome.google.com/webstore/detail/notscripts/odjhifogjcknibkahlpidmdajjpkkcfn) extension).
+- The user is using a legacy browser, and one of the features you require is not supported: This will happen frequently when you make use of cutting-edge APIs.
+- The user is interacting with the content before the JavaScript has been fully downloaded, parsed, and executed.
 
 Because of these risks, it's really important to seriously consider what will happen if your JavaScript doesn't work. We'll discuss options to consider and cover the basics in our example (a full discussion of solving this issue for all scenarios would require a book). Just remember, it is vital make your script generic and reusable.
 
@@ -605,8 +606,7 @@ With that, we're done! Here's the result:
 
 But wait a second, are we really done?
 
-Making it accessible
---------------------
+## Making it accessible
 
 We have built something that works and though we're far from a fully-featured select box, it works nicely. But what we've done is nothing more than fiddle with the DOM. It has no real semantics, and even though it looks like a select box, from the browser's point of view it isn't one, so assistive technologies won't be able to understand it's a select box. In short, this pretty new select box isn't accessible!
 
@@ -668,8 +668,7 @@ Here is the final result of all these changes (you'll get a better feel for this
 
 If you want to move forward, the code in this example needs some improvement before it becomes generic and reusable. This is an exercise you can try to perform. Two hints to help you in this: the first argument for all our functions is the same, which means those functions need the same context. Building an object to share that context would be wise.
 
-An alternative approach: Using radio buttons
---------------------------------------------
+## An alternative approach: Using radio buttons
 
 In the above example, we reinvented a {{htmlelement('select')}} element using non-semantic HTML, CSS, and JavaScript. This select was selecting one option from a limited number of options, which is the same functionality of a same-named group of {{htmlelement('input/radio', 'radio')}} buttons.
 
@@ -748,39 +747,37 @@ On the plus side, this control is fully accessible to a screen reader and fully 
 
 We'll leave adding this missing functionality as a reader exercise.
 
-Conclusion
-----------
+## Conclusion
 
 We have seen all the basics of building a custom form control, but as you can see it's not trivial to do. Before creating your own customized control, consider whether HTML provides alternative elements that can be used to adequately support your requirements. If you do need to create a custom control, it is often easier to rely on third-party libraries instead of building your own. But, if you do create your own, modify existing elements, or use a framework to implement a pre-baked control, remember that creating a usable and accessible form control is more complicated than it looks.
 
 Here are a few libraries you should consider before coding your own:
 
--   [jQuery UI](https://jqueryui.com/)
--   [AXE accessible custom select dropdowns](https://www.webaxe.org/accessible-custom-select-dropdowns)
--   [msDropDown](https://github.com/marghoobsuleman/ms-Dropdown)
--   [Nice Forms](https://www.emblematiq.com/lab/niceforms/)
+- [jQuery UI](https://jqueryui.com/)
+- [AXE accessible custom select dropdowns](https://www.webaxe.org/accessible-custom-select-dropdowns)
+- [msDropDown](https://github.com/marghoobsuleman/ms-Dropdown)
+- [Nice Forms](https://www.emblematiq.com/lab/niceforms/)
 
 If you do create alternative controls via radio buttons, your own JavaScript, or with a 3rd party library, ensure it is accessible and feature-proof; that is, it needs to be able to work better with a variety of browsers whose compatibility with the Web standards they use vary. Have fun!
 
-See also
---------
+## See also
 
 ### Learning path
 
--   [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
--   [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
--   [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
--   [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
--   [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
--   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
--   [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
--   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+- [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
+- [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+- [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+- [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+- [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+- [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
+- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
--   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
--   [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
--   [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
--   [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
--   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+- [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+- [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
+- [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

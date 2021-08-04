@@ -70,8 +70,8 @@ Then, add the following code in `login.component.html`:
 
 Let’s quickly gain an understanding of the structure of this new component which can have two important states.
 
--   One state is **for users that already have an account** and only need to login. In this state, the component will just render two `input` fields for the user to provide their `email` and `password`. Notice that `login` will be `true` in this case.
--   The second state is **for users that haven’t created an account yet**, and thus still need to sign up. Here, you also render a third `input` field where users can provide their `name`. In this case, `login` will be `false`.
+- One state is **for users that already have an account** and only need to login. In this state, the component will just render two `input` fields for the user to provide their `email` and `password`. Notice that `login` will be `true` in this case.
+- The second state is **for users that haven’t created an account yet**, and thus still need to sign up. Here, you also render a third `input` field where users can provide their `name`. In this case, `login` will be `false`.
 
 The method `confirm` will be used to implement the mutations that we need to send for the login functionality.
 
@@ -235,7 +235,7 @@ Then, update the following code in `header.component.html`:
       </div>
     </div>
 
-You first subscribe to the `isAuthenticated` stream from `authService` and update the `logged` property. If the `logged` is false, the *submit*-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.
+You first subscribe to the `isAuthenticated` stream from `authService` and update the `logged` property. If the `logged` is false, the _submit_-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.
 
 You’re also adding a second button on the right side of the `HeaderComponent` that users can use to login and logout.
 
@@ -253,8 +253,8 @@ Graphcool has a lightweight and flexible [template](https://www.graph.cool/docs/
 
 You can use the CLI’s [`add-template`](https://www.graph.cool/docs/reference/graphcool-cli/commands-aiteerae6l#graphcool-add-template) command to use a template in your Graphcool service. This command will perform two major tasks:
 
--   Download the files from Graphcool’s [`templates` repository](https://github.com/graphcool/templates) that are required for the `email-password` template.
--   Add commented lines to `graphcool.yml` and `types.graphql` that allow you to “activate” the template’s functionality by uncommenting them and then invoking `graphcool-framework deploy` again.
+- Download the files from Graphcool’s [`templates` repository](https://github.com/graphcool/templates) that are required for the `email-password` template.
+- Add commented lines to `graphcool.yml` and `types.graphql` that allow you to “activate” the template’s functionality by uncommenting them and then invoking `graphcool-framework deploy` again.
 
 Navigate into the `server` directory inside your project and run the following command:
 
@@ -301,7 +301,7 @@ Open `types.graphql` and uncomment the `User` type:
       password: String!
     }
 
-Before you apply the changes to the running service, you’ll make another modification to your data model by adding the *relation* between the `Link` and the newly added `User` type as well as a new field `name` for the `User`.
+Before you apply the changes to the running service, you’ll make another modification to your data model by adding the _relation_ between the `Link` and the newly added `User` type as well as a new field `name` for the `User`.
 
 Open your type definitions file `types.graphql` and update the `User` and `Link` types as follows:
 
@@ -326,8 +326,8 @@ Open your type definitions file `types.graphql` and update the `User` and `Link`
 
 You added two things to the schema:
 
--   A new field on the `User` type to store the `name` of the user.
--   A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
+- A new field on the `User` type to store the `name` of the user.
+- A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
 
 Now it’s time to apply the changes by deploying your service again.
 
@@ -337,9 +337,9 @@ Save the file and execute the following command in the `server` directory in a t
 
 Your GraphQL API now includes three additional operations, as specified in `graphcool.yml`:
 
--   `signup`: Create a new user based on `email` and `password`.
--   `authenticate`: Log in existing user with `email` and `password`.
--   `loggedInUser`: Checks whether a user is currently logged in.
+- `signup`: Create a new user based on `email` and `password`.
+- `authenticate`: Log in existing user with `email` and `password`.
+- `loggedInUser`: Checks whether a user is currently logged in.
 
 ### Adding an additional Argument to the `signup` Mutation
 
@@ -362,7 +362,7 @@ Open `server/src/email-password/signup.graphql` and update the extension of the 
       signupUser(email: String!, password: String!, name: String!): SignupUserPayload
     }
 
-For now you only adjusted the *interface* of the `signup` resolver. Next, you also need to make sure to update the *implementation*.
+For now you only adjusted the _interface_ of the `signup` resolver. Next, you also need to make sure to update the _implementation_.
 
 > Note: The `signup` resolver is implemented as a [serverless function](https://www.graph.cool/docs/reference/functions/overview-aiw4aimie9) which will be deployed for you by the Graphcool Framework. The input arguments for that function are determined by the input arguments of the corresponding GraphQL operation. In this case, this is the `signupUser`-mutation, so the function will received three string as input arguments: `email`, `password` and `name`. (Notice that these are wrapped in a single object called `event` though.)
 
@@ -520,7 +520,7 @@ Now, let’s gain a better understanding what’s going on in the two mutations 
 
 The `SIGNIN_USER_MUTATION` looks very similar to the mutations we saw before. It simply takes the `email` and `password` as arguments and returns info about the `user` as well as a `token` that you can attach to subsequent requests to authenticate the user. You’ll learn a bit how to do so.
 
-The `CREATE_USER_MUTATION` however is a bit different! Here, we define *two* mutations at once! When you’re doing that, the execution order is always *from top to bottom*. So, in your case, the `createUser` mutation will be executed *before* the `signinUser` mutation. Bundling two mutations like this allow you to sign up and login in a single request!
+The `CREATE_USER_MUTATION` however is a bit different! Here, we define _two_ mutations at once! When you’re doing that, the execution order is always _from top to bottom_. So, in your case, the `createUser` mutation will be executed _before_ the `signinUser` mutation. Bundling two mutations like this allow you to sign up and login in a single request!
 
 All right, all that’s left to do is to call the two mutations inside the `Login` component!
 
@@ -618,7 +618,7 @@ Still in `src/app/app.component.ts` make the following change :
 2.  You try to log in automatically
 3.  You set this `userId` on the `$root` `$data` object
 
-You can now create an account by providing a `name`, `email` and `password`. Once you do so, the *submit*-button will be rendered again:
+You can now create an account by providing a `name`, `email` and `password`. Once you do so, the _submit_-button will be rendered again:
 
 ![Creating an account by providing name, email, and password](http://imgur.com/WoWLmDJ.png)
 
@@ -647,7 +647,7 @@ Open `src/app/graphql.ts` and update the definition of `CREATE_LINK_MUTATION` as
       }
     `
 
-There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the *payload* of the mutation.
+There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the _payload_ of the mutation.
 
 Now you need to make sure that the `id` of the posting user is included when you’re calling the mutation in `CreateLinkComponent`.
 
@@ -698,7 +698,7 @@ Add the following import statement near the top of `src/app/create-link/create-l
 
 Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from `localStorage`. If that succeeds, you’ll pass it to the call to `CREATE_LINK_MUTATION` so that every new `Link` will from now on store information about the `User` who created it.
 
-If you haven’t done so before, go ahead and test the login functionality. Open `http://localhost:4200/login`. Then click the *need to create an account?*-button and provide some user data for the user you’re creating. Finally, click the *create Account*-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
+If you haven’t done so before, go ahead and test the login functionality. Open `http://localhost:4200/login`. Then click the _need to create an account?_-button and provide some user data for the user you’re creating. Finally, click the _create Account_-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
 
 ### Configuring Apollo with the Auth Token
 
@@ -706,7 +706,7 @@ Now that users are able to login and obtain a token that authenticates them agai
 
 Since all the API requests are actually created and sent by the `HttpLink` in your app, you need to make sure it knows about the user’s token. Luckily, Apollo provides a nice way for authenticating all requests by using [headers]().
 
-Open `src/app/apollo.config.ts`, put the following code *after* the creation of the `httpLink`:
+Open `src/app/apollo.config.ts`, put the following code _after_ the creation of the `httpLink`:
 
         const middleware = new ApolloLink((operation, forward) => {
           const token = localStorage.getItem(GC_AUTH_TOKEN);

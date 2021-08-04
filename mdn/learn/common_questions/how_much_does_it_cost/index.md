@@ -1,16 +1,14 @@
---- title: How much does it cost to do something on the Web? slug: Learn/Common\_questions/How\_much\_does\_it\_cost tags: - Beginner - WebMechanics - cost - hosting - web development tools ---
+--- title: How much does it cost to do something on the Web? slug: Learn/Common_questions/How_much_does_it_cost tags: - Beginner - WebMechanics - cost - hosting - web development tools ---
 
 Getting involved on the Web isn't as cheap as it looks. In this article we discuss how much you may have to spend, and why.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>You should already understand <a href="/en-US/docs/Learn/Common_questions/What_software_do_I_need">what software you need</a>, the difference between <a href="/en-US/docs/Learn/Common_questions/Pages_sites_servers_and_search_engines">a webpage, a website, etc</a>., and what <a href="/en-US/docs/Learn/Common_questions/What_is_a_domain_name">a domain name is</a>.</td></tr><tr class="even"><td>Objective:</td><td>Review the complete process for creating a website and find out how much each step can cost.</td></tr></tbody></table>
 
-Summary
--------
+## Summary
 
 <span class="seoSummary">When launching a website, you may spend nothing, or your costs may go through the roof. In this article we discuss how much everything costs, and how you get what you pay (or don't pay).</span>
 
-Software
---------
+## Software
 
 ### Text editors
 
@@ -46,13 +44,11 @@ If you want to install an (S)FTP client, there are several reliable and free opt
 
 Because FTP is inherently insecure, you should make sure to use SFTP — the secure, encrypted version of FTP that most hosting sites you'll deal with these days will offer by default — or another secure solution like Rsync over SSH.
 
-Browsers
---------
+## Browsers
 
 You either already have a browser or can get one for free. If necessary, download Firefox [here](https://www.mozilla.org/en-US/firefox/all/) or Google Chrome [here](https://www.google.com/chrome/browser/).
 
-Web access
-----------
+## Web access
 
 ### Computer / modem
 
@@ -60,17 +56,16 @@ You need a computer. Costs can vary tremendously, depending on your budget, and 
 
 Of course, you'll need a more serious computer if you want to produce complicated designs, touch up photos, or produce audio and video files.
 
-You need to upload content to a remote server (see *Hosting* below), so you need a modem. Your {{Glossary("ISP")}} can rent Internet connectivity to you for a few dollars per month, though your budget might vary, depending on your location.
+You need to upload content to a remote server (see _Hosting_ below), so you need a modem. Your {{Glossary("ISP")}} can rent Internet connectivity to you for a few dollars per month, though your budget might vary, depending on your location.
 
 ### ISP access
 
 Make sure that you have sufficient {{Glossary("Bandwidth", "bandwidth")}}:
 
--   Low-bandwidth access may be adequate to support a 'simple' website: reasonably-sized images, texts, some CSS and JavaScript. That will likely cost you a few dozen dollars, including the rent for the modem.
--   On the other hand, you'll need a high-bandwidth connection, such as DSL, cable, or fiber access, if you want a more advanced website with hundreds of files, or if you want to deliver heavy video/audio files directly from your web server. It could cost the same as low-bandwidth access, upwards to several hundred dollars per month for more professional needs.
+- Low-bandwidth access may be adequate to support a 'simple' website: reasonably-sized images, texts, some CSS and JavaScript. That will likely cost you a few dozen dollars, including the rent for the modem.
+- On the other hand, you'll need a high-bandwidth connection, such as DSL, cable, or fiber access, if you want a more advanced website with hundreds of files, or if you want to deliver heavy video/audio files directly from your web server. It could cost the same as low-bandwidth access, upwards to several hundred dollars per month for more professional needs.
 
-Hosting
--------
+## Hosting
 
 ### Understanding bandwidth
 
@@ -82,8 +77,8 @@ Note that there is no such thing as “unlimited” bandwidth. If you consume a 
 
 Your domain name has to be purchased through a domain name provider (a registrar). Your hosting provider may also be a registrar ([1&1](https://www.1and1.com/), [Gandi](https://www.gandi.net/?lang=en) for instance are at the same time registrars and hosting providers). The domain name usually costs $5-15 per year. This cost varies depending on:
 
--   Local obligations: some country top-level domain names are more costly, as different countries set different prices.
--   Services associated with the domain name: some registrars provide spam protection by hiding your postal address and email address behind their own addresses: the postal address can be provided in care of the registrar, and your email address can be obscured via your registrar's alias.
+- Local obligations: some country top-level domain names are more costly, as different countries set different prices.
+- Services associated with the domain name: some registrars provide spam protection by hiding your postal address and email address behind their own addresses: the postal address can be provided in care of the registrar, and your email address can be obscured via your registrar's alias.
 
 ### Do-it-yourself hosting vs. “packaged” hosting
 
@@ -95,38 +90,36 @@ You could use your hosting provider's environment, for roughly ten to fifteen do
 
 You might ask, why should I pay for my hosting when there are so many free services?
 
--   You have more freedom when you pay. Your website is yours, and you can migrate seamlessly from one hosting provider to the next.
--   Free hosting providers may add advertising to your content, beyond your control.
+- You have more freedom when you pay. Your website is yours, and you can migrate seamlessly from one hosting provider to the next.
+- Free hosting providers may add advertising to your content, beyond your control.
 
 It is better to go for paid hosting rather than relying on free hosting, as it is possible to move your files easily and uptime is guaranteed by most paid sites. Most hosting providers give you a huge discount to start with.
 
 Some people opt for a mixed approach. For example, their main blog on a paid host with a full domain name, and spontaneous, less strategic, content on a free host service.
 
-Professional website agencies and hosting
------------------------------------------
+## Professional website agencies and hosting
 
-If you desire a professional website, you will likely ask a web agency to do it for you.  
-  
+If you desire a professional website, you will likely ask a web agency to do it for you.
+
 Here, costs depend on multiple factors, such as:
 
--   Is this a simple website with a few pages of text? Or a more complex, thousand-pages-long website?
--   Will you want to update it regularly? Or will it be a static website?
--   Must the website connect to your company’s IT structure to gather content (say, internal data)?
--   Do you want some shiny new feature that is the rage of the moment? At the time of writing, clients are seeking single pages with complex parallax
--   Will you need the agency to think up user stories or solve complex {{Glossary("UX")}} problems? For example, creating a strategy to engage users, or A/B testing to choose a solution among several ideas
+- Is this a simple website with a few pages of text? Or a more complex, thousand-pages-long website?
+- Will you want to update it regularly? Or will it be a static website?
+- Must the website connect to your company’s IT structure to gather content (say, internal data)?
+- Do you want some shiny new feature that is the rage of the moment? At the time of writing, clients are seeking single pages with complex parallax
+- Will you need the agency to think up user stories or solve complex {{Glossary("UX")}} problems? For example, creating a strategy to engage users, or A/B testing to choose a solution among several ideas
 
 ...and for hosting:
 
--   Do you want redundant servers, in case your server goes down?
--   Is 95% reliability adequate, or do you need professional, around-the-clock service?
--   Do you want high-profile, ultra-responsive dedicated servers, or can you cope with a slower, shared machine?
+- Do you want redundant servers, in case your server goes down?
+- Is 95% reliability adequate, or do you need professional, around-the-clock service?
+- Do you want high-profile, ultra-responsive dedicated servers, or can you cope with a slower, shared machine?
 
 Depending on how you answer these questions, your site could cost thousands to hundreds of thousands of dollars.
 
-Next steps
-----------
+## Next steps
 
 Now that you understand what kind of money your website may cost you, it's time to start designing that website and [setting up your work environment](/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server).
 
--   Read on about [how to choose and install a text editor](/en-US/docs/Learn/Common_questions/Available_text_editors).
--   If you're more focused on design, take a look at the [anatomy of a web page](/en-US/docs/Learn/Common_questions/Common_web_layouts).
+- Read on about [how to choose and install a text editor](/en-US/docs/Learn/Common_questions/Available_text_editors).
+- If you're more focused on design, take a look at the [anatomy of a web page](/en-US/docs/Learn/Common_questions/Common_web_layouts).

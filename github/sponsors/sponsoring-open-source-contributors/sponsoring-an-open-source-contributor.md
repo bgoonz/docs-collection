@@ -1,13 +1,13 @@
 ---
 title: Sponsoring an open source contributor
-intro: 'You can make a monthly recurring payment to a developer or organization who designs, creates, or maintains open source projects you depend on.'
+intro: "You can make a monthly recurring payment to a developer or organization who designs, creates, or maintains open source projects you depend on."
 redirect_from:
   - /articles/sponsoring-a-developer
   - /articles/sponsoring-an-open-source-contributor
   - /github/supporting-the-open-source-community-with-github-sponsors/sponsoring-a-developer
   - /github/supporting-the-open-source-community-with-github-sponsors/sponsoring-an-open-source-contributor
 versions:
-  fpt: '*'
+  fpt: "*"
 permissions: Anyone can sponsor accounts on behalf of their own user account. Organization owners and billing managers can sponsor accounts on behalf of their organization.
 type: how_to
 topics:
@@ -23,6 +23,7 @@ shortTitle: Sponsor a contributor
 {% data reusables.sponsors.sponsorship-details %}
 
 You can sponsor an account on behalf of your user account to invest in projects that you personally benefit from. You can sponsor an account on behalf of your organization for many reasons.
+
 - Sustaining specific libraries that your organization's work depends on
 - Investing in the ecosystem you rely on as a organization (such as blockchain)
 - Developing brand awareness as an organization that values open source
@@ -59,12 +60,12 @@ Before you can sponsor an account, you must have a verified email address. For m
    - To sponsor an organization, to the right of the organization's name, click **Sponsor**.
      ![Sponsor button](/assets/images/help/sponsors/sponsor-org-button.png)
 1. Optionally, on the right side of the page, to sponsor the account on behalf of your organization, use the **Sponsor as** drop-down menu, and click the organization.
-  ![Drop-down menu to choose the account you'll sponsor as](/assets/images/help/sponsors/sponsor-as-drop-down-menu.png)
-{% data reusables.sponsors.select-a-tier %}
-{% data reusables.sponsors.pay-prorated-amount %}
-{% data reusables.sponsors.select-sponsorship-billing %}
-  ![Edit payment button](/assets/images/help/sponsors/edit-sponsorship-payment-button.png)
-{% data reusables.sponsors.who-can-see-your-sponsorship %}
-  ![Radio buttons to choose who can see your sponsorship](/assets/images/help/sponsors/who-can-see-sponsorship.png)
-{% data reusables.sponsors.choose-updates %}
-{% data reusables.sponsors.sponsor-account %}
+   ![Drop-down menu to choose the account you'll sponsor as](/assets/images/help/sponsors/sponsor-as-drop-down-menu.png)
+   {% data reusables.sponsors.select-a-tier %}
+   {% data reusables.sponsors.pay-prorated-amount %}
+   {% data reusables.sponsors.select-sponsorship-billing %}
+   ![Edit payment button](/assets/images/help/sponsors/edit-sponsorship-payment-button.png)
+   {% data reusables.sponsors.who-can-see-your-sponsorship %}
+   ![Radio buttons to choose who can see your sponsorship](/assets/images/help/sponsors/who-can-see-sponsorship.png)
+   {% data reusables.sponsors.choose-updates %}
+   {% data reusables.sponsors.sponsor-account %}

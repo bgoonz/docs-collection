@@ -4,7 +4,7 @@ In {{Glossary("JavaScript")}}, a **truthy** value is a value that is considered 
 
 {{Glossary("JavaScript")}} uses type {{Glossary("Type\_Conversion", "coercion")}} in Boolean contexts.
 
-Examples of *truthy* values in JavaScript (which will be coerced to true in boolean contexts, and thus execute the `if` block):
+Examples of _truthy_ values in JavaScript (which will be coerced to true in boolean contexts, and thus execute the `if` block):
 
     if (true)
     if ({})
@@ -20,11 +20,10 @@ Examples of *truthy* values in JavaScript (which will be coerced to true in bool
     if (Infinity)
     if (-Infinity)
 
-See also
---------
+## See also
 
--   {{Glossary("Falsy")}}
--   {{Glossary("Type\_Conversion", "Coercion")}}
--   {{Glossary("Boolean")}}
+- {{Glossary("Falsy")}}
+- {{Glossary("Type\_Conversion", "Coercion")}}
+- {{Glossary("Boolean")}}
 
 {{QuickLinksWithSubpages("/en-US/docs/Glossary")}}

@@ -1,5 +1,5 @@
 ---
-title: 'IDBRequest: error event'
+title: "IDBRequest: error event"
 slug: Web/API/IDBRequest/error_event
 tags:
   - Error
@@ -8,36 +8,46 @@ tags:
   - Reference
 browser-compat: api.IDBRequest.error_event
 ---
+
 <p>{{APIRef("IndexedDB")}}</p>
 
-<p>The <code>error</code> handler is executed when an error caused a request to fail.</p>
+<p>
+  The <code>error</code> handler is executed when an error caused a request to
+  fail.
+</p>
 
 <table class="properties">
- <tbody>
-  <tr>
-   <th scope="row">Bubbles</th>
-   <td>Yes</td>
-  </tr>
-  <tr>
-   <th scope="row">Cancelable</th>
-   <td>No</td>
-  </tr>
-  <tr>
-   <th scope="row">Interface</th>
-   <td>{{DOMxRef("Event")}}</td>
-  </tr>
-  <tr>
-   <th scope="row">Event handler property</th>
-   <td>{{DOMxRef("IDBRequest.onerror", "onerror")}}</td>
-  </tr>
- </tbody>
+  <tbody>
+    <tr>
+      <th scope="row">Bubbles</th>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th scope="row">Cancelable</th>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th scope="row">Interface</th>
+      <td>{{DOMxRef("Event")}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Event handler property</th>
+      <td>{{DOMxRef("IDBRequest.onerror", "onerror")}}</td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Examples">Examples</h2>
 
-<p>This example opens a database and tries to add a record, listening for the <code>error</code> event for the <code>add()</code> operation (this will occur if, for example, a record with the given <code>taskTitle</code> already exists):</p>
+<p>
+  This example opens a database and tries to add a record, listening for the
+  <code>error</code> event for the <code>add()</code> operation (this will occur
+  if, for example, a record with the given <code>taskTitle</code> already
+  exists):
+</p>
 
-<pre class="brush: js;">// Open the database
+<pre class="brush: js;">
+// Open the database
 const DBOpenRequest = window.indexedDB.open('toDoList', 4);
 
 DBOpenRequest.addEventListener('upgradeneeded', event =&gt; {
@@ -73,9 +83,13 @@ DBOpenRequest.addEventListener('success', event =&gt; {
 });
 </pre>
 
-<p>The same example, using the <code>onerror</code> property instead of <code>addEventListener()</code>:</p>
+<p>
+  The same example, using the <code>onerror</code> property instead of
+  <code>addEventListener()</code>:
+</p>
 
-<pre class="brush: js;">// Open the database
+<pre class="brush: js;">
+// Open the database
 const DBOpenRequest = window.indexedDB.open('toDoList', 4);
 
 DBOpenRequest.onupgradeneeded = event =&gt; {
@@ -108,7 +122,8 @@ DBOpenRequest.onsuccess = event =&gt; {
   objectStoreRequest.onerror = () =&gt; {
     console.log(`Error adding new item: ${newItem.taskTitle}`);
   };
-};</pre>
+};</pre
+>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
 
@@ -117,6 +132,10 @@ DBOpenRequest.onsuccess = event =&gt; {
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a href="/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">Using IndexedDB</a></li>
- <li>{{DOMxRef("IDBRequest.onerror", "onerror")}} event handler property</li>
+  <li>
+    <a href="/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB"
+      >Using IndexedDB</a
+    >
+  </li>
+  <li>{{DOMxRef("IDBRequest.onerror", "onerror")}} event handler property</li>
 </ul>

@@ -66,7 +66,7 @@ Add the following to the new controller:
           const description = this.get('description');
           const url = this.get('url');
           let variables = { description, url };
-            
+
           // 4.
           return this.get('apollo')
             .mutate(
@@ -104,14 +104,14 @@ Go ahead and see if the mutation works; run `yarn start` and you’ll see the fo
 
 ![Run yarn start to test the mutation](http://i.imgur.com/om3TXDz.png)
 
-Two input fields and a *submit*-button - not very pretty but functional.
+Two input fields and a _submit_-button - not very pretty but functional.
 
 Enter some data into the fields, e.g.:
 
--   **Description**: `The best learning resource for GraphQL`
--   **URL**: `www.howtographql.com`
+- **Description**: `The best learning resource for GraphQL`
+- **URL**: `www.howtographql.com`
 
-Then click the *submit*-button. You won’t get any visual feedback in the UI until after the page transitions, but you can still see if the query actually worked by checking the current list of links in a Playground.
+Then click the _submit_-button. You won’t get any visual feedback in the UI until after the page transitions, but you can still see if the query actually worked by checking the current list of links in a Playground.
 
 Type `graphcool playground` into a Terminal and send the following query:
 

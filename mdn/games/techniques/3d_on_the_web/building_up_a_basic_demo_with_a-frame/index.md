@@ -1,29 +1,26 @@
---- title: Building up a basic demo with A-Frame slug: Games/Techniques/3D\_on\_the\_web/Building\_up\_a\_basic\_demo\_with\_A-Frame tags: - 3D - A-Frame - VR - Virtual Reality - Web - WebGL ---
+--- title: Building up a basic demo with A-Frame slug: Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_A-Frame tags: - 3D - A-Frame - VR - Virtual Reality - Web - WebGL ---
 
 {{GamesSidebar}}
 
 The [WebVR](/en-US/docs/Games/Techniques/3D_on_the_web/WebVR) and [WebGL](/en-US/docs/Web/API/WebGL_API) APIs already enable us to start creating virtual reality (VR) experiences inside web browsers, but the community is still waiting for tools and libraries to appear, to make this easier. Mozilla's [A-Frame](https://aframe.io/) framework provides a markup language allowing us to build 3D VR landscapes using a system familiar to web developers, which follows game development coding principles; this is useful for quickly and successfully building prototypes and demos, without having to write a lot of JavaScript or GLSL. This article explains how to get up and running with A-Frame, and how to use it to build up a simple demo.
 
-High level overview
--------------------
+## High level overview
 
 The current version of A-Frame is 0.3.2, which means it's highly experimental, but it already works and you can test it right away in the browser. It runs on desktop, mobile (iOS and Android), and Oculus Rift, Gear VR and HTC Vive.
 
 A-Frame is built on top of [WebGL](/en-US/docs/Web/API/WebGL_API), and provides pre built components to use in applications — models, video players, skyboxes, geometries, controls, animations, cursors, etc. It is based on the [entity component system](https://en.wikipedia.org/wiki/Entity_component_system), which is known in the game development world, but it targets web developers with a familiar markup structure, manipulable with JavaScript. The end result is 3D web experiences, which are VR-enabled by default.
 
-Environment setup
------------------
+## Environment setup
 
 Let's start by setting up an environment to create something with A-Frame. We'll then build up a demo and run it. You should start off by:
 
--   Making sure you are using a modern browser with good WebGL support (and WebVR support if you have available VR hardware) such as the latest Firefox or Chrome — download [Firefox Nightly](https://nightly.mozilla.org/) or Chrome (v54 or higher).
--   (Optional) set up a VR device such as Oculus Rift or Google Cardboard.
--   Create a new directory to store your project in.
--   Save a copy of the latest [A-Frame JavaScript library file](https://github.com/aframevr/aframe/tree/master/dist) inside your directory (check the GitHub repository for latest stable a dev builds).
--   Open the [A-Frame documentation](https://aframe.io/docs/) in a separate tab — it is useful to refer to.
+- Making sure you are using a modern browser with good WebGL support (and WebVR support if you have available VR hardware) such as the latest Firefox or Chrome — download [Firefox Nightly](https://nightly.mozilla.org/) or Chrome (v54 or higher).
+- (Optional) set up a VR device such as Oculus Rift or Google Cardboard.
+- Create a new directory to store your project in.
+- Save a copy of the latest [A-Frame JavaScript library file](https://github.com/aframevr/aframe/tree/master/dist) inside your directory (check the GitHub repository for latest stable a dev builds).
+- Open the [A-Frame documentation](https://aframe.io/docs/) in a separate tab — it is useful to refer to.
 
-HTML structure
---------------
+## HTML structure
 
 The first step is to create an HTML document — inside your project directory, create a new `index.html` file, and save the follow HTML inside it:
 
@@ -84,9 +81,9 @@ You can also [check it out on GitHub](https://github.com/end3r/MDN-Games-3D/blob
 
 A-Frame takes care of setting up everything you need:
 
--   A default light source and camera are included, so the cube is visible.
--   The controls are already working: you can use the mouse for looking around and the keyboard for movement (try the W, A, S, and D keys.)
--   There's even an "Enter VR mode" button in the bottom right corner of the screen, to allow you to shift to full screen, stereoscopic image viewing if you have the necessary VR hardware set up and ready.
+- A default light source and camera are included, so the cube is visible.
+- The controls are already working: you can use the mouse for looking around and the keyboard for movement (try the W, A, S, and D keys.)
+- There's even an "Enter VR mode" button in the bottom right corner of the screen, to allow you to shift to full screen, stereoscopic image viewing if you have the necessary VR hardware set up and ready.
 
 ### Specifying a camera
 
@@ -155,8 +152,7 @@ The torus is now visible on the scene, but its color doesn't look very good — 
 
 In the new `material` attribute, we set up the `color` of the material, then its `roughness` (a rougher material will scatter reflected light in more directions than a smooth material) and `metalness` (how metallic the material is).
 
-Adding some JavaScript to the mix
----------------------------------
+## Adding some JavaScript to the mix
 
 It is possible to populate the scene with entities created using JavaScript too, so let's use it to add a third shape, a cylinder. Add a new {{htmlelement("script")}} element at the end of the `<body>` element, just after the `<a-scene>` element, then add the following JavaScript code inside it:
 
@@ -174,8 +170,7 @@ We're getting a reference to the scene handler first, then we create the cylinde
 
 It is impressive to be able to create such a scene with just a few lines of HTML and JavaScript.
 
-Animation
----------
+## Animation
 
 We've already used `rotation` and `position` to move the shapes on the scene, and we can also scale them. These attributes can be manipulated to create the illusion of [animation](https://aframe.io/docs/core/animation.html).
 
@@ -242,8 +237,7 @@ We could use the `<a-animation>` to change the position of the third shape, or w
 
 We're using the `render()` function to update the cylinder's position on every frame. Try changing the given values on the `y` axis and see how it affects the movement.
 
-Conclusion
-----------
+## Conclusion
 
 Everything is rendered properly and animating — congratulations on building your first A-Frame scene! Here's how the final version looks and works:
 
@@ -255,12 +249,11 @@ If you have a VR device available, now is a good time to try out your scene with
 
 That was easier than you thought, right? A-Frame targets web developers by offering easy to use web markup and all the advantages that brings, such as JavaScript manipulation. It is easy to start with, but also provides a powerful API for advanced concepts, as well as dealing with cross browser differences and suchlike. The community is growing, just like the number of supported VR devices — it's a great time to start experimenting with such frameworks.
 
-See also
---------
+## See also
 
--   [A-Frame website](https://aframe.io/)
--   [Mozilla Mixed Reality website](https://mixedreality.mozilla.org/)
--   [Introducing A-Frame 0.1.0 article](https://aframe.io/blog/2015/12/16/introducing-aframe/)
--   [Made with A-Frame Tumblr](https://aframevr.tumblr.com/)
--   [A-Frame physics plugin](https://github.com/ngokevin/aframe-physics-components)
--   [A-Frame gamepad controls plugin](https://github.com/donmccurdy/aframe-gamepad-controls)
+- [A-Frame website](https://aframe.io/)
+- [Mozilla Mixed Reality website](https://mixedreality.mozilla.org/)
+- [Introducing A-Frame 0.1.0 article](https://aframe.io/blog/2015/12/16/introducing-aframe/)
+- [Made with A-Frame Tumblr](https://aframevr.tumblr.com/)
+- [A-Frame physics plugin](https://github.com/ngokevin/aframe-physics-components)
+- [A-Frame gamepad controls plugin](https://github.com/donmccurdy/aframe-gamepad-controls)

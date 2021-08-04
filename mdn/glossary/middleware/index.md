@@ -4,10 +4,9 @@ Middleware is a (loosely defined) term for any software or service that enabl
 
 In server-side web application frameworks, the term is often more specifically used to refer to pre-built software components that can be added to the framework's request/response processing pipeline, to handle tasks such as database access.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Middleware\_(distributed\_applications)", "Middleware\_(distributed\_applications)")}} on Wikipedia
--   {{Interwiki("wikipedia", "Middleware", "Middleware")}} on Wikipedia
+- {{Interwiki("wikipedia", "Middleware\_(distributed\_applications)", "Middleware\_(distributed\_applications)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Middleware", "Middleware")}} on Wikipedia

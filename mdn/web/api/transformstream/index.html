@@ -5,24 +5,34 @@ tags:
   - Streams API
 browser-compat: api.TransformStream
 ---
+
 <p>{{APIRef("Streams")}}</p>
 
-<p><span class="seoSummary">The <code>TransformStream</code> interface of the <a href="/en-US/docs/Web/API/Streams_API">Streams API</a> represents a set of transformable data.</span></p>
+<p>
+  <span class="seoSummary"
+    >The <code>TransformStream</code> interface of the <a
+      href="/en-US/docs/Web/API/Streams_API"
+      >Streams API</a
+    > represents a set of transformable data.</span
+  >
+</p>
 
 <h2 id="Constructor">Constructor</h2>
 
 <dl>
- <dt>{{domxref("TransformStream.TransformStream", "TransformStream()")}}</dt>
- <dd>Creates and returns a transform stream object from the given handlers.</dd>
+  <dt>{{domxref("TransformStream.TransformStream", "TransformStream()")}}</dt>
+  <dd>
+    Creates and returns a transform stream object from the given handlers.
+  </dd>
 </dl>
 
 <h2 id="Properties">Properties</h2>
 
 <dl>
- <dt>{{domxref("TransformStream.readable")}} {{readonlyInline}}</dt>
- <dd>The <code>readable</code> end of a TransformStream.</dd>
- <dt>{{domxref("TransformStream.writable")}} {{readonlyInline}}</dt>
- <dd>The <code>writable</code> end of a TransformStream.</dd>
+  <dt>{{domxref("TransformStream.readable")}} {{readonlyInline}}</dt>
+  <dd>The <code>readable</code> end of a TransformStream.</dd>
+  <dt>{{domxref("TransformStream.writable")}} {{readonlyInline}}</dt>
+  <dd>The <code>writable</code> end of a TransformStream.</dd>
 </dl>
 
 <h2 id="Methods">Methods</h2>
@@ -33,9 +43,13 @@ browser-compat: api.TransformStream
 
 <h3 id="Anything-to-uint8array_stream">Anything-to-uint8array stream</h3>
 
-<p>In the following example, a transform stream passes through all chunks it receives as {{jsxref("Uint8Array")}} values.</p>
+<p>
+  In the following example, a transform stream passes through all chunks it
+  receives as {{jsxref("Uint8Array")}} values.
+</p>
 
-<pre class="brush: js">const transformContent = {
+<pre class="brush: js">
+const transformContent = {
   start() {}, // required.
   async transform(chunk, controller) {
     chunk = await chunk
@@ -71,11 +85,17 @@ class AnyToU8Stream extends TransformStream {
 }
 </pre>
 
-<h3 id="Polyfilling_TextEncoderStream_and_TextDecoderStream">Polyfilling TextEncoderStream and TextDecoderStream</h3>
+<h3 id="Polyfilling_TextEncoderStream_and_TextDecoderStream">
+  Polyfilling TextEncoderStream and TextDecoderStream
+</h3>
 
-<p>Note that this is deprecated by the native constructors. This is intended as a polyfill for unsupported platforms.</p>
+<p>
+  Note that this is deprecated by the native constructors. This is intended as a
+  polyfill for unsupported platforms.
+</p>
 
-<pre class="brush: js">const tes = {
+<pre class="brush: js">
+const tes = {
   start(){this.encoder = new TextEncoder()},
   transform(chunk, controller) {
     controller.enqueue(this.encoder.encode(chunk))
@@ -96,7 +116,8 @@ class JSTextEncoderStream extends TransformStream {
 
 <p>Similarly, <code>TextDecoderStream</code> can be written as such:</p>
 
-<pre class="brush: js">const tds = {
+<pre class="brush: js">
+const tds = {
   start(){
     this.decoder = new TextDecoder(this.encoding, this.options)
   },
@@ -119,11 +140,17 @@ class JSTextDecoderStream extends TransformStream {
 }
 </pre>
 
-<h3 id="Chaining_multiple_ReadableStreams_together">Chaining multiple ReadableStreams together</h3>
+<h3 id="Chaining_multiple_ReadableStreams_together">
+  Chaining multiple ReadableStreams together
+</h3>
 
-<p>This is a useful one, where multiple streams can be conjoined. Examples include building a PWA with progressive loading and progressive streaming.</p>
+<p>
+  This is a useful one, where multiple streams can be conjoined. Examples
+  include building a PWA with progressive loading and progressive streaming.
+</p>
 
-<pre class="brush: js">let responses = [ /* conjoined response tree */ ]
+<pre class="brush: js">
+let responses = [ /* conjoined response tree */ ]
 let {readable, writable} = new TransformStream
 
 responses.reduce(
@@ -145,6 +172,10 @@ responses.reduce(
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a href="https://whatwg-stream-visualizer.glitch.me/">WHATWG Stream Visualiser</a>, for a basic visualisation of readable, writable, and transform streams.</li>
- <li><a href="https://web.dev/streams/">Streams—The Definitive Guide</a></li>
+  <li>
+    <a href="https://whatwg-stream-visualizer.glitch.me/"
+      >WHATWG Stream Visualiser</a
+    >, for a basic visualisation of readable, writable, and transform streams.
+  </li>
+  <li><a href="https://web.dev/streams/">Streams—The Definitive Guide</a></li>
 </ul>

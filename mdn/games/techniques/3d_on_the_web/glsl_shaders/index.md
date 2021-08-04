@@ -1,4 +1,4 @@
---- title: GLSL Shaders slug: Games/Techniques/3D\_on\_the\_web/GLSL\_Shaders tags: - Beginner - GLSL - OpenGL - Shader - texture shader - three.js - vertex shader ---
+--- title: GLSL Shaders slug: Games/Techniques/3D_on_the_web/GLSL_Shaders tags: - Beginner - GLSL - OpenGL - Shader - texture shader - three.js - vertex shader ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ GLSL is not as intuitive as JavaScript. GLSL is strongly typed and there is a lo
 
 As you may remember from the [basic theory](/en-US/docs/Games/Techniques/3D_on_the_web/Basic_theory) article, a vertex is a point in a 3D coordinate system. Vertices may, and usually do, have additional properties. The 3D coordinate system defines space and the vertices help define shapes in that space.
 
-Shader types
-------------
+## Shader types
 
 A shader is essentially a function required to draw something on the screen. Shaders run on a [GPU](https://en.wikipedia.org/wiki/GPU) (graphics processing unit), which is optimized for such operations. Using a GPU to deal with shaders offloads some of the number crunching from the CPU. This allows the CPU to focus its processing power on other tasks, like executing code.
 
@@ -25,8 +24,7 @@ Fragment (or texture) shaders define RGBA (red, green, blue, alpha) colors for e
 
 The calculations result in a variable containing the information about the RGBA color.
 
-Demo
-----
+## Demo
 
 Let's build a simple demo to explain those shaders in action. Be sure to read [Three.js tutorial](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js) first to grasp the concept of the scene, its objects, and materials.
 
@@ -36,9 +34,9 @@ Let's build a simple demo to explain those shaders in action. Be sure to read [T
 
 To start with the WebGL shaders you don't need much. You should:
 
--   Make sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
--   Create a directory to store your experiments in.
--   Save a copy of the [latest minimized Three.js library](https://threejs.org/build/three.min.js) inside your directory.
+- Make sure you are using a modern browser with good [WebGL](/en-US/docs/Web/API/WebGL_API) support, such as the latest Firefox or Chrome.
+- Create a directory to store your experiments in.
+- Save a copy of the [latest minimized Three.js library](https://threejs.org/build/three.min.js) inside your directory.
 
 ### HTML structure
 
@@ -92,7 +90,7 @@ Let's continue by writing a simple vertex shader — add the code below inside t
 
 The resulting `gl_Position` is calculated by multiplying the model-view and the projection matrices by each vector to get the final vertex position, in each case.
 
-**Note**: You can learn more about *model*, *view*, and *projection transformations* from the [vertex processing paragraph](/en-US/docs/Games/Techniques/3D_on_the_web/Basic_theory#vertex_processing), and you can also check out the links at the end of this article to learn more about it.
+**Note**: You can learn more about _model_, _view_, and _projection transformations_ from the [vertex processing paragraph](/en-US/docs/Games/Techniques/3D_on_the_web/Basic_theory#vertex_processing), and you can also check out the links at the end of this article to learn more about it.
 
 Both `projectionMatrix` and `modelViewMatrix` are provided by Three.js and the vector is passed with the new 3D position, which results in the original cube moving 10 units along the `x` axis and 5 units along the `z` axis, translated via a shader. We can ignore the fourth parameter and leave it with the default `1.0` value; this is used to manipulate the clipping of the vertex position in the 3D space, but we don't need in our case.
 
@@ -135,8 +133,7 @@ Three.js compiles and runs the shaders attached to the mesh to which this materi
 
 It looks exactly the same as the Three.js cube demo but the slightly different position and the same blue color are both achieved using the shader.
 
-Final code
-----------
+## Final code
 
 ### HTML
 
@@ -194,13 +191,11 @@ Final code
 
 {{ EmbedLiveSample('Final\_code', '100%', '400', '', 'Games/Techniques/3D\_on\_the\_web/GLSL\_Shaders') }}
 
-Conclusion
-----------
+## Conclusion
 
 This article has taught the very basics of shaders. Our example doesn't do much but there are many more cool things you can do with shaders — check out some really cool ones on [ShaderToy](https://shadertoy.com/) for inspiration and to learn from their sources.
 
-See also
---------
+## See also
 
--   [Learning WebGL](https://web.archive.org/web/20180624211158/http://learningwebgl.com/blog/?page_id=1217) — for general WebGL knowledge
--   [WebGL Shaders and GLSL at WebGL Fundamentals](https://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html) — for GLSL specific information
+- [Learning WebGL](https://web.archive.org/web/20180624211158/http://learningwebgl.com/blog/?page_id=1217) — for general WebGL knowledge
+- [WebGL Shaders and GLSL at WebGL Fundamentals](https://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html) — for GLSL specific information

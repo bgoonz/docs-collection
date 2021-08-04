@@ -6,20 +6,19 @@ QUIC was designed to support the semantics of HTTP/2. It provides multiplexing, 
 
 Key features of QUIC include:
 
--   Reduction in connection establishment time.
--   Improved congestion control.
--   Multiplexing without head-of-line blocking.
--   Forward error correction.
--   Connection migration.
+- Reduction in connection establishment time.
+- Improved congestion control.
+- Multiplexing without head-of-line blocking.
+- Forward error correction.
+- Connection migration.
 
 There is limited browser and server support for QUIC today.
 
 ### Resources
 
--   [Chromium Projects Documentation](https://www.chromium.org/quic)
--   [IETF Draft](https://datatracker.ietf.org/doc/html/draft-tsvwg-quic-protocol-02)
+- [Chromium Projects Documentation](https://www.chromium.org/quic)
+- [IETF Draft](https://datatracker.ietf.org/doc/html/draft-tsvwg-quic-protocol-02)
 
-See also
---------
+## See also
 
--   [HTTP/2](/en-US/docs/Glossary/HTTP_2)
+- [HTTP/2](/en-US/docs/Glossary/HTTP_2)

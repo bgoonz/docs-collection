@@ -1,4 +1,4 @@
---- title: Entity header slug: Glossary/Entity\_header tags: - Glossary - WebMechanics ---
+--- title: Entity header slug: Glossary/Entity_header tags: - Glossary - WebMechanics ---
 
 #### Warning
 
@@ -13,7 +13,6 @@ In the following example, {{HTTPHeader("Content-Length")}} is an entity header, 
     User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:50.0) Gecko/20100101 Firefox/50.0
     Content-Length: 128
 
-See also
---------
+## See also
 
--   {{Glossary("Representation header")}}
+- {{Glossary("Representation header")}}

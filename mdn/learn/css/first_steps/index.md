@@ -1,4 +1,4 @@
---- title: CSS first steps slug: Learn/CSS/First\_steps tags: - Beginner - CSS - Landing - Learn - Module - first steps ---
+--- title: CSS first steps slug: Learn/CSS/First_steps tags: - Beginner - CSS - Landing - Learn - Module - first steps ---
 
 {{LearnSidebar}}
 
@@ -10,8 +10,7 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should have:
 
@@ -21,8 +20,7 @@ Before starting this module, you should have:
 
 **Note**: If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 This module contains the following articles, which will take you through all the basic theory of CSS, and provide opportunities for you to test out some skills.
 

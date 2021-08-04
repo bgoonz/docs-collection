@@ -1,4 +1,4 @@
-In this section, you’ll learn how to add a mutation to the GraphQL API. This mutation will allow you to *post* new links to the server.
+In this section, you’ll learn how to add a mutation to the GraphQL API. This mutation will allow you to _post_ new links to the server.
 
 ### Extending the schema definition
 
@@ -84,7 +84,7 @@ Next, update the `resolvers` functions to look as follows:
       Mutation: {
         // 2
         post: (parent, args) => {
-      
+
         let idCount = links.length
 
            const link = {
@@ -107,7 +107,7 @@ Also, here’s what’s going on with the numbered comments:
 
 Now’s a good time to discuss the second argument that’s passed into all resolver functions: `args`. Any guesses what it’s used for?
 
-Correct! 💡 It carries the *arguments* for the operation – in this case the `url` and `description` of the `Link` to be created. We didn’t need it for the `feed` and `info` resolvers before, because the corresponding root fields don’t specify any arguments in the schema definition.
+Correct! 💡 It carries the _arguments_ for the operation – in this case the `url` and `description` of the `Link` to be created. We didn’t need it for the `feed` and `info` resolvers before, because the corresponding root fields don’t specify any arguments in the schema definition.
 
 ### Testing the mutation
 
@@ -135,11 +135,11 @@ To verify that your mutation worked, you can send the `feed` query from before a
 
 ![returns the additional Link](https://imgur.com/ZfJQwdB.png)
 
-However, once you kill and restart the server, you’ll notice that the previously added links are now gone and you need to add them again. This is because the links are only stored *in-memory*, in the `links` array. In the next sections, you will learn how to add a *database* to the GraphQL server in order to persist the data beyond the runtime of the server.
+However, once you kill and restart the server, you’ll notice that the previously added links are now gone and you need to add them again. This is because the links are only stored _in-memory_, in the `links` array. In the next sections, you will learn how to add a _database_ to the GraphQL server in order to persist the data beyond the runtime of the server.
 
 ### Exercise
 
-If you want to practice implementing GraphQL resolvers a bit more, here’s an *optional* challenge for you. Based on your current implementation, extend the GraphQL API with full CRUD functionality for the `Link` type. In particular, implement the queries and mutations that have the following definitions:
+If you want to practice implementing GraphQL resolvers a bit more, here’s an _optional_ challenge for you. Based on your current implementation, extend the GraphQL API with full CRUD functionality for the `Link` type. In particular, implement the queries and mutations that have the following definitions:
 
     type Query {
       # Fetch a single link by its `id`

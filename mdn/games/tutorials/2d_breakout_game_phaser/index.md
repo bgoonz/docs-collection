@@ -1,4 +1,4 @@
---- title: 2D breakout game using Phaser slug: Games/Tutorials/2D\_breakout\_game\_Phaser tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
+--- title: 2D breakout game using Phaser slug: Games/Tutorials/2D_breakout_game_Phaser tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -12,8 +12,7 @@ To get the most out of this series of articles you should already have basic to 
 
 ![Gameplay screen from the game MDN Breakout created with Phaser where you can use your paddle to bounce the ball and destroy the brick field, with keeping the points and lives.](mdn-breakout-phaser.png)
 
-Lesson details
---------------
+## Lesson details
 
 All the lessons — and the different versions of the [MDN Breakout game](https://end3r.github.io/Gamedev-Phaser-Content-Kit/demos/lesson16.html) we are building together — are [available on GitHub](https://end3r.github.io/Gamedev-Phaser-Content-Kit/demos/):
 
@@ -40,8 +39,7 @@ After that, you can pick any framework you like and use it for your projects; we
 
 **Note**: This series of articles can be used as material for hands-on game development workshops. You can also make use of the [Gamedev Phaser Content Kit](https://github.com/end3r/Gamedev-Phaser-Content-Kit) based on this tutorial if you want to give a talk about game development with Phaser.
 
-Next steps
-----------
+## Next steps
 
 Ok, let us get started! Head to the first part of the series — [Initialize the framework](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Initialize_the_framework).
 

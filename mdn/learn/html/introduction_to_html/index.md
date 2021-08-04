@@ -1,4 +1,4 @@
---- title: Introduction to HTML slug: Learn/HTML/Introduction\_to\_HTML tags: - CodingScripting - HTML - Introduction to HTML - Landing - Links - Structure - Text - head - semantics ---
+--- title: Introduction to HTML slug: Learn/HTML/Introduction_to_HTML tags: - CodingScripting - HTML - Introduction to HTML - Landing - Links - Structure - Text - head - semantics ---
 
 {{LearnSidebar}}
 
@@ -10,15 +10,13 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you don't need any previous HTML knowledge, but you should have at least basic familiarity with using computers and using the web passively (i.e., just looking at it and consuming content). You should have a basic work environment set up (as detailed in [Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)), and understand how to create and manage files (as detailed in [Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)). Both are parts of our [Getting started with the web](/en-US/docs/Learn/Getting_started_with_the_web) complete beginner's module.
 
 **Note**: If you are working on a computer/tablet/other devices that doesn't let you create your own files, you can try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 This module contains the following articles, which will take you through all the basic theory of HTML and provide ample opportunity for you to test out some skills.
 
@@ -43,8 +41,7 @@ As well as defining individual parts of your page (such as "a paragraph" or "an 
 [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)  
 Writing HTML is fine, but what if something goes wrong, and you can't work out where the error in the code is? This article will introduce you to some tools that can help.
 
-Assessments
------------
+## Assessments
 
 The following assessments will test your understanding of the HTML basics covered in the guides above.
 

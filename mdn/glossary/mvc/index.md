@@ -8,8 +8,7 @@ The three parts of the MVC software-design pattern can be described as follows:
 2.  View: Handles layout and display.
 3.  Controller: Routes commands to the model and view parts.
 
-Model View Controller example
------------------------------
+## Model View Controller example
 
 Imagine a simple shopping list app. All we want is a list of the name, quantity and price of each item we need to buy this week. Below we'll describe how we could implement some of this functionality using MVC.
 
@@ -35,8 +34,7 @@ So for example, our shopping list could have input forms and buttons that allow 
 
 You might however also want to just update the view to display the data in a different format, e.g., change the item order to alphabetical, or lowest to highest price. In this case the controller could handle this directly without needing to update the model.
 
-MVC on the web
---------------
+## MVC on the web
 
 As a web developer, this pattern will probably be quite familiar even if you've never consciously used it before. Your data model is probably contained in some kind of database (be it a traditional server-side database like MySQL, or a client-side solution such as [IndexedDB \[en-US\]](/en-US/docs/Web/API/IndexedDB_API).) Your app's controlling code is probably written in HTML/JavaScript, and your user interface is probably written using HTML/CSS/whatever else you like. This sounds very much like MVC, but MVC makes these components follow a more rigid pattern.
 
@@ -44,9 +42,8 @@ In the early days of the Web, MVC architecture was mostly implemented on the ser
 
 Web frameworks such as [AngularJS](https://en.wikipedia.org/wiki/AngularJS) and [Ember.js](https://en.wikipedia.org/wiki/Ember.js "Ember.js") all implement an MVC architecture, albeit in slightly different ways.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Model–view–controller")}} on Wikipedia
+- {{interwiki("wikipedia", "Model–view–controller")}} on Wikipedia

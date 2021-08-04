@@ -4,12 +4,11 @@
 
 On the web, a caret is used to represent the insertion point in {{HTMLElement("input")}} and {{HTMLElement("textarea")}} elements, as well as any elements whose {{htmlattrxref("contenteditable")}} attribute is set, thereby allowing the contents of the element to be edited by the user.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{interwiki("wikipedia", "Caret navigation")}} on Wikipedia
+- {{interwiki("wikipedia", "Caret navigation")}} on Wikipedia
 
 ### CSS related to the caret
 
@@ -19,11 +18,11 @@ You can set the color of the caret for a given element's editable content by set
 
 These elements provide text entry fields or boxes and therefore make use of the caret.
 
--   `<input type="text">`
--   `<input type="password">`
--   `<input type="search">`
--   `<input type="date">`, `<input type="time">`, `<input type="datetime">`, and `<input type="datetime-local">`
--   `<input type="number">`[,](/en-US/docs/Web/HTML/Element/input/number) `<input type="range">`
--   `<input type="email">`, `<input type="tel">`, and `<input type="url">`
--   {{HTMLElement("textarea")}}
--   Any element with its {{htmlattrxref("contenteditable")}} attribute set
+- `<input type="text">`
+- `<input type="password">`
+- `<input type="search">`
+- `<input type="date">`, `<input type="time">`, `<input type="datetime">`, and `<input type="datetime-local">`
+- `<input type="number">`[,](/en-US/docs/Web/HTML/Element/input/number) `<input type="range">`
+- `<input type="email">`, `<input type="tel">`, and `<input type="url">`
+- {{HTMLElement("textarea")}}
+- Any element with its {{htmlattrxref("contenteditable")}} attribute set

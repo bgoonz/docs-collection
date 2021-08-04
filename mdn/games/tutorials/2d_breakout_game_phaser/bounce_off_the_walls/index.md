@@ -1,4 +1,4 @@
---- title: Bounce off the walls slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Bounce\_off\_the\_walls tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - bouncing ---
+--- title: Bounce off the walls slug: Games/Tutorials/2D_breakout_game_Phaser/Bounce_off_the_walls tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - bouncing ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **6th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs/
 
 <span class="seoSummary">Now that physics have been introduced, we can start implementing collision detection into the game — first we'll look at the walls.</span>
 
-Bouncing off the world boundaries
----------------------------------
+## Bouncing off the world boundaries
 
 The easiest way to get our ball bouncing off the walls is to tell the framework that we want to treat the boundaries of the {{htmlelement("canvas")}} element as walls and not let the ball move past them. In Phaser this can be easily accomplished using the `collideWorldsBound` property. Add this line right after the existing `game.physics.enable()` method call:
 
@@ -21,15 +20,13 @@ Now the ball will stop at the edge of the screen instead of disappearing, but it
 
 Try reloading index.html again — now you should see the ball bouncing off all the walls and moving inside the canvas area.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/dcw36opz/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 This is starting to look more like a game now, but we can't control it in any way — it's high time we introduced the [player paddle and controls](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Player_paddle_and_controls).
 

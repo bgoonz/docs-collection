@@ -1,4 +1,4 @@
---- title: Track the score and win slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Track\_the\_score\_and\_win tags: - Beginner - Canvas - Games - JavaScript - Tutorial - scoring - winning ---
+--- title: Track the score and win slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Track_the_score_and_win tags: - Beginner - Canvas - Games - JavaScript - Tutorial - scoring - winning ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **8th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">Destroying the bricks is really cool, but to be even more awesome the game could award points for every brick a user hits, and keep count of the total score.</span>
 
-Counting the score
-------------------
+## Counting the score
 
 If you can see your score throughout the game, eventually you can impress your friends. You need a variable to record the score. Add the following into your JavaScript, after the rest of your variables:
 
@@ -46,8 +45,7 @@ Calling `drawScore()` from the `draw()` function keeps the score up to date wit
 
     drawScore();
 
-Displaying a winning message when all bricks have been destroyed
-----------------------------------------------------------------
+## Displaying a winning message when all bricks have been destroyed
 
 Collecting the points works well, but you won't be adding them forever — what about when all the bricks have been destroyed? It's the main purpose of the game after all, so you should display a winning message if all available points have been collected. Add the following highlighted section into your `collisionDetection()` function:
 
@@ -73,8 +71,7 @@ Collecting the points works well, but you won't be adding them forever — what 
 
 Thanks to this, your users can actually win the game when they destroy all the bricks, which is quite important when it comes to games. The `document.location.reload()` function reloads the page and starts the game again once the alert button is clicked.
 
-Compare your code
------------------
+## Compare your code
 
 The latest code looks (and works) like this, in case you want to compare and contrast it with yours:
 
@@ -82,8 +79,7 @@ The latest code looks (and works) like this, in case you want to compare and co
 
 **Exercise**: Add more points per brick hit, print out the number of collected points in the end game alert box.
 
-Next steps
-----------
+## Next steps
 
 The game looks pretty good at this point. In the next lesson you will broaden the game's appeal by adding [Mouse controls](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls).
 

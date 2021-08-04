@@ -2,13 +2,12 @@
 
 **ECMAScript** is a scripting language specification on which {{glossary("JavaScript")}} is based. [Ecma International](https://www.ecma-international.org) is in charge of standardizing ECMAScript.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "ECMAScript")}} on Wikipedia
+- {{Interwiki("wikipedia", "ECMAScript")}} on Wikipedia
 
 ### Technical reference
 
--   [ECMAScript](http://www.ecmascript.org/)
+- [ECMAScript](http://www.ecmascript.org/)

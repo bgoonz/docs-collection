@@ -1,11 +1,10 @@
---- title: Common questions slug: Learn/Common\_questions tags: - CodingScripting - Infrastructure - Learn - Web - WebMechanics ---
+--- title: Common questions slug: Learn/Common_questions tags: - CodingScripting - Infrastructure - Learn - Web - WebMechanics ---
 
 {{LearnSidebar}}
 
 This section of the Learning Area is designed to provide answers to common questions that may come up, which are not necessarily part of the structured core learning pathways (e.g. the [HTML](/en-US/docs/Learn/HTML) or [CSS](/en-US/docs/Learn/CSS) learning articles.) These articles are designed to work on their own.
 
-Web mechanics
--------------
+## Web mechanics
 
 This section covers questions relating to general knowledge of the web ecosystem and how it works.
 
@@ -27,8 +26,7 @@ Domain names are a key component of the Internet infrastructure. They provide a 
 [What is a web server?](/en-US/docs/Learn/Common_questions/What_is_a_web_server)  
 The term "web server" can refer to the hardware or software that serves websites to clients across the web — or both of them working together. In this article we go over how web servers work, and why they're important.
 
-Tools and setup
----------------
+## Tools and setup
 
 Questions related to the tools/software you can use to build websites.
 
@@ -62,8 +60,7 @@ Looking for a place to host your website? Here's a step-by-step guide to hosting
 [What tools are available to debug and improve website performance?](/en-US/docs/Tools/Performance)  
 This set of articles shows you how to use the Developer Tools in Firefox to debug and improve performance of your website, using the tools to check memory usage, the JavaScript call tree, the number of DOM nodes being rendered, and more.
 
-Design and accessibility
-------------------------
+## Design and accessibility
 
 This section lists questions related to aesthetics, page structure, accessibility techniques, etc.
 
@@ -82,11 +79,10 @@ This article provides basic techniques to help you design websites for any kind 
 [What HTML features promote accessibility?](/en-US/docs/Learn/Common_questions/HTML_features_for_accessibility)  
 This article describes specific features of HTML that can be used to make a webpage more accessible to people with different disabilities.
 
-HTML, CSS and JavaScript questions
-----------------------------------
+## HTML, CSS and JavaScript questions
 
 For common solutions to HTML/CSS/JavaScript problems, try the following articles:
 
--   [Use HTML to solve common problems](/en-US/docs/Learn/HTML/Howto)
--   [Use CSS to solve common problems](/en-US/docs/Learn/CSS/Howto)
--   [Use JavaScript to solve common problems](/en-US/docs/Learn/JavaScript/Howto)
+- [Use HTML to solve common problems](/en-US/docs/Learn/HTML/Howto)
+- [Use CSS to solve common problems](/en-US/docs/Learn/CSS/Howto)
+- [Use JavaScript to solve common problems](/en-US/docs/Learn/JavaScript/Howto)

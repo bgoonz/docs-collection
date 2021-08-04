@@ -44,9 +44,9 @@ As you can see from the comments, some fields on your model types are read-only.
 
 In general, there are a few things to note about these type definitions:
 
--   Every type annotated with the `@model`-directive will be *mapped* to the database and corresponding CRUD-operations are added to the GraphQL API of your Graphcool service.
--   The `@isUnique`-directive means that the annotated field can never have the same value for two different records of that type (also called *nodes*). Since this is a read-only field, the Graphcool Framework will take care of managing this constraint.
--   `createdAt` and `updatedAt` are special fields that are managed by the Graphcool Framework as well. `createdAt` will carry the date for when a node of that type was created, `updatedAt` when it was last updated.
+- Every type annotated with the `@model`-directive will be _mapped_ to the database and corresponding CRUD-operations are added to the GraphQL API of your Graphcool service.
+- The `@isUnique`-directive means that the annotated field can never have the same value for two different records of that type (also called _nodes_). Since this is a read-only field, the Graphcool Framework will take care of managing this constraint.
+- `createdAt` and `updatedAt` are special fields that are managed by the Graphcool Framework as well. `createdAt` will carry the date for when a node of that type was created, `updatedAt` when it was last updated.
 
 #### Creating the GraphQL Server
 
@@ -74,10 +74,10 @@ Type the following command into the terminal:
 
 This will create a new directory called `server` and place the following files in there:
 
--   `graphcool.yml`: This is the [root configuration](https://www.graph.cool/docs/reference/service-definition/graphcool.yml-foatho8aip) file for your Graphcool service. It tells the Graphcool Framework where to find your data model (and other type definitions), specifies the [*permission rules*](https://www.graph.cool/docs/reference/auth/authorization/overview-iegoo0heez) and provides information about any integrated *serverless [functions](https://www.graph.cool/docs/reference/functions/overview-aiw4aimie9)*.
--   `types.graphql`: This specifies the data model for your application, all type definitions are written in GraphQL SDL.
--   `package.json`: If you’re integrating any serverless functions that are using dependencies from npm, you need to list those dependencies here. Note that this file is completely independent from the dependencies of your frontend which you’ll create in a bit. Since this tutorial won’t actually use any serverless functions, you can simply ignore it.
--   `src`: The `src` directory is used to for the code of the serverless functions you’re integrating in your Graphcool service. It currently contains the setup for a simple “Hello World”-[resolver](https://www.graph.cool/docs/reference/functions/resolvers-su6wu3yoo2) function (which you can delete if you like). Again, you can ignore this directory since we’re not going to use any functions in this tutorial.
+- `graphcool.yml`: This is the [root configuration](https://www.graph.cool/docs/reference/service-definition/graphcool.yml-foatho8aip) file for your Graphcool service. It tells the Graphcool Framework where to find your data model (and other type definitions), specifies the [_permission rules_](https://www.graph.cool/docs/reference/auth/authorization/overview-iegoo0heez) and provides information about any integrated _serverless [functions](https://www.graph.cool/docs/reference/functions/overview-aiw4aimie9)_.
+- `types.graphql`: This specifies the data model for your application, all type definitions are written in GraphQL SDL.
+- `package.json`: If you’re integrating any serverless functions that are using dependencies from npm, you need to list those dependencies here. Note that this file is completely independent from the dependencies of your frontend which you’ll create in a bit. Since this tutorial won’t actually use any serverless functions, you can simply ignore it.
+- `src`: The `src` directory is used to for the code of the serverless functions you’re integrating in your Graphcool service. It currently contains the setup for a simple “Hello World”-[resolver](https://www.graph.cool/docs/reference/functions/resolvers-su6wu3yoo2) function (which you can delete if you like). Again, you can ignore this directory since we’re not going to use any functions in this tutorial.
 
 Next you need to make sure that the data model of the GraphQL server is correct, so you need to adjust the type definitions in `types.graphql`.
 
@@ -114,9 +114,9 @@ Still in the `server` directory in your terminal, run the following command:
 
     graphcool-framework playground
 
-The left pane of the Playground is the *editor* that you can use to write your queries and mutations (and even realtime subscriptions). Once you click the play button in the middle, the response to the request will be displayed in the *results* pane on the right.
+The left pane of the Playground is the _editor_ that you can use to write your queries and mutations (and even realtime subscriptions). Once you click the play button in the middle, the response to the request will be displayed in the _results_ pane on the right.
 
-Copy the following two mutations into the *editor* pane:
+Copy the following two mutations into the _editor_ pane:
 
     mutation CreateGraphcoolLink {
       createLink(
@@ -134,13 +134,13 @@ Copy the following two mutations into the *editor* pane:
       }
     }
 
-Since you’re adding two mutations to the editor at once, the mutations need to have *operation names*. In your case, these are `CreateGraphcoolLink` and `CreateApolloLink`.
+Since you’re adding two mutations to the editor at once, the mutations need to have _operation names_. In your case, these are `CreateGraphcoolLink` and `CreateApolloLink`.
 
-Click the *Play*-button in the middle of the two panes and select each mutation from the dropdown exactly once.
+Click the _Play_-button in the middle of the two panes and select each mutation from the dropdown exactly once.
 
 ![Clicking the play button](http://imgur.com/ZBgeq22.png)
 
-This creates two new `Link` records in the database. You can verify that the mutations worked by either viewing the currently stored data in the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) (simply click *DATA* in the left side-menu) or by sending the following query in the already open Playground:
+This creates two new `Link` records in the database. You can verify that the mutations worked by either viewing the currently stored data in the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) (simply click _DATA_ in the left side-menu) or by sending the following query in the already open Playground:
 
     {
       allLinks {
@@ -309,12 +309,12 @@ To get back all the functionality of Apollo Client (and its Angular bindings), w
 
 Here’s an overview of the packages you just installed:
 
--   [`apollo-client`](https://www.npmjs.com/package/apollo-client) is the Apollo Client library
--   [`apollo-angular`](https://github.com/apollographql/apollo-angular) contains the bindings to use Apollo Client with Angular.
--   [`graphql-tag`](https://github.com/apollographql/graphql-tag) is a GraphQL parser. Every GraphQL operation you hand over to Apollo Client will have to be parsed by the `gql` function.
--   [`apollo-angular-link-http`](https://github.com/apollographql/apollo-angular/tree/master/packages/apollo-angular-link-http) provides a similar `HttpLink` to Apollo’s `HttpLink` with one difference, it uses Angular’s `HttpClient`.
--   [`apollo-cache-inmemory`](https://www.npmjs.com/package/apollo-cache-inmemory) is a cache implementation that supports all of Apollo Client 1.0’s features without the dependency on `Redux`.
--   [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality as well.
+- [`apollo-client`](https://www.npmjs.com/package/apollo-client) is the Apollo Client library
+- [`apollo-angular`](https://github.com/apollographql/apollo-angular) contains the bindings to use Apollo Client with Angular.
+- [`graphql-tag`](https://github.com/apollographql/graphql-tag) is a GraphQL parser. Every GraphQL operation you hand over to Apollo Client will have to be parsed by the `gql` function.
+- [`apollo-angular-link-http`](https://github.com/apollographql/apollo-angular/tree/master/packages/apollo-angular-link-http) provides a similar `HttpLink` to Apollo’s `HttpLink` with one difference, it uses Angular’s `HttpClient`.
+- [`apollo-cache-inmemory`](https://www.npmjs.com/package/apollo-cache-inmemory) is a cache implementation that supports all of Apollo Client 1.0’s features without the dependency on `Redux`.
+- [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality as well.
 
 That’s it; you’re ready to write some code! 🚀
 
@@ -393,7 +393,7 @@ Open `src/app/app.module.ts` and import the GraphQLModule in AppModule:
 
 Next, you need to replace the placeholder for the GraphQL endpoint with your actual endpoint. But where do you get your endpoint from?
 
-There are two ways for you to get your endpoint. You can either open the [Graphcool Console](https://console.graph.cool) and click the *Endoints*-button in the bottom-left corner. The second option is to use the CLI.
+There are two ways for you to get your endpoint. You can either open the [Graphcool Console](https://console.graph.cool) and click the _Endoints_-button in the bottom-left corner. The second option is to use the CLI.
 
 In the terminal, navigate into the `server` directory and use the following command to get access to the API endpoints of your Graphcools service:
 

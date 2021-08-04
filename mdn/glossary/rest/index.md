@@ -8,10 +8,10 @@ HTTP APIs in general are sometimes colloquially referred to as RESTful APIs, RES
 
 ### Learn about it
 
--   [restapitutorial.com](https://www.restapitutorial.com/)
--   [restcookbook.com](https://restcookbook.com/)
+- [restapitutorial.com](https://www.restapitutorial.com/)
+- [restcookbook.com](https://restcookbook.com/)
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Representational\_state\_transfer", "REST")}} on Wikipedia
--   [REST Architecture](https://www.service-architecture.com/articles/web-services/representational_state_transfer_rest.html)
+- {{Interwiki("wikipedia", "Representational\_state\_transfer", "REST")}} on Wikipedia
+- [REST Architecture](https://www.service-architecture.com/articles/web-services/representational_state_transfer_rest.html)

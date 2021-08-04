@@ -8,50 +8,138 @@ tags:
   - Presentation API
   - Reference
 ---
+
 <p>{{securecontext_header}}{{SeeCompatTable}}{{APIRef("Presentation API")}}</p>
 
-<p><span class="seoSummary">The Presentation API lets a {{Glossary("user agent")}} (such as a Web browser) effectively display web content through large presentation devices such as projectors and network-connected televisions.</span> Supported types of multimedia devices include both displays which are wired using HDMI, DVI, or the like, or wireless, using <a href="https://www.dlna.org/">DLNA</a>, <a href="https://developers.google.com/cast/">Chromecast</a>, <a href="https://developer.apple.com/airplay/">AirPlay</a>, or <a href="https://www.wi-fi.org/discover-wi-fi/miracast">Miracast</a>.</p>
+<p>
+  <span class="seoSummary"
+    >The Presentation API lets a {{Glossary("user agent")}} (such as a Web
+    browser) effectively display web content through large presentation devices
+    such as projectors and network-connected televisions.</span
+  >
+  Supported types of multimedia devices include both displays which are wired
+  using HDMI, DVI, or the like, or wireless, using
+  <a href="https://www.dlna.org/">DLNA</a>,
+  <a href="https://developers.google.com/cast/">Chromecast</a>,
+  <a href="https://developer.apple.com/airplay/">AirPlay</a>, or
+  <a href="https://www.wi-fi.org/discover-wi-fi/miracast">Miracast</a>.
+</p>
 
-<p><img alt="" src="presentation_mode_illustration.png"></p>
+<p><img alt="" src="presentation_mode_illustration.png" /></p>
 
-<p>In general, a web page uses the Presentation Controller API to specify the web content to be rendered on presentation device and initiate the presentation session. With Presentation Receiver API, the presenting web content obtains the session status. With providing both the controller page and the receiver one with a messaged-based channel, a Web developer can implement the interaction between these two pages.</p>
+<p>
+  In general, a web page uses the Presentation Controller API to specify the web
+  content to be rendered on presentation device and initiate the presentation
+  session. With Presentation Receiver API, the presenting web content obtains
+  the session status. With providing both the controller page and the receiver
+  one with a messaged-based channel, a Web developer can implement the
+  interaction between these two pages.
+</p>
 
-<p>Depending on the connection mechanism provided by the presentation device, any controller- and receiver page can be rendered by the same user agent, or by separated user agents.</p>
+<p>
+  Depending on the connection mechanism provided by the presentation device, any
+  controller- and receiver page can be rendered by the same user agent, or by
+  separated user agents.
+</p>
 
 <ul>
- <li>For 1-UA mode devices, both pages are loaded by the same user agent. However, rendering result of the receiver page will be sent to the presentation device via supported remote rendering protocol.</li>
- <li>For 2-UAs mode device, the receiver page is loaded directly on the presentation device. Controlling user agent communicates with presentation device via supported presentation control protocol, to control the presentation session and to transmit the message between two pages.</li>
+  <li>
+    For 1-UA mode devices, both pages are loaded by the same user agent.
+    However, rendering result of the receiver page will be sent to the
+    presentation device via supported remote rendering protocol.
+  </li>
+  <li>
+    For 2-UAs mode device, the receiver page is loaded directly on the
+    presentation device. Controlling user agent communicates with presentation
+    device via supported presentation control protocol, to control the
+    presentation session and to transmit the message between two pages.
+  </li>
 </ul>
 
 <h2 id="Interfaces">Interfaces</h2>
 
 <dl>
- <dt>{{domxref("Presentation")}}</dt>
- <dd>In controlling browsing context, the <code>Presentation</code> interface provides a mechanism to override the browser default behavior of launching presentation to external screen. In receiving browsing context, <code>Presentation</code> interface provides the access to the available presentation connections.</dd>
- <dt>{{domxref("PresentationRequest")}}</dt>
- <dd>Initiates or reconnects to a presentation made by a controlling browsing context.</dd>
- <dt>{{domxref("PresentationAvailability")}}</dt>
- <dd>A <a href="/en-US/docs/Web/API/PresentationAvailability">PresentationAvailability</a> object is associated with available presentation displays and represents the <dfn>presentation display availability</dfn> for a presentation request.</dd>
- <dt>{{domxref("PresentationConnectionAvailableEvent")}}</dt>
- <dd>The <code>PresentationConnectionAvailableEvent</code> is fired on a <a href="/en-US/docs/Web/API/PresentationRequest" title="The PresentationRequest interface of the Presentation API provides methods for starting a new presentation or joining an active one."><code>PresentationRequest</code></a> when a connection associated with the object is created.</dd>
- <dt>{{domxref("PresentationConnection")}}</dt>
- <dd>Each presentation connection is represented by a <a href="/en-US/docs/Web/API/PresentationConnection">PresentationConnection</a> object.</dd>
- <dt>{{domxref("PresentationConnectionCloseEvent")}}</dt>
- <dd>A <code>PresentationConnectionCloseEvent</code> is fired when a presentation connection enters a <code>closed</code> state.</dd>
- <dt>{{domxref("PresentationReceiver")}}</dt>
- <dd>The <a href="/en-US/docs/Web/API/PresentationReceiver">PresentationReceiver</a> allows a receiving browsing context to access the controlling browsing contexts and communicate with them.</dd>
- <dt>{{domxref("PresentationConnectionList")}}</dt>
- <dd><code>PresentationConnectionList</code> represents the collection of non-terminated presentation connections. It is also a monitor for the event of new available presentation connection.</dd>
+  <dt>{{domxref("Presentation")}}</dt>
+  <dd>
+    In controlling browsing context, the <code>Presentation</code> interface
+    provides a mechanism to override the browser default behavior of launching
+    presentation to external screen. In receiving browsing context,
+    <code>Presentation</code> interface provides the access to the available
+    presentation connections.
+  </dd>
+  <dt>{{domxref("PresentationRequest")}}</dt>
+  <dd>
+    Initiates or reconnects to a presentation made by a controlling browsing
+    context.
+  </dd>
+  <dt>{{domxref("PresentationAvailability")}}</dt>
+  <dd>
+    A
+    <a href="/en-US/docs/Web/API/PresentationAvailability"
+      >PresentationAvailability</a
+    >
+    object is associated with available presentation displays and represents the
+    <dfn>presentation display availability</dfn> for a presentation request.
+  </dd>
+  <dt>{{domxref("PresentationConnectionAvailableEvent")}}</dt>
+  <dd>
+    The <code>PresentationConnectionAvailableEvent</code> is fired on a
+    <a
+      href="/en-US/docs/Web/API/PresentationRequest"
+      title="The PresentationRequest interface of the Presentation API provides methods for starting a new presentation or joining an active one."
+      ><code>PresentationRequest</code></a
+    > when a connection associated with the object is created.
+  </dd>
+  <dt>{{domxref("PresentationConnection")}}</dt>
+  <dd>
+    Each presentation connection is represented by a
+    <a href="/en-US/docs/Web/API/PresentationConnection"
+      >PresentationConnection</a
+    >
+    object.
+  </dd>
+  <dt>{{domxref("PresentationConnectionCloseEvent")}}</dt>
+  <dd>
+    A <code>PresentationConnectionCloseEvent</code> is fired when a presentation
+    connection enters a <code>closed</code> state.
+  </dd>
+  <dt>{{domxref("PresentationReceiver")}}</dt>
+  <dd>
+    The
+    <a href="/en-US/docs/Web/API/PresentationReceiver">PresentationReceiver</a>
+    allows a receiving browsing context to access the controlling browsing
+    contexts and communicate with them.
+  </dd>
+  <dt>{{domxref("PresentationConnectionList")}}</dt>
+  <dd>
+    <code>PresentationConnectionList</code> represents the collection of
+    non-terminated presentation connections. It is also a monitor for the event
+    of new available presentation connection.
+  </dd>
 </dl>
 
 <h2 id="Example">Example</h2>
 
-<p>Example codes below highlight the usage of main features of the Presentation API: <code>controller.html</code> implements the controller and <code>presentation.html</code> implements the presentation. Both pages are served from the domain <code>http://example.org</code> (<code>http://example.org/controller.html</code> and <code>http://example.org/presentation.html</code>). These examples assume that the controlling page is managing one presentation at a time. Please refer to the comments in the code examples for further details.</p>
+<p>
+  Example codes below highlight the usage of main features of the Presentation
+  API: <code>controller.html</code> implements the controller and
+  <code>presentation.html</code> implements the presentation. Both pages are
+  served from the domain <code>http://example.org</code> (<code
+    >http://example.org/controller.html</code
+  >
+  and <code>http://example.org/presentation.html</code>). These examples assume
+  that the controlling page is managing one presentation at a time. Please refer
+  to the comments in the code examples for further details.
+</p>
 
-<h3 id="Monitor_availability_of_presentation_displays">Monitor availability of presentation displays</h3>
+<h3 id="Monitor_availability_of_presentation_displays">
+  Monitor availability of presentation displays
+</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"presentBtn"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"display: none;"</span>&gt;</span>Present<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   <span class="hljs-comment">// The Present button is visible if at least one presentation display is available</span>
@@ -85,7 +173,9 @@ tags:
 <h3 id="Starting_a_new_presentation">Starting a new presentation</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   presentBtn.onclick = <span class="hljs-function"><span class="hljs-keyword">function</span> () </span>{
     <span class="hljs-comment">// Start new presentation.</span>
@@ -102,7 +192,9 @@ tags:
 <h3 id="Reconnect_to_a_presentation">Reconnect to a presentation</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"reconnectBtn"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"display: none;"</span>&gt;</span>Reconnect<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   <span class="hljs-keyword">var</span> reconnect = <span class="hljs-function"><span class="hljs-keyword">function</span> () </span>{
@@ -124,10 +216,14 @@ tags:
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
 </div>
 
-<h3 id="Presentation_initiation_by_the_controlling_UA">Presentation initiation by the controlling UA</h3>
+<h3 id="Presentation_initiation_by_the_controlling_UA">
+  Presentation initiation by the controlling UA
+</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-comment">&lt;!-- Setting presentation.defaultRequest allows the page to specify the
      PresentationRequest to use when the controlling UA initiates a
      presentation. --&gt;</span>
@@ -139,10 +235,14 @@ tags:
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
 </div>
 
-<h3 id="Monitor_connections_state_and_exchange_data">Monitor connection's state and exchange data</h3>
+<h3 id="Monitor_connections_state_and_exchange_data">
+  Monitor connection's state and exchange data
+</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"disconnectBtn"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"display: none;"</span>&gt;</span>Disconnect<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stopBtn"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"display: none;"</span>&gt;</span>Stop<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"reconnectBtn"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"display: none;"</span>&gt;</span>Reconnect<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
@@ -214,10 +314,14 @@ tags:
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
 </div>
 
-<h3 id="Monitor_available_connections_and_say_hello">Monitor available connection(s) and say hello</h3>
+<h3 id="Monitor_available_connections_and_say_hello">
+  Monitor available connection(s) and say hello
+</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- presentation.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- presentation.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   <span class="hljs-keyword">var</span> addConnection = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">connection</span>) </span>{
     <span class="hljs-keyword">this</span>.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message</span>) </span>{
@@ -237,10 +341,14 @@ tags:
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
 </div>
 
-<h3 id="Passing_locale_information_with_a_message">Passing locale information with a message</h3>
+<h3 id="Passing_locale_information_with_a_message">
+  Passing locale information with a message
+</h3>
 
 <div class="example">
-<pre class="brush: js"><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
+  <pre
+    class="brush: js"
+  ><span class="hljs-comment">&lt;!-- controller.html --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   connection.send(<span class="hljs-string">"{string: '你好，世界!', lang: 'zh-CN'}"</span>);
   connection.send(<span class="hljs-string">"{string: 'こんにちは、世界!', lang: 'ja'}"</span>);
@@ -263,18 +371,18 @@ tags:
 <h2 id="Specifications">Specifications</h2>
 
 <table class="standard-table">
- <tbody>
-  <tr>
-   <th scope="col">Specification</th>
-   <th scope="col">Status</th>
-   <th scope="col">Comment</th>
-  </tr>
-  <tr>
-   <td>{{SpecName('Presentation')}}</td>
-   <td>{{Spec2('Presentation')}}</td>
-   <td>Initial definition.</td>
-  </tr>
- </tbody>
+  <tbody>
+    <tr>
+      <th scope="col">Specification</th>
+      <th scope="col">Status</th>
+      <th scope="col">Comment</th>
+    </tr>
+    <tr>
+      <td>{{SpecName('Presentation')}}</td>
+      <td>{{Spec2('Presentation')}}</td>
+      <td>Initial definition.</td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
@@ -282,10 +390,21 @@ tags:
 <h3 id="Presentation"><code>Presentation</code></h3>
 
 <div>
-
-<p>{{Compat("api.Presentation")}}</p>
+  <p>{{Compat("api.Presentation")}}</p>
 </div>
 
 <h2 id="See_also">See also</h2>
 
-<p><a href="https://mediascape.github.io/presentation-api-polyfill/">Presentation API polyfill</a> contains a JavaScript polyfill of the <a href="https://w3c.github.io/presentation-api/">Presentation API</a> specification under standardisation within the <a href="https://www.w3.org/2014/secondscreen/">Second Screen Working Group</a> at W3C. The polyfill is mostly intended for exploring how the Presentation API may be implemented on top of different presentation mechanisms.</p>
+<p>
+  <a href="https://mediascape.github.io/presentation-api-polyfill/"
+    >Presentation API polyfill</a
+  >
+  contains a JavaScript polyfill of the
+  <a href="https://w3c.github.io/presentation-api/">Presentation API</a>
+  specification under standardisation within the
+  <a href="https://www.w3.org/2014/secondscreen/"
+    >Second Screen Working Group</a
+  >
+  at W3C. The polyfill is mostly intended for exploring how the Presentation API
+  may be implemented on top of different presentation mechanisms.
+</p>

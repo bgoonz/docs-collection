@@ -1,10 +1,8 @@
-What are you going to build?
-----------------------------
+## What are you going to build?
 
 In this tutorial we are going to create a Hackernews clone with Go and gqlgen, So our API will be able to handle registration, authentication, submitting links and getting list of links.
 
-Project Setup <span id="project-setup"></span>
-----------------------------------------------
+## Project Setup <span id="project-setup"></span>
 
 Create a directory for project and initialize go modules file:
 
@@ -16,15 +14,14 @@ after that use ‍‍gqlgen `init` command to setup a gqlgen project.
 
 Here is a description from gqlgen about the generated files:
 
--   `gqlgen.yml` — The gqlgen config file, knobs for controlling the generated code.
--   `graph/generated/generated.go` — The GraphQL execution runtime, the bulk of the generated code.
--   `graph/model/models_gen.go` — Generated models required to build the graph. Often you will override these with your own models. Still very useful for input types.
--   `graph/schema.graphqls` — This is the file where you will add GraphQL schemas.
--   `graph/schema.resolvers.go` — This is where your application code lives. generated.go will call into this to get the data the user has requested.
--   `server.go` — This is a minimal entry point that sets up an http.Handler to the generated GraphQL server. start the server with `go run server.go` and open your browser and you should see the graphql playground, So setup is right!
+- `gqlgen.yml` — The gqlgen config file, knobs for controlling the generated code.
+- `graph/generated/generated.go` — The GraphQL execution runtime, the bulk of the generated code.
+- `graph/model/models_gen.go` — Generated models required to build the graph. Often you will override these with your own models. Still very useful for input types.
+- `graph/schema.graphqls` — This is the file where you will add GraphQL schemas.
+- `graph/schema.resolvers.go` — This is where your application code lives. generated.go will call into this to get the data the user has requested.
+- `server.go` — This is a minimal entry point that sets up an http.Handler to the generated GraphQL server. start the server with `go run server.go` and open your browser and you should see the graphql playground, So setup is right!
 
-Defining Our Schema <span id="defining-out-schema"></span>
-----------------------------------------------------------
+## Defining Our Schema <span id="defining-out-schema"></span>
 
 Now let’s start with defining schema we need for our API. We have two types Link and User each of them for representing Link and User to client, a `links` Query to return list of Links. an input for creating new links and mutation for creating link. we also need mutations to for auth system which includes Login, createUser, refreshToken(I’ll explain them later) then run the command below to regenerate graphql models.
 

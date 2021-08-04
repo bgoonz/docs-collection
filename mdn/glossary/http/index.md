@@ -6,8 +6,7 @@ As part of a {{glossary("URI")}}, the "http" within "http://example.com/" is cal
 
 HTTP is textual (all communication is done in plain text) and stateless (no communication is aware of previous communications). This property makes it ideal for humans to read documents (web sites) on the world wide web. However, HTTP can also be used as a basis for {{glossary("REST")}} web services from server to server or {{glossary("AJAX")}} requests within web sites to make them more dynamic.
 
-Learn more
-----------
+## Learn more
 
--   [HTTP on MDN](/en-US/docs/Web/HTTP)
--   {{interwiki("wikipedia", "Hypertext Transfer Protocol", "HTTP")}} on Wikipedia
+- [HTTP on MDN](/en-US/docs/Web/HTTP)
+- {{interwiki("wikipedia", "Hypertext Transfer Protocol", "HTTP")}} on Wikipedia

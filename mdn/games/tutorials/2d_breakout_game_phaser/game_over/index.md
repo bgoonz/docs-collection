@@ -1,4 +1,4 @@
---- title: Game over slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Game\_over tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - game over ---
+--- title: Game over slug: Games/Tutorials/2D_breakout_game_Phaser/Game_over tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial - game over ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **8th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs/
 
 <span class="seoSummary">To make the game more interesting we can introduce the ability to lose — if you don't hit the ball before it reaches the bottom edge of the screen it will be game over.</span>
 
-How to lose
------------
+## How to lose
 
 To provide the ability to lose, we will disable the ball's collision with the bottom edge of the screen. Add the code below inside the `create()` function; just after you define the ball's attributes is fine:
 
@@ -25,15 +24,13 @@ This will make the three walls (top, left and right) bounce the ball back, but t
 
 Adding those lines will make the ball check the world (in our case canvas) bounds and execute the function bound to the `onOutOfBounds` event. When you click on the resulting alert, the page will be reloaded so you can play again.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/436bckb7/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Now the basic gameplay is in place let's make it more interesting by introducing bricks to smash — it's time to [build the brick field](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Build_the_brick_field).
 

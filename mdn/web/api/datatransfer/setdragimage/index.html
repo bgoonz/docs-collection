@@ -2,47 +2,61 @@
 title: DataTransfer.setDragImage()
 slug: Web/API/DataTransfer/setDragImage
 tags:
-- API
-- H5 DnD
-- HTML DOM
-- Method
-- Reference
-- drag and drop
+  - API
+  - H5 DnD
+  - HTML DOM
+  - Method
+  - Reference
+  - drag and drop
 browser-compat: api.DataTransfer.setDragImage
 ---
+
 <div>{{APIRef("HTML Drag and Drop API")}}</div>
 
-<p>When a drag occurs, a translucent image is generated from the drag target (the element
-  the {{event("dragstart")}} event is fired at), and follows the mouse pointer during the
-  drag. This image is created automatically, so you do not need to create it yourself.
-  However, if a custom image is desired, the
-  <strong><code>DataTransfer.setDragImage()</code></strong> method can be used to set the
-  custom image to be used. The image will typically be an {{HTMLElement("image")}} element
-  but it can also be a {{HTMLElement("canvas")}} or any other visible element.</p>
+<p>
+  When a drag occurs, a translucent image is generated from the drag target (the
+  element the {{event("dragstart")}} event is fired at), and follows the mouse
+  pointer during the drag. This image is created automatically, so you do not
+  need to create it yourself. However, if a custom image is desired, the
+  <strong><code>DataTransfer.setDragImage()</code></strong> method can be used
+  to set the custom image to be used. The image will typically be an
+  {{HTMLElement("image")}} element but it can also be a
+  {{HTMLElement("canvas")}} or any other visible element.
+</p>
 
-<p>The method's <code>x</code> and <code>y</code> coordinates define how the image should
-  appear relative to the mouse pointer. These coordinates define the offset into the image
-  where the mouse cursor should be. For instance, to display the image so that the pointer
-  is at its center, use values that are half the width and height of the image.</p>
+<p>
+  The method's <code>x</code> and <code>y</code> coordinates define how the
+  image should appear relative to the mouse pointer. These coordinates define
+  the offset into the image where the mouse cursor should be. For instance, to
+  display the image so that the pointer is at its center, use values that are
+  half the width and height of the image.
+</p>
 
 <p>This method must be called in the {{event("dragstart")}} event handler.</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: js">void <em>dataTransfer</em>.setDragImage(img | element, xOffset, yOffset);
+<pre class="brush: js">
+void <em>dataTransfer</em>.setDragImage(img | element, xOffset, yOffset);
 </pre>
 
 <h3 id="Arguments">Arguments</h3>
 
 <dl>
   <dt><em>img |</em> element</dt>
-  <dd>An image {{domxref("Element")}} element to use for the drag feedback image.</dd>
-  <dd>If {{domxref("Element")}} is an img element, then set the drag data store bitmap to
-    the element's image (at its intrinsic size); otherwise, set the drag data store bitmap
-    to an image generated from the given element (the exact mechanism for doing so is not
-    currently specified).</dd>
+  <dd>
+    An image {{domxref("Element")}} element to use for the drag feedback image.
+  </dd>
+  <dd>
+    If {{domxref("Element")}} is an img element, then set the drag data store
+    bitmap to the element's image (at its intrinsic size); otherwise, set the
+    drag data store bitmap to an image generated from the given element (the
+    exact mechanism for doing so is not currently specified).
+  </dd>
   <dt><em>xOffset</em></dt>
-  <dd>A <code>long</code> indicating the horizontal offset within the image.</dd>
+  <dd>
+    A <code>long</code> indicating the horizontal offset within the image.
+  </dd>
   <dt><em>yOffset</em></dt>
   <dd>A <code>long</code> indicating the vertical offset within the image.</dd>
 </dl>
@@ -56,14 +70,17 @@ browser-compat: api.DataTransfer.setDragImage
 
 <h2 id="Example">Example</h2>
 
-<p>This example shows how to use the <code>setDragImage()</code> method. Note the example
-  refers to an image file named <code>example.gif</code>. If that file is present, it will
-  be used as the drag image and if that file is not present, the browser will use its
-  default drag image.</p>
+<p>
+  This example shows how to use the <code>setDragImage()</code> method. Note the
+  example refers to an image file named <code>example.gif</code>. If that file
+  is present, it will be used as the drag image and if that file is not present,
+  the browser will use its default drag image.
+</p>
 
 <p><a href="https://codepen.io/webgeeker/full/KBzrxE/">demo</a></p>
 
-<pre class="brush: js">&lt;!DOCTYPE html&gt;
+<pre class="brush: js">
+&lt;!DOCTYPE html&gt;
 &lt;html lang=en&gt;
 &lt;title&gt;Example of DataTransfer.setDragImage()&lt;/title&gt;
 &lt;meta name="viewport" content="width=device-width"&gt;
@@ -128,9 +145,27 @@ function drop_handler(ev) {
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API">Drag and drop</a></li>
- <li><a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations">Drag Operations</a></li>
- <li><a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types">Recommended Drag Types</a></li>
- <li><a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Multiple_items">Dragging and Dropping Multiple Items</a></li>
- <li><a href="https://codepen.io/tech_query/pen/MqGgap">DataTransfer test - Paste or Drag</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API">Drag and drop</a>
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations"
+      >Drag Operations</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types"
+      >Recommended Drag Types</a
+    >
+  </li>
+  <li>
+    <a href="/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Multiple_items"
+      >Dragging and Dropping Multiple Items</a
+    >
+  </li>
+  <li>
+    <a href="https://codepen.io/tech_query/pen/MqGgap"
+      >DataTransfer test - Paste or Drag</a
+    >
+  </li>
 </ul>

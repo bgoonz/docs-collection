@@ -2,47 +2,62 @@
 title: HTMLMediaElement.audioTracks
 slug: Web/API/HTMLMediaElement/audioTracks
 tags:
-- API
-- Audio
-- Audio Tracks
-- HTML DOM
-- HTMLMediaElement
-- Media
-- Property
-- Reference
-- Tracks
-- Web
-- audiotracks
+  - API
+  - Audio
+  - Audio Tracks
+  - HTML DOM
+  - HTMLMediaElement
+  - Media
+  - Property
+  - Reference
+  - Tracks
+  - Web
+  - audiotracks
 browser-compat: api.HTMLMediaElement.audioTracks
 ---
+
 <div>{{APIRef("HTML DOM")}}{{draft}}</div>
 
-<p><span class="seoSummary">The read-only <strong><code>audioTracks</code></strong>
-    property on {{domxref("HTMLMediaElement")}} objects returns
-    an {{domxref("AudioTrackList")}} object listing all of the  {{domxref("AudioTrack")}}
-    objects representing the media element's audio tracks.</span> The media element may be
-  either an {{HTMLElement("audio")}} element or a {{HTMLElement("video")}} element.</p>
+<p>
+  <span class="seoSummary"
+    >The read-only <strong><code>audioTracks</code></strong> property on
+    {{domxref("HTMLMediaElement")}} objects returns
+    an {{domxref("AudioTrackList")}} object listing all of the 
+    {{domxref("AudioTrack")}} objects representing the media element's audio
+    tracks.</span
+  >
+  The media element may be either an {{HTMLElement("audio")}} element or a
+  {{HTMLElement("video")}} element.
+</p>
 
-<p>The returned list is <em>live</em>; that is, as tracks are added to and removed from
-  the media element, the list's contents change dynamically. Once you have a reference to
-  the list, you can monitor it for changes to detect when new audio tracks are added or
-  existing ones removed. See {{SectionOnPage("/en-US/docs/Web/API/AudioTrackList", "Event
-  handlers")}} to learn more about watching for changes to a media element's track list.
+<p>
+  The returned list is <em>live</em>; that is, as tracks are added to and
+  removed from the media element, the list's contents change dynamically. Once
+  you have a reference to the list, you can monitor it for changes to detect
+  when new audio tracks are added or existing ones removed. See
+  {{SectionOnPage("/en-US/docs/Web/API/AudioTrackList", "Event handlers")}} to
+  learn more about watching for changes to a media element's track list.
 </p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre
-  class="brush: js">var <em>audioTracks</em> = <em>mediaElement</em>.audioTracks;</pre>
+<pre class="brush: js">
+var <em>audioTracks</em> = <em>mediaElement</em>.audioTracks;</pre
+>
 
 <h3 id="Value">Value</h3>
 
-<p>A {{domxref("AudioTrackList")}} object representing the list of audio tracks included
-  in the media element. The list of tracks can be accessed using array notation, or using
-  the object's {{domxref("AudioTrackList.getTrackById", "getTrackById()")}} method.</p>
+<p>
+  A {{domxref("AudioTrackList")}} object representing the list of audio tracks
+  included in the media element. The list of tracks can be accessed using array
+  notation, or using the object's {{domxref("AudioTrackList.getTrackById",
+  "getTrackById()")}} method.
+</p>
 
-<p>Each track is represented by a {{domxref("AudioTrack")}} object which provides
-  information about the track.</p>
+<p>
+  Each track is represented by a {{domxref("AudioTrack")}} object which provides
+  information about the track.
+</p>
 
 <h2 id="Examples">Examples</h2>
 
@@ -52,14 +67,16 @@ browser-compat: api.HTMLMediaElement.audioTracks
 
 <p>The HTML establishes the element itself.</p>
 
-<pre class="brush: html">&lt;video id="video" src="somevideo.mp4"&gt;&lt;/video&gt;
+<pre class="brush: html">
+&lt;video id="video" src="somevideo.mp4"&gt;&lt;/video&gt;
 </pre>
 
 <h3 id="JavaScript">JavaScript</h3>
 
 <p>The JavaScript code handles muting the video element's audio tracks.</p>
 
-<pre class="brush: js">var video = document.getElementById("video");
+<pre class="brush: js">
+var video = document.getElementById("video");
 
 for (var i = 0; i &lt; video.audioTracks.length; i += 1) {
   video.audioTracks[i].enabled = false;

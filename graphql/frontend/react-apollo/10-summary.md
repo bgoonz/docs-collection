@@ -8,12 +8,11 @@ The backend was powered by [`apollo-server`](https://www.apollographql.com/docs/
 
 The resolvers for our GraphQL server use [Prisma](https://prisma.io) for database access.
 
-Next Steps
-----------
+## Next Steps
 
 If you would like to dive deeper and become part of the awesome GraphQL community, here are a few resource and community recommendations for you:
 
--   [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
--   [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
--   [GraphQL Berlin Meetup](https://www.meetup.com/graphql-berlin/): A regular meetup of people interested in GraphQL and its ecosystem with speakers from all around the globe telling us about the latest developments in the GraphQL world.
--   [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma
+- [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
+- [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
+- [GraphQL Berlin Meetup](https://www.meetup.com/graphql-berlin/): A regular meetup of people interested in GraphQL and its ecosystem with speakers from all around the globe telling us about the latest developments in the GraphQL world.
+- [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma

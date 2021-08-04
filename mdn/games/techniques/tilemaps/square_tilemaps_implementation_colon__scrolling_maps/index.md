@@ -1,4 +1,4 @@
---- title: 'Square tilemaps implementation: Scrolling maps' slug: Games/Techniques/Tilemaps/Square\_tilemaps\_implementation:\_Scrolling\_maps tags: - Canvas - Games - JavaScript - atlas - scrolling - spritesheet - tilemap - tiles ---
+--- title: 'Square tilemaps implementation: Scrolling maps' slug: Games/Techniques/Tilemaps/Square_tilemaps_implementation:\_Scrolling_maps tags: - Canvas - Games - JavaScript - atlas - scrolling - spritesheet - tilemap - tiles ---
 
 {{GamesSidebar}}
 
@@ -6,27 +6,25 @@ This article covers how to implement scrolling square tilemaps using the [Canvas
 
 **Note**: When writing this article, we assumed previous reader knowledge of canvas basics such as how get a 2D canvas context, load images, etc., which is all explained in the [Canvas API tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial), as well as the basic information included in our [Tilemaps](/en-US/docs/Games/Techniques/Tilemaps) introduction article. This article also builds upon [implementing static square tilemaps](/en-US/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation%3A_Static_maps) — you should read that too if you've not done so already.
 
-The camera
-----------
+## The camera
 
 The camera is an object that holds information about which section of the game world or level is currently being shown. Cameras can either be free-form, controlled by the player (such as in strategy games) or follow an object (such as the main character in platform games.)
 
 Regardless of the type of camera, we would always need information regarding its current position, viewport size, etc. In the [demo provided](https://mozdevs.github.io/gamedev-js-tiles/square/scroll.html) along with this article, these are the parameters the camera has:
 
--   `x` and `y`: The current position of the camera. In this implementation, we are assuming that `(x,y)` points to the top left corner of visible portion of the map.
--   `width` and `height`: The size of the camera's viewport.
--   `maxX` and `maxY`: The limit for the camera's position — The lower limit will nearly always be (0,0), and in this case the upper limit is equal to the size of the world minus the size of the camera's viewport.
+- `x` and `y`: The current position of the camera. In this implementation, we are assuming that `(x,y)` points to the top left corner of visible portion of the map.
+- `width` and `height`: The size of the camera's viewport.
+- `maxX` and `maxY`: The limit for the camera's position — The lower limit will nearly always be (0,0), and in this case the upper limit is equal to the size of the world minus the size of the camera's viewport.
 
-Rendering the map
------------------
+## Rendering the map
 
 There are two main differences between rendering scrolling maps vs. static maps:
 
--   **Partial tiles might be shown**. In static maps, usually the rendering starts at the top left corner of a tile situated at the top left corner of a viewport. While rendering scrolling tilemaps, the first tile will often be clipped.
+- **Partial tiles might be shown**. In static maps, usually the rendering starts at the top left corner of a tile situated at the top left corner of a viewport. While rendering scrolling tilemaps, the first tile will often be clipped.
 
 TODO: show a diagram here explaining this.
 
--   **Only a section of the map will be rendered**. If the map is bigger than the viewport, we can obviously only display a part of it at a time, whereas non-scrolling maps are usually rendered wholly.
+- **Only a section of the map will be rendered**. If the map is bigger than the viewport, we can obviously only display a part of it at a time, whereas non-scrolling maps are usually rendered wholly.
 
 To handle these issues, we need to slightly modify the rendering algorithm. Let's imagine that we have the camera pointing at `(5,10)`. That means that the first tile would be `0x0`. In the demo code, the starting point is stored at `startCol` and `startRow`. It's convenient to also pre-calculate the last tile to be rendered.
 
@@ -63,8 +61,7 @@ With these values in place, the loop that renders the map is quite similar to th
             }
         }
 
-Demo
-----
+## Demo
 
 Our scrolling tilemap implementation demo pulls the above code together to show what an implementation of this map looks like. You can take a look at a [live demo](https://mozdevs.github.io/gamedev-js-tiles/square/scroll.html), and see [its source code](https://github.com/mozdevs/gamedev-js-tiles).
 

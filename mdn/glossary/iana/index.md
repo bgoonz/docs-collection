@@ -2,10 +2,9 @@
 
 **IANA **(Internet Assigned Numbers Authority) is a subsidiary of {{glossary("ICANN")}} charged with recording and/or assigning {{glossary("domain name","domain names")}}, {{glossary("IP address","IP addresses")}}, and other names and numbers used by Internet {{glossary("protocol","protocols")}}.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Official website](https://www.iana.org/)
--   {{interwiki("wikipedia", "Internet Assigned Numbers Authority", "IANA")}} on Wikipedia
+- [Official website](https://www.iana.org/)
+- {{interwiki("wikipedia", "Internet Assigned Numbers Authority", "IANA")}} on Wikipedia

@@ -13,13 +13,19 @@ tags:
   - onRemoved
 browser-compat: webextensions.api.bookmarks.onRemoved
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p>Fired when a bookmark or folder is removed. When a folder is removed recursively, a single notification is fired for the folder, and none for its contents.</p>
+<p>
+  Fired when a bookmark or folder is removed. When a folder is removed
+  recursively, a single notification is fired for the folder, and none for its
+  contents.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:js">browser.bookmarks.onRemoved.addListener(listener)
+<pre class="brush:js">
+browser.bookmarks.onRemoved.addListener(listener)
 browser.bookmarks.onRemoved.removeListener(listener)
 browser.bookmarks.onRemoved.hasListener(listener)
 </pre>
@@ -27,12 +33,18 @@ browser.bookmarks.onRemoved.hasListener(listener)
 <p>Events have three functions:</p>
 
 <dl>
- <dt><code>addListener(callback)</code></dt>
- <dd>Adds a listener to this event.</dd>
- <dt><code>removeListener(listener)</code></dt>
- <dd>Stop listening to this event. The <code>listener</code> argument is the listener to remove.</dd>
- <dt><code>hasListener(listener)</code></dt>
- <dd>Check whether <code>listener</code> is registered for this event. Returns <code>true</code> if it is listening, <code>false</code> otherwise.</dd>
+  <dt><code>addListener(callback)</code></dt>
+  <dd>Adds a listener to this event.</dd>
+  <dt><code>removeListener(listener)</code></dt>
+  <dd>
+    Stop listening to this event. The <code>listener</code> argument is the
+    listener to remove.
+  </dd>
+  <dt><code>hasListener(listener)</code></dt>
+  <dd>
+    Check whether <code>listener</code> is registered for this event. Returns
+    <code>true</code> if it is listening, <code>false</code> otherwise.
+  </dd>
 </dl>
 
 <h2 id="addListener_syntax">addListener syntax</h2>
@@ -40,20 +52,26 @@ browser.bookmarks.onRemoved.hasListener(listener)
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
- <dt><code>callback</code></dt>
- <dd>
- <p>Function that will be called when this event occurs. The function will be passed the following arguments:</p>
+  <dt><code>callback</code></dt>
+  <dd>
+    <p>
+      Function that will be called when this event occurs. The function will be
+      passed the following arguments:
+    </p>
 
- <dl class="reference-values">
-  <dt><code>id</code></dt>
-  <dd><code>string</code>. ID of the item that was removed.</dd>
- </dl>
+    <dl class="reference-values">
+      <dt><code>id</code></dt>
+      <dd><code>string</code>. ID of the item that was removed.</dd>
+    </dl>
 
- <dl class="reference-values">
-  <dt><code>removeInfo</code></dt>
-  <dd><a href="#removeinfo"><code>object</code></a>. More details about the removed item.</dd>
- </dl>
- </dd>
+    <dl class="reference-values">
+      <dt><code>removeInfo</code></dt>
+      <dd>
+        <a href="#removeinfo"><code>object</code></a
+        >. More details about the removed item.
+      </dd>
+    </dl>
+  </dd>
 </dl>
 
 <h2 id="Additional_objects">Additional objects</h2>
@@ -61,17 +79,23 @@ browser.bookmarks.onRemoved.hasListener(listener)
 <h3 id="removeInfo">removeInfo</h3>
 
 <dl class="reference-values">
- <dt><code>parentId</code></dt>
- <dd><code>string</code>. ID of the item's parent in the tree.</dd>
- <dt><code>index</code></dt>
- <dd><code>integer</code>. Zero-based index position of this item in its parent.</dd>
- <dt><code>node</code></dt>
- <dd>{{WebExtAPIRef('bookmarks.BookmarkTreeNode')}}. Detailed information about the item that was removed.</dd>
+  <dt><code>parentId</code></dt>
+  <dd><code>string</code>. ID of the item's parent in the tree.</dd>
+  <dt><code>index</code></dt>
+  <dd>
+    <code>integer</code>. Zero-based index position of this item in its parent.
+  </dd>
+  <dt><code>node</code></dt>
+  <dd>
+    {{WebExtAPIRef('bookmarks.BookmarkTreeNode')}}. Detailed information about
+    the item that was removed.
+  </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
-<pre class="brush: js">function handleRemoved(id, removeInfo) {
+<pre class="brush: js">
+function handleRemoved(id, removeInfo) {
   console.log("Item: " + id + " removed");
   console.log("Title: " + removeInfo.node.title);
   console.log("Url: " + removeInfo.node.url);
@@ -81,7 +105,8 @@ function handleClick() {
   browser.bookmarks.onRemoved.addListener(handleRemoved);
 }
 
-browser.browserAction.onClicked.addListener(handleClick);</pre>
+browser.browserAction.onClicked.addListener(handleClick);</pre
+>
 
 <p>{{WebExtExamples}}</p>
 
@@ -89,15 +114,32 @@ browser.browserAction.onClicked.addListener(handleClick);</pre>
 
 <p>{{Compat}}</p>
 
-<div class="note"><strong>Acknowledgements</strong>
+<div class="note">
+  <strong>Acknowledgements</strong>
 
-<p>This API is based on Chromium's <a href="https://developer.chrome.com/extensions/bookmarks#event-onRemoved"><code>chrome.bookmarks</code></a> API. This documentation is derived from <a href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/bookmarks.json"><code>bookmarks.json</code></a> in the Chromium code.</p>
+  <p>
+    This API is based on Chromium's
+    <a href="https://developer.chrome.com/extensions/bookmarks#event-onRemoved"
+      ><code>chrome.bookmarks</code></a
+    >
+    API. This documentation is derived from
+    <a
+      href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/bookmarks.json"
+      ><code>bookmarks.json</code></a
+    >
+    in the Chromium code.
+  </p>
 
-<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+  <p>
+    Microsoft Edge compatibility data is supplied by Microsoft Corporation and
+    is included here under the Creative Commons Attribution 3.0 United States
+    License.
+  </p>
 </div>
 
 <div class="hidden">
-<pre>// Copyright 2015 The Chromium Authors. All rights reserved.
+  <pre>
+// Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -124,5 +166,6 @@ browser.browserAction.onClicked.addListener(handleClick);</pre>
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
+</pre
+  >
 </div>

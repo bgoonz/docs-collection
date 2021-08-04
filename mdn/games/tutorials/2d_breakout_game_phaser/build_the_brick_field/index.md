@@ -1,4 +1,4 @@
---- title: Build the brick field slug: Games/Tutorials/2D\_breakout\_game\_Phaser/Build\_the\_brick\_field tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
+--- title: Build the brick field slug: Games/Tutorials/2D_breakout_game_Phaser/Build_the_brick_field tags: - 2D - Beginner - Canvas - Games - JavaScript - Phaser - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **9th step** out of 16 of the [Gamedev Phaser tutorial](/en-US/docs/
 
 <span class="seoSummary">Building the brick field is a little bit more complicated than adding a single object to the screen, although It's still easier with Phaser than in pure JavaScript. Let's explore how to create a group of bricks and print them on screen using a loop.</span>
 
-Defining new variables
-----------------------
+## Defining new variables
 
 First, let's define the needed variables — add the following below your previous variable definitions:
 
@@ -19,8 +18,7 @@ First, let's define the needed variables — add the following below your previo
 
 The `bricks` variable will be used to create a group, `newBrick` will be a new object added to the group on every iteration of the loop, and `brickInfo` will store all the data we need.
 
-Rendering the brick image
--------------------------
+## Rendering the brick image
 
 Next, let's load the image of the brick — add the following `load.image()` call just below the others:
 
@@ -31,8 +29,7 @@ Next, let's load the image of the brick — add the following `load.image()` cal
 
 You also need to [grab the brick image from Github](https://github.com/end3r/Gamedev-Phaser-Content-Kit/blob/gh-pages/demos/img/brick.png) and save it in your `/img` directory.
 
-Drawing the bricks
-------------------
+## Drawing the bricks
 
 We will place all the code for drawing the bricks inside an `initBricks` function to keep it separated from the rest of the code. Add a call to `initBricks` at the end of the `create()` function:
 
@@ -96,8 +93,7 @@ The problem currently is that we're painting all the bricks in one place, at coo
 
 Each `brickX` position is worked out as `brickInfo.width` plus `brickInfo.padding`, multiplied by the column number, `c`, plus the `brickInfo.offset.left`; the logic for the `brickY` is identical except that it uses the values for row number, `r`, `brickInfo.height`, and `brickInfo.offset.top`. Now every single brick can be placed in its correct place, with padding between each brick, and drawn at an offset from the left and top Canvas edges.
 
-Checking the initBricks() code
-------------------------------
+## Checking the initBricks() code
 
 Here is the complete code for the `initBricks()` function:
 
@@ -131,15 +127,13 @@ Here is the complete code for the `initBricks()` function:
 
 If you reload `index.html` at this point, you should see the bricks printed on screen, at an even distance from one another.
 
-Compare your code
------------------
+## Compare your code
 
 You can check the finished code for this lesson in the live demo below, and play with it to understand better how it works:
 
 {{JSFiddleEmbed("https://jsfiddle.net/end3r/cck2b9e8/","","400")}}
 
-Next steps
-----------
+## Next steps
 
 Something is missing though. The ball goes through the bricks without stopping — we need proper [collision detection](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser/Collision_detection).
 

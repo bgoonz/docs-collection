@@ -23,14 +23,13 @@ Or:
       document.getElementById("blackBox").style.display = "none";
     });
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "jQuery")}} on Wikipedia
--   [jQuery Official Website](https://jquery.com/)
+- {{Interwiki("wikipedia", "jQuery")}} on Wikipedia
+- [jQuery Official Website](https://jquery.com/)
 
 ### Technical information
 
--   [Official API reference documentation](https://api.jquery.com/) [](https://api.jquery.com/)
+- [Official API reference documentation](https://api.jquery.com/) [](https://api.jquery.com/)

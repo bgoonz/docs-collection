@@ -91,7 +91,7 @@ Here is what it looks like:
       }
     }
 
-We could now simply execute this query in a [Playground](https://github.com/graphql/graphql-playground) (against the *application schema*) and retrieve the results from the GraphQL server. But how can we use it inside our JavaScript code?
+We could now simply execute this query in a [Playground](https://github.com/graphql/graphql-playground) (against the _application schema_) and retrieve the results from the GraphQL server. But how can we use it inside our JavaScript code?
 
 ### Queries with Apollo Client
 

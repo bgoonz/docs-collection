@@ -12,43 +12,128 @@ tags:
   - atob()
   - btoa()
 ---
-<p><strong>Base64</strong> is a group of similar <a href="https://en.wikipedia.org/wiki/Binary-to-text_encoding">binary-to-text encoding</a> schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation. The term <em>Base64</em> originates from a specific <a href="https://en.wikipedia.org/wiki/MIME#Content-Transfer-Encoding">MIME content transfer encoding</a>.</p>
 
-<p>Base64 encoding schemes are commonly used when there is a need to encode binary data that needs to be stored and transferred over media that are designed to deal with ASCII. This is to ensure that the data remain intact without modification during transport. Base64 is commonly used in a number of applications including email via <a href="https://en.wikipedia.org/wiki/MIME">MIME</a>, and storing complex data in <a href="/en-US/docs/Web/XML">XML</a>.</p>
+<p>
+  <strong>Base64</strong> is a group of similar
+  <a href="https://en.wikipedia.org/wiki/Binary-to-text_encoding"
+    >binary-to-text encoding</a
+  >
+  schemes that represent binary data in an ASCII string format by translating it
+  into a radix-64 representation. The term <em>Base64</em> originates from a
+  specific
+  <a href="https://en.wikipedia.org/wiki/MIME#Content-Transfer-Encoding"
+    >MIME content transfer encoding</a
+  >.
+</p>
 
-<p>One common application of Base64 encoding on the web is to encode binary data  so it can be included in a <a href="/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs">data: URL</a>.</p>
+<p>
+  Base64 encoding schemes are commonly used when there is a need to encode
+  binary data that needs to be stored and transferred over media that are
+  designed to deal with ASCII. This is to ensure that the data remain intact
+  without modification during transport. Base64 is commonly used in a number of
+  applications including email via
+  <a href="https://en.wikipedia.org/wiki/MIME">MIME</a>, and storing complex
+  data in <a href="/en-US/docs/Web/XML">XML</a>.
+</p>
 
-<p>In JavaScript there are two functions respectively for decoding and encoding Base64 strings:</p>
+<p>
+  One common application of Base64 encoding on the web is to encode binary data 
+  so it can be included in a
+  <a href="/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs">data: URL</a>.
+</p>
+
+<p>
+  In JavaScript there are two functions respectively for decoding and encoding
+  Base64 strings:
+</p>
 
 <ul>
- <li><code><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa">btoa()</a></code>: creates a Base64-encoded ASCII string from a "string" of binary data ("btoa" should be read as "binary to ASCII").</li>
- <li><code><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/atob">atob()</a></code>: decodes a Base64-encoded string("atob" should be read as "ASCII to binary").</li>
+  <li>
+    <code
+      ><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa"
+        >btoa()</a
+      ></code
+    >: creates a Base64-encoded ASCII string from a "string" of binary data
+    ("btoa" should be read as "binary to ASCII").
+  </li>
+  <li>
+    <code
+      ><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/atob"
+        >atob()</a
+      ></code
+    >: decodes a Base64-encoded string("atob" should be read as "ASCII to
+    binary").
+  </li>
 </ul>
 
-<p>The algorithm used by <code>atob()</code> and <code>btoa()</code> is specified in <a href="https://datatracker.ietf.org/doc/html/rfc4648">RFC 4648</a>, section 4.</p>
+<p>
+  The algorithm used by <code>atob()</code> and <code>btoa()</code> is specified
+  in <a href="https://datatracker.ietf.org/doc/html/rfc4648">RFC 4648</a>,
+  section 4.
+</p>
 
-<p>Note that <code>btoa()</code> expects to be passed binary data, and will throw an exception if the given string contains any characters whose UTF-16 representation occupies more than one byte. For more details, see the documentation for <code><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa">btoa()</a></code>.</p>
+<p>
+  Note that <code>btoa()</code> expects to be passed binary data, and will throw
+  an exception if the given string contains any characters whose UTF-16
+  representation occupies more than one byte. For more details, see the
+  documentation for
+  <code
+    ><a href="/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa"
+      >btoa()</a
+    ></code
+  >.
+</p>
 
 <h2 id="Encoded_size_increase">Encoded size increase</h2>
 
-<p>Each Base64 digit represents exactly 6 bits of data. So, three 8-bits bytes of the input string/binary file (3×8 bits = 24 bits) can be represented by four 6-bit Base64 digits (4×6 = 24 bits).</p>
+<p>
+  Each Base64 digit represents exactly 6 bits of data. So, three 8-bits bytes of
+  the input string/binary file (3×8 bits = 24 bits) can be represented by four
+  6-bit Base64 digits (4×6 = 24 bits).
+</p>
 
-<p>This means that the Base64 version of a string or file will be at least 133% the size of its source (a ~33% increase). The increase may be larger if the encoded data is small. For example, the string <code>"a"</code> with <code>length === 1</code> gets encoded to <code>"YQ=="</code> with <code>length === 4</code> — a 300% increase.</p>
+<p>
+  This means that the Base64 version of a string or file will be at least 133%
+  the size of its source (a ~33% increase). The increase may be larger if the
+  encoded data is small. For example, the string <code>"a"</code> with
+  <code>length === 1</code> gets encoded to <code>"YQ=="</code> with
+  <code>length === 4</code> — a 300% increase.
+</p>
 
 <h2 id="the_unicode_problem">The "Unicode Problem"</h2>
 
-<p>Since <a href="/en-US/docs/Web/API/DOMString" title="/en-US/docs/Web/API/DOMString"><code>DOMString</code></a>s are 16-bit-encoded strings, in most browsers calling <code>window.btoa</code> on a Unicode string will cause a <code>Character Out Of Range</code> exception if a character exceeds the range of a 8-bit ASCII-encoded character. There are two possible methods to solve this problem:</p>
+<p>
+  Since
+  <a href="/en-US/docs/Web/API/DOMString" title="/en-US/docs/Web/API/DOMString"
+    ><code>DOMString</code></a
+  >s are 16-bit-encoded strings, in most browsers calling
+  <code>window.btoa</code> on a Unicode string will cause a
+  <code>Character Out Of Range</code> exception if a character exceeds the range
+  of a 8-bit ASCII-encoded character. There are two possible methods to solve
+  this problem:
+</p>
 
 <ul>
- <li>the first one is to escape the whole string and then encode it;</li>
- <li>the second one is to convert the UTF-16 <a href="/en-US/docs/Web/API/DOMString" title="/en-US/docs/Web/API/DOMString"><code>DOMString</code></a> to an UTF-8 array of characters and then encode it.</li>
+  <li>the first one is to escape the whole string and then encode it;</li>
+  <li>
+    the second one is to convert the UTF-16
+    <a
+      href="/en-US/docs/Web/API/DOMString"
+      title="/en-US/docs/Web/API/DOMString"
+      ><code>DOMString</code></a
+    >
+    to an UTF-8 array of characters and then encode it.
+  </li>
 </ul>
 
 <p>Here are the two possible methods.</p>
 
-<h3 id="solution_1_–_escaping_the_string_before_encoding_it">Solution #1 – escaping the string before encoding it</h3>
+<h3 id="solution_1_–_escaping_the_string_before_encoding_it">
+  Solution #1 – escaping the string before encoding it
+</h3>
 
-<pre class="brush:js">function utf8_to_b64( str ) {
+<pre class="brush:js">
+function utf8_to_b64( str ) {
   return window.btoa(unescape(encodeURIComponent( str )));
 }
 
@@ -58,13 +143,24 @@ function b64_to_utf8( str ) {
 
 // Usage:
 utf8_to_b64('✓ à la mode'); // "4pyTIMOgIGxhIG1vZGU="
-b64_to_utf8('4pyTIMOgIGxhIG1vZGU='); // "✓ à la mode"</pre>
+b64_to_utf8('4pyTIMOgIGxhIG1vZGU='); // "✓ à la mode"</pre
+>
 
-<p>This solution has been proposed by <a href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html">Johan Sundström</a>.</p>
+<p>
+  This solution has been proposed by
+  <a
+    href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html"
+    >Johan Sundström</a
+  >.
+</p>
 
-<p>Another possible solution without utilizing the now deprecated 'unescape' and 'escape' functions.</p>
+<p>
+  Another possible solution without utilizing the now deprecated 'unescape' and
+  'escape' functions.
+</p>
 
-<pre class="brush:js">function b64EncodeUnicode(str) {
+<pre class="brush:js">
+function b64EncodeUnicode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
         return String.fromCharCode('0x' + p1);
     }));
@@ -72,11 +168,24 @@ b64_to_utf8('4pyTIMOgIGxhIG1vZGU='); // "✓ à la mode"</pre>
  b64EncodeUnicode('✓ à la mode'); // "4pyTIMOgIGxhIG1vZGU="
 </pre>
 
-<h3 id="solution_2_–_rewriting_atob_and_btoa_using_typedarrays_and_utf-8">Solution #2 – rewriting <code>atob()</code> and <code>btoa()</code> using <code>TypedArray</code>s and UTF-8</h3>
+<h3 id="solution_2_–_rewriting_atob_and_btoa_using_typedarrays_and_utf-8">
+  Solution #2 – rewriting <code>atob()</code> and <code>btoa()</code> using
+  <code>TypedArray</code>s and UTF-8
+</h3>
 
-<p><strong>Note:</strong> The following code is also useful to get an <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer">ArrayBuffer</a> from a Base64 string and/or viceversa (<a href="#appendix_decode_a_base64_string_to_uint8array_or_arraybuffer">see below</a>).</p>
+<p>
+  <strong>Note:</strong> The following code is also useful to get an
+  <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"
+    >ArrayBuffer</a
+  >
+  from a Base64 string and/or viceversa (<a
+    href="#appendix_decode_a_base64_string_to_uint8array_or_arraybuffer"
+    >see below</a
+  >).
+</p>
 
-<pre class="brush: js">"use strict";
+<pre class="brush: js">
+"use strict";
 
 /*\
 |*|
@@ -252,7 +361,8 @@ function strToUTF8Arr (sDOMStr) {
 
 <h3 id="Tests">Tests</h3>
 
-<pre class="brush: js">/* Tests */
+<pre class="brush: js">
+/* Tests */
 
 var sMyInput = "Base 64 \u2014 Mozilla Developer Network";
 
@@ -266,11 +376,24 @@ var aMyUTF8Output = base64DecToArr(sMyBase64);
 
 var sMyOutput = UTF8ArrToStr(aMyUTF8Output);
 
-alert(sMyOutput);</pre>
+alert(sMyOutput);</pre
+>
 
-<h3 id="appendix_decode_a_base64_string_to_uint8array_or_arraybuffer">Appendix: Decode a Base64 string to Uint8Array or ArrayBuffer</h3>
+<h3 id="appendix_decode_a_base64_string_to_uint8array_or_arraybuffer">
+  Appendix: Decode a Base64 string to Uint8Array or ArrayBuffer
+</h3>
 
-<p>These function let us to create also <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">uint8Arrays</a> or <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer">arrayBuffers</a> from Base64-encoded strings:</p>
+<p>
+  These function let us to create also
+  <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"
+    >uint8Arrays</a
+  >
+  or
+  <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"
+    >arrayBuffers</a
+  >
+  from Base64-encoded strings:
+</p>
 
 <pre class="brush: js">
 // "Base 64 \u2014 Mozilla Developer Network"
@@ -279,6 +402,20 @@ var myArray = base64DecToArr("QmFzZSA2NCDigJQgTW96aWxsYSBEZXZlbG9wZXIgTmV0d29yaw
 // "Base 64 \u2014 Mozilla Developer Network"
 var myBuffer = base64DecToArr("QmFzZSA2NCDigJQgTW96aWxsYSBEZXZlbG9wZXIgTmV0d29yaw==").buffer;
 
-alert(myBuffer.byteLength);</pre>
+alert(myBuffer.byteLength);</pre
+>
 
-<p><strong>Note:</strong> The function <code>base64DecToArr(sBase64[, <var>nBlocksSize</var>])</code> returns an <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code>uint8Array</code></a> of bytes. If your aim is to build a buffer of 16-bit / 32-bit / 64-bit raw data, use the <code>nBlocksSize</code> argument, which is the number of bytes of which the <code>uint8Array.buffer.bytesLength</code> property must result a multiple (<code>1</code> or omitted for ASCII, <a href="/en-US/docs/Web/API/DOMString/Binary">binary strings</a> or UTF-8-encoded strings, <code>2</code> for UTF-16 strings, <code>4</code> for UTF-32 strings).</p>
+<p>
+  <strong>Note:</strong> The function
+  <code>base64DecToArr(sBase64[, <var>nBlocksSize</var>])</code> returns an
+  <a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"
+    ><code>uint8Array</code></a
+  >
+  of bytes. If your aim is to build a buffer of 16-bit / 32-bit / 64-bit raw
+  data, use the <code>nBlocksSize</code> argument, which is the number of bytes
+  of which the <code>uint8Array.buffer.bytesLength</code> property must result a
+  multiple (<code>1</code> or omitted for ASCII,
+  <a href="/en-US/docs/Web/API/DOMString/Binary">binary strings</a> or
+  UTF-8-encoded strings, <code>2</code> for UTF-16 strings, <code>4</code> for
+  UTF-32 strings).
+</p>

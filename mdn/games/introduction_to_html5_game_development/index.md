@@ -1,9 +1,8 @@
---- title: Introduction to HTML5 Game Development slug: Games/Introduction\_to\_HTML5\_Game\_Development tags: - Firefox OS - Games - HTML5 - Mobile ---
+--- title: Introduction to HTML5 Game Development slug: Games/Introduction_to_HTML5_Game_Development tags: - Firefox OS - Games - HTML5 - Mobile ---
 
 {{GamesSidebar}}
 
-Advantages
-----------
+## Advantages
 
 1.  <span class="seoSummary">Games built with HTML5 work on smartphones, tablets, PCs and Smart TVs.</span>
 2.  Advertise and promote your game all over the Web as well as other media.
@@ -13,8 +12,7 @@ Advantages
 6.  Connect with your customers more closely,
 7.  <span class="seoSummary">Players can play the game anywhere, anytime.</span>
 
-Web Technologies
-----------------
+## Web Technologies
 
 <table><thead><tr class="header"><th><strong>Function</strong></th><th><strong>Technology</strong></th></tr></thead><tbody><tr class="odd"><td><strong>Audio</strong></td><td><a href="/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a></td></tr><tr class="even"><td><strong>Graphics</strong></td><td><a href="/en-US/docs/Web/API/WebGL_API">WebGL</a> (<a href="https://www.khronos.org/opengles/">OpenGL ES</a> 2.0)</td></tr><tr class="odd"><td><strong>Input</strong></td><td><a href="/en-US/docs/Web/API/Touch_events">Touch events</a>, <a href="/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API">Gamepad API</a>, device sensors, <a href="/en-US/docs/Web/API/WebRTC_API">WebRTC</a>, <a href="/en-US/docs/Web/API/Fullscreen_API">Full Screen API</a>, <a href="/en-US/docs/Web/API/Pointer_Lock_API">Pointer Lock API</a></td></tr><tr class="even"><td><strong>Language</strong></td><td><a href="/en-US/docs/Web/JavaScript">JavaScript</a> (or C/C++ using <a href="https://github.com/kripken/emscripten/wiki">Emscripten</a> to compile to JavaScript)</td></tr><tr class="odd"><td><strong>Networking</strong></td><td><a href="/en-US/docs/Web/API/WebRTC_API">WebRTC</a> and/or <a href="/en-US/docs/Web/API/WebSockets_API">WebSockets</a></td></tr><tr class="even"><td><strong>Storage</strong></td><td><a href="/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> or the "cloud"</td></tr><tr class="odd"><td><strong>Web</strong></td><td><a href="/en-US/docs/Web/HTML">HTML</a>, <a href="/en-US/docs/Web/CSS">CSS</a>, <a href="/en-US/docs/Web/SVG">SVG</a>, <a href="/en-US/docs/Social_API">Social API</a> (and much more!)</td></tr></tbody></table>
 

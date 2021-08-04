@@ -14,20 +14,19 @@ A call to a safe method, not changing the state of the server:
 
 A call to a non-safe method, that may change the state of the server:
 
-    POST /pageX.html HTTP/1.1 
+    POST /pageX.html HTTP/1.1
 
 A call to an idempotent but non-safe method:
 
     DELETE /idX/delete HTTP/1.1
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   Definition of [safe](https://datatracker.ietf.org/doc/html/rfc7231#section-4.2.1) in the HTTP specification.
+- Definition of [safe](https://datatracker.ietf.org/doc/html/rfc7231#section-4.2.1) in the HTTP specification.
 
 ### Technical knowledge
 
--   Description of common safe methods: {{HTTPMethod("GET")}}, {{HTTPMethod("HEAD")}}, {{HTTPMethod("OPTIONS")}}
--   Description of common unsafe methods: {{HTTPMethod("PUT")}}, {{HTTPMethod("DELETE")}}, {{HTTPMethod("POST")}}
+- Description of common safe methods: {{HTTPMethod("GET")}}, {{HTTPMethod("HEAD")}}, {{HTTPMethod("OPTIONS")}}
+- Description of common unsafe methods: {{HTTPMethod("PUT")}}, {{HTTPMethod("DELETE")}}, {{HTTPMethod("POST")}}

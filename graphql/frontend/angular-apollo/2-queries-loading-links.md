@@ -185,7 +185,7 @@ Open up `src/app/graphql.ts` and add your first query:
 What’s going on here?
 
 1.  First, you import `gql` from the `graphql-tag` package. The `gql` function is used to parse the plain GraphQL code.
-2.  Now you define the plain GraphQL query. The name `AllLinksQuery` is the *operation name* and will be used by Apollo to refer to this query in its internals. You export this parsed query as `ALL_LINKS_QUERY` so you can easily import it into components.
+2.  Now you define the plain GraphQL query. The name `AllLinksQuery` is the _operation name_ and will be used by Apollo to refer to this query in its internals. You export this parsed query as `ALL_LINKS_QUERY` so you can easily import it into components.
 3.  You also declare the response interface of `AllLinksQuery`
 
 Next, you will inject the `Apollo` service to the `LinkList` component and call this newly created query to fetch data.

@@ -1,4 +1,4 @@
---- title: Effective connection type slug: Glossary/Effective\_connection\_type tags: - Glossary - Navigator - Network Information API - NetworkInformation - Performance - Reference - Web Performance - connect - effective connection type - effectiveType ---
+--- title: Effective connection type slug: Glossary/Effective_connection_type tags: - Glossary - Navigator - Network Information API - NetworkInformation - Performance - Reference - Web Performance - connect - effective connection type - effectiveType ---
 
 **Effective connection type** (ECT) refers to the measured network performance, returning a cellular connection type, like 3G, even if the actual connection is tethered broadband or WiFi, based on the time between the browser requesting a page and effective type of the connection.
 
@@ -10,10 +10,9 @@ The values of '`slow-2g`', '`2g`', '`3g`', and '`4g`' are determined using obser
 
     navigator.connection.effectiveType;
 
-See also
---------
+## See also
 
--   [Network Information API](/en-US/docs/Web/API/Network_Information_API)
--   {{domxref('NetworkInformation')}}
--   {{domxref('NetworkInformation.effectiveType')}}
--   {{HTTPHeader("ECT")}}
+- [Network Information API](/en-US/docs/Web/API/Network_Information_API)
+- {{domxref('NetworkInformation')}}
+- {{domxref('NetworkInformation.effectiveType')}}
+- {{HTTPHeader("ECT")}}

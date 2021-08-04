@@ -14,7 +14,6 @@ When using the main JavaScript thread, work in chunks for less than **50ms** to 
 **Load**  
 Deliver interactive content in less than **1 second**.
 
-See also
---------
+## See also
 
--   [Recommended Web Performance Timings: How long is too long](/en-US/docs/Web/Performance/How_long_is_too_long)
+- [Recommended Web Performance Timings: How long is too long](/en-US/docs/Web/Performance/How_long_is_too_long)

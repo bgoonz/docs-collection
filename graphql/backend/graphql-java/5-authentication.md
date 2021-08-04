@@ -11,14 +11,14 @@ Start off by defining the new mutation and related types in the schema:
           createUser(name: String!, authProvider: AuthData!): User
           createLink(url: String!, description: String!): Link
         }
-        
+
         type User {
           id: ID!
           name: String!
           email: String
           password: String
         }
-        
+
         input AuthData {
           email: String!
           password: String!
@@ -27,7 +27,7 @@ Start off by defining the new mutation and related types in the schema:
 Follow by creating the analogous Java types:
 
     public class User {
-        
+
         private final String id;
         private final String name;
         private final String email;
@@ -36,7 +36,7 @@ Follow by creating the analogous Java types:
         public User(String name, String email, String password) {
             this(null, name, email, password);
         }
-        
+
         public User(String id, String name, String email, String password) {
             this.id = id;
             this.name = name;
@@ -93,7 +93,7 @@ Follow by creating the analogous Java types:
 
 You’ll also need a new repository class to handle saving and loading users, in the fashion of `LinkRepository`.
 
-*Note that you should never ever store passwords in plain text. This is only to keep the tutorial simple.*
+_Note that you should never ever store passwords in plain text. This is only to keep the tutorial simple._
 
     public class UserRepository {
 
@@ -102,7 +102,7 @@ You’ll also need a new repository class to handle saving and loading users, in
         public UserRepository(MongoCollection<Document> users) {
             this.users = users;
         }
-        
+
         public User findByEmail(String email) {
             Document doc = users.find(eq("email", email)).first();
             return user(doc);
@@ -112,7 +112,7 @@ You’ll also need a new repository class to handle saving and loading users, in
             Document doc = users.find(eq("_id", new ObjectId(id))).first();
             return user(doc);
         }
-        
+
         public User saveUser(User user) {
             Document doc = new Document();
             doc.append("name", user.getName());
@@ -125,7 +125,7 @@ You’ll also need a new repository class to handle saving and loading users, in
                     user.getEmail(),
                     user.getPassword());
         }
-        
+
         private User user(Document doc) {
         if (doc == null) {
             return null;
@@ -141,7 +141,7 @@ You’ll also need a new repository class to handle saving and loading users, in
 Before adding the new `createUser` resolver to `Mutation`, you’ll have to refactor it slightly to also accept a `UserRepository` instance in the constructor
 
     public class Mutation implements GraphQLRootResolver {
-            
+
         private final LinkRepository linkRepository;
         private final UserRepository userRepository;
 
@@ -153,7 +153,7 @@ Before adding the new `createUser` resolver to `Mutation`, you’ll have to refa
         public Link createLink(String url, String description) {
             //stays the same
         }
-        
+
         public User createUser(String name, AuthData auth) {
             User newUser = new User(name, auth.getEmail(), auth.getPassword());
             return userRepository.saveUser(newUser);
@@ -164,15 +164,15 @@ And finally, you’ll need to instantiate a `UserRepository` and update the sche
 
         private static final LinkRepository linkRepository;
         private static final UserRepository userRepository; //the new field
-        
+
         static {
                 MongoDatabase mongo = new MongoClient().getDatabase("hackernews");
                 linkRepository = new LinkRepository(mongo.getCollection("links"));
                 userRepository = new UserRepository(mongo.getCollection("users"));
         }
-        
+
         //the rest is the same
-        
+
         private static GraphQLSchema buildSchema() {
             return SchemaParser.newParser()
                     .file("schema.graphqls")
@@ -206,7 +206,7 @@ As always, start off by defining the new mutation and related types in the schem
 Create a new class to model the new type
 
     public class SigninPayload {
-        
+
         private final String token;
         private final User user;
 
@@ -294,9 +294,9 @@ In GraphQL, the way to obtain this type of data, that isn’t coming from the qu
 Create a class called `AuthContext` extending `GraphQLContext` as such:
 
     public class AuthContext extends GraphQLContext {
-        
+
         private final User user;
-        
+
         public AuthContext(User user, Optional<HttpServletRequest> request, Optional<HttpServletResponse> response) {
             super(request, response);
             this.user = user;

@@ -202,7 +202,7 @@ Open `src/app/graphql.ts` and add the following query definition to the file:
 
 This query looks similar to the `allLinks` query that’s used in `LinkListComponent`. However, this time it takes in an argument called `searchText` and specifies a `filter` object that will be used to specify conditions on the links that you want to retrieve.
 
-In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its `URL` contains the provided `searchText` *or* its `description` contains the provided `searchText`. Both conditions can be combined using the `OR` operator.
+In this case, you’re specifying two filters that account for the following two conditions: A link is only returned if either its `URL` contains the provided `searchText` _or_ its `description` contains the provided `searchText`. Both conditions can be combined using the `OR` operator.
 
 The implementation is almost trivial. You’re executing the `ALL_LINKS_SEARCH_QUERY` each time `searchText` changes, and binding the results to `allLinks` so that they can be rendered.
 

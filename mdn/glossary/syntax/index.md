@@ -6,15 +6,14 @@ Syntax varies from language to language (e.g., syntax is different in {{Glossary
 
 Syntax applies both to programming languages (commands to the computer) and markup languages (document structure information) alike.
 
-Syntax only governs ordering and structure; the instructions must also be *meaningful*, which is the province of {{Glossary("semantics")}}.
+Syntax only governs ordering and structure; the instructions must also be _meaningful_, which is the province of {{Glossary("semantics")}}.
 
 Code must have correct syntax in order to {{Glossary("compile")}} correctly, otherwise a {{Glossary("syntax error")}} occurs. Even small errors, like a missing parenthesis, can stop source code from compiling successfully.
 
 Frameworks are said to have a "clean" syntax if they produce simple, readable, concise results. If a codebase uses "a lot of syntax", it requires more characters to achieve the same functionality.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Syntax (programming languages)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Syntax (programming languages)")}} on Wikipedia

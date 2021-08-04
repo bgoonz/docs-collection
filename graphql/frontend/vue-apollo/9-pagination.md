@@ -1,7 +1,6 @@
 Next up we’ll cover pagination. You’ll implement a simple pagination approach so that users are able to view the links in smaller chunks rather than having an extremely long list of `Link` elements.
 
-Preparing the VueJS Components
-------------------------------
+## Preparing the VueJS Components
 
 Once more, you first need to prepare the VueJS components for this new functionality. In fact, we’ll slightly adjust the current routing setup. Here’s the idea: The `LinkList` component will be used for two different use cases (and routes). The first one is to display the 10 top voted links. Its second use case is to display new links in a list separated into multiple pages that the user can navigate through.
 
@@ -91,7 +90,7 @@ Open `src/constants/graphql.js` and add three arguments to the `AllLinksQuery` b
       }
     `
 
-The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the *offset* where the query will start. If you passed a value of e.g. `10` to this argument, it means that the first 10 items of the list will not be included in the response. `first` then defines the *limit*, or *how many* elements, you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
+The query now accepts arguments that we’ll use to implement pagination and ordering. `skip` defines the _offset_ where the query will start. If you passed a value of e.g. `10` to this argument, it means that the first 10 items of the list will not be included in the response. `first` then defines the _limit_, or _how many_ elements, you want to load from that list. Say, you’re passing the `10` for `skip` and `5` for `first`, you’ll receive items 10 to 15 from the list.
 
 You need to update the references to this query in the `CreateLink` component.
 
@@ -125,7 +124,7 @@ Open `src/components/LinkItem.vue` and update the `updateStoreAfterVote` callbac
     updateStoreAfterVote (store, createVote, linkId) {
       const data = store.readQuery({
         query: ALL_LINKS_QUERY,
-        variables: {     
+        variables: {
           first: 5,
           skip: 0,
           orderBy: 'createdAt_DESC'
@@ -293,7 +292,7 @@ Still in `src/components/LinkList.vue` add `count` to `data` and initialize it t
       }
     }
 
-Next, you’ll implement the functionality for the *Previous*- and *Next*-buttons.
+Next, you’ll implement the functionality for the _Previous_- and _Next_-buttons.
 
 In `src/components/LinkList.vue`, add the following two methods that will be called when the buttons are pressed:
 

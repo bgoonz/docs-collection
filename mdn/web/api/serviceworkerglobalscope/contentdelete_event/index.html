@@ -1,5 +1,5 @@
 ---
-title: 'ServiceWorkerGlobalScope: contentdelete event'
+title: "ServiceWorkerGlobalScope: contentdelete event"
 slug: Web/API/ServiceWorkerGlobalScope/contentdelete_event
 tags:
   - Content Index API
@@ -10,36 +10,45 @@ tags:
   - event
 browser-compat: api.ServiceWorkerGlobalScope.contentdelete_event
 ---
+
 <div>{{draft}}{{APIRef("Service Workers API")}}</div>
 
-<p class="summary">The <strong><code>contentdelete</code></strong> event of the {{domxref("ServiceWorkerGlobalScope")}} interface is fired when an item is removed from the indexed content via the user agent.</p>
+<p class="summary">
+  The <strong><code>contentdelete</code></strong> event of the
+  {{domxref("ServiceWorkerGlobalScope")}} interface is fired when an item is
+  removed from the indexed content via the user agent.
+</p>
 
 <table class="properties">
- <tbody>
-  <tr>
-   <th scope="row">Bubbles</th>
-   <td>No</td>
-  </tr>
-  <tr>
-   <th scope="row">Cancelable</th>
-   <td>No</td>
-  </tr>
-  <tr>
-   <th scope="row">Interface</th>
-   <td>{{domxref("ContentIndexEvent")}}</td>
-  </tr>
-  <tr>
-   <th scope="row">Event handler property</th>
-   <td>{{domxref("ServiceWorkerGlobalScope.oncontentdelete")}}</td>
-  </tr>
- </tbody>
+  <tbody>
+    <tr>
+      <th scope="row">Bubbles</th>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th scope="row">Cancelable</th>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th scope="row">Interface</th>
+      <td>{{domxref("ContentIndexEvent")}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Event handler property</th>
+      <td>{{domxref("ServiceWorkerGlobalScope.oncontentdelete")}}</td>
+    </tr>
+  </tbody>
 </table>
 
 <h2 id="Examples">Examples</h2>
 
-<p>The following example uses a <code>contentdelete</code> event handler to remove cached content related to the deleted index item.</p>
+<p>
+  The following example uses a <code>contentdelete</code> event handler to
+  remove cached content related to the deleted index item.
+</p>
 
-<pre class="brush: js">self.addEventListener('contentdelete', event =&gt; {
+<pre class="brush: js">
+self.addEventListener('contentdelete', event =&gt; {
   event.waitUntil(
     caches.open('cache-name').then(cache =&gt; {
       return Promise.all([
@@ -51,9 +60,13 @@ browser-compat: api.ServiceWorkerGlobalScope.contentdelete_event
 });
 </pre>
 
-<p>You can also set up the event handler using the ServiceWorkerGlobalScope.ondelete property:</p>
+<p>
+  You can also set up the event handler using the
+  ServiceWorkerGlobalScope.ondelete property:
+</p>
 
-<pre class="brush: js">self.oncontentdelete = (event) =&gt; {
+<pre class="brush: js">
+self.oncontentdelete = (event) =&gt; {
   ...
 };
 </pre>
@@ -69,7 +82,16 @@ browser-compat: api.ServiceWorkerGlobalScope.contentdelete_event
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li>{{domxref("Content Index API")}}</li>
- <li><a href="https://web.dev/content-indexing-api/">An introductory article on the Content Index API</a></li>
- <li><a href="https://contentindex.dev/">An app which uses the Content Index API to list and remove 'save for later' content</a></li>
+  <li>{{domxref("Content Index API")}}</li>
+  <li>
+    <a href="https://web.dev/content-indexing-api/"
+      >An introductory article on the Content Index API</a
+    >
+  </li>
+  <li>
+    <a href="https://contentindex.dev/"
+      >An app which uses the Content Index API to list and remove 'save for
+      later' content</a
+    >
+  </li>
 </ul>

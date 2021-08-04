@@ -1,4 +1,4 @@
---- title: Alignment subject slug: Glossary/Alignment\_Subject tags: - Alignment subject - CSS - Glossary - alignment ---
+--- title: Alignment subject slug: Glossary/Alignment_Subject tags: - Alignment subject - CSS - Glossary - alignment ---
 
 In [CSS Box Alignment](/en-US/docs/Web/CSS/CSS_Box_Alignment) the **alignment subject** is the thing (or things) being aligned by the property.
 
@@ -19,7 +19,6 @@ For {{cssxref("align-content")}}, the flex lines. Note, this only has an effect 
 Grid containers  
 The grid tracks in the appropriate axis, with any spacing inserted between tracks added to the relevant gutters. Collapsed gutters are treated as a single opportunity for space insertion.
 
-Learn more
-----------
+## Learn more
 
--   [CSS Box Alignment](/en-US/docs/Web/CSS/CSS_Box_Alignment)
+- [CSS Box Alignment](/en-US/docs/Web/CSS/CSS_Box_Alignment)

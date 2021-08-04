@@ -1,8 +1,8 @@
 --- title: Mutable slug: Glossary/Mutable tags: - CodingScripting - Glossary - NeedsContent ---
 
-*Mutable* is a type of variable that can be changed. In {{glossary("JavaScript")}}, only {{Glossary("Object","objects")}} and {{Glossary("Array","arrays")}} are mutable, not {{Glossary("primitive", "primitive values")}}.
+_Mutable_ is a type of variable that can be changed. In {{glossary("JavaScript")}}, only {{Glossary("Object","objects")}} and {{Glossary("Array","arrays")}} are mutable, not {{Glossary("primitive", "primitive values")}}.
 
-(You *can* make a variable name point to a new value, but the previous value is still held in memory. Hence the need for garbage collection.)
+(You _can_ make a variable name point to a new value, but the previous value is still held in memory. Hence the need for garbage collection.)
 
 A **mutable object** is an object whose state can be modified after it is created.
 
@@ -26,9 +26,8 @@ On appending the "immutableString" with a string value, following events occur:
 4.  "immutableString" object now points to the newly created memory space
 5.  Previously created memory space is now available for garbage collection.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Immutable object")}} on Wikipedia
+- {{Interwiki("wikipedia", "Immutable object")}} on Wikipedia

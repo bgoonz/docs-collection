@@ -1,4 +1,4 @@
---- title: Build the brick field slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Build\_the\_brick\_field tags: - Beginner - Canvas - Games - Graphics - JavaScript - Tutorial ---
+--- title: Build the brick field slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Build_the_brick_field tags: - Beginner - Canvas - Games - Graphics - JavaScript - Tutorial ---
 
 {{GamesSidebar}}
 
@@ -8,8 +8,7 @@ This is the **6th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">After modifying the gameplay mechanics, we are now able to lose — this is great as it means the game is finally feeling more like a game. However, it will quickly get boring if all you do is bounce the ball off the walls and the paddle. What a breakout game really needs is some bricks to destroy with the ball, and this is what we'll create now!</span>
 
-Setting up the brick variables
-------------------------------
+## Setting up the brick variables
 
 The overall aim of this lesson is to render a few lines of code for the  bricks, using a nested loop that works through a two-dimensional array. First however we need to set up some variables to define information about the bricks such as their width and height, rows and columns, etc. Add the following lines to your code below the variables which you have previously declared in your program.
 
@@ -35,8 +34,7 @@ We will hold all our bricks in a two-dimensional array. It will contain the bric
 
 The code above will loop through the rows and columns and create the new bricks. NOTE that the brick objects will also be used for collision detection purposes later.
 
-Brick drawing logic
--------------------
+## Brick drawing logic
 
 Now let's create a function to loop through all the bricks in the array and draw them on the screen. Our code might look like this:
 
@@ -79,15 +77,13 @@ The final version of the `drawBricks()` function, after assigning the `brickX` a
         }
     }
 
-Actually drawing the bricks
----------------------------
+## Actually drawing the bricks
 
 The last thing to do in this lesson is to add a call to `drawBricks()` somewhere in the `draw()` function, preferably at the beginning, between the clearing of the Canvas and drawing the ball. Add the following just above the `drawBall()` call:
 
     drawBricks();
 
-Compare your code
------------------
+## Compare your code
 
 At this point, the game has got a little more interesting again  :
 
@@ -95,8 +91,7 @@ At this point, the game has got a little more interesting again  :
 
 Exercise: Try changing the number of bricks in a row or a column, or their positions.
 
-Next steps
-----------
+## Next steps
 
 So now we have bricks! But the ball isn't interacting with them at all — we'll change that as we continue to the seventh chapter: [Collision detection](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection).
 

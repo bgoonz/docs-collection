@@ -11,17 +11,43 @@ tags:
   - devtools.panels
 browser-compat: webextensions.api.devtools.panels.ExtensionPanel
 ---
+
 <div>{{AddonSidebar()}}</div>
 
-<p>An <code>ExtensionPanel</code> represents a panel added to the devtools. It's the resolution of the <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code> returned by <code><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools/panels/create">browser.devtools.panels.create()</a></code>.</p>
+<p>
+  An <code>ExtensionPanel</code> represents a panel added to the devtools. It's
+  the resolution of the
+  <code
+    ><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      >Promise</a
+    ></code
+  >
+  returned by
+  <code
+    ><a
+      href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools/panels/create"
+      >browser.devtools.panels.create()</a
+    ></code
+  >.
+</p>
 
 <h2 id="Type">Type</h2>
 
-<p>Values of this type are objects. The define two events, <code>onShown</code> and <code>onHidden</code>.</p>
+<p>
+  Values of this type are objects. The define two events,
+  <code>onShown</code> and <code>onHidden</code>.
+</p>
 
 <ul>
- <li><code>onShown</code> is emitted when the panel is shown in the devtools (for example, because the user clicked on the panel's tab in the devtools window).</li>
- <li><code>onHidden</code> is emitted when the panel is hidden (for example, because the user switched to a different tab in the devtools window).</li>
+  <li>
+    <code>onShown</code> is emitted when the panel is shown in the devtools (for
+    example, because the user clicked on the panel's tab in the devtools
+    window).
+  </li>
+  <li>
+    <code>onHidden</code> is emitted when the panel is hidden (for example,
+    because the user switched to a different tab in the devtools window).
+  </li>
 </ul>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
@@ -30,9 +56,13 @@ browser-compat: webextensions.api.devtools.panels.ExtensionPanel
 
 <h2 id="Examples">Examples</h2>
 
-<p>This code creates a new panel, then adds handlers for its <code>onShown</code> and <code>onHidden</code> events.</p>
+<p>
+  This code creates a new panel, then adds handlers for its
+  <code>onShown</code> and <code>onHidden</code> events.
+</p>
 
-<pre class="brush: js">function handleShown(e) {
+<pre class="brush: js">
+function handleShown(e) {
   console.log(e);
   console.log("panel is being shown");
 }
@@ -49,19 +79,32 @@ browser.devtools.panels.create(
 ).then((newPanel) =&gt; {
   newPanel.onShown.addListener(handleShown);
   newPanel.onHidden.addListener(handleHidden);
-});</pre>
+});</pre
+>
 
 <p>{{WebExtExamples}}</p>
 
-<div class="note"><strong>Acknowledgements</strong>
+<div class="note">
+  <strong>Acknowledgements</strong>
 
-<p>This API is based on Chromium's <a href="https://developer.chrome.com/extensions/devtools_panels"><code>chrome.devtools.panels</code></a> API.</p>
+  <p>
+    This API is based on Chromium's
+    <a href="https://developer.chrome.com/extensions/devtools_panels"
+      ><code>chrome.devtools.panels</code></a
+    >
+    API.
+  </p>
 
-<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+  <p>
+    Microsoft Edge compatibility data is supplied by Microsoft Corporation and
+    is included here under the Creative Commons Attribution 3.0 United States
+    License.
+  </p>
 </div>
 
 <div class="hidden">
-<pre>// Copyright 2015 The Chromium Authors. All rights reserved.
+  <pre>
+// Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -88,5 +131,6 @@ browser.devtools.panels.create(
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
+</pre
+  >
 </div>

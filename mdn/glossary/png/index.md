@@ -2,9 +2,8 @@
 
 **PNG** (Portable Network Graphics) is a graphics file format that supports lossless data compression.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) on Wikipedia
+- [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) on Wikipedia

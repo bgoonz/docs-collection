@@ -161,7 +161,7 @@ The actual filter is built and used in the `feed` resolver which is implemented 
 
 > **Note**: To understand what’s going on in this resolver, check out the [Node tutorial](https://www.howtographql.com/graphql-js/0-introduction/).
 
-In this case, two `where` conditions are specified: A link is only returned if either its `url` contains the provided `filter` *or* its `description` contains the provided `filter`. Both conditions are combined using Prisma’s `OR` operator.
+In this case, two `where` conditions are specified: A link is only returned if either its `url` contains the provided `filter` _or_ its `description` contains the provided `filter`. Both conditions are combined using Prisma’s `OR` operator.
 
 Perfect, the query is defined! But this time we actually want to load the data every time the user hits the **OK** button, not upon the initial load of the component. To do this, we’ll use a hook supplied by Apollo called `useLazyQuery`. This hook performs a query in the same way the `useQuery` hook does but the difference is that it must be executed manually. This is perfect for our situation––we want to execute the query when the **OK** button is clicked.
 

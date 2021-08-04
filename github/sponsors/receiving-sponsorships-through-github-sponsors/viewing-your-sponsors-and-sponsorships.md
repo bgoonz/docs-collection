@@ -5,7 +5,7 @@ redirect_from:
   - /articles/viewing-your-sponsors-and-sponsorships
   - /github/supporting-the-open-source-community-with-github-sponsors/viewing-your-sponsors-and-sponsorships
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Open Source
@@ -20,8 +20,9 @@ You can view analytics on your current and past sponsorships, the payments you'v
 ## Viewing your sponsors and sponsorships
 
 {% data reusables.sponsors.navigate-to-sponsors-dashboard %}
+
 1. Optionally, to filter your sponsors by tier, use the **Filter** drop-down menu, click **Active tiers** or **Retired tiers**, and select a tier.
-  ![Drop-down menu to filter by tier](/assets/images/help/sponsors/filter-drop-down.png)
+   ![Drop-down menu to filter by tier](/assets/images/help/sponsors/filter-drop-down.png)
 
 ## Viewing recent sponsorship activity
 
@@ -34,7 +35,8 @@ You can export your sponsorship transactions by month. {% data variables.product
 
 {% data reusables.sponsors.navigate-to-sponsors-dashboard %}
 {% data reusables.sponsors.activity-tab %}
+
 1. Click {% octicon "download" aria-label="The download icon" %} **Export**.
-  ![Export button](/assets/images/help/sponsors/export-all.png)
+   ![Export button](/assets/images/help/sponsors/export-all.png)
 1. Choose a time frame and a format for the data you'd like to export, then click **Start export**.
-  ![Options for data export](/assets/images/help/sponsors/export-your-sponsors.png)
+   ![Options for data export](/assets/images/help/sponsors/export-your-sponsors.png)

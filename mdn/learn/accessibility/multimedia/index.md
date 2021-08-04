@@ -8,8 +8,7 @@ Another category of content that can create accessibility problems is multimedia
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML, CSS, and JavaScript, an understanding of <a href="/en-US/docs/Learn/Accessibility/What_is_accessibility">what accessibility is</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the accessibility issues behind multimedia, and how to overcome them.</td></tr></tbody></table>
 
-Multimedia and accessibility
-----------------------------
+## Multimedia and accessibility
 
 So far in this module, we have looked at a variety of content and what needs to be done to ensure its accessibility, ranging from simple text content to data tables, images, native controls such as form elements and buttons, and even more complex markup structures (with [WAI-ARIA](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics) attributes).
 
@@ -17,8 +16,7 @@ This article on the other hand looks at another general class of content that ar
 
 But don't despair — here we will help you navigate through the techniques available for making multimedia more accessible.
 
-Simple images
--------------
+## Simple images
 
 We already covered simple text alternatives for HTML images in our [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML) article — you can refer back to there for the full details. In short, you should ensure that where possible visual content has an alternative text available for screenreaders to pick up and read to their users.
 
@@ -27,8 +25,7 @@ For example:
     <img src="dinosaur.png"
          alt="A red Tyrannosaurus Rex: A two legged dinosaur standing upright like a human, with small arms, and a large head with lots of sharp teeth.">
 
-Accessible audio and video controls
------------------------------------
+## Accessible audio and video controls
 
 Implementing controls for web-based audio/video shouldn't be a problem, right? Let's investigate.
 
@@ -58,8 +55,8 @@ The controls attribute provides play/pause buttons, seek bar, etc. — the basic
 
 However, there are problems with these controls:
 
--   They are not keyboard-accessible in most browsers, i.e. you can't tab between the controls inside the native player. Opera and Chrome provide this to some degree, but it still isn't ideal.
--   Different browsers give the native controls differing styling and functionality, and they aren't stylable, meaning that they can't be easily made to follow a site style guide.
+- They are not keyboard-accessible in most browsers, i.e. you can't tab between the controls inside the native player. Opera and Chrome provide this to some degree, but it still isn't ideal.
+- Different browsers give the native controls differing styling and functionality, and they aren't stylable, meaning that they can't be easily made to follow a site style guide.
 
 To remedy this, we can create our own custom controls. Let's look at how.
 
@@ -190,22 +187,21 @@ Each time the time updates (once per second), we fire this function. It works ou
 
 This gives you a basic idea of how to add custom player functionality to video/audio player instances. For more information on how to add more complex features to video/audio players, see:
 
--   [Audio and video delivery](/en-US/docs/Web/Guide/Audio_and_video_delivery)
--   [Video player styling basics](/en-US/docs/Web/Guide/Audio_and_video_delivery/Video_player_styling_basics)
--   [Creating a cross-browser video player](/en-US/docs/Web/Guide/Audio_and_video_delivery/cross_browser_video_player)
+- [Audio and video delivery](/en-US/docs/Web/Guide/Audio_and_video_delivery)
+- [Video player styling basics](/en-US/docs/Web/Guide/Audio_and_video_delivery/Video_player_styling_basics)
+- [Creating a cross-browser video player](/en-US/docs/Web/Guide/Audio_and_video_delivery/cross_browser_video_player)
 
 We've also created an advanced example to show how you could create an object-oriented system that finds every video and audio player on the page (no matter how many there are) and adds our custom controls to it. See [custom-controls-oojs](https://mdn.github.io/learning-area/accessibility/multimedia/custom-controls-OOJS/) (also [see the source code](https://github.com/mdn/learning-area/tree/master/accessibility/multimedia/custom-controls-OOJS)).
 
-Audio transcripts
------------------
+## Audio transcripts
 
 To provide deaf people with access to audio content, you really need to create text transcripts. These can either be included on the same page as the audio in some way or included on a separate page and linked to.
 
 In terms of actually creating the transcript, your options are:
 
--   Commercial services — You could pay a professional to do the transcription, see for example companies like [Scribie](https://scribie.com/), [Casting Words](https://castingwords.com/), or [Rev](https://www.rev.com/). Look around and ask for advice to make sure you find a reputable company that you'll be able to work with effectively.
--   Community/grassroots/self transcription — If you are part of an active community or team in your workplace, then you could ask them for help with doing the translations. You could even have a go at doing them yourself.
--   Automated services — There are AI services available, like [Trint](https://trint.com) or [Transcribear](https://transcribear.com/index.html). Upload a video/audio file to the site, and it automatically transcribes it for you. On YouTube, you can choose to generate automated captions/transcripts. Depending on how clear the spoken audio is, the resulting transcript quality will vary greatly. 
+- Commercial services — You could pay a professional to do the transcription, see for example companies like [Scribie](https://scribie.com/), [Casting Words](https://castingwords.com/), or [Rev](https://www.rev.com/). Look around and ask for advice to make sure you find a reputable company that you'll be able to work with effectively.
+- Community/grassroots/self transcription — If you are part of an active community or team in your workplace, then you could ask them for help with doing the translations. You could even have a go at doing them yourself.
+- Automated services — There are AI services available, like [Trint](https://trint.com) or [Transcribear](https://transcribear.com/index.html). Upload a video/audio file to the site, and it automatically transcribes it for you. On YouTube, you can choose to generate automated captions/transcripts. Depending on how clear the spoken audio is, the resulting transcript quality will vary greatly.
 
 As with most things in life, you tend to get what you pay for; different services will vary in accuracy and time taken to produce the transcript. If you pay a reputable company or AI service to do the transcription, you will probably get it done rapidly and to a high quality. If you don't want to pay for it, you are likely to get it done at a lower quality, and/or slowly.
 
@@ -213,7 +209,7 @@ It is not OK to publish an audio resource but promise to publish the transcript 
 
 ### Transcript examples
 
-If you use an automated service, then you'll probably have to use the user interface that the tool provides. For example, take a look at our [Wait, ARIA Roles Have Categories?](https://www.youtube.com/watch?v=mwF-PpJOjMs) video and choose the three-dot menu (. . .) *&gt; Show Transcript*. You'll see the transcript come up in a separate panel.
+If you use an automated service, then you'll probably have to use the user interface that the tool provides. For example, take a look at our [Wait, ARIA Roles Have Categories?](https://www.youtube.com/watch?v=mwF-PpJOjMs) video and choose the three-dot menu (. . .) _&gt; Show Transcript_. You'll see the transcript come up in a separate panel.
 
 If you are creating your own user interface to present your audio and associated transcript, you can do it however you like, but it might make sense to include it in a showable/hideable panel; see our [audio-transcript-ui](https://mdn.github.io/learning-area/accessibility/multimedia/audio-transcript-ui/) example (also see the [source code](https://github.com/mdn/learning-area/tree/master/accessibility/multimedia/audio-transcript-ui)).
 
@@ -227,8 +223,7 @@ However, there are some edge cases. You might for example have an audio recordin
 
 **Note**: An audio transcript will in general help multiple user groups. As well as giving deaf users access to the information contained in the audio, think about a user with a low bandwidth connection, who would find downloading the audio inconvenient. Think also about a user in a noisy environment like a pub or bar, who is trying to access the information but can't hear it over the noise.
 
-Video text tracks
------------------
+## Video text tracks
 
 To make video accessible for deaf, blind, or even other groups of users (such as those on low bandwidth, or who don't understand the language the video is recorded in), you need to include text tracks along with your video content.
 
@@ -244,10 +239,10 @@ Whereas many countries offer English films with subtitles written in their own n
 
 There are different types of text tracks for different purposes. The main ones you'll come across are:
 
--   Captions — There for the benefit of deaf users who can't hear the audio track, including the words being spoken, and contextual information such as who spoke the words, if the people were angry or sad, and what mood the music is currently creating.
--   Subtitles — Include translations of the audio dialog, for users that don't understand the language being spoken.
--   Descriptions — These include descriptions for blind people who can't see the video, for example, what the scene looks like.
--   Chapter titles — Chapter markers intended to help the user navigate the media resource
+- Captions — There for the benefit of deaf users who can't hear the audio track, including the words being spoken, and contextual information such as who spoke the words, if the people were angry or sad, and what mood the music is currently creating.
+- Subtitles — Include translations of the audio dialog, for users that don't understand the language being spoken.
+- Descriptions — These include descriptions for blind people who can't see the video, for example, what the scene looks like.
+- Chapter titles — Chapter markers intended to help the user navigate the media resource
 
 ### Implementing HTML5 video text tracks
 
@@ -269,8 +264,8 @@ A typical WebVTT file will look something like this:
 
 To get this displayed along with the HTML media playback, you need to:
 
--   Save it as a .vtt file in a sensible place.
--   Link to the .vtt file with the {{htmlelement("track")}} element. `<track>` should be placed within `<audio>` or `<video>`, but after all `<source>` elements. Use the {{htmlattrxref("kind","track")}} attribute to specify whether the cues are subtitles, captions, or descriptions. Furthermore, use {{htmlattrxref("srclang","track")}} to tell the browser what language you have written the subtitles in.
+- Save it as a .vtt file in a sensible place.
+- Link to the .vtt file with the {{htmlelement("track")}} element. `<track>` should be placed within `<audio>` or `<video>`, but after all `<source>` elements. Use the {{htmlattrxref("kind","track")}} attribute to specify whether the cues are subtitles, captions, or descriptions. Furthermore, use {{htmlattrxref("srclang","track")}} to tell the browser what language you have written the subtitles in.
 
 Here's an example:
 
@@ -288,15 +283,13 @@ For more details, please read [Adding captions and subtitles to HTML5 video](/en
 
 **Note**: Text tracks and transcriptions also help you with {{glossary("SEO")}}, since search engines especially thrive on text. Text tracks even allow search engines to link directly to a spot partway through the video.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information?
 
 We've not written a new set of assessments for this article, because there are already assessments available in our [HTML Multimedia and embedding](/en-US/docs/Learn/HTML/Multimedia_and_embedding) module that test your knowledge of the information presented here. If you haven't already, go and try out the assessments at [Test your skills: HTML images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Images_in_HTML/Test_your_skills:_HTML_images) and [Test your skills: Multimedia and embedding](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content/Test_your_skills:_Multimedia_and_embedding).
 
-Summary
--------
+## Summary
 
 This chapter has provided a summary of accessibility concerns for multimedia content, along with some practical solutions.
 
@@ -306,13 +299,12 @@ You can however make sure that such an app has good enough color contrast and cl
 
 {{PreviousMenuNext("Learn/Accessibility/WAI-ARIA\_basics","Learn/Accessibility/Mobile", "Learn/Accessibility")}}
 
-In this module
---------------
+## In this module
 
--   [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
--   [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
--   [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
--   [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
--   [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
--   [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
--   [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)
+- [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
+- [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
+- [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+- [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+- [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
+- [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
+- [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)

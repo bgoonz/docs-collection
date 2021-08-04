@@ -12,10 +12,9 @@ You may see attributes without the equals sign or a value. That is a shorthand f
     <!-- or -->
     <input required="required">
 
-Learn more
-----------
+## Learn more
 
 ### Technical reference
 
--   [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
--   Information about HTML's [global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
+- Information about HTML's [global attributes](/en-US/docs/Web/HTML/Global_attributes)

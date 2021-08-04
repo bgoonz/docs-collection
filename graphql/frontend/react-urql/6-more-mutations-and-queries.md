@@ -4,10 +4,10 @@ In this section of the tutorial you’ll implement the voting feature! Authentic
 
 Once more, let’s first prepare the app’s components before implementing the actual upvote mutation. There’s several things that the `Link` component isn’t currently displaying, compared to the real Hackernews site.
 
--   a link should display its number in the list of the current page (`1.`, `2.`, …)
--   it should display an upvote button and the number of upvotes it received
--   it should display who posted the link
--   and it should display when it was posted
+- a link should display its number in the list of the current page (`1.`, `2.`, …)
+- it should display an upvote button and the number of upvotes it received
+- it should display who posted the link
+- and it should display when it was posted
 
 Before you’ll modify the `Link` component, let’s write a function that takes a timestamp and converts it to a string that’s more user friendly, e.g. `"3 hours ago"`.
 
@@ -57,9 +57,9 @@ Open `Link.js` and update it to look as follows:
 
     const Link = ({ index, link }) => {
       const isLoggedIn = !!getToken()
-      
+
       const upvote = React.useCallback(() => {}, [])
-      
+
       return (
         <div className="flex mt2 items-start">
           <div className="flex items-center">
@@ -181,7 +181,7 @@ Still in `Link.js`, implement the `useMutation` hook and update the `upvote` han
           executeMutation({ linkId: link.id });
         }
       }, [state.fetching, executeMutation, link.id]);
-        
+
       // ...
     };
 
@@ -209,7 +209,7 @@ Start by creating a new file called `Search.js` in `src/components` and add the 
 
       const search = React.useCallback(() => {}, []);
       const links = []
-      
+
       return (
         <div>
           <div>
@@ -345,9 +345,9 @@ Still in `Search.js`, add the `useQuery` hook to the `Search` component and repl
       const search = React.useCallback(() => {
         executeQuery();
       }, [executeQuery]);
-      
+
       const links = result.data ? result.data.feed.links : [];
-        
+
       // ...
     };
 

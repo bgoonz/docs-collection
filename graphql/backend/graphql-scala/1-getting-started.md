@@ -34,9 +34,9 @@ After this process you will see a simple project with the structure like this:
 
 I will explain shortly the most important files here.
 
--   `build.sbt`
--   `project/plugins.sbt`
--   `project/build.properties`
+- `build.sbt`
+- `project/plugins.sbt`
+- `project/build.properties`
 
 Files above are related to SBT. There you can find all dependencies to external libraries and plugins we will be using in the project.  
 I assume you’re at least a beginner in the scala and you understand what is going on in those files. One thing you could be unfamiliar with is `Revolver` plugin.  

@@ -1,15 +1,14 @@
 In this section, you’re going to set up a [SQLite](https://www.sqlite.org/index.html) to persist the data of incoming GraphQL mutations. Instead of writing SQL directly, you will use [Prisma](https://www.prisma.io/) to access your database.
 
-So, what is Prisma?
--------------------
+## So, what is Prisma?
 
 Prisma is an [open source](https://github.com/prisma/prisma) database toolkit that makes it easy for developers to reason about their data and how they access it, by providing a clean and type-safe API for submitting database queries.
 
 It mainly consists of three tools:
 
--   **Prisma Client**: An auto-generated and type-safe query builder for Node.js & TypeScript.
--   **Prisma Migrate** (experimental): A declarative data modeling & migration system.
--   **Prisma Studio** (experimental): A GUI to view and edit data in your database.
+- **Prisma Client**: An auto-generated and type-safe query builder for Node.js & TypeScript.
+- **Prisma Migrate** (experimental): A declarative data modeling & migration system.
+- **Prisma Studio** (experimental): A GUI to view and edit data in your database.
 
 In this tutorial, you will be setting everything up from scratch and taking full advantage of these three tools. We want to get you building stuff right away, so explanations of Prisma concepts will be kept light but we have included links to [Prisma docs](https://www.prisma.io/docs/) in case you want to dive deeper on any particular concept.
 
@@ -38,11 +37,11 @@ From your project root, run the following commands in your terminal:
 
     npx prisma init
 
-Remember the GraphQL schema that you’ve been working with until now? Well, Prisma has a schema, too! Inside the `prisma` directory that was created in the last step, you’ll see a file called `schema.prisma`. You can think of the `schema.prisma` file as a *database schema*. It has three components:
+Remember the GraphQL schema that you’ve been working with until now? Well, Prisma has a schema, too! Inside the `prisma` directory that was created in the last step, you’ll see a file called `schema.prisma`. You can think of the `schema.prisma` file as a _database schema_. It has three components:
 
 1.  **Data source**: Specifies your database connection.
 2.  **Generator**: Indicates that you want to generate Prisma Client.
-3.  **Data model**: Defines your application *models*. Each model will be mapped to a table in the underlying database.
+3.  **Data model**: Defines your application _models_. Each model will be mapped to a table in the underlying database.
 
 Prisma’s unique data model bridges the gap to help you reason about your data in a way that maps very well to the underlying database, while still providing an abstraction that allows you to be productive with type safety and auto-completion.
 
@@ -77,8 +76,7 @@ Let’s break down the three parts:
 
 The `Link` model defines the structure of the `Link` database table that Prisma is going to create for you in a bit.
 
-Getting Started with SQLite
----------------------------
+## Getting Started with SQLite
 
 It’s finally time to actually create our [SQLite](https://www.sqlite.org/index.html) database. In case you aren’t familiar with SQLite, it is an in-process library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.
 
@@ -86,7 +84,7 @@ The great thing is that, unlike most other SQL databases, SQLite does not have a
 
 So how about the setup? Well, the great news is that Prisma can do that for us right out of the box with a simple command!
 
-From the root directory of your project, create your first *migration* by running the following command in your terminal:
+From the root directory of your project, create your first _migration_ by running the following command in your terminal:
 
     npx prisma migrate dev
 
@@ -94,7 +92,7 @@ You will get a prompt asking you to provide a name for the migration. Let’s na
 
 Take a look at the `prisma` directory in your project’s file system. You’ll see that there is now a `/migrations` directory that Prisma Migrate created for you when running the above command.
 
-For now, the important thing to understand is that we have told Prisma with our data model, "I want to create a `Link` table to store data about *links*, and here’s what that data will look like. Prisma then generates the necessary migration and packages it into a dedicated directory with its own `README.md` file containing detailed information about the specific migration. This is then put inside that `prisma/migrations` directory, which becomes a historical reference of how your database evolves over time with each individual migration you make!
+For now, the important thing to understand is that we have told Prisma with our data model, "I want to create a `Link` table to store data about _links_, and here’s what that data will look like. Prisma then generates the necessary migration and packages it into a dedicated directory with its own `README.md` file containing detailed information about the specific migration. This is then put inside that `prisma/migrations` directory, which becomes a historical reference of how your database evolves over time with each individual migration you make!
 
 Boom! 💥 You now have a database with a `Link` table! 🎉
 
@@ -102,7 +100,7 @@ Check out the [Prisma Migrate docs](https://www.prisma.io/docs/reference/tools-a
 
 ### Generating Prisma Client
 
-It’s time to generate *Prisma Client* based on your data model!
+It’s time to generate _Prisma Client_ based on your data model!
 
 Run the following command in your terminal:
 

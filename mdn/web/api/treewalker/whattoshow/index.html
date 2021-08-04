@@ -2,18 +2,22 @@
 title: TreeWalker.whatToShow
 slug: Web/API/TreeWalker/whatToShow
 tags:
-- API
-- DOM
-- Property
-- TreeWalker
+  - API
+  - DOM
+  - Property
+  - TreeWalker
 browser-compat: api.TreeWalker.whatToShow
 ---
+
 <p>{{ APIRef("DOM") }}</p>
 
-<p>The <code><strong>TreeWalker.whatToShow</strong></code> read-only property returns an
-  <code>unsigned long</code> being a bitmask made of constants describing the types of
-  {{domxref("Node")}} that must to be presented. Non-matching nodes are skipped, but their
-  children may be included, if relevant. The possible values are:</p>
+<p>
+  The <code><strong>TreeWalker.whatToShow</strong></code> read-only property
+  returns an <code>unsigned long</code> being a bitmask made of constants
+  describing the types of {{domxref("Node")}} that must to be presented.
+  Non-matching nodes are skipped, but their children may be included, if
+  relevant. The possible values are:
+</p>
 
 <table class="standard-table">
   <tbody>
@@ -24,17 +28,22 @@ browser-compat: api.TreeWalker.whatToShow
     </tr>
     <tr>
       <td><code>NodeFilter.SHOW_ALL</code></td>
-      <td><code>-1</code> (that is the max value of <code>unsigned long</code>)</td>
+      <td>
+        <code>-1</code> (that is the max value of <code>unsigned long</code>)
+      </td>
       <td>Shows all nodes.</td>
     </tr>
     <tr>
       <td><code>NodeFilter.SHOW_ATTRIBUTE</code> {{deprecated_inline}}</td>
       <td><code>2</code></td>
-      <td>Shows attribute {{ domxref("Attr") }} nodes. This is meaningful only when
-        creating a {{ domxref("TreeWalker") }} with an {{ domxref("Attr") }} node as its
-        root; in this case, it means that the attribute node will appear in the first
-        position of the iteration or traversal. Since attributes are never children of
-        other nodes, they do not appear when traversing over the document tree.</td>
+      <td>
+        Shows attribute {{ domxref("Attr") }} nodes. This is meaningful only
+        when creating a {{ domxref("TreeWalker") }} with an {{ domxref("Attr")
+        }} node as its root; in this case, it means that the attribute node will
+        appear in the first position of the iteration or traversal. Since
+        attributes are never children of other nodes, they do not appear when
+        traversing over the document tree.
+      </td>
     </tr>
     <tr>
       <td><code>NodeFilter.SHOW_CDATA_SECTION</code> {{deprecated_inline}}</td>
@@ -72,7 +81,9 @@ browser-compat: api.TreeWalker.whatToShow
       <td>Legacy, no more used.</td>
     </tr>
     <tr>
-      <td><code>NodeFilter.SHOW_ENTITY_REFERENCE</code> {{deprecated_inline}}</td>
+      <td>
+        <code>NodeFilter.SHOW_ENTITY_REFERENCE</code> {{deprecated_inline}}
+      </td>
       <td><code>16</code></td>
       <td>Legacy, no more used.</td>
     </tr>
@@ -96,12 +107,12 @@ browser-compat: api.TreeWalker.whatToShow
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre
-  class="brush: js"><em>nodeTypes</em> = treeWalker.whatToShow;</pre>
+<pre class="brush: js"><em>nodeTypes</em> = treeWalker.whatToShow;</pre>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">var treeWalker = document.createTreeWalker(
+<pre class="brush: js">
+var treeWalker = document.createTreeWalker(
     document.body,
     NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_TEXT,
     { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },

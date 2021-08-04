@@ -1,5 +1,4 @@
-CreateLinks
------------
+## CreateLinks
 
 Lets implement CreateLink mutation; first we need a function to let us write a link to database. Create folders `links` and `users` inside `internal` directory, these packages are layers between database and our app.
 
@@ -86,8 +85,7 @@ Hopefully you understand this piece of code, we create a link object from input 
       }
     }
 
-links Query <span id="links-query"></span>
-------------------------------------------
+## links Query <span id="links-query"></span>
 
 Just like how we implemented CreateLink mutation we implement links query, we need a function to retrieve links from database and pass it to graphql server in our resolver. Create a function named GetAll
 

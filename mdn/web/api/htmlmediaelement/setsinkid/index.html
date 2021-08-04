@@ -2,28 +2,34 @@
 title: HTMLMediaElement.setSinkId()
 slug: Web/API/HTMLMediaElement/setSinkId
 tags:
-- API
-- Audio
-- Experimental
-- HTMLMediaElement
-- Media
-- Method
-- Reference
-- setSinkId
+  - API
+  - Audio
+  - Experimental
+  - HTMLMediaElement
+  - Media
+  - Method
+  - Reference
+  - setSinkId
 browser-compat: api.HTMLMediaElement.setSinkId
 ---
+
 <p>{{APIRef("HTML DOM")}} {{SeeCompatTable}}</p>
 
-<p>The <strong><code>HTMLMediaElement.setSinkId()</code></strong> method sets the ID of
-  the audio device to use for output and returns a <a
+<p>
+  The <strong><code>HTMLMediaElement.setSinkId()</code></strong> method sets the
+  ID of the audio device to use for output and returns a <a
     href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
-    title="The Promise object is used for deferred and asynchronous computations. A Promise represents an operation that hasn't completed yet, but is expected in the future."><code>Promise</code></a>.
-  This only works when the application is authorized to use the specified device.</p>
+    title="The Promise object is used for deferred and asynchronous computations. A Promise represents an operation that hasn't completed yet, but is expected in the future."
+    ><code>Promise</code></a
+  >. This only works when the application is authorized to use the specified
+  device.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
 <pre
-  class="brush: js"><em>HTMLMediaElement</em>.setSinkId(<em>sinkId</em>).then(function() { ... })</pre>
+  class="brush: js"
+><em>HTMLMediaElement</em>.setSinkId(<em>sinkId</em>).then(function() { ... })</pre>
 
 <h3 id="Returns">Returns</h3>
 
@@ -33,7 +39,9 @@ browser-compat: api.HTMLMediaElement.setSinkId
 
 <dl>
   <dt>sinkId</dt>
-  <dd>The {{domxref("MediaDeviceInfo.deviceId")}} of the audio output device.</dd>
+  <dd>
+    The {{domxref("MediaDeviceInfo.deviceId")}} of the audio output device.
+  </dd>
 </dl>
 
 <h3 id="Exceptions">Exceptions</h3>
@@ -55,7 +63,8 @@ browser-compat: api.HTMLMediaElement.setSinkId
 
 <h2 id="Examples">Examples</h2>
 
-<pre class="brush:js">const devices = await navigator.mediaDevices.enumerateDevices();
+<pre class="brush:js">
+const devices = await navigator.mediaDevices.enumerateDevices();
 const audioDevices = devices.filter(device =&gt; device.kind === 'audiooutput');
 const audio = document.createElement('audio');
 await audio.setSinkId(audioDevices[0].deviceId);

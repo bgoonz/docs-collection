@@ -2,9 +2,8 @@
 
 In networking, a **node** is a connection point in the network. In physical networks, a node is usually a device, like a computer or a router.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Node (networking)", "Node")}} on Wikipedia
+- {{Interwiki("wikipedia", "Node (networking)", "Node")}} on Wikipedia

@@ -4,9 +4,8 @@ A **firewall** is a system that filters network traffic. It can either let it pa
 
 Firewalls can be as simple as a single piece of software, or more complex, like a dedicated machine whose only function is to act as a firewall.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Firewall (computing)")}} on Wikipedia
+- {{Interwiki("wikipedia", "Firewall (computing)")}} on Wikipedia

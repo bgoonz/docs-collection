@@ -10,8 +10,7 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should at least work through our [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML). At this point you should find the {{anch("Introductory guides")}} easy to understand, and also be able to make use of our [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls) guide.
 
@@ -21,8 +20,7 @@ The above text is a good indicator as to why we've put web forms into its own st
 
 **Note**: If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Introductory guides
--------------------
+## Introductory guides
 
 [Your first form](/en-US/docs/Learn/Forms/Your_first_form)  
 The first article in our series provides your very first experience of creating a web form, including designing a simple form, implementing it using the right HTML elements, adding some very simple styling via CSS, and how data is sent to a server.
@@ -30,8 +28,7 @@ The first article in our series provides your very first experience of creating 
 [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)  
 With the basics out of the way, we now look in more detail at the elements used to provide structure and meaning to the different parts of a form.
 
-The different form controls
----------------------------
+## The different form controls
 
 [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)  
 We start off this section by looking at the functionality of the original HTML {{htmlelement("input")}} types in detail, looking at what options are available to collect different types of data.
@@ -42,8 +39,7 @@ Here we continue our deep dive into the `<input>` element, looking at the additi
 [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)  
 Next we take a look at all the non-`<input>` form controls and associated tools, such as {{htmlelement('select')}}, {{htmlelement('textarea')}}, {{htmlelement('meter')}}, and {{htmlelement('progress')}}.
 
-Form styling guides
--------------------
+## Form styling guides
 
 [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)  
 This article provides an introduction to styling forms with CSS, including all the basics you might need to know for basic styling tasks.
@@ -54,8 +50,7 @@ Here we look at some more advanced form styling techniques that need to be used 
 [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)  
 An introduction to the UI pseudo-classes enabling HTML form controls to be targeted based on their current state.
 
-Validating and submitting form data
------------------------------------
+## Validating and submitting form data
 
 [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)  
 Sending data is not enough — we also need to make sure that the data users enter into forms is in the correct format to process it successfully, and that it won't break our applications. We also want to help our users to fill out our forms correctly and not get frustrated when trying to use our apps. Form validation helps us achieve these goals — this article tells you what you need to know.
@@ -63,8 +58,7 @@ Sending data is not enough — we also need to make sure that the data users ent
 [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)  
 This article looks at what happens when a user submits a form — where does the data go, and how do we handle it when it gets there? We also look at some of the security concerns associated with sending form data.
 
-Advanced articles
------------------
+## Advanced articles
 
 The following articles aren't essential to the learning pathway, but they'll prove interesting and useful when you've mastered the above techniques and want to know more.
 
@@ -77,9 +71,8 @@ This article looks at ways to use a form to assemble an HTTP request and send it
 [CSS property compatibility table for form controls](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)  
 This last article provides a handy reference allowing you to look up what CSS properties are compatible with what form elements.
 
-See also
---------
+## See also
 
--   [HTML forms element reference](/en-US/docs/Web/HTML/Element#forms)
--   [HTML &lt;input&gt; types reference](/en-US/docs/Web/HTML/Element/input)
--   [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
+- [HTML forms element reference](/en-US/docs/Web/HTML/Element#forms)
+- [HTML &lt;input&gt; types reference](/en-US/docs/Web/HTML/Element/input)
+- [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)

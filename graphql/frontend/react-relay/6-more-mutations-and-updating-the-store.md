@@ -181,7 +181,7 @@ However, the `optimisticUpdater` and `updater` callbacks are new. Let’s quickl
 
 The `proxyStore` that’s being passed into them allows you to directly manipulate the cache with the changes you expect to happen through this mutation.
 
-`optimisticUpdater` is triggered right after the mutation is sent (before the server response comes back) - it allows you to implement the *success scenario* of the mutation so that the user sees the effect of her mutation right away without having to wait for the server response.
+`optimisticUpdater` is triggered right after the mutation is sent (before the server response comes back) - it allows you to implement the _success scenario_ of the mutation so that the user sees the effect of her mutation right away without having to wait for the server response.
 
 `updater` is triggered when the actual server response comes back. If `optimisticUpdater` is implemented, then any changes that were introduced through it will be rolled back before `updater` is executed.
 
@@ -207,13 +207,13 @@ Still in `CreateVoteMutation.js`, implement the two functions like so:
       link.getLinkedRecord('votes').setValue(newVoteCount, 'count')
     },
 
-All right, what’s going on here? Recall that the `optimisticUpdater` is called *before* the server’s response is received. This allows you to directly update the state of your app *optimistically*, i.e. with the *expected behaviour*. In your case, the expected behaviour is that the vote count for the link will be increased by one.
+All right, what’s going on here? Recall that the `optimisticUpdater` is called _before_ the server’s response is received. This allows you to directly update the state of your app _optimistically_, i.e. with the _expected behaviour_. In your case, the expected behaviour is that the vote count for the link will be increased by one.
 
 You can implement this by first retrieving the link that’s identified by `linkId` from the cache using `proxyStore.get(linkId)` and manually increment its number of votes by one.
 
-In the `updater` on the other hand, you can work with the *actual* server response. After the mutation was performed, you can retrieve the data from its payload by calling `proxyStore.getRootField('createVote')`. Here, `createVote` is the *root field* of the mutation that you just sent!
+In the `updater` on the other hand, you can work with the _actual_ server response. After the mutation was performed, you can retrieve the data from its payload by calling `proxyStore.getRootField('createVote')`. Here, `createVote` is the _root field_ of the mutation that you just sent!
 
-From here, you can access the mutation payload by retrieving the *linked records*, i.e. traversing the payload of the mutation (by first accessing the `vote`, then the `link` and finally the `votes` field) from where you can retrieve the `count` value which is a *scalar* value that can be accessed with `getValue`.
+From here, you can access the mutation payload by retrieving the _linked records_, i.e. traversing the payload of the mutation (by first accessing the `vote`, then the `link` and finally the `votes` field) from where you can retrieve the `count` value which is a _scalar_ value that can be accessed with `getValue`.
 
 Once you did that, you effectively have the new number of votes available that was returned by the server. Now, you can use the same approach as in the `optimisticUpdater` to make sure that the link that’s identified by `linkId` receives a new value for its number of votes.
 

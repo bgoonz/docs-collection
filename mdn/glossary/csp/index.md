@@ -4,13 +4,12 @@ A CSP ([Content Security Policy](/en-US/docs/Web/HTTP/CSP)) is used to detect an
 
 The implementation is based on an {{Glossary("HTTP")}} header called {{HTTPHeader("Content-Security-Policy")}}.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Content Security Policy on Wikipedia](https://en.wikipedia.org/wiki/Content_Security_Policy)
+- [Content Security Policy on Wikipedia](https://en.wikipedia.org/wiki/Content_Security_Policy)
 
 ### Technical knowledge
 
--   [Content Security Policy documentation on MDN](/en-US/docs/Web/HTTP/CSP)
+- [Content Security Policy documentation on MDN](/en-US/docs/Web/HTTP/CSP)

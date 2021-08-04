@@ -136,8 +136,8 @@ Next, we need to pull in the functionality of Apollo Client (and its React hooks
 
 Here’s an overview of the packages we installed:
 
--   [`@apollo/client`](https://github.com/apollographql/apollo-client) contains all the pieces needed to wire up the GraphQL client for our app. It exposes the `ApolloClient`, a provider to wrap around the React app called `ApolloProvider`, custom hooks such as `useQuery`, and much more.
--   [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality within.
+- [`@apollo/client`](https://github.com/apollographql/apollo-client) contains all the pieces needed to wire up the GraphQL client for our app. It exposes the `ApolloClient`, a provider to wrap around the React app called `ApolloProvider`, custom hooks such as `useQuery`, and much more.
+- [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality within.
 
 That’s it, we’re ready to write some code! 🚀
 
@@ -145,7 +145,7 @@ That’s it, we’re ready to write some code! 🚀
 
 Apollo abstracts away all lower-level networking logic and provides a nice interface to the GraphQL server. In contrast to working with REST APIs, we don’t have to deal with constructing our own HTTP requests any more - instead we can simply write queries and mutations and send them using an `ApolloClient` instance.
 
-The first thing we have to do when using Apollo is configure our `ApolloClient` instance. It needs to know the *endpoint* of our GraphQL API so it can deal with the network connections.
+The first thing we have to do when using Apollo is configure our `ApolloClient` instance. It needs to know the _endpoint_ of our GraphQL API so it can deal with the network connections.
 
 Open `src/index.js` and replace the contents with the following:
 
@@ -181,7 +181,7 @@ Open `src/index.js` and replace the contents with the following:
       </ApolloProvider>,
       document.getElementById('root')
     );
-     
+
 
 Let’s take a look at what’s going on in the code snippet above:
 
@@ -208,13 +208,13 @@ We now have a new directory called `server` inside our project that contains all
 
 Before we start the server, let’s quickly understand the main components:
 
--   `prisma`: This directory holds all the files that relate to our [Prisma](https://www.prisma.io) setup. Prisma Client is used to access the database in our GraphQL resolvers (similar to an ORM).
-    -   `schema.prisma` defines our data model for the project. It uses the [Prisma Schema Language](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema) to define the shape of our databases tables and the relations between them.
-    -   `dev.db` is a SQLite database that will be used to store and retrieve data for this tutorial
--   `src`: This directory holds the source files for our GraphQL server.
-    -   `schema.graphql` contains our **application schema**. The application schema defines the GraphQL operations we can send from the frontend. We’ll take a closer look at this file in just a bit.
-    -   `resolvers` contains the [*resolver functions*](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#resolvers-implement-the-api) for the operations defined in the application schema.
-    -   `index.js` is the entry point for our GraphQL server.
+- `prisma`: This directory holds all the files that relate to our [Prisma](https://www.prisma.io) setup. Prisma Client is used to access the database in our GraphQL resolvers (similar to an ORM).
+  - `schema.prisma` defines our data model for the project. It uses the [Prisma Schema Language](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema) to define the shape of our databases tables and the relations between them.
+  - `dev.db` is a SQLite database that will be used to store and retrieve data for this tutorial
+- `src`: This directory holds the source files for our GraphQL server.
+  - `schema.graphql` contains our **application schema**. The application schema defines the GraphQL operations we can send from the frontend. We’ll take a closer look at this file in just a bit.
+  - `resolvers` contains the [_resolver functions_](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#resolvers-implement-the-api) for the operations defined in the application schema.
+  - `index.js` is the entry point for our GraphQL server.
 
 From the mentioned files, only the application schema defined in `server/src/schema.graphql` is relevant for you as a frontend developer. This file contains the [GraphQL schema](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e) which defines all the operations (queries, mutations and subscriptions) we can send from your frontend app.
 
@@ -285,16 +285,16 @@ Here is what it looks like:
 
 This schema allows for the following operations:
 
--   Queries:
-    -   `feed`: Retrieves all links from the backend, note that this query also allows for filter, sorting and pagination arguments
--   Mutations:
-    -   `post`: Allows authenticated users to create a new link
-    -   `signup`: Create an account for a new user
-    -   `login`: Login an existing user
-    -   `vote`: Allows authenticated users to vote for an existing link
--   Subscriptions:
-    -   `newLink`: Receive realtime updates when a new link is created
-    -   `newVote`: Receive realtime updates when a vote was submitted
+- Queries:
+  - `feed`: Retrieves all links from the backend, note that this query also allows for filter, sorting and pagination arguments
+- Mutations:
+  - `post`: Allows authenticated users to create a new link
+  - `signup`: Create an account for a new user
+  - `login`: Login an existing user
+  - `vote`: Allows authenticated users to vote for an existing link
+- Subscriptions:
+  - `newLink`: Receive realtime updates when a new link is created
+  - `newVote`: Receive realtime updates when a vote was submitted
 
 For example, we can send the following `feed` query to retrieve the first 10 links from the server:
 
@@ -362,7 +362,7 @@ The first thing to note about the Playground is that it has built-in documentati
 
 ![GraphQL Playground](https://imgur.com/zhlNpOE.png)
 
-The left pane of the Playground is the *editor* that you can use to write your queries, mutations and subscriptions. Once you click the play button in the middle, your request is sent and the server’s response will be displayed in the *results* pane on the right.
+The left pane of the Playground is the _editor_ that you can use to write your queries, mutations and subscriptions. Once you click the play button in the middle, your request is sent and the server’s response will be displayed in the _results_ pane on the right.
 
 At first you will create a user (if you haven’t already). Send the following mutation to create a new `User`:
 
@@ -384,7 +384,7 @@ From the server’s response, copy the authentication `token` and open another t
 
 Whenever you’re now sending a query/mutation from that tab, it will carry the authentication token. This is necessary to perform queries and mutations that require you to be logged in. Now you will run two such mutations.
 
-Copy the following two mutations into the *editor* pane.
+Copy the following two mutations into the _editor_ pane.
 
     mutation CreatePrismaLink {
       post(
@@ -404,7 +404,7 @@ Copy the following two mutations into the *editor* pane.
       }
     }
 
-Since you’re adding two mutations to the editor at once, the mutations need to have *operation names*. In your case, these are `CreatePrismaLink` and `CreateApolloLink`.
+Since you’re adding two mutations to the editor at once, the mutations need to have _operation names_. In your case, these are `CreatePrismaLink` and `CreateApolloLink`.
 
 Click the **Play** button in the middle of the two panes and select each mutation from the dropdown exactly once.
 

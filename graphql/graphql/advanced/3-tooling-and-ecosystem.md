@@ -4,8 +4,7 @@ If you are familiar with GraphQL basics, you probably know how GraphQL’s Type 
 
 An amazing thing with GraphQL is that these capabilities are not only known to the server. GraphQL allows clients to ask a server for information about its schema. GraphQL calls this **introspection**.
 
-Introspection
--------------
+## Introspection
 
 The designers of the schema already know what the schema looks like but how can clients discover what is accessible through a GraphQL API? We can ask GraphQL for this information by querying the `__schema` meta-field, which is always available on the root type of a Query per the spec.
 
@@ -107,8 +106,7 @@ As you can see, introspection is an extremely powerful feature of GraphQL, and w
 
 A lot of tools available in the GraphQL ecosystem use the introspection system to provide amazing features. Think of documentation browsers, autocomplete, code generation, everything is possible! One of the most useful tools you will need as you build and use GraphQL APIs uses introspection heavily. It is called **GraphiQL**.
 
-GraphQL Playground
-------------------
+## GraphQL Playground
 
 [GraphQL Playground](https://github.com/graphcool/graphql-playground) is a powerful “GraphQL IDE” for interactively working with a GraphQL API. It features an editor for GraphQL queries, mutations and subscriptions, equipped with autocompletion and validation as well as a documentation explorer to quickly visualize the structure of a schema (powered by introspection). It also can display your query history or lets you work with multiple GraphQL APIs side-by-side. It also seamlessly integrates with [`graphql-config`](https://github.com/graphcool/graphql-config).
 

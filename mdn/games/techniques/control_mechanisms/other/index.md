@@ -1,4 +1,4 @@
---- title: Unconventional controls slug: Games/Techniques/Control\_mechanisms/Other tags: - Controls - Doppler - Games - JavaScript - Makey Makey - TV Leap Motion - Voice ---
+--- title: Unconventional controls slug: Games/Techniques/Control_mechanisms/Other tags: - Controls - Doppler - Games - JavaScript - Makey Makey - TV Leap Motion - Voice ---
 
 {{GamesSidebar}}
 
@@ -6,8 +6,7 @@
 
 Having different control mechanisms in your game helps reach broader audiences. Implementing mobile and desktop controls is recommended is a must, and gamepad controls add that extra experience. But imagine going even further — in this article we will explore various unconventional ways to control your web game, some more unconventional than others.
 
-TV remote
----------
+## TV remote
 
 Playing games on a TV screen doesn't always have to be done through consoles. There's already a Gamepad API working on the desktop computers, so we can imitate the experience, but we can go even further. Modern smart TVs can handle HTML5 games, because they have a built-in browser that can be used as a gaming platform. Smart TVs are shipped with remote controls, which can be used to control your games if you know how.
 
@@ -51,8 +50,7 @@ You can add moving between states, starting a new game, controlling the ship and
 
 You can see it in action by watching [this video](https://www.youtube.com/watch?v=Bh11sP0bcTY).
 
-Leap Motion
------------
+## Leap Motion
 
 Have you ever thought about controlling a game only with your hands? It's possible with [Leap Motion](https://www.leapmotion.com/), an immersive controller for games and apps.
 
@@ -119,8 +117,7 @@ If the `horizontalDegree` value is greater than our `degreeThreshold`, which is 
 
 That's it — everything you needed for a working Leap Motion example in JavaScript is here already. You can explore the `hand`'s properties and implement any behavior you like right inside your game.
 
-Doppler effect
---------------
+## Doppler effect
 
 There's a very interesting article available on [Motion sensing using the doppler effect](https://danielrapp.github.io/doppler/), which mixes together waving your hand and using the microphone. This time it's about detecting sound waves bouncing off objects and returning to the microphone.
 
@@ -138,8 +135,7 @@ The `diff` would be the difference between the initial position of the hand and 
 
 This approach won't give us the full flexibility of using a Gamepad, or even Leap Motion, but it's definitely an interesting, unconventional alternative. You can use it to scroll a page hands-free, or play theremin, but it should also be enough to move the ship up and down the screen if implemented correctly.
 
-MaKey MaKey
------------
+## MaKey MaKey
 
 If you want to go completely bananas you can use [MaKey MaKey](https://makeymakey.com/), a board that can turn anything into a controller — it's all about connecting real-world, conductive objects to a computer and using them as touch interfaces.
 
@@ -166,8 +162,7 @@ There's even a [Cylon.js-supported Makey Button functionality](https://cylonjs.c
 
 As the description says: this GPIO driver allows you to connect a 10 MOhm resistor to a digital pin on your Arduino or Raspberry Pi to control your robots with bananas, clay, or drawable circuitry.
 
-Summary
--------
+## Summary
 
 I hope you liked the experiments — if you have any others that you think might interest other people, feel free to add details of them here.
 

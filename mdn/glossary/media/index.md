@@ -4,7 +4,6 @@ The term **media** is an overloaded one when talking about the web; it takes on 
 
 {{GlossaryDisambiguation}}
 
-Learn more
-----------
+## Learn more
 
--   {{interwiki("wikipedia", "Media")}} on Wikipedia
+- {{interwiki("wikipedia", "Media")}} on Wikipedia

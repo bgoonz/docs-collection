@@ -1,4 +1,4 @@
---- title: Styling text slug: Learn/CSS/Styling\_text tags: - Beginner - CSS - CodingScripting - Fonts - Landing - Links - Module - Text - font - letter - line - lists - shadow - web fonts ---
+--- title: Styling text slug: Learn/CSS/Styling_text tags: - Beginner - CSS - CodingScripting - Fonts - Landing - Links - Module - Text - font - letter - line - lists - shadow - web fonts ---
 
 {{LearnSidebar}}
 
@@ -10,15 +10,13 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should already have basic familiarity with HTML, as discussed in the [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module, and be comfortable with CSS fundamentals, as discussed in [Introduction to CSS](/en-US/docs/Learn/CSS/First_steps).
 
 **Note**: If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/), [CodePen](https://codepen.io/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 This module contains the following articles, which will teach you all of the essentials behind styling HTML text content.
 
@@ -34,8 +32,7 @@ When styling links, it is important to understand how to make use of pseudo-clas
 [Web fonts](/en-US/docs/Learn/CSS/Styling_text/Web_fonts)  
 Here we will explore web fonts in detail — these allow you to download custom fonts along with your web page, to allow for more varied, custom text styling.
 
-Assessments
------------
+## Assessments
 
 The following assessments will test your understanding of the text styling techniques covered in the guides above.
 

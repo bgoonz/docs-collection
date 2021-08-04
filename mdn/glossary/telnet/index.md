@@ -2,7 +2,6 @@
 
 **Telnet** is a command line tool and an underlying TCP/IP protocol for accessing remote computers.
 
-Learn more
-----------
+## Learn more
 
--   {{interwiki('wikipedia','Telnet')}} on Wikipedia
+- {{interwiki('wikipedia','Telnet')}} on Wikipedia

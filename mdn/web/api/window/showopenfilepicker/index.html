@@ -9,39 +9,60 @@ tags:
   - working with files
 browser-compat: api.Window.showOpenFilePicker
 ---
-<div>{{securecontext_header}}{{DefaultAPISidebar("File System Access API")}}
+
+<div>
+  {{securecontext_header}}{{DefaultAPISidebar("File System Access API")}}
 </div>
 
-<p class="summary">The <strong><code>showOpenFilePicker()</code></strong> method of the
-  {{domxref("Window")}} interface shows a file picker that allows a user to select a file
-  or multiple files and returns a handle for the file(s).</p>
+<p class="summary">
+  The <strong><code>showOpenFilePicker()</code></strong> method of the
+  {{domxref("Window")}} interface shows a file picker that allows a user to
+  select a file or multiple files and returns a handle for the file(s).
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre
-  class="brush: js">var <var>FileSystemHandles</var> = Window.showOpenFilePicker();</pre>
+<pre class="brush: js">
+var <var>FileSystemHandles</var> = Window.showOpenFilePicker();</pre
+>
 
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
   <dt><em>options</em> {{optional_inline}}</dt>
-  <dd>An optional object containing options, which are as follows:
+  <dd>
+    An optional object containing options, which are as follows:
     <ul>
-      <li><code>multiple</code>: A {{jsxref('Boolean')}}. Default <code>false</code>. When
-        set to <code>true</code> multiple files may be selected.</li>
-      <li><code>excludeAcceptAllOption</code>:A {{jsxref('Boolean')}}. Default
-        <code>false</code>. By default the picker should include an option to not apply
-        any file type filters (instigated with the type option below). Setting this option
-        to <code>true</code> means that option is <em>not</em> available.</li>
-      <li><code>types</code>: An {{jsxref('Array')}} of allowed file types to pick. Each
-        item is an object with the following options:
+      <li>
+        <code>multiple</code>: A {{jsxref('Boolean')}}. Default
+        <code>false</code>. When set to <code>true</code> multiple files may be
+        selected.
+      </li>
+      <li>
+        <code>excludeAcceptAllOption</code>:A {{jsxref('Boolean')}}. Default
+        <code>false</code>. By default the picker should include an option to
+        not apply any file type filters (instigated with the type option below).
+        Setting this option to <code>true</code> means that option is
+        <em>not</em> available.
+      </li>
+      <li>
+        <code>types</code>: An {{jsxref('Array')}} of allowed file types to
+        pick. Each item is an object with the following options:
         <ul>
-          <li><code>description</code>: An optional description of the category of files
-            types allowed.</li>
-          <li><code>accept</code>: An {{jsxref('Object')}} with the keys set to the <a
-              href="/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types">MIME
-              type</a> and the values an {{jsxref('Array')}} of file extensions (see below
-            for an example).</li>
+          <li>
+            <code>description</code>: An optional description of the category of
+            files types allowed.
+          </li>
+          <li>
+            <code>accept</code>: An {{jsxref('Object')}} with the keys set to
+            the
+            <a
+              href="/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types"
+              >MIME type</a
+            >
+            and the values an {{jsxref('Array')}} of file extensions (see below
+            for an example).
+          </li>
         </ul>
       </li>
     </ul>
@@ -56,18 +77,23 @@ browser-compat: api.Window.showOpenFilePicker
 
 <dl>
   <dt><code>AbortError</code></dt>
-  <dd>An AbortError is thrown if a user dismisses the prompt without making a selection or
-    if a file selected is deemed too sensitive or dangerous to be exposed to the website.
+  <dd>
+    An AbortError is thrown if a user dismisses the prompt without making a
+    selection or if a file selected is deemed too sensitive or dangerous to be
+    exposed to the website.
   </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
-<p>Here we set the options object for passing into the method. We'll allow a selection of
-  image file types, with no option to allow for all files types, or multiple file
-  selection.</p>
+<p>
+  Here we set the options object for passing into the method. We'll allow a
+  selection of image file types, with no option to allow for all files types, or
+  multiple file selection.
+</p>
 
-<pre class="brush: js">const pickerOpts = {
+<pre class="brush: js">
+const pickerOpts = {
   types: [
     {
       description: 'Images',
@@ -78,12 +104,16 @@ browser-compat: api.Window.showOpenFilePicker
   ],
   excludeAcceptAllOption: true,
   multiple: false
-};</pre>
+};</pre
+>
 
-<p>Next we can create an asynchronous function which show the file picker and return the
-  selected file.</p>
+<p>
+  Next we can create an asynchronous function which show the file picker and
+  return the selected file.
+</p>
 
-<pre class="brush: js">// create a reference for our file handle
+<pre class="brush: js">
+// create a reference for our file handle
 let fileHandle;
 
 async function getFile() {
@@ -91,7 +121,8 @@ async function getFile() {
   [fileHandle] = await window.showOpenFilePicker(pickerOpts);
 
   // run code with our fileHandle
-}</pre>
+}</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -104,7 +135,14 @@ async function getFile() {
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/API/File_System_Access_API">File System Access API</a></li>
-  <li><a href="https://web.dev/file-system-access/">The File System Access API:
-      simplifying access to local files</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/File_System_Access_API"
+      >File System Access API</a
+    >
+  </li>
+  <li>
+    <a href="https://web.dev/file-system-access/"
+      >The File System Access API: simplifying access to local files</a
+    >
+  </li>
 </ul>

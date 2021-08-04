@@ -140,7 +140,7 @@ Add `ReplaceField` type class to the `LinkType` constructor.
 In similar way we will change the `UserType` but `User` entity hasn’t `links` property so we have to add such field manually to the ObjectType. `AddField` type class is for such reason:
 
     AddFields(
-      Field("links", ListType(LinkType), 
+      Field("links", ListType(LinkType),
       resolve = c =>  linksFetcher.deferRelSeq(linkByUserRel, c.value.id))
     )
 
@@ -279,7 +279,7 @@ Both are almost the same, the only difference is the type of `Relation` we’re 
 
 Now you should be able to query for this field.
 
-------------------------------------------------------------------------
+---
 
 The second part won’t be as easy.
 
@@ -331,7 +331,7 @@ Replace current `VoteType` declaration with the following one:
         AddFields(Field("user",  UserType, resolve = c => usersFetcher.defer(c.value.userId))),
         AddFields(Field("link",  LinkType, resolve = c => linksFetcher.defer(c.value.linkId)))
       )
-        
+
 
 Now you’re ready to execute a query like that:
 

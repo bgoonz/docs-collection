@@ -1,4 +1,4 @@
---- title: Mouse controls slug: Games/Tutorials/2D\_Breakout\_game\_pure\_JavaScript/Mouse\_controls tags: - Beginner - Canvas - Controls - Games - JavaScript - Tutorial - mouse ---
+--- title: Mouse controls slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls tags: - Beginner - Canvas - Controls - Games - JavaScript - Tutorial - mouse ---
 
 {{GamesSidebar}}
 
@@ -8,15 +8,13 @@ This is the **9th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/
 
 <span class="seoSummary">The game itself is actually finished, so let's work on polishing it up. We have already added keyboard controls, but we could easily add mouse controls too.</span>
 
-Listening for mouse movement
-----------------------------
+## Listening for mouse movement
 
 Listening for mouse movement is even easier than listening for key presses: all we need is the listener for the {{event("mousemove")}} event. Add the following line in the same place as the other event listeners, just below the `keyup event`:
 
     document.addEventListener("mousemove", mouseMoveHandler, false);
 
-Anchoring the paddle movement to the mouse movement
----------------------------------------------------
+## Anchoring the paddle movement to the mouse movement
 
 We can update the paddle position based on the pointer coordinates — the following handler function will do exactly that. Add the following function to your code, below the previous line you added:
 
@@ -31,8 +29,7 @@ In this function we first work out a `relativeX` value, which is equal to the ho
 
 The paddle will now follow the position of the mouse cursor, but since we're restricting the movement to the size of the Canvas, it won't disappear completely off either side.
 
-Compare your code
------------------
+## Compare your code
 
 This is the latest state of the code to compare against:
 
@@ -40,8 +37,7 @@ This is the latest state of the code to compare against:
 
 Exercise: adjust the boundaries of the paddle movement, so the whole paddle will be visible on both edges of the Canvas instead of only half of it.
 
-Next steps
-----------
+## Next steps
 
 Now we've got a complete game we'll finish our series of lessons with some more small tweaks — [Finishing up](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Finishing_up).
 

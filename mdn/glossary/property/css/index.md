@@ -16,14 +16,13 @@ Here's an example of a CSS rule:
       background-color: white;
     }
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Learn CSS](/en-US/docs/Learn/CSS)
+- [Learn CSS](/en-US/docs/Learn/CSS)
 
 ### Technical reference
 
--   [The CSS reference on MDN](/en-US/docs/Web/CSS/Reference)
--   [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)
+- [The CSS reference on MDN](/en-US/docs/Web/CSS/Reference)
+- [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)

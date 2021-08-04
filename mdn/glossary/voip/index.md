@@ -4,9 +4,8 @@ VoIP (Voice over Internet Protocol) is a technology used to transmit voice messa
 
 VoIP allows you to make a call directly from a computer, a special VoIP phone, or a traditional phone connected to a special adapter. A high speed internet connection is required for VoIP. Usually, telephone calls over the Internet do not incur further charges beyond what the user is paying for Internet access, much in the same way that the user doesn't pay for sending individual emails over the Internet.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "VoIP")}} on Wikipedia
+- {{Interwiki("wikipedia", "VoIP")}} on Wikipedia

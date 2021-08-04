@@ -4,9 +4,8 @@ A constant is a value that the programmer cannot change, for example numbers (1,
 
 Like variables, some constants are bound to identifiers. For example, the identifier `pi` could be bound to the value 3.14... .
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Constant\_(computer\_programming)", "Constant")}} on Wikipedia
+- {{Interwiki("wikipedia", "Constant\_(computer\_programming)", "Constant")}} on Wikipedia

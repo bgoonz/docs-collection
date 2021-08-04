@@ -4,9 +4,8 @@
 
 Modems are different from {{Glossary("Router","routers")}}, but many companies sell modems combined with routers.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Modem")}} on Wikipedia
+- {{Interwiki("wikipedia", "Modem")}} on Wikipedia

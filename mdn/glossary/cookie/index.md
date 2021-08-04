@@ -6,9 +6,8 @@ Cookies are used to personalize a user’s web experience with a website. It may
 
 Cookies can be set and modified at the server level using the `Set-Cookie` [HTTP header](/en-US/docs/Web/HTTP/Cookies), or with JavaScript using `document.cookie`.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [HTTP cookie](https://en.wikipedia.org/wiki/HTTP_cookie) on Wikipedia
+- [HTTP cookie](https://en.wikipedia.org/wiki/HTTP_cookie) on Wikipedia

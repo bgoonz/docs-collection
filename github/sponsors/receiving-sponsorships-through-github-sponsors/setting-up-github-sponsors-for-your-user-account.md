@@ -1,12 +1,12 @@
 ---
 title: Setting up GitHub Sponsors for your user account
-intro: 'You can become a sponsored developer by joining {% data variables.product.prodname_sponsors %}, completing your sponsored developer profile, creating sponsorship tiers, submitting your bank and tax information, and enabling two-factor authentication on your {% data variables.product.prodname_dotcom %} account.'
+intro: "You can become a sponsored developer by joining {% data variables.product.prodname_sponsors %}, completing your sponsored developer profile, creating sponsorship tiers, submitting your bank and tax information, and enabling two-factor authentication on your {% data variables.product.prodname_dotcom %} account."
 redirect_from:
   - /articles/becoming-a-sponsored-developer
   - /github/supporting-the-open-source-community-with-github-sponsors/becoming-a-sponsored-developer
   - /github/supporting-the-open-source-community-with-github-sponsors/setting-up-github-sponsors-for-your-user-account
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - User account
@@ -20,9 +20,7 @@ shortTitle: Set up for user account
 
 To join {% data variables.product.prodname_sponsors %} as an organization, see "[Setting up {% data variables.product.prodname_sponsors %} for your organization](/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization)."
 
-{% data reusables.sponsors.navigate-to-github-sponsors %}
-2. If you are an organization owner, you have more than one eligible account. Click **View your eligible accounts**, then in the list of accounts, find your user account.
-3. Click **Join the waitlist**.
+{% data reusables.sponsors.navigate-to-github-sponsors %} 2. If you are an organization owner, you have more than one eligible account. Click **View your eligible accounts**, then in the list of accounts, find your user account. 3. Click **Join the waitlist**.
 {% data reusables.sponsors.contact-info %}
 {% data reusables.sponsors.accept-legal-terms %}
 
@@ -79,8 +77,7 @@ Before you can become a sponsored developer, you must enable 2FA on your {% data
 
 ## Submitting your application to {% data variables.product.prodname_dotcom %} for approval
 
-{% data reusables.sponsors.navigate-to-sponsors-dashboard %}
-4. Click **Request approval**.
-  ![Request approval button](/assets/images/help/sponsors/request-approval-button.png)
+{% data reusables.sponsors.navigate-to-sponsors-dashboard %} 4. Click **Request approval**.
+![Request approval button](/assets/images/help/sponsors/request-approval-button.png)
 
 {% data reusables.sponsors.github-review-app %}

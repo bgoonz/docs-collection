@@ -1,8 +1,8 @@
 ---
 title: Disabling your GitHub Sponsors account
-intro: 'If you no longer want to participate in {% data variables.product.prodname_sponsors %}, you can disable your {% data variables.product.prodname_sponsors %} account.'
+intro: "If you no longer want to participate in {% data variables.product.prodname_sponsors %}, you can disable your {% data variables.product.prodname_sponsors %} account."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Open Source
@@ -20,7 +20,8 @@ Alternatively, you can unpublish your sponsors profile and then republish the ac
 
 {% data reusables.sponsors.navigate-to-sponsors-dashboard %}
 {% data reusables.sponsors.settings-tab %}
+
 1. Under "Disable GitHub Sponsors account", click **Disable account**.  
-  !["Disable your account" button](/assets/images/help/sponsors/disable-your-account-button.png)
+   !["Disable your account" button](/assets/images/help/sponsors/disable-your-account-button.png)
 2. To confirm, click **Disable GitHub Sponsors account**.
-  !["Disable GitHub Sponsors account" button](/assets/images/help/sponsors/disable-github-sponsors-account-dialog.png)
+   !["Disable GitHub Sponsors account" button](/assets/images/help/sponsors/disable-github-sponsors-account-dialog.png)

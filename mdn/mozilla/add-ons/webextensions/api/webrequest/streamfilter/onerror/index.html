@@ -11,14 +11,25 @@ tags:
   - webRequest
 browser-compat: webextensions.api.webRequest.StreamFilter.onerror
 ---
+
 <div>{{AddonSidebar()}}</div>
 
 <div>
-<p>An event handler that will be called when an error occurs. This is most often because an invalid request ID was passed into {{WebExtAPIRef("webRequest.filterResponseData()")}}.</p>
+  <p>
+    An event handler that will be called when an error occurs. This is most
+    often because an invalid request ID was passed into
+    {{WebExtAPIRef("webRequest.filterResponseData()")}}.
+  </p>
 
-<p>After this event is fired, the {{WebExtAPIRef("webRequest.StreamFilter.error")}} property will contain a message giving more information about the error.</p>
+  <p>
+    After this event is fired, the
+    {{WebExtAPIRef("webRequest.StreamFilter.error")}} property will contain a
+    message giving more information about the error.
+  </p>
 
-<p>Note that this event is <strong>not</strong> triggered for network errors.</p>
+  <p>
+    Note that this event is <strong>not</strong> triggered for network errors.
+  </p>
 </div>
 
 <h2 id="Browser_compatibility">Browser compatibility</h2>
@@ -27,9 +38,13 @@ browser-compat: webextensions.api.webRequest.StreamFilter.onerror
 
 <h2 id="Examples">Examples</h2>
 
-<p>This example adds an <code>onerror</code> listener which logs the value of {{WebExtAPIRef("webRequest.StreamFilter.error")}}.</p>
+<p>
+  This example adds an <code>onerror</code> listener which logs the value of
+  {{WebExtAPIRef("webRequest.StreamFilter.error")}}.
+</p>
 
-<pre class="brush: js">function listener(details) {
+<pre class="brush: js">
+function listener(details) {
   // This example seems not useful because,
   // a extension would use "details.requestId"
   let filter = browser.webRequest.filterResponseData("12345");
@@ -43,11 +58,13 @@ browser.webRequest.onBeforeRequest.addListener(
   listener,
   {urls: ["&lt;all_urls&gt;"], types: ["main_frame"]},
   ["blocking"]
-);</pre>
+);</pre
+>
 
 <p>This example uses no <code>"blocking"</code>.</p>
 
-<pre class="brush: js">function listener(details) {
+<pre class="brush: js">
+function listener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
 
   filter.onerror = event =&gt; {
@@ -58,6 +75,7 @@ browser.webRequest.onBeforeRequest.addListener(
 browser.webRequest.onBeforeRequest.addListener(
   listener,
   {urls: ["&lt;all_urls&gt;"], types: ["main_frame"]}
-);</pre>
+);</pre
+>
 
 <p>{{WebExtExamples}}</p>

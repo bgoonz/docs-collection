@@ -146,7 +146,7 @@ Open `src/components/AppHeader.vue` and update the file to look like the followi
       }
     </script>
 
-You first retrieve the `userId` from `this.$root.$data`. If the `userId` is not available, the *submit*-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.
+You first retrieve the `userId` from `this.$root.$data`. If the `userId` is not available, the _submit_-button won’t be rendered anymore. That way you make sure only authenticated users can create new links.
 
 You’re also adding a second button on the right side of the `AppHeader` that users can use to login and logout.
 
@@ -164,13 +164,13 @@ In the directory where `project.graphcool` is located, type the following into t
 
 This will open up the Graphcool Console - the web UI that allows you to configure your Graphcool project.
 
-Select the *Integrations*-tab on the left side-menu and then click on the *Email-Password-Auth*-integration.
+Select the _Integrations_-tab on the left side-menu and then click on the _Email-Password-Auth_-integration.
 
 ![The email-password-auth integration](http://imgur.com/FkyzuuM.png)
 
 This will open the popup that allows you to enable Graphcool’s email-based authentication mechanism.
 
-In the popup, simply click *Enable*.
+In the popup, simply click _Enable_.
 
 ![Click enable in the popup](http://imgur.com/HNdmas3.png)
 
@@ -234,8 +234,8 @@ Open your project file `project.graphcool` and update the `User` and `Link` type
 
 You added two things to the schema:
 
--   A new field on the `User` type to store the `name` of the user.
--   A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
+- A new field on the `User` type to store the `name` of the user.
+- A new relation between the `User` and the `Link` type that represents a one-to-many relationship and expresses that one `User` can be associated with multiple links. The relation manifests itself in the two fields `postedBy` and `links`.
 
 Save the file and execute the following command in the Terminal:
 
@@ -307,7 +307,7 @@ Now, let’s gain a better understanding what’s going on in the two mutations 
 
 The `SIGNIN_USER_MUTATION` looks very similar to the mutations we saw before. It simply takes the `email` and `password` as arguments and returns info about the `user` as well as a `token` that you can attach to subsequent requests to authenticate the user. You’ll learn in a bit how to do so.
 
-The `CREATE_USER_MUTATION` however is a bit different! Here, we actually define *two* mutations at once! When you’re doing that, the execution order is always *from top to bottom*. So, in your case the `createUser` mutation will be executed *before* the `signinUser` mutation. Bundling two mutations like this allows you to sign up and login in a single request!
+The `CREATE_USER_MUTATION` however is a bit different! Here, we actually define _two_ mutations at once! When you’re doing that, the execution order is always _from top to bottom_. So, in your case the `createUser` mutation will be executed _before_ the `signinUser` mutation. Bundling two mutations like this allows you to sign up and login in a single request!
 
 All right, all that’s left to do is to call the two mutations inside the `AppLogin` component!
 
@@ -380,7 +380,7 @@ Still in `src/main.js` make the following change to the bottom of the file:
 1.  You get the current `GC_USER_ID` from `localStorage` if there is one
 2.  You set this `userId` on the `$root` `$data` object
 
-You can now create an account by providing a `name`, `email` and `password`. Once you do so, the *submit*-button will be rendered again:
+You can now create an account by providing a `name`, `email` and `password`. Once you do so, the _submit_-button will be rendered again:
 
 ![Creating an account by providing name, email, and password](http://imgur.com/WoWLmDJ.png)
 
@@ -409,7 +409,7 @@ Open `src/constants/graphql.js` and update the definition of `CREATE_LINK_MUTATI
       }
     `
 
-There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the *payload* of the mutation.
+There are two major changes. You first added another argument to the mutation that represents the `id` of the user that is posting the link. Secondly, you also include the `postedBy` information in the _payload_ of the mutation.
 
 Now you need to make sure that the `id` of the posting user is included when you’re calling the mutation in `createLink`.
 
@@ -456,7 +456,7 @@ Add the following import statement near the top of `src/components/CreateLink.vu
 
 Perfect! Before sending the mutation, you’re now also retrieving the corresponding user id from `localStorage`. If that succeeds, you’ll pass it to the call to `createLinkMutation` so that every new `Link` will from now on store information about the `User` who created it.
 
-If you haven’t done so before, go ahead and test the login functionality. Open `http://localhost:8080/login`. Then click the *need to create an account?*-button and provide some user data for the user you’re creating. Finally, click the *create Account*-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
+If you haven’t done so before, go ahead and test the login functionality. Open `http://localhost:8080/login`. Then click the _need to create an account?_-button and provide some user data for the user you’re creating. Finally, click the _create Account_-button. If all went well, the app navigates back to the root route and your user was created. You can verify that the new user is there by checking the [data browser](https://www.graph.cool/docs/reference/console/data-browser-och3ookaeb/) or sending the `allUsers` query in a Playground.
 
 ### Configuring Apollo with the Auth Token
 
@@ -464,7 +464,7 @@ Now that users are able to login and obtain a token that authenticates them agai
 
 Since all the API requests are actually created and sent by the `ApolloClient` in your app, you need to make sure it knows about the user’s token. Luckily, Apollo provides a nice way for authenticating all requests by using [middleware](http://dev.apollodata.com/react/auth.html#Header).
 
-Open `src/main.js` and put the following code *between* the creation of the `httpLink` and the instantiation of the `ApolloClient`:
+Open `src/main.js` and put the following code _between_ the creation of the `httpLink` and the instantiation of the `ApolloClient`:
 
     const authMiddleware = new ApolloLink((operation, forward) => {
       // add the authorization to the headers

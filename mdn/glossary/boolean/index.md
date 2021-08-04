@@ -26,14 +26,13 @@ Below is some JavaScript pseudocode (it's not truly executable code) demonstrati
 
 The Boolean value is named after English mathematician {{interwiki("wikipedia", "George Boole")}}, who pioneered the field of mathematical logic.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Boolean data type", "Boolean")}} on Wikipedia
+- {{Interwiki("wikipedia", "Boolean data type", "Boolean")}} on Wikipedia
 
 ### Technical reference
 
--   The JavaScript global object: {{jsxref("Boolean")}}
--   [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)
+- The JavaScript global object: {{jsxref("Boolean")}}
+- [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)

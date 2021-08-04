@@ -1,28 +1,24 @@
---- title: Implementing controls using the Gamepad API slug: Games/Techniques/Controls\_Gamepad\_API tags: - Controls - Gamepad API - Gamepads - Games - JavaScript - controllers ---
+--- title: Implementing controls using the Gamepad API slug: Games/Techniques/Controls_Gamepad_API tags: - Controls - Gamepad API - Gamepads - Games - JavaScript - controllers ---
 
 {{GamesSidebar}}
 
 This article looks at implementing an effective, cross-browser control system for web games using the Gamepad API, allowing you to control your web games using console game controllers. It features a case study game — Hungry Fridge, created by [Enclave Games](https://enclavegames.com/).
 
-Controls for web games
-----------------------
+## Controls for web games
 
 Historically playing games on a console connected to your TV was always a totally different experience to gaming on the PC, mostly because of the unique controls. Eventually, extra drivers and plugins allowed us to use console gamepads with desktop games — either native games or those running in the browser. Now in the era of HTML5, we finally have the [Gamepad API](/en-US/docs/Web/API/Gamepad_API), which gives us the ability to play browser-based games using gamepad controllers without any plugins. The Gamepad API achieves this by providing an interface exposing button presses and axis changes that can be used inside JavaScript code to handle the input. These are good times for browser gaming.
 
-API status and browser support
-------------------------------
+## API status and browser support
 
 The [Gamepad API](https://www.w3.org/TR/gamepad/) is still at the Working Draft stage in the W3C process, which means its implementation might still change, but saying that the [browser support](https://caniuse.com/gamepad) is already quite good. Firefox 29+ and Chrome 35+ support it out of the box. Opera supports the API in version 22+ (not surprising given that they now use Chrome's Blink engine.) And Microsoft implemented support for the API in Edge recently, which means four main browsers now supporting the Gamepad API.
 
-Which gamepads are best?
-------------------------
+## Which gamepads are best?
 
 The most popular gamepads right now are those from the Xbox 360, Xbox One, PS3 and PS4 — they have been heavily tested and work well with the Gamepad API implementation in browsers across Windows and Mac OS X.
 
 There's also a number of other devices with various different button layouts that more or less work across browser implementations. The code discussed in this article was tested with a few gamepads, but the author's favorite configuration is a wireless Xbox 360 controller and the Firefox browser on Mac OS X.
 
-Case Study: Hungry Fridge
--------------------------
+## Case Study: Hungry Fridge
 
 The [GitHub Game Off II](https://github.com/blog/1674-github-game-off-ii) competition ran in November 2013 and [Enclave Games](https://enclavegames.com/) decided to take part in it. The theme for the competition was "change", so they submitted a game where you have to feed the Hungry Fridge by tapping the healthy food (apples, carrots, lettuces) and avoid the "bad" food (beer, burgers, pizza.) A countdown changes the type of food the Fridge wants to eat every few seconds, so you have to be careful and act quickly.
 
@@ -30,8 +26,7 @@ The second, hidden "change" implementation is the ability to transform the stati
 
 The game encapsulates two totally different types of "change" — good food vs. bad food, and mobile vs. desktop.
 
-Demo
-----
+## Demo
 
 The full version of the Hungry Fridge game was built first, and then to showcase the Gamepad API in action and show the JavaScript source code, a [simple demo](https://end3r.github.io/Gamepad-API-Content-Kit/demo/demo.html) was created. It's part of the [Gamepad API Content Kit](https://end3r.github.io/Gamepad-API-Content-Kit/) available on GitHub where you can dive deep into the code and study exactly how it works.
 
@@ -39,8 +34,7 @@ The code explained below is from the full version of the Hungry Fridge game, but
 
 **Note**: Easter Egg time: There's a hidden option to launch Super Turbo Hungry Fridge on the desktop without having a gamepad connected — click the gamepad icon in the top right corner of the screen. It will launch the game in the Super Turbo mode and you'll be able to control the Fridge with the keyboard: A and D for turning the turret left and right, W for shooting and arrow keys for movement.
 
-Implementation
---------------
+## Implementation
 
 There are two important events to use along with the Gamepad API — `gamepadconnected` and `gamepaddisconnected`. The first one is fired when the browser detects the connection of a new gamepad while the second one is fired when a gamepad is disconnected (either physically by the user or due to inactivity.) In the demo, the `gamepadAPI` object is used to store everything related to the API:
 
@@ -94,12 +88,12 @@ The `disconnect` function sets the `gamepad.turbo property` to `false` and remov
 
 There's lots of useful information contained in the `gamepad` object, with the states of buttons and axes being the most important:
 
--   `id`: A string containing information about the controller.
--   `index`: A unique identifier for the connected device.
--   `connected`: A boolean variable, `true` if the device is connected.
--   `mapping`: The layout type of the buttons; `standard` is the only available option for now.
--   `axes`: The state of each axis, represented by an array of floating-point values.
--   `buttons` : The state of each button, represented by an array of `GamepadButton` objects containing `pressed` and `value` properties.
+- `id`: A string containing information about the controller.
+- `index`: A unique identifier for the connected device.
+- `connected`: A boolean variable, `true` if the device is connected.
+- `mapping`: The layout type of the buttons; `standard` is the only available option for now.
+- `axes`: The state of each axis, represented by an array of floating-point values.
+- `buttons` : The state of each button, represented by an array of `GamepadButton` objects containing `pressed` and `value` properties.
 
 The `index` variable is useful if we're connecting more than one controller and want to identify them to act accordingly — for example when we have a two-player game requiring two devices to be connected.
 
@@ -197,8 +191,7 @@ Gamepads can get dusty from lying around inactive, meaning that checking for exa
 
 Even if we move it a little by mistake or the stick doesn't make it back to its original position, the tank won't turn unexpectedly.
 
-Specification update
---------------------
+## Specification update
 
 After more than a year of stability, in April 2015 the W3C Gamepad API spec was updated ([see the latest](https://w3c.github.io/gamepad/).) It hasn't changed much, but it's good to know whats going on — the updates are as follows.
 
@@ -221,7 +214,6 @@ This enum defines the set of known mappings for a Gamepad. For now, there's only
 
 There were more events available in the spec than just `gamepadconnected` and `gamepaddisconnected` available, but they were removed from the specification as they were thought to not be very useful. The discussion is still ongoing as to whether they should be put back, and in what form.
 
-Summary
--------
+## Summary
 
 The Gamepad API is very easy to develop with. Now it's easier than ever to deliver a console-like experience to the browser without the need for any plugins. You can play the full version of the [Hungry Fridge](https://enclavegames.com/games/hungry-fridge/) game directly in your browser, install it from the [Firefox Marketplace](https://marketplace.firefox.com/app/hungry-fridge) or check the source code of the demo along with all the other resources on the [Gamepad API Content Kit](https://end3r.github.io/Gamepad-API-Content-Kit/)[.](https://github.com/EnclaveGames/Hungry-Fridge)

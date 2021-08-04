@@ -4,10 +4,9 @@
 
 {{glossary("JavaScript")}} is heavily object-oriented. It follows a **prototype**-based model ([as opposed to class-based](/en-US/docs/Web/JavaScript/Guide/Details_of_the_Object_Model#class-based_vs._prototype-based_languages)).
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "Object-oriented programming")}} on Wikipedia
--   [Introduction to object-oriented JavaScript](/en-US/docs/Learn/JavaScript/Objects)
+- {{Interwiki("wikipedia", "Object-oriented programming")}} on Wikipedia
+- [Introduction to object-oriented JavaScript](/en-US/docs/Learn/JavaScript/Objects)

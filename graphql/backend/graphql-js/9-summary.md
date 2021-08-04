@@ -6,9 +6,9 @@ The resolvers of your GraphQL server are implemented using Prisma Client which i
 
 If you want to dive deeper and become part of the awesome GraphQL community, here are a few resource and community recommendations for you:
 
--   [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
--   [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
--   [GraphQL Conf](https://www.graphqlconf.org): The world’s biggest gathering of GraphQL enthusiasts happening in the heart of Berlin
--   [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma
+- [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
+- [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
+- [GraphQL Conf](https://www.graphqlconf.org): The world’s biggest gathering of GraphQL enthusiasts happening in the heart of Berlin
+- [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma
 
 Congratulations on completing the tutorial! We can’t wait to see what you build.

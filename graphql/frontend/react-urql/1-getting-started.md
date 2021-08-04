@@ -134,10 +134,10 @@ Next, you need to pull in the functionality of `urql`. We’ll also be installin
 
 Here’s an overview of the packages you just installed:
 
--   [`urql`](https://github.com/FormidableLabs/urql) offers the basic `urql` client which includes React hooks and components, and a basic document cache by default
--   [`@urql/exchange-graphcache`](https://github.com/FormidableLabs/urql-exchange-graphcache) is a replacement for `urql`’s default cache, which supports full normalized caching, which we’ll set up later
--   [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - urql and its other packages use some of its functionality as well.
--   [`graphql-tag`](https://github.com/apollographql/graphql-tag) is a utility to write GraphQL query definitions using [tagged template literals](https://mxstbr.blog/2016/11/styled-components-magic-explained/).
+- [`urql`](https://github.com/FormidableLabs/urql) offers the basic `urql` client which includes React hooks and components, and a basic document cache by default
+- [`@urql/exchange-graphcache`](https://github.com/FormidableLabs/urql-exchange-graphcache) is a replacement for `urql`’s default cache, which supports full normalized caching, which we’ll set up later
+- [`graphql`](https://github.com/graphql/graphql-js) contains Facebook’s reference implementation of GraphQL - urql and its other packages use some of its functionality as well.
+- [`graphql-tag`](https://github.com/apollographql/graphql-tag) is a utility to write GraphQL query definitions using [tagged template literals](https://mxstbr.blog/2016/11/styled-components-magic-explained/).
 
 > **Note**: You can find more information on [how urql’s Exchanges work in its docs](https://formidable.com/open-source/urql/docs/). Generally speaking, every GraphQL operation goes through a chain of middleware that can transform, filter, or fulfill them. Every core feature in urql including fetching, deduplication, and caching is implemented using Exchanges.
 
@@ -147,7 +147,7 @@ That’s it, you’re ready to write some code! 🚀
 
 Instead of dealing with GraphQL requests directly, urql has a central Client. It controls when and how operations are made and deals with all the details of deduplication, caching, and cancellation. In contrast to working with REST APIs, you don’t have to construct any HTTP requests manually or store the results explicitly - instead you can simply write queries and mutations and send them using `urql`’s React bindings. Internally these bindings just use methods on the Client, for instance `executeQuery` and `executeMutation`.
 
-The first thing you have to do when using urql is configure a `Client` instance. It needs to know the *endpoint* of your GraphQL API so it can deal with the network connections.
+The first thing you have to do when using urql is configure a `Client` instance. It needs to know the _endpoint_ of your GraphQL API so it can deal with the network connections.
 
 Open `src/index.js` and replace the contents with the following:
 
@@ -174,9 +174,9 @@ Open `src/index.js` and replace the contents with the following:
 
 Let’s try to understand what’s going on in that code snippet:
 
--   You’re importing the `Client`, `Provider`, and `defaultExchanges` from `urql`.
--   Here you’re instantiating a new `Client` and are passing it your endpoint `url` and a list of `defaultExchanges`
--   Finally you render the root component of your React app. The `App` is wrapped with the context Provider for the `urql` Client.
+- You’re importing the `Client`, `Provider`, and `defaultExchanges` from `urql`.
+- Here you’re instantiating a new `Client` and are passing it your endpoint `url` and a list of `defaultExchanges`
+- Finally you render the root component of your React app. The `App` is wrapped with the context Provider for the `urql` Client.
 
 The `defaultExchanges` would also be applied automatically, but in the next step you’ll set up the normalized cache!
 
@@ -184,9 +184,9 @@ The `defaultExchanges` would also be applied automatically, but in the next step
 
 By default urql sets up three built-in exchanges, which provide its core functionality. These are all part of the `defaultExchanges` array:
 
--   `dedupExchange` deduplicates operations. If you’re sending the same queries at the same time, then it will make sure that only one of them is actually sent to your API
--   `cacheExchange` caches operation results. This is only a document cache, so it caches results from your GraphQL API by the unique query + variables combination that those results have been requested with.
--   `fetchExchange` sends GraphQL requests using `fetch` and supports cancellation by default.
+- `dedupExchange` deduplicates operations. If you’re sending the same queries at the same time, then it will make sure that only one of them is actually sent to your API
+- `cacheExchange` caches operation results. This is only a document cache, so it caches results from your GraphQL API by the unique query + variables combination that those results have been requested with.
+- `fetchExchange` sends GraphQL requests using `fetch` and supports cancellation by default.
 
 As you can see above, by default `urql` only comes with a simple document cache. This cache is very useful for content-heavy sites, since it treats every query and result as documents that it can simply cache 1:1. For more complex apps you will most likely want to use normalized caching, which makes sure that data updates globally across the app, if it can be shared across queries.
 
@@ -218,9 +218,9 @@ Modify `src/index.js` with the following new changes:
 
 Let’s go through the changes we’ve made to `index.js` in order:
 
--   you’re now importing `dedupExchange` and `fetchExchange` from `urql` and have added `cacheExchange` from the additional `@urql/exchange-graphcache` package.
--   you’re creating a new normalized cache by calling `cacheExchange` with a config, which is empty for now.
--   lastly, you’ve replaced `defaultExchanges` on the `Client` with a new list of exchanges that includes the normalized cache exchange. The list is in a specific order (basically: `fetch` last and `dedup` first.)
+- you’re now importing `dedupExchange` and `fetchExchange` from `urql` and have added `cacheExchange` from the additional `@urql/exchange-graphcache` package.
+- you’re creating a new normalized cache by calling `cacheExchange` with a config, which is empty for now.
+- lastly, you’ve replaced `defaultExchanges` on the `Client` with a new list of exchanges that includes the normalized cache exchange. The list is in a specific order (basically: `fetch` last and `dedup` first.)
 
 That’s it, you’re all set to start for loading some data into your app! 😎
 
@@ -242,14 +242,14 @@ You now have a new directory called `server` inside your project that contains a
 
 Before we start the server, let’s quickly understand the main components:
 
--   `prisma`: This directory holds all the files that relate to your [Prisma](https://www.prisma.io) setup. Prisma Client is used to access the database in your GraphQL resolvers (similar to an ORM).
-    -   `prisma.yml` is the root configuration file for your Prisma project.
-    -   `datamodel.prisma` defines your data model in the GraphQL [Schema Definition Language](https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51) (SDL). When using Prisma, the datamodel is used to describe the database schema.
--   `src`: This directory holds the source files for your GraphQL server.
-    -   `schema.graphql` contains your **application schema**. The application schema defines the GraphQL operations you can send from the frontend. We’ll take a closer look at this file in just a bit.
-    -   `generated/prisma-client` contains the auto-generated Prisma client, a type-safe database access library (similar to an ORM).
-    -   `resolvers` contains the [*resolver functions*](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#resolvers-implement-the-api) for the operations defined in the application schema.
-    -   `index.js` is the entry point for your GraphQL server.
+- `prisma`: This directory holds all the files that relate to your [Prisma](https://www.prisma.io) setup. Prisma Client is used to access the database in your GraphQL resolvers (similar to an ORM).
+  - `prisma.yml` is the root configuration file for your Prisma project.
+  - `datamodel.prisma` defines your data model in the GraphQL [Schema Definition Language](https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51) (SDL). When using Prisma, the datamodel is used to describe the database schema.
+- `src`: This directory holds the source files for your GraphQL server.
+  - `schema.graphql` contains your **application schema**. The application schema defines the GraphQL operations you can send from the frontend. We’ll take a closer look at this file in just a bit.
+  - `generated/prisma-client` contains the auto-generated Prisma client, a type-safe database access library (similar to an ORM).
+  - `resolvers` contains the [_resolver functions_](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e#resolvers-implement-the-api) for the operations defined in the application schema.
+  - `index.js` is the entry point for your GraphQL server.
 
 From the mentioned files, only the application schema defined in `server/src/schema.graphql` is relevant for you as a frontend developer. This file contains the [GraphQL schema](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e) which defines all the operations (queries, mutations and subscriptions) you can send from your frontend app.
 
@@ -291,16 +291,16 @@ Here is what it looks like:
 
 This schema allows for the following operations:
 
--   Queries:
-    -   `feed`: Retrieves all links from the backend, note that this query also allows for filter, sorting and pagination arguments
--   Mutations:
-    -   `post`: Allows authenticated users to create a new link
-    -   `signup`: Create an account for a new user
-    -   `login`: Login an existing user
-    -   `vote`: Allows authenticated users to vote for an existing link
--   Subscriptions:
-    -   `newLink`: Receive realtime updates when a new link is created
-    -   `newVote`: Receive realtime updates when a vote was submitted
+- Queries:
+  - `feed`: Retrieves all links from the backend, note that this query also allows for filter, sorting and pagination arguments
+- Mutations:
+  - `post`: Allows authenticated users to create a new link
+  - `signup`: Create an account for a new user
+  - `login`: Login an existing user
+  - `vote`: Allows authenticated users to vote for an existing link
+- Subscriptions:
+  - `newLink`: Receive realtime updates when a new link is created
+  - `newVote`: Receive realtime updates when a vote was submitted
 
 For example, you can send the following `feed` query to retrieve the first 10 links from the server:
 
@@ -345,7 +345,7 @@ In your terminal, navigate to the `server` directory and execute the following c
 
 Note that you can also omit `yarn prisma` in the above command if you have the `prisma` CLI installed globally on your machine (which you can do with `yarn global add prisma`). In that case, you can simply run `prisma deploy`.
 
-When prompted where you want to set/deploy your service, select `Demo server` (it requires login, you could sign in with your GitHub account), then choose a *region*, e.g. `demo-us1` or `demo-eu1`. The Demo server includes a free instance of an AWS Aurora database. (If you have Docker installed, you can also deploy locally.)
+When prompted where you want to set/deploy your service, select `Demo server` (it requires login, you could sign in with your GitHub account), then choose a _region_, e.g. `demo-us1` or `demo-eu1`. The Demo server includes a free instance of an AWS Aurora database. (If you have Docker installed, you can also deploy locally.)
 
 > **Note**: Once the command has finished running, the CLI writes the endpoint for the Prisma API to your prisma.yml. It will look similar to this: https://eu1.prisma.sh/john-doe/hackernews-node/dev.
 
@@ -367,9 +367,9 @@ The first thing to note about the Playground is that it has built-in documentati
 
 ![The GraphQL Playground](https://imgur.com/8xK81qt.png)
 
-The left pane of the Playground is the *editor* that you can use to write your queries, mutations and subscriptions. Once you click the play button in the middle, your request is sent and the server’s response will be displayed in the *results* pane on the right.
+The left pane of the Playground is the _editor_ that you can use to write your queries, mutations and subscriptions. Once you click the play button in the middle, your request is sent and the server’s response will be displayed in the _results_ pane on the right.
 
-Copy the following two mutations into the *editor* pane - make sure to have the **default** Playground from the **app** project selected in the left side-menu:
+Copy the following two mutations into the _editor_ pane - make sure to have the **default** Playground from the **app** project selected in the left side-menu:
 
     mutation CreatePrismaLink {
       post(
@@ -389,7 +389,7 @@ Copy the following two mutations into the *editor* pane - make sure to have the 
       }
     }
 
-Since you’re adding two mutations to the editor at once, the mutations need to have *operation names*. In your case, these are `CreatePrismaLink` and `CreateUrqlLink`.
+Since you’re adding two mutations to the editor at once, the mutations need to have _operation names_. In your case, these are `CreatePrismaLink` and `CreateUrqlLink`.
 
 Click the **Play**-button in the middle of the two panes and select each mutation from the dropdown exactly once.
 

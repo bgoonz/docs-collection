@@ -1,4 +1,4 @@
---- title: Empty element slug: Glossary/Empty\_element tags: - CodingScripting - Glossary - Intermediate ---
+--- title: Empty element slug: Glossary/Empty_element tags: - CodingScripting - Glossary - Intermediate ---
 
 An **empty element** is an {{Glossary("element")}} from HTML, SVG, or MathML that **cannot** have any child nodes (i.e., nested elements or text nodes).
 
@@ -8,18 +8,18 @@ In HTML, using a closing tag on an empty element is usually invalid. For example
 
 The empty elements in HTML are as follows:
 
--   {{HTMLElement("area")}}
--   {{HTMLElement("base")}}
--   {{HTMLElement("br")}}
--   {{HTMLElement("col")}}
--   {{HTMLElement("embed")}}
--   {{HTMLElement("hr")}}
--   {{HTMLElement("img")}}
--   {{HTMLElement("input")}}
--   {{HTMLElement("keygen")}}(HTML 5.2 Draft removed)
--   {{HTMLElement("link")}}
--   {{HTMLElement("meta")}}
--   {{HTMLElement("param")}}
--   {{HTMLElement("source")}}
--   {{HTMLElement("track")}}
--   {{HTMLElement("wbr")}}
+- {{HTMLElement("area")}}
+- {{HTMLElement("base")}}
+- {{HTMLElement("br")}}
+- {{HTMLElement("col")}}
+- {{HTMLElement("embed")}}
+- {{HTMLElement("hr")}}
+- {{HTMLElement("img")}}
+- {{HTMLElement("input")}}
+- {{HTMLElement("keygen")}}(HTML 5.2 Draft removed)
+- {{HTMLElement("link")}}
+- {{HTMLElement("meta")}}
+- {{HTMLElement("param")}}
+- {{HTMLElement("source")}}
+- {{HTMLElement("track")}}
+- {{HTMLElement("wbr")}}

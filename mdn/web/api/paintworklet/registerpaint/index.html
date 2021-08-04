@@ -14,12 +14,15 @@ tags:
   - registerPaint
 browser-compat: api.PaintWorkletGlobalScope.registerPaint
 ---
+
 <div>{{draft}}{{APIRef("CSS Painting API")}}</div>
 
-<p class="summary">The
-  <strong><code>PaintWorkletGlobalScope.registerPaint()</code></strong> method of the
-  {{domxref("PaintWorklet")}} interface registers a class programmatically generate an
-  image where a CSS property expects a file.</p>
+<p class="summary">
+  The
+  <strong><code>PaintWorkletGlobalScope.registerPaint()</code></strong> method
+  of the {{domxref("PaintWorklet")}} interface registers a class
+  programmatically generate an image where a CSS property expects a file.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
@@ -49,13 +52,16 @@ browser-compat: api.PaintWorkletGlobalScope.registerPaint
 
 <h2 id="Examples">Examples</h2>
 
-<p>The following shows registering an example worklet module. This should be in a separate
-  js file. Note that <code>registerPaint()</code> is called without a reference to
-  <code>PaintWorkletGlobalScope</code>. The file itself is loaded
-  through <code>CSS.paintWorklet.addModule()</code> (documented here on the parent class
-  of PaintWorklet, at {{domxref('Worklet.addModule()')}}.</p>
+<p>
+  The following shows registering an example worklet module. This should be in a
+  separate js file. Note that <code>registerPaint()</code> is called without a
+  reference to <code>PaintWorkletGlobalScope</code>. The file itself is loaded
+  through <code>CSS.paintWorklet.addModule()</code> (documented here on the
+  parent class of PaintWorklet, at {{domxref('Worklet.addModule()')}}.
+</p>
 
-<pre class="brush: js">/* checkboardWorklet.js */
+<pre class="brush: js">
+/* checkboardWorklet.js */
 
 class CheckerboardPainter {
   paint(ctx, geom, properties) {
@@ -75,22 +81,32 @@ class CheckerboardPainter {
 }
 
 // Register our class under a specific name
-registerPaint('checkerboard', CheckerboardPainter);</pre>
+registerPaint('checkerboard', CheckerboardPainter);</pre
+>
 
-<p>The first step in using a paintworket is defining the paint worklet using the
-  <code>registerPaint()</code> function, as done above. To use it, you register it with
-  the <code>CSS.paintWorklet.addModule()</code> method:</p>
+<p>
+  The first step in using a paintworket is defining the paint worklet using the
+  <code>registerPaint()</code> function, as done above. To use it, you register
+  it with the <code>CSS.paintWorklet.addModule()</code> method:
+</p>
 
-<pre class="brush: html">&lt;script&gt;
+<pre class="brush: html">
+&lt;script&gt;
    CSS.paintWorklet.addModule('checkboardWorklet.js');
-&lt;/script&gt;</pre>
+&lt;/script&gt;</pre
+>
 
-<p>You can then use the <code>{{cssxref('paint()', 'paint()')}}</code> CSS function in your
-  CSS anywhere an <code>{{cssxref('&lt;image&gt;')}}</code> value is valid.</p>
+<p>
+  You can then use the <code>{{cssxref('paint()', 'paint()')}}</code> CSS
+  function in your CSS anywhere an
+  <code>{{cssxref('&lt;image&gt;')}}</code> value is valid.
+</p>
 
-<pre class="brush: css">li {
+<pre class="brush: css">
+li {
    background-image: paint(checkerboard);
-}</pre>
+}</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 

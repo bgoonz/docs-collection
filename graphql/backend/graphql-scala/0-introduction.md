@@ -10,20 +10,20 @@ I assume you’re familiar with GraphQL concepts, but if not, you can visit [Gra
 
 A GraphQL server should be able to:
 
--   Receive requests following the GraphQL format, for example:
+- Receive requests following the GraphQL format, for example:
 
 <!-- -->
 
     {  "query": "query { allLinks { url } }" }
 
--   Connect to one or more data sources, like databases or other APIs and format obtained information.
--   Response with the requested data, such as this one:
+- Connect to one or more data sources, like databases or other APIs and format obtained information.
+- Response with the requested data, such as this one:
 
 <!-- -->
 
     { "data": { "allLinks": { "url": "http://graphql.org/" } } }
 
--   Validate incoming requests accordingly to the schema definition and supported formats. For example, if a query is made with an unknown field, the response should be something like:
+- Validate incoming requests accordingly to the schema definition and supported formats. For example, if a query is made with an unknown field, the response should be something like:
 
 <!-- -->
 

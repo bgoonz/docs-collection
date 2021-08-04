@@ -1,15 +1,14 @@
---- title: 'Test your skills: Advanced styling' slug: 'Learn/Forms/Test\_your\_skills:\_Advanced\_styling' tags: - Assessment - Beginner - Forms - Learn - Pseudo-classes - Styling - test your skills ---
+--- title: 'Test your skills: Advanced styling' slug: 'Learn/Forms/Test_your_skills:\_Advanced_styling' tags: - Assessment - Beginner - Forms - Learn - Pseudo-classes - Styling - test your skills ---
 
 {{learnsidebar}}
 
 This aim of this skill test is to assess whether you've understood our [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling) and [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes) articles.
 
-**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.  
-  
+**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.
+
 If you get stuck, then ask us for help — see the {{anch("Assessment or further help")}} section at the bottom of this page.
 
-Advanced form styling 1
------------------------
+## Advanced form styling 1
 
 In our first advanced styling tasks, we want you to handle making a search input as consistent as possible across browsers — a trickier task than with standard text inputs, even on modern browsers.
 
@@ -28,8 +27,7 @@ Try updating the live code below to recreate the finished example:
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/html/forms/tasks/advanced-styling/advanced-styling1-download.html) to work in your own editor or in an online editor.
 
-Advanced form styling 2
------------------------
+## Advanced form styling 2
 
 In our next task we provide you with a set of three radio buttons. We want you to give them custom styling.
 
@@ -46,8 +44,7 @@ Try updating the live code below to recreate the finished example:
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/html/forms/tasks/advanced-styling/advanced-styling2-download.html) to work in your own editor or in an online editor.
 
-Advanced form styling 3
------------------------
+## Advanced form styling 3
 
 In our final task for this assessment series, we provide you with a feedback form that is already nicely-styled — you've already seen something similar if you've worked through our [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes) article, and now we want you to come up with your own solution.
 
@@ -58,8 +55,7 @@ What we'd like you to do is make use of some advanced pseudo-classes to provide 
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/html/forms/tasks/advanced-styling/advanced-styling3-download.html) to work in your own editor or in an online editor.
 
-Assessment or further help
---------------------------
+## Assessment or further help
 
 You can practice these examples in the Interactive Editors above.
 
@@ -67,7 +63,7 @@ If you would like your work assessed, or are stuck and want to ask for help:
 
 1.  Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/). You can write the code yourself, or use the starting point files linked to in the above sections.
 2.  Write a post asking for assessment and/or help at the <a href="https://discourse.mozilla.org/c/mdn/learn" class="external external-icon">MDN Discourse forum Learning category</a>. Your post should include:
-    -   A descriptive title such as "Assessment wanted for Advanced form styling 1 skill test".
-    -   Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-    -   A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-    -   A link to the actual task or assessment page, so we can find the question you want help with.
+    - A descriptive title such as "Assessment wanted for Advanced form styling 1 skill test".
+    - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+    - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+    - A link to the actual task or assessment page, so we can find the question you want help with.

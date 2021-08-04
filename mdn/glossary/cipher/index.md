@@ -10,8 +10,8 @@ Ciphers operate two ways, either as [block ciphers](https://en.wikipedia.org/wik
 
 They also are classified according to how their {{glossary("key", "keys")}} are handled:
 
--   [symmetric key](https://en.wikipedia.org/wiki/Symmetric_key_algorithm) algorithms use the same key to encode and decode a message. The key also must be sent securely if the message is to stay confidential.
--   [asymmetric key](https://en.wikipedia.org/wiki/Asymmetric_key_algorithm) algorithms use a different key for encryption and decryption.
+- [symmetric key](https://en.wikipedia.org/wiki/Symmetric_key_algorithm) algorithms use the same key to encode and decode a message. The key also must be sent securely if the message is to stay confidential.
+- [asymmetric key](https://en.wikipedia.org/wiki/Asymmetric_key_algorithm) algorithms use a different key for encryption and decryption.
 
 1.  General knowledge
     1.  {{Interwiki("wikipedia", "Cipher")}} on Wikipedia

@@ -2,10 +2,10 @@
 
 In this tutorial, you will implement the backend for a [Hackernews](https://news.ycombinator.com/) clone that has the following features:
 
--   show a list of links
--   authentication system
--   users can create new links
--   users can vote for links
+- show a list of links
+- authentication system
+- users can create new links
+- users can vote for links
 
 ### Install Dependencies
 

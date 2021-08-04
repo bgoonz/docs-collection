@@ -80,7 +80,7 @@ You could now simply execute this query in a Playground and retrieve the results
 
 ### Queries with `ember-apollo-client`
 
-When using Apollo in Ember, you can use the [`query`](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method on the `ApolloClient`. This will fetch the data and will allow you to process the response as a *promise*. This method is exposed by the `ember-apollo-client` add-on through the `apollo` service.
+When using Apollo in Ember, you can use the [`query`](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method on the `ApolloClient`. This will fetch the data and will allow you to process the response as a _promise_. This method is exposed by the `ember-apollo-client` add-on through the `apollo` service.
 
 A example would look as follows:
 
@@ -123,7 +123,7 @@ In the `queries` folder, create a new file named `allLinks.graphql` and add the 
 
 What’s going on here?
 
-You defined the plain GraphQL query. The name `AllLinksQuery` is the *operation name* and will be used by Apollo to refer to this query in its internals.
+You defined the plain GraphQL query. The name `AllLinksQuery` is the _operation name_ and will be used by Apollo to refer to this query in its internals.
 
 You can now finally remove the mock data and render actual links that are fetched from the server.
 
@@ -135,7 +135,7 @@ In the `links.js` route file, update the code as follows:
 
     // 1.
     export default Ember.Route.extend(UnsubscribeRoute, {
-      // 2.  
+      // 2.
       apollo: Ember.inject.service(),
 
       model() {

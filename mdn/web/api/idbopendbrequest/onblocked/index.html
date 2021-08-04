@@ -12,24 +12,30 @@ tags:
   - onblocked
 browser-compat: api.IDBOpenDBRequest.onblocked
 ---
+
 <p>{{ APIRef("IndexedDB") }}</p>
 
-<p>The <strong><code>onblocked </code></strong>event handler of the
+<p>
+  The <strong><code>onblocked </code></strong>event handler of the
   {{domxref("IDBOpenDBRequest")}} interface is the event handler for the
-  {{event("blocked")}} event. This event is triggered when the {{event("upgradeneeded")}}
-  should be triggered because of a version change but the database is still in use (that
-  is, not closed) somewhere, even after the <code>versionchange</code> event was sent.</p>
+  {{event("blocked")}} event. This event is triggered when the
+  {{event("upgradeneeded")}} should be triggered because of a version change but
+  the database is still in use (that is, not closed) somewhere, even after the
+  <code>versionchange</code> event was sent.
+</p>
 
 <p>{{AvailableInWorkers}}</p>
 
 <h2 id="Syntax">Syntax</h2>
 
 <pre
-  class="brush: js"><em>IDBOpenDBRequest</em>.onblocked = <em>function</em>(event) { ... };</pre>
+  class="brush: js"
+><em>IDBOpenDBRequest</em>.onblocked = <em>function</em>(event) { ... };</pre>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">var db;
+<pre class="brush: js">
+var db;
 
 // Let us open our database
 var request = indexedDB.open("toDoList", 4);
@@ -72,7 +78,8 @@ request.onupgradeneeded = function(event) {
 
 request.onblocked = function() {
   console.log("Your database version can't be upgraded because the app is open somewhere else.");
-}</pre>
+}</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -85,14 +92,32 @@ request.onblocked = function() {
 <h2 id="See_also">See also</h2>
 
 <ul>
-  <li><a href="/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">Using IndexedDB</a></li>
+  <li>
+    <a href="/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB"
+      >Using IndexedDB</a
+    >
+  </li>
   <li>Starting transactions: {{domxref("IDBDatabase")}}</li>
   <li>Using transactions: {{domxref("IDBTransaction")}}</li>
   <li>Setting a range of keys: {{domxref("IDBKeyRange")}}</li>
-  <li>Retrieving and making changes to your data: {{domxref("IDBObjectStore")}}</li>
+  <li>
+    Retrieving and making changes to your data: {{domxref("IDBObjectStore")}}
+  </li>
   <li>Using cursors: {{domxref("IDBCursor")}}</li>
-  <li>Reference example: <a href="https://github.com/mdn/to-do-notifications/tree/gh-pages">To-do
-      Notifications</a> (<a href="https://mdn.github.io/to-do-notifications/">view example live</a>.)</li>
-  <li><code><a href="/en-US/docs/Web/API/IDBOpenDBRequest/blocked_event">blocked</a></code>
-    event</li>
+  <li>
+    Reference example:
+    <a href="https://github.com/mdn/to-do-notifications/tree/gh-pages"
+      >To-do Notifications</a
+    >
+    (<a href="https://mdn.github.io/to-do-notifications/">view example live</a
+    >.)
+  </li>
+  <li>
+    <code
+      ><a href="/en-US/docs/Web/API/IDBOpenDBRequest/blocked_event"
+        >blocked</a
+      ></code
+    >
+    event
+  </li>
 </ul>

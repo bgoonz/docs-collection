@@ -6,12 +6,12 @@ Ajax allows you to update parts of the {{Glossary("DOM")}} of an {{Glossary("HT
 
 With interactive websites and modern web standards, Ajax is gradually being replaced by functions within JavaScript frameworks and the official {{domxref("Fetch API")}} Standard.
 
--   [MDN Web Docs Glossary](/en-US/docs/Glossary):
-    -   {{Glossary("XHR\_(XMLHttpRequest)","XMLHttpRequest")}}
--   {{interwiki("wikipedia", "AJAX")}} on Wikipedia
--   [Ajax](/en-US/docs/Web/Guide/AJAX)
--   [Ajax - Getting started](/en-US/docs/Web/Guide/AJAX/Getting_Started)
--   {{DOMxRef("XMLHttpRequest")}}
--   {{DOMxRef("Fetch API")}}
--   [Using Fetch API](/en-US/docs/Web/API/Fetch_API/Using_Fetch)
--   [Synchronous vs. Asynchronous Communications](https://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)
+- [MDN Web Docs Glossary](/en-US/docs/Glossary):
+  - {{Glossary("XHR\_(XMLHttpRequest)","XMLHttpRequest")}}
+- {{interwiki("wikipedia", "AJAX")}} on Wikipedia
+- [Ajax](/en-US/docs/Web/Guide/AJAX)
+- [Ajax - Getting started](/en-US/docs/Web/Guide/AJAX/Getting_Started)
+- {{DOMxRef("XMLHttpRequest")}}
+- {{DOMxRef("Fetch API")}}
+- [Using Fetch API](/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- [Synchronous vs. Asynchronous Communications](https://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)

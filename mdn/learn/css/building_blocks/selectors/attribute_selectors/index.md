@@ -1,4 +1,4 @@
---- title: Attribute selectors slug: Learn/CSS/Building\_blocks/Selectors/Attribute\_selectors tags: - Attribute - Beginner - CSS - Learn - Selectors ---
+--- title: Attribute selectors slug: Learn/CSS/Building_blocks/Selectors/Attribute_selectors tags: - Attribute - Beginner - CSS - Learn - Selectors ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors/Type\_Class\_and\_ID\_Selectors", "Learn/CSS/Building\_blocks/Selectors/Pseudo-classes\_and\_pseudo-elements", "Learn/CSS/Building\_blocks")}}
 
@@ -6,8 +6,7 @@ As you know from your study of HTML, elements can have attributes that give furt
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn what attribute selectors are and how to use them.</td></tr></tbody></table>
 
-Presence and value selectors
-----------------------------
+## Presence and value selectors
 
 These selectors enable the selection of an element based on the presence of an attribute alone (for example `href`), or on various different matches against the value of the attribute.
 
@@ -16,31 +15,29 @@ Matches elements with an <em>attr</em> attribute whose value is exactly <em>valu
 
 In the example below you can see these selectors being used.
 
--   By using `li[class]` we can match any list item with a class attribute. This matches all of the list items except the first one.
--   `li[class="a"]` matches a selector with a class of `a`, but not a selector with a class of `a` with another space-separated class as part of the value. It selects the second list item.
--   `li[class~="a"]` will match a class of `a` but also a value that contains the class of `a` as part of a whitespace-separated list. It selects the second and third list items.
+- By using `li[class]` we can match any list item with a class attribute. This matches all of the list items except the first one.
+- `li[class="a"]` matches a selector with a class of `a`, but not a selector with a class of `a` with another space-separated class as part of the value. It selects the second list item.
+- `li[class~="a"]` will match a class of `a` but also a value that contains the class of `a` as part of a whitespace-separated list. It selects the second and third list items.
 
 {{EmbedGHLiveSample("css-examples/learn/selectors/attribute.html", '100%', 800)}}
 
-Substring matching selectors
-----------------------------
+## Substring matching selectors
 
 These selectors allow for more advanced matching of substrings inside the value of your attribute. For example, if you had classes of `box-warning` and `box-error` and wanted to match everything that started with the string "box-", you could use `[class^="box-"]` to select them both (or `[class|="box"]` as described in section above).
 
 <table><thead><tr class="header"><th>Selector</th><th>Example</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>[attr^=value]</code></td><td><code>li[class^="box-"]</code></td><td>Matches elements with an <em>attr</em> attribute, whose value begins with <em>value</em>.</td></tr><tr class="even"><td><code>[attr$=value]</code></td><td><code>li[class$="-box"]</code></td><td>Matches elements with an <em>attr</em> attribute whose value ends with <em>value</em>.</td></tr><tr class="odd"><td><code>[attr*=value]</code></td><td><code>li[class*="box"]</code></td><td>Matches elements with an <em>attr</em> attribute whose value contains <em>value</em> anywhere within the string.</td></tr></tbody></table>
 
-(Aside: It may help to note that `^` and `$` have long been used as *anchors* in so-called *regular expressions* to mean *begins with* and *ends with* respectively.)
+(Aside: It may help to note that `^` and `$` have long been used as _anchors_ in so-called _regular expressions_ to mean _begins with_ and _ends with_ respectively.)
 
 The next example shows usage of these selectors:
 
--   `li[class^="a"]` matches any attribute value which starts with `a`, so matches the first two list items.
--   `li[class$="a"]` matches any attribute value that ends with `a`, so matches the first and third list item.
--   `li[class*="a"]` matches any attribute value where `a` appears anywhere in the string, so it matches all of our list items.
+- `li[class^="a"]` matches any attribute value which starts with `a`, so matches the first two list items.
+- `li[class$="a"]` matches any attribute value that ends with `a`, so matches the first and third list item.
+- `li[class*="a"]` matches any attribute value where `a` appears anywhere in the string, so it matches all of our list items.
 
 {{EmbedGHLiveSample("css-examples/learn/selectors/attribute-substring.html", '100%', 800)}}
 
-Case-sensitivity
-----------------
+## Case-sensitivity
 
 If you want to match attribute values case-insensitively you can use the value `i` before the closing bracket. This flag tells the browser to match ASCII characters case-insensitively. Without the flag the values will be matched according to the case-sensitivity of the document language — in HTML's case it will be case sensitive.
 
@@ -50,22 +47,20 @@ In the example below, the first selector will match a value that begins with `a`
 
 **Note**: There is also a newer value `s`, which will force case-sensitive matching in contexts where matching is normally case-insensitive, however this is less well supported in browsers and isn't very useful in an HTML context.
 
-Next steps
-----------
+## Next steps
 
 Now that we are done with attribute selectors, you can continue on to the next article and read about [pseudo-class and pseudo-element selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements).
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Selectors/Type\_Class\_and\_ID\_Selectors", "Learn/CSS/Building\_blocks/Selectors/Pseudo-classes\_and\_pseudo-elements", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

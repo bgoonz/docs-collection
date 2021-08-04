@@ -60,9 +60,9 @@ Great, but how can you now actually implement `_createLink` and send the mutatio
 
 ### Writing the Mutation
 
-Mutations were one of the major pain points developers had with Relay Classic. The way that they were implemented was in a declarative and powerful way. However, it was very difficult to actually understand how they worked since there was so much *magic* going on behind the scenes. As a result, the main concern was that they’re not predictable enough and developers had a hard time reasoning about them.
+Mutations were one of the major pain points developers had with Relay Classic. The way that they were implemented was in a declarative and powerful way. However, it was very difficult to actually understand how they worked since there was so much _magic_ going on behind the scenes. As a result, the main concern was that they’re not predictable enough and developers had a hard time reasoning about them.
 
-That’s why one of the major goals of Relay Modern was also to introduce a new and more approachable mutation API. The Facebook team delivered that and Relay now exposes a more [*imperative* API](https://facebook.github.io/relay/docs/mutations.html) that allows you to manipulate the local store directly (actually, the manipulation happens through a dedicated *proxy* object, but it’s definitely much more direct than before). You’ll learn about this new API to update the cache in a later chapter - for now we’re only interested in performing a mutation to create a new link.
+That’s why one of the major goals of Relay Modern was also to introduce a new and more approachable mutation API. The Facebook team delivered that and Relay now exposes a more [_imperative_ API](https://facebook.github.io/relay/docs/mutations.html) that allows you to manipulate the local store directly (actually, the manipulation happens through a dedicated _proxy_ object, but it’s definitely much more direct than before). You’ll learn about this new API to update the cache in a later chapter - for now we’re only interested in performing a mutation to create a new link.
 
 To implement the mutation for adding new links, first create a new directory called `mutations` in `src` and then create a new file called `CreateLinkMutation.js` that you put into that new directory. Then paste the following code into it:
 
@@ -159,14 +159,14 @@ In a terminal, navigate to the project’s root directory and call the following
 
 This time, the `__generated__` directory is created in the `mutations` folder and contains a Javascript representation for the `CreateLinkMutation`.
 
-You can now finally go ahead and test the mutation. Run `yarn start`, you’ll be greeted with a very simple screen: Two input fields and a *submit*-button - not very pretty but functional.
+You can now finally go ahead and test the mutation. Run `yarn start`, you’ll be greeted with a very simple screen: Two input fields and a _submit_-button - not very pretty but functional.
 
 Enter some data into the fields, e.g.:
 
--   **Description**: `The best learning resource for GraphQL`
--   **URL**: `www.howtographql.com`
+- **Description**: `The best learning resource for GraphQL`
+- **URL**: `www.howtographql.com`
 
-Then click the *submit*-button. You won’t get any visual feedback in the UI, but if you open the browser’s console, you’ll see the string from the log statement that you passed as a `callback` being printed: `Mutation completed`.
+Then click the _submit_-button. You won’t get any visual feedback in the UI, but if you open the browser’s console, you’ll see the string from the log statement that you passed as a `callback` being printed: `Mutation completed`.
 
 ![Clicking the submit button to see mutation completed](http://imgur.com/T03eeoY.png)
 

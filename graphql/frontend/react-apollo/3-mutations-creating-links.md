@@ -141,8 +141,8 @@ Two input fields and a **Submit** button - not very pretty but functional.
 
 Enter some data into the fields, e.g.:
 
--   **Description**: `The best learning resource for GraphQL`
--   **URL**: `howtographql.com`
+- **Description**: `The best learning resource for GraphQL`
+- **URL**: `howtographql.com`
 
 Then click the **Submit** button. You won’t get any visual feedback in the UI, but let’s see if the query actually worked by checking the current list of links in a Playground.
 

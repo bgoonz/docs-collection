@@ -2,9 +2,8 @@
 
 **ISO** (International Organization for Standardization) is a global association that develops uniform criteria coordinating the companies in each major industry.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [Official website](https://www.iso.org/iso/home.html)
+- [Official website](https://www.iso.org/iso/home.html)

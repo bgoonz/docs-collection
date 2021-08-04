@@ -9,11 +9,26 @@ tags:
   - Web Performance
 browser-compat: api.PerformanceObserverEntryList.getEntriesByType
 ---
+
 <div>{{APIRef("Performance Timeline API")}}</div>
 
-<p>The <strong><code>getEntriesByType()</code></strong> method of the {{domxref("PerformanceObserverEntryList")}} returns a list of explicitly <em>observed</em> {{domxref("PerformanceEntry","performance entry", '', 'true')}} objects for a given {{domxref("PerformanceEntry.entryType","performance entry type", '', 'true')}}. The list's members are determined by the set of {{domxref("PerformanceEntry.entryType","entry types", '', 'true')}} specified in the call to the {{domxref("PerformanceObserver.observe","observe()")}} method. The list is available in the observer's callback function (as the first parameter in the callback).</p>
+<p>
+  The <strong><code>getEntriesByType()</code></strong> method of the
+  {{domxref("PerformanceObserverEntryList")}} returns a list of explicitly
+  <em>observed</em> {{domxref("PerformanceEntry","performance entry", '',
+  'true')}} objects for a given
+  {{domxref("PerformanceEntry.entryType","performance entry type", '',
+  'true')}}. The list's members are determined by the set of
+  {{domxref("PerformanceEntry.entryType","entry types", '', 'true')}} specified
+  in the call to the {{domxref("PerformanceObserver.observe","observe()")}}
+  method. The list is available in the observer's callback function (as the
+  first parameter in the callback).
+</p>
 
-<p class="note">This method is exposed to {{domxref("Window")}} and {{domxref("Worker")}} interfaces.</p>
+<p class="note">
+  This method is exposed to {{domxref("Window")}} and {{domxref("Worker")}}
+  interfaces.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
@@ -23,17 +38,30 @@ browser-compat: api.PerformanceObserverEntryList.getEntriesByType
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
- <dt><em><code>type</code></em></dt>
- <dd>The type of entry to retrieve such as "<code>frame</code>". The valid entry types are listed in {{domxref("PerformanceEntry.entryType")}}.</dd>
+  <dt>
+    <em><code>type</code></em>
+  </dt>
+  <dd>
+    The type of entry to retrieve such as "<code>frame</code>". The valid entry
+    types are listed in {{domxref("PerformanceEntry.entryType")}}.
+  </dd>
 </dl>
 
 <h3 id="Return_Value">Return value</h3>
 
-<p>A list of explicitly <em>observed</em> {{domxref("PerformanceEntry")}} objects that have the specified <code>type</code>. The items will be in chronological order based on the entries' {{domxref("PerformanceEntry.startTime","startTime")}}. If no objects have the specified <code>type</code>, or no argument is provided, an empty list is returned.</p>
+<p>
+  A list of explicitly <em>observed</em> {{domxref("PerformanceEntry")}} objects
+  that have the specified <code>type</code>. The items will be in chronological
+  order based on the entries'
+  {{domxref("PerformanceEntry.startTime","startTime")}}. If no objects have the
+  specified <code>type</code>, or no argument is provided, an empty list is
+  returned.
+</p>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">function print_perf_entry(pe) {
+<pre class="brush: js">
+function print_perf_entry(pe) {
   console.log("name: "        + pe.name      +
               "; entryType: " + pe.entryType +
               "; startTime: " + pe.startTime +

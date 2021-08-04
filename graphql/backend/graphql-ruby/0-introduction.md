@@ -6,28 +6,28 @@ The Ruby ecosystem was one of the first to adopt [GraphQL](http://graphql.org/).
 
 In this chapter you’ll learn how to build your very own [GraphQL](http://graphql.org/) server using the following technologies:
 
--   [Ruby on Rails](http://rubyonrails.org/): the most popular library for building applications in [Ruby](https://www.ruby-lang.org/en/)
--   [GraphQL Gem](http://graphql-ruby.org/): the most popular library for building [GraphQL](http://graphql.org/) applications
--   [GraphiQL](https://github.com/graphql/graphiql): An in-browser IDE for exploring [GraphQL](http://graphql.org/), which comes bundled with [GraphQL Gem](http://graphql-ruby.org/)
+- [Ruby on Rails](http://rubyonrails.org/): the most popular library for building applications in [Ruby](https://www.ruby-lang.org/en/)
+- [GraphQL Gem](http://graphql-ruby.org/): the most popular library for building [GraphQL](http://graphql.org/) applications
+- [GraphiQL](https://github.com/graphql/graphiql): An in-browser IDE for exploring [GraphQL](http://graphql.org/), which comes bundled with [GraphQL Gem](http://graphql-ruby.org/)
 
 ### What is a GraphQL Server?
 
 A GraphQL server should be able to:
 
--   Receive requests following the GraphQL format, for example:
+- Receive requests following the GraphQL format, for example:
 
 <!-- -->
 
     { "query": "query { allLinks { url } }" }
 
--   Connect to any necessary databases or services responsible for storing/fetching the actual data.
--   Return a GraphQL response with the requested data, such as this:
+- Connect to any necessary databases or services responsible for storing/fetching the actual data.
+- Return a GraphQL response with the requested data, such as this:
 
 <!-- -->
 
     { "data": { "allLinks": { "url": "http://graphql.org/" } } }
 
--   Validate incoming requests against the schema definition and the supported format. For example, if a query is made with an unknown field, the response should be something like:
+- Validate incoming requests against the schema definition and the supported format. For example, if a query is made with an unknown field, the response should be something like:
 
 <!-- -->
 
@@ -47,4 +47,4 @@ An important thing to note about building a GraphQL server is that the main deve
 2.  Implement functions called **resolvers** to handle these types and their fields.
 3.  As new requirements arrive, go back to step 1 to update the schema and continue through the other steps.
 
-The schema is a *contract* agreed on between the frontend and backend, so keeping it at the center allows both sides of the development to evolve without going off the spec. This also makes it easier to parallelize the work, since the frontend can move on with full knowledge of the API from the start, using a simple mocking service which can later be easily replaced with the final server.
+The schema is a _contract_ agreed on between the frontend and backend, so keeping it at the center allows both sides of the development to evolve without going off the spec. This also makes it easier to parallelize the work, since the frontend can move on with full knowledge of the API from the start, using a simple mocking service which can later be easily replaced with the final server.

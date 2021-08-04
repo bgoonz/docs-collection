@@ -8,7 +8,6 @@ Encryption is a cryptographic primitive: it transforms a plaintext message into 
 
 Without knowing the secret, the reverse operation, {{glossary("decryption")}}, is mathematically hard to perform. How hard depends on the security of the cryptographic algorithm chosen and evolves with the progress of {{glossary("cryptanalysis")}}.
 
-Learn more
-----------
+## Learn more
 
--   Learn more about [Encryption and Decryption](/en-US/docs/Encryption_and_Decryption)
+- Learn more about [Encryption and Decryption](/en-US/docs/Encryption_and_Decryption)

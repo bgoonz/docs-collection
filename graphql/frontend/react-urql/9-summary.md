@@ -4,9 +4,9 @@ Feel free to extend this app, start a new one, or play around more with urql! If
 
 Both `urql` and `@urql/exchange-graphcache` are powerful yet minimal tools that have a lot more to offer than what we’ve shown you in this tutorial! If you’d like to learn more, maybe check out some of these links:
 
--   [urql Architecture](https://formidable.com/open-source/urql/docs/): More information on how urql works internally and how it’s structured
--   [urql Guides](https://formidable.com/open-source/urql/docs/): If you now want to write your own exchanges to extend urql, these are some useful guides to get started!
--   [`@urql/exchange-graphcache`](https://github.com/FormidableLabs/urql-exchange-graphcache): Graphcache supports more than what you’ve seen! It can do optimistic updates, cache resolvers, and more!
+- [urql Architecture](https://formidable.com/open-source/urql/docs/): More information on how urql works internally and how it’s structured
+- [urql Guides](https://formidable.com/open-source/urql/docs/): If you now want to write your own exchanges to extend urql, these are some useful guides to get started!
+- [`@urql/exchange-graphcache`](https://github.com/FormidableLabs/urql-exchange-graphcache): Graphcache supports more than what you’ve seen! It can do optimistic updates, cache resolvers, and more!
 
 **Thank you for following along and congratulations on learning how to use React, urql, and GraphQL!**
 
@@ -20,7 +20,7 @@ The resolvers of your GraphQL server are implemented using the Prisma client tha
 
 If you want to dive deeper and become part of the awesome GraphQL community, here are a few resource and community recommendations for you:
 
--   [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
--   [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
--   [GraphQL Conf](https://www.graphqlconf.org): The world’s biggest gathering of GraphQL enthusiasts happening in the heart of Berlin
--   [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma
+- [Prisma Blog](https://prisma.io/blog): The blog regularly features new and interesting content about GraphQL, from community news to technical deep dives and various tutorials.
+- [GraphQL Weekly](https://graphqlweekly.com): A weekly GraphQL newsletter with news from the GraphQL ecosystem
+- [GraphQL Conf](https://www.graphqlconf.org): The world’s biggest gathering of GraphQL enthusiasts happening in the heart of Berlin
+- [Prisma Slack](https://slack.prisma.io): A Slack team with vivid discussions around everything GraphQL & Prisma

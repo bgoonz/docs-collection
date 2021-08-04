@@ -17,13 +17,12 @@ Write content using your visitors' vocabulary. Use text as well as images so tha
 popularity  
 You get most traffic when other established sites link to your site.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   {{Interwiki("wikipedia", "SEO")}} on Wikipedia
+- {{Interwiki("wikipedia", "SEO")}} on Wikipedia
 
 ### Learn SEO
 
--   [Google Search Central](https://developers.google.com/search/docs)
+- [Google Search Central](https://developers.google.com/search/docs)

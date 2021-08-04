@@ -12,30 +12,67 @@ tags:
   - speech
 browser-compat: api.SpeechRecognitionEvent
 ---
+
 <p>{{APIRef("Web Speech API")}}</p>
 
-<p><span class="seoSummary">The <strong><code>SpeechRecognitionEvent</code></strong> interface of the <a href="/en-US/docs/Web/API/Web_Speech_API">Web Speech API</a> represents the event object for the {{event("result")}} and {{event("nomatch")}} events, and contains all the data associated with an interim or final speech recognition result.</span></p>
+<p>
+  <span class="seoSummary"
+    >The <strong><code>SpeechRecognitionEvent</code></strong> interface of the
+    <a href="/en-US/docs/Web/API/Web_Speech_API">Web Speech API</a> represents
+    the event object for the {{event("result")}} and {{event("nomatch")}}
+    events, and contains all the data associated with an interim or final speech
+    recognition result.</span
+  >
+</p>
 
 <h2 id="Properties">Properties</h2>
 
-<p><em><code>SpeechRecognitionEvent</code> also inherits properties from its parent interface, {{domxref("Event")}}.</em></p>
+<p>
+  <em
+    ><code>SpeechRecognitionEvent</code> also inherits properties from its
+    parent interface, {{domxref("Event")}}.</em
+  >
+</p>
 
 <dl>
- <dt>{{domxref("SpeechRecognitionEvent.emma")}} {{readonlyinline}}</dt>
- <dd>Returns an <cite>E</cite><cite>xtensible MultiModal Annotation markup language (EMMA) — XML — representation of the result.</cite></dd>
- <dt>{{domxref("SpeechRecognitionEvent.interpretation")}} {{readonlyinline}}</dt>
- <dd>Returns the semantic meaning of what the user said.</dd>
- <dt>{{domxref("SpeechRecognitionEvent.resultIndex")}} {{readonlyinline}}</dt>
- <dd>Returns the lowest index value result in the {{domxref("SpeechRecognitionResultList")}} "array" that has actually changed.</dd>
- <dt>{{domxref("SpeechRecognitionEvent.results")}} {{readonlyinline}}</dt>
- <dd>Returns a {{domxref("SpeechRecognitionResultList")}} object representing all the speech recognition results for the current session.</dd>
+  <dt>{{domxref("SpeechRecognitionEvent.emma")}} {{readonlyinline}}</dt>
+  <dd>
+    Returns an <cite>E</cite
+    ><cite
+      >xtensible MultiModal Annotation markup language (EMMA) — XML —
+      representation of the result.</cite
+    >
+  </dd>
+  <dt>
+    {{domxref("SpeechRecognitionEvent.interpretation")}} {{readonlyinline}}
+  </dt>
+  <dd>Returns the semantic meaning of what the user said.</dd>
+  <dt>{{domxref("SpeechRecognitionEvent.resultIndex")}} {{readonlyinline}}</dt>
+  <dd>
+    Returns the lowest index value result in the
+    {{domxref("SpeechRecognitionResultList")}} "array" that has actually
+    changed.
+  </dd>
+  <dt>{{domxref("SpeechRecognitionEvent.results")}} {{readonlyinline}}</dt>
+  <dd>
+    Returns a {{domxref("SpeechRecognitionResultList")}} object representing all
+    the speech recognition results for the current session.
+  </dd>
 </dl>
 
 <h2 id="Examples">Examples</h2>
 
-<p>This code is excerpted from our <a href="https://github.com/mdn/web-speech-api/blob/master/speech-color-changer/script.js">Speech color changer</a> example.</p>
+<p>
+  This code is excerpted from our
+  <a
+    href="https://github.com/mdn/web-speech-api/blob/master/speech-color-changer/script.js"
+    >Speech color changer</a
+  >
+  example.
+</p>
 
-<pre class="brush: js">recognition.onresult = function(event) {
+<pre class="brush: js">
+recognition.onresult = function(event) {
   // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
   // The SpeechRecognitionResultList object contains SpeechRecognitionResult objects.
   // It has a getter so it can be accessed like an array
@@ -47,7 +84,8 @@ browser-compat: api.SpeechRecognitionEvent
   var color = event.results[0][0].transcript;
   diagnostic.textContent = 'Result received: ' + color + '.';
   bg.style.backgroundColor = color;
-}</pre>
+}</pre
+>
 
 <h2 id="Specifications">Specifications</h2>
 
@@ -59,16 +97,22 @@ browser-compat: api.SpeechRecognitionEvent
 
 <h3 id="Firefox_OS_permissions">Firefox OS permissions</h3>
 
-<p>To use speech recognition in an app, you need to specify the following permissions in your <a href="/en-US/docs/Web/Apps/Build/Manifest">manifest</a>:</p>
+<p>
+  To use speech recognition in an app, you need to specify the following
+  permissions in your
+  <a href="/en-US/docs/Web/Apps/Build/Manifest">manifest</a>:
+</p>
 
-<pre class="brush: json">"permissions": {
+<pre class="brush: json">
+"permissions": {
   "audio-capture" : {
     "description" : "Audio capture"
   },
   "speech-recognition" : {
     "description" : "Speech recognition"
   }
-}</pre>
+}</pre
+>
 
 <p>You also need a privileged app, so you need to include this as well:</p>
 
@@ -77,5 +121,5 @@ browser-compat: api.SpeechRecognitionEvent
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a href="/en-US/docs/Web/API/Web_Speech_API">Web Speech API</a></li>
+  <li><a href="/en-US/docs/Web/API/Web_Speech_API">Web Speech API</a></li>
 </ul>

@@ -2,45 +2,57 @@
 title: Element.insertAdjacentText()
 slug: Web/API/Element/insertAdjacentText
 tags:
-- API
-- DOM
-- Element
-- Gecko
-- Method
-- Reference
-- insertAdjacentText
+  - API
+  - DOM
+  - Element
+  - Gecko
+  - Method
+  - Reference
+  - insertAdjacentText
 browser-compat: api.Element.insertAdjacentText
 ---
+
 <div>{{APIRef("DOM")}}</div>
 
-<p>The <strong><code>insertAdjacentText()</code></strong> method of the
-  {{domxref("Element")}} interface inserts a given text node at a given position relative
-  to the element it is invoked upon.</p>
+<p>
+  The <strong><code>insertAdjacentText()</code></strong> method of the
+  {{domxref("Element")}} interface inserts a given text node at a given position
+  relative to the element it is invoked upon.
+</p>
 
 <h2 id="Syntax">Syntax</h2>
 
 <pre
-  class="brush: js"><em>element</em>.insertAdjacentText(<em>position</em>, <em>element</em>);</pre>
+  class="brush: js"
+><em>element</em>.insertAdjacentText(<em>position</em>, <em>element</em>);</pre>
 
 <h3 id="Parameters">Parameters</h3>
 
 <dl>
   <dt><code>position</code></dt>
-  <dd>A {{domxref("DOMString")}} representing the position relative to the
+  <dd>
+    A {{domxref("DOMString")}} representing the position relative to the
     <code>element</code>; must be one of the following strings:
     <ul>
-      <li><code>'beforebegin'</code>: Before the <code>element</code>
-        itself.</li>
-      <li><code>'afterbegin'</code>: Just inside the
-        <code>element</code>, before its first child.</li>
-      <li><code>'beforeend'</code>: Just inside the
-        <code>element</code>, after its last child.</li>
-      <li><code>'afterend'</code>: After the <code>element</code>
-        itself.</li>
+      <li>
+        <code>'beforebegin'</code>: Before the <code>element</code> itself.
+      </li>
+      <li>
+        <code>'afterbegin'</code>: Just inside the <code>element</code>, before
+        its first child.
+      </li>
+      <li>
+        <code>'beforeend'</code>: Just inside the <code>element</code>, after
+        its last child.
+      </li>
+      <li><code>'afterend'</code>: After the <code>element</code> itself.</li>
     </ul>
   </dd>
   <dt><code>element</code></dt>
-  <dd>A {{domxref("DOMString")}} representing the text to be inserted into the tree.</dd>
+  <dd>
+    A {{domxref("DOMString")}} representing the text to be inserted into the
+    tree.
+  </dd>
 </dl>
 
 <h3 id="Return_value">Return value</h3>
@@ -74,36 +86,52 @@ browser-compat: api.Element.insertAdjacentText
 <code>&lt;/p&gt;</code>
 &lt;!-- <strong><code>afterend</code></strong> --&gt;</pre>
 
-<div class="note"><strong>Note:</strong> The <code>beforebegin</code> and
-  <code>afterend</code> positions work only if the node is in a tree and has an element
-  parent.</div>
+<div class="note">
+  <strong>Note:</strong> The <code>beforebegin</code> and
+  <code>afterend</code> positions work only if the node is in a tree and has an
+  element parent.
+</div>
 
 <h2 id="Example">Example</h2>
 
-<pre class="brush: js">beforeBtn.addEventListener('click', function() {
+<pre class="brush: js">
+beforeBtn.addEventListener('click', function() {
   para.insertAdjacentText('afterbegin',textInput.value);
 });
 
 afterBtn.addEventListener('click', function() {
   para.insertAdjacentText('beforeend',textInput.value);
-});</pre>
+});</pre
+>
 
-<p>Have a look at our <a
-    href="https://mdn.github.io/dom-examples/insert-adjacent/insertAdjacentText.html">insertAdjacentText.html</a>
-  demo on GitHub (see the <a
-    href="https://github.com/mdn/dom-examples/blob/master/insert-adjacent/insertAdjacentText.html">source
-    code</a> too.) Here we have a simple paragraph. You can enter some text into the form
-  element, then press the <em>Insert before</em> and <em>Insert after</em> buttons to
-  insert it before or after the existing paragraph text using
-  <code>insertAdjacentText()</code>. Note that the existing text node is not added to —
-  further text nodes are created containing the new additions.</p>
+<p>
+  Have a look at our
+  <a
+    href="https://mdn.github.io/dom-examples/insert-adjacent/insertAdjacentText.html"
+    >insertAdjacentText.html</a
+  >
+  demo on GitHub (see the
+  <a
+    href="https://github.com/mdn/dom-examples/blob/master/insert-adjacent/insertAdjacentText.html"
+    >source code</a
+  >
+  too.) Here we have a simple paragraph. You can enter some text into the form
+  element, then press the <em>Insert before</em> and
+  <em>Insert after</em> buttons to insert it before or after the existing
+  paragraph text using <code>insertAdjacentText()</code>. Note that the existing
+  text node is not added to — further text nodes are created containing the new
+  additions.
+</p>
 
 <h2 id="Polyfill">Polyfill</h2>
 
-<p>You can polyfill the insertAdjacentText<code>() method</code> in Internet Explorer 5.5
-  (maybe earlier) and higher with the following code:</p>
+<p>
+  You can polyfill the insertAdjacentText<code>() method</code> in Internet
+  Explorer 5.5 (maybe earlier) and higher with the following code:
+</p>
 
-<pre>if (!Element.prototype.insertAdjacentText)
+<pre>
+if (!Element.prototype.insertAdjacentText)
   Element.prototype.insertAdjacentText = function(type, txt){
     this.insertAdjacentHTML(
       type,

@@ -18,10 +18,9 @@ Here is a typical SDP message:
 
 SDP is never used alone, but by protocols like {{Glossary("RTP")}} and {{Glossary("RTSP")}}. SDP is also as component of {{Glossary("WebRTC")}}, which uses SDP as a way of describing a session.
 
-Learn more
-----------
+## Learn more
 
 ### General knowledge
 
--   [WebRTC protocols](/en-US/docs/Web/API/WebRTC_API/Protocols)
--   {{Interwiki("wikipedia", "Session Description Protocol")}} on Wikipedia
+- [WebRTC protocols](/en-US/docs/Web/API/WebRTC_API/Protocols)
+- {{Interwiki("wikipedia", "Session Description Protocol")}} on Wikipedia

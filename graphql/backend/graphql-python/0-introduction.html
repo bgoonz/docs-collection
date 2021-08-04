@@ -1,60 +1,137 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Introduction</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">Introduction</h1>
-</header>
-<h3 id="motivation">Motivation</h3>
-<p><a href="https://www.python.org">Python</a> is a general purpose and mature language, used to create solutions from Web APIs to Artificial Intelligence. It has a lovable community, empowering the minorities and making everyone feel welcomed. If you are new to the language, you might want to check <a href="https://learnpythonthehardway.org/">Learn Python the Hard Way</a> – it’s really easy!</p>
-<p>One of its most famous libraries is <a href="https://www.djangoproject.com/">Django</a>, <em>the web framework for perfectionists with deadlines</em>. It allows you to quickly prototype and build full web applications with less code.</p>
-<p>Last but not least, there’s <a href="http://graphene-python.org/">Graphene</a> and <a href="http://docs.graphene-python.org/projects/django/en/latest/">Graphene-Django</a>, exposing a simple and powerful API for creating GraphQL servers.</p>
-<p>In this tutorial, you’ll implement your own GraphQL server by developing a Hackernews clone using the technologies mentioned above.</p>
-<h3 id="what-is-a-graphql-server">What is a GraphQL Server?</h3>
-<p>A GraphQL server should be able to:</p>
-<ul>
-<li>Receive requests following the GraphQL format, for example:</li>
-</ul>
-<pre class="graphql(nocopy)"><code>{ &quot;query&quot;: &quot;query { allLinks { url } }&quot; }</code></pre>
-<ul>
-<li>Connect to any necessary databases or services responsible for storing/fetching the actual data.</li>
-<li>Return a GraphQL response with the requested data, such as this:</li>
-</ul>
-<pre class="graphql(nocopy)"><code>{ &quot;data&quot;: { &quot;allLinks&quot;: { &quot;url&quot;: &quot;http://graphql.org/&quot; } } }</code></pre>
-<ul>
-<li>Validate incoming requests against the schema definition and the supported format. For example, if a query is made with an unknown field, the response should be something like:</li>
-</ul>
-<pre class="graphql(nocopy)"><code>{
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Introduction</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Introduction</h1>
+    </header>
+    <h3 id="motivation">Motivation</h3>
+    <p>
+      <a href="https://www.python.org">Python</a> is a general purpose and
+      mature language, used to create solutions from Web APIs to Artificial
+      Intelligence. It has a lovable community, empowering the minorities and
+      making everyone feel welcomed. If you are new to the language, you might
+      want to check
+      <a href="https://learnpythonthehardway.org/">Learn Python the Hard Way</a>
+      – it’s really easy!
+    </p>
+    <p>
+      One of its most famous libraries is
+      <a href="https://www.djangoproject.com/">Django</a>,
+      <em>the web framework for perfectionists with deadlines</em>. It allows
+      you to quickly prototype and build full web applications with less code.
+    </p>
+    <p>
+      Last but not least, there’s
+      <a href="http://graphene-python.org/">Graphene</a> and
+      <a href="http://docs.graphene-python.org/projects/django/en/latest/"
+        >Graphene-Django</a
+      >, exposing a simple and powerful API for creating GraphQL servers.
+    </p>
+    <p>
+      In this tutorial, you’ll implement your own GraphQL server by developing a
+      Hackernews clone using the technologies mentioned above.
+    </p>
+    <h3 id="what-is-a-graphql-server">What is a GraphQL Server?</h3>
+    <p>A GraphQL server should be able to:</p>
+    <ul>
+      <li>Receive requests following the GraphQL format, for example:</li>
+    </ul>
+    <pre
+      class="graphql(nocopy)"
+    ><code>{ &quot;query&quot;: &quot;query { allLinks { url } }&quot; }</code></pre>
+    <ul>
+      <li>
+        Connect to any necessary databases or services responsible for
+        storing/fetching the actual data.
+      </li>
+      <li>Return a GraphQL response with the requested data, such as this:</li>
+    </ul>
+    <pre
+      class="graphql(nocopy)"
+    ><code>{ &quot;data&quot;: { &quot;allLinks&quot;: { &quot;url&quot;: &quot;http://graphql.org/&quot; } } }</code></pre>
+    <ul>
+      <li>
+        Validate incoming requests against the schema definition and the
+        supported format. For example, if a query is made with an unknown field,
+        the response should be something like:
+      </li>
+    </ul>
+    <pre class="graphql(nocopy)"><code>{
   &quot;errors&quot;: [{
     &quot;message&quot;: &quot;Cannot query field \&quot;unknown\&quot; on type \&quot;Link\&quot;.&quot;
   }]
 }</code></pre>
-<p>These are the basic features all GraphQL servers have, but of course, they can do much more as needed. You can read in more detail about the expected behavior of a GraphQL server in the <a href="https://graphql.org/">official specification</a>.</p>
-<h3 id="schema-driven-development">Schema-Driven Development</h3>
-<p>An important thing to note about building a GraphQL server is that the main development process will revolve around the schema definition. You’ll see in this chapter that the main steps we’ll follow will be something like this:</p>
-<ol type="1">
-<li>Define your types and the appropriate queries and mutations for them.</li>
-<li>Implement functions called <strong>resolvers</strong> to handle these types and their fields.</li>
-<li>As new requirements arrive, go back to step 1 to update the schema and continue through the other steps.</li>
-</ol>
-<p>The schema is a <em>contract</em> agreed on between the frontend and backend, so keeping it at the center allows both sides of the development to evolve without going off the spec. This also makes it easier to parallelize the work, since the frontend can move on with full knowledge of the API from the start, using a simple mocking service which can later be easily replaced with the final server.</p>
-<h3 id="revisions">Revisions</h3>
-<h4 id="v2.0">v2.0</h4>
-<p>Add Token based authentication with <a href="https://github.com/flavors/django-graphql-jwt">django-graphql-jwt</a>. Thanks <a href="https://github.com/mongkok">mongkok</a> for the library and contribution!</p>
-<h4 id="v1.1">v1.1</h4>
-<p>Change Django and Graphene to version 2.</p>
-<h4 id="v1.0">v1.0</h4>
-<p>Original content :)</p>
-</body>
+    <p>
+      These are the basic features all GraphQL servers have, but of course, they
+      can do much more as needed. You can read in more detail about the expected
+      behavior of a GraphQL server in the
+      <a href="https://graphql.org/">official specification</a>.
+    </p>
+    <h3 id="schema-driven-development">Schema-Driven Development</h3>
+    <p>
+      An important thing to note about building a GraphQL server is that the
+      main development process will revolve around the schema definition. You’ll
+      see in this chapter that the main steps we’ll follow will be something
+      like this:
+    </p>
+    <ol type="1">
+      <li>
+        Define your types and the appropriate queries and mutations for them.
+      </li>
+      <li>
+        Implement functions called <strong>resolvers</strong> to handle these
+        types and their fields.
+      </li>
+      <li>
+        As new requirements arrive, go back to step 1 to update the schema and
+        continue through the other steps.
+      </li>
+    </ol>
+    <p>
+      The schema is a <em>contract</em> agreed on between the frontend and
+      backend, so keeping it at the center allows both sides of the development
+      to evolve without going off the spec. This also makes it easier to
+      parallelize the work, since the frontend can move on with full knowledge
+      of the API from the start, using a simple mocking service which can later
+      be easily replaced with the final server.
+    </p>
+    <h3 id="revisions">Revisions</h3>
+    <h4 id="v2.0">v2.0</h4>
+    <p>
+      Add Token based authentication with
+      <a href="https://github.com/flavors/django-graphql-jwt"
+        >django-graphql-jwt</a
+      >. Thanks <a href="https://github.com/mongkok">mongkok</a> for the library
+      and contribution!
+    </p>
+    <h4 id="v1.1">v1.1</h4>
+    <p>Change Django and Graphene to version 2.</p>
+    <h4 id="v1.0">v1.0</h4>
+    <p>Original content :)</p>
+  </body>
 </html>
