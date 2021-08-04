@@ -13,9 +13,9 @@ redirect_from:
   - /articles/organizing-members-into-teams
   - /github/setting-up-and-managing-organizations-and-teams/organizing-members-into-teams
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -37,4 +37,3 @@ children:
   - /deleting-a-team
 shortTitle: Organize members into teams
 ---
-

@@ -1,12 +1,12 @@
 ---
 title: Managing allowed IP addresses for your organization
 intro: You can restrict access to your organization's assets by configuring a list of IP addresses that are allowed to connect.
-product: '{% data reusables.gated-features.allowed-ip-addresses %}'
+product: "{% data reusables.gated-features.allowed-ip-addresses %}"
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/managing-allowed-ip-addresses-for-your-organization
 versions:
-  fpt: '*'
-  ghae: '*'
+  fpt: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -41,13 +41,14 @@ You can also configure allowed IP addresses for the organizations in an enterpri
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.security %}
+
 1. Under "IP allow list", select **Enable IP allow list**.
-  ![Checkbox to allow IP addresses](/assets/images/help/security/enable-ip-allowlist-organization-checkbox.png)
+   ![Checkbox to allow IP addresses](/assets/images/help/security/enable-ip-allowlist-organization-checkbox.png)
 1. Click **Save**.
 
 ## Allowing access by {% data variables.product.prodname_github_apps %}
 
-If you're using an allow list, you can also choose to automatically add to your allow list any IP addresses configured for {% data variables.product.prodname_github_apps %} that you install in your organization. 
+If you're using an allow list, you can also choose to automatically add to your allow list any IP addresses configured for {% data variables.product.prodname_github_apps %} that you install in your organization.
 
 {% data reusables.identity-and-permissions.ip-allow-lists-address-inheritance %}
 
@@ -58,8 +59,9 @@ For more information about how to create an allow list for a {% data variables.p
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.security %}
+
 1. Under "IP allow list", select **Enable IP allow list configuration for installed GitHub Apps**.
-  ![Checkbox to allow GitHub App IP addresses](/assets/images/help/security/enable-ip-allowlist-githubapps-checkbox.png)
+   ![Checkbox to allow GitHub App IP addresses](/assets/images/help/security/enable-ip-allowlist-githubapps-checkbox.png)
 1. Click **Save**.
 
 ## Editing an allowed IP address
@@ -70,6 +72,7 @@ For more information about how to create an allow list for a {% data variables.p
 {% data reusables.identity-and-permissions.ip-allow-lists-edit-entry %}
 {% data reusables.identity-and-permissions.ip-allow-lists-edit-ip %}
 {% data reusables.identity-and-permissions.ip-allow-lists-edit-description %}
+
 1. Click **Update**.
 
 ## Deleting an allowed IP address

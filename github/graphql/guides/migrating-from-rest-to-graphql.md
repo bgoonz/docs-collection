@@ -1,13 +1,13 @@
 ---
 title: Migrating from REST to GraphQL
-intro: 'Learn best practices and considerations for migrating from {% data variables.product.prodname_dotcom %}''s REST API to {% data variables.product.prodname_dotcom %}''s GraphQL API.'
+intro: "Learn best practices and considerations for migrating from {% data variables.product.prodname_dotcom %}'s REST API to {% data variables.product.prodname_dotcom %}'s GraphQL API."
 redirect_from:
   - /v4/guides/migrating-from-rest
   - /graphql/guides/migrating-from-rest
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Migrate from REST to GraphQL
@@ -35,6 +35,7 @@ Here are examples of each.
 ## Example: Getting the data you need and nothing more
 
 A single REST API call retrieves a list of your organization's members:
+
 ```shell
 curl -v {% data variables.product.api_url_pre %}/orgs/:org/members
 ```
@@ -43,7 +44,7 @@ The REST payload contains excessive data if your goal is to retrieve only member
 
 ```graphql
 query {
-    organization(login:"github") {
+  organization(login: "github") {
     membersWithRole(first: 100) {
       edges {
         node {
@@ -57,11 +58,13 @@ query {
 ```
 
 Consider another example: retrieving a list of pull requests and checking if each one is mergeable. A call to the REST API retrieves a list of pull requests and their [summary representations](/rest#summary-representations):
+
 ```shell
 curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls
 ```
 
 Determining if a pull request is mergeable requires retrieving each pull request individually for its [detailed representation](/rest#detailed-representations) (a large payload) and checking whether its `mergeable` attribute is true or false:
+
 ```shell
 curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number
 ```
@@ -70,7 +73,7 @@ With GraphQL, you could retrieve only the `number` and `mergeable` attributes fo
 
 ```graphql
 query {
-    repository(owner:"octocat", name:"Hello-World") {
+  repository(owner: "octocat", name: "Hello-World") {
     pullRequests(last: 10) {
       edges {
         node {
@@ -86,6 +89,7 @@ query {
 ## Example: Nesting
 
 Querying with nested fields lets you replace multiple REST calls with fewer GraphQL queries. For example, retrieving a pull request along with its commits, non-review comments, and reviews using the **REST API** requires four separate calls:
+
 ```shell
 curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number
 curl -v {% data variables.product.api_url_pre %}/repos/:owner/:repo/pulls/:number/commits
@@ -141,7 +145,13 @@ Consider an example of adding a comment to an issue or pull request using a Grap
 
 ```graphql
 mutation {
-  addComment(input:{clientMutationId: 1234, subjectId: "MDA6SXNzdWUyMjcyMDA2MTT=", body: "Looks good to me!"}) {
+  addComment(
+    input: {
+      clientMutationId: 1234
+      subjectId: "MDA6SXNzdWUyMjcyMDA2MTT="
+      body: "Looks good to me!"
+    }
+  ) {
     clientMutationId
     commentEdge {
       node {
@@ -192,7 +202,13 @@ Wrapping `1234` in quotes transforms the value from an integer into a string, th
 
 ```graphql
 mutation {
-  addComment(input:{clientMutationId: "1234", subjectId: "MDA6SXNzdWUyMjcyMDA2MTT=", body: "Looks good to me!"}) {
+  addComment(
+    input: {
+      clientMutationId: "1234"
+      subjectId: "MDA6SXNzdWUyMjcyMDA2MTT="
+      body: "Looks good to me!"
+    }
+  ) {
     clientMutationId
     commentEdge {
       node {

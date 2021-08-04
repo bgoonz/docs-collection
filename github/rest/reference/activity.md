@@ -3,16 +3,16 @@ title: Activity
 redirect_from:
   - /v3/activity
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
 ---
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Events
@@ -23,7 +23,7 @@ The Events API can return different types of events triggered by activity on {% 
 
 Events are optimized for polling with the "ETag" header. If no new events have been triggered, you will see a "304 Not Modified" response, and your current rate limit will be untouched. There is also an "X-Poll-Interval" header that specifies how often (in seconds) you are allowed to poll. In times of high server load, the time may increase. Please obey the header.
 
-``` shell
+```shell
 $ curl -I {% data variables.product.api_url_pre %}/users/tater/events
 > HTTP/2 200
 > X-Poll-Interval: 60
@@ -39,13 +39,13 @@ $    -H 'If-None-Match: "a18c3bded88eb5dbb5c849a489412bf3"'
 Only events created within the past 90 days will be included in timelines. Events older than 90 days will not be included (even if the total number of events in the timeline is less than 300).
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'events' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'events' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Feeds
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'feeds' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'feeds' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ### Example of getting an Atom feed
@@ -103,24 +103,24 @@ HTTP/2 200
 
 Users receive notifications for conversations in repositories they watch including:
 
-* Issues and their comments
-* Pull Requests and their comments
-* Comments on any commits
+- Issues and their comments
+- Pull Requests and their comments
+- Comments on any commits
 
 Notifications are also sent for conversations in unwatched repositories when the user is involved including:
 
-* **@mentions**
-* Issue assignments
-* Commits the user authors or commits
-* Any discussion in which the user actively participates
+- **@mentions**
+- Issue assignments
+- Commits the user authors or commits
+- Any discussion in which the user actively participates
 
-All Notification API calls require the `notifications` or `repo` API scopes.  Doing this will give read-only access to some issue and commit content. You will still need the `repo` scope to access issues and commits from their respective endpoints.
+All Notification API calls require the `notifications` or `repo` API scopes. Doing this will give read-only access to some issue and commit content. You will still need the `repo` scope to access issues and commits from their respective endpoints.
 
-Notifications come back as "threads".  A thread contains information about the current discussion of an issue, pull request, or commit.
+Notifications come back as "threads". A thread contains information about the current discussion of an issue, pull request, or commit.
 
-Notifications are optimized for polling with the `Last-Modified` header.  If there are no new notifications, you will see a `304 Not Modified` response, leaving your current rate limit untouched.  There is an `X-Poll-Interval` header that specifies how often (in seconds) you are allowed to poll.  In times of high server load, the time may increase.  Please obey the header.
+Notifications are optimized for polling with the `Last-Modified` header. If there are no new notifications, you will see a `304 Not Modified` response, leaving your current rate limit untouched. There is an `X-Poll-Interval` header that specifies how often (in seconds) you are allowed to poll. In times of high server load, the time may increase. Please obey the header.
 
-``` shell
+```shell
 # Add authentication to your requests
 $ curl -I {% data variables.product.api_url_pre %}/notifications
 HTTP/2 200
@@ -140,26 +140,26 @@ When retrieving responses from the Notifications API, each payload has a key tit
 
 Here's a list of potential `reason`s for receiving a notification:
 
-Reason Name | Description
-------------|------------
-`assign` | You were assigned to the issue.
-`author` | You created the thread.
-`comment` | You commented on the thread.
-`invitation` | You accepted an invitation to contribute to the repository.
-`manual` | You subscribed to the thread (via an issue or pull request).
-`mention` | You were specifically **@mentioned** in the content.
-`review_requested` | You, or a team you're a member of, were requested to review a pull request.{% ifversion fpt %}
-`security_alert` | {% data variables.product.prodname_dotcom %} discovered a [security vulnerability](/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies) in your repository.{% endif %}
-`state_change` | You changed the thread state (for example, closing an issue or merging a pull request).
-`subscribed` | You're watching the repository.
-`team_mention` | You were on a team that was mentioned.
+| Reason Name        | Description                                                                                                                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assign`           | You were assigned to the issue.                                                                                                                                                                       |
+| `author`           | You created the thread.                                                                                                                                                                               |
+| `comment`          | You commented on the thread.                                                                                                                                                                          |
+| `invitation`       | You accepted an invitation to contribute to the repository.                                                                                                                                           |
+| `manual`           | You subscribed to the thread (via an issue or pull request).                                                                                                                                          |
+| `mention`          | You were specifically **@mentioned** in the content.                                                                                                                                                  |
+| `review_requested` | You, or a team you're a member of, were requested to review a pull request.{% ifversion fpt %}                                                                                                        |
+| `security_alert`   | {% data variables.product.prodname_dotcom %} discovered a [security vulnerability](/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies) in your repository.{% endif %} |
+| `state_change`     | You changed the thread state (for example, closing an issue or merging a pull request).                                                                                                               |
+| `subscribed`       | You're watching the repository.                                                                                                                                                                       |
+| `team_mention`     | You were on a team that was mentioned.                                                                                                                                                                |
 
 Note that the `reason` is modified on a per-thread basis, and can change, if the `reason` on a later notification is different.
 
-For example, if you are the author of an issue, subsequent notifications on that issue will have a `reason` of `author`. If you're then  **@mentioned** on the same issue, the notifications you fetch thereafter will have a `reason` of `mention`. The `reason` remains as `mention`, regardless of whether you're ever mentioned again.
+For example, if you are the author of an issue, subsequent notifications on that issue will have a `reason` of `author`. If you're then **@mentioned** on the same issue, the notifications you fetch thereafter will have a `reason` of `mention`. The `reason` remains as `mention`, regardless of whether you're ever mentioned again.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'notifications' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'notifications' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Starring
@@ -183,7 +183,7 @@ There is one supported custom media type for the Starring REST API. When you use
 For more information about media types, see "[Custom media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'starring' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'starring' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Watching
@@ -191,5 +191,5 @@ For more information about media types, see "[Custom media types](/rest/overview
 Watching a repository registers the user to receive notifications on new discussions, as well as events in the user's activity feed. For simple repository bookmarks, see "[Repository starring](/rest/reference/activity#starring)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'watching' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'watching' %}{% include rest_operation %}{% endif %}
 {% endfor %}

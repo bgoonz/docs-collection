@@ -1,13 +1,13 @@
 ---
 title: About your organization dashboard
-intro: 'As an organization member, you can visit your organization''s dashboard throughout the day to stay updated on recent activity and keep track of issues and pull requests you''re working on or following in the organization.'
+intro: "As an organization member, you can visit your organization's dashboard throughout the day to stay updated on recent activity and keep track of issues and pull requests you're working on or following in the organization."
 redirect_from:
   - /articles/about-your-organization-dashboard
   - /github/setting-up-and-managing-organizations-and-teams/about-your-organization-dashboard
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -37,13 +37,14 @@ In the "All activity" section of your news feed, you can view updates from other
 The "All activity" section shows all recent activity in the organization, including activity in repositories you're not subscribed to and of people you're not following. For more information, see {% ifversion fpt or ghes or ghae %}"[About notifications](/github/managing-subscriptions-and-notifications-on-github/about-notifications){% else %}"[Watching and unwatching repositories](/github/receiving-notifications-about-activity-on-github/watching-and-unwatching-repositories){% endif %}" and "[Following people](/articles/following-people)."
 
 For instance, the organization news feed shows updates when someone in the organization:
- - Creates a new branch.
- - Comments on an issue or pull request.
- - Submits a pull request review comment.
- - Forks a repository.
- - Creates a wiki page.
- - Pushes commits.{% ifversion fpt or ghes %}
- - Creates a public repository.{% endif %}
+
+- Creates a new branch.
+- Comments on an issue or pull request.
+- Submits a pull request review comment.
+- Forks a repository.
+- Creates a wiki page.
+- Pushes commits.{% ifversion fpt or ghes %}
+- Creates a public repository.{% endif %}
 
 ## Further information
 

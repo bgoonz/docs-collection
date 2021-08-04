@@ -1,10 +1,10 @@
 ---
 title: Automating projects (beta)
-intro: 'You can use the API and {% data variables.product.prodname_actions %} to manage your projects.'
-product: '{% data reusables.gated-features.actions %}'
+intro: "You can use the API and {% data variables.product.prodname_actions %} to manage your projects."
+product: "{% data reusables.gated-features.actions %}"
 allowTitleToDifferFromFilename: true
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Projects
@@ -14,7 +14,7 @@ topics:
 
 ## Introduction
 
-This article demonstrates how to use the GraphQL API and {% data variables.product.prodname_actions %} to add a pull request to a project. When the pull request is marked as "ready for review", a new task is added to the project with a  "Status" field set to "Todo", and the current date is added to a custom "Date posted" field.
+This article demonstrates how to use the GraphQL API and {% data variables.product.prodname_actions %} to add a pull request to a project. When the pull request is marked as "ready for review", a new task is added to the project with a "Status" field set to "Todo", and the current date is added to a custom "Date posted" field.
 
 This article assumes that you have a basic understanding of {% data variables.product.prodname_actions %}. For more information about {% data variables.product.prodname_actions %}, see "[{% data variables.product.prodname_actions %}](/actions)."
 
@@ -82,7 +82,7 @@ jobs:
                 }
               }
             }' -f project=$PROJECT_ID -f pr=$PR_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
-          
+
           echo 'ITEM_ID='$item_id >> $GITHUB_ENV
 
       - name: Get date

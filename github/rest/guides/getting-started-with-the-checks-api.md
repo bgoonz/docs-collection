@@ -1,10 +1,10 @@
 ---
 title: Getting started with the Checks API
-intro: 'The Check Runs API enables you to build GitHub Apps that run powerful checks against code changes in a repository. You can create apps that perform continuous integration, code linting, or code scanning services and provide detailed feedback on commits.'
+intro: "The Check Runs API enables you to build GitHub Apps that run powerful checks against code changes in a repository. You can create apps that perform continuous integration, code linting, or code scanning services and provide detailed feedback on commits."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Get started - Checks API
@@ -34,7 +34,7 @@ To use the check suites API, the GitHub App must have the `checks:write` permiss
 
 {% data reusables.shortdesc.authenticating_github_app %}
 
-## About check runs 
+## About check runs
 
 A check run is an individual test that is part of a check suite. Each run includes a status and conclusion.
 
@@ -45,7 +45,7 @@ If a check run is in a incomplete state for more than 14 days, then the check ru
 {% endif %}
 
 As soon as you receive the [`check_suite`](/webhooks/event-payloads/#check_suite) webhook, you can create the check run, even if the check is not complete. You can update the `status` of the check run as it completes with the values `queued`, `in_progress`, or `completed`, and you can update the `output` as more details become available. A check run can contain timestamps, a link to more details on your external site, detailed annotations for specific lines of code, and information about the analysis performed.
- 
+
 ![Check run annotation](/assets/images/check_run_annotations.png)
 
 A check can also be manually re-run in the GitHub UI. See "[About status checks](/articles/about-status-checks#checks)" for more details. When this occurs, the GitHub App that created the check run will receive the [`check_run`](/webhooks/event-payloads/#check_run) webhook requesting a new check run. If you create a check run without creating a check suite, GitHub creates the check suite for you automatically.
@@ -62,15 +62,15 @@ For example, a code linting app could use requested actions to display a button 
 
 To create a button that can request additional actions from your app, use the [`actions` object](/rest/reference/checks#create-a-check-run--parameters) when you [Create a check run](/rest/reference/checks/#create-a-check-run). For example, the `actions` object below displays a button in a pull request with the label "Fix this." The button appears after the check run completes.
 
-   ```json
-  "actions": [{
-      "label": "Fix this",
-      "description": "Let us fix that for you",
-      "identifier": "fix_errors"
-    }]
-  ```
+```json
+"actions": [{
+   "label": "Fix this",
+   "description": "Let us fix that for you",
+   "identifier": "fix_errors"
+ }]
+```
 
-  ![Check run requested action button](/assets/images/github-apps/github_apps_checks_fix_this_button.png)
+![Check run requested action button](/assets/images/github-apps/github_apps_checks_fix_this_button.png)
 
 When a user clicks the button, {% data variables.product.prodname_dotcom %} sends the [`check_run.requested_action` webhook](/webhooks/event-payloads/#check_run) to your app. When your app receives a `check_run.requested_action` webhook event, it can look for the `requested_action.identifier` key in the webhook payload to determine which button was clicked and perform the requested task.
 

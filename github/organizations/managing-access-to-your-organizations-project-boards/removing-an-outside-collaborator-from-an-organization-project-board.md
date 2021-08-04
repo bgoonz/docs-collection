@@ -1,13 +1,13 @@
 ---
 title: Removing an outside collaborator from an organization project board
-intro: 'As an organization owner or project board admin, you can remove an outside collaborator''s access to a project board.'
+intro: "As an organization owner or project board admin, you can remove an outside collaborator's access to a project board."
 redirect_from:
   - /articles/removing-an-outside-collaborator-from-an-organization-project-board
   - /github/setting-up-and-managing-organizations-and-teams/removing-an-outside-collaborator-from-an-organization-project-board
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams

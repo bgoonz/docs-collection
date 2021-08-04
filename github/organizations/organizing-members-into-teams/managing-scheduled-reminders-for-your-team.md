@@ -5,7 +5,7 @@ redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-pull-requests
   - /github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your team
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -21,6 +21,7 @@ Team maintainers and organization owners can set scheduled reminders for any pul
 {% data reusables.reminders.scheduled-reminders-limitations %}
 
 ## Creating a scheduled reminder for a team
+
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
 {% data reusables.organizations.specific_team %}
@@ -45,6 +46,7 @@ Team maintainers and organization owners can set scheduled reminders for any pul
 {% data reusables.reminders.create-reminder %}
 
 ## Managing a scheduled reminder for a team
+
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
 {% data reusables.organizations.specific_team %}
@@ -56,6 +58,7 @@ Team maintainers and organization owners can set scheduled reminders for any pul
 {% data reusables.reminders.update-buttons %}
 
 ## Deleting a scheduled reminder for a team
+
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
 {% data reusables.organizations.specific_team %}

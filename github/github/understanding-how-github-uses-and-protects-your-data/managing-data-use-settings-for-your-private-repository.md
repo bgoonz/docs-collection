@@ -1,11 +1,11 @@
 ---
 title: Managing data use settings for your private repository
-intro: 'To help {% data variables.product.product_name %} connect you to relevant tools, people, projects, and information, you can configure data use for your private repository.'
+intro: "To help {% data variables.product.product_name %} connect you to relevant tools, people, projects, and information, you can configure data use for your private repository."
 redirect_from:
   - /articles/opting-into-or-out-of-data-use-for-your-private-repository
   - /github/understanding-how-github-uses-and-protects-your-data/opting-into-or-out-of-data-use-for-your-private-repository
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal
@@ -22,9 +22,8 @@ When you enable data use for your private repository, you'll be able to access t
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.navigate-to-security-and-analysis %}
-4. Under "Configure security and analysis features", to the right of the feature, click **Disable** or **Enable**.
-  !["Enable" or "Disable" button for "Configure security and analysis" features](/assets/images/help/repository/security-and-analysis-disable-or-enable-dotcom-private.png)
+{% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under "Configure security and analysis features", to the right of the feature, click **Disable** or **Enable**.
+!["Enable" or "Disable" button for "Configure security and analysis" features](/assets/images/help/repository/security-and-analysis-disable-or-enable-dotcom-private.png)
 
 ## Further reading
 

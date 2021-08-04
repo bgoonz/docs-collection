@@ -5,19 +5,17 @@ redirect_from:
   - /guides/rendering-data-as-graphs/
   - /v3/guides/rendering-data-as-graphs
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
- 
-
 
 In this guide, we're going to use the API to fetch information about repositories
 that we own, and the programming languages that make them up. Then, we'll
-visualize that information in a couple of different ways using the [D3.js][D3.js] library. To
-interact with the {% data variables.product.product_name %} API, we'll be using the excellent Ruby library, [Octokit][Octokit].
+visualize that information in a couple of different ways using the [D3.js][d3.js] library. To
+interact with the {% data variables.product.product_name %} API, we'll be using the excellent Ruby library, [Octokit][octokit].
 
 If you haven't already, you should read the ["Basics of Authentication"][basics-of-authentication]
 guide before starting this example. You can find the complete source code for this project in the [platform-samples][platform samples] repository.
@@ -30,7 +28,7 @@ First, [register a new application][new oauth application] on {% data variables.
 URLs to `http://localhost:4567/`. As [before][basics-of-authentication], we're going to handle authentication for the API by
 implementing a Rack middleware using [sinatra-auth-github][sinatra auth github]:
 
-``` ruby
+```ruby
 require 'sinatra/auth/github'
 
 module Example
@@ -69,7 +67,7 @@ end
 
 Set up a similar _config.ru_ file as in the previous example:
 
-``` ruby
+```ruby
 ENV['RACK_ENV'] ||= 'development'
 require "rubygems"
 require "bundler/setup"
@@ -82,14 +80,14 @@ run Example::MyGraphApp
 ## Fetching repository information
 
 This time, in order to talk to the {% data variables.product.product_name %} API, we're going to use the [Octokit
-Ruby library][Octokit]. This is much easier than directly making a bunch of
+Ruby library][octokit]. This is much easier than directly making a bunch of
 REST calls. Plus, Octokit was developed by a GitHubber, and is actively maintained,
 so you know it'll work.
 
 Authentication with the API via Octokit is easy. Just pass your login
 and token to the `Octokit::Client` constructor:
 
-``` ruby
+```ruby
 if !authenticated?
   authenticate!
 else
@@ -102,14 +100,14 @@ to see the different programming languages they use, and count which ones are us
 most often. To do that, we'll first need a list of our repositories from the API.
 With Octokit, that looks like this:
 
-``` ruby
+```ruby
 repos = client.repositories
 ```
 
 Next, we'll iterate over each repository, and count the language that {% data variables.product.product_name %}
 associates with it:
 
-``` ruby
+```ruby
 language_obj = {}
 repos.each do |repo|
   # sometimes language can be nil
@@ -128,7 +126,7 @@ languages.to_s
 When you restart your server, your web page should display something
 that looks like this:
 
-``` ruby
+```ruby
 {"JavaScript"=>13, "PHP"=>1, "Perl"=>1, "CoffeeScript"=>2, "Python"=>1, "Java"=>3, "Ruby"=>3, "Go"=>1, "C++"=>1}
 ```
 
@@ -140,12 +138,12 @@ our counts into D3 to get a neat bar graph representing the popularity of the la
 
 D3.js, or just D3, is a comprehensive library for creating many kinds of charts, graphs, and interactive visualizations.
 Using D3 in detail is beyond the scope of this guide, but for a good introductory article,
-check out ["D3 for Mortals"][D3 mortals].
+check out ["D3 for Mortals"][d3 mortals].
 
 D3 is a JavaScript library, and likes working with data as arrays. So, let's convert our Ruby hash into
 a JSON array for use by JavaScript in the browser.
 
-``` ruby
+```ruby
 languages = []
 language_obj.each do |lang, count|
   languages.push :language => lang, :count => count
@@ -162,33 +160,32 @@ Now, _lang_freq.erb_ is going to need some JavaScript to support rendering a bar
 For now, you can just use the code provided here, and refer to the resources linked above
 if you want to learn more about how D3 works:
 
-``` html
+```html
 <!DOCTYPE html>
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <html>
   <head>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
     <style>
-    svg {
-      padding: 20px;
-    }
-    rect {
-      fill: #2d578b
-    }
-    text {
-      fill: white;
-    }
-    text.yAxis {
-      font-size: 12px;
-      font-family: Helvetica, sans-serif;
-      fill: black;
-    }
+      svg {
+        padding: 20px;
+      }
+      rect {
+        fill: #2d578b;
+      }
+      text {
+        fill: white;
+      }
+      text.yAxis {
+        font-size: 12px;
+        font-family: Helvetica, sans-serif;
+        fill: black;
+      }
     </style>
   </head>
   <body>
     <p>Check this sweet data out:</p>
     <div id="lang_freq"></div>
-
   </body>
   <script>
     var data = <%= languages %>;
@@ -257,12 +254,12 @@ a repository that combines several languages, the one with the most bytes of cod
 is considered to be the primary language.
 
 Let's combine a few API calls to get a _true_ representation of which language
-has the greatest number of bytes written across all our code. A [treemap][D3 treemap]
+has the greatest number of bytes written across all our code. A [treemap][d3 treemap]
 should be a great way to visualize the sizes of our coding languages used, rather
 than simply the count. We'll need to construct an array of objects that looks
 something like this:
 
-``` json
+```json
 [ { "name": "language1", "size": 100},
   { "name": "language2", "size": 23}
   ...
@@ -270,9 +267,9 @@ something like this:
 ```
 
 Since we already have a list of repositories above, let's inspect each one, and
-call [the language listing API method][language API]:
+call [the language listing API method][language api]:
 
-``` ruby
+```ruby
 repos.each do |repo|
   repo_name = repo.name
   repo_langs = octokit_client.languages("#{github_user.login}/#{repo_name}")
@@ -281,7 +278,7 @@ end
 
 From there, we'll cumulatively add each language found to a list of languages:
 
-``` ruby
+```ruby
 repo_langs.each do |lang, count|
   if !language_obj[lang]
     language_obj[lang] = count
@@ -293,7 +290,7 @@ end
 
 After that, we'll format the contents into a structure that D3 understands:
 
-``` ruby
+```ruby
 language_obj.each do |lang, count|
   language_byte_count.push :name => "#{lang} (#{count})", :count => count
 end
@@ -302,18 +299,18 @@ end
 language_bytes = [ :name => "language_bytes", :elements => language_byte_count]
 ```
 
-(For more information on D3 tree map magic, check out [this simple tutorial][language API].)
+(For more information on D3 tree map magic, check out [this simple tutorial][language api].)
 
 To wrap up, we pass this JSON information over to the same ERB template:
 
-``` ruby
+```ruby
 erb :lang_freq, :locals => { :languages => languages.to_json, :language_byte_count => language_bytes.to_json}
 ```
 
 Like before, here's a bunch of JavaScript that you can drop
 directly into your template:
 
-``` html
+```html
 <div id="byte_freq"></div>
 <script>
   var language_bytes = <%= language_byte_count %>
@@ -366,14 +363,13 @@ proportions that are easy to see at a glance. You might need to
 tweak the height and width of your treemap, passed as the first two
 arguments to `drawTreemap` above, to get all the information to show up properly.
 
-
-[D3.js]: http://d3js.org/
+[d3.js]: http://d3js.org/
 [basics-of-authentication]: /rest/guides/basics-of-authentication
 [sinatra auth github]: https://github.com/atmos/sinatra_auth_github
-[Octokit]: https://github.com/octokit/octokit.rb
-[D3 mortals]: http://www.recursion.org/d3-for-mere-mortals/
-[D3 treemap]: https://www.d3-graph-gallery.com/treemap.html 
-[language API]: /rest/reference/repos#list-repository-languages
+[octokit]: https://github.com/octokit/octokit.rb
+[d3 mortals]: http://www.recursion.org/d3-for-mere-mortals/
+[d3 treemap]: https://www.d3-graph-gallery.com/treemap.html
+[language api]: /rest/reference/repos#list-repository-languages
 [simple tree map]: http://2kittymafiasoftware.blogspot.com/2011/09/simple-treemap-visualization-with-d3.html
 [platform samples]: https://github.com/github/platform-samples/tree/master/api/ruby/rendering-data-as-graphs
 [new oauth application]: https://github.com/settings/applications/new

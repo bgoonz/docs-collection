@@ -6,12 +6,13 @@ redirect_from:
   - /articles/about-milestones
   - /github/managing-your-work-on-github/about-milestones
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 When you [create a milestone](/articles/creating-and-editing-milestones-for-issues-and-pull-requests), you can [associate it with issues and pull requests](/articles/associating-milestones-with-issues-and-pull-requests).
 
 To better manage your project, you can [view details about your milestone](/articles/viewing-your-milestone-s-progress). From the milestone page, you can see:

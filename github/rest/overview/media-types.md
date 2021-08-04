@@ -4,13 +4,12 @@ intro: Learn about media types for specifying the format of the data you want to
 redirect_from:
   - /v3/media
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
-
 
 Custom media types are used in the API to let consumers choose the format
 of the data they wish to receive. This is done by adding one or more of
@@ -48,7 +47,7 @@ put the version before the property:
 
     application/vnd.github.v3.raw+json
 
-You can check the current version through every response's headers.  Look
+You can check the current version through every response's headers. Look
 for the `X-GitHub-Media-Type` header:
 
 ```shell
@@ -162,7 +161,7 @@ Return the raw contents of a gist. This is the default if you do not pass any sp
 
 The gist contents are base64-encoded before being sent out. This can be useful if your gist contains any invalid UTF-8 sequences.
 
-[gfm]:http://github.github.com/github-flavored-markdown/
+[gfm]: http://github.github.com/github-flavored-markdown/
 [git-diff]: http://git-scm.com/docs/git-diff
 [git-patch]: http://git-scm.com/docs/git-format-patch
 [hypermedia]: /rest#hypermedia

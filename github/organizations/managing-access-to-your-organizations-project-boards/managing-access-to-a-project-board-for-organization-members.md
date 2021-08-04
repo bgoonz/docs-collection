@@ -1,13 +1,13 @@
 ---
 title: Managing access to a project board for organization members
-intro: 'As an organization owner or project board admin, you can set a default permission level for a project board for all organization members.'
+intro: "As an organization owner or project board admin, you can set a default permission level for a project board for all organization members."
 redirect_from:
   - /articles/managing-access-to-a-project-board-for-organization-members
   - /github/setting-up-and-managing-organizations-and-teams/managing-access-to-a-project-board-for-organization-members
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -29,10 +29,8 @@ By default, organization members have write access to their organization's proje
 {% data reusables.organizations.organization-wide-project %}
 {% data reusables.project-management.select-project %}
 {% data reusables.project-management.click-menu %}
-{% data reusables.project-management.access-collaboration-settings %}
-8. Under "Organization member permission", choose a baseline permission level for all organization members: **Read**, **Write**, **Admin**, or **None**.
-![Baseline project board permission options for all organization members](/assets/images/help/projects/baseline-project-permissions-for-organization-members.png)
-9. Click **Save**.
+{% data reusables.project-management.access-collaboration-settings %} 8. Under "Organization member permission", choose a baseline permission level for all organization members: **Read**, **Write**, **Admin**, or **None**.
+![Baseline project board permission options for all organization members](/assets/images/help/projects/baseline-project-permissions-for-organization-members.png) 9. Click **Save**.
 
 ## Further reading
 

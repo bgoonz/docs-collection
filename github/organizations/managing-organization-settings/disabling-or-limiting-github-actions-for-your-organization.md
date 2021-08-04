@@ -1,12 +1,12 @@
 ---
 title: Disabling or limiting GitHub Actions for your organization
-intro: 'Organization owners can disable, enable, and limit GitHub Actions for an organization.'
+intro: "Organization owners can disable, enable, and limit GitHub Actions for an organization."
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/disabling-or-limiting-github-actions-for-your-organization
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -31,8 +31,9 @@ Alternatively, you can enable {% data variables.product.prodname_actions %} for 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.settings-sidebar-actions %}
+
 1. Under **Local and third-party Actions**, select an option.
-  ![Enable, disable, or limit actions for this organization](/assets/images/help/repository/enable-org-actions.png)
+   ![Enable, disable, or limit actions for this organization](/assets/images/help/repository/enable-org-actions.png)
 1. Click **Save**.
 
 {% endif %}
@@ -54,8 +55,9 @@ You can disable all workflows for an organization or set a policy that configure
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.settings-sidebar-actions %}
+
 1. Under **Policies**, select an option.
-  ![Set actions policy for this organization](/assets/images/help/organizations/actions-policy.png)
+   ![Set actions policy for this organization](/assets/images/help/organizations/actions-policy.png)
 1. Click **Save**.
 
 ## Allowing specific actions to run
@@ -65,13 +67,15 @@ You can disable all workflows for an organization or set a policy that configure
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.settings-sidebar-actions %}
+
 1. Under **Policies**, select **Allow select actions** and add your required actions to the list.
-  ![Add actions to allow list](/assets/images/help/organizations/actions-policy-allow-list.png)
+   ![Add actions to allow list](/assets/images/help/organizations/actions-policy-allow-list.png)
 1. Click **Save**.
 
 {% endif %}
 
 {% ifversion fpt %}
+
 ## Configuring required approval for workflows from public forks
 
 {% data reusables.actions.workflow-run-approve-public-fork %} You can configure this behavior for an organization using the procedure below. Modifying this setting overrides the configuration set at the enterprise level.
@@ -85,6 +89,7 @@ You can disable all workflows for an organization or set a policy that configure
 {% endif %}
 
 {% ifversion fpt or ghes > 2.22 %}
+
 ## Enabling workflows for private repository forks
 
 {% data reusables.github-actions.private-repository-forks-overview %}
@@ -98,6 +103,7 @@ You can disable all workflows for an organization or set a policy that configure
 {% endif %}
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
+
 ## Setting the permissions of the `GITHUB_TOKEN` for your organization
 
 {% data reusables.github-actions.workflow-permissions-intro %}
@@ -112,7 +118,8 @@ You can set the default permissions for the `GITHUB_TOKEN` in the settings for y
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.settings-sidebar-actions %}
+
 1. Under **Workflow permissions**, choose whether you want the `GITHUB_TOKEN` to have read and write access for all scopes, or just read access for the `contents` scope.
-  ![Set GITHUB_TOKEN permissions for this organization](/assets/images/help/settings/actions-workflow-permissions-organization.png)
+   ![Set GITHUB_TOKEN permissions for this organization](/assets/images/help/settings/actions-workflow-permissions-organization.png)
 1. Click **Save** to apply the settings.
-{% endif %}
+   {% endif %}

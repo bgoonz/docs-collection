@@ -6,9 +6,9 @@ redirect_from:
   - /articles/collaborating-with-groups-in-organizations
   - /github/setting-up-and-managing-organizations-and-teams/collaborating-with-groups-in-organizations
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -21,4 +21,3 @@ children:
   - /viewing-insights-for-your-organization
 shortTitle: Collaborate with groups
 ---
-

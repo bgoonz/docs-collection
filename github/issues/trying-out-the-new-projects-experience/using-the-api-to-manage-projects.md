@@ -2,7 +2,7 @@
 title: Using the API to manage projects (beta)
 intro: You can use the GraphQL API to find information about projects and to update projects.
 versions:
-  fpt: '*'
+  fpt: "*"
 miniTocMaxHeadingLevel: 3
 allowTitleToDifferFromFilename: true
 type: how_to
@@ -70,6 +70,7 @@ You can find the node ID of a project if you know the organization name and proj
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -77,9 +78,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"query{organization(login: \"<em>ORGANIZATION</em>\") {projectNext(number: <em>NUMBER</em>){id}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   query{
@@ -90,6 +93,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 You can also find the node ID of all projects in your organization. The following example will return the node ID and title of the first 20 projects in an organization. Replace `ORGANIZATION` with the name of your organization. For example, `octo-org`.
@@ -97,6 +101,7 @@ You can also find the node ID of all projects in your organization. The followin
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -104,9 +109,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"{organization(login: \"<em>ORGANIZATION</em>\") {projectsNext(first: 20) {nodes {id title}}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   query{
@@ -120,6 +127,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 ### Finding the node ID of a field
@@ -131,6 +139,7 @@ The following example will return the ID, name, and settings for the first 20 fi
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -138,9 +147,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"query{node(id: \"<em>PROJECT_ID</em>\") {... on ProjectNext {fields(first: 20) {nodes {id name settings}}}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   query{
@@ -157,6 +168,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 The response will look similar to the following example:
@@ -200,6 +212,7 @@ The following example will return the title and ID for the first 20 items in a p
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -207,9 +220,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"query{node(id: \"<em>PROJECT_ID</em>\") {... on ProjectNext {items(first: 20) {nodes{title id fieldValues(first: 8) {nodes{value projectField{name}}} content{...on Issue {assignees(first: 10) {nodes{login}}} ...on PullRequest {assignees(first: 10) {nodes{login}}}}}}}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   query{
@@ -249,6 +264,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 A project may contain items that a user does not have permission to view. In this case, the response will include redacted item.
@@ -279,6 +295,7 @@ The following example will add an issue or pull request to your project. Replace
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -286,9 +303,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"mutation {addProjectNextItem(input: {projectId: \"<em>PROJECT_ID</em>\" contentId: \"<em>CONTENT_ID</em>\"}) {projectNextItem {id}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   mutation {
@@ -299,6 +318,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 The response will contain the node ID of the newly created item.
@@ -324,6 +344,7 @@ The following example will update a date field. Replace `PROJECT_ID` with the no
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -331,9 +352,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"mutation {updateProjectNextItemField(input: {projectId: \"<em>PROJECT_ID</em>\" itemId: \"<em>ITEM_ID</em>\" fieldId: \"<em>FIELD_ID</em>\" value: \"2021-5-11\"}) {projectNextItem {id}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   mutation {
@@ -351,6 +374,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 {% note %}
@@ -362,14 +386,16 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
 ### Updating a single-select field
 
 The following example will update a date field.
+
 - `PROJECT_ID` - Replace this with the node ID of your project.
 - `ITEM_ID` - Replace this with the node ID of the item you want to update.
-- `FIELD_ID` -  Replace this with the ID of the field that you want to update.
+- `FIELD_ID` - Replace this with the ID of the field that you want to update.
 - `OPTION_ID` - Replace this with the ID of the desired value.
 
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -377,9 +403,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"mutation {updateProjectNextItemField(input: {projectId: \"<em>PROJECT_ID</em>\" itemId: \"<em>ITEM_ID</em>\" fieldId: \"<em>FIELD_ID</em>\" value: \"<em>OPTION_ID</em>\"}) {projectNextItem {id}}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   mutation {
@@ -397,6 +425,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 ### Deleting an item from a project
@@ -406,6 +435,7 @@ The following example will delete an item from a project. Replace `PROJECT_ID` w
 {% include tool-switcher %}
 
 {% curl %}
+
 ```shell
 curl --request POST \
   --url https://api.github.com/graphql \
@@ -413,9 +443,11 @@ curl --request POST \
   --header 'GraphQL-Features: projects_next_graphql' \
   --data '{"query":"mutation {deleteProjectNextItem(input: {projectId: \"<em>PROJECT_ID</em>\" itemId: \"<em>ITEM_ID</em>\"}) {deletedItemId}}"}'
 ```
+
 {% endcurl %}
 
 {% cli %}
+
 ```shell
 gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
   mutation {
@@ -429,6 +461,7 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
     }
   }'
 ```
+
 {% endcli %}
 
 ## Reference
@@ -443,69 +476,69 @@ gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
 
 **Fields**
 
-Name | Description
---- | ---
-`closed` (`Boolean!`) | `true` if the project is closed.
-`closedAt` (`DateTime!`) | Identifies the date and time when the object was closed.
-`createdAt` (`DateTime!`) | Identifies the date and time when the object was created.
-`creator` (`Actor`) | The actor who originally created the project.
-`databaseId` (`Int`) | Identifies the primary key from the database.
-`description` (`String`) | The project's description.
-`fields` (`[ProjectNextField]!`) | List of fields in the project.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first *n* elements from the list.<br>`last` (`Int`): Returns the last *n* elements from the list.
-`items` (`[ProjectNextItem]`) | List of items in the project.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first *n* elements from the list.<br>`last` (`Int`): Returns the last *n* elements from the list.
-`number` (`Int!`) | The project's number.
-`owner` (`ProjectNextOwner!`) | The project's owner. Currently limited to organizations.
-`title` (`String!`) | The project's name.
-`updatedAt` (`DateTime!`) | Identifies the date and time when the object was last updated.
-`viewerCanUpdate` (`Boolean!`) | Check if the current viewer can update this object.
+| Name                             | Description                                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `closed` (`Boolean!`)            | `true` if the project is closed.                                                                                                                                                                                                                                                                                                                                                    |
+| `closedAt` (`DateTime!`)         | Identifies the date and time when the object was closed.                                                                                                                                                                                                                                                                                                                            |
+| `createdAt` (`DateTime!`)        | Identifies the date and time when the object was created.                                                                                                                                                                                                                                                                                                                           |
+| `creator` (`Actor`)              | The actor who originally created the project.                                                                                                                                                                                                                                                                                                                                       |
+| `databaseId` (`Int`)             | Identifies the primary key from the database.                                                                                                                                                                                                                                                                                                                                       |
+| `description` (`String`)         | The project's description.                                                                                                                                                                                                                                                                                                                                                          |
+| `fields` (`[ProjectNextField]!`) | List of fields in the project.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first _n_ elements from the list.<br>`last` (`Int`): Returns the last _n_ elements from the list. |
+| `items` (`[ProjectNextItem]`)    | List of items in the project.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first _n_ elements from the list.<br>`last` (`Int`): Returns the last _n_ elements from the list.  |
+| `number` (`Int!`)                | The project's number.                                                                                                                                                                                                                                                                                                                                                               |
+| `owner` (`ProjectNextOwner!`)    | The project's owner. Currently limited to organizations.                                                                                                                                                                                                                                                                                                                            |
+| `title` (`String!`)              | The project's name.                                                                                                                                                                                                                                                                                                                                                                 |
+| `updatedAt` (`DateTime!`)        | Identifies the date and time when the object was last updated.                                                                                                                                                                                                                                                                                                                      |
+| `viewerCanUpdate` (`Boolean!`)   | Check if the current viewer can update this object.                                                                                                                                                                                                                                                                                                                                 |
 
 #### ProjectNextConnection
 
 The connection type for ProjectNext.
 
-Name | Description
---- | ---
-`edges` ([ProjectNextEdge]) | A list of edges.
-`nodes` ([ProjectNext]) | A list of nodes.
-`pageInfo` (PageInfo!) | Information to aid in pagination.
-`totalCount` (Int!) | Identifies the total count of items in the connection.
+| Name                        | Description                                            |
+| --------------------------- | ------------------------------------------------------ |
+| `edges` ([ProjectNextEdge]) | A list of edges.                                       |
+| `nodes` ([ProjectNext])     | A list of nodes.                                       |
+| `pageInfo` (PageInfo!)      | Information to aid in pagination.                      |
+| `totalCount` (Int!)         | Identifies the total count of items in the connection. |
 
 #### ProjectNextEdge
 
-Name | Description
---- | ---
-`cursor` (String!) | A cursor for use in pagination.
-`node` (ProjectCard) | The item at the end of the edge.
+| Name                 | Description                      |
+| -------------------- | -------------------------------- |
+| `cursor` (String!)   | A cursor for use in pagination.  |
+| `node` (ProjectCard) | The item at the end of the edge. |
 
 #### ProjectNextField
 
 A field inside a project.
 
-Name | Description
---- | ---
-`createdAt` (`DateTime!`) | Identifies the date and time when the object was created.
-`name` (`String!`) | The project field's name.
-`project` (`ProjectNext!`) | The project that contains this field.
-`settings` (`String`) | String representation of project field settings.
-`updatedAt` (`DateTime!`) | Identifies the date and time when the object was last updated.
+| Name                       | Description                                                    |
+| -------------------------- | -------------------------------------------------------------- |
+| `createdAt` (`DateTime!`)  | Identifies the date and time when the object was created.      |
+| `name` (`String!`)         | The project field's name.                                      |
+| `project` (`ProjectNext!`) | The project that contains this field.                          |
+| `settings` (`String`)      | String representation of project field settings.               |
+| `updatedAt` (`DateTime!`)  | Identifies the date and time when the object was last updated. |
 
 #### ProjectNextFieldConnection
 
 The connection type for ProjectNextField.
 
-Name | Description
---- | ---
-`edges` ([ProjectNextFieldEdge]) | A list of edges.
-`nodes` ([ProjectNextField]) | A list of nodes.
-`pageInfo` (PageInfo!) | Information to aid in pagination.
-`totalCount` (Int!) | Identifies the total count of items in the connection.
+| Name                             | Description                                            |
+| -------------------------------- | ------------------------------------------------------ |
+| `edges` ([ProjectNextFieldEdge]) | A list of edges.                                       |
+| `nodes` ([ProjectNextField])     | A list of nodes.                                       |
+| `pageInfo` (PageInfo!)           | Information to aid in pagination.                      |
+| `totalCount` (Int!)              | Identifies the total count of items in the connection. |
 
 #### ProjectNextFieldEdge
 
-Name | Description
---- | ---
-`cursor` (String!) | A cursor for use in pagination.
-`node` (ProjectCard) | The item at the end of the edge.
+| Name                 | Description                      |
+| -------------------- | -------------------------------- |
+| `cursor` (String!)   | A cursor for use in pagination.  |
+| `node` (ProjectCard) | The item at the end of the edge. |
 
 #### ProjectNextItem
 
@@ -513,16 +546,16 @@ Name | Description
 
 An item in a `ProjectNext`.
 
-Name | Description
---- | ---
-`content` (`ProjectNextItemContent`) | The content of the referenced issue or pull request.
-`createdAt` (DateTime!) | Identifies the date and time when the object was created.
-`creator` (`Actor`) | The actor who created this item.
-`databaseId` (`Int`) | Identifies the primary key from the database.
-`fieldValues` (`[ProjectNextItemFieldValue]!`) | List of field values for the item.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first *n* elements from the list.<br>`last` (`Int`): Returns the last *n* elements from the list.
-`project` (`ProjectNext!`) | The project that contains this item.
-`title` (`String!`) | Title of the item.
-`updatedAt` (DateTime!) | Identifies the date and time when the object was last updated.
+| Name                                           | Description                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content` (`ProjectNextItemContent`)           | The content of the referenced issue or pull request.                                                                                                                                                                                                                                                                                                                                    |
+| `createdAt` (DateTime!)                        | Identifies the date and time when the object was created.                                                                                                                                                                                                                                                                                                                               |
+| `creator` (`Actor`)                            | The actor who created this item.                                                                                                                                                                                                                                                                                                                                                        |
+| `databaseId` (`Int`)                           | Identifies the primary key from the database.                                                                                                                                                                                                                                                                                                                                           |
+| `fieldValues` (`[ProjectNextItemFieldValue]!`) | List of field values for the item.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first _n_ elements from the list.<br>`last` (`Int`): Returns the last _n_ elements from the list. |
+| `project` (`ProjectNext!`)                     | The project that contains this item.                                                                                                                                                                                                                                                                                                                                                    |
+| `title` (`String!`)                            | Title of the item.                                                                                                                                                                                                                                                                                                                                                                      |
+| `updatedAt` (DateTime!)                        | Identifies the date and time when the object was last updated.                                                                                                                                                                                                                                                                                                                          |
 
 #### ProjectNextItemContent
 
@@ -537,19 +570,19 @@ Content associated with a `ProjectNextItem`.
 
 The connection type for ProjectNextItem.
 
-Name | Description
---- | ---
-`edges` ([`ProjectNextItemEdge`]) | A list of edges.
-`nodes` ([`ProjectNextItem`]) | A list of nodes.
-`pageInfo` (`PageInfo!`) | Information to aid in pagination.
-`totalCount` (`Int!`) | Identifies the total count of items in the connection.
+| Name                              | Description                                            |
+| --------------------------------- | ------------------------------------------------------ |
+| `edges` ([`ProjectNextItemEdge`]) | A list of edges.                                       |
+| `nodes` ([`ProjectNextItem`])     | A list of nodes.                                       |
+| `pageInfo` (`PageInfo!`)          | Information to aid in pagination.                      |
+| `totalCount` (`Int!`)             | Identifies the total count of items in the connection. |
 
 #### ProjectNextItemEdge
 
-Name | Description
---- | ---
-`cursor` (`String!`) | A cursor for use in pagination.
-`node` (`ProjectCard`) | The item at the end of the edge.
+| Name                   | Description                      |
+| ---------------------- | -------------------------------- |
+| `cursor` (`String!`)   | A cursor for use in pagination.  |
+| `node` (`ProjectCard`) | The item at the end of the edge. |
 
 #### ProjectNextItemFieldValue
 
@@ -557,35 +590,35 @@ Name | Description
 
 A value of a field in an item in a `ProjectNext`.
 
-Name | Description
---- | ---
-`createdAt` (`DateTime!`) | Identifies the date and time when the object was created.
-`creator` (`Actor`) | The actor who created this item.
-`databaseId` (`Int`) | Identifies the primary key from the database.
-`projectField` (`ProjectNextField!`) | The project field that contains this value.
-`projectItem` (`ProjectNextItem!`) | The project item that contains this value.
-`updatedAt` (`DateTime!`) | Identifies the date and time when the object was last updated.
-`value` | Value of the field.
+| Name                                 | Description                                                    |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `createdAt` (`DateTime!`)            | Identifies the date and time when the object was created.      |
+| `creator` (`Actor`)                  | The actor who created this item.                               |
+| `databaseId` (`Int`)                 | Identifies the primary key from the database.                  |
+| `projectField` (`ProjectNextField!`) | The project field that contains this value.                    |
+| `projectItem` (`ProjectNextItem!`)   | The project item that contains this value.                     |
+| `updatedAt` (`DateTime!`)            | Identifies the date and time when the object was last updated. |
+| `value`                              | Value of the field.                                            |
 
 #### ProjectNextItemFieldValueConnection
 
 The connection type for ProjectNextItemFieldValue.
 
-Name | Description
---- | ---
-`edges` ([`ProjectNextItemFieldValueEdge`]) | A list of edges.
-`nodes` ([`ProjectNextItemFieldValue`]) | A list of nodes.
-`pageInfo` (`PageInfo!`) | Information to aid in pagination.
-`totalCount` (`Int!`) | Identifies the total count of items in the connection.
+| Name                                        | Description                                            |
+| ------------------------------------------- | ------------------------------------------------------ |
+| `edges` ([`ProjectNextItemFieldValueEdge`]) | A list of edges.                                       |
+| `nodes` ([`ProjectNextItemFieldValue`])     | A list of nodes.                                       |
+| `pageInfo` (`PageInfo!`)                    | Information to aid in pagination.                      |
+| `totalCount` (`Int!`)                       | Identifies the total count of items in the connection. |
 
 #### ProjectNextItemEdge
 
 An edge in a connection.
 
-Name | Description
---- | ---
-`cursor` (`String!`) | A cursor for use in pagination.
-`node` (`ProjectCard`) | The item at the end of the edge.
+| Name                   | Description                      |
+| ---------------------- | -------------------------------- |
+| `cursor` (`String!`)   | A cursor for use in pagination.  |
+| `node` (`ProjectCard`) | The item at the end of the edge. |
 
 ### Interfaces
 
@@ -599,10 +632,10 @@ Represents an owner of a project.
 
 **Fields**
 
-Name | Description
---- | ---
-`projectNext` (`ProjectNext`) | Find project by number.<br><br>**Arguments**<br>`number` (`Int!`): The project number to find.
-`projectsNext` (`ProjectNextConnection!`) | A list of project next items under the owner.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first *n* elements from the list.<br>`last` (`Int`): Returns the last *n* elements from the list.
+| Name                                      | Description                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `projectNext` (`ProjectNext`)             | Find project by number.<br><br>**Arguments**<br>`number` (`Int!`): The project number to find.                                                                                                                                                                                                                                                                                                     |
+| `projectsNext` (`ProjectNextConnection!`) | A list of project next items under the owner.<br><br>**Arguments**<br>`after` (`String`): Returns the elements in the list that come after the specified cursor.<br>`before` (`String`): Returns the elements in the list that come before the specified cursor.<br>`first` (`Int`): Returns the first _n_ elements from the list.<br>`last` (`Int`): Returns the last _n_ elements from the list. |
 
 ### Mutations
 
@@ -616,10 +649,10 @@ Adds an existing item (Issue or PullRequest) to a project.
 
 **Return fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`projectNextItem` (`ProjectNextItem`) | The item added to the project.
+| Name                                  | Description                                                 |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `clientMutationId` (`String`)         | A unique identifier for the client performing the mutation. |
+| `projectNextItem` (`ProjectNextItem`) | The item added to the project.                              |
 
 #### updateProjectNextItemField
 
@@ -631,10 +664,10 @@ Updates a field of an item from a project.
 
 **Return fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`projectNextItem` (`ProjectNextItem`) | The item added to the project.
+| Name                                  | Description                                                 |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `clientMutationId` (`String`)         | A unique identifier for the client performing the mutation. |
+| `projectNextItem` (`ProjectNextItem`) | The item added to the project.                              |
 
 #### deleteProjectNextItem
 
@@ -646,10 +679,10 @@ Deletes an item from a project.
 
 **Return fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`deletedItemId` (`ID`) | The ID of the deleted item.
+| Name                          | Description                                                 |
+| ----------------------------- | ----------------------------------------------------------- |
+| `clientMutationId` (`String`) | A unique identifier for the client performing the mutation. |
+| `deletedItemId` (`ID`)        | The ID of the deleted item.                                 |
 
 ### Input Objects
 
@@ -659,11 +692,11 @@ Autogenerated input type of AddProjectNextItem.
 
 **Input fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`contentId` (`ID!`) | The ID of the item (Issue or PullRequest) to add.
-`projectId` (`ID!`) | The ID of the Project to add the item to.
+| Name                          | Description                                                 |
+| ----------------------------- | ----------------------------------------------------------- |
+| `clientMutationId` (`String`) | A unique identifier for the client performing the mutation. |
+| `contentId` (`ID!`)           | The ID of the item (Issue or PullRequest) to add.           |
+| `projectId` (`ID!`)           | The ID of the Project to add the item to.                   |
 
 #### UpdateProjectNextItemFieldInput
 
@@ -671,13 +704,13 @@ Autogenerated input type of UpdateProjectNextItemField.
 
 **Input fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`fieldId` (`ID!`) | The ID of the field to be updated. Currently supports custom fields and status.
-`itemId` (`ID!`) | The ID of the item to be updated.
-`projectId` (`ID!`) | The ID of the Project.
-`value` (`String!`) | The value which will be set on the field.
+| Name                          | Description                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------- |
+| `clientMutationId` (`String`) | A unique identifier for the client performing the mutation.                     |
+| `fieldId` (`ID!`)             | The ID of the field to be updated. Currently supports custom fields and status. |
+| `itemId` (`ID!`)              | The ID of the item to be updated.                                               |
+| `projectId` (`ID!`)           | The ID of the Project.                                                          |
+| `value` (`String!`)           | The value which will be set on the field.                                       |
 
 #### DeleteProjectNextItemInput
 
@@ -685,8 +718,8 @@ Autogenerated input type of DeleteProjectNextItem.
 
 **Input fields**
 
-Name | Description
---- | ---
-`clientMutationId` (`String`) | A unique identifier for the client performing the mutation.
-`itemId` (`ID!`) | The ID of the item to be removed.
-`projectId` (`ID!`) | The ID of the Project from which the item should be removed.
+| Name                          | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `clientMutationId` (`String`) | A unique identifier for the client performing the mutation.  |
+| `itemId` (`ID!`)              | The ID of the item to be removed.                            |
+| `projectId` (`ID!`)           | The ID of the Project from which the item should be removed. |

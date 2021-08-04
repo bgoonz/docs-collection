@@ -1,11 +1,11 @@
 ---
 title: About GitHub Premium Support for GitHub Enterprise Cloud
-intro: '{% data variables.contact.premium_support %} is a paid, supplemental support offering for {% data variables.product.prodname_ghe_cloud %} customers.'
+intro: "{% data variables.contact.premium_support %} is a paid, supplemental support offering for {% data variables.product.prodname_ghe_cloud %} customers."
 redirect_from:
   - /articles/about-github-premium-support
   - /articles/about-github-premium-support-for-github-enterprise-cloud
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Jobs
 shortTitle: GitHub Premium Support
@@ -26,12 +26,13 @@ shortTitle: GitHub Premium Support
 ## About {% data variables.contact.premium_support %}
 
 {% data variables.contact.premium_support %} offers:
-  - Written support, in English, through our support portal 24 hours per day, 7 days per week
-  - Phone support, in English, 24 hours per day, 7 days per week
-  - A Service Level Agreement (SLA) with guaranteed initial response times
-  - Access to premium content
-  - Scheduled health checks
-  - Managed services
+
+- Written support, in English, through our support portal 24 hours per day, 7 days per week
+- Phone support, in English, 24 hours per day, 7 days per week
+- A Service Level Agreement (SLA) with guaranteed initial response times
+- Access to premium content
+- Scheduled health checks
+- Managed services
 
 {% data reusables.support.about-premium-plans %}
 

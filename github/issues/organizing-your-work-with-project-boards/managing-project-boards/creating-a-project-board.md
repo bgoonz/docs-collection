@@ -1,18 +1,19 @@
 ---
 title: Creating a project board
-intro: 'Project boards can be used to create customized workflows to suit your needs, like tracking and prioritizing specific feature work, comprehensive roadmaps, or even release checklists.'
+intro: "Project boards can be used to create customized workflows to suit your needs, like tracking and prioritizing specific feature work, comprehensive roadmaps, or even release checklists."
 redirect_from:
   - /github/managing-your-work-on-github/managing-project-boards/creating-a-project-board
   - /articles/creating-a-project/
   - /articles/creating-a-project-board
   - /github/managing-your-work-on-github/creating-a-project-board
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 {% data reusables.projects.project_boards_old %}
 
 {% data reusables.project-management.use-automated-template %}
@@ -29,8 +30,7 @@ You can also configure workflow automations to keep your project board in sync w
 
 ## Creating a user-owned project board
 
-{% data reusables.profile.access_profile %}
-2. On the top of your profile page, in the main navigation, click {% octicon "project" aria-label="The project board icon" %} **Projects**.
+{% data reusables.profile.access_profile %} 2. On the top of your profile page, in the main navigation, click {% octicon "project" aria-label="The project board icon" %} **Projects**.
 ![Project tab](/assets/images/help/projects/user-projects-tab.png)
 {% data reusables.project-management.click-new-project %}
 {% data reusables.project-management.create-project-name-description %}
@@ -69,8 +69,7 @@ You can also configure workflow automations to keep your project board in sync w
 
 ## Creating a repository project board
 
-{% data reusables.repositories.navigate-to-repo %}
-2. Under your repository name, click {% octicon "project" aria-label="The project board icon" %} **Projects**.
+{% data reusables.repositories.navigate-to-repo %} 2. Under your repository name, click {% octicon "project" aria-label="The project board icon" %} **Projects**.
 ![Project tab](/assets/images/help/projects/repo-tabs-projects.png)
 {% data reusables.project-management.click-new-project %}
 {% data reusables.project-management.create-project-name-description %}

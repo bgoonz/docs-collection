@@ -1,12 +1,13 @@
 ---
 title: About GitHub Insights
-intro: '{% data variables.product.prodname_insights %} provides metrics and analytical reports to help engineering teams understand and improve their software delivery process.'
+intro: "{% data variables.product.prodname_insights %} provides metrics and analytical reports to help engineering teams understand and improve their software delivery process."
 redirect_from:
   - /github/installing-and-configuring-github-insights/about-github-insights
   - /insights/installing-and-configuring-github-insights/about-github-insights
 versions:
-  ghes: '*'
+  ghes: "*"
 ---
+
 ## About {% data variables.product.prodname_insights %}
 
 {% data variables.product.prodname_insights %} is a standalone application that provides analytic reports based on data from {% data variables.product.product_location %} to help you understand and improve your software delivery process. You can use these metrics to remove bottlenecks in process, improve collaboration, and deliver projects faster, with higher quality.

@@ -1,14 +1,14 @@
 ---
 title: Managing an individual’s access to an organization project board
-intro: 'As an organization owner or project board admin, you can manage an individual member''s access to a project board owned by your organization.'
+intro: "As an organization owner or project board admin, you can manage an individual member's access to a project board owned by your organization."
 redirect_from:
   - /articles/managing-an-individual-s-access-to-an-organization-project-board
   - /articles/managing-an-individuals-access-to-an-organization-project-board
   - /github/setting-up-and-managing-organizations-and-teams/managing-an-individuals-access-to-an-organization-project-board
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -17,7 +17,7 @@ shortTitle: Manage individual access
 
 {% note %}
 
-**Note:** {% data reusables.project-management.cascading-permissions %} For more information, see "[Project board permissions for an organization](/articles/project-board-permissions-for-an-organization)." 
+**Note:** {% data reusables.project-management.cascading-permissions %} For more information, see "[Project board permissions for an organization](/articles/project-board-permissions-for-an-organization)."
 
 {% endnote %}
 
@@ -29,9 +29,8 @@ shortTitle: Manage individual access
 {% data reusables.project-management.select-project %}
 {% data reusables.project-management.click-menu %}
 {% data reusables.project-management.access-collaboration-settings %}
-{% data reusables.project-management.collaborator-option %}
-9. Under "Search by username, full name or email address", type the collaborator's name, username, or {% data variables.product.prodname_dotcom %} email.
-   ![The Collaborators section with the Octocat's username entered in the search field](/assets/images/help/projects/org-project-collaborators-find-name.png)
+{% data reusables.project-management.collaborator-option %} 9. Under "Search by username, full name or email address", type the collaborator's name, username, or {% data variables.product.prodname_dotcom %} email.
+![The Collaborators section with the Octocat's username entered in the search field](/assets/images/help/projects/org-project-collaborators-find-name.png)
 {% data reusables.project-management.add-collaborator %}
 {% data reusables.project-management.collaborator-permissions %}
 

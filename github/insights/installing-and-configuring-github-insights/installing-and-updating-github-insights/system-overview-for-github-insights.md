@@ -1,13 +1,14 @@
 ---
 title: System overview for GitHub Insights
-intro: '{% data variables.product.prodname_insights %} is a standalone application which interfaces with {% data variables.product.prodname_enterprise %}.'
+intro: "{% data variables.product.prodname_insights %} is a standalone application which interfaces with {% data variables.product.prodname_enterprise %}."
 redirect_from:
   - /github/installing-and-configuring-github-insights/system-overview-for-github-insights
   - /insights/installing-and-configuring-github-insights/system-overview-for-github-insights
 versions:
-  ghes: '*'
+  ghes: "*"
 shortTitle: System overview
 ---
+
 ## Requirements for running {% data variables.product.prodname_insights %}
 
 {% data variables.product.prodname_insights %} requires a supported version of {% data variables.product.prodname_ghe_server %}.
@@ -18,11 +19,11 @@ To provision {% data variables.product.prodname_insights %}, the application ser
 
 The application server should meet minimum specifications.
 
-| Specification | Minimum   |
-| --------|-----------|
-| vCPUs   | 16         |
-| RAM     | 64GB        |
-| Disk    | 250GB      |
+| Specification | Minimum |
+| ------------- | ------- |
+| vCPUs         | 16      |
+| RAM           | 64GB    |
+| Disk          | 250GB   |
 
 If you'll use {% data variables.product.prodname_insights %} to import large amounts of data, we recommend greater minimum specifications. For more information, see "[Managing repositories](/github/installing-and-configuring-github-insights/managing-repositories#about-import-times)."
 
@@ -36,11 +37,11 @@ If you'll use {% data variables.product.prodname_insights %} to import large amo
 
 {% data variables.product.prodname_insights %} requires the following ports to be open for inbound and outbound traffic.
 
-| Port      | Service       | Protocol        |
-| ----------|--------------|-----------------|
-| 22        | SSH USER   | TCP   |
-| 80        | HTTP USER  | TCP   |
-| 443       | HTTPS USER | TCP   |
+| Port | Service    | Protocol |
+| ---- | ---------- | -------- |
+| 22   | SSH USER   | TCP      |
+| 80   | HTTP USER  | TCP      |
+| 443  | HTTPS USER | TCP      |
 
 ### Authentication and access permissions
 

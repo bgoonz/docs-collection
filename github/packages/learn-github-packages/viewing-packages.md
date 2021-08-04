@@ -1,7 +1,7 @@
 ---
 title: Viewing packages
-intro: 'You can see details about packages published to a repository, and narrow results by organization or user.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can see details about packages published to a repository, and narrow results by organization or user."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /articles/viewing-a-repositorys-packages
   - /github/managing-packages-with-github-packages/publishing-and-managing-packages/viewing-a-repositorys-packages
@@ -10,9 +10,9 @@ redirect_from:
   - /packages/manage-packages/viewing-packages
 permissions: You must have at least read permissions to view a package.
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 ---
 
 {% data reusables.package_registry.packages-ghes-release-stage %}
@@ -20,9 +20,10 @@ versions:
 
 ## About package views
 
-Your ability to view a package depends on several factors. By default, you can view all packages you have published. 
+Your ability to view a package depends on several factors. By default, you can view all packages you have published.
 
 Repository-scoped packages inherit their permissions and visibility from the repository that owns the package. The registries below use this type of permissions:{% ifversion not fpt %}
+
 - Docker registry (`docker.pkg.github.com`){% endif %}
 - npm registry
 - RubyGems registry
@@ -50,17 +51,15 @@ You can find and view a package located in a particular repository.
 You can find and view a package located in the repositories of an organization you belong to.
 
 {% data reusables.profile.access_org %}
-{% data reusables.user_settings.access_org %}
-3. Under your organization name, click {% octicon "package" aria-label="The package icon" %} **Packages**.
+{% data reusables.user_settings.access_org %} 3. Under your organization name, click {% octicon "package" aria-label="The package icon" %} **Packages**.
 {% data reusables.package_registry.navigate-to-packages %}
 
 ## Viewing your packages
 
-You can find and view any package you've published across all organizations and repositories. 
+You can find and view any package you've published across all organizations and repositories.
 
-{% data reusables.profile.access_profile %}
-2. On the top of the profile page, in the main navigation, click **Packages**.
-  ![Project tab](/assets/images/help/package-registry/user-packages-tab.png)
+{% data reusables.profile.access_profile %} 2. On the top of the profile page, in the main navigation, click **Packages**.
+![Project tab](/assets/images/help/package-registry/user-packages-tab.png)
 {% data reusables.package_registry.navigate-to-packages %}
 
 ## Further reading

@@ -1,11 +1,11 @@
 ---
 title: Adding a billing manager to your organization
-intro: 'A *billing manager* is a user who manages the billing settings for your organization, such as updating payment information. This is a great option if regular members of your organization don''t typically have access to billing resources.'
+intro: "A *billing manager* is a user who manages the billing settings for your organization, such as updating payment information. This is a great option if regular members of your organization don't typically have access to billing resources."
 redirect_from:
   - /articles/adding-a-billing-manager-to-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/adding-a-billing-manager-to-your-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -13,7 +13,7 @@ topics:
 shortTitle: Add a billing manager
 ---
 
-Members of your organization's Owners team can give *billing manager* permissions to people. Once a person accepts their invitation to become a billing manager for your organization, they can invite additional people to be billing managers.
+Members of your organization's Owners team can give _billing manager_ permissions to people. Once a person accepts their invitation to become a billing manager for your organization, they can invite additional people to be billing managers.
 
 {% note %}
 
@@ -43,7 +43,7 @@ Billing managers **are not** able to:
 
 {% tip %}
 
-**Tip:**  If your organization [requires members, billing managers, and outside collaborators to use two-factor authentication](/articles/requiring-two-factor-authentication-in-your-organization), the user must enable two-factor authentication before they can accept your invitation to become a billing manager for the organization.
+**Tip:** If your organization [requires members, billing managers, and outside collaborators to use two-factor authentication](/articles/requiring-two-factor-authentication-in-your-organization), the user must enable two-factor authentication before they can accept your invitation to become a billing manager for the organization.
 
 {% endtip %}
 
@@ -52,7 +52,8 @@ Billing managers **are not** able to:
 The invited person will receive an invitation email asking them to become a billing manager for your organization. Once the invited person clicks the accept link in their invitation email, they will automatically be added to the organization as a billing manager. If they don't already have a GitHub account, they will be directed to sign up for one, and they will be automatically added to the organization as a billing manager after they create an account.
 
 {% data reusables.organizations.billing-settings %}
+
 1. Under "Billing management", next to "Billing managers", click **Add**.
-  ![Invite billing manager](/assets/images/help/billing/settings_billing_managers_list.png)
-6. Type the username or email address of the person you want to add and click **Send invitation**.
-  ![Invite billing manager page](/assets/images/help/billing/billing_manager_invite.png)
+   ![Invite billing manager](/assets/images/help/billing/settings_billing_managers_list.png)
+2. Type the username or email address of the person you want to add and click **Send invitation**.
+   ![Invite billing manager page](/assets/images/help/billing/billing_manager_invite.png)

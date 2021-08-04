@@ -1,10 +1,10 @@
 ---
 title: Quickstart for projects (beta)
-intro: 'Experience the speed, flexibility, and customization of projects (beta) by creating a project in this interactive guide.'
+intro: "Experience the speed, flexibility, and customization of projects (beta) by creating a project in this interactive guide."
 allowTitleToDifferFromFilename: true
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
+  fpt: "*"
 type: quick_start
 topics:
   - Projects

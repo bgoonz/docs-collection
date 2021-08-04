@@ -1,18 +1,17 @@
 ---
 title: Getting started with the REST API
-intro: 'Learn the foundations for using the REST API, starting with authentication and some endpoint examples.'
+intro: "Learn the foundations for using the REST API, starting with authentication and some endpoint examples."
 redirect_from:
   - /guides/getting-started/
   - /v3/guides/getting-started
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Get started - REST API
 ---
-
 
 Let's walk through core API concepts as we tackle some everyday use cases.
 
@@ -64,7 +63,7 @@ Mmmmm, tastes like [JSON][json]. Let's add the `-i` flag to include headers:
 ```shell
 $ curl -i https://api.github.com/users/defunkt
 
-> HTTP/2 200 
+> HTTP/2 200
 > server: GitHub.com
 > date: Thu, 08 Jul 2021 07:04:08 GMT
 > content-type: application/json; charset=utf-8
@@ -109,13 +108,13 @@ There are a few interesting bits in the response headers. As expected, the
 Any headers beginning with `X-` are custom headers, and are not included in the
 HTTP spec. For example:
 
-* `X-GitHub-Media-Type` has a value of `github.v3`. This lets us know the [media type][media types]
-for the response. Media types have helped us version our output in API v3. We'll
-talk more about that later.
-* Take note of the `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers. This
-pair of headers indicate [how many requests a client can make][rate-limiting] in
-a rolling time period (typically an hour) and how many of those requests the
-client has already spent.
+- `X-GitHub-Media-Type` has a value of `github.v3`. This lets us know the [media type][media types]
+  for the response. Media types have helped us version our output in API v3. We'll
+  talk more about that later.
+- Take note of the `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers. This
+  pair of headers indicate [how many requests a client can make][rate-limiting] in
+  a rolling time period (typically an hour) and how many of those requests the
+  client has already spent.
 
 ## Authentication
 
@@ -197,8 +196,8 @@ Apps that need to read or write private information using the API on behalf of a
 
 OAuth uses _tokens_. Tokens provide two big features:
 
-* **Revokable access**: users can revoke authorization to third party apps at any time
-* **Limited access**: users can review the specific access that a token
+- **Revokable access**: users can revoke authorization to third party apps at any time
+- **Limited access**: users can review the specific access that a token
   will provide before authorizing a third party app
 
 Tokens should be created via a [web flow][webflow]. An application
@@ -248,8 +247,9 @@ $ curl -i {% data variables.product.api_url_pre %}/orgs/octo-org/repos
 The information returned from these calls will depend on which scopes our token has when we authenticate:
 
 {% ifversion not ghae %}
-* A token with `public_repo` [scope][scopes] returns a response that includes all public repositories we have access to see on github.com.{% endif %}
-* A token with `repo` [scope][scopes] returns a response that includes all {% ifversion not ghae %}public{% else %}internal{% endif %} and private repositories we have access to see on {% data variables.product.product_location %}.
+
+- A token with `public_repo` [scope][scopes] returns a response that includes all public repositories we have access to see on github.com.{% endif %}
+- A token with `repo` [scope][scopes] returns a response that includes all {% ifversion not ghae %}public{% else %}internal{% endif %} and private repositories we have access to see on {% data variables.product.product_location %}.
 
 As the [docs][repos-api] indicate, these methods take a `type` parameter that
 can filter the repositories returned based on what type of access the user has
@@ -322,8 +322,7 @@ $ curl -i -H "Authorization: token {% ifversion fpt or ghes > 3.1 or ghae-next %
     {% data variables.product.api_url_pre %}/issues
 ```
 
-To get only the [issues under one of your {% data variables.product.product_name %} organizations][get issues api], call `GET
-/orgs/<org>/issues`:
+To get only the [issues under one of your {% data variables.product.product_name %} organizations][get issues api], call `GET /orgs/<org>/issues`:
 
 ```shell
 $ curl -i -H "Authorization: token {% ifversion fpt or ghes > 3.1 or ghae-next %}ghp_16C7e42F292c6912E7710c838347Ae178B4a{% else %}5199831f4dd3b79e7c5b7e0ebe75d67aa66e79d4{% endif %}" \
@@ -450,9 +449,9 @@ we asked for it and the response will contain no body. As a bonus, `304` respons
 
 Woot! Now you know the basics of the {% data variables.product.product_name %} API!
 
-* Basic & OAuth authentication
-* Fetching and creating repositories and issues
-* Conditional requests
+- Basic & OAuth authentication
+- Fetching and creating repositories and issues
+- Conditional requests
 
 Keep learning with the next API guide [Basics of Authentication][auth guide]!
 
@@ -461,7 +460,7 @@ Keep learning with the next API guide [Basics of Authentication][auth guide]!
 [media types]: /rest/overview/media-types
 [oauth]: /apps/building-integrations/setting-up-and-registering-oauth-apps/
 [webflow]: /apps/building-oauth-apps/authorizing-oauth-apps/
-[create a new authorization API]: /rest/reference/oauth-authorizations#create-a-new-authorization
+[create a new authorization api]: /rest/reference/oauth-authorizations#create-a-new-authorization
 [scopes]: /apps/building-oauth-apps/understanding-scopes-for-oauth-apps/
 [repos-api]: /rest/reference/repos
 [pages]: http://pages.github.com

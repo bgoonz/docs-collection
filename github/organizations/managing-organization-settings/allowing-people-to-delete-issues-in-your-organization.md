@@ -5,9 +5,9 @@ redirect_from:
   - /articles/allowing-people-to-delete-issues-in-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/allowing-people-to-delete-issues-in-your-organization
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -20,7 +20,5 @@ Once enabled, organization owners and people with admin permissions in an organi
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.member-privileges %}
-5. Under "Issue deletion", select **Allow members to delete issues for this organization**.
-![Checkbox to allow people to delete issues](/assets/images/help/settings/issue-deletion.png)
-6. Click **Save**.
+{% data reusables.organizations.member-privileges %} 5. Under "Issue deletion", select **Allow members to delete issues for this organization**.
+![Checkbox to allow people to delete issues](/assets/images/help/settings/issue-deletion.png) 6. Click **Save**.

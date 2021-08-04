@@ -4,14 +4,13 @@ intro: You can use basic authentication for testing in a non-production environm
 redirect_from:
   - /v3/auth
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Other authentication methods
 ---
-
 
 {% ifversion fpt or ghes %}
 While the API provides multiple methods for authentication, we strongly
@@ -56,7 +55,7 @@ This approach is useful if your tools only support Basic Authentication but you 
 {% note %}
 
 **Note:** {% data variables.product.prodname_dotcom %} has discontinued password authentication to the API starting on November 13, 2020 for all {% data variables.product.prodname_dotcom_the_website %} accounts, including those on a {% data variables.product.prodname_free_user %}, {% data variables.product.prodname_pro %}, {% data variables.product.prodname_team %}, or {% data variables.product.prodname_ghe_cloud %} plan. You must now authenticate to the {% data variables.product.prodname_dotcom %} API with an API token, such as an OAuth access token, GitHub App installation access token, or personal access token, depending on what you need to do with the token. For more information, see "[Troubleshooting](/rest/overview/troubleshooting#basic-authentication-errors)."
- 
+
 {% endnote %}
 
 {% endif %}
@@ -72,11 +71,13 @@ would authenticate you if you replace `<username>` with your {% data variables.p
 ```shell
 $ curl -u <em>username</em> {% data variables.product.api_url_pre %}/user
 ```
+
 If you have two-factor authentication enabled, make sure you understand how to [work with two-factor authentication](/rest/overview/other-authentication-methods#working-with-two-factor-authentication).
 
 {% endif %}
 
 {% ifversion fpt %}
+
 ### Authenticating for SAML SSO
 
 {% note %}
@@ -109,6 +110,7 @@ The value `organizations` is a comma-separated list of organization IDs for orga
 {% endif %}
 
 {% ifversion fpt or ghes %}
+
 ## Working with two-factor authentication
 
 When you have two-factor authentication enabled, [Basic Authentication](#basic-authentication) for _most_ endpoints in the REST API requires that you use a personal access token{% ifversion ghes %} or OAuth token instead of your username and password{% endif %}.
@@ -118,11 +120,12 @@ You can generate a new personal access token {% ifversion fpt %}using [{% data v
 {% endif %}
 
 {% ifversion ghes %}
+
 ### Using the OAuth Authorizations API with two-factor authentication
 
 When you make calls to the OAuth Authorizations API, Basic Authentication requires that you use a one-time password (OTP) and your username and password instead of tokens. When you attempt to authenticate with the OAuth Authorizations API, the server will respond with a `401 Unauthorized` and one of these headers to let you know that you need a two-factor authentication code:
 
-`X-GitHub-OTP: required; SMS` or `X-GitHub-OTP: required; app`.  
+`X-GitHub-OTP: required; SMS` or `X-GitHub-OTP: required; app`.
 
 This header tells you how your account receives its two-factor authentication codes. Depending how you set up your account, you will either receive your OTP codes via SMS or you will use an application like Google Authenticator or 1Password. For more information, see "[Configuring two-factor authentication](/articles/configuring-two-factor-authentication)." Pass the OTP in the header:
 
@@ -134,6 +137,7 @@ $ curl --request POST \
   --header 'x-github-otp: <em>OTP</em>' \
   --data '{"scopes": ["public_repo"], "note": "test"}'
 ```
+
 {% endif %}
 
 [curl]: http://curl.haxx.se/

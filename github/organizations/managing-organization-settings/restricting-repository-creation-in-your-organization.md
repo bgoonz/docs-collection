@@ -1,13 +1,13 @@
 ---
 title: Restricting repository creation in your organization
-intro: 'To protect your organization''s data, you can configure permissions for creating repositories in your organization.'
+intro: "To protect your organization's data, you can configure permissions for creating repositories in your organization."
 redirect_from:
   - /articles/restricting-repository-creation-in-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/restricting-repository-creation-in-your-organization
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -30,7 +30,5 @@ Organization owners can always create any type of repository.
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.member-privileges %}
-5. Under "Repository creation", select one or more options.
-  ![Repository creation options](/assets/images/help/organizations/repo-creation-perms-radio-buttons.png)
-6. Click **Save**.
+{% data reusables.organizations.member-privileges %} 5. Under "Repository creation", select one or more options.
+![Repository creation options](/assets/images/help/organizations/repo-creation-perms-radio-buttons.png) 6. Click **Save**.

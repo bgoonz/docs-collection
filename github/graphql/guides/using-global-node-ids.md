@@ -4,9 +4,9 @@ intro: You can get global node IDs of objects via the REST API and use them in G
 redirect_from:
   - /v4/guides/using-global-node-ids
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
@@ -95,8 +95,8 @@ You'll need to know the object's _type_ first, though. You can check the type wi
 
 ```graphql
 query {
-  node(id:"MDQ6VXNlcjU4MzIzMQ==") {
-     __typename
+  node(id: "MDQ6VXNlcjU4MzIzMQ==") {
+    __typename
   }
 }
 ```
@@ -111,8 +111,8 @@ Once you've confirmed the type, you can use an [inline fragment](https://graphql
 
 ```graphql
 query {
-  node(id:"MDQ6VXNlcjU4MzIzMQ==") {
-   ... on User {
+  node(id: "MDQ6VXNlcjU4MzIzMQ==") {
+    ... on User {
       name
       login
     }

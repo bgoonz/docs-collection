@@ -1,31 +1,29 @@
 ---
 title: Delivering deployments
-intro: 'Using the Deployments REST API, you can build custom tooling that interacts with your server and a third-party app.'
+intro: "Using the Deployments REST API, you can build custom tooling that interacts with your server and a third-party app."
 redirect_from:
   - /guides/delivering-deployments/
   - /guides/automating-deployments-to-integrators/
   - /v3/guides/delivering-deployments
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
- 
-  
 
-The [Deployments API][deploy API] provides your projects hosted on {% data variables.product.product_name %} with
+The [Deployments API][deploy api] provides your projects hosted on {% data variables.product.product_name %} with
 the capability to launch them on a server that you own. Combined with
-[the Status API][status API], you'll be able to coordinate your deployments
+[the Status API][status api], you'll be able to coordinate your deployments
 the moment your code lands on the default branch.
 
 This guide will use that API to demonstrate a setup that you can use.
 In our scenario, we will:
 
-* Merge a pull request
-* When the CI is finished, we'll set the pull request's status accordingly.
-* When the pull request is merged, we'll run our deployment to our server.
+- Merge a pull request
+- When the CI is finished, we'll set the pull request's status accordingly.
+- When the pull request is merged, we'll run our deployment to our server.
 
 Our CI system and host server will be figments of our imagination. They could be
 Heroku, Amazon, or something else entirely. The crux of this guide will be setting up
@@ -43,7 +41,7 @@ Note: you can download the complete source code for this project
 We'll write a quick Sinatra app to prove that our local connections are working.
 Let's start with this:
 
-``` ruby
+```ruby
 require 'sinatra'
 require 'json'
 
@@ -53,7 +51,7 @@ post '/event_handler' do
 end
 ```
 
-(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][Sinatra].)
+(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][sinatra].)
 
 Start this server up. By default, Sinatra starts on port `4567`, so you'll want
 to configure ngrok to start listening for that, too.
@@ -71,15 +69,15 @@ content type:
 Click **Update webhook**. You should see a body response of `Well, it worked!`.
 Great! Click on **Let me select individual events.**, and select the following:
 
-* Deployment
-* Deployment status
-* Pull Request
+- Deployment
+- Deployment status
+- Pull Request
 
 These are the events {% data variables.product.product_name %} will send to our server whenever the relevant action
-occurs. We'll configure our server to *just* handle when pull requests are merged
+occurs. We'll configure our server to _just_ handle when pull requests are merged
 right now:
 
-``` ruby
+```ruby
 post '/event_handler' do
   @payload = JSON.parse(params[:payload])
 
@@ -107,7 +105,7 @@ merged, we want our project to be deployed.
 We'll start by modifying our event listener to process pull requests when they're
 merged, and start paying attention to deployments:
 
-``` ruby
+```ruby
 when "pull_request"
   if @payload["action"] == "closed" && @payload["pull_request"]["merged"]
     start_deployment(@payload["pull_request"])
@@ -122,7 +120,7 @@ end
 Based on the information from the pull request, we'll start by filling out the
 `start_deployment` method:
 
-``` ruby
+```ruby
 def start_deployment(pull_request)
   user = pull_request['user']['login']
   payload = JSON.generate(:environment => 'production', :deploy_user => user)
@@ -144,7 +142,7 @@ such as when the deployment was created, and what state it's in.
 Let's simulate a deployment that does some work, and notice the effect it has on
 the output. First, let's complete our `process_deployment` method:
 
-``` ruby
+```ruby
 def process_deployment
   payload = JSON.parse(@payload['payload'])
   # you can send this information to your chat room, monitor, pager, etc.
@@ -158,7 +156,7 @@ end
 
 Finally, we'll simulate storing the status information as console output:
 
-``` ruby
+```ruby
 def update_deployment_status
   puts "Deployment status for #{@payload['id']} is #{@payload['state']}"
 end
@@ -178,20 +176,20 @@ At GitHub, we've used a version of [Heaven][heaven] to manage
 our deployments for years. The basic flow is essentially the exact same as the
 server we've built above. At GitHub, we:
 
-* Wait for a response on the state of the CI
-* If the code is green, we merge the pull request
-* Heaven takes the merged code, and deploys it to our production and staging servers
-* In the meantime, Heaven also notifies everyone about the build, via [Hubot][hubot] sitting in our chat rooms
+- Wait for a response on the state of the CI
+- If the code is green, we merge the pull request
+- Heaven takes the merged code, and deploys it to our production and staging servers
+- In the meantime, Heaven also notifies everyone about the build, via [Hubot][hubot] sitting in our chat rooms
 
 That's it! You don't need to build your own deployment setup to use this example.
 You can always rely on [GitHub integrations][integrations].
 
-[deploy API]: /rest/reference/repos#deployments
-[status API]: /guides/building-a-ci-server
+[deploy api]: /rest/reference/repos#deployments
+[status api]: /guides/building-a-ci-server
 [ngrok]: https://ngrok.com/
 [using ngrok]: /webhooks/configuring/#using-ngrok
 [platform samples]: https://github.com/github/platform-samples/tree/master/api/ruby/delivering-deployments
-[Sinatra]: http://www.sinatrarb.com/
+[sinatra]: http://www.sinatrarb.com/
 [webhook]: /webhooks/
 [octokit.rb]: https://github.com/octokit/octokit.rb
 [access token]: /articles/creating-an-access-token-for-command-line-use

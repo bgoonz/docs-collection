@@ -1,12 +1,12 @@
 ---
 title: Changing the visibility of your organization's dependency insights
 intro: You can allow all organization members to view dependency insights for your organization or limit viewing to organization owners.
-product: '{% data reusables.gated-features.org-insights %}'
+product: "{% data reusables.gated-features.org-insights %}"
 redirect_from:
   - /articles/changing-the-visibility-of-your-organizations-dependency-insights
   - /github/setting-up-and-managing-organizations-and-teams/changing-the-visibility-of-your-organizations-dependency-insights
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -19,7 +19,5 @@ Enterprise owners can set limitations for viewing organization dependency insigh
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.member-privileges %}
-5. Under "Member organization permissions", select or unselect **Allow members to view dependency insights**.
-![Checkbox to allow members to view insights](/assets/images/help/organizations/allow-members-to-view-insights.png)
-6. Click **Save**.
+{% data reusables.organizations.member-privileges %} 5. Under "Member organization permissions", select or unselect **Allow members to view dependency insights**.
+![Checkbox to allow members to view insights](/assets/images/help/organizations/allow-members-to-view-insights.png) 6. Click **Save**.

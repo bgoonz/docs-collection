@@ -1,13 +1,13 @@
 ---
 title: Migrating admin teams to improved organization permissions
-intro: 'If your organization was created after September 2015, your organization has improved organization permissions by default. Organizations created before September 2015 may need to migrate older Owners and Admin teams to the improved permissions model. Members of legacy admin teams automatically retain the ability to create repositories until those teams are migrated to the improved organization permissions model.'
+intro: "If your organization was created after September 2015, your organization has improved organization permissions by default. Organizations created before September 2015 may need to migrate older Owners and Admin teams to the improved permissions model. Members of legacy admin teams automatically retain the ability to create repositories until those teams are migrated to the improved organization permissions model."
 redirect_from:
   - /articles/migrating-your-previous-admin-teams-to-the-improved-organization-permissions/
   - /articles/migrating-admin-teams-to-improved-organization-permissions
   - /github/setting-up-and-managing-organizations-and-teams/migrating-admin-teams-to-improved-organization-permissions
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Organizations
   - Teams
@@ -33,15 +33,17 @@ For more information, see "[Repository permission levels for an organization](/a
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.teams_sidebar %}
+
 1. Review your organization's legacy admin teams, then click **Migrate all teams**.
-  ![Migrate all teams button](/assets/images/help/teams/migrate-all-legacy-admin-teams.png)
+   ![Migrate all teams button](/assets/images/help/teams/migrate-all-legacy-admin-teams.png)
 1. Read the information about possible permissions changes for members of these teams, then click **Migrate all teams.**
-  ![Confirm migration button](/assets/images/help/teams/confirm-migrate-all-legacy-admin-teams.png)
+   ![Confirm migration button](/assets/images/help/teams/confirm-migrate-all-legacy-admin-teams.png)
 
 ## Migrating a single admin team
 
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
 {% data reusables.organizations.specific_team %}
+
 1. In the team description box, click **Migrate team**.
-  ![Migrate team button](/assets/images/help/teams/migrate-a-legacy-admin-team.png)
+   ![Migrate team button](/assets/images/help/teams/migrate-a-legacy-admin-team.png)

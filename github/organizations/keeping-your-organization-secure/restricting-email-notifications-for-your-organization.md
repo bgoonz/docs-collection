@@ -1,7 +1,7 @@
 ---
 title: Restricting email notifications for your organization
-intro: 'To prevent organization information from leaking into personal email accounts, you can restrict the domains where members can receive email notifications about organization activity.'
-product: '{% data reusables.gated-features.restrict-email-domain %}'
+intro: "To prevent organization information from leaking into personal email accounts, you can restrict the domains where members can receive email notifications about organization activity."
+product: "{% data reusables.gated-features.restrict-email-domain %}"
 permissions: Organization owners can restrict email notifications for an organization.
 redirect_from:
   - /articles/restricting-email-notifications-about-organization-activity-to-an-approved-email-domain/
@@ -9,8 +9,8 @@ redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/restricting-email-notifications-to-an-approved-domain
   - /organizations/keeping-your-organization-secure/restricting-email-notifications-to-an-approved-domain
 versions:
-  fpt: '*'
-  ghes: '>=3.2'
+  fpt: "*"
+  ghes: ">=3.2"
 type: how_to
 topics:
   - Enterprise
@@ -43,5 +43,4 @@ For more information about verifying and approving domains for an organization, 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.verified-domains %}
-{% data reusables.organizations.restrict-email-notifications %}
-6. Click **Save**.
+{% data reusables.organizations.restrict-email-notifications %} 6. Click **Save**.

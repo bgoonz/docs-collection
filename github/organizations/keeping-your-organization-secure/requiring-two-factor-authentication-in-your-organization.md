@@ -1,12 +1,12 @@
 ---
 title: Requiring two-factor authentication in your organization
-intro: 'Organization owners can require {% ifversion fpt %}organization members, outside collaborators, and billing managers{% else %}organization members and outside collaborators{% endif %} to enable two-factor authentication for their personal accounts, making it harder for malicious actors to access an organization''s repositories and settings.'
+intro: "Organization owners can require {% ifversion fpt %}organization members, outside collaborators, and billing managers{% else %}organization members and outside collaborators{% endif %} to enable two-factor authentication for their personal accounts, making it harder for malicious actors to access an organization's repositories and settings."
 redirect_from:
   - /articles/requiring-two-factor-authentication-in-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/requiring-two-factor-authentication-in-your-organization
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Organizations
   - Teams
@@ -48,8 +48,7 @@ Before you require use of two-factor authentication, we recommend notifying {% i
 {% data reusables.organizations.security %}
 {% data reusables.organizations.require_two_factor_authentication %}
 {% data reusables.organizations.removed_outside_collaborators %}
-{% ifversion fpt %}
-8. If any members or outside collaborators are removed from the organization, we recommend sending them an invitation that can reinstate their former privileges and access to your organization. They must enable two-factor authentication before they can accept your invitation.
+{% ifversion fpt %} 8. If any members or outside collaborators are removed from the organization, we recommend sending them an invitation that can reinstate their former privileges and access to your organization. They must enable two-factor authentication before they can accept your invitation.
 {% endif %}
 
 ## Viewing people who were removed from your organization
@@ -60,13 +59,9 @@ To view people who were automatically removed from your organization for non-com
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.audit_log.audit_log_sidebar_for_org_admins %}
-4. Enter your search query. To search for:
-    - Organization members removed, use `action:org.remove_member` in your search query
-    - Outside collaborators removed, use `action:org.remove_outside_collaborator` in your search query{% ifversion fpt %}
-    - Billing managers removed, use `action:org.remove_billing_manager`in your search query{% endif %}
+{% data reusables.audit_log.audit_log_sidebar_for_org_admins %} 4. Enter your search query. To search for: - Organization members removed, use `action:org.remove_member` in your search query - Outside collaborators removed, use `action:org.remove_outside_collaborator` in your search query{% ifversion fpt %} - Billing managers removed, use `action:org.remove_billing_manager`in your search query{% endif %}
 
- You can also view people who were removed from your organization by using a [time frame](/articles/reviewing-the-audit-log-for-your-organization/#search-based-on-time-of-action) in your search.
+You can also view people who were removed from your organization by using a [time frame](/articles/reviewing-the-audit-log-for-your-organization/#search-based-on-time-of-action) in your search.
 
 ## Helping removed members and outside collaborators rejoin your organization
 

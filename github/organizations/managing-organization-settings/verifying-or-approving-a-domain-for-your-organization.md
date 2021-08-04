@@ -1,6 +1,6 @@
 ---
 title: Verifying or approving a domain for your organization
-intro: 'You can verify your ownership of domains with {% data variables.product.company_short %} to confirm your organization''s identity. You can also approve domains that {% data variables.product.company_short %} can send email notifications to for members of your organization.'
+intro: "You can verify your ownership of domains with {% data variables.product.company_short %} to confirm your organization's identity. You can also approve domains that {% data variables.product.company_short %} can send email notifications to for members of your organization."
 redirect_from:
   - /articles/verifying-your-organization-s-domain
   - /articles/verifying-your-organizations-domain
@@ -8,8 +8,8 @@ redirect_from:
   - /organizations/managing-organization-settings/verifying-your-organizations-domain
 permissions: Organization owners can verify or approve a domain for an organization.
 versions:
-  fpt: '*'
-  ghes: '>=3.2'
+  fpt: "*"
+  ghes: ">=3.2"
 type: how_to
 topics:
   - Enterprise
@@ -51,14 +51,15 @@ To verify a domain, you must have access to modify domain records with your doma
 {% data reusables.organizations.add-a-domain %}
 {% data reusables.organizations.add-domain %}
 {% data reusables.organizations.add-dns-txt-record %}
+
 1. Wait for your DNS configuration to change, which may take up to 72 hours. You can confirm your DNS configuration has changed by running the `dig` command on the command line, replacing `ORGANIZATION` with the name of your organization and `example.com` with the domain you'd like to verify. You should see your new TXT record listed in the command output.
    ```shell
    $ dig _github-challenge-<em>ORGANIZATION</em>.<em>example.com</em> +nostats +nocomments +nocmd TXT
    ```
 1. After confirming your TXT record is added to your DNS, follow steps one through three above to navigate to your organization's approved and verified domains.
-{% data reusables.organizations.continue-verifying-domain %}
-11. Optionally, once the "Verified" badge is visible on your organization's profile page, you can delete the TXT entry from the DNS record at your domain hosting service.
-![Verified badge](/assets/images/help/organizations/verified-badge.png)
+   {% data reusables.organizations.continue-verifying-domain %}
+1. Optionally, once the "Verified" badge is visible on your organization's profile page, you can delete the TXT entry from the DNS record at your domain hosting service.
+   ![Verified badge](/assets/images/help/organizations/verified-badge.png)
 
 ## Approving a domain for your organization
 
@@ -81,5 +82,6 @@ To verify a domain, you must have access to modify domain records with your doma
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.verified-domains %}
+
 1. To the right of the domain to remove, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab icon" %}, then click **Delete**.
-    !["Delete" for a domain](/assets/images/help/organizations/domains-delete.png)
+   !["Delete" for a domain](/assets/images/help/organizations/domains-delete.png)

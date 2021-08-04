@@ -1,20 +1,21 @@
 ---
 title: Viewing a project's contributors
-intro: 'You can see who contributed commits to a repository{% ifversion fpt %} and its dependencies{% endif %}.'
+intro: "You can see who contributed commits to a repository{% ifversion fpt %} and its dependencies{% endif %}."
 redirect_from:
   - /articles/i-don-t-see-myself-in-the-contributions-graph/
   - /articles/viewing-contribution-activity-in-a-repository/
   - /articles/viewing-a-projects-contributors
   - /github/visualizing-repository-data-with-graphs/viewing-a-projects-contributors
-product: '{% data reusables.gated-features.repository-insights %}'
+product: "{% data reusables.gated-features.repository-insights %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: View project contributors
 ---
+
 ## About contributors
 
 You can view the top 100 contributors to a repository{% ifversion ghes or ghae %}, including commit co-authors,{% endif %} in the contributors graph. Merge commits and empty commits aren't counted as contributions for this graph.
@@ -26,15 +27,14 @@ You can also see a list of people who have contributed to the project's Python d
 ## Accessing the contributors graph
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.accessing-repository-graphs %}
-3. In the left sidebar, click **Contributors**.
-  ![Contributors tab](/assets/images/help/graphs/contributors_tab.png)
-4. Optionally, to view contributors during a specific time period, click, then drag until the time period is selected. The contributors graph sums weekly commit numbers onto each Sunday, so your time period must include a Sunday.
-  ![Selected time range in the contributors graph](/assets/images/help/graphs/repo_contributors_click_drag_graph.png)
+{% data reusables.repositories.accessing-repository-graphs %} 3. In the left sidebar, click **Contributors**.
+![Contributors tab](/assets/images/help/graphs/contributors_tab.png) 4. Optionally, to view contributors during a specific time period, click, then drag until the time period is selected. The contributors graph sums weekly commit numbers onto each Sunday, so your time period must include a Sunday.
+![Selected time range in the contributors graph](/assets/images/help/graphs/repo_contributors_click_drag_graph.png)
 
 ## Troubleshooting contributors
 
 If you don't appear in a repository's contributors graph, it may be because:
+
 - You aren't one of the top 100 contributors.
 - Your commits haven't been merged into the default branch.
 - The email address you used to author the commits isn't connected to your account on {% data variables.product.product_name %}.

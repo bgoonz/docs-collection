@@ -3,9 +3,9 @@ title: Managing project boards
 shortTitle: Managing project boards
 intro: Learn how to create and manage project boards
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Issues
   - Projects

@@ -1,16 +1,15 @@
 ---
 title: Resources in the REST API
-intro: 'Learn how to navigate the resources provided by the {% data variables.product.prodname_dotcom %} API.'
+intro: "Learn how to navigate the resources provided by the {% data variables.product.prodname_dotcom %} API."
 redirect_from:
   - /rest/initialize-the-repo/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
-
 
 This describes the resources that make up the official {% data variables.product.product_name %} REST API. If you have any problems or requests, please contact {% data variables.contact.contact_support %}.
 
@@ -29,7 +28,7 @@ For information about GitHub's GraphQL API, see the [v4 documentation](/graphql)
 
 ## Schema
 
-{% ifversion fpt %}All API access is over HTTPS, and{% else %}The API is{% endif %} accessed from `{% data variables.product.api_url_code %}`.  All data is
+{% ifversion fpt %}All API access is over HTTPS, and{% else %}The API is{% endif %} accessed from `{% data variables.product.api_url_code %}`. All data is
 sent and received as JSON.
 
 ```shell
@@ -91,7 +90,7 @@ response illustrates all attributes that are returned by that method.
 
 ## Authentication
 
-{% ifversion ghae %} We recommend authenticating to the {% data variables.product.product_name %} REST API by creating an OAuth2 token through the [web application flow](/developers/apps/authorizing-oauth-apps#web-application-flow). {% else %} There are two ways to authenticate through {% data variables.product.product_name %} REST API.{% endif %} Requests that require authentication will return `404 Not Found`, instead of `403 Forbidden`, in some places.  This is to prevent the accidental leakage of private repositories to unauthorized users.
+{% ifversion ghae %} We recommend authenticating to the {% data variables.product.product_name %} REST API by creating an OAuth2 token through the [web application flow](/developers/apps/authorizing-oauth-apps#web-application-flow). {% else %} There are two ways to authenticate through {% data variables.product.product_name %} REST API.{% endif %} Requests that require authentication will return `404 Not Found`, instead of `403 Forbidden`, in some places. This is to prevent the accidental leakage of private repositories to unauthorized users.
 
 ### Basic authentication
 
@@ -111,9 +110,10 @@ Note: GitHub recommends sending OAuth tokens using the Authorization header.
 
 {% endnote %}
 
-Read [more about OAuth2](/apps/building-oauth-apps/).  Note that OAuth2 tokens can be acquired using the [web application flow](/developers/apps/authorizing-oauth-apps#web-application-flow) for production applications.
+Read [more about OAuth2](/apps/building-oauth-apps/). Note that OAuth2 tokens can be acquired using the [web application flow](/developers/apps/authorizing-oauth-apps#web-application-flow) for production applications.
 
 {% ifversion fpt or ghes %}
+
 ### OAuth2 key/secret
 
 {% data reusables.apps.deprecating_auth_with_query_parameters %}
@@ -200,65 +200,64 @@ See the guide on "[Using Global Node IDs](/graphql/guides/using-global-node-ids)
 There are three possible types of client errors on API calls that
 receive request bodies:
 
-1. Sending invalid JSON will result in a `400 Bad Request` response.
+1.  Sending invalid JSON will result in a `400 Bad Request` response.
 
         HTTP/2 400
         Content-Length: 35
 
         {"message":"Problems parsing JSON"}
 
-2. Sending the wrong type of JSON values will result in a `400 Bad
-   Request` response.
+2.  Sending the wrong type of JSON values will result in a `400 Bad Request` response.
 
-        HTTP/2 400
-        Content-Length: 40
+         HTTP/2 400
+         Content-Length: 40
 
-        {"message":"Body should be a JSON object"}
+         {"message":"Body should be a JSON object"}
 
-3. Sending invalid fields will result in a `422 Unprocessable Entity`
-   response.
+3.  Sending invalid fields will result in a `422 Unprocessable Entity`
+    response.
 
-        HTTP/2 422
-        Content-Length: 149
+         HTTP/2 422
+         Content-Length: 149
 
-        {
-          "message": "Validation Failed",
-          "errors": [
-            {
-              "resource": "Issue",
-              "field": "title",
-              "code": "missing_field"
-            }
-          ]
-        }
+         {
+           "message": "Validation Failed",
+           "errors": [
+             {
+               "resource": "Issue",
+               "field": "title",
+               "code": "missing_field"
+             }
+           ]
+         }
 
 All error objects have resource and field properties so that your client
-can tell what the problem is.  There's also an error code to let you
-know what is wrong with the field.  These are the possible validation error
+can tell what the problem is. There's also an error code to let you
+know what is wrong with the field. These are the possible validation error
 codes:
 
-Error code name | Description
------------|-----------|
-`missing` | A resource does not exist.
-`missing_field` | A required field on a resource has not been set.
-`invalid` | The formatting of a field is invalid.  Review the documentation for more specific information.
-`already_exists` | Another resource has the same value as this field.  This can happen in resources that must have some unique key (such as label names).
-`unprocessable` | The inputs provided were invalid.
+| Error code name  | Description                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `missing`        | A resource does not exist.                                                                                                            |
+| `missing_field`  | A required field on a resource has not been set.                                                                                      |
+| `invalid`        | The formatting of a field is invalid. Review the documentation for more specific information.                                         |
+| `already_exists` | Another resource has the same value as this field. This can happen in resources that must have some unique key (such as label names). |
+| `unprocessable`  | The inputs provided were invalid.                                                                                                     |
 
 Resources may also send custom validation errors (where `code` is `custom`). Custom errors will always have a `message` field describing the error, and most errors will also include a `documentation_url` field pointing to some content that might help you resolve the error.
 
 ## HTTP redirects
 
 API v3 uses HTTP redirection where appropriate. Clients should assume that any
-request may result in a redirection. Receiving an HTTP redirection is *not* an
+request may result in a redirection. Receiving an HTTP redirection is _not_ an
 error and clients should follow that redirect. Redirect responses will have a
 `Location` header field which contains the URI of the resource to which the
 client should repeat the requests.
 
-Status Code | Description
------------|-----------|
-`301` | Permanent redirection. The URI you used to make the request has been superseded by the one specified in the `Location` header field. This and all future requests to this resource should be directed to the new URI.
-`302`, `307` | Temporary redirection. The request should be repeated verbatim to the URI specified in the `Location` header field but clients should continue to use the original URI for future requests.
+| Status Code  | Description                                                                                                                                                                                                           |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `301`        | Permanent redirection. The URI you used to make the request has been superseded by the one specified in the `Location` header field. This and all future requests to this resource should be directed to the new URI. |
+| `302`, `307` | Temporary redirection. The request should be repeated verbatim to the URI specified in the `Location` header field but clients should continue to use the original URI for future requests.                           |
 
 Other redirection status codes may be used in accordance with the HTTP 1.1 spec.
 
@@ -267,22 +266,22 @@ Other redirection status codes may be used in accordance with the HTTP 1.1 spec.
 Where possible, API v3 strives to use appropriate HTTP verbs for each
 action.
 
-Verb | Description
------|-----------
-`HEAD` | Can be issued against any resource to get just the HTTP header info.
-`GET` | Used for retrieving resources.
-`POST` | Used for creating resources.
-`PATCH` | Used for updating resources with partial JSON data. For instance, an Issue resource has `title` and `body` attributes. A `PATCH` request may accept one or more of the attributes to update the resource.
-`PUT` | Used for replacing resources or collections. For `PUT` requests with no `body` attribute, be sure to set the `Content-Length` header to zero.
-`DELETE` |Used for deleting resources.
+| Verb     | Description                                                                                                                                                                                               |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `HEAD`   | Can be issued against any resource to get just the HTTP header info.                                                                                                                                      |
+| `GET`    | Used for retrieving resources.                                                                                                                                                                            |
+| `POST`   | Used for creating resources.                                                                                                                                                                              |
+| `PATCH`  | Used for updating resources with partial JSON data. For instance, an Issue resource has `title` and `body` attributes. A `PATCH` request may accept one or more of the attributes to update the resource. |
+| `PUT`    | Used for replacing resources or collections. For `PUT` requests with no `body` attribute, be sure to set the `Content-Length` header to zero.                                                             |
+| `DELETE` | Used for deleting resources.                                                                                                                                                                              |
 
 ## Hypermedia
 
 All resources may have one or more `*_url` properties linking to other
-resources.  These are meant to provide explicit URLs so that proper API clients
-don't need to construct URLs on their own.  It is highly recommended that API
-clients use these.  Doing so will make future upgrades of the API easier for
-developers.  All URLs are expected to be proper [RFC 6570][rfc] URI templates.
+resources. These are meant to provide explicit URLs so that proper API clients
+don't need to construct URLs on their own. It is highly recommended that API
+clients use these. Doing so will make future upgrades of the API easier for
+developers. All URLs are expected to be proper [RFC 6570][rfc] URI templates.
 
 You can then expand these templates using something like the [uri_template][uri]
 gem:
@@ -303,7 +302,7 @@ gem:
 ## Pagination
 
 Requests that return multiple items will be paginated to 30 items by
-default.  You can specify further pages with the `page` parameter. For some
+default. You can specify further pages with the `page` parameter. For some
 resources, you can also set a custom page size up to 100 with the `per_page` parameter.
 Note that for technical reasons not all endpoints respect the `per_page` parameter,
 see [events](/rest/reference/activity#events) for example.
@@ -344,12 +343,12 @@ This `Link` response header contains one or more [Hypermedia](/rest#hypermedia) 
 
 The possible `rel` values are:
 
-Name | Description
------------|-----------|
-`next` |The link relation for the immediate next page of results.
-`last` |The link relation for the last page of results.
-`first` |The link relation for the first page of results.
-`prev` |The link relation for the immediate previous page of results.
+| Name    | Description                                                   |
+| ------- | ------------------------------------------------------------- |
+| `next`  | The link relation for the immediate next page of results.     |
+| `last`  | The link relation for the last page of results.               |
+| `first` | The link relation for the first page of results.              |
+| `prev`  | The link relation for the immediate previous page of results. |
 
 ## Rate limiting
 
@@ -380,16 +379,16 @@ $ curl -I {% data variables.product.api_url_pre %}/users/octocat
 > X-RateLimit-Reset: 1372700873
 ```
 
-Header Name | Description
------------|-----------|
-`X-RateLimit-Limit` | The maximum number of requests you're permitted to make per hour.
-`X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window.
-`X-RateLimit-Reset` | The time at which the current rate limit window resets in [UTC epoch seconds](http://en.wikipedia.org/wiki/Unix_time).
+| Header Name             | Description                                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `X-RateLimit-Limit`     | The maximum number of requests you're permitted to make per hour.                                                      |
+| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window.                                                     |
+| `X-RateLimit-Reset`     | The time at which the current rate limit window resets in [UTC epoch seconds](http://en.wikipedia.org/wiki/Unix_time). |
 
 If you need the time in a different format, any modern programming language can get the job done. For example, if you open up the console on your web browser, you can easily get the reset time as a JavaScript Date object.
 
-``` javascript
-new Date(1372700873 * 1000)
+```javascript
+new Date(1372700873 * 1000);
 // => Mon Jul 01 2013 13:47:53 GMT-0400 (EDT)
 ```
 
@@ -564,9 +563,9 @@ Access-Control-Max-Age: 86400
 ## JSON-P callbacks
 
 You can send a `?callback` parameter to any GET call to have the results
-wrapped in a JSON function.  This is typically used when browsers want
+wrapped in a JSON function. This is typically used when browsers want
 to embed {% data variables.product.product_name %} content in web pages by getting around cross domain
-issues.  The response includes the same data output as the regular API,
+issues. The response includes the same data output as the regular API,
 plus the relevant HTTP Header information.
 
 ```shell
@@ -613,7 +612,7 @@ You can write a JavaScript handler to process the callback. Here's a minimal exa
     </html>
 
 All of the headers are the same String value as the HTTP Headers with one
-notable exception: Link.  Link headers are pre-parsed for you and come
+notable exception: Link. Link headers are pre-parsed for you and come
 through as an array of `[url, options]` tuples.
 
 A link that looks like this:
@@ -646,10 +645,10 @@ A link that looks like this:
 
 Some requests that create new data, such as creating a new commit, allow you to provide time zone information when specifying or generating timestamps. We apply the following rules, in order of priority, to determine timezone information for API calls.
 
-* [Explicitly providing an ISO 8601 timestamp with timezone information](#explicitly-providing-an-iso-8601-timestamp-with-timezone-information)
-* [Using the `Time-Zone` header](#using-the-time-zone-header)
-* [Using the last known timezone for the user](#using-the-last-known-timezone-for-the-user)
-* [Defaulting to UTC without other timezone information](#defaulting-to-utc-without-other-timezone-information)
+- [Explicitly providing an ISO 8601 timestamp with timezone information](#explicitly-providing-an-iso-8601-timestamp-with-timezone-information)
+- [Using the `Time-Zone` header](#using-the-time-zone-header)
+- [Using the last known timezone for the user](#using-the-last-known-timezone-for-the-user)
+- [Defaulting to UTC without other timezone information](#defaulting-to-utc-without-other-timezone-information)
 
 ### Explicitly providing an ISO 8601 timestamp with timezone information
 

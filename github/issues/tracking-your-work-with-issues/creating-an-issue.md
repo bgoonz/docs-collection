@@ -1,6 +1,6 @@
 ---
 title: Creating an issue
-intro: 'Issues can be created in a variety of ways, so you can choose the most convenient method for your workflow.'
+intro: "Issues can be created in a variety of ways, so you can choose the most convenient method for your workflow."
 permissions: People with read permissions can create an issue in a repository where issues are enabled.
 redirect_from:
   - /github/managing-your-work-on-github/managing-your-work-with-issues-and-pull-requests/creating-an-issue
@@ -19,9 +19,9 @@ redirect_from:
   - /github/managing-your-work-on-github/about-automation-for-issues-and-pull-requests-with-query-parameters
   - /issues/tracking-your-work-with-issues/creating-issues/creating-an-issue
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Issues
@@ -46,13 +46,14 @@ Issues can be used to keep track of bugs, enhancements, or other requests. For m
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-issues %}
 {% data reusables.repositories.new_issue %}
+
 1. If your repository uses issue templates, click **Get started** next to the type of issue you'd like to open.
-  ![Select the type of issue you want to create](/assets/images/help/issues/issue_template_get_started_button.png)
+   ![Select the type of issue you want to create](/assets/images/help/issues/issue_template_get_started_button.png)
    Or, click **Open a blank issue** if the type of issue you'd like to open isn't included in the available options.
-  ![Link to open a blank issue](/assets/images/help/issues/blank_issue_link.png)
-{% data reusables.repositories.type-issue-title-and-description %}
-{% data reusables.repositories.assign-an-issue-as-project-maintainer %}
-{% data reusables.repositories.submit-new-issue %}
+   ![Link to open a blank issue](/assets/images/help/issues/blank_issue_link.png)
+   {% data reusables.repositories.type-issue-title-and-description %}
+   {% data reusables.repositories.assign-an-issue-as-project-maintainer %}
+   {% data reusables.repositories.submit-new-issue %}
 
 ## Creating an issue from a comment
 
@@ -60,17 +61,17 @@ You can open a new issue from a comment in an issue or pull request. When you op
 
 1. Navigate to the comment that you would like to open an issue from.
 2. In that comment, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab icon" %}.
-  ![Kebab button in pull request review comment](/assets/images/help/pull_requests/kebab-in-pull-request-review-comment.png)
+   ![Kebab button in pull request review comment](/assets/images/help/pull_requests/kebab-in-pull-request-review-comment.png)
 3. Click **Reference in new issue**.
-  ![Reference in new issue menu item](/assets/images/help/pull_requests/reference-in-new-issue.png)
+   ![Reference in new issue menu item](/assets/images/help/pull_requests/reference-in-new-issue.png)
 4. Use the "Repository" drop-down menu, and select the repository you want to open the issue in.
-  ![Repository dropdown for new issue](/assets/images/help/pull_requests/new-issue-repository.png)
+   ![Repository dropdown for new issue](/assets/images/help/pull_requests/new-issue-repository.png)
 5. Type a descriptive title and body for the issue.
-  ![Title and body for new issue](/assets/images/help/pull_requests/new-issue-title-and-body.png)
+   ![Title and body for new issue](/assets/images/help/pull_requests/new-issue-title-and-body.png)
 6. Click **Create issue**.
-  ![Button to create new issue](/assets/images/help/pull_requests/create-issue.png)
-{% data reusables.repositories.assign-an-issue-as-project-maintainer %}
-{% data reusables.repositories.submit-new-issue %}
+   ![Button to create new issue](/assets/images/help/pull_requests/create-issue.png)
+   {% data reusables.repositories.assign-an-issue-as-project-maintainer %}
+   {% data reusables.repositories.submit-new-issue %}
 
 ## Creating an issue from code
 
@@ -79,15 +80,14 @@ You can open a new issue from a specific line or lines of code in a file or pull
 ![Code snippet rendered in an issue opened from code](/assets/images/help/repository/issue-opened-from-code.png)
 
 {% data reusables.repositories.navigate-to-repo %}
-1. Locate the code you want to reference in an issue:
-    - To open an issue about code in a file, navigate to the file.
-    - To open an issue about code in a pull request, navigate to the pull request and click {% octicon "diff" aria-label="The file diff icon" %} **Files changed**. Then, browse to the file that contains the code you want include in your comment, and click **View**.
-{% data reusables.repositories.choose-line-or-range %}
-4. To the left of the code range, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab octicon" %}. In the drop-down menu, click **Reference in new issue**.
-  ![Kebab menu with option to open a new issue from a selected line](/assets/images/help/repository/open-new-issue-specific-line.png)
-{% data reusables.repositories.type-issue-title-and-description %}
-{% data reusables.repositories.assign-an-issue-as-project-maintainer %}
-{% data reusables.repositories.submit-new-issue %}
+
+1. Locate the code you want to reference in an issue: - To open an issue about code in a file, navigate to the file. - To open an issue about code in a pull request, navigate to the pull request and click {% octicon "diff" aria-label="The file diff icon" %} **Files changed**. Then, browse to the file that contains the code you want include in your comment, and click **View**.
+   {% data reusables.repositories.choose-line-or-range %}
+2. To the left of the code range, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab octicon" %}. In the drop-down menu, click **Reference in new issue**.
+   ![Kebab menu with option to open a new issue from a selected line](/assets/images/help/repository/open-new-issue-specific-line.png)
+   {% data reusables.repositories.type-issue-title-and-description %}
+   {% data reusables.repositories.assign-an-issue-as-project-maintainer %}
+   {% data reusables.repositories.submit-new-issue %}
 
 ## Creating an issue from a project board note
 
@@ -115,15 +115,15 @@ You must have the proper permissions for any action to use the equivalent query 
 
 If you create an invalid URL using query parameters, or if you don’t have the proper permissions, the URL will return a `404 Not Found` error page. If you create a URL that exceeds the server limit, the URL will return a `414 URI Too Long` error page.
 
-Query parameter | Example
----  | ---
-`title` | `https://github.com/octo-org/octo-repo/issues/new?labels=bug&title=New+bug+report` creates an issue with the label "bug" and title "New bug report."
-`body` | `https://github.com/octo-org/octo-repo/issues/new?title=New+bug+report&body=Describe+the+problem.` creates an issue with the title "New bug report" and the comment "Describe the problem" in the issue body.
-`labels` | `https://github.com/octo-org/octo-repo/issues/new?labels=help+wanted,bug` creates an issue with the labels "help wanted" and "bug".
-`milestone` | `https://github.com/octo-org/octo-repo/issues/new?milestone=testing+milestones` creates an issue with the milestone "testing milestones."
-`assignees` | `https://github.com/octo-org/octo-repo/issues/new?assignees=octocat` creates an issue and assigns it to @octocat.
-`projects` | `https://github.com/octo-org/octo-repo/issues/new?title=Bug+fix&projects=octo-org/1` creates an issue with the title "Bug fix" and adds it to the organization's project board 1.
-`template` | `https://github.com/octo-org/octo-repo/issues/new?template=issue_template.md` creates an issue with a template in the issue body. The `template` query parameter works with templates stored in an `ISSUE_TEMPLATE` subdirectory within the root, `docs/` or `.github/` directory in a repository. For more information, see "[Using templates to encourage useful issues and pull requests](/communities/using-templates-to-encourage-useful-issues-and-pull-requests)."
+| Query parameter | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | `https://github.com/octo-org/octo-repo/issues/new?labels=bug&title=New+bug+report` creates an issue with the label "bug" and title "New bug report."                                                                                                                                                                                                                                                                                                                      |
+| `body`          | `https://github.com/octo-org/octo-repo/issues/new?title=New+bug+report&body=Describe+the+problem.` creates an issue with the title "New bug report" and the comment "Describe the problem" in the issue body.                                                                                                                                                                                                                                                             |
+| `labels`        | `https://github.com/octo-org/octo-repo/issues/new?labels=help+wanted,bug` creates an issue with the labels "help wanted" and "bug".                                                                                                                                                                                                                                                                                                                                       |
+| `milestone`     | `https://github.com/octo-org/octo-repo/issues/new?milestone=testing+milestones` creates an issue with the milestone "testing milestones."                                                                                                                                                                                                                                                                                                                                 |
+| `assignees`     | `https://github.com/octo-org/octo-repo/issues/new?assignees=octocat` creates an issue and assigns it to @octocat.                                                                                                                                                                                                                                                                                                                                                         |
+| `projects`      | `https://github.com/octo-org/octo-repo/issues/new?title=Bug+fix&projects=octo-org/1` creates an issue with the title "Bug fix" and adds it to the organization's project board 1.                                                                                                                                                                                                                                                                                         |
+| `template`      | `https://github.com/octo-org/octo-repo/issues/new?template=issue_template.md` creates an issue with a template in the issue body. The `template` query parameter works with templates stored in an `ISSUE_TEMPLATE` subdirectory within the root, `docs/` or `.github/` directory in a repository. For more information, see "[Using templates to encourage useful issues and pull requests](/communities/using-templates-to-encourage-useful-issues-and-pull-requests)." |
 
 ## Further reading
 

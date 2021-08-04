@@ -1,16 +1,16 @@
 ---
 title: Installing a package
-intro: 'You can install a package from {% data variables.product.prodname_registry %} and use the package as a dependency in your own project.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can install a package from {% data variables.product.prodname_registry %} and use the package as a dependency in your own project."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /github/managing-packages-with-github-packages/installing-a-package
   - /packages/publishing-and-managing-packages/installing-a-package
   - /packages/manage-packages/installing-a-package
 permissions: You can install any package that you have permission to view.
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 ---
 
 {% data reusables.package_registry.packages-ghes-release-stage %}

@@ -5,7 +5,7 @@ permissions: Organization owners can cancel an invitation to become an outside c
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/canceling-an-invitation-to-become-an-outside-collaborator-in-your-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -19,10 +19,7 @@ For each pending collaborator, you can cancel all invitations to join organizati
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
 {% data reusables.organizations.people %}
-{% data reusables.organizations.people_tab_outside_collaborators %}
-5. Click **X pending collaborators**.
-  !["Pending collaborators" button](/assets/images/help/organizations/pending-collaborator-list.png)
-6. To the right of the person you want to cancel invitations for, click **Cancel invitations**.
-  !["Cancel invitation" button](/assets/images/help/organizations/cancel-pending-collaborators.png)
-7. Click **Cancel invitations for pending collaborators**.
-  ![Button to confirm cancellation](/assets/images/help/organizations/confirm-cancelation-of-pending-collaborators.png)
+{% data reusables.organizations.people_tab_outside_collaborators %} 5. Click **X pending collaborators**.
+!["Pending collaborators" button](/assets/images/help/organizations/pending-collaborator-list.png) 6. To the right of the person you want to cancel invitations for, click **Cancel invitations**.
+!["Cancel invitation" button](/assets/images/help/organizations/cancel-pending-collaborators.png) 7. Click **Cancel invitations for pending collaborators**.
+![Button to confirm cancellation](/assets/images/help/organizations/confirm-cancelation-of-pending-collaborators.png)

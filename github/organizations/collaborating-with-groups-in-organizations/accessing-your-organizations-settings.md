@@ -9,16 +9,17 @@ redirect_from:
   - /articles/accessing-your-organization-s-settings
   - /articles/accessing-your-organizations-settings
   - /github/setting-up-and-managing-organizations-and-teams/accessing-your-organizations-settings
-intro: 'The organization account settings page provides several ways to manage the account, such as billing, team membership, and repository settings.'
+intro: "The organization account settings page provides several ways to manage the account, such as billing, team membership, and repository settings."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
 shortTitle: Access organization settings
 ---
+
 {% ifversion fpt %}
 
 {% tip %}

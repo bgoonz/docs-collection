@@ -7,12 +7,13 @@ redirect_from:
   - /articles/deleting-a-project-board
   - /github/managing-your-work-on-github/deleting-a-project-board
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 {% data reusables.projects.project_boards_old %}
 
 {% tip %}
@@ -22,11 +23,11 @@ topics:
 {% endtip %}
 
 1. Navigate to the project board you want to delete.
-{% data reusables.project-management.click-menu %}
-{% data reusables.project-management.click-edit-sidebar-menu-project-board %}
-4. Click **Delete project**.
-![Delete project button](/assets/images/help/projects/delete-project-button.png)
-5. To confirm that you want to delete the project board, click **OK**.
+   {% data reusables.project-management.click-menu %}
+   {% data reusables.project-management.click-edit-sidebar-menu-project-board %}
+2. Click **Delete project**.
+   ![Delete project button](/assets/images/help/projects/delete-project-button.png)
+3. To confirm that you want to delete the project board, click **OK**.
 
 ## Further reading
 

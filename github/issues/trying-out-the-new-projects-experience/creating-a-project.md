@@ -1,10 +1,10 @@
 ---
 title: Creating a project (beta)
-intro: 'Learn how to make a project, populate it, and add custom fields.'
+intro: "Learn how to make a project, populate it, and add custom fields."
 allowTitleToDifferFromFilename: true
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
+  fpt: "*"
 type: quick_start
 topics:
   - Projects
@@ -64,7 +64,7 @@ As field values change, they are automatically synced so that your project and t
 
 ### Showing existing fields
 
-Your project tracks up-to-date information about  issues and pull requests, including any changes to the title, assignees, labels, milestones, and repository. When your project initializes, "title" and "assignees" are displayed; the other fields are hidden. You can change the visibility of these fields in your project.
+Your project tracks up-to-date information about issues and pull requests, including any changes to the title, assignees, labels, milestones, and repository. When your project initializes, "title" and "assignees" are displayed; the other fields are hidden. You can change the visibility of these fields in your project.
 
 1. {% data reusables.projects.open-command-palette %}
 2. Start typing "show".

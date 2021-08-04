@@ -1,13 +1,13 @@
 ---
 title: Converting an organization member to an outside collaborator
-intro: 'If a current member of your organization only needs access to certain repositories, such as consultants or temporary employees, you can convert them to an *outside collaborator*.'
+intro: "If a current member of your organization only needs access to certain repositories, such as consultants or temporary employees, you can convert them to an *outside collaborator*."
 redirect_from:
   - /articles/converting-an-organization-member-to-an-outside-collaborator
   - /github/setting-up-and-managing-organizations-and-teams/converting-an-organization-member-to-an-outside-collaborator
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -33,13 +33,10 @@ When you convert an organization member to an outside collaborator, their privil
 
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
-{% data reusables.organizations.people %}
-4. Select the person or people you'd like to convert to outside collaborators.
-  ![List of members with two members selected](/assets/images/help/teams/list-of-members-selected-bulk.png)
-5. Above the list of members, use the drop-down menu and click **Convert to outside collaborator**.
-  ![Drop-down menu with option to convert members to outside collaborators](/assets/images/help/teams/user-bulk-management-options.png)
-6. Read the information about converting members to outside collaborators, then click **Convert to outside collaborator**.
-  ![Information on outside collaborators permissions and Convert to outside collaborators button](/assets/images/help/teams/confirm-outside-collaborator-bulk.png)
+{% data reusables.organizations.people %} 4. Select the person or people you'd like to convert to outside collaborators.
+![List of members with two members selected](/assets/images/help/teams/list-of-members-selected-bulk.png) 5. Above the list of members, use the drop-down menu and click **Convert to outside collaborator**.
+![Drop-down menu with option to convert members to outside collaborators](/assets/images/help/teams/user-bulk-management-options.png) 6. Read the information about converting members to outside collaborators, then click **Convert to outside collaborator**.
+![Information on outside collaborators permissions and Convert to outside collaborators button](/assets/images/help/teams/confirm-outside-collaborator-bulk.png)
 
 ## Further reading
 

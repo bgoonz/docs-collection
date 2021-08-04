@@ -1,16 +1,16 @@
 ---
 title: Configuring a publishing source for your GitHub Pages site
-intro: 'If you use the default publishing source for your {% data variables.product.prodname_pages %} site, your site will publish automatically. You can also choose to publish your{% ifversion ghes < 3.0 %} project{% endif %} site from a different branch or folder.'
+intro: "If you use the default publishing source for your {% data variables.product.prodname_pages %} site, your site will publish automatically. You can also choose to publish your{% ifversion ghes < 3.0 %} project{% endif %} site from a different branch or folder."
 redirect_from:
   - /articles/configuring-a-publishing-source-for-github-pages/
   - /articles/configuring-a-publishing-source-for-your-github-pages-site
   - /github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-product: '{% data reusables.gated-features.pages %}'
-permissions: 'People with admin or maintainer permissions for a repository can configure a publishing source for a {% data variables.product.prodname_pages %} site.'
+product: "{% data reusables.gated-features.pages %}"
+permissions: "People with admin or maintainer permissions for a repository can configure a publishing source for a {% data variables.product.prodname_pages %} site."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pages
 shortTitle: Configure publishing source
@@ -25,15 +25,11 @@ Before you configure a publishing source, make sure the branch{% ifversion ghes 
 {% data reusables.pages.navigate-site-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.pages.sidebar-pages %}
-{% ifversion fpt or ghes > 2.22 or ghae %}
-3. Under "{% data variables.product.prodname_pages %}", use the **None** or **Branch** drop-down menu and select a publishing source.
-  ![Drop-down menu to select a publishing source](/assets/images/help/pages/publishing-source-drop-down.png)
-4. Optionally, use the drop-down menu to select a folder for your publishing source.
-  ![Drop-down menu to select a folder for publishing source](/assets/images/help/pages/publishing-source-folder-drop-down.png)
-5. Click **Save**.
-  ![Button to save changes to publishing source settings](/assets/images/help/pages/publishing-source-save.png){% else %}
-3. Under "{% data variables.product.prodname_pages %}", use the **Source** drop-down menu and select a publishing source.
-   ![Drop down menu to select a publishing source](/assets/images/help/pages/publishing-source-drop-down.png)
+{% ifversion fpt or ghes > 2.22 or ghae %} 3. Under "{% data variables.product.prodname_pages %}", use the **None** or **Branch** drop-down menu and select a publishing source.
+![Drop-down menu to select a publishing source](/assets/images/help/pages/publishing-source-drop-down.png) 4. Optionally, use the drop-down menu to select a folder for your publishing source.
+![Drop-down menu to select a folder for publishing source](/assets/images/help/pages/publishing-source-folder-drop-down.png) 5. Click **Save**.
+![Button to save changes to publishing source settings](/assets/images/help/pages/publishing-source-save.png){% else %} 3. Under "{% data variables.product.prodname_pages %}", use the **Source** drop-down menu and select a publishing source.
+![Drop down menu to select a publishing source](/assets/images/help/pages/publishing-source-drop-down.png)
 {% endif %}
 
 ## Troubleshooting publishing problems with your {% data variables.product.prodname_pages %} site

@@ -4,9 +4,9 @@ redirect_from:
   - /v4/union
   - /v4/reference/union
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
@@ -20,5 +20,5 @@ For example, a field marked as an [`ProjectCardItem`](/graphql/reference/unions#
 For more information, see "[Introduction to GraphQL](/graphql/guides/introduction-to-graphql)."
 
 {% for item in graphql.schemaForCurrentVersion.unions %}
-  {% include graphql-union %}
+{% include graphql-union %}
 {% endfor %}

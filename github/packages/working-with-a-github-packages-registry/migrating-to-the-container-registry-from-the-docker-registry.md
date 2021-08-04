@@ -1,13 +1,13 @@
 ---
 title: Migrating to the Container registry from the Docker registry
-intro: 'Docker images previously stored in the Docker registry are being automatically migrated to the {% data variables.product.prodname_container_registry %}.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "Docker images previously stored in the Docker registry are being automatically migrated to the {% data variables.product.prodname_container_registry %}."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /packages/getting-started-with-github-container-registry/migrating-to-github-container-registry-for-docker-images
   - /packages/guides/container-guides-for-github-packages/migrating-to-github-container-registry-for-docker-images
   - /packages/guides/migrating-to-github-container-registry-for-docker-images
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Migrate to Container registry
 ---
 
@@ -19,8 +19,8 @@ Migration is being done gradually, rather than all at once. If your images haven
 
 After your Docker images have been migrated to the {% data variables.product.prodname_container_registry %} you will see the following changes on the details page for a package:
 
-* The icon is now the {% data variables.product.prodname_container_registry %} logo, previously it was a Docker logo.
-* The domain in the pull URL is now `ghcr.io`, previously it was `docker.pkg.github.com`.
+- The icon is now the {% data variables.product.prodname_container_registry %} logo, previously it was a Docker logo.
+- The domain in the pull URL is now `ghcr.io`, previously it was `docker.pkg.github.com`.
 
 ![{% data variables.product.prodname_container_registry %} details page](/assets/images/help/package-registry/container-registry-details-page.png)
 
@@ -29,6 +29,7 @@ After your Docker images have been migrated to the {% data variables.product.pro
 The {% data variables.product.prodname_container_registry %} is optimized to support some of the unique needs of containers.
 
 With the {% data variables.product.prodname_container_registry %} you can:
+
 - Store container images within your organization and user account, or connect them to a repository.
 - Choose whether to inherit permissions from a repository, or set granular permissions independently of a repository.
 - Access public container images anonymously.
@@ -39,4 +40,4 @@ After migration you'll no longer be able to use the GraphQL API to query for pac
 
 ## Billing
 
-For more information about billing for the {% data variables.product.prodname_container_registry %}, see "[About  billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."
+For more information about billing for the {% data variables.product.prodname_container_registry %}, see "[About billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."

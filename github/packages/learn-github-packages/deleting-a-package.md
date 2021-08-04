@@ -1,10 +1,10 @@
 ---
 title: Deleting a package
-intro: 'You can delete a version of a {% ifversion not ghae %}private{% endif %} package using GraphQL or on {% data variables.product.product_name %}.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can delete a version of a {% ifversion not ghae %}private{% endif %} package using GraphQL or on {% data variables.product.product_name %}."
+product: "{% data reusables.gated-features.packages %}"
 versions:
-  ghes: '>=2.22 <3.1'
-  ghae: '*'
+  ghes: ">=2.22 <3.1"
+  ghae: "*"
 ---
 
 {% data reusables.package_registry.packages-ghes-release-stage %}
@@ -19,15 +19,11 @@ You can only delete a specified version of a {% ifversion not ghae %}private {% 
 To delete a {% ifversion not ghae %}private {% endif %}package version, you must have admin permissions in the repository.
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.package_registry.packages-from-code-tab %}
-3. Click the name of the package that you want to delete.
-  ![Package name](/assets/images/help/package-registry/select-pkg-cloud.png)
-4. On the right, use the **Edit package** drop-down and select "Manage versions".
-  ![Package name](/assets/images/help/package-registry/manage-versions.png)
-5. To the right of the version you want to delete, click **Delete**.
-  ![Delete package button](/assets/images/help/package-registry/delete-package-button.png)
-6. To confirm deletion, type the package name and click **I understand the consequences, delete this version**.
-  ![Confirm package deletion button](/assets/images/help/package-registry/confirm-package-deletion.png)
+{% data reusables.package_registry.packages-from-code-tab %} 3. Click the name of the package that you want to delete.
+![Package name](/assets/images/help/package-registry/select-pkg-cloud.png) 4. On the right, use the **Edit package** drop-down and select "Manage versions".
+![Package name](/assets/images/help/package-registry/manage-versions.png) 5. To the right of the version you want to delete, click **Delete**.
+![Delete package button](/assets/images/help/package-registry/delete-package-button.png) 6. To confirm deletion, type the package name and click **I understand the consequences, delete this version**.
+![Confirm package deletion button](/assets/images/help/package-registry/confirm-package-deletion.png)
 
 ## Deleting a version of a {% ifversion not ghae %}private {% endif %}package with GraphQL
 

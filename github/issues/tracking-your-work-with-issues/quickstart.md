@@ -1,12 +1,12 @@
 ---
 title: Quickstart for GitHub Issues
-intro: 'Follow this brief interactive guide to learn about {% data variables.product.prodname_github_issues %}.'
+intro: "Follow this brief interactive guide to learn about {% data variables.product.prodname_github_issues %}."
 allowTitleToDifferFromFilename: true
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 type: quick_start
 topics:
   - Issues
@@ -28,6 +28,7 @@ First, create an issue. There are multiple ways to create an issue; you can choo
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-issues %}
 {% data reusables.repositories.new_issue %}
+
 1. In this example, we will start with a blank issue. Your repository may use issue templates{% ifversion fpt %} and issue forms{% endif %} to encourage contributors to provide specific information. If your repository uses issue templates, {% ifversion fpt or ghes %}click **Open a blank issue**{% else %}click **Open a regular issue.**{% endif %}.
 
 ![blank issue](/assets/images/help/issues/blank-issue.png)

@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Using the GraphQL API for Discussions</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">Using the GraphQL API for Discussions</h1>
-</header>
-<p>The {% data variables.product.prodname_discussions %} GraphQL API allows you to get, create, edit, and delete discussion posts. For more information about {% data variables.product.prodname_discussions %}, see “<a href="/discussions/collaborating-with-your-community-using-discussions/about-discussions">‎About discussions</a>.”</p>
-<p>This API is available for authenticated users, OAuth Apps, and GitHub Apps. Access tokens require the <code>repo</code> scope for private repositories and the <code>public_repo</code> scope for public repositories. For more information, see “<a href="/developers/apps/scopes-for-oauth-apps">Scopes for OAuth apps</a>.”</p>
-<h2 id="fields">Fields</h2>
-<h3 id="repository.discussions">Repository.discussions</h3>
-<p>List the discussions within a repository. If <code>categoryId</code> is specified, only results within that category will be returned.</p>
-<p><em>Signature:</em></p>
-<pre class="graphql"><code>discussions(
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using the GraphQL API for Discussions</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using the GraphQL API for Discussions</h1>
+    </header>
+    <p>
+      The {% data variables.product.prodname_discussions %} GraphQL API allows
+      you to get, create, edit, and delete discussion posts. For more
+      information about {% data variables.product.prodname_discussions %}, see
+      “<a
+        href="/discussions/collaborating-with-your-community-using-discussions/about-discussions"
+        >‎About discussions</a
+      >.”
+    </p>
+    <p>
+      This API is available for authenticated users, OAuth Apps, and GitHub
+      Apps. Access tokens require the <code>repo</code> scope for private
+      repositories and the <code>public_repo</code> scope for public
+      repositories. For more information, see “<a
+        href="/developers/apps/scopes-for-oauth-apps"
+        >Scopes for OAuth apps</a
+      >.”
+    </p>
+    <h2 id="fields">Fields</h2>
+    <h3 id="repository.discussions">Repository.discussions</h3>
+    <p>
+      List the discussions within a repository. If <code>categoryId</code> is
+      specified, only results within that category will be returned.
+    </p>
+    <p><em>Signature:</em></p>
+    <pre class="graphql"><code>discussions(
   after: String,
   before: String,
   first: Int,
@@ -30,8 +62,8 @@
   categoryId: ID = null,
   orderBy: DiscussionOrder = {field: UPDATED_AT, direction: DESC}
 ) : Discussion</code></pre>
-<h4 id="discussionorder">DiscussionOrder</h4>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    <h4 id="discussionorder">DiscussionOrder</h4>
+    <pre class="graphql"><code>&quot;&quot;&quot;
 Ways in which discussions can be ordered.
 &quot;&quot;&quot;
 input DiscussionOrder {
@@ -45,7 +77,7 @@ input DiscussionOrder {
   &quot;&quot;&quot;
   direction: OrderDirection!
 }</code></pre>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    <pre class="graphql"><code>&quot;&quot;&quot;
 Properties by which discussion connections can be ordered.
 &quot;&quot;&quot;
 enum DiscussionOrderField {
@@ -59,31 +91,54 @@ enum DiscussionOrderField {
   &quot;&quot;&quot;
   UPDATED_AT
 }</code></pre>
-<h3 id="repository.discussioncategories">Repository.discussionCategories</h3>
-<p>Return the available discussion categories defined within this repository. Each repository may have up to 10 categories. For more information about discussion categories, see “<a href="/discussions/collaborating-with-your-community-using-discussions/about-discussions#about-categories-and-formats-for-discussions">About discussions</a>.”</p>
-<p><em>Signature:</em></p>
-<pre class="graphql"><code>discussionCategories(
+    <h3 id="repository.discussioncategories">
+      Repository.discussionCategories
+    </h3>
+    <p>
+      Return the available discussion categories defined within this repository.
+      Each repository may have up to 10 categories. For more information about
+      discussion categories, see “<a
+        href="/discussions/collaborating-with-your-community-using-discussions/about-discussions#about-categories-and-formats-for-discussions"
+        >About discussions</a
+      >.”
+    </p>
+    <p><em>Signature:</em></p>
+    <pre class="graphql"><code>discussionCategories(
   after: String,
   before: String,
   first: Int,
   last: Int,
 ) : DiscussionCategoryConnection!</code></pre>
-<h3 id="repository.discussion">Repository.discussion</h3>
-<p>Get a discussion. Returns <code>null</code> if discussion with the specified ID does not exist.</p>
-<p><em>Signature:</em></p>
-<pre class="graphql"><code>discussion(number: Int!) : Discussion</code></pre>
-<h3 id="repository.pinneddiscussions">Repository.pinnedDiscussions</h3>
-<p>Return discussions pinned to this repository, ordered by pin position.</p>
-<p><em>Signature:</em></p>
-<pre class="graphql"><code>pinnedDiscussions(
+    <h3 id="repository.discussion">Repository.discussion</h3>
+    <p>
+      Get a discussion. Returns <code>null</code> if discussion with the
+      specified ID does not exist.
+    </p>
+    <p><em>Signature:</em></p>
+    <pre
+      class="graphql"
+    ><code>discussion(number: Int!) : Discussion</code></pre>
+    <h3 id="repository.pinneddiscussions">Repository.pinnedDiscussions</h3>
+    <p>
+      Return discussions pinned to this repository, ordered by pin position.
+    </p>
+    <p><em>Signature:</em></p>
+    <pre class="graphql"><code>pinnedDiscussions(
   after: String,
   before: String,
   first: Int,
   last: Int,
 ) : PinnedDiscussionConnection!</code></pre>
-<h2 id="objects">Objects</h2>
-<p><strong>Note:</strong> For brevity, connection types are not expanded here. Each connection type mentioned in the schema follows the same pattern as other connections in the GraphQL API. For more information, see “<a href="/graphql/guides/introduction-to-graphql#connection">Introduction to GraphQL</a>.”</p>
-<pre class="graphql"><code>query {
+    <h2 id="objects">Objects</h2>
+    <p>
+      <strong>Note:</strong> For brevity, connection types are not expanded
+      here. Each connection type mentioned in the schema follows the same
+      pattern as other connections in the GraphQL API. For more information, see
+      “<a href="/graphql/guides/introduction-to-graphql#connection"
+        >Introduction to GraphQL</a
+      >.”
+    </p>
+    <pre class="graphql"><code>query {
   repository(owner: &quot;github&quot;, name: &quot;some-repo&quot;) {
     discussions(first: 10) {
       # type: DiscussionConnection
@@ -113,10 +168,10 @@ enum DiscussionOrderField {
     }
   }
 }</code></pre>
-<h3 id="discussion">Discussion</h3>
-<details>
-<p><summary>Fields:</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    <h3 id="discussion">Discussion</h3>
+    <details>
+      <p><summary>Fields:</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 A discussion in a repository.
 &quot;&quot;&quot;
 type Discussion implements Comment &amp; Deletable &amp; Lockable &amp; Node &amp; Reactable &amp; RepositoryNode &amp; Subscribable &amp; Updatable {
@@ -361,11 +416,11 @@ type Discussion implements Comment &amp; Deletable &amp; Lockable &amp; Node &am
   &quot;&quot;&quot;
   viewerSubscription: SubscriptionState
 }</code></pre>
-</details>
-<h3 id="discussioncomment">DiscussionComment</h3>
-<details>
-<p><summary>Fields</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h3 id="discussioncomment">DiscussionComment</h3>
+    <details>
+      <p><summary>Fields</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 A comment on a discussion.
 &quot;&quot;&quot;
 type DiscussionComment implements Comment &amp; Deletable &amp; Minimizable &amp; Node &amp; Reactable &amp; Updatable &amp; UpdatableComment {
@@ -605,11 +660,11 @@ type DiscussionComment implements Comment &amp; Deletable &amp; Minimizable &amp
   &quot;&quot;&quot;
   viewerDidAuthor: Boolean!
 }</code></pre>
-</details>
-<h3 id="discussioncategory">DiscussionCategory</h3>
-<details>
-<p><summary>Fields</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h3 id="discussioncategory">DiscussionCategory</h3>
+    <details>
+      <p><summary>Fields</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 A category for discussions in a repository.
 &quot;&quot;&quot;
 type DiscussionCategory implements Node &amp; RepositoryNode {
@@ -654,11 +709,11 @@ type DiscussionCategory implements Node &amp; RepositoryNode {
   &quot;&quot;&quot;
   updatedAt: DateTime!
 }</code></pre>
-</details>
-<h3 id="pinneddiscussion">PinnedDiscussion</h3>
-<details>
-<p><summary>Fields:</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h3 id="pinneddiscussion">PinnedDiscussion</h3>
+    <details>
+      <p><summary>Fields:</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 A Pinned discussion is a discussion pinned to a repository&#39;s index page.
 &quot;&quot;&quot;
 type PinnedDiscussion implements Node &amp; RepositoryNode {
@@ -708,11 +763,11 @@ type PinnedDiscussion implements Node &amp; RepositoryNode {
   &quot;&quot;&quot;
   updatedAt: DateTime!
 }</code></pre>
-</details>
-<h4 id="pinneddiscussionpattern">PinnedDiscussionPattern</h4>
-<details>
-<p><summary>Values</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h4 id="pinneddiscussionpattern">PinnedDiscussionPattern</h4>
+    <details>
+      <p><summary>Values</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 Preconfigured background patterns that may be used to style discussions pinned within a repository.
 &quot;&quot;&quot;
 enum PinnedDiscussionPattern {
@@ -746,11 +801,11 @@ enum PinnedDiscussionPattern {
   &quot;&quot;&quot;
   PLUS
 }</code></pre>
-</details>
-<h4 id="pinneddiscussiongradient">PinnedDiscussionGradient</h4>
-<details>
-<p><summary>Values</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h4 id="pinneddiscussiongradient">PinnedDiscussionGradient</h4>
+    <details>
+      <p><summary>Values</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 Preconfigured gradients that may be used to style discussions pinned within a repository.
 &quot;&quot;&quot;
 enum PinnedDiscussionGradient {
@@ -779,13 +834,18 @@ enum PinnedDiscussionGradient {
   &quot;&quot;&quot;
   RED_ORANGE
 }</code></pre>
-</details>
-<h2 id="interfaces">Interfaces</h2>
-<h3 id="repositorydiscussionauthor">RepositoryDiscussionAuthor</h3>
-<p>Implemented by the <code>User</code> and <code>Organization</code> types. <strong>Note:</strong> An <code>Organization</code> will only have discussions associated with it if it was converted from a <code>User</code>.</p>
-<details>
-<p><summary>Fields</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h2 id="interfaces">Interfaces</h2>
+    <h3 id="repositorydiscussionauthor">RepositoryDiscussionAuthor</h3>
+    <p>
+      Implemented by the <code>User</code> and <code>Organization</code> types.
+      <strong>Note:</strong> An <code>Organization</code> will only have
+      discussions associated with it if it was converted from a
+      <code>User</code>.
+    </p>
+    <details>
+      <p><summary>Fields</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 Represents an author of discussions in repositories.
 &quot;&quot;&quot;
 interface RepositoryDiscussionAuthor {
@@ -830,12 +890,17 @@ interface RepositoryDiscussionAuthor {
     repositoryId: ID
   ): DiscussionConnection!
 }</code></pre>
-</details>
-<h3 id="repositorydiscussioncommentauthor">RepositoryDiscussionCommentAuthor</h3>
-<p>Also implemented by the <code>User</code> and <code>Organization</code> types.</p>
-<details>
-<p><summary>Fields</summary></p>
-<pre class="graphql"><code>&quot;&quot;&quot;
+    </details>
+    <h3 id="repositorydiscussioncommentauthor">
+      RepositoryDiscussionCommentAuthor
+    </h3>
+    <p>
+      Also implemented by the <code>User</code> and
+      <code>Organization</code> types.
+    </p>
+    <details>
+      <p><summary>Fields</summary></p>
+      <pre class="graphql"><code>&quot;&quot;&quot;
 Represents an author of discussion comments in repositories.
 &quot;&quot;&quot;
 interface RepositoryDiscussionCommentAuthor {
@@ -874,11 +939,19 @@ interface RepositoryDiscussionCommentAuthor {
     repositoryId: ID
   ): DiscussionCommentConnection!
 }</code></pre>
-</details>
-<h2 id="mutations">Mutations</h2>
-<p>These mutations follow the same implementation pattern that other mutations in the GraphQL API. Each mutation accepts a single argument of an <code>Input</code> type, named after the mutation, and returns a <code>Payload</code> type containing the fields specified.</p>
-<p>For example, this is a basic <code>createDiscussion</code> mutation that will create a new discussion:</p>
-<pre class="graphql"><code>mutation {
+    </details>
+    <h2 id="mutations">Mutations</h2>
+    <p>
+      These mutations follow the same implementation pattern that other
+      mutations in the GraphQL API. Each mutation accepts a single argument of
+      an <code>Input</code> type, named after the mutation, and returns a
+      <code>Payload</code> type containing the fields specified.
+    </p>
+    <p>
+      For example, this is a basic <code>createDiscussion</code> mutation that
+      will create a new discussion:
+    </p>
+    <pre class="graphql"><code>mutation {
   # input type: CreateDiscussionInput
   createDiscussion(input: {repositoryId: &quot;1234&quot;, categoryId: &quot;5678&quot;, body: &quot;The body&quot;, title: &quot;The title&quot;}) {
 
@@ -888,104 +961,219 @@ interface RepositoryDiscussionCommentAuthor {
     }
   }
 }</code></pre>
-<h3 id="creatediscussion">createDiscussion</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>body: String!</code> The body of the new discussion.</li>
-<li><code>title: String!</code> The title of the new discussion.</li>
-<li><code>repositoryId: ID!</code> The ID of a repository in which to create the discussion.</li>
-<li><code>categoryId: ID!</code> The ID of a <code>DiscussionCategory</code> within this repository.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>discussion: Discussion</code> The discussion that was created.</li>
-</ul>
-<h3 id="updatediscussion">updateDiscussion</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>discussionId: ID!</code> The node ID of the discussion to update.</li>
-<li><code>body: String</code> The new contents of the discussion body.</li>
-<li><code>title: String</code> The new discussion title.</li>
-<li><code>categoryId: ID</code> The node ID of a <code>DiscussionCategory</code> within the same repository to change this discussion to.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>discussion: Discussion</code> The discussion that was modified.</li>
-</ul>
-<h3 id="deletediscussion">deleteDiscussion</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>id: ID!</code> The node ID of the discussion to delete.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>discussion: Discussion</code> The discussion that was deleted.</li>
-</ul>
-<h3 id="adddiscussioncomment">addDiscussionComment</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>body: String!</code> The contents of the comment.</li>
-<li><code>discussionId: ID!</code> The node ID of the discussion to comment on.</li>
-<li><code>replyToId: ID</code> The node ID of the discussion comment to reply to. If absent, the created comment will be a top-level comment.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>comment: DiscussionComment</code> The discussion comment that was created.</li>
-</ul>
-<h3 id="updatediscussioncomment">updateDiscussionComment</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>body: String!</code> The new contents of the comment body.</li>
-<li><code>commentId: ID!</code> The node ID of the discussion comment to update.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>comment: DiscussionComment</code> The discussion comment that was updated.</li>
-</ul>
-<h3 id="deletediscussioncomment">deleteDiscussionComment</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>id: ID!</code> The node ID of the discussion comment to delete.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>comment: DiscussionComment</code> The discussion comment that was deleted.</li>
-</ul>
-<h3 id="markdiscussioncommentasanswer">markDiscussionCommentAsAnswer</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>id: ID!</code> The node ID of the discussion comment to mark as an answer.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>discussion: Discussion</code> The discussion that includes the chosen comment.</li>
-</ul>
-<h3 id="unmarkdiscussioncommentasanswer">unmarkDiscussionCommentAsAnswer</h3>
-<p>Input fields:</p>
-<ul>
-<li><code>id: ID!</code> The node ID of the discussion comment to unmark as an answer.</li>
-<li><code>clientMutationId: String</code> A unique identifier for the client performing the mutation.</li>
-</ul>
-<p>Return type fields:</p>
-<ul>
-<li><code>clientMutationId: String</code> The unique identifier provided as an input.</li>
-<li><code>discussion: Discussion</code> The discussion that includes the unmarked comment.</li>
-</ul>
-<h2 id="search">Search</h2>
-<p>Discussion may be returned from the top-level <code>search</code> field. To search for discussion, specify <code>type</code> as <code>DISCUSSION</code>. The <code>SearchResultItemConnection</code> type has a <code>discussionCount</code> field to report the number of returned discussions, and the <code>Discussion</code> type is added to the <code>SearchResultItem</code> union. For more information, see “<a href="/graphql/reference/queries#searchresultitemconnection">Queries</a>” and “<a href="/github/searching-for-information-on-github/searching-discussions">Searching discussions</a>.”</p>
-</body>
+    <h3 id="creatediscussion">createDiscussion</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li><code>body: String!</code> The body of the new discussion.</li>
+      <li><code>title: String!</code> The title of the new discussion.</li>
+      <li>
+        <code>repositoryId: ID!</code> The ID of a repository in which to create
+        the discussion.
+      </li>
+      <li>
+        <code>categoryId: ID!</code> The ID of a
+        <code>DiscussionCategory</code> within this repository.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>discussion: Discussion</code> The discussion that was created.
+      </li>
+    </ul>
+    <h3 id="updatediscussion">updateDiscussion</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li>
+        <code>discussionId: ID!</code> The node ID of the discussion to update.
+      </li>
+      <li>
+        <code>body: String</code> The new contents of the discussion body.
+      </li>
+      <li><code>title: String</code> The new discussion title.</li>
+      <li>
+        <code>categoryId: ID</code> The node ID of a
+        <code>DiscussionCategory</code> within the same repository to change
+        this discussion to.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>discussion: Discussion</code> The discussion that was modified.
+      </li>
+    </ul>
+    <h3 id="deletediscussion">deleteDiscussion</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li><code>id: ID!</code> The node ID of the discussion to delete.</li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>discussion: Discussion</code> The discussion that was deleted.
+      </li>
+    </ul>
+    <h3 id="adddiscussioncomment">addDiscussionComment</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li><code>body: String!</code> The contents of the comment.</li>
+      <li>
+        <code>discussionId: ID!</code> The node ID of the discussion to comment
+        on.
+      </li>
+      <li>
+        <code>replyToId: ID</code> The node ID of the discussion comment to
+        reply to. If absent, the created comment will be a top-level comment.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>comment: DiscussionComment</code> The discussion comment that was
+        created.
+      </li>
+    </ul>
+    <h3 id="updatediscussioncomment">updateDiscussionComment</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li><code>body: String!</code> The new contents of the comment body.</li>
+      <li>
+        <code>commentId: ID!</code> The node ID of the discussion comment to
+        update.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>comment: DiscussionComment</code> The discussion comment that was
+        updated.
+      </li>
+    </ul>
+    <h3 id="deletediscussioncomment">deleteDiscussionComment</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li>
+        <code>id: ID!</code> The node ID of the discussion comment to delete.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>comment: DiscussionComment</code> The discussion comment that was
+        deleted.
+      </li>
+    </ul>
+    <h3 id="markdiscussioncommentasanswer">markDiscussionCommentAsAnswer</h3>
+    <p>Input fields:</p>
+    <ul>
+      <li>
+        <code>id: ID!</code> The node ID of the discussion comment to mark as an
+        answer.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>discussion: Discussion</code> The discussion that includes the
+        chosen comment.
+      </li>
+    </ul>
+    <h3 id="unmarkdiscussioncommentasanswer">
+      unmarkDiscussionCommentAsAnswer
+    </h3>
+    <p>Input fields:</p>
+    <ul>
+      <li>
+        <code>id: ID!</code> The node ID of the discussion comment to unmark as
+        an answer.
+      </li>
+      <li>
+        <code>clientMutationId: String</code> A unique identifier for the client
+        performing the mutation.
+      </li>
+    </ul>
+    <p>Return type fields:</p>
+    <ul>
+      <li>
+        <code>clientMutationId: String</code> The unique identifier provided as
+        an input.
+      </li>
+      <li>
+        <code>discussion: Discussion</code> The discussion that includes the
+        unmarked comment.
+      </li>
+    </ul>
+    <h2 id="search">Search</h2>
+    <p>
+      Discussion may be returned from the top-level <code>search</code> field.
+      To search for discussion, specify <code>type</code> as
+      <code>DISCUSSION</code>. The <code>SearchResultItemConnection</code> type
+      has a <code>discussionCount</code> field to report the number of returned
+      discussions, and the <code>Discussion</code> type is added to the
+      <code>SearchResultItem</code> union. For more information, see “<a
+        href="/graphql/reference/queries#searchresultitemconnection"
+        >Queries</a
+      >” and “<a
+        href="/github/searching-for-information-on-github/searching-discussions"
+        >Searching discussions</a
+      >.”
+    </p>
+  </body>
 </html>

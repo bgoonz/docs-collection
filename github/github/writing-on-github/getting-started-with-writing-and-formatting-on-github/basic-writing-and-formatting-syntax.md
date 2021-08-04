@@ -5,18 +5,21 @@ redirect_from:
   - /articles/basic-writing-and-formatting-syntax
   - /github/writing-on-github/basic-writing-and-formatting-syntax
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Basic formatting syntax
 ---
+
 ## Headings
 
 To create a heading, add one to six `#` symbols before your heading text. The number of `#` you use will determine the size of the heading.
 
 ```markdown
 # The largest heading
+
 ## The second largest heading
+
 ###### The smallest heading
 ```
 
@@ -24,15 +27,15 @@ To create a heading, add one to six `#` symbols before your heading text. The nu
 
 ## Styling text
 
-You can indicate emphasis with bold, italic, or strikethrough text in comment fields and `.md` files.  
+You can indicate emphasis with bold, italic, or strikethrough text in comment fields and `.md` files.
 
-| Style | Syntax | Keyboard shortcut | Example | Output |
-| --- | --- | --- | --- | --- |
-| Bold | `** **` or `__ __` | command/control + b | `**This is bold text**` | **This is bold text** |
-| Italic | `* *` or `_ _` | command/control + i | `*This text is italicized*` | *This text is italicized* |
-| Strikethrough | `~~ ~~` | | `~~This was mistaken text~~` | ~~This was mistaken text~~ |
-| Bold and nested italic | `** **` and `_ _` | | `**This text is _extremely_ important**` | **This text is _extremely_ important** |
-| All bold and italic | `*** ***` | | `***All this text is important***` | ***All this text is important*** |
+| Style                  | Syntax             | Keyboard shortcut   | Example                                  | Output                                 |
+| ---------------------- | ------------------ | ------------------- | ---------------------------------------- | -------------------------------------- |
+| Bold                   | `** **` or `__ __` | command/control + b | `**This is bold text**`                  | **This is bold text**                  |
+| Italic                 | `* *` or `_ _`     | command/control + i | `*This text is italicized*`              | _This text is italicized_              |
+| Strikethrough          | `~~ ~~`            |                     | `~~This was mistaken text~~`             | ~~This was mistaken text~~             |
+| Bold and nested italic | `** **` and `_ _`  |                     | `**This text is _extremely_ important**` | **This text is _extremely_ important** |
+| All bold and italic    | `*** ***`          |                     | `***All this text is important***`       | **_All this text is important_**       |
 
 ## Quoting text
 
@@ -146,7 +149,7 @@ In this example, you could add a nested list item under the list item `100. Firs
      - First nested list item
 ```
 
-![List with a nested list item](/assets/images/help/writing/nested-list-example-3.png)   
+![List with a nested list item](/assets/images/help/writing/nested-list-example-3.png)
 
 You can create multiple levels of nested lists using the same method. For example, because the first nested list item has seven spaces (`␣␣␣␣␣-␣`) before the nested list content `First nested list item`, you would need to indent the second nested list item by seven spaces.
 
@@ -156,7 +159,7 @@ You can create multiple levels of nested lists using the same method. For exampl
        - Second nested list item
 ```
 
-![List with two levels of nested items](/assets/images/help/writing/nested-list-example-2.png)    
+![List with two levels of nested items](/assets/images/help/writing/nested-list-example-2.png)
 
 For more examples, see the [GitHub Flavored Markdown Spec](https://github.github.com/gfm/#example-265).
 

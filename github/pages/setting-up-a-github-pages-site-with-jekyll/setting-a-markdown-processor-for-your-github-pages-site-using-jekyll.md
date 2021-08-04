@@ -1,16 +1,16 @@
 ---
 title: Setting a Markdown processor for your GitHub Pages site using Jekyll
-intro: 'You can choose a Markdown processor to determine how Markdown is rendered on your {% data variables.product.prodname_pages %} site.'
+intro: "You can choose a Markdown processor to determine how Markdown is rendered on your {% data variables.product.prodname_pages %} site."
 redirect_from:
   - /articles/migrating-your-pages-site-from-maruku/
   - /articles/updating-your-markdown-processor-to-kramdown/
   - /articles/setting-a-markdown-processor-for-your-github-pages-site-using-jekyll
   - /github/working-with-github-pages/setting-a-markdown-processor-for-your-github-pages-site-using-jekyll
-product: '{% data reusables.gated-features.pages %}'
+product: "{% data reusables.gated-features.pages %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pages
 shortTitle: Set Markdown processor
@@ -22,11 +22,9 @@ People with write permissions for a repository can set the Markdown processor fo
 
 You can use {% data variables.product.prodname_dotcom %} Flavored Markdown with either processor, but only our CommonMark processor will always match the results you see on {% data variables.product.product_name %}.
 
-{% data reusables.pages.navigate-site-repo %}
-2. In your repository, browse to the *_config.yml* file.
-{% data reusables.repositories.edit-file %}
-4. Find the line that starts with `markdown:` and change the value to `kramdown` or `GFM`.
-  ![Markdown setting in config.yml](/assets/images/help/pages/config-markdown-value.png)
+{% data reusables.pages.navigate-site-repo %} 2. In your repository, browse to the _\_config.yml_ file.
+{% data reusables.repositories.edit-file %} 4. Find the line that starts with `markdown:` and change the value to `kramdown` or `GFM`.
+![Markdown setting in config.yml](/assets/images/help/pages/config-markdown-value.png)
 {% data reusables.files.write_commit_message %}
 {% data reusables.files.choose-commit-email %}
 {% data reusables.files.choose_commit_branch %}

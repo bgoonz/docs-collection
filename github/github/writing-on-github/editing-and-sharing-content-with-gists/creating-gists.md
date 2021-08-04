@@ -1,6 +1,6 @@
 ---
 title: Creating gists
-intro: 'You can create two kinds of gists: {% ifversion ghae %}internal{% else %}public{% endif %} and secret. Create {% ifversion ghae %}an internal{% else %}a public{% endif %} gist if you''re ready to share your ideas with {% ifversion ghae %}enterprise members{% else %}the world{% endif %} or a secret gist if you''re not.'
+intro: "You can create two kinds of gists: {% ifversion ghae %}internal{% else %}public{% endif %} and secret. Create {% ifversion ghae %}an internal{% else %}a public{% endif %} gist if you're ready to share your ideas with {% ifversion ghae %}enterprise members{% else %}the world{% endif %} or a secret gist if you're not."
 redirect_from:
   - /articles/about-gists/
   - /articles/cannot-delete-an-anonymous-gist/
@@ -8,10 +8,11 @@ redirect_from:
   - /articles/creating-gists
   - /github/writing-on-github/creating-gists
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
+
 ## About gists
 
 Every gist is a Git repository, which means that it can be forked and cloned. {% ifversion not ghae %}If you are signed in to {% data variables.product.product_name %} when{% else %}When{% endif %} you create a gist, the gist will be associated with your account and you will see it in your list of gists when you navigate to your {% data variables.gists.gist_homepage %}.
@@ -31,6 +32,7 @@ If your site administrator has disabled private mode, you can also use anonymous
 {% endif %}
 
 You'll receive a notification when:
+
 - You are the author of a gist.
 - Someone mentions you in a gist.
 - You subscribe to a gist, by clicking **Subscribe** at the top of any gist.
@@ -70,13 +72,13 @@ Alternatively, you can drag and drop a text file from your desktop directly into
 1. Sign in to {% data variables.product.product_name %}.
 2. Navigate to your {% data variables.gists.gist_homepage %}.
 3. Type an optional description and name for your gist.
-![Gist name description](/assets/images/help/gist/gist_name_description.png)
+   ![Gist name description](/assets/images/help/gist/gist_name_description.png)
 
-4. Type the text of your gist into the gist text box. 
-![Gist text box](/assets/images/help/gist/gist_text_box.png)
+4. Type the text of your gist into the gist text box.
+   ![Gist text box](/assets/images/help/gist/gist_text_box.png)
 
-5. Optionally, to create {% ifversion ghae %}an internal{% else %}a public{% endif %} gist, click {% octicon "triangle-down" aria-label="The downwards triangle icon" %}, then click **Create {% ifversion ghae %}internal{% else %}public{% endif %} gist**. 
-![Drop-down menu to select gist visibility]{% ifversion ghae %}(/assets/images/help/gist/gist-visibility-drop-down-ae.png){% else %}(/assets/images/help/gist/gist-visibility-drop-down.png){% endif %}
+5. Optionally, to create {% ifversion ghae %}an internal{% else %}a public{% endif %} gist, click {% octicon "triangle-down" aria-label="The downwards triangle icon" %}, then click **Create {% ifversion ghae %}internal{% else %}public{% endif %} gist**.
+   ![Drop-down menu to select gist visibility]{% ifversion ghae %}(/assets/images/help/gist/gist-visibility-drop-down-ae.png){% else %}(/assets/images/help/gist/gist-visibility-drop-down.png){% endif %}
 
-6. Click **Create secret Gist** or **Create {% ifversion ghae %}internal{% else %}public{% endif %} gist**. 
-  ![Button to create gist](/assets/images/help/gist/create-secret-gist-button.png)
+6. Click **Create secret Gist** or **Create {% ifversion ghae %}internal{% else %}public{% endif %} gist**.
+   ![Button to create gist](/assets/images/help/gist/create-secret-gist-button.png)

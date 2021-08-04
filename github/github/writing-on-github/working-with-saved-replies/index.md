@@ -1,12 +1,12 @@
 ---
 title: Working with saved replies
-intro: 'To save time and make sure you''re delivering a consistent message, you can add saved replies to issue and pull request comments.'
+intro: "To save time and make sure you're delivering a consistent message, you can add saved replies to issue and pull request comments."
 redirect_from:
   - /articles/working-with-saved-replies
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /about-saved-replies
   - /creating-a-saved-reply
@@ -15,4 +15,3 @@ children:
   - /using-saved-replies
 shortTitle: Work with saved replies
 ---
-

@@ -6,16 +6,15 @@ redirect_from:
   - /v3/guides/basics-of-authentication
   - /rest/basics-of-authentication
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
 
-
 In this section, we're going to focus on the basics of authentication. Specifically,
-we're going to create a Ruby server (using [Sinatra][Sinatra]) that implements
+we're going to create a Ruby server (using [Sinatra][sinatra]) that implements
 the [web flow][webflow] of an application in several different ways.
 
 {% tip %}
@@ -45,7 +44,7 @@ is set to `http://localhost:4567`. Let's fill in the callback URL as `http://loc
 
 Now, let's start filling out our simple server. Create a file called _server.rb_ and paste this into it:
 
-``` ruby
+```ruby
 require 'sinatra'
 require 'rest-client'
 require 'json'
@@ -65,7 +64,7 @@ page][app settings].{% ifversion fpt %} You should **never, _ever_** store these
 
 Next, in _views/index.erb_, paste this content:
 
-``` erb
+```erb
 <html>
   <head>
   </head>
@@ -84,7 +83,7 @@ Next, in _views/index.erb_, paste this content:
 </html>
 ```
 
-(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][Sinatra guide].)
+(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][sinatra guide].)
 
 Also, notice that the URL uses the `scope` query parameter to define the
 [scopes][oauth scopes] requested by the application. For our application, we're
@@ -105,7 +104,7 @@ the app. Let's fix that now!
 
 In _server.rb_, add a route to specify what the callback should do:
 
-``` ruby
+```ruby
 get '/callback' do
   # get temporary GitHub code...
   session_code = request.env['rack.request.query_hash']['code']
@@ -124,7 +123,7 @@ end
 
 After a successful app authentication, {% data variables.product.product_name %} provides a temporary `code` value.
 You'll need to `POST` this code back to {% data variables.product.product_name %} in exchange for an `access_token`.
-To simplify our GET and POST HTTP requests, we're using the [rest-client][REST Client].
+To simplify our GET and POST HTTP requests, we're using the [rest-client][rest client].
 Note that you'll probably never access the API through REST. For a more serious
 application, you should probably use [a library written in the language of your choice][libraries].
 
@@ -135,7 +134,7 @@ Users can edit the scopes you requested by directly changing the URL. This can g
 The scopes that were granted are returned as a part of the response from
 exchanging a token.
 
-``` ruby
+```ruby
 get '/callback' do
   # ...
   # Get the access_token using the code sample above
@@ -176,7 +175,7 @@ changes in available application functionality.
 At last, with this access token, you'll be able to make authenticated requests as
 the logged in user:
 
-``` ruby
+```ruby
 # fetch user information
 auth_result = JSON.parse(RestClient.get('{% data variables.product.api_url_code %}/user',
                                         {:params => {:access_token => access_token}}))
@@ -193,7 +192,7 @@ erb :basic, :locals => auth_result
 
 We can do whatever we want with our results. In this case, we'll just dump them straight into _basic.erb_:
 
-``` erb
+```erb
 <p>Hello, <%= login %>!</p>
 <p>
   <% if !email.nil? && !email.empty? %> It looks like your public email address is <%= email %>.
@@ -234,7 +233,7 @@ the `user:email` scope.
 
 Create a file called _advanced_server.rb_, and paste these lines into it:
 
-``` ruby
+```ruby
 require 'sinatra'
 require 'rest_client'
 require 'json'
@@ -322,7 +321,7 @@ OAuth flow and updates the session with the granted token and scopes.
 
 Next, create a file in _views_ called _advanced.erb_, and paste this markup into it:
 
-``` erb
+```erb
 <html>
   <head>
   </head>
@@ -359,10 +358,10 @@ Also, if we had never authorized this application to access our {% data variable
 we would've seen the same confirmation dialog from earlier pop-up and warn us.
 
 [webflow]: /apps/building-oauth-apps/authorizing-oauth-apps/
-[Sinatra]: http://www.sinatrarb.com/
+[sinatra]: http://www.sinatrarb.com/
 [about env vars]: http://en.wikipedia.org/wiki/Environment_variable#Getting_and_setting_environment_variables
-[Sinatra guide]: https://github.com/sinatra/sinatra-book/blob/master/book/Introduction.markdown#hello-world-application
-[REST Client]: https://github.com/archiloque/rest-client
+[sinatra guide]: https://github.com/sinatra/sinatra-book/blob/master/book/Introduction.markdown#hello-world-application
+[rest client]: https://github.com/archiloque/rest-client
 [libraries]: /libraries/
 [oauth scopes]: /apps/building-oauth-apps/understanding-scopes-for-oauth-apps/
 [platform samples]: https://github.com/github/platform-samples/tree/master/api/ruby/basics-of-authentication

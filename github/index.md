@@ -1,5 +1,5 @@
 ---
-title: '{% data variables.product.product_name %}{% ifversion fpt %}.com{% endif %} Help Documentation'
+title: "{% data variables.product.product_name %}{% ifversion fpt %}.com{% endif %} Help Documentation"
 featuredLinks:
   gettingStarted:
     - /github/getting-started-with-github/set-up-git
@@ -12,7 +12,7 @@ featuredLinks:
     - /github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line
     - /github/getting-started-with-github/managing-remote-repositories
     - /github/working-with-github-pages
-versions: '*'
+versions: "*"
 children:
   - get-started
   - github
@@ -39,22 +39,21 @@ externalProducts:
   cli:
     id: cli
     name: GitHub CLI
-    href: 'https://cli.github.com/manual'
+    href: "https://cli.github.com/manual"
     external: true
   atom:
     id: atom
     name: Atom
-    href: 'https://atom.io/docs'
+    href: "https://atom.io/docs"
     external: true
   electron:
     id: electron
     name: Electron
-    href: 'https://electronjs.org/docs'
+    href: "https://electronjs.org/docs"
     external: true
   codeql:
     id: codeql
     name: CodeQL
-    href: 'https://codeql.github.com/docs'
+    href: "https://codeql.github.com/docs"
     external: true
 ---
-

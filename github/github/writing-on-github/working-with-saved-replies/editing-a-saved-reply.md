@@ -6,17 +6,15 @@ redirect_from:
   - /articles/editing-a-saved-reply
   - /github/writing-on-github/editing-a-saved-reply
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
+
 {% data reusables.user_settings.access_settings %}
-{% data reusables.user_settings.saved_replies %}
-3. Under "Saved replies", next to the saved reply you want to edit, click {% octicon "pencil" aria-label="The pencil" %}.  
-![Edit a saved reply](/assets/images/help/settings/saved-replies-edit-existing.png)
-4. Under "Edit saved reply", you can edit the title and the content of the saved reply.
-![Edit title and content](/assets/images/help/settings/saved-replies-edit-existing-content.png)
-5. Click **Update saved reply**.
+{% data reusables.user_settings.saved_replies %} 3. Under "Saved replies", next to the saved reply you want to edit, click {% octicon "pencil" aria-label="The pencil" %}.  
+![Edit a saved reply](/assets/images/help/settings/saved-replies-edit-existing.png) 4. Under "Edit saved reply", you can edit the title and the content of the saved reply.
+![Edit title and content](/assets/images/help/settings/saved-replies-edit-existing-content.png) 5. Click **Update saved reply**.
 ![Update saved reply](/assets/images/help/settings/saved-replies-save-edit.png)
 
 ## Further reading

@@ -1,12 +1,12 @@
 ---
 title: Guides
-intro: 'Learn about getting started with GraphQL, migrating from REST to GraphQL, and how to use the GitHub GraphQL API for a variety of tasks.'
+intro: "Learn about getting started with GraphQL, migrating from REST to GraphQL, and how to use the GitHub GraphQL API for a variety of tasks."
 redirect_from:
   - /v4/guides
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 children:
@@ -18,4 +18,3 @@ children:
   - /managing-enterprise-accounts
   - /using-the-graphql-api-for-discussions
 ---
-

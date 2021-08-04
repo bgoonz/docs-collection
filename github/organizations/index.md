@@ -7,9 +7,9 @@ redirect_from:
   - /categories/setting-up-and-managing-organizations-and-teams
   - /github/setting-up-and-managing-organizations-and-teams
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -30,4 +30,3 @@ children:
   - /managing-git-access-to-your-organizations-repositories
   - /migrating-to-improved-organization-permissions
 ---
-

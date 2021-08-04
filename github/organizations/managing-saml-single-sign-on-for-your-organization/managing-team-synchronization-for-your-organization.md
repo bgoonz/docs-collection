@@ -1,7 +1,7 @@
 ---
 title: Managing team synchronization for your organization
-intro: 'You can enable and disable team synchronization between your identity provider (IdP) and your organization on {% data variables.product.product_name %}.'
-product: '{% data reusables.gated-features.team-synchronization %}'
+intro: "You can enable and disable team synchronization between your identity provider (IdP) and your organization on {% data variables.product.product_name %}."
+product: "{% data reusables.gated-features.team-synchronization %}"
 redirect_from:
   - /articles/synchronizing-teams-between-your-identity-provider-and-github
   - /github/setting-up-and-managing-organizations-and-teams/synchronizing-teams-between-your-identity-provider-and-github
@@ -10,7 +10,7 @@ redirect_from:
 permissions: Organization owners can manage team synchronization for an organization.
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -52,9 +52,8 @@ You must authenticate to your organization using SAML SSO and the supported IdP.
 {% data reusables.organizations.security %}
 {% data reusables.identity-and-permissions.team-sync-confirm-saml %}
 {% data reusables.identity-and-permissions.enable-team-sync-azure %}
-{% data reusables.identity-and-permissions.team-sync-confirm %}
-6. Review the identity provider tenant information you want to connect to your organization, then click **Approve**.
-  ![Pending request to enable team synchronization to a specific IdP tenant with option to approve or cancel request](/assets/images/help/teams/approve-team-synchronization.png)
+{% data reusables.identity-and-permissions.team-sync-confirm %} 6. Review the identity provider tenant information you want to connect to your organization, then click **Approve**.
+![Pending request to enable team synchronization to a specific IdP tenant with option to approve or cancel request](/assets/images/help/teams/approve-team-synchronization.png)
 
 ### Enabling team synchronization for Okta
 
@@ -64,11 +63,9 @@ You must authenticate to your organization using SAML SSO and the supported IdP.
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.security %}
 {% data reusables.identity-and-permissions.team-sync-confirm-saml %}
-{% data reusables.identity-and-permissions.enable-team-sync-okta %}
-7. Under your organization's name, type a valid SSWS token and the URL to your Okta instance.
-  ![Enable team synchronization Okta organization form](/assets/images/help/teams/confirm-team-synchronization-okta-organization.png)
-6. Review the identity provider tenant information you want to connect to your organization, then click **Create**.
-  ![Enable team synchronization create button](/assets/images/help/teams/confirm-team-synchronization-okta.png)
+{% data reusables.identity-and-permissions.enable-team-sync-okta %} 7. Under your organization's name, type a valid SSWS token and the URL to your Okta instance.
+![Enable team synchronization Okta organization form](/assets/images/help/teams/confirm-team-synchronization-okta-organization.png) 6. Review the identity provider tenant information you want to connect to your organization, then click **Create**.
+![Enable team synchronization create button](/assets/images/help/teams/confirm-team-synchronization-okta.png)
 
 ## Disabling team synchronization
 
@@ -76,6 +73,5 @@ You must authenticate to your organization using SAML SSO and the supported IdP.
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.security %}
-5. Under "Team synchronization", click **Disable team synchronization**.
-  ![Disable team synchronization](/assets/images/help/teams/disable-team-synchronization.png)
+{% data reusables.organizations.security %} 5. Under "Team synchronization", click **Disable team synchronization**.
+![Disable team synchronization](/assets/images/help/teams/disable-team-synchronization.png)

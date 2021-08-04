@@ -4,7 +4,7 @@ intro: You can get reminders in Slack for all pull requests that teams in your o
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -20,6 +20,7 @@ Organization owners can schedule a reminder for one or more teams in their organ
 {% data reusables.reminders.scheduled-reminders-limitations %}
 
 ## Creating a scheduled reminder for an organization
+
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.reminders.scheduled-reminders %}
@@ -29,8 +30,7 @@ Organization owners can schedule a reminder for one or more teams in their organ
 {% data reusables.reminders.slack-channel %}
 {% data reusables.reminders.days-dropdown %}
 {% data reusables.reminders.times-dropdowns %}
-{% data reusables.reminders.tracked-repos %}
-11. Under "Filter by team assigned to review code", click the **Add a team** dropdown and choose one or more teams. You can add up to 100 teams. If the team you select doesn't have access to the "Tracked repositories" selected above, you won't be able to create the scheduled reminder.
+{% data reusables.reminders.tracked-repos %} 11. Under "Filter by team assigned to review code", click the **Add a team** dropdown and choose one or more teams. You can add up to 100 teams. If the team you select doesn't have access to the "Tracked repositories" selected above, you won't be able to create the scheduled reminder.
 ![Add a team dropdown](/assets/images/help/organizations/scheduled-reminders-add-teams.png)
 {% data reusables.reminders.ignore-drafts %}
 {% data reusables.reminders.no-review-requests %}
@@ -44,6 +44,7 @@ Organization owners can schedule a reminder for one or more teams in their organ
 {% data reusables.reminders.create-reminder %}
 
 ## Managing a scheduled reminder for an organization
+
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.reminders.scheduled-reminders %}
@@ -53,6 +54,7 @@ Organization owners can schedule a reminder for one or more teams in their organ
 {% data reusables.reminders.update-buttons %}
 
 ## Deleting a scheduled reminder for an organization
+
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.reminders.scheduled-reminders %}

@@ -1,13 +1,13 @@
 ---
 title: Deleting an organization account
-intro: 'When you delete an organization, all repositories, forks of private repositories, wikis, issues, pull requests, and Project or Organization Pages are deleted as well. {% ifversion fpt %}The organization name becomes available for use on a new user or organization account, and your billing will end.{% endif %}'
+intro: "When you delete an organization, all repositories, forks of private repositories, wikis, issues, pull requests, and Project or Organization Pages are deleted as well. {% ifversion fpt %}The organization name becomes available for use on a new user or organization account, and your billing will end.{% endif %}"
 redirect_from:
   - /articles/deleting-an-organization-account
   - /github/setting-up-and-managing-organizations-and-teams/deleting-an-organization-account
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -30,6 +30,5 @@ Once you delete an organization, GitHub **cannot restore your content**. Therefo
 ## 2. Delete the organization
 
 {% data reusables.profile.access_org %}
-{% data reusables.profile.org_settings %}
-4. Near the bottom of the organization's settings page, click **Delete this Organization**.
-   ![Delete this organization button](/assets/images/help/settings/settings-organization-delete.png)
+{% data reusables.profile.org_settings %} 4. Near the bottom of the organization's settings page, click **Delete this Organization**.
+![Delete this organization button](/assets/images/help/settings/settings-organization-delete.png)

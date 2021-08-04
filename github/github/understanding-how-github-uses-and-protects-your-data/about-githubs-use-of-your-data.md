@@ -3,15 +3,15 @@ title: About GitHub's use of your data
 redirect_from:
   - /articles/about-github-s-use-of-your-data
   - /articles/about-githubs-use-of-your-data
-intro: '{% data variables.product.product_name %} uses your repository''s data to connect you to relevant tools, people, projects, and information.'
+intro: "{% data variables.product.product_name %} uses your repository's data to connect you to relevant tools, people, projects, and information."
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal
 shortTitle: GitHub's use of your data
 ---
- 
+
 ## About {% data variables.product.product_name %}'s use of your data
 
 {% data variables.product.product_name %} aggregates metadata and parses content patterns for the purposes of delivering generalized insights within the product. It uses data from public repositories, and also uses metadata and aggregate data from private repositories when a repository's owner has chosen to share the data with {% data variables.product.product_name %} through an opt-in. If you opt a private repository into data use, then it will perform read-only analysis of that specific private repository.

@@ -6,7 +6,7 @@ redirect_from:
   - /articles/managing-saml-single-sign-on-for-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/managing-saml-single-sign-on-for-your-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Organizations
   - Teams
@@ -23,4 +23,3 @@ children:
   - /accessing-your-organization-if-your-identity-provider-is-unavailable
 shortTitle: Manage SAML single sign-on
 ---
-

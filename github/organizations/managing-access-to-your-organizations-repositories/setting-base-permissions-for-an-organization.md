@@ -5,9 +5,9 @@ permissions: Organization owners can set base permissions for an organization.
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/setting-base-permissions-for-an-organization
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -26,11 +26,9 @@ If someone with admin permissions to an organization's repository grants a membe
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.member-privileges %}
-5. Under "Base permissions", use the drop-down to select new base permissions.
-  ![Selecting new permission level from base permissions drop-down](/assets/images/help/organizations/base-permissions-drop-down.png)
-6. Review the changes. To confirm, click **Change default permission to PERMISSION**.
-  ![Reviewing and confirming change of base permissions](/assets/images/help/organizations/base-permissions-confirm.png)
+{% data reusables.organizations.member-privileges %} 5. Under "Base permissions", use the drop-down to select new base permissions.
+![Selecting new permission level from base permissions drop-down](/assets/images/help/organizations/base-permissions-drop-down.png) 6. Review the changes. To confirm, click **Change default permission to PERMISSION**.
+![Reviewing and confirming change of base permissions](/assets/images/help/organizations/base-permissions-confirm.png)
 
 ## Further reading
 

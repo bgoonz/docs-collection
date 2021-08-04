@@ -4,9 +4,9 @@ redirect_from:
   - /v4/input_object
   - /v4/reference/input_object
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---

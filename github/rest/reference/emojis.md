@@ -4,9 +4,9 @@ redirect_from:
   - /v3/emojis
   - /v3/misc
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3

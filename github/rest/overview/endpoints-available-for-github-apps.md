@@ -5,9 +5,9 @@ redirect_from:
   - /v3/apps/available-endpoints
   - /rest/reference/endpoints-available-for-github-apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: GitHub App-enabled endpoints
@@ -19,6 +19,7 @@ You must use an installation access token to access endpoints using your {% data
 {% assign category = thing[0] %}
 {% assign operations = thing[1] %}
 {% if operations.size > 0 %}
+
   <h3 id="{{category}}">
     <a href="#{{category}}">{{ category }}</a>
   </h3>  

@@ -3,9 +3,9 @@ title: Apps
 redirect_from:
   - /v3/apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -24,7 +24,7 @@ You can access REST API v3 endpoints while authenticated as a GitHub App. These 
 A subset of REST API v3 endpoints requires authenticating as a GitHub App installation. See [Installations](/rest/reference/apps#installations) for a list of these endpoints.
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## OAuth Applications API
@@ -32,7 +32,7 @@ A subset of REST API v3 endpoints requires authenticating as a GitHub App instal
 You can use this API to manage the OAuth tokens an OAuth application uses to access people's {% data variables.product.prodname_dotcom %} accounts.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'oauth-applications' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'oauth-applications' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Installations
@@ -42,10 +42,11 @@ The Installations API enables you to get information about installations of your
 To list all GitHub App installations for an organization, see "[List app installations for an organization](/rest/reference/orgs#list-app-installations-for-an-organization)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'installations' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'installations' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% ifversion fpt %}
+
 ## Marketplace
 
 For more information about {% data variables.product.prodname_marketplace %}, see "[GitHub Marketplace](/marketplace/)."
@@ -61,18 +62,19 @@ To test with stubbed data, use a stubbed endpoint in place of its production cou
 Be sure to replace stubbed endpoints with production endpoints before deploying your {% data variables.product.prodname_github_app %}.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'marketplace' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'marketplace' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
+
 ## Webhooks
 
 A {% data variables.product.prodname_github_app %}'s webhook allows you to receive HTTP `POST` payloads whenever certain events happen for an app. {% data reusables.webhooks.webhooks-rest-api-links %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}

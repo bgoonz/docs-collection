@@ -7,12 +7,13 @@ redirect_from:
   - /github/managing-your-work-on-github/about-duplicate-issues-and-pull-requests
   - /issues/tracking-your-work-with-issues/managing-issues/marking-issues-or-pull-requests-as-a-duplicate
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 For a "marked as duplicate" timeline event to appear, the user who creates the duplicate reference comment must have write access to the repository where they create the comment.
 
 ## Marking duplicates

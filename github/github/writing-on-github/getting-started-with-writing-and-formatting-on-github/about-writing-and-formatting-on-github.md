@@ -5,11 +5,12 @@ redirect_from:
   - /articles/about-writing-and-formatting-on-github
   - /github/writing-on-github/about-writing-and-formatting-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Write & format on GitHub
 ---
+
 [Markdown](http://daringfireball.net/projects/markdown/) is an easy-to-read, easy-to-write syntax for formatting plain text.
 
 We've added some custom functionality to create {% data variables.product.prodname_dotcom %} Flavored Markdown, used to format prose and code across our site.

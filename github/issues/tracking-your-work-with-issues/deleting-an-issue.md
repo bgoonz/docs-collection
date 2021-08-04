@@ -7,12 +7,13 @@ redirect_from:
   - /github/managing-your-work-on-github/deleting-an-issue
   - /issues/tracking-your-work-with-issues/creating-issues/deleting-an-issue
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 You can only delete issues in a repository owned by your user account. You cannot delete issues in a repository owned by another user account, even if you are a collaborator there.
 
 To delete an issue in a repository owned by an organization, an organization owner must enable deleting an issue for the organization's repositories, and you must have admin or owner permissions in the repository. For more information, see "[Allowing people to delete issues in your organization](/articles/allowing-people-to-delete-issues-in-your-organization)" and "[Repository permission levels for an organization](/articles/repository-permission-levels-for-an-organization/)."
@@ -21,8 +22,8 @@ Collaborators do not receive a notification when you delete an issue. When visit
 
 1. Navigate to the issue you want to delete.
 2. On the right side bar, under "Notifications", click **Delete issue**.
-!["Delete issue" text highlighted on bottom of the issue page's right side bar](/assets/images/help/issues/delete-issue.png)
-4. To confirm deletion, click **Delete this issue**.
+   !["Delete issue" text highlighted on bottom of the issue page's right side bar](/assets/images/help/issues/delete-issue.png)
+3. To confirm deletion, click **Delete this issue**.
 
 ## Further reading
 

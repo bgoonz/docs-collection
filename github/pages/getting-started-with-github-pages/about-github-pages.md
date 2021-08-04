@@ -1,6 +1,6 @@
 ---
 title: About GitHub Pages
-intro: 'You can use {% data variables.product.prodname_pages %} to host a website about yourself, your organization, or your project directly from a {% data variables.product.product_name %} repository.'
+intro: "You can use {% data variables.product.prodname_pages %} to host a website about yourself, your organization, or your project directly from a {% data variables.product.product_name %} repository."
 redirect_from:
   - /articles/what-are-github-pages/
   - /articles/what-is-github-pages/
@@ -10,11 +10,11 @@ redirect_from:
   - /articles/should-i-rename-usernamegithubcom-repositories-to-usernamegithubio/
   - /articles/about-github-pages
   - /github/working-with-github-pages/about-github-pages
-product: '{% data reusables.gated-features.pages %}'
+product: "{% data reusables.gated-features.pages %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pages
 ---
@@ -58,12 +58,12 @@ You can only create one user or organization site for each account on {% data va
 {% ifversion ghes %}
 The URL where your site is available depends on whether subdomain isolation is enabled for {% data variables.product.product_location %}.
 
-| Type of site | Subdomain isolation enabled | Subdomain isolation disabled |
-| ------------ | --------------------------- | ---------------------------- |
-User | `http(s)://pages.<hostname>/<username>` | `http(s)://<hostname>/pages/<username>` |
-Organization | `http(s)://pages.<hostname>/<organization>` | `http(s)://<hostname>/pages/<organization>` |
-Project site owned by user account | `http(s)://pages.<hostname>/<username>/<repository>/` | `http(s)://<hostname>/pages/<username>/<repository>/`
-Project site owned by organization account | `http(s)://pages.<hostname>/<orgname>/<repository>/` | `http(s)://<hostname>/pages/<orgname>/<repository>/`
+| Type of site                               | Subdomain isolation enabled                           | Subdomain isolation disabled                          |
+| ------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------- |
+| User                                       | `http(s)://pages.<hostname>/<username>`               | `http(s)://<hostname>/pages/<username>`               |
+| Organization                               | `http(s)://pages.<hostname>/<organization>`           | `http(s)://<hostname>/pages/<organization>`           |
+| Project site owned by user account         | `http(s)://pages.<hostname>/<username>/<repository>/` | `http(s)://<hostname>/pages/<username>/<repository>/` |
+| Project site owned by organization account | `http(s)://pages.<hostname>/<orgname>/<repository>/`  | `http(s)://<hostname>/pages/<orgname>/<repository>/`  |
 
 For more information, see "[Enabling subdomain isolation](/enterprise/{{ currentVersion }}/admin/installation/enabling-subdomain-isolation)" or contact your site administrator.
 {% endif %}
@@ -107,19 +107,21 @@ You cannot publish your project site from any other branch, even if the default 
 ## Guidelines for using {% data variables.product.prodname_pages %}
 
 {% ifversion fpt %}
+
 - {% data variables.product.prodname_pages %} sites created after June 15, 2016 and using `github.io` domains are served over HTTPS. If you created your site before June 15, 2016, you can enable HTTPS support for traffic to your site. For more information, see "[Securing your {% data variables.product.prodname_pages %} with HTTPS](/articles/securing-your-github-pages-site-with-https)."
 - {% data reusables.pages.no_sensitive_data_pages %}
 - Your use of {% data variables.product.prodname_pages %} is subject to the [GitHub Terms of Service](/articles/github-terms-of-service/), including the prohibition on reselling.
 
 ### Usage limits
+
 {% endif %}
 {% data variables.product.prodname_pages %} sites are subject to the following usage limits:
 
-  - {% data variables.product.prodname_pages %} source repositories have a recommended limit of 1GB.{% ifversion fpt %} For more information, see "[What is my disk quota?"](/articles/what-is-my-disk-quota/#file-and-repository-size-limitations){% endif %}
-  - Published {% data variables.product.prodname_pages %} sites may be no larger than 1 GB.
-{% ifversion fpt %}
-  - {% data variables.product.prodname_pages %} sites have a *soft* bandwidth limit of 100GB per month.
-  - {% data variables.product.prodname_pages %} sites have a *soft* limit of 10 builds per hour.
+- {% data variables.product.prodname_pages %} source repositories have a recommended limit of 1GB.{% ifversion fpt %} For more information, see "[What is my disk quota?"](/articles/what-is-my-disk-quota/#file-and-repository-size-limitations){% endif %}
+- Published {% data variables.product.prodname_pages %} sites may be no larger than 1 GB.
+  {% ifversion fpt %}
+- {% data variables.product.prodname_pages %} sites have a _soft_ bandwidth limit of 100GB per month.
+- {% data variables.product.prodname_pages %} sites have a _soft_ limit of 10 builds per hour.
 
 If your site exceeds these usage quotas, we may not be able to serve your site, or you may receive a polite email from {% data variables.contact.contact_support %} suggesting strategies for reducing your site's impact on our servers, including putting a third-party content distribution network (CDN) in front of your site, making use of other {% data variables.product.prodname_dotcom %} features such as releases, or moving to a different hosting service that might better fit your needs.
 

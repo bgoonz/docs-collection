@@ -5,9 +5,9 @@ redirect_from:
   - /articles/about-teams
   - /github/setting-up-and-managing-organizations-and-teams/about-teams
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -18,6 +18,7 @@ topics:
 Organization owners and team maintainers can give teams admin, read, or write access to organization repositories. Organization members can send a notification to an entire team by mentioning the team's name. Organization members can also send a notification to an entire team by requesting a review from that team. Organization members can request reviews from specific teams with read access to the repository where the pull request is opened. Teams can be designated as owners of certain types or areas of code in a CODEOWNERS file.
 
 For more information, see:
+
 - "[Managing team access to an organization repository](/articles/managing-team-access-to-an-organization-repository)"
 - "[Mentioning people and teams](/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams)"
 - "[About code owners](/articles/about-code-owners/)"

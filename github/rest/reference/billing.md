@@ -1,7 +1,7 @@
 ---
 title: Billing
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -12,5 +12,5 @@ You can monitor your {% data variables.product.prodname_actions %} and {% data v
 You can get billing information for an enterprise. For more information, see the "[{% data variables.product.prodname_dotcom %} Enterprise administration](/rest/reference/enterprise-admin#billing)" REST API.
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}

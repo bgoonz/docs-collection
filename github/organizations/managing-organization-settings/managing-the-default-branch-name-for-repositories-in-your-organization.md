@@ -1,13 +1,13 @@
 ---
 title: Managing the default branch name for repositories in your organization
-intro: 'You can set the default branch name for repositories that members create in your organization on {% data variables.product.product_location %}.'
+intro: "You can set the default branch name for repositories that members create in your organization on {% data variables.product.product_location %}."
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/managing-the-default-branch-name-for-repositories-in-your-organization
 permissions: Organization owners can manage the default branch name for new repositories in the organization.
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -26,13 +26,10 @@ If an enterprise owner has enforced a policy for the default branch name for you
 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
-{% data reusables.organizations.repository-defaults %}
-3. Under "Repository default branch", click **Change default branch name now**.
-    ![Override button](/assets/images/help/organizations/repo-default-name-button.png)
-4. Type the default name that you would like to use for new branches.
-    ![Text box for entering default name](/assets/images/help/organizations/repo-default-name-text.png)
-5. Click **Update**.
-    ![Update button](/assets/images/help/organizations/repo-default-name-update.png)
+{% data reusables.organizations.repository-defaults %} 3. Under "Repository default branch", click **Change default branch name now**.
+![Override button](/assets/images/help/organizations/repo-default-name-button.png) 4. Type the default name that you would like to use for new branches.
+![Text box for entering default name](/assets/images/help/organizations/repo-default-name-text.png) 5. Click **Update**.
+![Update button](/assets/images/help/organizations/repo-default-name-update.png)
 
 ## Further reading
 

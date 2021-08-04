@@ -1,12 +1,12 @@
 ---
 title: Using the Explorer
-intro: 'You can run queries on real {% data variables.product.prodname_dotcom %} data using the GraphQL Explorer, an integrated development environment in your browser that includes docs, syntax highlighting, and validation errors.'
+intro: "You can run queries on real {% data variables.product.prodname_dotcom %} data using the GraphQL Explorer, an integrated development environment in your browser that includes docs, syntax highlighting, and validation errors."
 redirect_from:
   - /v4/guides/using-the-explorer
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
@@ -39,7 +39,7 @@ To use the GraphiQL app, download and install it from https://github.com/skevy/g
 1. Launch GraphiQL.
 1. In the upper-right corner of GraphiQL, click **Edit HTTP Headers**.
 1. In the **Key** field, enter `Authorization`. In the **Value** field, enter `Bearer <token>`, where `<token>` is your generated OAuth token.
-![graphiql headers](/assets/images/developer/graphiql-headers.png)
+   ![graphiql headers](/assets/images/developer/graphiql-headers.png)
 1. Click the checkmark to the right of the token to save it.
 1. To return to the editor, click outside of the **Edit HTTP Headers** modal.
 1. In the **GraphQL Endpoint** field, enter `{% data variables.product.graphql_url_pre %}`.
@@ -111,8 +111,8 @@ If you want to run the call in the Explorer, enter the `query` segment in the ma
 
 Because GraphQL is [introspective](/graphql/guides/introduction-to-graphql#discovering-the-graphql-api), the Explorer supports:
 
-* Intelligent typeaheads aware of the current schema
-* Validation error previews as you type
+- Intelligent typeaheads aware of the current schema
+- Validation error previews as you type
 
 If you enter a query that is not well-formed or does not pass [schema validation](/graphql/guides/introduction-to-graphql#schema), a popup warns you of an error. If you run the query, the error returns in the response pane.
 

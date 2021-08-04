@@ -1,15 +1,15 @@
 ---
 title: Publishing and installing a package with GitHub Actions
-intro: 'You can configure a workflow in {% data variables.product.prodname_actions %} to automatically publish or install a package from {% data variables.product.prodname_registry %}.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can configure a workflow in {% data variables.product.prodname_actions %} to automatically publish or install a package from {% data variables.product.prodname_registry %}."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /github/managing-packages-with-github-packages/using-github-packages-with-github-actions
   - /packages/using-github-packages-with-your-projects-ecosystem/using-github-packages-with-github-actions
   - /packages/guides/using-github-packages-with-github-actions
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 shortTitle: Publish & install with Actions
 ---
 
@@ -25,6 +25,7 @@ shortTitle: Publish & install with Actions
 You can extend the CI and CD capabilities of your repository by publishing or installing packages as part of your workflow.
 
 {% ifversion fpt %}
+
 ### Authenticating to the {% data variables.product.prodname_container_registry %}
 
 {% data reusables.package_registry.authenticate_with_pat_for_container_registry %}
@@ -50,6 +51,7 @@ When you enable GitHub Actions, GitHub installs a GitHub App on your repository.
 {% data variables.product.prodname_registry %} allows you to push and pull packages through the `GITHUB_TOKEN` available to a {% data variables.product.prodname_actions %} workflow.
 
 {% ifversion fpt %}
+
 ## About permissions and package access for {% data variables.product.prodname_container_registry %}
 
 The {% data variables.product.prodname_container_registry %} (`ghcr.io`) allows users to create and administer containers as free-standing resources at the organization level. Containers can be owned by an organization or personal user account and you can customize access to each of your containers separately from repository permissions.
@@ -61,16 +63,17 @@ All workflows accessing the {% data variables.product.prodname_container_registr
 When you create, install, modify, or delete a container through a workflow, there are some default permission and access settings used to ensure admins have access to the workflow. You can adjust these access settings as well.
 
 For example, by default if a workflow creates a container using the `GITHUB_TOKEN`, then:
+
 - The container inherits the visibility and permissions model of the repository where the workflow is run.
 - Repository admins where the workflow is run become the admins of the container once the container is created.
 
 These are more examples of how default permissions work for workflows that manage packages.
 
-| {% data variables.product.prodname_actions %} workflow task | Default permissions and access |
-|----|----|
-| Download an existing container | - If the container is public, any workflow running in any repository can download the container. <br> - If the container is internal, then all workflows running in any repository owned by the Enterprise account can download the container. For enterprise-owned organizations, you can read any repository in the enterprise <br> - If the container is private, only workflows running in repositories that are given read permission on that container can download the container. <br>
-| Upload a new version to an existing container | - If the container is private, internal, or public, only workflows running in repositories that are given write permission on that container can upload new versions to the container.
-| Delete a container or versions of a container | - If the container is private, internal, or public, only workflows running in repositories that are given delete permission can delete existing versions of the container.
+| {% data variables.product.prodname_actions %} workflow task | Default permissions and access                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Download an existing container                              | - If the container is public, any workflow running in any repository can download the container. <br> - If the container is internal, then all workflows running in any repository owned by the Enterprise account can download the container. For enterprise-owned organizations, you can read any repository in the enterprise <br> - If the container is private, only workflows running in repositories that are given read permission on that container can download the container. <br> |
+| Upload a new version to an existing container               | - If the container is private, internal, or public, only workflows running in repositories that are given write permission on that container can upload new versions to the container.                                                                                                                                                                                                                                                                                                        |
+| Delete a container or versions of a container               | - If the container is private, internal, or public, only workflows running in repositories that are given delete permission can delete existing versions of the container.                                                                                                                                                                                                                                                                                                                    |
 
 You can also adjust access to containers in a more granular way or adjust some of the default permissions behavior. For more information, see "[Configuring a package’s access control and visibility](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility)."
 
@@ -90,6 +93,7 @@ Create a new workflow file in your repository (such as `.github/workflows/deploy
 {% data reusables.package_registry.publish-docker-image %}
 
 {% else %}
+
 ```yaml{:copy}
 name: Create and publish a Docker image
 
@@ -140,7 +144,7 @@ jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
     needs: run-npm-test {% ifversion ghes > 3.1 or ghae-next %}
-    permissions: 
+    permissions:
       contents: read
       packages: write {% endif %}
     steps:
@@ -159,6 +163,7 @@ jobs:
           tags: |
             {% ifversion ghae %}docker.YOUR-HOSTNAME.com{% else %}docker.pkg.github.com{% endif %}/{% raw %}${{ github.repository }}/octo-image:${{ github.sha }}{% endraw %}
 ```
+
 {% endif %}
 
 The relevant settings are explained in the following table. For full details about each element in a workflow, see "[Workflow syntax for {% data variables.product.prodname_actions %}](/actions/reference/workflow-syntax-for-github-actions)."
@@ -290,6 +295,7 @@ build-and-push-image:
 {% endif %}
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
+
 <tr>
 <td>
 {% raw %}
@@ -307,6 +313,7 @@ permissions:
 {% endif %}
 
 {% ifversion fpt %}
+
 <tr>
 <td>
 {% raw %}
@@ -343,6 +350,7 @@ permissions:
 </tr>
 
 {% else %}
+
 <tr>
 <td>
 {% raw %}
@@ -402,6 +410,7 @@ with:
 </tr>
 
 {% ifversion fpt %}
+
 <tr>
 <td>
 {% raw %}
@@ -430,6 +439,7 @@ push: true
 </tr>
 
 {% ifversion fpt %}
+
 <tr>
 <td>
 {% raw %}
@@ -445,6 +455,7 @@ labels: ${{ steps.meta.outputs.labels }}
 </tr>
 
 {% else %}
+
 <tr>
 <td>
 {% ifversion ghae %}
@@ -475,7 +486,6 @@ This new workflow will run automatically every time you push a change to a branc
 
 A few minutes after the workflow has completed, the new package will visible in your repository. To find your available packages, see "[Viewing a repository's packages](/packages/publishing-and-managing-packages/viewing-packages#viewing-a-repositorys-packages)."
 
-
 ## Installing a package using an action
 
 You can install packages as part of your CI flow using {% data variables.product.prodname_actions %}. For example, you could configure a workflow so that anytime a developer pushes code to a pull request, the workflow resolves dependencies by downloading and installing packages hosted by {% data variables.product.prodname_registry %}. Then, the workflow can run CI tests that require the dependencies.
@@ -485,6 +495,7 @@ Installing packages hosted by {% data variables.product.prodname_registry %} thr
 {% data reusables.package_registry.actions-configuration %}
 
 {% ifversion fpt %}
+
 ## Upgrading a workflow that accesses `ghcr.io`
 
 The {% data variables.product.prodname_container_registry %} supports the `GITHUB_TOKEN` for easy and secure authentication in your workflows. If your workflow is using a personal access token (PAT) to authenticate to `ghcr.io`, then we highly recommend you update your workflow to use the `GITHUB_TOKEN`.
@@ -495,16 +506,17 @@ Using the `GITHUB_TOKEN` instead of a PAT, which includes the `repo` scope, incr
 
 1. Navigate to your package landing page.
 1. In the left sidebar, click **Actions access**.
-  !["Actions access" option in left menu](/assets/images/help/package-registry/organization-repo-access-for-a-package.png)
+   !["Actions access" option in left menu](/assets/images/help/package-registry/organization-repo-access-for-a-package.png)
 1. To ensure your container package has access to your workflow, you must add the repository where the workflow is stored to your container. Click **Add repository** and search for the repository you want to add.
    !["Add repository" button](/assets/images/help/package-registry/add-repository-button.png)
-  {% note %}
+   {% note %}
 
-  **Note:** Adding a repository to your container through the **Actions access** menu option is different than connecting your container to a repository. For more information, see "[Ensuring workflow access to your package](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package)" and "[Connecting a repository to a package](/packages/learn-github-packages/connecting-a-repository-to-a-package)."
+   **Note:** Adding a repository to your container through the **Actions access** menu option is different than connecting your container to a repository. For more information, see "[Ensuring workflow access to your package](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package)" and "[Connecting a repository to a package](/packages/learn-github-packages/connecting-a-repository-to-a-package)."
 
-  {% endnote %}
+{% endnote %}
+
 1. Optionally, using the "role" drop-down menu, select the default access level that you'd like the repository to have to your container image.
-  ![Permission access levels to give to repositories](/assets/images/help/package-registry/repository-permission-options-for-package-access-through-actions.png)
+   ![Permission access levels to give to repositories](/assets/images/help/package-registry/repository-permission-options-for-package-access-through-actions.png)
 1. Open your workflow file. On the line where you log in to `ghcr.io`, replace your PAT with {% raw %}`${{ secrets.GITHUB_TOKEN }}`{% endraw %}.
 
 For example, this workflow publishes a Docker image using {% raw %}`${{ secrets.GITHUB_TOKEN }}`{% endraw %} to authenticate.
@@ -512,7 +524,7 @@ For example, this workflow publishes a Docker image using {% raw %}`${{ secrets.
 ```yaml{:copy}
 name: Demo Push
 
-on:   
+on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:

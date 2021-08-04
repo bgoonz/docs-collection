@@ -7,9 +7,9 @@ redirect_from:
   - /articles/managing-access-to-your-organizations-repositories
   - /github/setting-up-and-managing-organizations-and-teams/managing-access-to-your-organizations-repositories
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -27,4 +27,3 @@ children:
   - /reinstating-a-former-outside-collaborators-access-to-your-organization
 shortTitle: Manage access to repositories
 ---
-

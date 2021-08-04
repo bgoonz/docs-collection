@@ -4,7 +4,7 @@ redirect_from:
   - /categories/working-with-github-support
   - /forum
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Jobs
 children:
@@ -15,4 +15,3 @@ children:
   - /submitting-a-ticket
 shortTitle: GitHub Support
 ---
-

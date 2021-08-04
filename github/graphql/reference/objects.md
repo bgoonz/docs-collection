@@ -4,9 +4,9 @@ redirect_from:
   - /v4/object
   - /v4/reference/object
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---

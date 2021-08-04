@@ -1,12 +1,12 @@
 ---
 title: Managing the publication of GitHub Pages sites for your organization
-intro: 'You can control whether organization members can publish {% data variables.product.prodname_pages %} sites from repositories in the organization{% ifversion fpt %} and restrict the visibilities that members can choose for the sites{% endif %}.'
-permissions: 'Organization owners can manage the publication of {% data variables.product.prodname_pages %} sites from repositories in the organization.'
-product: '{% data reusables.gated-features.pages %}'
+intro: "You can control whether organization members can publish {% data variables.product.prodname_pages %} sites from repositories in the organization{% ifversion fpt %} and restrict the visibilities that members can choose for the sites{% endif %}."
+permissions: "Organization owners can manage the publication of {% data variables.product.prodname_pages %} sites from repositories in the organization."
+product: "{% data reusables.gated-features.pages %}"
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/disabling-publication-of-github-pages-sites-for-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/managing-the-publication-of-github-pages-sites-for-your-organization
@@ -25,10 +25,11 @@ If you disallow publication of {% data variables.product.prodname_pages %} sites
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.member-privileges %}{% ifversion fpt %}
+
 1. Under "Pages creation", select the visibilities you want to allow and deselect the visibilities you want to disallow.
-  ![Checkboxes to allow or disallow creation of {% data variables.product.prodname_pages %} sites](/assets/images/help/organizations/github-pages-creation-checkboxes.png){% else %}
+   ![Checkboxes to allow or disallow creation of {% data variables.product.prodname_pages %} sites](/assets/images/help/organizations/github-pages-creation-checkboxes.png){% else %}
 1. Under "Pages creation", select or deselect **Allow members to publish sites**.
-  ![Unselected checkbox for "Allow members to publish sites" option](/assets/images/help/organizations/org-settings-pages-disable-publication-checkbox.png){% endif %}
+   ![Unselected checkbox for "Allow members to publish sites" option](/assets/images/help/organizations/org-settings-pages-disable-publication-checkbox.png){% endif %}
 1. Click **Save**.
 
 ## Further reading

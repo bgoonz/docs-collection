@@ -1,7 +1,7 @@
 ---
 title: Introduction to GitHub Packages
-intro: '{% data variables.product.prodname_registry %} is a software package hosting service that allows you to host your software packages privately {% ifversion ghae %} for specified users or internally for your enterprise{% else %}or publicly{% endif %} and use packages as dependencies in your projects.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "{% data variables.product.prodname_registry %} is a software package hosting service that allows you to host your software packages privately {% ifversion ghae %} for specified users or internally for your enterprise{% else %}or publicly{% endif %} and use packages as dependencies in your projects."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /articles/about-github-package-registry
   - /github/managing-packages-with-github-package-registry/about-github-package-registry
@@ -11,9 +11,9 @@ redirect_from:
   - /packages/learn-github-packages/core-concepts-for-github-packages
   - /packages/guides/about-github-container-registry
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 shortTitle: Introduction
 ---
 
@@ -42,14 +42,15 @@ You can view a package's README, as well as metadata such as licensing, download
 
 ### Overview of package permissions and visibility
 
-|                    |        |
-|--------------------|--------------------|
-| Permissions        | {% ifversion fpt %}The permissions for a package are either inherited from the repository where the package is hosted or, for packages in the {% data variables.product.prodname_container_registry %}, they can be defined for specific user or organization accounts. For more information, see "[Configuring a package’s access control and visibility](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility)." {% else %}Each package inherits the permissions of the repository where the package is hosted. <br> <br> For example, anyone with read permissions for a repository can install a package as a dependency in a project, and anyone with write permissions can publish a new package version.{% endif %} |
-| Visibility         | {% data reusables.package_registry.public-or-private-packages %} |
+|             |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Permissions | {% ifversion fpt %}The permissions for a package are either inherited from the repository where the package is hosted or, for packages in the {% data variables.product.prodname_container_registry %}, they can be defined for specific user or organization accounts. For more information, see "[Configuring a package’s access control and visibility](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility)." {% else %}Each package inherits the permissions of the repository where the package is hosted. <br> <br> For example, anyone with read permissions for a repository can install a package as a dependency in a project, and anyone with write permissions can publish a new package version.{% endif %} |
+| Visibility  | {% data reusables.package_registry.public-or-private-packages %}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 For more information, see "[About permissions for {% data variables.product.prodname_registry %}](/packages/learn-github-packages/about-permissions-for-github-packages)."
 
 {% ifversion fpt %}
+
 ## About billing for {% data variables.product.prodname_registry %}
 
 {% data reusables.package_registry.packages-billing %} {% data reusables.package_registry.packages-spending-limit-brief %} For more information, see "[About billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."
@@ -57,19 +58,21 @@ For more information, see "[About permissions for {% data variables.product.prod
 {% endif %}
 
 ## Supported clients and formats
+
 <!-- If you make changes to this feature, update /getting-started-with-github/github-language-support to reflect any changes to supported clients or formats. -->
 
 {% data variables.product.prodname_registry %} uses the native package tooling commands you're already familiar with to publish and install package versions.
+
 ### Support for package registries
 
-| Language | Description | Package format | Package client |
-| --- | --- | --- | --- |
-| JavaScript | Node package manager | `package.json`  | `npm` |
-| Ruby |  RubyGems package manager | `Gemfile` |  `gem` |
-| Java | Apache Maven project management and comprehension tool | `pom.xml` |  `mvn` |
-| Java | Gradle build automation tool for Java | `build.gradle` or `build.gradle.kts`  | `gradle`  |
-| .NET | NuGet package management for .NET | `nupkg`  |  `dotnet` CLI |
-| N/A | Docker container management | `Dockerfile` | `Docker` |
+| Language   | Description                                            | Package format                       | Package client |
+| ---------- | ------------------------------------------------------ | ------------------------------------ | -------------- |
+| JavaScript | Node package manager                                   | `package.json`                       | `npm`          |
+| Ruby       | RubyGems package manager                               | `Gemfile`                            | `gem`          |
+| Java       | Apache Maven project management and comprehension tool | `pom.xml`                            | `mvn`          |
+| Java       | Gradle build automation tool for Java                  | `build.gradle` or `build.gradle.kts` | `gradle`       |
+| .NET       | NuGet package management for .NET                      | `nupkg`                              | `dotnet` CLI   |
+| N/A        | Docker container management                            | `Dockerfile`                         | `Docker`       |
 
 {% ifversion ghes > 2.22 %}
 {% note %}
@@ -87,6 +90,7 @@ For more information about configuring your package client for use with {% data 
 {% ifversion fpt %}
 For more information about Docker and the {% data variables.product.prodname_container_registry %}, see "[Working with the Container registry](/packages/working-with-a-github-packages-registry/working-with-the-container-registry)."
 {% endif %}
+
 ## Authenticating to {% data variables.product.prodname_registry %}
 
 {% data reusables.package_registry.authenticate-packages %}
@@ -122,9 +126,9 @@ If you have feedback or feature requests for {% data variables.product.prodname_
 
 Contact {% data variables.contact.github_support %} about {% data variables.product.prodname_registry %} using [our contact form](https://support.github.com/contact?form%5Bsubject%5D=Re:%20GitHub%20Packages) if:
 
-* You experience anything that contradicts the documentation
-* You encounter vague or unclear errors
-* Your published package contains sensitive data, such as GDPR violations, API Keys, or personally identifying information
+- You experience anything that contradicts the documentation
+- You encounter vague or unclear errors
+- Your published package contains sensitive data, such as GDPR violations, API Keys, or personally identifying information
 
 {% else %}
 If you need support for {% data variables.product.prodname_registry %}, please contact your site administrators.

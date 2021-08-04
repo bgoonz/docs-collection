@@ -1,11 +1,11 @@
 ---
 title: Metrics available with GitHub Insights
-intro: '{% data variables.product.prodname_insights %} includes a variety of metrics to give you visibility into your team''s software delivery process.'
+intro: "{% data variables.product.prodname_insights %} includes a variety of metrics to give you visibility into your team's software delivery process."
 redirect_from:
   - /github/installing-and-configuring-github-insights/metrics-available-with-github-insights
   - /github/installing-and-configuring-github-insights/key-metrics-for-collaboration-in-pull-requests
 versions:
-  ghes: '*'
+  ghes: "*"
 shortTitle: Metrics in GitHub Insights
 ---
 
@@ -61,16 +61,16 @@ A large pull request backlog means work may be out of date, indicating wasted ef
 
 ## Reports
 
-| Metric | Description |
-| ------ | ----------- |
-| Activity | An activity is any one of the following:<ul><li>Committing to a branch</li><li>Opening a pull request</li><li>Closing a pull request</li><li>Merging a pull request</li><li>Commenting on a pull request</li><li>Approving a pull request</li></ul> |
-| Activity, hour | An hour with activity is any hour in which at least one contributor records an activity. |
-| Churn code | Churn code is code changed within three weeks of being added or last changed. This includes lines of code that were overwritten by the author or by another contributor. |
-| Lines of code added and changed | Total count of new lines of code added plus lines of code changed. You can include or exclude churn code. |
-| Ownership | Percentage breakdown of lines of code added and changed by the last contributor to add or change each line of code. |
-| Pairings | Contributors who modify or remove another contributor's code. |
-| Percentage of codebase changed | Lines of code added or changed in the codebase as a percentage of total lines of code in the codebase. |
-| Percentage of new and changed code vs churn code | Lines of code added and changed, excluding churn code, as a percentage of total lines of code added and changed, including churn code. |
-| Pull requests open | The count of all pull requests which are open at the end of the period selected or the time interval displayed on the chart. |
-| Retention | Percentage of lines of code persisting in the codebase after each week, grouped by the week the lines were created. |
-| Time to merge | Time between the first commit on a branch and the merge action of a pull request on that branch. The timestamp of the first commit on a branch is subtracted from the timestamp on the merge action of the pull request. |
+| Metric                                           | Description                                                                                                                                                                                                                                         |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Activity                                         | An activity is any one of the following:<ul><li>Committing to a branch</li><li>Opening a pull request</li><li>Closing a pull request</li><li>Merging a pull request</li><li>Commenting on a pull request</li><li>Approving a pull request</li></ul> |
+| Activity, hour                                   | An hour with activity is any hour in which at least one contributor records an activity.                                                                                                                                                            |
+| Churn code                                       | Churn code is code changed within three weeks of being added or last changed. This includes lines of code that were overwritten by the author or by another contributor.                                                                            |
+| Lines of code added and changed                  | Total count of new lines of code added plus lines of code changed. You can include or exclude churn code.                                                                                                                                           |
+| Ownership                                        | Percentage breakdown of lines of code added and changed by the last contributor to add or change each line of code.                                                                                                                                 |
+| Pairings                                         | Contributors who modify or remove another contributor's code.                                                                                                                                                                                       |
+| Percentage of codebase changed                   | Lines of code added or changed in the codebase as a percentage of total lines of code in the codebase.                                                                                                                                              |
+| Percentage of new and changed code vs churn code | Lines of code added and changed, excluding churn code, as a percentage of total lines of code added and changed, including churn code.                                                                                                              |
+| Pull requests open                               | The count of all pull requests which are open at the end of the period selected or the time interval displayed on the chart.                                                                                                                        |
+| Retention                                        | Percentage of lines of code persisting in the codebase after each week, grouped by the week the lines were created.                                                                                                                                 |
+| Time to merge                                    | Time between the first commit on a branch and the merge action of a pull request on that branch. The timestamp of the first commit on a branch is subtracted from the timestamp on the merge action of the pull request.                            |

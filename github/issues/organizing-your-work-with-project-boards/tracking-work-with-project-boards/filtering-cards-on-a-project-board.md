@@ -6,13 +6,14 @@ redirect_from:
   - /articles/filtering-cards-on-a-project-board
   - /github/managing-your-work-on-github/filtering-cards-on-a-project-board
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Filter cards on board
 ---
+
 {% data reusables.projects.project_boards_old %}
 
 On a card, you can click any assignee, milestone, or label to filter the project board by that qualifier. To clear the search, you can click the same assignee, milestone, or label again.
@@ -33,7 +34,7 @@ You can also use the "Filter cards" search bar at the top of each project board 
 
 1. Navigate to the project board that contains the cards you want to filter.
 2. Above the project card columns, click into the "Filter cards" search bar and type a search query to filter the cards.
-![Filter card search bar](/assets/images/help/projects/filter-card-search-bar.png)
+   ![Filter card search bar](/assets/images/help/projects/filter-card-search-bar.png)
 
 {% tip %}
 

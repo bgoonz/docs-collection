@@ -1,14 +1,15 @@
 ---
 title: Forking and cloning gists
-intro: 'Gists are actually Git repositories, which means that you can fork or clone any gist, even if you aren''t the original author. You can also view a gist''s full commit history, including diffs.'
+intro: "Gists are actually Git repositories, which means that you can fork or clone any gist, even if you aren't the original author. You can also view a gist's full commit history, including diffs."
 redirect_from:
   - /articles/forking-and-cloning-gists
   - /github/writing-on-github/forking-and-cloning-gists
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
+
 ## Forking gists
 
 Each gist indicates which forks have activity, making it easy to find interesting changes from others.

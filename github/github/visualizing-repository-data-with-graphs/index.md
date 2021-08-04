@@ -7,9 +7,9 @@ redirect_from:
   - /categories/graphs/
   - /categories/visualizing-repository-data-with-graphs
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -18,4 +18,3 @@ children:
   - /understanding-connections-between-repositories
 shortTitle: View repository graphs
 ---
-

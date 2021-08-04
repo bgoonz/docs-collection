@@ -1,30 +1,29 @@
 ---
 title: Best practices for integrators
-intro: 'Build an app that reliably interacts with the {% data variables.product.prodname_dotcom %} API and provides the best experience for your users.'
+intro: "Build an app that reliably interacts with the {% data variables.product.prodname_dotcom %} API and provides the best experience for your users."
 redirect_from:
   - /guides/best-practices-for-integrators/
   - /v3/guides/best-practices-for-integrators
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Integrator best practices
 ---
 
-
-Interested in integrating with the GitHub platform? [You're in good company](https://github.com/integrations). This guide will help you build an app that provides the best experience for your users *and* ensure that it's reliably interacting with the API. 
+Interested in integrating with the GitHub platform? [You're in good company](https://github.com/integrations). This guide will help you build an app that provides the best experience for your users _and_ ensure that it's reliably interacting with the API.
 
 ## Secure payloads delivered from GitHub
 
-It's very important that you secure [the payloads sent from GitHub][event-types]. Although no personal information (like passwords) is ever transmitted in a payload, leaking *any* information is not good. Some information that might be sensitive include committer email address or the names of private repositories.
+It's very important that you secure [the payloads sent from GitHub][event-types]. Although no personal information (like passwords) is ever transmitted in a payload, leaking _any_ information is not good. Some information that might be sensitive include committer email address or the names of private repositories.
 
 There are several steps you can take to secure receipt of payloads delivered by GitHub:
 
 1. Ensure that your receiving server is on an HTTPS connection. By default, GitHub will verify SSL certificates when delivering payloads.{% ifversion fpt %}
 1. You can add [the IP address we use when delivering hooks](/github/authenticating-to-github/about-githubs-ip-addresses) to your server's allow list. To ensure that you're always checking the right IP address, you can [use the `/meta` endpoint](/rest/reference/meta#meta) to find the address we use.{% endif %}
-1. Provide [a secret token](/webhooks/securing/) to ensure payloads are definitely coming from GitHub. By enforcing a secret token, you're ensuring that any data received by your server is absolutely coming from GitHub. Ideally, you should provide a different secret token *per user* of your service. That way, if one token is compromised, no other user would be affected.
+1. Provide [a secret token](/webhooks/securing/) to ensure payloads are definitely coming from GitHub. By enforcing a secret token, you're ensuring that any data received by your server is absolutely coming from GitHub. Ideally, you should provide a different secret token _per user_ of your service. That way, if one token is compromised, no other user would be affected.
 
 ## Favor asynchronous work over synchronous
 
@@ -145,17 +144,17 @@ You can always [check your rate limit status](/rest/reference/rate-limit) at any
 [Abuse rate limits](/rest/overview/resources-in-the-rest-api#abuse-rate-limits) are another way we ensure the API's availability.
 To avoid hitting this limit, you should ensure your application follows the guidelines below.
 
-* Make authenticated requests, or use your application's client ID and secret. Unauthenticated
+- Make authenticated requests, or use your application's client ID and secret. Unauthenticated
   requests are subject to more aggressive abuse rate limiting.
-* Make requests for a single user or client ID serially. Do not make requests for a single user
+- Make requests for a single user or client ID serially. Do not make requests for a single user
   or client ID concurrently.
-* If you're making a large number of `POST`, `PATCH`, `PUT`, or `DELETE` requests for a single user
+- If you're making a large number of `POST`, `PATCH`, `PUT`, or `DELETE` requests for a single user
   or client ID, wait at least one second between each request.
-* When you have been limited, use the `Retry-After` response header to slow down. The value of the
+- When you have been limited, use the `Retry-After` response header to slow down. The value of the
   `Retry-After` header will always be an integer, representing the number of seconds you should wait
   before making requests again. For example, `Retry-After: 30` means you should wait 30 seconds
   before sending more requests.
-* Requests that create content which triggers notifications, such as issues, comments and pull requests,
+- Requests that create content which triggers notifications, such as issues, comments and pull requests,
   may be further limited and will not include a `Retry-After` header in the response. Please create this
   content at a reasonable pace to avoid further limiting.
 

@@ -4,11 +4,10 @@ redirect_from:
   - /v4/explorer
   - /v4/explorer-new
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 layout: graphql-explorer
 topics:
   - API
 ---
-

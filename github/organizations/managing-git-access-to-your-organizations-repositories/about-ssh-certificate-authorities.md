@@ -1,14 +1,14 @@
 ---
 title: About SSH certificate authorities
-intro: 'With an SSH certificate authority, your organization or enterprise account can provide SSH certificates that members can use to access your resources with Git.'
-product: '{% data reusables.gated-features.ssh-certificate-authorities %}'
+intro: "With an SSH certificate authority, your organization or enterprise account can provide SSH certificates that members can use to access your resources with Git."
+product: "{% data reusables.gated-features.ssh-certificate-authorities %}"
 redirect_from:
   - /articles/about-ssh-certificate-authorities
   - /github/setting-up-and-managing-organizations-and-teams/about-ssh-certificate-authorities
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams

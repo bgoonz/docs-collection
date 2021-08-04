@@ -1,10 +1,10 @@
 ---
 title: Best practices for managing projects (beta)
-intro: 'Learn tips for managing your projects on {% data variables.product.company_short %}.'
+intro: "Learn tips for managing your projects on {% data variables.product.company_short %}."
 allowTitleToDifferFromFilename: true
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Projects
@@ -48,6 +48,6 @@ To prevent information from getting out of sync, maintain a single source of tru
 
 Automating tasks lets you spend less time on busy work and more time on the project itself. The less you need to remember to do manually, the more likely your project will stay up to date. {% data variables.product.prodname_actions %} and the GraphQL API enable you to automate routine project management tasks. For example, to keep track of pull requests awaiting review, you can create a workflow that adds a pull request to a project and sets the status to "needs review"; this process can be automatically triggered when a pull request is marked as "ready for review".
 
-- For an example workflow, see "[Automating projects](/issues/trying-out-the-new-projects-experience/automating-projects)." 
+- For an example workflow, see "[Automating projects](/issues/trying-out-the-new-projects-experience/automating-projects)."
 - For more information about the API, see "[Using the API to manage projects](/issues/trying-out-the-new-projects-experience/using-the-api-to-manage-projects)."
 - For more information about {% data variables.product.prodname_actions %}, see ["{% data variables.product.prodname_actions %}](/actions)."

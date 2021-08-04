@@ -1,12 +1,12 @@
 ---
 title: Schema previews
-intro: 'You can preview upcoming features and changes to the {% data variables.product.prodname_dotcom %} GraphQL schema before they are added to the {% data variables.product.prodname_dotcom %} GraphQL API.'
+intro: "You can preview upcoming features and changes to the {% data variables.product.prodname_dotcom %} GraphQL schema before they are added to the {% data variables.product.prodname_dotcom %} GraphQL API."
 redirect_from:
   - /v4/previews
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
@@ -24,6 +24,7 @@ To access a schema preview, you'll need to provide a custom [media type](/rest/o
 {% endnote %}
 
 {% for preview in graphql.previewsForCurrentVersion %}
+
 ## {{ preview.title }}
 
 {{ preview.description }}
@@ -37,8 +38,9 @@ To toggle this preview and access the following schema members, you must provide
 Previewed schema members:
 
 {% for schemaMemberPath in preview.toggled_on %}
+
 - `{{ schemaMemberPath }}`
-{% endfor %}
+  {% endfor %}
 
 {% if preview.announcement %}
 **Announced:** [{{ preview.announcement.date }}]({{ preview.announcement.url }})

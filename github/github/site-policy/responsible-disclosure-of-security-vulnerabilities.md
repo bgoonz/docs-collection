@@ -4,11 +4,12 @@ redirect_from:
   - /responsible-disclosure/
   - /articles/responsible-disclosure-of-security-vulnerabilities
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal
 ---
+
 We want to keep GitHub safe for everyone. If you've discovered a security vulnerability in GitHub, we appreciate your help in disclosing it to us in a responsible manner.
 
 ## Bounty Program

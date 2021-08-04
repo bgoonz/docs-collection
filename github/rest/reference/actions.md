@@ -1,12 +1,12 @@
 ---
 title: Actions
-product: '{% data reusables.gated-features.actions %}'
+product: "{% data reusables.gated-features.actions %}"
 redirect_from:
   - /v3/actions
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -17,7 +17,7 @@ miniTocMaxHeadingLevel: 3
 The {% data variables.product.prodname_actions %} API enables you to manage {% data variables.product.prodname_actions %} using the REST API. {% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} require the permissions mentioned in each endpoint. For more information, see "[{% data variables.product.prodname_actions %} Documentation](/actions)."
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Artifacts
@@ -29,10 +29,11 @@ The Artifacts API allows you to download, delete, and retrieve information about
 {% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'artifacts' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'artifacts' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
+
 ## Permissions
 
 {% data reusables.actions.ae-beta %}
@@ -42,7 +43,7 @@ The Permissions API allows you to set permissions for what organizations and rep
 You can also set permissions for an enterprise. For more information, see the "[{% data variables.product.prodname_dotcom %} Enterprise administration](/rest/reference/enterprise-admin#github-actions)" REST API.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'permissions' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'permissions' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 {% endif %}
 
@@ -55,7 +56,7 @@ The Secrets API lets you create, update, delete, and retrieve information about 
 {% data reusables.actions.actions-authentication %} {% data variables.product.prodname_github_apps %} must have the `secrets` permission to use this API. Authenticated users must have collaborator access to a repository to create, update, or read secrets.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'secrets' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'secrets' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Self-hosted runners
@@ -70,7 +71,7 @@ The Self-hosted Runners API allows you to register, view, and delete self-hosted
 You can manage self-hosted runners for an enterprise. For more information, see the "[{% data variables.product.prodname_dotcom %} Enterprise administration](/rest/reference/enterprise-admin#github-actions)" REST API.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'self-hosted-runners' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'self-hosted-runners' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Self-hosted runner groups
@@ -85,7 +86,7 @@ The Self-hosted Runners Groups API allows you manage groups of self-hosted runne
 You can manage self-hosted runner groups for an enterprise. For more information, see the "[{% data variables.product.prodname_dotcom %} Enterprise administration](/rest/reference/enterprise-admin##github-actions)" REST API.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'self-hosted-runner-groups' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'self-hosted-runner-groups' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Workflows
@@ -97,7 +98,7 @@ The Workflows API allows you to view workflows for a repository. {% data reusabl
 {% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'workflows' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'workflows' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Workflow jobs
@@ -109,7 +110,7 @@ The Workflow Jobs API allows you to view logs and workflow jobs. {% data reusabl
 {% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'workflow-jobs' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'workflow-jobs' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Workflow runs
@@ -121,5 +122,5 @@ The Workflow Runs API allows you to view, re-run, cancel, and view logs for work
 {% data reusables.actions.actions-authentication %} {% data reusables.actions.actions-app-actions-permissions-api %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'workflow-runs' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'workflow-runs' %}{% include rest_operation %}{% endif %}
 {% endfor %}

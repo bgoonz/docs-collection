@@ -1,101 +1,256 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Using global node IDs</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">Using global node IDs</h1>
-</header>
-<p>You can access most objects in GitHub (users, issues, pull requests, etc.) using either the REST API or the GraphQL API. With a <a href="https://developer.github.com/changes/2017-12-19-graphql-node-id/">recent update</a>, you can find the <strong>global node ID</strong> of many objects from within the REST API and use these IDs in your GraphQL operations.</p>
-<p>{% note %}</p>
-<p><strong>Note:</strong> In REST, the global node ID field is named <code>node_id</code>. In GraphQL, it’s an <code>id</code> field on the <code>node</code> interface. For a refresher on what “node” means in GraphQL, see “<a href="/graphql/guides/introduction-to-graphql#node">Introduction to GraphQL</a>.”</p>
-<p>{% endnote %}</p>
-<h2 id="putting-global-node-ids-to-use">Putting global node IDs to use</h2>
-<p>You can follow three steps to use global node IDs effectively:</p>
-<ol type="1">
-<li>Call a REST endpoint that returns an object’s <code>node_id</code>.</li>
-<li>Find the object’s type in GraphQL.</li>
-<li>Use the ID and type to do a direct node lookup in GraphQL.</li>
-</ol>
-<p>Let’s walk through an example.</p>
-<h2 id="call-a-rest-endpoint-that-returns-an-objects-node-id">1. Call a REST endpoint that returns an object’s node ID</h2>
-<p>If you <a href="/rest/reference/users#get-the-authenticated-user">request the authenticated user</a>:</p>
-<pre class="shell"><code>$ curl -i -u &lt;em&gt;username:token&lt;/em&gt; {% data variables.product.api_url_pre %}/user</code></pre>
-<p>you’ll get a response that includes the <code>node_id</code> of the authenticated user:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Using global node IDs</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Using global node IDs</h1>
+    </header>
+    <p>
+      You can access most objects in GitHub (users, issues, pull requests, etc.)
+      using either the REST API or the GraphQL API. With a
+      <a href="https://developer.github.com/changes/2017-12-19-graphql-node-id/"
+        >recent update</a
+      >, you can find the <strong>global node ID</strong> of many objects from
+      within the REST API and use these IDs in your GraphQL operations.
+    </p>
+    <p>{% note %}</p>
+    <p>
+      <strong>Note:</strong> In REST, the global node ID field is named
+      <code>node_id</code>. In GraphQL, it’s an <code>id</code> field on the
+      <code>node</code> interface. For a refresher on what “node” means in
+      GraphQL, see “<a href="/graphql/guides/introduction-to-graphql#node"
+        >Introduction to GraphQL</a
+      >.”
+    </p>
+    <p>{% endnote %}</p>
+    <h2 id="putting-global-node-ids-to-use">Putting global node IDs to use</h2>
+    <p>You can follow three steps to use global node IDs effectively:</p>
+    <ol type="1">
+      <li>
+        Call a REST endpoint that returns an object’s <code>node_id</code>.
+      </li>
+      <li>Find the object’s type in GraphQL.</li>
+      <li>Use the ID and type to do a direct node lookup in GraphQL.</li>
+    </ol>
+    <p>Let’s walk through an example.</p>
+    <h2 id="call-a-rest-endpoint-that-returns-an-objects-node-id">
+      1. Call a REST endpoint that returns an object’s node ID
+    </h2>
+    <p>
+      If you
+      <a href="/rest/reference/users#get-the-authenticated-user"
+        >request the authenticated user</a
+      >:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ curl -i -u &lt;em&gt;username:token&lt;/em&gt; {% data variables.product.api_url_pre %}/user</code></pre>
+    <p>
+      you’ll get a response that includes the <code>node_id</code> of the
+      authenticated user:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;login&quot;</span><span class="fu">:</span> <span class="st">&quot;octocat&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-3" title="3">  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-4" title="4">  <span class="dt">&quot;avatar_url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/images/error/octocat_happy.gif&quot;</span><span class="fu">,</span></a>
@@ -139,20 +294,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb2-42" title="42">    <span class="dt">&quot;collaborators&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb2-43" title="43">  <span class="fu">},</span></a>
 <a class="sourceLine" id="cb2-44" title="44">  <span class="dt">&quot;node_id&quot;</span><span class="fu">:</span> <span class="st">&quot;MDQ6VXNlcjU4MzIzMQ==&quot;</span></a>
-<a class="sourceLine" id="cb2-45" title="45"><span class="fu">}</span></a></code></pre></div>
-<h2 id="find-the-object-type-in-graphql">2. Find the object type in GraphQL</h2>
-<p>In this example, the <code>node_id</code> value is <code>MDQ6VXNlcjU4MzIzMQ==</code>. You can use this value to query the same object in GraphQL.</p>
-<p>You’ll need to know the object’s <em>type</em> first, though. You can check the type with a simple GraphQL query:</p>
-<pre class="graphql"><code>query {
+<a class="sourceLine" id="cb2-45" title="45"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="find-the-object-type-in-graphql">
+      2. Find the object type in GraphQL
+    </h2>
+    <p>
+      In this example, the <code>node_id</code> value is
+      <code>MDQ6VXNlcjU4MzIzMQ==</code>. You can use this value to query the
+      same object in GraphQL.
+    </p>
+    <p>
+      You’ll need to know the object’s <em>type</em> first, though. You can
+      check the type with a simple GraphQL query:
+    </p>
+    <pre class="graphql"><code>query {
   node(id:&quot;MDQ6VXNlcjU4MzIzMQ==&quot;) {
      __typename
   }
 }</code></pre>
-<p>This type of query—that is, finding the node by ID—is known as a “direct node lookup.”</p>
-<p>When you run this query, you’ll see that the <code>__typename</code> is <a href="/graphql/reference/objects#user"><code>User</code></a>.</p>
-<h2 id="do-a-direct-node-lookup-in-graphql">3. Do a direct node lookup in GraphQL</h2>
-<p>Once you’ve confirmed the type, you can use an <a href="https://graphql.github.io/learn/queries/#inline-fragments">inline fragment</a> to access the object by its ID and return additional data. In this example, we define the fields on <code>User</code> that we’d like to query:</p>
-<pre class="graphql"><code>query {
+    <p>
+      This type of query—that is, finding the node by ID—is known as a “direct
+      node lookup.”
+    </p>
+    <p>
+      When you run this query, you’ll see that the <code>__typename</code> is
+      <a href="/graphql/reference/objects#user"><code>User</code></a
+      >.
+    </p>
+    <h2 id="do-a-direct-node-lookup-in-graphql">
+      3. Do a direct node lookup in GraphQL
+    </h2>
+    <p>
+      Once you’ve confirmed the type, you can use an
+      <a href="https://graphql.github.io/learn/queries/#inline-fragments"
+        >inline fragment</a
+      >
+      to access the object by its ID and return additional data. In this
+      example, we define the fields on <code>User</code> that we’d like to
+      query:
+    </p>
+    <pre class="graphql"><code>query {
   node(id:&quot;MDQ6VXNlcjU4MzIzMQ==&quot;) {
    ... on User {
       name
@@ -160,8 +342,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     }
   }
 }</code></pre>
-<p>This type of query is the standard approach for looking up an object by its global node ID.</p>
-<h2 id="using-global-node-ids-in-migrations">Using global node IDs in migrations</h2>
-<p>When building integrations that use either the REST API or the GraphQL API, it’s best practice to persist the global node ID so you can easily reference objects across API versions. For more information on handling the transition between REST and GraphQL, see “<a href="/graphql/guides/migrating-from-rest-to-graphql">Migrating from REST to GraphQL</a>.”</p>
-</body>
+    <p>
+      This type of query is the standard approach for looking up an object by
+      its global node ID.
+    </p>
+    <h2 id="using-global-node-ids-in-migrations">
+      Using global node IDs in migrations
+    </h2>
+    <p>
+      When building integrations that use either the REST API or the GraphQL
+      API, it’s best practice to persist the global node ID so you can easily
+      reference objects across API versions. For more information on handling
+      the transition between REST and GraphQL, see “<a
+        href="/graphql/guides/migrating-from-rest-to-graphql"
+        >Migrating from REST to GraphQL</a
+      >.”
+    </p>
+  </body>
 </html>

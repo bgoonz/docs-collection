@@ -5,9 +5,9 @@ redirect_from:
   - /guides/traversing-with-pagination/
   - /v3/guides/traversing-with-pagination
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: Traverse with pagination
@@ -28,13 +28,13 @@ in the [platform-samples][platform samples] repository.
 To start with, it's important to know a few facts about receiving paginated items:
 
 1. Different API calls respond with different defaults. For example, a call to
-[List public repositories](/rest/reference/repos#list-public-repositories)
-provides paginated items in sets of 30, whereas a call to the GitHub Search API
-provides items in sets of 100
+   [List public repositories](/rest/reference/repos#list-public-repositories)
+   provides paginated items in sets of 30, whereas a call to the GitHub Search API
+   provides items in sets of 100
 2. You can specify how many items to receive (up to a maximum of 100); but,
 3. For technical reasons, not every endpoint behaves the same. For example,
-[events](/rest/reference/activity#events) won't let you set a maximum for items to receive.
-Be sure to read the documentation on how to handle paginated results for specific endpoints.
+   [events](/rest/reference/activity#events) won't let you set a maximum for items to receive.
+   Be sure to read the documentation on how to handle paginated results for specific endpoints.
 
 Information about pagination is provided in [the Link header](http://tools.ietf.org/html/rfc5988)
 of an API call. For example, let's make a curl request to the search API, to find
@@ -110,7 +110,7 @@ just described above.
 As always, first we'll require [GitHub's Octokit.rb][octokit.rb] Ruby library, and
 pass in our [personal access token][personal token]:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -122,7 +122,7 @@ Next, we'll execute the search, using Octokit's `search_code` method. Unlike
 using `curl`, we can also immediately retrieve the number of results, so let's
 do that:
 
-``` ruby
+```ruby
 results = client.search_code('addClass user:mozilla')
 total_count = results.total_count
 ```
@@ -139,7 +139,7 @@ on. These relations also contain information about the resulting URL, by calling
 Knowing this, let's grab the page number of the last result, and present all
 this information to the user:
 
-``` ruby
+```ruby
 last_response = client.last_response
 number_of_pages = last_response.rels[:last].href.match(/page=(\d+).*$/)[1]
 
@@ -154,7 +154,7 @@ we'll retrieve the data set for the next page by following the `rels[:next]` inf
 The loop will finish when there is no `rels[:next]` information to consume (in other
 words, we are at `rels[:last]`). It might look something like this:
 
-``` ruby
+```ruby
 puts last_response.data.items.first.path
 until last_response.rels[:next].nil?
   last_response = last_response.rels[:next].get
@@ -166,7 +166,7 @@ Changing the number of items per page is extremely simple with Octokit.rb. Simpl
 pass a `per_page` options hash to the initial client construction. After that,
 your code should remain intact:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -203,7 +203,7 @@ Let's sketch out a micro-version of what that might entail.
 From the code above, we already know we can get the `number_of_pages` in the
 paginated results from the first call:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -221,7 +221,8 @@ puts "There are #{total_count} results, on #{number_of_pages} pages!"
 ```
 
 From there, we can construct a beautiful ASCII representation of the number boxes:
-``` ruby
+
+```ruby
 numbers = ""
 for i in 1..number_of_pages.to_i
   numbers << "[#{i}] "
@@ -232,7 +233,7 @@ puts numbers
 Let's simulate a user clicking on one of these boxes, by constructing a random
 number:
 
-``` ruby
+```ruby
 random_page = Random.new
 random_page = random_page.rand(1..number_of_pages.to_i)
 
@@ -242,14 +243,14 @@ puts "A User appeared, and clicked number #{random_page}!"
 Now that we have a page number, we can use Octokit to explicitly retrieve that
 individual page, by passing the `:page` option:
 
-``` ruby
+```ruby
 clicked_results = client.search_code('addClass user:mozilla', :page => random_page)
 ```
 
 If we wanted to get fancy, we could also grab the previous and next pages, in
 order to generate links for back (`<<`) and forward (`>>`) elements:
 
-``` ruby
+```ruby
 prev_page_href = client.last_response.rels[:prev] ? client.last_response.rels[:prev].href : "(none)"
 next_page_href = client.last_response.rels[:next] ? client.last_response.rels[:next].href : "(none)"
 

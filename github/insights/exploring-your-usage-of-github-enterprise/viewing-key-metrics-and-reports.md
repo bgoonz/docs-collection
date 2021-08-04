@@ -3,9 +3,9 @@ title: Viewing key metrics and reports
 intro: You can view and filter key metrics and reports to help you understand and improve your software delivery process through data.
 redirect_from:
   - /github/installing-and-configuring-github-insights/viewing-and-filtering-key-metrics-and-reports
-permissions: 'Anyone with access to {% data variables.product.prodname_insights %} can view key metrics and reports.'
+permissions: "Anyone with access to {% data variables.product.prodname_insights %} can view key metrics and reports."
 versions:
-  ghes: '*'
+  ghes: "*"
 shortTitle: View metrics & reports
 ---
 
@@ -29,11 +29,11 @@ You can filter the data included in key metrics or reports by teams, repositorie
 ## Viewing reports
 
 1. In {% data variables.product.prodname_insights %}, click **{% octicon "file" aria-label="The file icon" %} Reports**.
-  ![Reports tab](/assets/images/help/insights/reports-tab.png)
+   ![Reports tab](/assets/images/help/insights/reports-tab.png)
 2. Under **{% octicon "file" aria-label="The file icon" %} Reports**, click the name of the report you want to view.
-  ![List of reports](/assets/images/help/insights/reports-list.png)
-{% data reusables.github-insights.filter-reports %}
-{% data reusables.github-insights.view-events %}
+   ![List of reports](/assets/images/help/insights/reports-list.png)
+   {% data reusables.github-insights.filter-reports %}
+   {% data reusables.github-insights.view-events %}
 
 ## Further reading
 

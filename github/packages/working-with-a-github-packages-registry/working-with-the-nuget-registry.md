@@ -1,7 +1,7 @@
 ---
 title: Working with the NuGet registry
-intro: 'You can configure the `dotnet` command-line interface (CLI) to publish NuGet packages to {% data variables.product.prodname_registry %} and to use packages stored on {% data variables.product.prodname_registry %} as dependencies in a .NET project.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can configure the `dotnet` command-line interface (CLI) to publish NuGet packages to {% data variables.product.prodname_registry %} and to use packages stored on {% data variables.product.prodname_registry %} as dependencies in a .NET project."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /articles/configuring-nuget-for-use-with-github-package-registry
   - /github/managing-packages-with-github-package-registry/configuring-nuget-for-use-with-github-package-registry
@@ -10,9 +10,9 @@ redirect_from:
   - /packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages
   - /packages/guides/configuring-dotnet-cli-for-use-with-github-packages
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 shortTitle: NuGet registry
 ---
 
@@ -39,9 +39,10 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 
 {% data reusables.package_registry.required-scopes %}
 
-To authenticate to {% data variables.product.prodname_registry %} with the `dotnet` command-line interface (CLI), create a *nuget.config* file in your project directory specifying {% data variables.product.prodname_registry %} as a source under `packageSources` for the `dotnet` CLI client.
+To authenticate to {% data variables.product.prodname_registry %} with the `dotnet` command-line interface (CLI), create a _nuget.config_ file in your project directory specifying {% data variables.product.prodname_registry %} as a source under `packageSources` for the `dotnet` CLI client.
 
 You must replace:
+
 - `USERNAME` with the name of your user account on {% data variables.product.prodname_dotcom %}.
 - `TOKEN` with your personal access token.
 - `OWNER` with the name of the user or organization account that owns the repository containing your project.{% ifversion ghes or ghae %}
@@ -84,84 +85,95 @@ If your instance has subdomain isolation disabled:
     </packageSourceCredentials>
 </configuration>
 ```
+
 {% endif %}
 
 ## Publishing a package
 
-You can publish a package to {% data variables.product.prodname_registry %} by authenticating with a *nuget.config* file{% ifversion fpt or ghes > 2.22 or ghae %}, or by using the `--api-key` command line option with your {% data variables.product.prodname_dotcom %} personal access token (PAT){% endif %}.
+You can publish a package to {% data variables.product.prodname_registry %} by authenticating with a _nuget.config_ file{% ifversion fpt or ghes > 2.22 or ghae %}, or by using the `--api-key` command line option with your {% data variables.product.prodname_dotcom %} personal access token (PAT){% endif %}.
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
+
 ### Publishing a package using a GitHub PAT as your API key
 
 If you don't already have a PAT to use for your {% data variables.product.prodname_dotcom %} account, see "[Creating a personal access token](/github/authenticating-to-github/creating-a-personal-access-token)."
 
 1. Create a new project.
-  ```shell
-  dotnet new console --name OctocatApp
-  ```
+
+```shell
+dotnet new console --name OctocatApp
+```
+
 2. Package the project.
-  ```shell
-  dotnet pack --configuration Release
-  ```
+
+```shell
+dotnet pack --configuration Release
+```
 
 3. Publish the package using your PAT as the API key.
-  ```shell
-  dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg"  --api-key <em>YOUR_GITHUB_PAT</em> --source "github"
-  ```
+
+```shell
+dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg"  --api-key <em>YOUR_GITHUB_PAT</em> --source "github"
+```
 
 {% data reusables.package_registry.viewing-packages %}
 
 {% endif %}
 
-### Publishing a package using a *nuget.config* file
+### Publishing a package using a _nuget.config_ file
 
-When publishing, you need to use the same value for `OWNER` in your *csproj* file that you use in your *nuget.config* authentication file. Specify or increment the version number in your *.csproj* file, then use the `dotnet pack` command to create a *.nuspec* file for that version. For more information on creating your package, see "[Create and publish a package](https://docs.microsoft.com/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli)" in the Microsoft documentation.
+When publishing, you need to use the same value for `OWNER` in your _csproj_ file that you use in your _nuget.config_ authentication file. Specify or increment the version number in your _.csproj_ file, then use the `dotnet pack` command to create a _.nuspec_ file for that version. For more information on creating your package, see "[Create and publish a package](https://docs.microsoft.com/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli)" in the Microsoft documentation.
 
-{% data reusables.package_registry.authenticate-step %}
-2. Create a new project.
-  ```shell
-  dotnet new console --name OctocatApp
-  ```
-3. Add your project's specific information to your project's file, which ends in *.csproj*.  You must replace:
-    - `OWNER` with the name of the user or organization account that owns the repository containing your project.
-    - `REPOSITORY` with the name of the repository containing the package you want to publish.                      
-    - `1.0.0` with the version number of the package.{% ifversion ghes or ghae %}
-    - `HOSTNAME` with the host name for {% data variables.product.product_location %}.{% endif %}
-  ``` xml
-  <Project Sdk="Microsoft.NET.Sdk">
+{% data reusables.package_registry.authenticate-step %} 2. Create a new project.
 
-    <PropertyGroup>
-      <OutputType>Exe</OutputType>
-      <TargetFramework>netcoreapp3.0</TargetFramework>
-      <PackageId>OctocatApp</PackageId>
-      <Version>1.0.0</Version>
-      <Authors>Octocat</Authors>
-      <Company>GitHub</Company>
-      <PackageDescription>This package adds an Octocat!</PackageDescription>
-      <RepositoryUrl>https://{% ifversion fpt %}github.com{% else %}HOSTNAME{% endif %}/OWNER/REPOSITORY</RepositoryUrl>
-    </PropertyGroup>
+```shell
+dotnet new console --name OctocatApp
+```
 
-  </Project>
-  ```
+3. Add your project's specific information to your project's file, which ends in _.csproj_. You must replace:
+   - `OWNER` with the name of the user or organization account that owns the repository containing your project.
+   - `REPOSITORY` with the name of the repository containing the package you want to publish.
+   - `1.0.0` with the version number of the package.{% ifversion ghes or ghae %}
+   - `HOSTNAME` with the host name for {% data variables.product.product_location %}.{% endif %}
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageId>OctocatApp</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Octocat</Authors>
+    <Company>GitHub</Company>
+    <PackageDescription>This package adds an Octocat!</PackageDescription>
+    <RepositoryUrl>https://{% ifversion fpt %}github.com{% else %}HOSTNAME{% endif %}/OWNER/REPOSITORY</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
+```
+
 4. Package the project.
-  ```shell
-  dotnet pack --configuration Release
-  ```
 
-5. Publish the package using the `key` you specified in the *nuget.config* file.
-  ```shell
-  dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg" --source "github"
-  ```
+```shell
+dotnet pack --configuration Release
+```
+
+5. Publish the package using the `key` you specified in the _nuget.config_ file.
+
+```shell
+dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg" --source "github"
+```
 
 {% data reusables.package_registry.viewing-packages %}
 
 ## Publishing multiple packages to the same repository
 
-To publish multiple packages to the same repository, you can include the same {% data variables.product.prodname_dotcom %} repository URL in the `RepositoryURL` fields in all *.csproj* project files. {% data variables.product.prodname_dotcom %} matches the repository based on that field.
+To publish multiple packages to the same repository, you can include the same {% data variables.product.prodname_dotcom %} repository URL in the `RepositoryURL` fields in all _.csproj_ project files. {% data variables.product.prodname_dotcom %} matches the repository based on that field.
 
-For example, the *OctodogApp* and *OctocatApp* projects will publish to the same repository:
+For example, the _OctodogApp_ and _OctocatApp_ projects will publish to the same repository:
 
-``` xml
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -178,7 +190,7 @@ For example, the *OctodogApp* and *OctocatApp* projects will publish to the same
 </Project>
 ```
 
-``` xml
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -197,40 +209,42 @@ For example, the *OctodogApp* and *OctocatApp* projects will publish to the same
 
 ## Installing a package
 
-Using packages from {% data variables.product.prodname_dotcom %} in your project is similar to using packages from *nuget.org*. Add your package dependencies to your *.csproj* file, specifying the package name and version. For more information on using a *.csproj* file in your project, see "[Working with NuGet packages](https://docs.microsoft.com/nuget/consume-packages/overview-and-workflow)" in the Microsoft documentation.
+Using packages from {% data variables.product.prodname_dotcom %} in your project is similar to using packages from _nuget.org_. Add your package dependencies to your _.csproj_ file, specifying the package name and version. For more information on using a _.csproj_ file in your project, see "[Working with NuGet packages](https://docs.microsoft.com/nuget/consume-packages/overview-and-workflow)" in the Microsoft documentation.
 
 {% data reusables.package_registry.authenticate-step %}
 
-2. To use a package, add `ItemGroup` and configure the `PackageReference` field in the *.csproj* project file, replacing the `OctokittenApp` package with your package dependency and `1.0.0` with the version you want to use:
-  ``` xml
-  <Project Sdk="Microsoft.NET.Sdk">
+2. To use a package, add `ItemGroup` and configure the `PackageReference` field in the _.csproj_ project file, replacing the `OctokittenApp` package with your package dependency and `1.0.0` with the version you want to use:
 
-    <PropertyGroup>
-      <OutputType>Exe</OutputType>
-      <TargetFramework>netcoreapp3.0</TargetFramework>
-      <PackageId>OctocatApp</PackageId>
-      <Version>1.0.0</Version>
-      <Authors>Octocat</Authors>
-      <Company>GitHub</Company>
-      <PackageDescription>This package adds an Octocat!</PackageDescription>
-      <RepositoryUrl>https://{% ifversion fpt %}github.com{% else %}HOSTNAME{% endif %}/OWNER/REPOSITORY</RepositoryUrl>
-    </PropertyGroup>
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-      <PackageReference Include="OctokittenApp" Version="12.0.2" />
-    </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageId>OctocatApp</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Octocat</Authors>
+    <Company>GitHub</Company>
+    <PackageDescription>This package adds an Octocat!</PackageDescription>
+    <RepositoryUrl>https://{% ifversion fpt %}github.com{% else %}HOSTNAME{% endif %}/OWNER/REPOSITORY</RepositoryUrl>
+  </PropertyGroup>
 
-  </Project>
-  ```
+  <ItemGroup>
+    <PackageReference Include="OctokittenApp" Version="12.0.2" />
+  </ItemGroup>
+
+</Project>
+```
 
 3. Install the packages with the `restore` command.
-  ```shell
-  dotnet restore
-  ```
+
+```shell
+dotnet restore
+```
 
 ## Troubleshooting
 
-Your NuGet package may fail to push if the `RepositoryUrl` in *.csproj* is not set to the expected repository .
+Your NuGet package may fail to push if the `RepositoryUrl` in _.csproj_ is not set to the expected repository .
 
 ## Further reading
 

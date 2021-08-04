@@ -6,17 +6,19 @@ redirect_from:
   - /articles/about-repository-graphs
   - /github/visualizing-repository-data-with-graphs/about-repository-graphs
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
+
 A repository's graphs give you information on {% ifversion fpt %} traffic, projects that depend on the repository,{% endif %} contributors and commits to the repository, and a repository's forks and network. If you maintain a repository, you can use this data to get a better understanding of who's using your repository and why they're using it.
 
 {% ifversion fpt %}
 
 Some repository graphs are available only in public repositories with {% data variables.product.prodname_free_user %}:
+
 - Pulse
 - Contributors
 - Traffic

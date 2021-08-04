@@ -1,6 +1,6 @@
 ---
 title: About issues
-intro: 'Use {% data variables.product.prodname_github_issues %} to track ideas, feedback, tasks, or bugs for work on {% data variables.product.company_short %}.'
+intro: "Use {% data variables.product.prodname_github_issues %} to track ideas, feedback, tasks, or bugs for work on {% data variables.product.company_short %}."
 redirect_from:
   - /github/managing-your-work-on-github/managing-your-work-with-issues-and-pull-requests/about-issues
   - /articles/creating-issues/
@@ -8,14 +8,15 @@ redirect_from:
   - /github/managing-your-work-on-github/about-issues
   - /issues/tracking-your-work-with-issues/creating-issues/about-issues
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Issues
   - Project management
 ---
+
 ## Integrated with GitHub
 
 Issues let you track your work on {% data variables.product.company_short %}, where development happens. When you mention an issue in another issue or pull request, the issue's timeline reflects the cross-reference so that you can keep track of related work. To indicate that work is in progress, you can link an issue to a pull request. When the pull request merges, the linked issue automatically closes.

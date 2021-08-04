@@ -1,9 +1,9 @@
 ---
 title: Trying out the new projects experience
 shortTitle: Projects (beta)
-intro: 'Build customized projects to track your work in {% data variables.product.company_short %}.'
+intro: "Build customized projects to track your work in {% data variables.product.company_short %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Issues
   - Projects
@@ -16,4 +16,3 @@ children:
   - /automating-projects
   - /best-practices-for-managing-projects
 ---
-

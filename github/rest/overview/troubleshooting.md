@@ -4,14 +4,12 @@ intro: Learn how to resolve the most common problems people encounter in the RES
 redirect_from:
   - /v3/troubleshooting
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
-
-
 
 If you're encountering some oddities in the API, here's a list of resolutions to
 some of the problems you may be experiencing.
@@ -32,13 +30,14 @@ pagination. If you're making requests and receiving an incomplete set of results
 probably only seeing the first page. You'll need to request the remaining pages
 in order to get more results.
 
-It's important to *not* try and guess the format of the pagination URL. Not every
+It's important to _not_ try and guess the format of the pagination URL. Not every
 API call uses the same structure. Instead, extract the pagination information from
 [the Link Header](/rest#pagination), which is sent with every request.
 
 [oap-guide]: https://developer.github.com/changes/2015-01-19-an-integrators-guide-to-organization-application-policies/
 
 {% ifversion fpt %}
+
 ## Basic authentication errors
 
 On November 13, 2020 username and password authentication to the REST API and the OAuth Authorizations API were deprecated and no longer work.

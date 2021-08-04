@@ -1,15 +1,15 @@
 ---
 title: Troubleshooting custom domains and GitHub Pages
-intro: 'You can check for common errors to resolve issues with custom domains or HTTPS for your {% data variables.product.prodname_pages %} site.'
+intro: "You can check for common errors to resolve issues with custom domains or HTTPS for your {% data variables.product.prodname_pages %} site."
 redirect_from:
   - /articles/my-custom-domain-isn-t-working/
   - /articles/custom-domain-isn-t-working/
   - /articles/troubleshooting-custom-domains/
   - /articles/troubleshooting-custom-domains-and-github-pages
   - /github/working-with-github-pages/troubleshooting-custom-domains-and-github-pages
-product: '{% data reusables.gated-features.pages %}'
+product: "{% data reusables.gated-features.pages %}"
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Pages
 shortTitle: Troubleshoot a custom domain
@@ -39,6 +39,7 @@ You can also test whether your custom domain's DNS records are configured correc
 If your custom domain is unsupported, you may need to change your domain to a supported domain. You can also contact your DNS provider to see if they offer forwarding services for domain names.
 
 Make sure your site does not:
+
 - Use more than one apex domain. For example, both `example.com` and `anotherexample.com`.
 - Use more than one `www` subdomain. For example, both `www.example.com` and `www.anotherexample.com`.
 - Use both an apex domain and custom subdomain. For example, both `example.com` and `docs.example.com`.

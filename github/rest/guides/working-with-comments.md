@@ -1,26 +1,24 @@
 ---
 title: Working with comments
-intro: 'Using the REST API, you can access and manage comments in your pull requests, issues, or commits.'
+intro: "Using the REST API, you can access and manage comments in your pull requests, issues, or commits."
 redirect_from:
   - /guides/working-with-comments/
   - /v3/guides/working-with-comments
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---
 
-
-
 For any Pull Request, {% data variables.product.product_name %} provides three kinds of comment views:
-[comments on the Pull Request][PR comment] as a whole, [comments on a specific line][PR line comment] within the Pull Request,
-and [comments on a specific commit][commit comment] within the Pull Request. 
+[comments on the Pull Request][pr comment] as a whole, [comments on a specific line][pr line comment] within the Pull Request,
+and [comments on a specific commit][commit comment] within the Pull Request.
 
 Each of these types of comments goes through a different portion of the {% data variables.product.product_name %} API.
 In this guide, we'll explore how you can access and manipulate each one. For every
-example, we'll be using [this sample Pull Request made][sample PR] on the "octocat"
+example, we'll be using [this sample Pull Request made][sample pr] on the "octocat"
 repository. As always, samples can be found in [our platform-samples repository][platform-samples].
 
 ## Pull Request Comments
@@ -36,7 +34,7 @@ We'll demonstrate fetching Pull Request comments by creating a Ruby script using
 The following code should help you get started accessing comments from a Pull Request
 using Octokit.rb:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -61,11 +59,11 @@ the comments to fetch information about each one.
 
 Within the diff view, you can start a discussion on a particular aspect of a singular
 change made within the Pull Request. These comments occur on the individual lines
-within a changed file. The endpoint URL for this discussion comes from [the Pull Request Review API][PR Review API].
+within a changed file. The endpoint URL for this discussion comes from [the Pull Request Review API][pr review api].
 
 The following code fetches all the Pull Request comments made on files, given a single Pull Request number:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -92,12 +90,12 @@ deal specifically with the way a particular change was implemented within a file
 ## Commit Comments
 
 The last type of comments occur specifically on individual commits. For this reason,
-they make use of [the commit comment API][commit comment API].
+they make use of [the commit comment API][commit comment api].
 
 To retrieve the comments on a commit, you'll want to use the SHA1 of the commit.
 In other words, you won't use any identifier related to the Pull Request. Here's an example:
 
-``` ruby
+```ruby
 require 'octokit'
 
 # !!! DO NOT EVER USE HARD-CODED VALUES IN A REAL APP !!!
@@ -116,13 +114,13 @@ end
 Note that this API call will retrieve single line comments, as well as comments made
 on the entire commit.
 
-[PR comment]: https://github.com/octocat/Spoon-Knife/pull/1176#issuecomment-24114792
-[PR line comment]: https://github.com/octocat/Spoon-Knife/pull/1176#discussion_r6252889
+[pr comment]: https://github.com/octocat/Spoon-Knife/pull/1176#issuecomment-24114792
+[pr line comment]: https://github.com/octocat/Spoon-Knife/pull/1176#discussion_r6252889
 [commit comment]: https://github.com/octocat/Spoon-Knife/commit/cbc28e7c8caee26febc8c013b0adfb97a4edd96e#commitcomment-4049848
-[sample PR]: https://github.com/octocat/Spoon-Knife/pull/1176
+[sample pr]: https://github.com/octocat/Spoon-Knife/pull/1176
 [platform-samples]: https://github.com/github/platform-samples/tree/master/api/ruby/working-with-comments
 [issues]: /rest/reference/issues#comments
 [personal token]: /articles/creating-an-access-token-for-command-line-use
 [octokit.rb]: https://github.com/octokit/octokit.rb
-[PR Review API]: /rest/reference/pulls#comments
-[commit comment API]: /rest/reference/repos#get-a-commit-comment
+[pr review api]: /rest/reference/pulls#comments
+[commit comment api]: /rest/reference/repos#get-a-commit-comment

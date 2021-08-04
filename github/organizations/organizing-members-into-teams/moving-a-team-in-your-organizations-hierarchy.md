@@ -1,15 +1,15 @@
 ---
 title: Moving a team in your organization’s hierarchy
-intro: 'Team maintainers and organization owners can nest a team under a parent team, or change or remove a nested team''s parent.'
+intro: "Team maintainers and organization owners can nest a team under a parent team, or change or remove a nested team's parent."
 redirect_from:
   - /articles/changing-a-team-s-parent/
   - /articles/moving-a-team-in-your-organization-s-hierarchy
   - /articles/moving-a-team-in-your-organizations-hierarchy
   - /github/setting-up-and-managing-organizations-and-teams/moving-a-team-in-your-organizations-hierarchy
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -23,6 +23,7 @@ Organization owners can change the parent of any team. Team maintainers can chan
 {% tip %}
 
 **Tips:**
+
 - You cannot change a team's parent to a secret team. For more information, see "[About teams](/articles/about-teams)."
 - You cannot nest a parent team beneath one of its child teams.
 
@@ -30,16 +31,12 @@ Organization owners can change the parent of any team. Team maintainers can chan
 
 {% data reusables.profile.access_org %}
 {% data reusables.user_settings.access_org %}
-{% data reusables.organizations.teams %}
-4. In the list of teams, click the name of the team whose parent you'd like to change.
-  ![List of the organization's teams](/assets/images/help/teams/click-team-name.png)
-{% data reusables.organizations.team_settings %}
-6. Use the drop-down menu to choose a parent team, or to remove an existing parent, select **Clear selected value**.
-  ![Drop-down menu listing the organization's teams](/assets/images/help/teams/choose-parent-team.png)
-7. Click **Update**.
-{% data reusables.repositories.changed-repository-access-permissions %}
-9. Click **Confirm new parent team**.
-  ![Modal box with information about the changes in repository access permissions](/assets/images/help/teams/confirm-new-parent-team.png)
+{% data reusables.organizations.teams %} 4. In the list of teams, click the name of the team whose parent you'd like to change.
+![List of the organization's teams](/assets/images/help/teams/click-team-name.png)
+{% data reusables.organizations.team_settings %} 6. Use the drop-down menu to choose a parent team, or to remove an existing parent, select **Clear selected value**.
+![Drop-down menu listing the organization's teams](/assets/images/help/teams/choose-parent-team.png) 7. Click **Update**.
+{% data reusables.repositories.changed-repository-access-permissions %} 9. Click **Confirm new parent team**.
+![Modal box with information about the changes in repository access permissions](/assets/images/help/teams/confirm-new-parent-team.png)
 
 ## Further reading
 

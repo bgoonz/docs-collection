@@ -1,13 +1,13 @@
 ---
 title: Guides
-intro: 'Learn about getting started with the REST API, authentication, and how to use the REST API for a variety of tasks.'
+intro: "Learn about getting started with the REST API, authentication, and how to use the REST API for a variety of tasks."
 redirect_from:
   - /guides/
   - /v3/guides
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 children:
@@ -23,6 +23,7 @@ children:
   - /getting-started-with-the-git-database-api
   - /getting-started-with-the-checks-api
 ---
+
 This section of the documentation is intended to get you up-and-running with
 real-world {% data variables.product.product_name %} API applications. We'll cover everything you need to know, from
 authentication, to manipulating results, to combining results with other apps.

@@ -1,14 +1,14 @@
 ---
 title: Managing security and analysis settings for your organization
-intro: 'You can control features that secure and analyze the code in your organization''s projects on {% data variables.product.prodname_dotcom %}.'
+intro: "You can control features that secure and analyze the code in your organization's projects on {% data variables.product.prodname_dotcom %}."
 permissions: Organization owners can manage security and analysis settings for repositories in the organization.
 redirect_from:
   - /github/setting-up-and-managing-organizations-and-teams/managing-secret-scanning-for-your-organization
   - /github/setting-up-and-managing-organizations-and-teams/managing-security-and-analysis-settings-for-your-organization
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 topics:
   - Organizations
   - Teams
@@ -81,7 +81,7 @@ You can enable or disable features for all repositories. {% ifversion fpt %}The 
    {% endif %}
    {% endif %}
    {% ifversion ghae or ghes > 3.0 %}
-3. Click **Enable/Disable all** or **Enable/Disable for eligible repositories** to confirm the change.
+5. Click **Enable/Disable all** or **Enable/Disable for eligible repositories** to confirm the change.
    ![Button to enable feature for all the eligible repositories in the organization](/assets/images/enterprise/github-ae/organizations/security-and-analysis-enable-secret-scanning-existing-repos-ghae.png)
    {% endif %}
 
@@ -125,7 +125,7 @@ To allow {% data variables.product.prodname_dependabot %} to access a private {%
 
 1. Optionally, to remove a repository from the list, to the right of the repository, click {% octicon "x" aria-label="The X icon" %}.
    !["X" button to remove a repository](/assets/images/help/organizations/dependabot-private-repository-list.png)
-{% endif %}
+   {% endif %}
 
 {% ifversion fpt or ghes > 3.0 %}
 
@@ -135,8 +135,8 @@ You can manage access to {% data variables.product.prodname_GH_advanced_security
 
 1. Go to the security and analysis settings for your organization. For more information, see "[Displaying the security and analysis settings](#displaying-the-security-and-analysis-settings)."
 1. To see a list of all the repositories in your organization with {% data variables.product.prodname_GH_advanced_security %} enabled, scroll to the "{% data variables.product.prodname_GH_advanced_security %} repositories" section.
-  ![{% data variables.product.prodname_GH_advanced_security %} repositories section](/assets/images/help/organizations/settings-security-analysis-ghas-repos-list.png)
-  The table lists the number of unique committers for each repository. This is the number of seats you could free up on your license by removing access to {% data variables.product.prodname_GH_advanced_security %}. {% ifversion fpt %}For more information, see "[About licensing for {% data variables.product.prodname_GH_advanced_security %}](/billing/managing-licensing-for-github-advanced-security/about-licensing-for-github-advanced-security)."{% else %}For more information, see "[About licensing for {% data variables.product.prodname_GH_advanced_security %}](/admin/advanced-security/about-licensing-for-github-advanced-security)."{% endif %}
+   ![{% data variables.product.prodname_GH_advanced_security %} repositories section](/assets/images/help/organizations/settings-security-analysis-ghas-repos-list.png)
+   The table lists the number of unique committers for each repository. This is the number of seats you could free up on your license by removing access to {% data variables.product.prodname_GH_advanced_security %}. {% ifversion fpt %}For more information, see "[About licensing for {% data variables.product.prodname_GH_advanced_security %}](/billing/managing-licensing-for-github-advanced-security/about-licensing-for-github-advanced-security)."{% else %}For more information, see "[About licensing for {% data variables.product.prodname_GH_advanced_security %}](/admin/advanced-security/about-licensing-for-github-advanced-security)."{% endif %}
 1. To remove access to {% data variables.product.prodname_GH_advanced_security %} from a repository and free up seats used by any committers that are unique to the repository, click the adjacent {% octicon "x" aria-label="X symbol" %}.
 1. In the confirmation dialog, click **Remove repository** to remove access to the features of {% data variables.product.prodname_GH_advanced_security %}.
 
