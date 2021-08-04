@@ -1,5 +1,4 @@
-Navigate and edit Java source code
-==================================
+# Navigate and edit Java source code
 
 Visual Studio Code is a source code editor first and foremost with rich editing [features](/docs/editor/codebasics.md). In this document, we will go through a few Java-specific features, which are helpful when working with Java.
 
@@ -7,8 +6,7 @@ If you run into any issues when using the features below, you can contact us by 
 
 <a href="javascript:void(0)" class="tutorial-feedback-btn">Report an issue</a>
 
-Code navigation
----------------
+## Code navigation
 
 With the [Outline view](/docs/getstarted/userinterface.md#outline-view), you can conveniently navigate your methods within the same class. [Project view](/docs/java/java-project.md#project-view) also provide a great overview of your project. As a Java editor, it also supports CodeLens (references) and Javadoc hovers and highlights out of box.
 
@@ -58,8 +56,8 @@ Folding regions allows you to fold or unfold code snippet to better view the sou
 
 With [Smart Selection](https://code.visualstudio.com/updates/v1_33#_smart-select-api) (semantic selection), you can expand or shrink the selection range based on the semantic information of the caret position in your source code.
 
--   To expand the selection, use `kb(editor.action.smartSelect.expand)`.
--   To shrink the selection, use `kb(editor.action.smartSelect.shrink)`.
+- To expand the selection, use `kb(editor.action.smartSelect.expand)`.
+- To shrink the selection, use `kb(editor.action.smartSelect.shrink)`.
 
 ### Semantic Highlighting
 
@@ -79,17 +77,16 @@ You can learn more about the details of Java semantic highlighting on the [Java 
 
 The [Spring Boot Tools](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-spring-boot) extension provides enhanced navigation and code completion support for Spring Boot projects.
 
--   `@/` shows all defined request mappings (mapped path, request method, source location)
--   `@+` shows all defined beans (bean name, bean type, source location)
--   `@>` shows all functions (prototype implementation)
--   `@` shows all Spring annotations in the code
+- `@/` shows all defined request mappings (mapped path, request method, source location)
+- `@+` shows all defined beans (bean name, bean type, source location)
+- `@>` shows all functions (prototype implementation)
+- `@` shows all Spring annotations in the code
 
 ![Spring Navigation](images/java-editing/spring-navigation.png)
 
 To learn more about Spring Boot support with Visual Studio Code, read [Spring Boot in Visual Studio Code](/docs/java/java-spring-boot.md).
 
-Code editing
-------------
+## Code editing
 
 Editing code is also easy with IntelliSense for smart code completions and signature details. You can use code snippets as well as various code actions such as generating Getters/Setters and organizing imports to further boost your productivity.
 
@@ -111,8 +108,7 @@ VS Code supports applying templates when you create a Java source file. When you
 
 ![New File](images/java-editing/create-new-file.gif)
 
-Code snippets
--------------
+## Code snippets
 
 Visual Studio Code supports a wide range of popular Java code snippets to make you more productive, such as class/interface, syserr, sysout, if/else, try/catch, static main method. Leveraging information from Java language server, it also provides a preview of the code snippet during the selection.
 

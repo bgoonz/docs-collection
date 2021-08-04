@@ -1,5 +1,4 @@
-Java project management in VS Code
-==================================
+# Java project management in VS Code
 
 This document will give you an overview of how to manage your Java project in Visual Studio Code.
 
@@ -7,8 +6,7 @@ If you run into any issues when using the features below, you can contact us by 
 
 <a href="javascript:void(0)" class="tutorial-feedback-btn">Report an issue</a>
 
-Project management
-------------------
+## Project management
 
 Managing a project in VS Code requires the [Project Manager for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-dependency) extension. The extension helps manage class paths and dependencies, and create new projects, packages, and classes.
 
@@ -50,8 +48,7 @@ You can export your build to JAR from the project view or by running the command
 
 ![Export jar from the project view](images/java-project/exportjar.gif)
 
-Configure JDK
--------------
+## Configure JDK
 
 As Java evolves, it’s common that developers work with multiple versions of JDK. To correctly configure your environment and project, you have to know two configurations, `java.configuration.runtimes` and `java.home`. The former specifies options for your project’s execution environment; the latter specifies your language server’s execution environment.
 
@@ -99,8 +96,7 @@ If you only work with source files and don’t use a build tool, VS Code will ap
 
 ![jdk home](images/java-project/projectmanager-javahomeconf.png)
 
-Library configuration
----------------------
+## Library configuration
 
 Behind the scene, there’s a setting `java.project.referencedLibaries` in `settings.json`. Below are details on how to customize this setting.
 
@@ -164,8 +160,7 @@ In case VS Code throws an error for a classpath issue, try setting your classpat
 
 In some rare cases, you may need to clean the Java workspace by executing the **Java: Clean Java Language Server Workspace** command from the Command Palette (`kb(workbench.action.showCommands)`) to let the language server rebuild your dependencies.
 
-Lightweight Mode
-----------------
+## Lightweight Mode
 
 VS Code for Java supports two modes, lightweight and standard. With lightweight mode, only source files and JDK are resolved by the language server; with standard mode, imported dependencies are resolved and the project is built by the language server. Lightweight mode works best when you need a super quick-to-start and lightweight environment to work with your source files, for example, reading source code, navigating among source code and JDK, viewing outline and Javadoc, and detecting and fixing syntax errors. Also, code completion is supported within the scope of source files and JDK.
 
@@ -173,22 +168,21 @@ Lightweight mode doesn’t resolve imported dependencies nor build the project, 
 
 You can control which mode to launch with by configuring `java.server.launchMode` with the options below:
 
--   `Hybrid` (default) - Firstly, a workspace is opened with lightweight mode. You will be asked whether to switch to standard mode if your workspace contains unresolved Java projects. If you choose **Later**, it will stay in lightweight mode. You can click the server mode icon on the Status bar to manually switch to standard mode.
--   `Standard` - A workspace is opened with standard mode.
--   `LightWeight` - A workspace is opened with lightweight mode. You can click the server mode icon on the Status bar to manually switch to standard mode.
+- `Hybrid` (default) - Firstly, a workspace is opened with lightweight mode. You will be asked whether to switch to standard mode if your workspace contains unresolved Java projects. If you choose **Later**, it will stay in lightweight mode. You can click the server mode icon on the Status bar to manually switch to standard mode.
+- `Standard` - A workspace is opened with standard mode.
+- `LightWeight` - A workspace is opened with lightweight mode. You can click the server mode icon on the Status bar to manually switch to standard mode.
 
 The Status bar indicates which mode the current workspace is in using different icons.
 
--    - workspace opened with lightweight mode.
--    - workspace in the process of being opened with standard mode.
--    - workspace opened with standard mode.
+- - workspace opened with lightweight mode.
+- - workspace in the process of being opened with standard mode.
+- - workspace opened with standard mode.
 
 Clicking the lightweight mode icon switches to standard mode.
 
 ![Switch to Standard](images/java-project/switch-to-standard.gif)
 
-Build Status
-------------
+## Build Status
 
 When you edit Java source code in Visual Studio Code, the Java language server is building your workspace to provide you with the necessary language features. You can see the detailed build task status and watch what is happening behind the scene by clicking the language server Status bar icon in the lower right.
 
@@ -198,12 +192,11 @@ Visit the [GitHub Repo](https://github.com/microsoft/vscode-maven) of the Maven 
 
 In addition to Maven, there’s also a [Bazel extension](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) if you use Bazel to build and test your project.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out more about:
 
--   [Java Editing](/docs/java/java-editing.md) - Explore the editing features for Java in VS Code.
--   [Java Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
--   [Java Testing](/docs/java/java-testing.md) - Use VS Code for your JUnit and TestNG cases.
--   [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.
+- [Java Editing](/docs/java/java-editing.md) - Explore the editing features for Java in VS Code.
+- [Java Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
+- [Java Testing](/docs/java/java-testing.md) - Use VS Code for your JUnit and TestNG cases.
+- [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.

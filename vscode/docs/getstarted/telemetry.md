@@ -1,10 +1,8 @@
-Telemetry
-=========
+# Telemetry
 
 Visual Studio Code collects telemetry data, which is used to help understand how to improve the product. For example, this usage data helps to debug issues, such as slow start-up times, and to prioritize new features. While we appreciate the insights this data provides, we also know that not everyone wants to send usage data and you can disable telemetry as described in [disable telemetry reporting](#disable-telemetry-reporting). You can also read our [privacy statement](https://go.microsoft.com/fwlink/?LinkID=528096&clcid=0x409) to learn more.
 
-Disable telemetry reporting
----------------------------
+## Disable telemetry reporting
 
 If you don’t want to send usage data to Microsoft, you can set the `telemetry.enableTelemetry` user [setting](/docs/getstarted/settings.md) to `false`.
 
@@ -16,21 +14,19 @@ If you use the JSON editor for your settings, add the following line:
 
         "telemetry.enableTelemetry": false
 
-Disable crash reporting
------------------------
+## Disable crash reporting
 
 VS Code collects data about any crashes that occur and sends it to Microsoft to help improve our products and services.
 
 If you don’t want to send crash data to Microsoft, you can change the `enable-crash-reporter` runtime argument to `false`
 
--   Open the Command Palette (`kb(workbench.action.showCommands)`).
--   Run the **Preferences: Configure Runtime Arguments** command.
--   This command will open a `argv.json` file to configure runtime arguments.
--   Edit `"enable-crash-reporter": false`.
--   Restart VS Code.
+- Open the Command Palette (`kb(workbench.action.showCommands)`).
+- Run the **Preferences: Configure Runtime Arguments** command.
+- This command will open a `argv.json` file to configure runtime arguments.
+- Edit `"enable-crash-reporter": false`.
+- Restart VS Code.
 
-Extensions and telemetry
-------------------------
+## Extensions and telemetry
 
 VS Code lets you add features to the product by installing Microsoft and third-party extensions. These extensions may be collecting their own usage data and are not controlled by the `telemetry.enableTelemetry` setting. Consult the specific extension’s documentation to learn about its telemetry reporting and whether it can be disabled.
 
@@ -38,8 +34,7 @@ For example, the [GitHub Pull Requests extension](https://marketplace.visualstud
 
 ![GitHub Pule Request extension disable telemetry](images/telemetry/GHPR-disable-telemetry.png)
 
-Output channel for telemetry events
------------------------------------
+## Output channel for telemetry events
 
 If you’d like to review the telemetry events in VS Code as they are sent, you can enable tracing and it will record telemetry events. Set the log level to **Trace** using the **Developer: Set Log Level…** command and then in the Output panel (`kb(workbench.action.output.toggleOutput)`), pick **Log (Telemetry)** from the dropdown.
 
@@ -49,23 +44,21 @@ When tracing telemetry events, the events are also logged to a local file `telem
 
 ![open telemetry log file](images/telemetry/open-telemetry-log.png)
 
-Viewing all telemetry events
-----------------------------
+## Viewing all telemetry events
 
 If you’d like to view all the possible telemetry events that VS Code could send, you can use the `--telemetry` flag in the CLI. This will generate a JSON report that you can then view within VS Code. These reports are generated per build and do not contain extension telemetry unless the extension author adds a `telemetry.json` file to their root build directory.
 
 For example, running `code --telemetry > telemetry.json && code telemetry.json` will create a `telemetry.json` file in your current working directory and then open it in VS Code. You cannot pipe the output like this, `code --telemetry | code -`, due to the length of the telemetry report.
 
-GDPR and VS Code
-----------------
+## GDPR and VS Code
 
 In addition to supporting the General Data Protection Regulation (GDPR), the VS Code team takes privacy very seriously. That’s both for Microsoft as a company and specifically within the VS Code team.
 
 To ensure GDPR compliance, we made several updates to VS Code, these include:
 
--   Making it easier to opt out of telemetry collection by placing a notification in product for all existing and new users.
--   Reviewing and classifying the telemetry that we send (documented in [our OSS codebase](https://github.com/microsoft/vscode/pull/34997)).
--   Ensuring that we have valid data retention policies in place for any data we do collect, for example crash dumps.
+- Making it easier to opt out of telemetry collection by placing a notification in product for all existing and new users.
+- Reviewing and classifying the telemetry that we send (documented in [our OSS codebase](https://github.com/microsoft/vscode/pull/34997)).
+- Ensuring that we have valid data retention policies in place for any data we do collect, for example crash dumps.
 
 In short, we have worked hard to do the right thing, for all users, as these practices apply to all geographies, not just Europe.
 
@@ -75,8 +68,7 @@ We expect our approach to evolve as we learn more about GDPR and the expectation
 
 You can find more information about how the Visual Studio family approaches GDPR at [Visual Studio Family Data Subject Requests for the GDPR](https://docs.microsoft.com/microsoft-365/compliance/gdpr-dsr-visual-studio-family).
 
-Managing online services
-------------------------
+## Managing online services
 
 Beyond crash reporting and telemetry, VS Code uses online services for various other purposes such as downloading product updates, finding, installing, and updating extensions, Settings Sync, or providing Natural Language Search within the Settings editor. You can choose to turn on/off features that use these services.
 
@@ -96,8 +88,7 @@ The built-in **TypeScript and JavaScript Language Features** extension queries t
 
 When you use **Developer: Toggle Developer Tools** or **Developer: Open Webview Developer Tools**, VS Code may talk to Google servers to fetch data needed to launch Developer Tools.
 
-Extension recommendations
--------------------------
+## Extension recommendations
 
 VS Code provides extension recommendations based on your file types, your workspace, and your environment. File type recommendations are either precomputed or dynamic. Workspace and environment recommendations are always precomputed.
 
@@ -117,8 +108,7 @@ Some precomputed recommendations are shipped as part of the product while additi
 
 When you open a file type for which VS Code does not have any precomputed recommendation, it asks the Extension Marketplace for extensions that declare that they support this file type. If the query returns extensions you don’t have installed, VS Code will provide a notification.
 
-For extension authors
----------------------
+## For extension authors
 
 If you have created a VS Code extension, you can use the VS Code telemetry infrastructure for reporting through the [vscode-extension-telemetry](https://www.npmjs.com/package/vscode-extension-telemetry) npm module. This module provides a consistent way for extensions to report telemetry over [Azure Monitor and Application Insights](https://azure.microsoft.com/services/monitor/). The module respects the user’s decision about whether or not to send telemetry data via the `telemetry.enableTelemetry` setting.
 
@@ -128,9 +118,8 @@ If you would prefer to not utilize the npm module, it is still recommended that 
 
 Additionally, telemetry authors can add a `telemetry.json` file to their root build directory for their telemetry to show up in the `--telemetry` dump that VS Code produces.
 
-Next steps
-----------
+## Next steps
 
--   [Visual Studio Code FAQ](/docs/supporting/faq.md) - Consult the Frequently Asked Questions to learn more.
--   [User and Workspace Settings](/docs/getstarted/settings.md) - Read about available options to customize VS Code.
--   [Key Bindings](/docs/getstarted/keybindings.md) - You can easily modify commonly used keyboard shortcuts.
+- [Visual Studio Code FAQ](/docs/supporting/faq.md) - Consult the Frequently Asked Questions to learn more.
+- [User and Workspace Settings](/docs/getstarted/settings.md) - Read about available options to customize VS Code.
+- [Key Bindings](/docs/getstarted/keybindings.md) - You can easily modify commonly used keyboard shortcuts.

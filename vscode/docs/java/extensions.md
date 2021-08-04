@@ -1,5 +1,4 @@
-Java extensions for Visual Studio Code
-======================================
+# Java extensions for Visual Studio Code
 
 Visual Studio Code provides many features as a Java language editor. You can also install VS Code extensions to add more features for Java development.
 
@@ -12,8 +11,7 @@ Thanks to the great Java community around VS Code, you can search for a large nu
 
 ![Java Extensions](images/extensions/extensions.png)
 
-Recommended extensions
-----------------------
+## Recommended extensions
 
 To help set up Java on VS Code, there is the Microsoft [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack), which contains these popular extensions:
 
@@ -32,8 +30,7 @@ There are also great extensions provided by Pivotal and Microsoft for Spring Boo
 2.  [Spring Initializr Java Support](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-initializr)
 3.  [Spring Boot Dashboard](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard)
 
-Popular extensions from the community
--------------------------------------
+## Popular extensions from the community
 
 Thanks to the great Java community around VS Code, there are many great community-created extensions as well. You can search for more Java extensions easily within the VS Code:
 
@@ -56,36 +53,33 @@ Here are a few useful extensions:
 
 We also appreciate contributions to any of our existing extensions and we hope you’ll create new Java extensions if you don’t find what you’re looking for in the Marketplace. We’re especially looking for help in areas such as support for Gradle and other Java application servers.
 
-Recommended extensions with great Java support
-----------------------------------------------
+## Recommended extensions with great Java support
 
 We’d also like to recommend a couple of other extensions we believe are great to make VS Code even better for Java developers.
 
 1.  [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) is a great tool to use when you need to collaborate with someone else on the same code base.
 2.  The [Remote Development](/docs/remote/remote-overview.md) extensions let you use VS Code to access a container, a remote machine, or the Windows Subsystem for Linux.
 
-Extension for container development
------------------------------------
+## Extension for container development
 
 You can use [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) extension to build docker images and work with image registries.
 
 [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) extension provides an explorer view to manage clusters and the nodes inside. It also provides advanced syntax support for editing Kubernetes manifest files.
 
-Recommended extensions for cloud (Azure) development
-----------------------------------------------------
+## Recommended extensions for cloud (Azure) development
 
 ### Team development
 
--   The [Azure Repos](https://marketplace.visualstudio.com/items?itemName=ms-vsts.team) extension makes it easy to connect to your Azure DevOps Servers, allowing you to easily monitor builds, pull requests, and work items for your TFVC or Git source repositories.
+- The [Azure Repos](https://marketplace.visualstudio.com/items?itemName=ms-vsts.team) extension makes it easy to connect to your Azure DevOps Servers, allowing you to easily monitor builds, pull requests, and work items for your TFVC or Git source repositories.
 
 ### Internet of Things
 
--   The [Azure IoT Toolkit](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit) for VS Code makes it easy to develop and connect your [IoT applications to Azure](https://docs.microsoft.com//azure/index#pivot=services&panel=iot). With this extension, you can interact with Azure IoT Hub, manage devices connected to Azure IoT Hub, and develop with code snippets for Azure IoT Hub.
+- The [Azure IoT Toolkit](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit) for VS Code makes it easy to develop and connect your [IoT applications to Azure](https://docs.microsoft.com//azure/index#pivot=services&panel=iot). With this extension, you can interact with Azure IoT Hub, manage devices connected to Azure IoT Hub, and develop with code snippets for Azure IoT Hub.
 
 ### General tools
 
--   The [Azure Tools Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) provides a rich set of extensions that makes it easy to discover and interact with Azure services to power your applications.
+- The [Azure Tools Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) provides a rich set of extensions that makes it easy to discover and interact with Azure services to power your applications.
 
--   The [Azure Resource Manager Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools) provide a rich editing experience for Azure Resource Manager deployment templates and template language expressions. For example, IntelliSense for TLE function names, parameter references, signature help, Go to Definition, Peek Definition, and Peek References as well as Errors and Warnings, making it quick and easy to author Azure Resource Manager templates in VS Code.
+- The [Azure Resource Manager Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools) provide a rich editing experience for Azure Resource Manager deployment templates and template language expressions. For example, IntelliSense for TLE function names, parameter references, signature help, Go to Definition, Peek Definition, and Peek References as well as Errors and Warnings, making it quick and easy to author Azure Resource Manager templates in VS Code.
 
 Visit [Azure Extensions](/docs/azure/extensions.md) to find more Azure extensions.

@@ -1,157 +1,429 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>settings</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-</head>
-<body>
-<h1 id="user-and-workspace-settings">User and Workspace Settings</h1>
-<p>You can configure Visual Studio Code to your liking through its various settings. Nearly every part of VS Code’s editor, user interface, and functional behavior has options you can modify.</p>
-<figure>
-<img src="images/settings/hero.png" alt="VS Code settings" /><figcaption>VS Code settings</figcaption>
-</figure>
-<p>VS Code provides two different scopes for settings:</p>
-<ul>
-<li><strong>User Settings</strong> - Settings that apply globally to any instance of VS Code you open.</li>
-<li><strong>Workspace Settings</strong> - Settings stored inside your workspace and only apply when the workspace is opened.</li>
-</ul>
-<p>Workspace settings override user settings. Workspace settings are specific to a project and can be shared across developers on a project.</p>
-<blockquote>
-<p><strong>Note</strong>: A VS Code “workspace” is usually just your project root folder. Workspace settings as well as <a href="/docs/editor/debugging.md">debugging</a> and <a href="/docs/editor/tasks.md">task</a> configurations are stored at the root in a <code>.vscode</code> folder. You can also have more than one root folder in a VS Code workspace through a feature called <a href="/docs/editor/multi-root-workspaces.md">Multi-root workspaces</a>. You can learn more in the <a href="/docs/editor/workspaces.md">What is a VS Code “workspace”?</a> article.</p>
-</blockquote>
-<h2 id="creating-user-and-workspace-settings">Creating User and Workspace Settings</h2>
-<p>To open your user and workspace settings, use the following VS Code menu command:</p>
-<ul>
-<li>On Windows/Linux - <strong>File</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong></li>
-<li>On macOS - <strong>Code</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong></li>
-</ul>
-<p>You can also open the Settings editor from the <strong>Command Palette</strong> (<code>kb(workbench.action.showCommands)</code>) with <strong>Preferences: Open Settings</strong> or use the keyboard shortcut (<code>kb(workbench.action.openSettings)</code>).</p>
-<p>In the example below, the color theme and the file icon theme have been changed.</p>
-<figure>
-<img src="images/settings/settings.png" alt="Example Settings" /><figcaption>Example Settings</figcaption>
-</figure>
-<p>Changes to settings are reloaded by VS Code as you change them. Modified settings are now indicated with a <em>blue line</em> similar to modified lines in the editor. The gear icon opens a context menu with options to reset the setting to its default value as well as copy setting as JSON.</p>
-<blockquote>
-<p><strong>Note:</strong> Workspace settings are useful for sharing project specific settings across a team.</p>
-</blockquote>
-<h2 id="settings-editor">Settings editor</h2>
-<p>When you open the settings editor, you can search and discover settings you are looking for. When you search using the Search bar, it will not only show and highlight the settings matching your criteria, but also filter out those which are not matching. This makes finding settings quick and easy.</p>
-<figure>
-<img src="images/settings/settings-search.png" alt="Settings Search" /><figcaption>Settings Search</figcaption>
-</figure>
-<p><strong>Note</strong>: VS Code extensions can also add their own custom settings and they will be visible under an <strong>Extensions</strong> section.</p>
-<h3 id="edit-settings">Edit settings</h3>
-<p>Each setting can be edited by either a <strong>checkbox</strong>, an <strong>input</strong> or by a <strong>dropdown</strong>. Edit the text or select the option you want to change to the desired settings.</p>
-<figure>
-<img src="images/settings/settings-edit.png" alt="Edit a Setting" /><figcaption>Edit a Setting</figcaption>
-</figure>
-<h3 id="settings-groups">Settings groups</h3>
-<p>Default settings are represented in groups so that you can navigate them easily. It has a <strong>Commonly Used</strong> group at the top, which shows popular customizations.</p>
-<figure>
-<img src="images/settings/settings-groups.png" alt="Settings Groups" /><figcaption>Settings Groups</figcaption>
-</figure>
-<p>Below is a <a href="/docs/getstarted/settings.md#default-settings">copy of the default settings</a> that come with VS Code.</p>
-<h2 id="settings-file-locations">Settings file locations</h2>
-<p>By default VS Code shows the Settings editor, but you can still edit the underlying <code>settings.json</code> file by using the <strong>Open Settings (JSON)</strong> command or by changing your default settings editor with the <code>workbench.settings.editor</code> setting.</p>
-<p>Depending on your platform, the user settings file is located here:</p>
-<ul>
-<li><strong>Windows</strong> <code>%APPDATA%\Code\User\settings.json</code></li>
-<li><strong>macOS</strong> <code>$HOME/Library/Application Support/Code/User/settings.json</code></li>
-<li><strong>Linux</strong> <code>$HOME/.config/Code/User/settings.json</code></li>
-</ul>
-<p>The workspace settings file is located under the <code>.vscode</code> folder in your root folder.</p>
-<blockquote>
-<p><strong>Note:</strong> In case of a <a href="/docs/editor/multi-root-workspaces.md#settings">Multi-root Workspace</a>, workspace settings are located inside the workspace configuration file.</p>
-</blockquote>
-<h2 id="language-specific-editor-settings">Language-specific editor settings</h2>
-<p>To customize your editor by language, run the global command <strong>Preferences: Configure Language Specific Settings</strong> (command ID: <code>workbench.action.configureLanguageBasedSettings</code>) from the <strong>Command Palette</strong> (<code>kb(workbench.action.showCommands)</code>) which opens the language picker. Select the language you want, which then opens your user <code>settings.json</code> with the language entry where you can add applicable settings.</p>
-<figure>
-<img src="images/settings/pref-config-lang-settings.png" alt="Configure language-specific settings command" /><figcaption>Configure language-specific settings command</figcaption>
-</figure>
-<p>Select the language via the dropdown:</p>
-<figure>
-<img src="images/settings/lang-selection.png" alt="Select language dropdown" /><figcaption>Select language dropdown</figcaption>
-</figure>
-<p>Add language-specific settings to your user settings:</p>
-<figure>
-<img src="images/settings/lang-based-settings.png" alt="Add language-specific setting" /><figcaption>Add language-specific setting</figcaption>
-</figure>
-<p>If you have a file open and you want to customize the editor for this file type, select the Language Mode in the Status Bar to the bottom-right of the VS Code window. This opens the Language Mode picker with an option <strong>Configure ‘language_name’ language based settings</strong>. Selecting this opens your user <code>settings.json</code> with the language entry where you can add applicable settings.</p>
-<p>Language-specific editor settings in your user settings override workspace settings.</p>
-<p>You can scope language-specific settings to the workspace by placing them in the workspace settings just like other settings. If you have settings defined for a language in both user and workspace scopes, then they are merged by giving precedence to the ones defined in the workspace.</p>
-<p>The following examples customize editor settings for language modes <code>typescript</code> and <code>markdown</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>settings</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="user-and-workspace-settings">User and Workspace Settings</h1>
+    <p>
+      You can configure Visual Studio Code to your liking through its various
+      settings. Nearly every part of VS Code’s editor, user interface, and
+      functional behavior has options you can modify.
+    </p>
+    <figure>
+      <img src="images/settings/hero.png" alt="VS Code settings" />
+      <figcaption>VS Code settings</figcaption>
+    </figure>
+    <p>VS Code provides two different scopes for settings:</p>
+    <ul>
+      <li>
+        <strong>User Settings</strong> - Settings that apply globally to any
+        instance of VS Code you open.
+      </li>
+      <li>
+        <strong>Workspace Settings</strong> - Settings stored inside your
+        workspace and only apply when the workspace is opened.
+      </li>
+    </ul>
+    <p>
+      Workspace settings override user settings. Workspace settings are specific
+      to a project and can be shared across developers on a project.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note</strong>: A VS Code “workspace” is usually just your
+        project root folder. Workspace settings as well as
+        <a href="/docs/editor/debugging.md">debugging</a> and
+        <a href="/docs/editor/tasks.md">task</a> configurations are stored at
+        the root in a <code>.vscode</code> folder. You can also have more than
+        one root folder in a VS Code workspace through a feature called
+        <a href="/docs/editor/multi-root-workspaces.md">Multi-root workspaces</a
+        >. You can learn more in the
+        <a href="/docs/editor/workspaces.md">What is a VS Code “workspace”?</a>
+        article.
+      </p>
+    </blockquote>
+    <h2 id="creating-user-and-workspace-settings">
+      Creating User and Workspace Settings
+    </h2>
+    <p>
+      To open your user and workspace settings, use the following VS Code menu
+      command:
+    </p>
+    <ul>
+      <li>
+        On Windows/Linux - <strong>File</strong> &gt;
+        <strong>Preferences</strong> &gt; <strong>Settings</strong>
+      </li>
+      <li>
+        On macOS - <strong>Code</strong> &gt; <strong>Preferences</strong> &gt;
+        <strong>Settings</strong>
+      </li>
+    </ul>
+    <p>
+      You can also open the Settings editor from the
+      <strong>Command Palette</strong>
+      (<code>kb(workbench.action.showCommands)</code>) with
+      <strong>Preferences: Open Settings</strong> or use the keyboard shortcut
+      (<code>kb(workbench.action.openSettings)</code>).
+    </p>
+    <p>
+      In the example below, the color theme and the file icon theme have been
+      changed.
+    </p>
+    <figure>
+      <img src="images/settings/settings.png" alt="Example Settings" />
+      <figcaption>Example Settings</figcaption>
+    </figure>
+    <p>
+      Changes to settings are reloaded by VS Code as you change them. Modified
+      settings are now indicated with a <em>blue line</em> similar to modified
+      lines in the editor. The gear icon opens a context menu with options to
+      reset the setting to its default value as well as copy setting as JSON.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> Workspace settings are useful for sharing project
+        specific settings across a team.
+      </p>
+    </blockquote>
+    <h2 id="settings-editor">Settings editor</h2>
+    <p>
+      When you open the settings editor, you can search and discover settings
+      you are looking for. When you search using the Search bar, it will not
+      only show and highlight the settings matching your criteria, but also
+      filter out those which are not matching. This makes finding settings quick
+      and easy.
+    </p>
+    <figure>
+      <img src="images/settings/settings-search.png" alt="Settings Search" />
+      <figcaption>Settings Search</figcaption>
+    </figure>
+    <p>
+      <strong>Note</strong>: VS Code extensions can also add their own custom
+      settings and they will be visible under an
+      <strong>Extensions</strong> section.
+    </p>
+    <h3 id="edit-settings">Edit settings</h3>
+    <p>
+      Each setting can be edited by either a <strong>checkbox</strong>, an
+      <strong>input</strong> or by a <strong>dropdown</strong>. Edit the text or
+      select the option you want to change to the desired settings.
+    </p>
+    <figure>
+      <img src="images/settings/settings-edit.png" alt="Edit a Setting" />
+      <figcaption>Edit a Setting</figcaption>
+    </figure>
+    <h3 id="settings-groups">Settings groups</h3>
+    <p>
+      Default settings are represented in groups so that you can navigate them
+      easily. It has a <strong>Commonly Used</strong> group at the top, which
+      shows popular customizations.
+    </p>
+    <figure>
+      <img src="images/settings/settings-groups.png" alt="Settings Groups" />
+      <figcaption>Settings Groups</figcaption>
+    </figure>
+    <p>
+      Below is a
+      <a href="/docs/getstarted/settings.md#default-settings"
+        >copy of the default settings</a
+      >
+      that come with VS Code.
+    </p>
+    <h2 id="settings-file-locations">Settings file locations</h2>
+    <p>
+      By default VS Code shows the Settings editor, but you can still edit the
+      underlying <code>settings.json</code> file by using the
+      <strong>Open Settings (JSON)</strong> command or by changing your default
+      settings editor with the <code>workbench.settings.editor</code> setting.
+    </p>
+    <p>Depending on your platform, the user settings file is located here:</p>
+    <ul>
+      <li>
+        <strong>Windows</strong> <code>%APPDATA%\Code\User\settings.json</code>
+      </li>
+      <li>
+        <strong>macOS</strong>
+        <code>$HOME/Library/Application Support/Code/User/settings.json</code>
+      </li>
+      <li>
+        <strong>Linux</strong>
+        <code>$HOME/.config/Code/User/settings.json</code>
+      </li>
+    </ul>
+    <p>
+      The workspace settings file is located under the
+      <code>.vscode</code> folder in your root folder.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> In case of a
+        <a href="/docs/editor/multi-root-workspaces.md#settings"
+          >Multi-root Workspace</a
+        >, workspace settings are located inside the workspace configuration
+        file.
+      </p>
+    </blockquote>
+    <h2 id="language-specific-editor-settings">
+      Language-specific editor settings
+    </h2>
+    <p>
+      To customize your editor by language, run the global command
+      <strong>Preferences: Configure Language Specific Settings</strong>
+      (command ID: <code>workbench.action.configureLanguageBasedSettings</code>)
+      from the
+      <strong>Command Palette</strong>
+      (<code>kb(workbench.action.showCommands)</code>) which opens the language
+      picker. Select the language you want, which then opens your user
+      <code>settings.json</code> with the language entry where you can add
+      applicable settings.
+    </p>
+    <figure>
+      <img
+        src="images/settings/pref-config-lang-settings.png"
+        alt="Configure language-specific settings command"
+      />
+      <figcaption>Configure language-specific settings command</figcaption>
+    </figure>
+    <p>Select the language via the dropdown:</p>
+    <figure>
+      <img
+        src="images/settings/lang-selection.png"
+        alt="Select language dropdown"
+      />
+      <figcaption>Select language dropdown</figcaption>
+    </figure>
+    <p>Add language-specific settings to your user settings:</p>
+    <figure>
+      <img
+        src="images/settings/lang-based-settings.png"
+        alt="Add language-specific setting"
+      />
+      <figcaption>Add language-specific setting</figcaption>
+    </figure>
+    <p>
+      If you have a file open and you want to customize the editor for this file
+      type, select the Language Mode in the Status Bar to the bottom-right of
+      the VS Code window. This opens the Language Mode picker with an option
+      <strong>Configure ‘language_name’ language based settings</strong>.
+      Selecting this opens your user <code>settings.json</code> with the
+      language entry where you can add applicable settings.
+    </p>
+    <p>
+      Language-specific editor settings in your user settings override workspace
+      settings.
+    </p>
+    <p>
+      You can scope language-specific settings to the workspace by placing them
+      in the workspace settings just like other settings. If you have settings
+      defined for a language in both user and workspace scopes, then they are
+      merged by giving precedence to the ones defined in the workspace.
+    </p>
+    <p>
+      The following examples customize editor settings for language modes
+      <code>typescript</code> and <code>markdown</code>.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;[typescript]&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;editor.formatOnSave&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;editor.formatOnPaste&quot;</span><span class="fu">:</span> <span class="kw">true</span></a>
@@ -162,54 +434,117 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb1-9" title="9">    <span class="dt">&quot;editor.renderWhitespace&quot;</span><span class="fu">:</span> <span class="st">&quot;all&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-10" title="10">    <span class="dt">&quot;editor.acceptSuggestionOnEnter&quot;</span><span class="fu">:</span> <span class="st">&quot;off&quot;</span></a>
 <a class="sourceLine" id="cb1-11" title="11">  <span class="fu">}</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="fu">}</span></a></code></pre></div>
-<p>You can use IntelliSense in <code>settings.json</code> to help you find allowed language-based settings. All editor settings and some non-editor settings are supported. Some languages have default language-specific settings already set, which you can review in <code>defaultSettings.json</code> opened with the <strong>Preferences: Open Default Settings</strong> command.</p>
-<h2 id="settings-precedence">Settings precedence</h2>
-<p>Configurations can be overridden at multiple levels by the different setting scopes:</p>
-<ul>
-<li>User settings - Apply globally to all VS Code instances.</li>
-<li>Workspace setting - Apply to the open folder or workspace and override User settings.</li>
-<li>Workspace Folder settings - Apply to a specific folder of a <a href="/docs/editor/multi-root-workspaces.md">multi-root workspace</a>. Override User and Workspace settings.</li>
-</ul>
-<p>Setting values can be of various types:</p>
-<ul>
-<li>String - <code>"files.autoSave": "afterDelay"</code></li>
-<li>Boolean - <code>"editor.minimap.enabled": true</code></li>
-<li>Number - <code>"files.autoSaveDelay": 1000</code></li>
-<li>Array - <code>"editor.rulers": []</code></li>
-<li>Object - <code>"search.exclude": { "**/node_modules": true, "**/bower_components": true }</code></li>
-</ul>
-<p>Values with primitive types and Array type are overridden but those with Object type are merged. For example, <code>workbench.colorCustomizations</code> takes an Object that specifies a group of UI elements and their desired colors.</p>
-<p>If your user settings set the editor backgrounds to blue and green:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      You can use IntelliSense in <code>settings.json</code> to help you find
+      allowed language-based settings. All editor settings and some non-editor
+      settings are supported. Some languages have default language-specific
+      settings already set, which you can review in
+      <code>defaultSettings.json</code> opened with the
+      <strong>Preferences: Open Default Settings</strong> command.
+    </p>
+    <h2 id="settings-precedence">Settings precedence</h2>
+    <p>
+      Configurations can be overridden at multiple levels by the different
+      setting scopes:
+    </p>
+    <ul>
+      <li>User settings - Apply globally to all VS Code instances.</li>
+      <li>
+        Workspace setting - Apply to the open folder or workspace and override
+        User settings.
+      </li>
+      <li>
+        Workspace Folder settings - Apply to a specific folder of a
+        <a href="/docs/editor/multi-root-workspaces.md">multi-root workspace</a
+        >. Override User and Workspace settings.
+      </li>
+    </ul>
+    <p>Setting values can be of various types:</p>
+    <ul>
+      <li>String - <code>"files.autoSave": "afterDelay"</code></li>
+      <li>Boolean - <code>"editor.minimap.enabled": true</code></li>
+      <li>Number - <code>"files.autoSaveDelay": 1000</code></li>
+      <li>Array - <code>"editor.rulers": []</code></li>
+      <li>
+        Object -
+        <code
+          >"search.exclude": { "**/node_modules": true, "**/bower_components":
+          true }</code
+        >
+      </li>
+    </ul>
+    <p>
+      Values with primitive types and Array type are overridden but those with
+      Object type are merged. For example,
+      <code>workbench.colorCustomizations</code> takes an Object that specifies
+      a group of UI elements and their desired colors.
+    </p>
+    <p>If your user settings set the editor backgrounds to blue and green:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">    <span class="dt">&quot;editor.background&quot;</span><span class="fu">:</span> <span class="st">&quot;#000088&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;editor.selectionBackground&quot;</span><span class="fu">:</span> <span class="st">&quot;#008800&quot;</span></a>
-<a class="sourceLine" id="cb2-4" title="4">  <span class="fu">}</span></a></code></pre></div>
-<p>And your open workspace settings set the editor foreground to red:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="fu">}</span></a></code></pre>
+    </div>
+    <p>And your open workspace settings set the editor foreground to red:</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb3-2" title="2">    <span class="dt">&quot;editor.foreground&quot;</span><span class="fu">:</span> <span class="st">&quot;#880000&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;editor.selectionBackground&quot;</span><span class="fu">:</span> <span class="st">&quot;#00FF00&quot;</span></a>
-<a class="sourceLine" id="cb3-4" title="4">  <span class="fu">}</span></a></code></pre></div>
-<p>The result, when that workspace is open, is the combination of those two color customizations, as if you had specified:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      The result, when that workspace is open, is the combination of those two
+      color customizations, as if you had specified:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1">  <span class="er">&quot;workbench.colorCustomizations&quot;:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-2" title="2">    <span class="dt">&quot;editor.background&quot;</span><span class="fu">:</span> <span class="st">&quot;#000088&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;editor.selectionBackground&quot;</span><span class="fu">:</span> <span class="st">&quot;#00FF00&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-4" title="4">    <span class="dt">&quot;editor.foreground&quot;</span><span class="fu">:</span> <span class="st">&quot;#880000&quot;</span></a>
-<a class="sourceLine" id="cb4-5" title="5">  <span class="fu">}</span></a></code></pre></div>
-<p>If there are conflicting values, such as <code>editor.selectionBackground</code> in the example above, the usual override behavior occurs with workspace values taking precedence over user values.</p>
-<h2 id="settings-and-security">Settings and security</h2>
-<p>Some settings allow you to specify an executable that VS Code will run to perform certain operations. For example, you can choose which shell the Integrated Terminal should use. For enhanced security, such settings can only be defined in user settings and not at workspace scope.</p>
-<p>Here is the list of settings not supported in workspace settings:</p>
-<ul>
-<li><code>git.path</code></li>
-<li><code>terminal.external.windowsExec</code></li>
-<li><code>terminal.external.osxExec</code></li>
-<li><code>terminal.external.linuxExec</code></li>
-</ul>
-<p>The first time you open a workspace that defines any of these settings, VS Code will warn you and then always ignore the values after that.</p>
-<h2 id="default-settings">Default settings</h2>
-<p>Below are the Visual Studio Code default settings and their values. You can also view the default values in the Settings editor.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      If there are conflicting values, such as
+      <code>editor.selectionBackground</code> in the example above, the usual
+      override behavior occurs with workspace values taking precedence over user
+      values.
+    </p>
+    <h2 id="settings-and-security">Settings and security</h2>
+    <p>
+      Some settings allow you to specify an executable that VS Code will run to
+      perform certain operations. For example, you can choose which shell the
+      Integrated Terminal should use. For enhanced security, such settings can
+      only be defined in user settings and not at workspace scope.
+    </p>
+    <p>Here is the list of settings not supported in workspace settings:</p>
+    <ul>
+      <li><code>git.path</code></li>
+      <li><code>terminal.external.windowsExec</code></li>
+      <li><code>terminal.external.osxExec</code></li>
+      <li><code>terminal.external.linuxExec</code></li>
+    </ul>
+    <p>
+      The first time you open a workspace that defines any of these settings, VS
+      Code will warn you and then always ignore the values after that.
+    </p>
+    <h2 id="default-settings">Default settings</h2>
+    <p>
+      Below are the Visual Studio Code default settings and their values. You
+      can also view the default values in the Settings editor.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb5-2" title="2"></a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="er">//</span> <span class="er">Editor</span></a>
 <a class="sourceLine" id="cb5-4" title="4"></a>
@@ -3597,13 +3932,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb5-3386" title="3386"></a>
 <a class="sourceLine" id="cb5-3387" title="3387">    <span class="er">//</span> <span class="er">The</span> <span class="er">default</span> <span class="er">click</span> <span class="er">action</span> <span class="er">used</span> <span class="er">in</span> <span class="er">the</span> <span class="er">npm</span> <span class="er">scripts</span> <span class="er">explorer:</span> <span class="er">`open`</span> <span class="er">or</span> <span class="er">`run`,</span> <span class="er">the</span> <span class="er">default</span> <span class="er">is</span> <span class="er">`open`.</span></a>
 <a class="sourceLine" id="cb5-3388" title="3388">    <span class="er">&quot;npm.scriptExplorerAction&quot;:</span> <span class="er">&quot;open&quot;,</span></a>
-<a class="sourceLine" id="cb5-3389" title="3389"><span class="er">}</span></a></code></pre></div>
-<h2 id="common-questions">Common questions</h2>
-<h3 id="vs-code-says-unable-to-write-settings.">VS Code says “Unable to write settings.”</h3>
-<p>If you try to change a setting (for example turning on Auto Save or selecting a new Color Theme) and you see “Unable to write settings. Please open User Settings to correct errors/warnings in the file and try again.”, it means your <code>settings.json</code> file is ill-formed or has errors. The errors can be as simple as a missing comma or setting value. Open the Settings editor <strong>File</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong> (<strong>Code</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong> on macOS) (<code>kb(workbench.action.openSettings)</code>) and you should see the error highlighted with red squiggles.</p>
-<h3 id="how-can-i-reset-my-user-settings">How can I reset my user settings?</h3>
-<p>The easiest way to reset VS Code back to the default settings is to clear your user <code>settings.json</code> file contents in the Settings editor. Delete everything between the two curly braces, save the file, and VS Code will go back to using the default values.</p>
-<h3 id="when-does-it-make-sense-to-use-workspace-settings">When does it make sense to use workspace settings?</h3>
-<p>If you’re using a workspace that needs custom settings but you don’t want to apply them to your other VS Code projects. A good example is language-specific linting rules.</p>
-</body>
+<a class="sourceLine" id="cb5-3389" title="3389"><span class="er">}</span></a></code></pre>
+    </div>
+    <h2 id="common-questions">Common questions</h2>
+    <h3 id="vs-code-says-unable-to-write-settings.">
+      VS Code says “Unable to write settings.”
+    </h3>
+    <p>
+      If you try to change a setting (for example turning on Auto Save or
+      selecting a new Color Theme) and you see “Unable to write settings. Please
+      open User Settings to correct errors/warnings in the file and try again.”,
+      it means your <code>settings.json</code> file is ill-formed or has errors.
+      The errors can be as simple as a missing comma or setting value. Open the
+      Settings editor <strong>File</strong> &gt;
+      <strong>Preferences</strong> &gt; <strong>Settings</strong> (<strong
+        >Code</strong
+      >
+      &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong> on macOS)
+      (<code>kb(workbench.action.openSettings)</code>) and you should see the
+      error highlighted with red squiggles.
+    </p>
+    <h3 id="how-can-i-reset-my-user-settings">
+      How can I reset my user settings?
+    </h3>
+    <p>
+      The easiest way to reset VS Code back to the default settings is to clear
+      your user <code>settings.json</code> file contents in the Settings editor.
+      Delete everything between the two curly braces, save the file, and VS Code
+      will go back to using the default values.
+    </p>
+    <h3 id="when-does-it-make-sense-to-use-workspace-settings">
+      When does it make sense to use workspace settings?
+    </h3>
+    <p>
+      If you’re using a workspace that needs custom settings but you don’t want
+      to apply them to your other VS Code projects. A good example is
+      language-specific linting rules.
+    </p>
+  </body>
 </html>

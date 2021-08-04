@@ -1,5 +1,4 @@
-Java build tools in VS Code
-===========================
+# Java build tools in VS Code
 
 This document will give you an overview of how work with your Java build tools in Visual Studio Code. It covers the [Maven for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-maven) extension as well as other tools.
 
@@ -7,8 +6,7 @@ If you run into any issues when using the features below, you can contact us by 
 
 <a href="javascript:void(0)" class="tutorial-feedback-btn">Report an issue</a>
 
-Maven
------
+## Maven
 
 [Maven](https://maven.apache.org/) is a software tool that helps you manage Java projects and automate application builds. The [Maven for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-maven) extension for Visual Studio Code provides fully integrated Maven support, allowing you to explore Maven projects, execute Maven commands, and perform the goals of build lifecycle and plugins.
 
@@ -65,13 +63,12 @@ There are two ways to generate a Maven project:
 
 1.  Right-click on a folder and select **Generate from Maven Archetype**.
 
-Gradle
-------
+## Gradle
 
 VS Code supports basic Gradle Java project (not including Android). There are also a couple third party extensions available for writing `.gradle` files as well as running Gradle tasks.
 
--   [Gradle Language Support](https://marketplace.visualstudio.com/items?itemName=naco-siren.gradle-language)
--   [Gradle Tasks](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-gradle)
+- [Gradle Language Support](https://marketplace.visualstudio.com/items?itemName=naco-siren.gradle-language)
+- [Gradle Tasks](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-gradle)
 
 ### Additional resources
 
@@ -79,12 +76,11 @@ Visit the [GitHub Repo](https://github.com/microsoft/vscode-maven) of the Maven 
 
 In addition to Maven, there’s also a [Bazel extension](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) if you use Bazel to build and test your project.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out more about:
 
--   [Java Editing](/docs/java/java-editing.md) - Explore the editing features for Java in VS Code.
--   [Java Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
--   [Java Testing](/docs/java/java-testing.md) - Use VS Code for your JUnit and TestNG cases.
--   [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.
+- [Java Editing](/docs/java/java-editing.md) - Explore the editing features for Java in VS Code.
+- [Java Debugging](/docs/java/java-debugging.md) - Find out how to debug your Java project with VS Code.
+- [Java Testing](/docs/java/java-testing.md) - Use VS Code for your JUnit and TestNG cases.
+- [Java Extensions](/docs/java/extensions.md) - Learn about more useful Java extensions for VS Code.

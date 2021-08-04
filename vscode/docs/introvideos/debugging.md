@@ -1,5 +1,4 @@
-Debugging in Visual Studio Code
-===============================
+# Debugging in Visual Studio Code
 
 Debugging is a core feature of Visual Studio Code. In this tutorial, we will show you how to run and debug a program in VS Code. We’ll take a tour of the Run View, explore some debugging features, and end by setting a breakpoint.
 
@@ -7,22 +6,19 @@ Debugging is a core feature of Visual Studio Code. In this tutorial, we will sho
 
 Next video: [Version Control](/docs/introvideos/versioncontrol.md)
 
-Video outline
--------------
+## Video outline
 
--   Debugging that “just works”.
--   Run a sample Node.js app.
--   Use a `launch.json` configuration file.
--   Single file debugging.
--   Set a breakpoint.
+- Debugging that “just works”.
+- Run a sample Node.js app.
+- Use a `launch.json` configuration file.
+- Single file debugging.
+- Set a breakpoint.
 
-Next video
-----------
+## Next video
 
--   [Version Control](/docs/introvideos/versioncontrol.md) - Learn the basics of Git version control.
+- [Version Control](/docs/introvideos/versioncontrol.md) - Learn the basics of Git version control.
 
-Related resources
------------------
+## Related resources
 
--   [Debugging](/docs/editor/debugging.md) - Official documentation for VS Code debugging.
--   [Integrated Terminal](/docs/editor/integrated-terminal.md) - Use the integrated terminal inside VS Code.
+- [Debugging](/docs/editor/debugging.md) - Official documentation for VS Code debugging.
+- [Integrated Terminal](/docs/editor/integrated-terminal.md) - Use the integrated terminal inside VS Code.

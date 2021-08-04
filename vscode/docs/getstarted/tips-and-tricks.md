@@ -1,5 +1,4 @@
-Visual Studio Code Tips and Tricks
-==================================
+# Visual Studio Code Tips and Tricks
 
 “Tips and Tricks” lets you jump right in and learn how to be productive with Visual Studio Code. You’ll become familiar with its powerful editing, code intelligence, and source code control features and learn useful keyboard shortcuts. This topic goes pretty fast and provides a broad overview, so be sure to look at the other in-depth topics in [Getting Started](/docs/getstarted/userinterface.md) and the [User Guide](/docs/editor/codebasics.md) to learn more.
 
@@ -7,8 +6,7 @@ Visual Studio Code Tips and Tricks
 
 Prefer a video? You can watch a recent Microsoft Build talk [Visual Studio Code tips and tricks](https://aka.ms/Build2020AppDev-VSCodeTips), which describes 20 tips and tricks for working productively with VS Code.
 
-Basics
-------
+## Basics
 
 ### Getting started
 
@@ -72,8 +70,7 @@ Keyboard Shortcut: `kb(workbench.action.openRecent)`
 
 Displays a Quick Pick dropdown with the list from **File** &gt; **Open Recent** with recently opened folders and workspaces followed by files.
 
-Command line
-------------
+## Command line
 
 VS Code has a powerful command line interface (CLI) which allows you to customize how the editor is launched to support various scenarios.
 
@@ -107,8 +104,7 @@ VS Code has a powerful command line interface (CLI) which allows you to customiz
 
 Workspace specific files are in a `.vscode` folder at the root. For example, `tasks.json` for the Task Runner and `launch.json` for the debugger.
 
-Status Bar
-----------
+## Status Bar
 
 ### Errors and warnings
 
@@ -130,17 +126,16 @@ Keyboard Shortcut: `kb(workbench.action.editor.changeLanguageMode)`
 
 If you want to persist the new language mode for that file type, you can use the **Configure File Association for** command to associate the current file extension with an installed language.
 
-Customization
--------------
+## Customization
 
 There are many things you can do to customize VS Code.
 
--   Change your theme
--   Change your keyboard shortcuts
--   Tune your settings
--   Add JSON validation
--   Create snippets
--   Install extensions
+- Change your theme
+- Change your keyboard shortcuts
+- Tune your settings
+- Add JSON validation
+- Create snippets
+- Install extensions
 
 ### Change your theme
 
@@ -158,13 +153,13 @@ Additionally, you can install and change your File Icon themes.
 
 Are you used to keyboard shortcuts from another editor? You can install a Keymap extension that brings the keyboard shortcuts from your favorite editor to VS Code. Go to **Preferences** &gt; **Keymaps** to see the current list on the [Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Keymaps&sortBy=Downloads). Some of the more popular ones:
 
--   [Vim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
--   [Sublime Text Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.sublime-keybindings)
--   [Emacs Keymap](https://marketplace.visualstudio.com/items?itemName=hiro-sun.vscode-emacs)
--   [Atom Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.atom-keybindings)
--   [Brackets Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.brackets-keybindings)
--   [Eclipse Keymap](https://marketplace.visualstudio.com/items?itemName=alphabotsec.vscode-eclipse-keybindings)
--   [Visual Studio Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vs-keybindings)
+- [Vim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
+- [Sublime Text Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.sublime-keybindings)
+- [Emacs Keymap](https://marketplace.visualstudio.com/items?itemName=hiro-sun.vscode-emacs)
+- [Atom Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.atom-keybindings)
+- [Brackets Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.brackets-keybindings)
+- [Eclipse Keymap](https://marketplace.visualstudio.com/items?itemName=alphabotsec.vscode-eclipse-keybindings)
+- [Visual Studio Keymap](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vs-keybindings)
 
 ### Customize your keyboard shortcuts
 
@@ -312,8 +307,7 @@ or a custom schema
 
 See more in the [JSON](/docs/languages/json.md) documentation.
 
-Extensions
-----------
+## Extensions
 
 Keyboard Shortcut: `kb(workbench.view.extensions)`
 
@@ -340,18 +334,17 @@ In the **Extensions** view, click **Show Recommended Extensions** in the **More 
 
 Are you interested in creating your own extension? You can learn how to do this in the [Extension API documentation](/api), specifically check out the [documentation on contribution points](/api/references/contribution-points.md).
 
--   configuration
--   commands
--   keybindings
--   languages
--   debuggers
--   grammars
--   themes
--   snippets
--   jsonValidation
+- configuration
+- commands
+- keybindings
+- languages
+- debuggers
+- grammars
+- themes
+- snippets
+- jsonValidation
 
-Files and folders
------------------
+## Files and folders
 
 ### Integrated Terminal
 
@@ -361,8 +354,8 @@ Keyboard Shortcut: `kb(workbench.action.terminal.toggleTerminal)`
 
 Further reading:
 
--   [Integrated Terminal](/docs/editor/integrated-terminal.md) documentation
--   [Mastering VS Code’s Terminal article](https://www.growingwiththeweb.com/2017/03/mastering-vscodes-terminal.html)
+- [Integrated Terminal](/docs/editor/integrated-terminal.md) documentation
+- [Mastering VS Code’s Terminal article](https://www.growingwiththeweb.com/2017/03/mastering-vscodes-terminal.html)
 
 ### Toggle Sidebar
 
@@ -444,8 +437,7 @@ Use the actions in the editor toolbar to resolve the save conflict. You can eith
 
 **Note:** The file will remain dirty and cannot be saved until you pick one of the two actions to resolve the conflict.
 
-Editing hacks
--------------
+## Editing hacks
 
 Here is a selection of common features for editing code. If the keyboard shortcuts aren’t comfortable for you, consider installing a [keymap extension](https://marketplace.visualstudio.com/search?target=VSCode&category=Keymaps&sortBy=Downloads) for your old editor.
 
@@ -605,8 +597,7 @@ The preview and editor will synchronize with your scrolling in either view.
 
 ![side by side Markdown preview](images/tips-and-tricks/markdown-preview-side-by-side.png)
 
-IntelliSense
-------------
+## IntelliSense
 
 `kb(editor.action.triggerSuggest)` to trigger the Suggestions widget.
 
@@ -706,8 +697,7 @@ See IntelliSense for your `package.json` file.
 
 ![emmet syntax](images/tips-and-tricks/emmet_syntax.gif)
 
-Snippets
---------
+## Snippets
 
 ### Create custom snippets
 
@@ -728,8 +718,7 @@ Snippets
 
 See more details in [Creating your own Snippets](/docs/editor/userdefinedsnippets.md).
 
-Git integration
----------------
+## Git integration
 
 Keyboard Shortcut: `kb(workbench.view.scm)`
 
@@ -757,7 +746,7 @@ If you prefer the inline view, you can set `"diffEditor.renderSideBySide": false
 
 Navigate through diffs with `kb(editor.action.diffReview.next)` and `kb(editor.action.diffReview.prev)`. This will present them in a unified patch format. Lines can be navigated with arrow keys and pressing `kbstyle(Enter)` will jump back in the diff editor and the selected line.
 
-![diff\_review\_pane](images/tips-and-tricks/diff_review_pane.png)
+![diff_review_pane](images/tips-and-tricks/diff_review_pane.png)
 
 **Edit pending changes**
 
@@ -817,8 +806,7 @@ You can resolve merge conflicts with the inline CodeLens which lets you **Accept
     git config --global diff.tool vscode
     git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 
-Debugging
----------
+## Debugging
 
 ### Configure debugger
 
@@ -846,8 +834,7 @@ Add a logpoint with the **Add Logpoint** command in the left editor gutter and i
 
 ![Logpoint set in the editor](images/tips-and-tricks/logpoint.png)
 
-Task runner
------------
+## Task runner
 
 ### Auto detect tasks
 
@@ -897,16 +884,14 @@ From the explorer you can open a script in the editor, run it as a task, and lau
 
 With the setting `npm.enableRunFromFolder`, you can enable to run npm scripts from the File Explorer’s context menu for a folder. The setting enables the command **Run NPM Script in Folder…** when a folder is selected. The command shows a Quick Pick list of the npm scripts contained in this folder and you can select the script to be executed as a task.
 
-Portable mode
--------------
+## Portable mode
 
 VS Code has a [Portable mode](/docs/editor/portable.md) which lets you keep settings and data in the same location as your installation, for example, on a USB drive.
 
-Insiders builds
----------------
+## Insiders builds
 
 The Visual Studio Code team uses the Insiders version to test the latest features and bug fixes of VS Code. You can also use the Insiders version by [downloading it here](/insiders).
 
--   For Early Adopters - Insiders has the most recent code changes for users and extension authors to try out.
--   Frequent Builds - New builds every day with the latest bug fixes and features.
--   Side-by-side install - Insiders installs next to the Stable build allowing you to use either independently.
+- For Early Adopters - Insiders has the most recent code changes for users and extension authors to try out.
+- Frequent Builds - New builds every day with the latest bug fixes and features.
+- Side-by-side install - Insiders installs next to the Stable build allowing you to use either independently.
