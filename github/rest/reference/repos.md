@@ -1,32 +1,32 @@
 ---
 title: Repositories
-intro: 'The Repos API allows to create, manage and control the workflow of public and private {% data variables.product.product_name %} respositories.' 
+intro: "The Repos API allows to create, manage and control the workflow of public and private {% data variables.product.product_name %} respositories."
 allowTitleToDifferFromFilename: true
 redirect_from:
   - /v3/repos
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
 ---
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Branches
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'branches' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'branches' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Collaborators
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'collaborators' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'collaborators' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Comments
@@ -44,7 +44,7 @@ about the use of media types in the API [here](/rest/overview/media-types).
 For more information, see "[Custom media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Commits
@@ -52,14 +52,15 @@ For more information, see "[Custom media types](/rest/overview/media-types)."
 The Repo Commits API supports listing, viewing, and comparing commits in a repository.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'commits' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'commits' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% ifversion fpt %}
+
 ## Community
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'community' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'community' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -89,7 +90,7 @@ for a directory, the response will be an object with an `entries` attribute cont
 You can read more about the use of media types in the API [here](/rest/overview/media-types).
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'contents' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'contents' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Deploy keys
@@ -99,7 +100,7 @@ You can read more about the use of media types in the API [here](/rest/overview/
 Deploy keys can either be setup using the following API endpoints, or by using GitHub. To learn how to set deploy keys up in GitHub, see "[Managing deploy keys](/developers/overview/managing-deploy-keys)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'keys' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'keys' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Deployments
@@ -146,31 +147,31 @@ Keep in mind that GitHub is never actually accessing your servers. It's up to yo
 
 Note that the `repo_deployment` [OAuth scope](/developers/apps/scopes-for-oauth-apps) grants targeted access to deployments and deployment statuses **without** granting access to repository code, while the {% ifversion not ghae %}`public_repo` and{% endif %}`repo` scopes grant permission to code as well.
 
-
 ### Inactive deployments
 
 When you set the state of a deployment to `success`, then all prior non-transient, non-production environment deployments in the same repository to the same environment name will become `inactive`. To avoid this, you can set `auto_inactive` to `false` when creating the deployment status.
 
-You can communicate that a transient environment no longer exists by setting its `state` to `inactive`.  Setting the `state` to `inactive` shows the deployment as `destroyed` in {% data variables.product.prodname_dotcom %} and removes access to it.
+You can communicate that a transient environment no longer exists by setting its `state` to `inactive`. Setting the `state` to `inactive` shows the deployment as `destroyed` in {% data variables.product.prodname_dotcom %} and removes access to it.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'deployments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'deployments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
+
 ## Environments
 
 The Environments API allows you to create, configure, and delete environments. For more information about environments, see "[Environments](/actions/reference/environments)." To manage environment secrets, see "[Secrets](/rest/reference/actions#secrets)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'environments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'environments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 {% endif %}
 
 ## Forks
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'forks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'forks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Invitations
@@ -181,12 +182,12 @@ Note that the `repo:invite` [OAuth scope](/developers/apps/scopes-for-oauth-apps
 access to invitations **without** also granting access to repository code, while the
 `repo` scope grants permission to code as well as invitations.
 
-### Invite a user to a repository		
+### Invite a user to a repository
 
 Use the API endpoint for adding a collaborator. For more information, see "[Add a repository collaborator](/rest/reference/repos#add-a-repository-collaborator)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'invitations' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'invitations' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Merging
@@ -198,7 +199,7 @@ and then pushing to {% data variables.product.product_name %}. The benefit is th
 The authenticated user will be the author of any merges done through this endpoint.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'merging' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'merging' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Pages
@@ -206,20 +207,22 @@ The authenticated user will be the author of any merges done through this endpoi
 The {% data variables.product.prodname_pages %} API retrieves information about your {% data variables.product.prodname_pages %} configuration, and the statuses of your builds. Information about the site and the builds can only be accessed by authenticated owners{% ifversion not ghae %}, even if the websites are public{% endif %}. For more information, see "[About {% data variables.product.prodname_pages %}](/pages/getting-started-with-github-pages/about-github-pages)."
 
 In {% data variables.product.prodname_pages %} API endpoints with a `status` key in their response, the value can be one of:
-* `null`: The site has yet to be built.
-* `queued`: The build has been requested but not yet begun.
-* `building`:The build is in progress.
-* `built`: The site has been built.
-* `errored`: Indicates an error occurred during the build.
 
-In {% data variables.product.prodname_pages %} API endpoints that  return GitHub Pages site information, the JSON responses include these fields:
-* `html_url`: The absolute URL (including scheme) of the rendered Pages site. For example, `https://username.github.io`.
-* `source`: An object that contains the source branch and directory for the rendered Pages site. This includes:
-   - `branch`: The repository branch used to publish your [site's source files](/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). For example, _main_ or _gh-pages_.
-   - `path`: The repository directory from which the site publishes. Will be either `/` or `/docs`.
+- `null`: The site has yet to be built.
+- `queued`: The build has been requested but not yet begun.
+- `building`:The build is in progress.
+- `built`: The site has been built.
+- `errored`: Indicates an error occurred during the build.
+
+In {% data variables.product.prodname_pages %} API endpoints that return GitHub Pages site information, the JSON responses include these fields:
+
+- `html_url`: The absolute URL (including scheme) of the rendered Pages site. For example, `https://username.github.io`.
+- `source`: An object that contains the source branch and directory for the rendered Pages site. This includes:
+  - `branch`: The repository branch used to publish your [site's source files](/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). For example, _main_ or _gh-pages_.
+  - `path`: The repository directory from which the site publishes. Will be either `/` or `/docs`.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'pages' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'pages' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Releases
@@ -231,7 +234,7 @@ In {% data variables.product.prodname_pages %} API endpoints that  return GitHub
 {% endnote %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'releases' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'releases' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Statistics
@@ -242,7 +245,7 @@ types of repository activity.
 ### A word about caching
 
 Computing repository statistics is an expensive operation, so we try to return cached
-data whenever possible.  If the data hasn't been cached when you query a repository's
+data whenever possible. If the data hasn't been cached when you query a repository's
 statistics, you'll receive a `202` response; a background job is also fired to
 start compiling these statistics. Give the job a few moments to complete, and
 then submit the request again. If the job has completed, that request will receive a
@@ -255,11 +258,12 @@ Repository statistics are cached by the SHA of the repository's default branch; 
 The statistics exposed by the API match the statistics shown by [different repository graphs](/github/visualizing-repository-data-with-graphs/about-repository-graphs).
 
 To summarize:
+
 - All statistics exclude merge commits.
 - Contributor statistics also exclude empty commits.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'statistics' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'statistics' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Statuses
@@ -273,13 +277,13 @@ we highly recommend providing them as they make statuses much more
 useful in the GitHub UI.
 
 As an example, one common use is for continuous integration
-services to mark commits as passing or failing builds using status.  The
+services to mark commits as passing or failing builds using status. The
 `target_url` would be the full URL to the build output, and the
 `description` would be the high level summary of what happened with the
 build.
 
 Statuses can include a `context` to indicate what service is providing that status.
-For example, you may have your continuous integration service push statuses with a context of `ci`, and a security audit tool push statuses with a context of `security`.  You can
+For example, you may have your continuous integration service push statuses with a context of `ci`, and a security audit tool push statuses with a context of `security`. You can
 then use the [Get the combined status for a specific reference](/rest/reference/repos#get-the-combined-status-for-a-specific-reference) to retrieve the whole status for a commit.
 
 Note that the `repo:status` [OAuth scope](/developers/apps/scopes-for-oauth-apps) grants targeted access to statuses **without** also granting access to repository code, while the
@@ -288,17 +292,18 @@ Note that the `repo:status` [OAuth scope](/developers/apps/scopes-for-oauth-apps
 If you are developing a GitHub App and want to provide more detailed information about an external service, you may want to use the [Checks API](/rest/reference/checks).
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'statuses' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'statuses' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% ifversion fpt %}
+
 ## Traffic
 
 For repositories that you have push access to, the traffic API provides access
 to the information provided in your repository graph. For more information, see "<a href="/github/visualizing-repository-data-with-graphs/viewing-traffic-to-a-repository" class="dotcom-only">Viewing traffic to a repository</a>."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'traffic' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'traffic' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 {% endif %}
 
@@ -311,7 +316,7 @@ If you would like to set up a single webhook to receive events from all of your 
 In addition to the REST API, {% data variables.product.prodname_dotcom %} can also serve as a [PubSubHubbub](#pubsubhubbub) hub for repositories.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ### Receiving Webhooks
@@ -333,7 +338,7 @@ The event can be any available webhook event. For more information, see "[Webhoo
 
 #### Response format
 
-The default format is what [existing post-receive hooks should expect](/post-receive-hooks/): A JSON body sent as the `payload` parameter in a POST.  You can also specify to receive the raw JSON body with either an `Accept` header, or a `.json` extension.
+The default format is what [existing post-receive hooks should expect](/post-receive-hooks/): A JSON body sent as the `payload` parameter in a POST. You can also specify to receive the raw JSON body with either an `Accept` header, or a `.json` extension.
 
     Accept: application/json
     https://github.com/{owner}/{repo}/events/push.json
@@ -349,7 +354,7 @@ Callback URLs can use the `http://` protocol.
 
 The GitHub PubSubHubbub endpoint is: `{% data variables.product.api_url_code %}/hub`. A successful request with curl looks like:
 
-``` shell
+```shell
 curl -u "user" -i \
   {% data variables.product.api_url_pre %}/hub \
   -F "hub.mode=subscribe" \
@@ -361,9 +366,9 @@ PubSubHubbub requests can be sent multiple times. If the hook already exists, it
 
 ##### Parameters
 
-Name | Type | Description
------|------|--------------
-``hub.mode``|`string` | **Required**. Either `subscribe` or `unsubscribe`.
-``hub.topic``|`string` |**Required**.  The URI of the GitHub repository to subscribe to.  The path must be in the format of `/{owner}/{repo}/events/{event}`.
-``hub.callback``|`string` | The URI to receive the updates to the topic.
-``hub.secret``|`string` | A shared secret key that generates a hash signature of the outgoing body content.  You can verify a push came from GitHub by comparing the raw request body with the contents of the {% ifversion fpt or ghes > 2.22 %}`X-Hub-Signature` or `X-Hub-Signature-256` headers{% elsif ghes < 3.0 %}`X-Hub-Signature` header{% elsif ghae %}`X-Hub-Signature-256` header{% endif %}. You can see [the PubSubHubbub documentation](https://pubsubhubbub.github.io/PubSubHubbub/pubsubhubbub-core-0.4.html#authednotify) for more details.
+| Name           | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `hub.mode`     | `string` | **Required**. Either `subscribe` or `unsubscribe`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `hub.topic`    | `string` | **Required**. The URI of the GitHub repository to subscribe to. The path must be in the format of `/{owner}/{repo}/events/{event}`.                                                                                                                                                                                                                                                                                                                                                                                                |
+| `hub.callback` | `string` | The URI to receive the updates to the topic.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `hub.secret`   | `string` | A shared secret key that generates a hash signature of the outgoing body content. You can verify a push came from GitHub by comparing the raw request body with the contents of the {% ifversion fpt or ghes > 2.22 %}`X-Hub-Signature` or `X-Hub-Signature-256` headers{% elsif ghes < 3.0 %}`X-Hub-Signature` header{% elsif ghae %}`X-Hub-Signature-256` header{% endif %}. You can see [the PubSubHubbub documentation](https://pubsubhubbub.github.io/PubSubHubbub/pubsubhubbub-core-0.4.html#authednotify) for more details. |

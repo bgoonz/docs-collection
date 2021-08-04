@@ -5,9 +5,9 @@ redirect_from:
   - /v3/enterprise-admin
   - /v3/enterprise
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -40,8 +40,10 @@ REST API endpoints{% ifversion ghes %}—except [Management Console](#management
 ```shell
 http(s)://<em>hostname</em>/
 ```
+
 {% endif %}
 {% ifversion ghae or ghes %}
+
 ### Authentication
 
 Your {% data variables.product.product_name %} installation's API endpoints accept [the same authentication methods](/rest/overview/resources-in-the-rest-api#authentication) as the GitHub.com API. You can authenticate yourself with **[OAuth tokens](/apps/building-integrations/setting-up-and-registering-oauth-apps/)** {% ifversion ghes %}(which can be created using the [Authorizations API](/rest/reference/oauth-authorizations#create-a-new-authorization)) {% endif %}or **[basic authentication](/rest/overview/resources-in-the-rest-api#basic-authentication)**. {% ifversion ghes %}
@@ -52,6 +54,7 @@ Enterprise administration API endpoints are only accessible to authenticated {% 
 {% endif %}
 
 {% ifversion ghae or ghes %}
+
 ### Version information
 
 The current version of your enterprise is returned in the response header of every API:
@@ -59,7 +62,7 @@ The current version of your enterprise is returned in the response header of eve
 You can also read the current version by calling the [meta endpoint](/rest/reference/meta/).
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 {% endif %}
@@ -69,38 +72,41 @@ You can also read the current version by calling the [meta endpoint](/rest/refer
 ## Audit log
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'audit-log' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'audit-log' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion fpt %}
+
 ## Billing
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'billing' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'billing' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion fpt or ghes > 2.21 or ghae %}
+
 ## GitHub Actions
 
 {% data reusables.actions.ae-beta %}
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'actions' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'actions' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion ghae or ghes %}
+
 ## Admin stats
 
-The Admin Stats API provides a variety of metrics about your installation. *It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it.
+The Admin Stats API provides a variety of metrics about your installation. _It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'admin-stats' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'admin-stats' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -112,7 +118,7 @@ The Admin Stats API provides a variety of metrics about your installation. *It i
 The Announcements API allows you to manage the global announcement banner in your enterprise. For more information, see "[Customizing user messages for your enterprise](/admin/user-management/customizing-user-messages-for-your-enterprise#creating-a-global-announcement-banner)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'announcement' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'announcement' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -123,10 +129,10 @@ The Announcements API allows you to manage the global announcement banner in you
 
 Global webhooks are installed on your enterprise. You can use global webhooks to automatically monitor, respond to, or enforce rules for users, organizations, teams, and repositories on your enterprise. Global webhooks can subscribe to the [organization](/developers/webhooks-and-events/webhook-events-and-payloads#organization), [user](/developers/webhooks-and-events/webhook-events-and-payloads#user), [repository](/developers/webhooks-and-events/webhook-events-and-payloads#repository), [team](/developers/webhooks-and-events/webhook-events-and-payloads#team), [member](/developers/webhooks-and-events/webhook-events-and-payloads#member), [membership](/developers/webhooks-and-events/webhook-events-and-payloads#membership), [fork](/developers/webhooks-and-events/webhook-events-and-payloads#fork), and [ping](/developers/webhooks-and-events/about-webhooks#ping-event) event types.
 
-*This API is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it. To learn how to configure global webhooks, see [About global webhooks](/enterprise/admin/user-management/about-global-webhooks).
+_This API is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it. To learn how to configure global webhooks, see [About global webhooks](/enterprise/admin/user-management/about-global-webhooks).
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'global-webhooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'global-webhooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -140,19 +146,19 @@ You can use the LDAP API to update account relationships between a {% data varia
 With the LDAP mapping endpoints, you're able to update the Distinguished Name (DN) that a user or team maps to. Note that the LDAP endpoints are generally only effective if your {% data variables.product.product_name %} appliance has [LDAP Sync enabled](/enterprise/admin/authentication/using-ldap). The [Update LDAP mapping for a user](#update-ldap-mapping-for-a-user) endpoint can be used when LDAP is enabled, even if LDAP Sync is disabled.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'ldap' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'ldap' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
-
 {% ifversion ghae or ghes %}
+
 ## License
 
-The License API provides information on your Enterprise license. *It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it.
+The License API provides information on your Enterprise license. _It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'license' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'license' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -190,24 +196,25 @@ $ curl -L 'https://api_key:<em>your-amazing-password</em>@<em>hostname</em>:<em>
 ```
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'management-console' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'management-console' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion ghae or ghes %}
+
 ## Organizations
 
-The Organization Administration API allows you to create organizations on your enterprise. *It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it.
+The Organization Administration API allows you to create organizations on your enterprise. _It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'orgs' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'orgs' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
-
 {% ifversion ghes %}
+
 ## Organization pre-receive hooks
 
 The Organization Pre-receive Hooks API allows you to view and modify
@@ -216,20 +223,20 @@ enforcement of the pre-receive hooks that are available to an organization.
 ### Object attributes
 
 | Name                             | Type      | Description                                               |
-|----------------------------------|-----------|-----------------------------------------------------------|
+| -------------------------------- | --------- | --------------------------------------------------------- |
 | `name`                           | `string`  | The name of the hook.                                     |
 | `enforcement`                    | `string`  | The state of enforcement for the hook on this repository. |
 | `allow_downstream_configuration` | `boolean` | Whether repositories can override enforcement.            |
 | `configuration_url`              | `string`  | URL for the endpoint where enforcement is set.            |
 
-Possible values for *enforcement* are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject
+Possible values for _enforcement_ are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject
 any pushes that result in a non-zero status. `testing` means the script will run but will not cause any pushes to be rejected.
 
 `configuration_url` may be a link to this endpoint or this hook's global
 configuration. Only site admins are able to access the global configuration.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'org-pre-receive-hooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'org-pre-receive-hooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -238,24 +245,24 @@ configuration. Only site admins are able to access the global configuration.
 
 ## Pre-receive environments
 
-The Pre-receive Environments API allows you to create, list, update and delete environments for pre-receive hooks. *It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it.
+The Pre-receive Environments API allows you to create, list, update and delete environments for pre-receive hooks. _It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it.
 
 ### Object attributes
 
 #### Pre-receive Environment
 
-| Name                  | Type      | Description                                                                |
-|-----------------------|-----------|----------------------------------------------------------------------------|
-| `name`                | `string`  | The name of the environment as displayed in the UI.                        |
-| `image_url`           | `string`  | URL to the tarball that will be downloaded and extracted.                  |
+| Name                  | Type      | Description                                                                                        |
+| --------------------- | --------- | -------------------------------------------------------------------------------------------------- |
+| `name`                | `string`  | The name of the environment as displayed in the UI.                                                |
+| `image_url`           | `string`  | URL to the tarball that will be downloaded and extracted.                                          |
 | `default_environment` | `boolean` | Whether this is the default environment that ships with {% data variables.product.product_name %}. |
-| `download`            | `object`  | This environment's download status.                                        |
-| `hooks_count`         | `integer` | The number of pre-receive hooks that use this environment.                 |
+| `download`            | `object`  | This environment's download status.                                                                |
+| `hooks_count`         | `integer` | The number of pre-receive hooks that use this environment.                                         |
 
 #### Pre-receive Environment Download
 
 | Name            | Type     | Description                                             |
-|-----------------|----------|---------------------------------------------------------|
+| --------------- | -------- | ------------------------------------------------------- |
 | `state`         | `string` | The state of the most recent download.                  |
 | `downloaded_at` | `string` | The time when the most recent download started.         |
 | `message`       | `string` | On failure, this will have any error messages produced. |
@@ -263,23 +270,24 @@ The Pre-receive Environments API allows you to create, list, update and delete e
 Possible values for `state` are `not_started`, `in_progress`, `success`, `failed`.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'pre-receive-environments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'pre-receive-environments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion ghes %}
+
 ## Pre-receive hooks
 
-The Pre-receive Hooks API allows you to create, list, update and delete pre-receive hooks. *It is only available to
-[authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `404` response if they try to access it.
+The Pre-receive Hooks API allows you to create, list, update and delete pre-receive hooks. _It is only available to
+[authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `404` response if they try to access it.
 
 ### Object attributes
 
 #### Pre-receive Hook
 
 | Name                             | Type      | Description                                                     |
-|----------------------------------|-----------|-----------------------------------------------------------------|
+| -------------------------------- | --------- | --------------------------------------------------------------- |
 | `name`                           | `string`  | The name of the hook.                                           |
 | `script`                         | `string`  | The script that the hook runs.                                  |
 | `script_repository`              | `object`  | The GitHub repository where the script is kept.                 |
@@ -287,11 +295,11 @@ The Pre-receive Hooks API allows you to create, list, update and delete pre-rece
 | `enforcement`                    | `string`  | The state of enforcement for this hook.                         |
 | `allow_downstream_configuration` | `boolean` | Whether enforcement can be overridden at the org or repo level. |
 
-Possible values for *enforcement* are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject
+Possible values for _enforcement_ are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject
 any pushes that result in a non-zero status. `testing` means the script will run but will not cause any pushes to be rejected.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'pre-receive-hooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'pre-receive-hooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -306,28 +314,29 @@ enforcement of the pre-receive hooks that are available to a repository.
 ### Object attributes
 
 | Name                | Type     | Description                                               |
-|---------------------|----------|-----------------------------------------------------------|
+| ------------------- | -------- | --------------------------------------------------------- |
 | `name`              | `string` | The name of the hook.                                     |
 | `enforcement`       | `string` | The state of enforcement for the hook on this repository. |
 | `configuration_url` | `string` | URL for the endpoint where enforcement is set.            |
 
-Possible values for *enforcement* are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject any pushes that result in a non-zero status. `testing` means the script will run but will not cause any pushes to be rejected.
+Possible values for _enforcement_ are `enabled`, `disabled` and`testing`. `disabled` indicates the pre-receive hook will not run. `enabled` indicates it will run and reject any pushes that result in a non-zero status. `testing` means the script will run but will not cause any pushes to be rejected.
 
 `configuration_url` may be a link to this repository, it's organization owner or global configuration. Authorization to access the endpoint at `configuration_url` is determined at the owner or site admin level.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'repo-pre-receive-hooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'repo-pre-receive-hooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
 
 {% ifversion ghae or ghes %}
+
 ## Users
 
-The User Administration API allows you to suspend{% ifversion ghes %}, unsuspend, promote, and demote{% endif %}{% ifversion ghae %} and unsuspend{% endif %} users on your enterprise. *It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators.* Normal users will receive a `403` response if they try to access it.
+The User Administration API allows you to suspend{% ifversion ghes %}, unsuspend, promote, and demote{% endif %}{% ifversion ghae %} and unsuspend{% endif %} users on your enterprise. _It is only available to [authenticated](/rest/overview/resources-in-the-rest-api#authentication) site administrators._ Normal users will receive a `403` response if they try to access it.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'users' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'users' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}

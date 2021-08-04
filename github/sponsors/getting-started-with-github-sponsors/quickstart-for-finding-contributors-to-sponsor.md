@@ -2,7 +2,7 @@
 title: Quickstart for finding contributors to sponsor
 intro: Learn some best practices for finding open source contributors to sponsor.
 versions:
-  fpt: '*'
+  fpt: "*"
 type: quick_start
 topics:
   - Open Source
@@ -28,16 +28,17 @@ You can see whom a user or organization sponsors on their {% data variables.prod
 ## Consider how you benefit from different contributions
 
 Consider whether you benefit from the work of open source contributions, such as:
- - Documentation
- - Design
- - Translation
- - Newsletters
- - Code reviews
- - Tutorials
- - Mentoring
- - Triaging issues and helping with project management
- - Answering questions
- - Event planning
+
+- Documentation
+- Design
+- Translation
+- Newsletters
+- Code reviews
+- Tutorials
+- Mentoring
+- Triaging issues and helping with project management
+- Answering questions
+- Event planning
 
 For more information on different types of open source contributions, see the [Open source guide](https://opensource.guide/how-to-contribute/#you-dont-have-to-contribute-code).
 

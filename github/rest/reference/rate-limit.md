@@ -1,13 +1,13 @@
 ---
 title: Rate limit
-intro: 'With the Rate Limit API, you can check the current rate limit status of various REST APIs.'
+intro: "With the Rate Limit API, you can check the current rate limit status of various REST APIs."
 redirect_from:
   - /v3/rate_limit
   - /v3/rate-limit
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -22,13 +22,13 @@ The Search API has a [custom rate limit](/rest/reference/search#rate-limit), sep
 For these reasons, the Rate Limit API response categorizes your rate limit. Under `resources`, you'll see four
 objects:
 
-* The `core` object provides your rate limit status for all non-search-related resources in the REST API.
+- The `core` object provides your rate limit status for all non-search-related resources in the REST API.
 
-* The `search` object provides your rate limit status for the [Search API](/rest/reference/search).
+- The `search` object provides your rate limit status for the [Search API](/rest/reference/search).
 
-* The `graphql` object provides your rate limit status for the [GraphQL API](/graphql).
+- The `graphql` object provides your rate limit status for the [GraphQL API](/graphql).
 
-* The `integration_manifest` object provides your rate limit status for the [GitHub App Manifest code conversion](/apps/building-github-apps/creating-github-apps-from-a-manifest/#3-you-exchange-the-temporary-code-to-retrieve-the-app-configuration) endpoint.
+- The `integration_manifest` object provides your rate limit status for the [GitHub App Manifest code conversion](/apps/building-github-apps/creating-github-apps-from-a-manifest/#3-you-exchange-the-temporary-code-to-retrieve-the-app-configuration) endpoint.
 
 For more information on the headers and values in the rate limit response, see "[Rate limiting](/rest#rate-limiting)."
 

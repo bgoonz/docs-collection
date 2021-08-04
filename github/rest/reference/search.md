@@ -1,12 +1,12 @@
 ---
 title: Search
-intro: 'The {% data variables.product.product_name %} Search API lets you to search for the specific item efficiently.'
+intro: "The {% data variables.product.product_name %} Search API lets you to search for the specific item efficiently."
 redirect_from:
   - /v3/search
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -52,9 +52,11 @@ GitHub Octocat in:readme user:defunkt
 ```
 
 **Note:** Be sure to use your language's preferred HTML-encoder to construct your query strings. For example:
+
 ```javascript
 // JavaScript
-const queryString = 'q=' + encodeURIComponent('GitHub Octocat in:readme user:defunkt');
+const queryString =
+  "q=" + encodeURIComponent("GitHub Octocat in:readme user:defunkt");
 ```
 
 See "[Searching on GitHub](/articles/searching-on-github/)"
@@ -65,6 +67,7 @@ quantities, dates, or to exclude results, see "[Understanding the search syntax]
 ### Limitations on query length
 
 The Search API does not support queries that:
+
 - are longer than 256 characters (not including operators or qualifiers).
 - have more than five `AND`, `OR`, or `NOT` operators.
 
@@ -90,7 +93,6 @@ For example, if your search query searches for the `octocat/test` and `codertoca
 
 {% include rest_operations_at_current_path %}
 
-
 ### Text match metadata
 
 On GitHub, you can use the context provided by code snippets and highlights in search results. The Search API offers additional metadata that allows you to highlight the matching search terms when displaying search results.
@@ -108,20 +110,20 @@ application/vnd.github.v3.text-match+json
 When you provide the `text-match` media type, you will receive an extra key in the JSON payload called `text_matches` that provides information about the position of your search terms within the text and the `property` that includes the search term. Inside the `text_matches` array, each object includes
 the following attributes:
 
-Name | Description
------|-----------|
-`object_url` | The URL for the resource that contains a string property matching one of the search terms.
-`object_type` | The name for the type of resource that exists at the given `object_url`.
-`property` | The name of a property of the resource that exists at `object_url`. That property is a string that matches one of the search terms. (In the JSON returned from `object_url`, the full content for the `fragment` will be found in the property with this name.)
-`fragment` | A subset of the value of `property`. This is the text fragment that matches one or more of the search terms.
-`matches` | An array of one or more search terms that are present in `fragment`. The indices (i.e., "offsets") are relative to the fragment. (They are not relative to the _full_ content of `property`.)
+| Name          | Description                                                                                                                                                                                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `object_url`  | The URL for the resource that contains a string property matching one of the search terms.                                                                                                                                                                      |
+| `object_type` | The name for the type of resource that exists at the given `object_url`.                                                                                                                                                                                        |
+| `property`    | The name of a property of the resource that exists at `object_url`. That property is a string that matches one of the search terms. (In the JSON returned from `object_url`, the full content for the `fragment` will be found in the property with this name.) |
+| `fragment`    | A subset of the value of `property`. This is the text fragment that matches one or more of the search terms.                                                                                                                                                    |
+| `matches`     | An array of one or more search terms that are present in `fragment`. The indices (i.e., "offsets") are relative to the fragment. (They are not relative to the _full_ content of `property`.)                                                                   |
 
 #### Example
 
 Using cURL, and the [example issue search](#search-issues-and-pull-requests) above, our API
 request would look like this:
 
-``` shell
+```shell
 curl -H 'Accept: application/vnd.github.v3.text-match+json' \
 '{% data variables.product.api_url_pre %}/search/issues?q=windows+label:bug+language:python+state:open&sort=created&order=asc'
 ```
@@ -143,17 +145,11 @@ The second text match occurred in the `body` property of one of the issue's comm
       "matches": [
         {
           "text": "windows",
-          "indices": [
-            14,
-            21
-          ]
+          "indices": [14, 21]
         },
         {
           "text": "windows",
-          "indices": [
-            78,
-            85
-          ]
+          "indices": [78, 85]
         }
       ]
     },
@@ -165,10 +161,7 @@ The second text match occurred in the `body` property of one of the issue's comm
       "matches": [
         {
           "text": "Windows",
-          "indices": [
-            163,
-            170
-          ]
+          "indices": [163, 170]
         }
       ]
     }

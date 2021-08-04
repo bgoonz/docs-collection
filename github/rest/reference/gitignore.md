@@ -4,9 +4,9 @@ intro: "The Gitignore API fetches `.gitignore` templates that can be used to ign
 redirect_from:
   - /v3/gitignore
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3

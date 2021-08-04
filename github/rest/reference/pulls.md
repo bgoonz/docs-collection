@@ -1,12 +1,12 @@
 ---
 title: Pulls
-intro: 'The Pulls API allows you to list, view, edit, create, and even merge pull requests.'
+intro: "The Pulls API allows you to list, view, edit, create, and even merge pull requests."
 redirect_from:
   - /v3/pulls
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -37,19 +37,19 @@ If a diff is corrupt, contact {% data variables.contact.contact_support %}. Incl
 
 Pull Requests have these possible link relations:
 
-Name | Description
------|-----------|
-`self`| The API location of this Pull Request.
-`html`| The HTML location of this Pull Request.
-`issue`| The API location of this Pull Request's [Issue](/rest/reference/issues).
-`comments`| The API location of this Pull Request's [Issue comments](/rest/reference/issues#comments).
-`review_comments`| The API location of this Pull Request's [Review comments](/rest/reference/pulls#comments).
-`review_comment`| The [URL template](/rest#hypermedia) to construct the API location for a [Review comment](/rest/reference/pulls#comments) in this Pull Request's repository.
-`commits`|The API location of this Pull Request's [commits](#list-commits-on-a-pull-request).
-`statuses`| The API location of this Pull Request's [commit statuses](/rest/reference/repos#statuses), which are the statuses of its `head` branch.
+| Name              | Description                                                                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `self`            | The API location of this Pull Request.                                                                                                                       |
+| `html`            | The HTML location of this Pull Request.                                                                                                                      |
+| `issue`           | The API location of this Pull Request's [Issue](/rest/reference/issues).                                                                                     |
+| `comments`        | The API location of this Pull Request's [Issue comments](/rest/reference/issues#comments).                                                                   |
+| `review_comments` | The API location of this Pull Request's [Review comments](/rest/reference/pulls#comments).                                                                   |
+| `review_comment`  | The [URL template](/rest#hypermedia) to construct the API location for a [Review comment](/rest/reference/pulls#comments) in this Pull Request's repository. |
+| `commits`         | The API location of this Pull Request's [commits](#list-commits-on-a-pull-request).                                                                          |
+| `statuses`        | The API location of this Pull Request's [commit statuses](/rest/reference/repos#statuses), which are the statuses of its `head` branch.                      |
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Reviews
@@ -58,7 +58,7 @@ Pull Request Reviews are groups of Pull Request Review Comments on the Pull
 Request, grouped together with a state and optional body comment.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'reviews' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'reviews' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Review comments
@@ -77,7 +77,7 @@ These are the supported media types for pull request review comments.
 For more information, see "[Custom media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Review requests
@@ -85,5 +85,5 @@ For more information, see "[Custom media types](/rest/overview/media-types)."
 Pull request authors and repository owners and collaborators can request a pull request review from anyone with write access to the repository. Each requested reviewer will receive a notification asking them to review the pull request.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'review-requests' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'review-requests' %}{% include rest_operation %}{% endif %}
 {% endfor %}

@@ -1,11 +1,11 @@
 ---
 title: About GitHub Sponsors
-intro: '{% data variables.product.prodname_sponsors %} allows the developer community to financially support the people and organizations who design, build, and maintain the open source projects they depend on, directly on {% data variables.product.product_name %}.'
+intro: "{% data variables.product.prodname_sponsors %} allows the developer community to financially support the people and organizations who design, build, and maintain the open source projects they depend on, directly on {% data variables.product.product_name %}."
 redirect_from:
   - /articles/about-github-sponsors
   - /github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Open Source
@@ -45,6 +45,7 @@ Donations between sponsored developers will not be matched.
 {% data reusables.sponsors.feedback %}
 
 ## Further reading
+
 - "[Sponsoring open source contributors](/sponsors/sponsoring-open-source-contributors)"
 - "[Receiving sponsorships through {% data variables.product.prodname_sponsors %}](/sponsors/receiving-sponsorships-through-github-sponsors)"
 - "[FAQ with the {% data variables.product.prodname_sponsors %} team](https://github.blog/2019-06-12-faq-with-the-github-sponsors-team/)" on {% data variables.product.prodname_blog %}

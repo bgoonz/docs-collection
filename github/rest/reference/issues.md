@@ -1,12 +1,12 @@
 ---
 title: Issues
-intro: 'The Issues API enables you to view and manage issues, including issue assignees, comments, labels, and milestones.'
+intro: "The Issues API enables you to view and manage issues, including issue assignees, comments, labels, and milestones."
 redirect_from:
   - /v3/issues
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -24,13 +24,13 @@ These are the supported media types for issues.
 For more information about media types, see "[Custom media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Assignees
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'assignees' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'assignees' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Comments
@@ -43,7 +43,7 @@ You can read more about the use of media types in the API
 [here](/rest/overview/media-types).
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Events
@@ -51,19 +51,19 @@ You can read more about the use of media types in the API
 The Issue Events API can return different types of events triggered by activity in issues and pull requests. For more information about the specific events that you can receive from the Issue Events API, see "[Issue event types](/developers/webhooks-and-events/issue-event-types)." An events API for GitHub activity outside of issues and pull requests is also available. For more information, see the "[Events API](/developers/webhooks-and-events/github-event-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'events' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'events' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Labels
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'labels' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'labels' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Milestones
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'milestones' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'milestones' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Timeline
@@ -73,5 +73,5 @@ The Timeline Events API can return different types of events triggered by timeli
 You can use this API to display information about issues and pull request or determine who should be notified of issue comments.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'timeline' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'timeline' %}{% include rest_operation %}{% endif %}
 {% endfor %}

@@ -1,7 +1,7 @@
 ---
 title: GitHub Sponsors Documentation
 shortTitle: GitHub Sponsors
-intro: 'Invest in the open source projects you depend on, support digital infrastructure, and make open source careers possible by sponsoring open source contributors and their projects. Build a {% data variables.product.prodname_sponsors %} profile and receive compensation for your open source work.'
+intro: "Invest in the open source projects you depend on, support digital infrastructure, and make open source careers possible by sponsoring open source contributors and their projects. Build a {% data variables.product.prodname_sponsors %} profile and receive compensation for your open source work."
 introLinks:
   quickstart: /sponsors/getting-started-with-github-sponsors/quickstart-for-finding-contributors-to-sponsor
 redirect_from:
@@ -27,7 +27,7 @@ featuredLinks:
     - /sponsors/about-github-sponsors-for-open-source-contributors
 layout: product-landing
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /getting-started-with-github-sponsors
   - /sponsoring-open-source-contributors
@@ -35,6 +35,7 @@ children:
   - /integrating-with-github-sponsors
   - /guides
 ---
+
 <!---->
 <!---->
 <!---->

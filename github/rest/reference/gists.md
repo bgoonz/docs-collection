@@ -3,9 +3,9 @@ title: Gists
 redirect_from:
   - /v3/gists
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -35,7 +35,7 @@ These are the supported media types for fetching gist contents.
 For more information, see "[Media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Comments
@@ -50,5 +50,5 @@ These are the supported media types for gist comments.
 For more information about media types, see "[Custom media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'comments' %}{% include rest_operation %}{% endif %}
 {% endfor %}

@@ -1,13 +1,13 @@
 ---
 title: Git database
-intro: 'The Git Database API enables you to read and write raw Git objects to your Git database on {% data variables.product.product_name %} and to list and update Git references (branch heads and tags).'
+intro: "The Git Database API enables you to read and write raw Git objects to your Git database on {% data variables.product.product_name %} and to list and update Git references (branch heads and tags)."
 allowTitleToDifferFromFilename: true
 redirect_from:
   - /v3/git
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
@@ -16,7 +16,7 @@ miniTocMaxHeadingLevel: 3
 The Git Database API gives you access to read and write raw Git objects to your Git database on {% data variables.product.product_name %} and to list and update your references (branch heads and tags). For more information about using the Git Database API, see "[Getting started with the Git data API](/rest/guides/getting-started-with-the-git-database-api)."
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 ## Blobs
@@ -34,7 +34,7 @@ These are the supported media types for blobs.
 For more information, see "[Media types](/rest/overview/media-types)."
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'blobs' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'blobs' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Commits
@@ -44,7 +44,7 @@ These endpoints allow you to read and write [commit objects](https://git-scm.com
 to your Git database on {% data variables.product.product_name %}.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'commits' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'commits' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## References
@@ -57,7 +57,7 @@ commit hash. These endpoints allow you to read and write [references](https://gi
 to your Git database on {% data variables.product.product_name %}.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'refs' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'refs' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Tags
@@ -65,7 +65,7 @@ to your Git database on {% data variables.product.product_name %}.
 A Git tag is similar to a [Git reference](/rest/reference/git#refs), but the Git commit that it points to never changes. Git tags are helpful when you want to point to specific releases. These endpoints allow you to read and write [tag objects](https://git-scm.com/book/en/v1/Git-Internals-Git-References#Tags) to your Git database on {% data variables.product.product_name %}. The Git tags API only supports [annotated tag objects](https://git-scm.com/book/en/v1/Git-Internals-Git-References#Tags), not lightweight tags.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'tags' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'tags' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Trees
@@ -73,5 +73,5 @@ A Git tag is similar to a [Git reference](/rest/reference/git#refs), but the Git
 A Git tree object creates the hierarchy between files in a Git repository. You can use the Git tree object to create the relationship between directories and the files they contain. These endpoints allow you to read and write [tree objects](https://git-scm.com/book/en/v1/Git-Internals-Git-Objects#Tree-Objects) to your Git database on {% data variables.product.product_name %}.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'trees' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'trees' %}{% include rest_operation %}{% endif %}
 {% endfor %}

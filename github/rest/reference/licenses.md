@@ -4,9 +4,9 @@ intro: "The Licenses API lets you to retrieve popular open source licenses and i
 redirect_from:
   - /v3/licenses
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3

@@ -1,29 +1,30 @@
 ---
 title: Organizations
-intro: 'The Organizations API gives you access to control and manage all your {% data variables.product.product_name %} organizations.'
+intro: "The Organizations API gives you access to control and manage all your {% data variables.product.product_name %} organizations."
 allowTitleToDifferFromFilename: true
 redirect_from:
   - /v3/orgs
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 miniTocMaxHeadingLevel: 3
 ---
 
 {% for operation in currentRestOperations %}
-  {% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
+{% unless operation.subcategory %}{% include rest_operation %}{% endunless %}
 {% endfor %}
 
 {% ifversion fpt %}
+
 ## Blocking users
 
-The token used to authenticate the call must have the `admin:org` scope in order to make any blocking calls for an organization. Otherwise, the response returns `HTTP 404`.  
+The token used to authenticate the call must have the `admin:org` scope in order to make any blocking calls for an organization. Otherwise, the response returns `HTTP 404`.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'blocking' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'blocking' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 {% endif %}
@@ -31,13 +32,13 @@ The token used to authenticate the call must have the `admin:org` scope in order
 ## Members
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'members' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'members' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Outside collaborators
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'outside-collaborators' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'outside-collaborators' %}{% include rest_operation %}{% endif %}
 {% endfor %}
 
 ## Webhooks
@@ -66,5 +67,5 @@ For more best practices, [see our guide](/guides/best-practices-for-integrators/
 {% data variables.product.product_name %} will send along several HTTP headers to differentiate between event types and payload identifiers. See [webhook headers](/webhooks/event-payloads/#delivery-headers) for details.
 
 {% for operation in currentRestOperations %}
-  {% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
+{% if operation.subcategory == 'webhooks' %}{% include rest_operation %}{% endif %}
 {% endfor %}
